@@ -10,6 +10,7 @@ import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useEffect, useState, useRef } from 'react';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
+import { useFeedAlert } from '@/hooks/useFeedAlert';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { toast } from 'sonner';
 import {
@@ -250,6 +251,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
   // Verde solo si ha entrado algo NUEVO desde el último repaso. Sin número: un
   // contador fijo se convierte en ruido y deja de mirarse.
   const { hayNuevo } = useAdminActivityAlert(isAdmin);
+  const { hayNuevo: hayNuevoFeed } = useFeedAlert(user?.id);
   const { state, setOpen } = useSidebar();
   const collapsed = state === 'collapsed';
   const isAgency = subscription_tier === 'agency' || subscription_tier === 'elite';
@@ -311,7 +313,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
             <NavItem icon={LayoutGrid} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} />
             <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} badge={flashBadge} badgeColor="gold" />
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} badge={msgBadge} badgeColor="blue" />
-            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} />
+            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} />
           </SidebarMenu>
         </div>
 

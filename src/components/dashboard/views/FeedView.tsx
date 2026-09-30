@@ -1,12 +1,19 @@
+import { useEffect } from 'react';
 import { Rss } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useFeedPosts } from '@/hooks/useFeedPosts';
+import { useFeedAlert } from '@/hooks/useFeedAlert';
 import PostCard from '@/components/PostCard';
 import { fotoOptimizada } from '@/lib/imagen';
 
 const FeedView = () => {
   const { user } = useAuth();
   const { posts, loading } = useFeedPosts(user?.id);
+  // Marcar como visto AL SALIR, no al entrar — igual que AdminActivity.tsx:
+  // si se marcara al entrar, lo que llega mientras miras la pestaña quedaría
+  // fuera de la ventana de "nuevo" en la próxima visita.
+  const { marcarVisto } = useFeedAlert(user?.id);
+  useEffect(() => () => { marcarVisto(); }, [marcarVisto]);
 
   if (loading) {
     return <p className="text-sm text-muted-foreground animate-pulse p-6">Cargando feed…</p>;

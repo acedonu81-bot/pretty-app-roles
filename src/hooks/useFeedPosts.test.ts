@@ -29,6 +29,8 @@ function mockTables({ follows, posts, profiles }: { follows: { followed_user_id:
   });
 }
 
+const baseProfile = { photo_url: null, role: 'dj', portfolio_urls: null, updated_at: '2026-09-01T00:00:00Z' };
+
 describe('useFeedPosts', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -59,8 +61,8 @@ describe('useFeedPosts', () => {
         { id: 'post-2', user_id: 'pro-2', content: 'Mix nuevo', post_type: 'text', media_url: null, created_at: '2026-09-29T10:00:00Z' },
       ],
       profiles: [
-        { user_id: 'pro-1', display_name: 'DJ Uno', photo_url: null, role: 'dj' },
-        { user_id: 'pro-2', display_name: 'DJ Dos', photo_url: null, role: 'dj' },
+        { user_id: 'pro-1', display_name: 'DJ Uno', ...baseProfile },
+        { user_id: 'pro-2', display_name: 'DJ Dos', ...baseProfile },
       ],
     });
 
@@ -70,5 +72,40 @@ describe('useFeedPosts', () => {
     expect(result.current.posts).toHaveLength(2);
     expect(result.current.posts[0]).toMatchObject({ id: 'post-1', authorName: 'DJ Uno' });
     expect(result.current.posts[1]).toMatchObject({ id: 'post-2', authorName: 'DJ Dos' });
+  });
+
+  it('falls back to portfolio photos when a followed profile has no posts', async () => {
+    mockTables({
+      follows: [{ followed_user_id: 'pro-3' }],
+      posts: [],
+      profiles: [
+        { user_id: 'pro-3', display_name: 'DJ Tres', ...baseProfile, portfolio_urls: ['https://x/a.jpg', 'https://x/b.jpg'] },
+      ],
+    });
+
+    const { result } = renderHook(() => useFeedPosts('viewer-1'));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(result.current.posts).toHaveLength(2);
+    expect(result.current.posts.every(p => p.post_type === 'image' && p.authorName === 'DJ Tres')).toBe(true);
+    expect(result.current.posts.map(p => p.media_url)).toEqual(['https://x/a.jpg', 'https://x/b.jpg']);
+  });
+
+  it('shows real posts instead of portfolio when a profile has both', async () => {
+    mockTables({
+      follows: [{ followed_user_id: 'pro-4' }],
+      posts: [
+        { id: 'post-4', user_id: 'pro-4', content: 'Novedad real', post_type: 'text', media_url: null, created_at: '2026-09-30T10:00:00Z' },
+      ],
+      profiles: [
+        { user_id: 'pro-4', display_name: 'DJ Cuatro', ...baseProfile, portfolio_urls: ['https://x/c.jpg'] },
+      ],
+    });
+
+    const { result } = renderHook(() => useFeedPosts('viewer-1'));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(result.current.posts).toHaveLength(1);
+    expect(result.current.posts[0]).toMatchObject({ id: 'post-4' });
   });
 });
