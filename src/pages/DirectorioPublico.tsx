@@ -17,6 +17,7 @@ import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
 import { expandRole, canonicalRole } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
+import FollowButton from '@/components/FollowButton';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -924,17 +925,24 @@ function DirectorioPublicoContenido() {
 
                   {/* Info — clean & minimal on mobile */}
                   <div className="p-3 sm:p-4 flex flex-col flex-1">
-                    <a href={profileUrl(p)} className="block hover:opacity-70 transition-opacity">
-                      <p className="text-sm sm:text-base font-black leading-tight truncate" style={{ color: '#111' }}>{p.display_name}</p>
-                      {/* Zone + specialty inline on mobile — single clean line */}
-                      <p className="text-xs truncate mt-0.5 sm:hidden" style={{ color: '#717171' }}>
-                        {[p.zone?.split(',')[0], p.specialty?.split(/[·+(]/)[0].trim()].filter(Boolean).join(' · ')}
-                      </p>
-                      {/* Desktop: specialty on its own line */}
-                      {p.specialty && (
-                        <p className="hidden sm:block text-xs font-semibold mb-1 mt-0.5 truncate" style={{ color: '#7a6216' }}>{p.specialty}</p>
-                      )}
-                    </a>
+                    <div className="flex items-start justify-between gap-2">
+                      <a href={profileUrl(p)} className="block flex-1 min-w-0 hover:opacity-70 transition-opacity">
+                        <p className="text-sm sm:text-base font-black leading-tight truncate" style={{ color: '#111' }}>{p.display_name}</p>
+                        {/* Zone + specialty inline on mobile — single clean line */}
+                        <p className="text-xs truncate mt-0.5 sm:hidden" style={{ color: '#717171' }}>
+                          {[p.zone?.split(',')[0], p.specialty?.split(/[·+(]/)[0].trim()].filter(Boolean).join(' · ')}
+                        </p>
+                        {/* Desktop: specialty on its own line */}
+                        {p.specialty && (
+                          <p className="hidden sm:block text-xs font-semibold mb-1 mt-0.5 truncate" style={{ color: '#7a6216' }}>{p.specialty}</p>
+                        )}
+                      </a>
+                      {/* Seguir directo desde la tarjeta — sin entrar a la ficha,
+                          igual que un "Seguir" al lado del nombre en Instagram.
+                          compact: en la tarjeta de 2 columnas de móvil solo cabe
+                          el icono sin desbordar o forzar el truncado del nombre. */}
+                      {user && <FollowButton viewerId={user.id} followedUserId={p.user_id} compact />}
+                    </div>
 
                     {/* Price — prominent text on mobile */}
                     <p className="text-sm font-black mt-1 sm:hidden" style={{ color: '#333' }}>
