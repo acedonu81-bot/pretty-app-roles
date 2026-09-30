@@ -21,6 +21,7 @@ import { useScarcitySignal } from '@/hooks/useScarcitySignal';
 import { instagramUrl, extractInstagramHandle } from '@/lib/social';
 import { toSlug } from '@/data/profiles';
 import type { Profile } from '@/data/profiles';
+import FollowButton from '@/components/FollowButton';
 
 const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel: string; url: string }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -424,6 +425,9 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
                 {cfg.label}
               </span>
+              {p.userId && me.user_id && me.user_id !== p.userId && (
+                <FollowButton viewerId={me.user_id} followedUserId={p.userId} />
+              )}
               <ShareProfileButton name={p.name} roleLabel={cfg.label}
                 url={`https://xpeak.es/p/${p.slug || toSlug(p.name)}`} />
               {p.isLive && (

@@ -31,18 +31,45 @@ export default function EmbedDiferido({ src, alto, tipo, titulo, className, styl
         title={titulo} className={className} style={{ border: 'none', ...style }} />
     );
   }
+  // Barras de ecualizador en CSS puro (sin librería ni canvas): cada una
+  // anima su altura con un delay distinto para que no se vean sincronizadas.
+  // Sugiere "esto es audio" de un vistazo, en vez del círculo de play genérico
+  // que no se distinguía de cualquier otro botón de la ficha.
+  const barras = [0.4, 0.75, 1, 0.55, 0.85, 0.35, 0.65];
   return (
     <button type="button" onClick={() => setCargado(true)} aria-label={`Escuchar ${titulo}`}
-      className={`w-full flex items-center gap-3 px-4 text-left transition-colors hover:bg-black/[0.03] ${className ?? ''}`}
+      className={`embed-diferido-btn w-full flex items-center gap-3 px-4 text-left transition-colors hover:bg-black/[0.03] ${className ?? ''}`}
       style={{ height: alto, background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', ...style }}>
       <span className="flex items-center justify-center rounded-full flex-shrink-0"
         style={{ width: 44, height: 44, background: 'linear-gradient(135deg,#D4AF37,#B8941E)' }}>
-        <Play size={18} fill="#000" color="#000" style={{ marginLeft: 2 }} />
+        <Play size={16} fill="#000" color="#000" style={{ marginLeft: 2 }} />
+      </span>
+      <span className="flex items-end gap-[3px] h-6 flex-shrink-0" aria-hidden="true">
+        {barras.map((h, i) => (
+          <span key={i} className="eq-bar" style={{ '--h': h, animationDelay: `${i * 0.12}s` } as React.CSSProperties} />
+        ))}
       </span>
       <span className="min-w-0">
         <span className="block text-sm font-bold" style={{ color: '#111' }}>Escuchar {titulo.toLowerCase()}</span>
         {tipo && <span className="block text-xs" style={{ color: '#6b7280' }}>{tipo}</span>}
       </span>
+      <style>{`
+        .eq-bar {
+          width: 3px;
+          border-radius: 2px;
+          background: linear-gradient(180deg, #D4AF37, #B8941E);
+          height: calc(var(--h) * 100%);
+          animation: eq-bounce 0.9s ease-in-out infinite alternate;
+          transform-origin: bottom;
+        }
+        @keyframes eq-bounce {
+          from { transform: scaleY(0.35); opacity: 0.7; }
+          to { transform: scaleY(1); opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .eq-bar { animation: none; transform: scaleY(var(--h)); }
+        }
+      `}</style>
     </button>
   );
 }
