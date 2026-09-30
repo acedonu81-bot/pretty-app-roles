@@ -340,7 +340,13 @@ const EventRequestsSection = () => {
     // Con varios roles en una misma oferta (1 DJ + 2 camareros), el
     // profesional se apunta automáticamente a UNA plaza libre de su propio
     // rol — nunca elige él, solo se filtra por lo que ya declara su perfil.
-    const miPlaza = (slots[req.id] ?? []).find(s => ROL_UI_A_SLUG[s.role] === canonicalRole(profile.role));
+    // Cuentan también los oficios secundarios: un DJ que alquila su equipo
+    // (roles = ['dj','alquiler']) debe poder apuntarse a una plaza de alquiler.
+    // Primero su oficio principal, si la oferta tiene plaza para él.
+    const misOficios = [profile.role, ...((profile as { roles?: string[] | null }).roles ?? [])]
+      .map(r => canonicalRole(r)).filter(Boolean) as string[];
+    const plazas = slots[req.id] ?? [];
+    const miPlaza = misOficios.map(o => plazas.find(s => ROL_UI_A_SLUG[s.role] === o)).find(Boolean);
     if (!miPlaza) { toast.error('No hay ninguna plaza de tu rol en esta oferta.'); return; }
     setApplying(req.id);
     const { data, error } = await supabase.from('event_request_responses' as any).insert({
