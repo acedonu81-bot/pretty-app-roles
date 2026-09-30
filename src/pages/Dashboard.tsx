@@ -39,6 +39,7 @@ const AnimadorView = lazy(() => import('@/components/dashboard/views/AnimadorVie
 const SpeakerView = lazy(() => import('@/components/dashboard/views/SpeakerView'));
 const SettingsView = lazy(() => import('@/components/dashboard/views/SettingsView'));
 const MessagesView = lazy(() => import('@/components/dashboard/views/MessagesView'));
+const FeedView = lazy(() => import('@/components/dashboard/views/FeedView'));
 const CalendarView = lazy(() => import('@/components/dashboard/views/CalendarView'));
 const ProfileView = lazy(() => import('@/components/dashboard/views/ProfileView'));
 const MapaView = lazy(() => import('@/components/dashboard/views/MapaView'));
@@ -575,6 +576,7 @@ const Dashboard = () => {
       case 'legal-soporte': return <LegalView document="soporte" />;
       case 'empresario': return <EmpresarioView onMessage={handleMessage} />;
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;
+      case 'feed': return <FeedView />;
       case 'calendar':   return <CalendarView />;
       case 'contracts':  return <ContractView />;
       case 'profile': return <ProfileView onNavigate={nav} />;

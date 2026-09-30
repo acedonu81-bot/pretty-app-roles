@@ -1,6 +1,6 @@
 import {
   LayoutGrid, Search, MessageSquare, Megaphone, Settings,
-  BarChart3, FileText, FileEdit, CalendarDays, Sparkles,
+  BarChart3, FileText, FileEdit, CalendarDays, Sparkles, Rss,
   ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
@@ -311,6 +311,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
             <NavItem icon={LayoutGrid} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} />
             <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} badge={flashBadge} badgeColor="gold" />
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} badge={msgBadge} badgeColor="blue" />
+            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} />
           </SidebarMenu>
         </div>
 

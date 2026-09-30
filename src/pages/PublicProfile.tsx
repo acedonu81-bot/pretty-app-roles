@@ -22,6 +22,8 @@ import { instagramUrl, extractInstagramHandle } from '@/lib/social';
 import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
 import { fotoOptimizada } from '@/lib/imagen';
 import EmbedDiferido from '@/components/EmbedDiferido';
+import FollowButton from '@/components/FollowButton';
+import PostCard from '@/components/PostCard';
 
 /* ── Reviews ─────────────────────────────────────────────────────────────── */
 interface Review {
@@ -1014,12 +1016,15 @@ const PublicProfile = () => {
             initial="hidden" animate="show" variants={stagger}>
 
             <motion.div variants={fadeUp}>
-              {/* Role badge + compartir */}
+              {/* Role badge + seguir + compartir */}
               <div className="flex items-center gap-2 mb-3">
                 <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                   style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
                   {roleLabel[profile.role] ?? profile.role}
                 </span>
+                {sbProfile && authUser?.id !== sbProfile.user_id && (
+                  <FollowButton viewerId={authUser?.id} followedUserId={sbProfile.user_id} />
+                )}
                 <ShareProfileButton name={profile.name} roleLabel={roleLabel[profile.role] ?? profile.role} url={profileUrl} />
               </div>
 
@@ -1411,19 +1416,7 @@ const PublicProfile = () => {
                 <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Novedades</span>
               </div>
               <div className="flex flex-col gap-3">
-                {publicPosts.map(post => (
-                  <div key={post.id} className="p-5 rounded-2xl"
-                    style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.07)' }}>
-                    <p className="text-xs mb-2" style={{ color: '#444' }}>
-                      {new Date(post.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
-                    </p>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: '#222' }}>{post.content}</p>
-                    {post.media_url && post.post_type === 'image' && (
-                      <img src={post.media_url} alt="Post" className="w-full max-h-60 object-cover rounded-xl mt-3" loading="lazy"
-                        onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                    )}
-                  </div>
-                ))}
+                {publicPosts.map(post => <PostCard key={post.id} post={post} />)}
               </div>
             </motion.div>
           )}
