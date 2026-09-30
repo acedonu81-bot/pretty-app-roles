@@ -12,6 +12,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { timeAgo } from '@/lib/timeAgo';
 import { isNative } from '@/lib/capacitor';
 import { fotoOptimizada } from '@/lib/imagen';
+import FollowButton from '@/components/FollowButton';
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -156,6 +157,14 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           {/* gradient bottom — desktop only (mobile shows name below photo) */}
           <div className="absolute inset-0 hidden sm:block" style={{ background: 'linear-gradient(to top, rgba(7,7,16,0.9) 0%, transparent 50%)' }} />
         </div>
+
+        {/* Seguir — esquina superior derecha de la foto, como en Instagram.
+            realProfileId es undefined para perfiles seed/demo sin user_id real. */}
+        {realProfileId && currentUser.user_id && currentUser.user_id !== realProfileId && (
+          <div className="absolute top-2.5 right-2.5 z-10">
+            <FollowButton viewerId={currentUser.user_id} followedUserId={realProfileId} compact />
+          </div>
+        )}
 
         {/* Badges top-left — single most-relevant badge on mobile, full set on desktop */}
         <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
