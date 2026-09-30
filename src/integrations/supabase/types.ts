@@ -486,18 +486,21 @@ export type Database = {
         Row: {
           id: string
           sent_at: string
+          sent_day: string | null
           type: string
           user_id: string
         }
         Insert: {
           id?: string
           sent_at?: string
+          sent_day?: string | null
           type: string
           user_id: string
         }
         Update: {
           id?: string
           sent_at?: string
+          sent_day?: string | null
           type?: string
           user_id?: string
         }
@@ -631,6 +634,7 @@ export type Database = {
           event_date: string | null
           event_dates: string[] | null
           event_type: string
+          exact_address: string | null
           expires_at: string | null
           id: string
           roles_needed: string[] | null
@@ -650,6 +654,7 @@ export type Database = {
           event_date?: string | null
           event_dates?: string[] | null
           event_type: string
+          exact_address?: string | null
           expires_at?: string | null
           id?: string
           roles_needed?: string[] | null
@@ -669,6 +674,7 @@ export type Database = {
           event_date?: string | null
           event_dates?: string[] | null
           event_type?: string
+          exact_address?: string | null
           expires_at?: string | null
           id?: string
           roles_needed?: string[] | null
@@ -828,9 +834,11 @@ export type Database = {
           agreed_price: number | null
           created_at: string | null
           created_by: string | null
+          es_autorregistro: boolean | null
           event_date: string | null
           event_description: string | null
           event_location: string | null
+          exact_address: string | null
           id: string
           professional_name: string
           professional_note: string | null
@@ -846,9 +854,11 @@ export type Database = {
           agreed_price?: number | null
           created_at?: string | null
           created_by?: string | null
+          es_autorregistro?: boolean | null
           event_date?: string | null
           event_description?: string | null
           event_location?: string | null
+          exact_address?: string | null
           id?: string
           professional_name: string
           professional_note?: string | null
@@ -864,9 +874,11 @@ export type Database = {
           agreed_price?: number | null
           created_at?: string | null
           created_by?: string | null
+          es_autorregistro?: boolean | null
           event_date?: string | null
           event_description?: string | null
           event_location?: string | null
+          exact_address?: string | null
           id?: string
           professional_name?: string
           professional_note?: string | null
@@ -1098,21 +1110,6 @@ export type Database = {
         }
         Relationships: []
       }
-      profile_vote_counts: {
-        Row: {
-          profile_id: string
-          vote_count: number
-        }
-        Insert: {
-          profile_id: string
-          vote_count?: number
-        }
-        Update: {
-          profile_id?: string
-          vote_count?: number
-        }
-        Relationships: []
-      }
       profile_business_views: {
         Row: {
           created_at: string
@@ -1266,11 +1263,35 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_vote_counts: {
+        Row: {
+          profile_id: string
+          vote_count: number
+        }
+        Insert: {
+          profile_id: string
+          vote_count?: number
+        }
+        Update: {
+          profile_id?: string
+          vote_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_vote_counts_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           admin_seen_at: string | null
           ai_moderation_flagged: boolean
           ai_moderation_reason: string | null
+          allows_overnight: boolean | null
           annual_billing: boolean | null
           audio_embed_url: string | null
           audio_session_urls: string[] | null
@@ -1290,9 +1311,15 @@ export type Database = {
           dance_level: string | null
           dance_role: string | null
           display_name: string | null
+          distance_from_madrid_km: number | null
           email: string | null
           email_opt_out: boolean
+          emergente_anios: number | null
+          emergente_sub_nivel: string | null
+          emergente_verified_at: string | null
+          emergente_verified_by: string | null
           excluded_services: string[] | null
+          experience_level: string | null
           fast_responder_count: number
           genres: string[] | null
           google_review_url: string | null
@@ -1309,6 +1336,8 @@ export type Database = {
           is_seed_profile: boolean
           is_verified: boolean | null
           languages: string[] | null
+          marketing_consent: boolean
+          marketing_consent_asked_at: string | null
           min_hours: number | null
           min_notice_hours: number | null
           night_surcharge_pct: number | null
@@ -1319,13 +1348,18 @@ export type Database = {
           phone: string | null
           photo_url: string | null
           portfolio_urls: string[] | null
+          price_per_event: number | null
+          price_per_hour: number | null
           priority_badge_until: string | null
           referral_code: string | null
           region: string | null
+          rental_equipment: string[] | null
+          response_bucket: string | null
           role: string | null
           roles: string[]
           score: number | null
           seeking_dance_partner: boolean
+          show_new_badge: boolean
           show_online: boolean
           specialty: string | null
           stream_title: string | null
@@ -1340,6 +1374,7 @@ export type Database = {
           user_id: string
           validation_status: string | null
           validation_submitted_at: string | null
+          venue_capacity: number | null
           video_session_urls: string[] | null
           zone: string | null
         }
@@ -1347,6 +1382,7 @@ export type Database = {
           admin_seen_at?: string | null
           ai_moderation_flagged?: boolean
           ai_moderation_reason?: string | null
+          allows_overnight?: boolean | null
           annual_billing?: boolean | null
           audio_embed_url?: string | null
           audio_session_urls?: string[] | null
@@ -1366,9 +1402,15 @@ export type Database = {
           dance_level?: string | null
           dance_role?: string | null
           display_name?: string | null
+          distance_from_madrid_km?: number | null
           email?: string | null
           email_opt_out?: boolean
+          emergente_anios?: number | null
+          emergente_sub_nivel?: string | null
+          emergente_verified_at?: string | null
+          emergente_verified_by?: string | null
           excluded_services?: string[] | null
+          experience_level?: string | null
           fast_responder_count?: number
           genres?: string[] | null
           google_review_url?: string | null
@@ -1385,6 +1427,8 @@ export type Database = {
           is_seed_profile?: boolean
           is_verified?: boolean | null
           languages?: string[] | null
+          marketing_consent?: boolean
+          marketing_consent_asked_at?: string | null
           min_hours?: number | null
           min_notice_hours?: number | null
           night_surcharge_pct?: number | null
@@ -1395,13 +1439,18 @@ export type Database = {
           phone?: string | null
           photo_url?: string | null
           portfolio_urls?: string[] | null
+          price_per_event?: number | null
+          price_per_hour?: number | null
           priority_badge_until?: string | null
           referral_code?: string | null
           region?: string | null
+          rental_equipment?: string[] | null
+          response_bucket?: string | null
           role?: string | null
           roles?: string[]
           score?: number | null
           seeking_dance_partner?: boolean
+          show_new_badge?: boolean
           show_online?: boolean
           specialty?: string | null
           stream_title?: string | null
@@ -1416,6 +1465,7 @@ export type Database = {
           user_id: string
           validation_status?: string | null
           validation_submitted_at?: string | null
+          venue_capacity?: number | null
           video_session_urls?: string[] | null
           zone?: string | null
         }
@@ -1423,6 +1473,7 @@ export type Database = {
           admin_seen_at?: string | null
           ai_moderation_flagged?: boolean
           ai_moderation_reason?: string | null
+          allows_overnight?: boolean | null
           annual_billing?: boolean | null
           audio_embed_url?: string | null
           audio_session_urls?: string[] | null
@@ -1442,9 +1493,15 @@ export type Database = {
           dance_level?: string | null
           dance_role?: string | null
           display_name?: string | null
+          distance_from_madrid_km?: number | null
           email?: string | null
           email_opt_out?: boolean
+          emergente_anios?: number | null
+          emergente_sub_nivel?: string | null
+          emergente_verified_at?: string | null
+          emergente_verified_by?: string | null
           excluded_services?: string[] | null
+          experience_level?: string | null
           fast_responder_count?: number
           genres?: string[] | null
           google_review_url?: string | null
@@ -1461,6 +1518,8 @@ export type Database = {
           is_seed_profile?: boolean
           is_verified?: boolean | null
           languages?: string[] | null
+          marketing_consent?: boolean
+          marketing_consent_asked_at?: string | null
           min_hours?: number | null
           min_notice_hours?: number | null
           night_surcharge_pct?: number | null
@@ -1471,13 +1530,18 @@ export type Database = {
           phone?: string | null
           photo_url?: string | null
           portfolio_urls?: string[] | null
+          price_per_event?: number | null
+          price_per_hour?: number | null
           priority_badge_until?: string | null
           referral_code?: string | null
           region?: string | null
+          rental_equipment?: string[] | null
+          response_bucket?: string | null
           role?: string | null
           roles?: string[]
           score?: number | null
           seeking_dance_partner?: boolean
+          show_new_badge?: boolean
           show_online?: boolean
           specialty?: string | null
           stream_title?: string | null
@@ -1492,6 +1556,7 @@ export type Database = {
           user_id?: string
           validation_status?: string | null
           validation_submitted_at?: string | null
+          venue_capacity?: number | null
           video_session_urls?: string[] | null
           zone?: string | null
         }
@@ -1657,9 +1722,11 @@ export type Database = {
           approved: boolean
           comment: string | null
           created_at: string | null
+          cumplio_acordado: boolean | null
           event_date: string | null
           event_type: string | null
           id: string
+          llego_puntual: boolean | null
           rating: number
           rejected_at: string | null
           reviewed_user_id: string | null
@@ -1668,14 +1735,17 @@ export type Database = {
           reviewer_id: string | null
           reviewer_name: string | null
           reviewer_role: string | null
+          volveria_contratar: boolean | null
         }
         Insert: {
           approved?: boolean
           comment?: string | null
           created_at?: string | null
+          cumplio_acordado?: boolean | null
           event_date?: string | null
           event_type?: string | null
           id?: string
+          llego_puntual?: boolean | null
           rating: number
           rejected_at?: string | null
           reviewed_user_id?: string | null
@@ -1684,14 +1754,17 @@ export type Database = {
           reviewer_id?: string | null
           reviewer_name?: string | null
           reviewer_role?: string | null
+          volveria_contratar?: boolean | null
         }
         Update: {
           approved?: boolean
           comment?: string | null
           created_at?: string | null
+          cumplio_acordado?: boolean | null
           event_date?: string | null
           event_type?: string | null
           id?: string
+          llego_puntual?: boolean | null
           rating?: number
           rejected_at?: string | null
           reviewed_user_id?: string | null
@@ -1700,6 +1773,7 @@ export type Database = {
           reviewer_id?: string | null
           reviewer_name?: string | null
           reviewer_role?: string | null
+          volveria_contratar?: boolean | null
         }
         Relationships: []
       }
@@ -2023,6 +2097,7 @@ export type Database = {
       analytics_quien_online: {
         Args: never
         Returns: {
+          detalle: string
           device: string
           display_name: string
           hace_segundos: number
@@ -2048,7 +2123,7 @@ export type Database = {
         }[]
       }
       analytics_usuarios_unicos: {
-        Args: { p_dias?: number }
+        Args: { p_desde_medianoche?: boolean; p_dias?: number }
         Returns: {
           usuarios: number
         }[]
@@ -2063,11 +2138,34 @@ export type Database = {
       }
       city_ref_from_zone: { Args: { p_zone: string }; Returns: string }
       clean_stale_live_sessions: { Args: never; Returns: undefined }
+      completar_preguntas_resena: {
+        Args: {
+          p_cumplio_acordado: boolean
+          p_llego_puntual: boolean
+          p_review_id: string
+          p_volveria_contratar: boolean
+        }
+        Returns: undefined
+      }
+      contratado_en_solicitud: {
+        Args: { p_request_id: string }
+        Returns: boolean
+      }
+      email_opted_out: {
+        Args: { p_email: string; p_user_id: string }
+        Returns: boolean
+      }
       es_admin: { Args: never; Returns: boolean }
+      es_trafico_propio: { Args: { p_user_id: string }; Returns: boolean }
+      flash_bookings_last_7_days: {
+        Args: { p_professional_user_id: string }
+        Returns: number
+      }
       flash_bookings_today_count: {
         Args: { p_professional_user_id: string }
         Returns: number
       }
+      flash_rol_ui_a_roles: { Args: { p_label: string }; Returns: string[] }
       get_vote_count: { Args: { p_profile_id: string }; Returns: number }
       has_role: { Args: { _role: string; _user_id: string }; Returns: boolean }
       has_voted_today: {
@@ -2093,6 +2191,13 @@ export type Database = {
       is_profile_complete: {
         Args: { p: Database["public"]["Tables"]["profiles"]["Row"] }
         Returns: boolean
+      }
+      last_viewed_batch: {
+        Args: { p_user_ids: string[] }
+        Returns: {
+          last_viewed_at: string
+          user_id: string
+        }[]
       }
       latest_deletion_id: { Args: never; Returns: string }
       log_analytics_event:
@@ -2270,6 +2375,7 @@ export type Database = {
       panel_analytics_quien_online: {
         Args: never
         Returns: {
+          detalle: string
           device: string
           display_name: string
           hace_segundos: number
@@ -2295,7 +2401,7 @@ export type Database = {
         }[]
       }
       panel_analytics_usuarios_unicos: {
-        Args: { p_dias?: number }
+        Args: { p_desde_medianoche?: boolean; p_dias?: number }
         Returns: {
           usuarios: number
         }[]
@@ -2307,6 +2413,10 @@ export type Database = {
       }
       perfil_completitud: { Args: { p_user_id: string }; Returns: number }
       profile_views_last_7_days: {
+        Args: { p_viewed_user_id: string }
+        Returns: number
+      }
+      profile_views_previous_week: {
         Args: { p_viewed_user_id: string }
         Returns: number
       }

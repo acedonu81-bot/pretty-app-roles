@@ -77,12 +77,11 @@ export default class AppErrorBoundary extends Component<Props, State> {
       <div style={{
         minHeight: '100dvh', display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center', gap: 16,
-        padding: 24, textAlign: 'center', background: '#0a0908', color: '#fff',
-      }}>
+        padding: 24, textAlign: 'center', background: '#FFFDF7', color: '#111'}}>
         <p style={{ fontSize: 15, fontWeight: 800, maxWidth: 320 }}>
           Algo ha fallado al cargar esta pantalla.
         </p>
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', maxWidth: 320 }}>
+        <p style={{ fontSize: 13, color: '#374151', maxWidth: 320 }}>
           Ya lo sabemos. Prueba a recargar: si sigue pasando, escríbenos.
         </p>
         {/* Solo para admin: el envío a client_errors puede fallar (sin red,
@@ -91,15 +90,14 @@ export default class AppErrorBoundary extends Component<Props, State> {
             volcado de código a un usuario normal. */}
         {this.state.esAdmin && (
         <details style={{ marginTop: 4, maxWidth: 520, width: '100%' }}>
-          <summary style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', cursor: 'pointer' }}>
+          <summary style={{ fontSize: 12, color: '#6b7280', cursor: 'pointer' }}>
             Ver detalle técnico
           </summary>
           <pre style={{
             marginTop: 8, padding: 12, borderRadius: 8, textAlign: 'left',
             fontSize: 11, lineHeight: 1.5, color: '#fca5a5',
-            background: 'rgba(255,255,255,0.05)', overflow: 'auto', maxHeight: 260,
-            whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-          }}>
+            background: '#FFFDF7', overflow: 'auto', maxHeight: 260,
+            whiteSpace: 'pre-wrap', wordBreak: 'break-word'}}>
             {this.state.error.message}
             {'\n\n'}
             {(this.state.error.stack ?? '').slice(0, 1500)}
@@ -111,8 +109,7 @@ export default class AppErrorBoundary extends Component<Props, State> {
           style={{
             marginTop: 8, padding: '12px 24px', borderRadius: 12, fontWeight: 800,
             fontSize: 14, background: 'linear-gradient(90deg,#D4AF37,#B8941E)',
-            color: '#000', border: 'none', cursor: 'pointer',
-          }}
+            color: '#000', border: 'none', cursor: 'pointer'}}
         >
           Recargar
         </button>

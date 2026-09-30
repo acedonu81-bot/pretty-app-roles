@@ -49,6 +49,7 @@ const DIRECTORY_ITEMS: { id: string; label: string }[] = [
   { id: 'speaker', label: 'Speakers & Presentadores' },
   { id: 'design', label: 'Diseño & Visuales' },
   { id: 'tecnico', label: 'Técnicos de Sonido y Montaje' },
+  { id: 'alquiler', label: 'Alquiler de Equipos' },
   { id: 'local_eventos', label: 'Locales para eventos' },
 ];
 const DIRECTORY_IDS = new Set(DIRECTORY_ITEMS.map(i => i.id));
@@ -65,10 +66,10 @@ const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
   { label: 'Azafatas & RRPP', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
   { label: 'Belleza & Estética', ids: ['makeup', 'vestuario'] },
   { label: 'Entretenimiento', ids: ['bailarin', 'mago', 'humorista', 'animador'] },
-  { label: 'Técnica & Producción', ids: ['tecnico'] },
+  { label: 'Técnica & Producción', ids: ['tecnico', 'alquiler'] },
 ];
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth', 'grupo-musical': 'Grupo Musical', tecnico: 'Técnico de Sonido y Montaje', emergentes: 'DJs Emergentes', local_eventos: 'Locales para eventos' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth', 'grupo-musical': 'Grupo Musical', tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', emergentes: 'DJs Emergentes', local_eventos: 'Locales para eventos' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();

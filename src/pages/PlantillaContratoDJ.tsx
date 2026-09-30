@@ -37,29 +37,29 @@ export default function PlantillaContratoDJ() {
         })}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#FFFFFF', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#374151' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#374151' }}>
             ← Todos los artículos
           </a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>
               DJ · Recurso · XPEAK
             </p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Plantilla de contrato para DJ: descarga en Word y PDF (2026)
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
               Plantilla de contrato DJ editable con todas las cláusulas necesarias para eventos y bodas en España. Válida legalmente, con IVA, IRPF y cláusula de cancelación incluidos.
             </p>
           </div>
@@ -73,8 +73,8 @@ export default function PlantillaContratoDJ() {
               <div className="space-y-2">
                 {CLAUSULAS.map((c, i) => (
                   <div key={c} className="flex items-start gap-3 p-4 rounded-xl"
-                    style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
-                    <span className="font-black text-xs shrink-0 mt-0.5" style={{ color: '#D4AF37' }}>{i + 1}.</span>
+                    style={{ background: i % 2 === 0 ? '#FFFDF7' : '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+                    <span className="font-black text-xs shrink-0 mt-0.5" style={{ color: '#8B6A00' }}>{i + 1}.</span>
                     <p className="text-xs font-medium">{c}</p>
                   </div>
                 ))}
@@ -91,8 +91,8 @@ export default function PlantillaContratoDJ() {
                 ].map(p => (
                   <div key={p.paso} className="p-4 rounded-xl text-center"
                     style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-                    <p className="text-xs font-black mb-1" style={{ color: '#D4AF37' }}>{p.paso}</p>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.desc}</p>
+                    <p className="text-xs font-black mb-1" style={{ color: '#8B6A00' }}>{p.paso}</p>
+                    <p className="text-xs" style={{ color: '#374151' }}>{p.desc}</p>
                   </div>
                 ))}
               </div>
@@ -107,9 +107,9 @@ export default function PlantillaContratoDJ() {
                   { t: 'Garantiza la actuación prometida', d: 'Playlist, equipo, hora de inicio y fin: todo queda por escrito.' },
                   { t: 'Obligatorio para facturar', d: 'Si el DJ emite factura (IVA + IRPF), necesitas el contrato para la deducción.' },
                 ].map(item => (
-                  <div key={item.t} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div key={item.t} className="p-4 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                     <p className="text-xs font-bold mb-1">{item.t}</p>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.d}</p>
+                    <p className="text-xs" style={{ color: '#374151' }}>{item.d}</p>
                   </div>
                 ))}
               </div>
@@ -118,7 +118,7 @@ export default function PlantillaContratoDJ() {
             <BlogEmailCapture variant="plantilla" intent="contratar-dj" articlePath="/plantilla-contrato-dj" />
 
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/contrato-dj-que-debe-incluir', cat: 'DJ', title: 'Contrato para DJ: qué debe incluir y cómo redactarlo' },
@@ -126,10 +126,10 @@ export default function PlantillaContratoDJ() {
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
                       style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#374151' }}>{link.title}</span>
                   </a>
                 ))}
               </div>

@@ -30,6 +30,17 @@ const AdminMetrics = () => {
       // no hay columna dedicada al momento de activar el toggle, así que
       // cualquier edición del perfil (no solo el toggle) cuenta como "reciente".
       const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      // Métricas reales: fuera las cuentas admin (user_roles) y los perfiles de
+      // ejemplo (is_seed / is_seed_profile). Antes inflaban el panel: 85 usuarios
+      // y 77 profesionales cuando los reales eran 81 y 74 (30 sep 2026).
+      const { data: adminRows } = await supabase.from('user_roles').select('user_id').eq('role', 'admin');
+      const adminIds = (adminRows ?? []).map(r => r.user_id).filter(Boolean);
+      const perfilesReales = () => {
+        let q = supabase.from('profiles').select('id', { count: 'exact', head: true })
+          .eq('is_seed', false).not('is_seed_profile', 'is', true);
+        if (adminIds.length) q = q.not('user_id', 'in', `(${adminIds.join(',')})`);
+        return q;
+      };
       const [
         { count: totalUsers },
         { count: businesses },
@@ -44,15 +55,15 @@ const AdminMetrics = () => {
         { count: eventRequestsOpen },
         { count: eventRequestsHired },
       ] = await Promise.all([
-        supabase.from('profiles').select('id', { count: 'exact', head: true }),
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'empresario'),
+        perfilesReales(),
+        perfilesReales().eq('role', 'empresario'),
         // Profesionales de verdad: ni empresarios ni altas sin oficio elegido.
         // Antes se calculaba como total - empresarios, así que los 'pending'
         // engordaban la cifra de profesionales del panel (42-1=41 cuando los
         // reales eran 39).
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).not('role', 'in', '("empresario","pending")'),
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('is_flash_active', true),
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('is_flash_active', true).gte('updated_at', since24h),
+        perfilesReales().not('role', 'in', '("empresario","pending")'),
+        perfilesReales().eq('is_flash_active', true),
+        perfilesReales().eq('is_flash_active', true).gte('updated_at', since24h),
         // Todos los conteos excluyen es_autorregistro: un bolo que el
         // profesional se apunta a si mismo no es demanda real y falseaba
         // "solicitudes" y "aceptadas" del panel.

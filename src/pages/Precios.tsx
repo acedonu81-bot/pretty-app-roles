@@ -8,8 +8,8 @@ const PLANES = [
     precio: '0€',
     periodo: 'para siempre',
     target: 'DJs, fotógrafos, camareros, staff',
-    color: 'rgba(255,255,255,0.06)',
-    border: 'rgba(255,255,255,0.1)',
+    color: '#FFFDF7',
+    border: 'rgba(122,98,22,0.16)',
     incluye: [
       'Perfil verificado con portfolio',
       'Aparecer en el directorio',
@@ -87,9 +87,9 @@ export default function Precios() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#FFFFFF', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             Unirse
@@ -99,9 +99,9 @@ export default function Precios() {
         <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-10 pb-20">
 
           <div className="text-center mb-12">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Precios</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Precios</p>
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">Precios</h1>
-            <p className="text-sm max-w-md mx-auto" style={{ color: '#3d3d4e' }}>
+            <p className="text-sm max-w-md mx-auto" style={{ color: '#374151' }}>
               Sin tarjeta de crédito, sin permanencia.
             </p>
           </div>
@@ -116,24 +116,24 @@ export default function Precios() {
                     {plan.badge}
                   </span>
                 )}
-                <p className="text-[0.6rem] font-bold uppercase tracking-wider mb-1" style={{ color: '#3d3d4e' }}>{plan.target}</p>
+                <p className="text-[0.6rem] font-bold uppercase tracking-wider mb-1" style={{ color: '#374151' }}>{plan.target}</p>
                 <p className="text-lg font-black mb-1">{plan.nombre}</p>
                 <div className="flex items-baseline gap-1 mb-5">
-                  <span className="text-4xl font-black" style={{ color: plan.gold ? '#D4AF37' : '#fff' }}>{plan.precio}</span>
-                  <span className="text-xs" style={{ color: '#3d3d4e' }}>{plan.periodo}</span>
+                  <span className="text-4xl font-black" style={{ color: plan.gold ? '#8B6A00' : '#111' }}>{plan.precio}</span>
+                  <span className="text-xs" style={{ color: '#374151' }}>{plan.periodo}</span>
                 </div>
 
                 <ul className="space-y-2 mb-6">
                   {plan.incluye.map(item => (
                     <li key={item} className="flex items-start gap-2 text-xs">
-                      <CheckCircle size={13} className="mt-0.5 shrink-0" style={{ color: '#22c55e' }} />
-                      <span style={{ color: 'rgba(255,255,255,0.8)' }}>{item}</span>
+                      <CheckCircle size={13} className="mt-0.5 shrink-0" style={{ color: '#059669' }} />
+                      <span style={{ color: '#111' }}>{item}</span>
                     </li>
                   ))}
                   {plan.noIncluye.map(item => (
                     <li key={item} className="flex items-start gap-2 text-xs">
-                      <X size={13} className="mt-0.5 shrink-0" style={{ color: 'rgba(255,255,255,0.2)' }} />
-                      <span style={{ color: 'rgba(255,255,255,0.3)' }}>{item}</span>
+                      <X size={13} className="mt-0.5 shrink-0" style={{ color: '#9ca3af' }} />
+                      <span style={{ color: '#6b7280' }}>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -142,7 +142,7 @@ export default function Precios() {
                   className="block w-full text-center py-3 rounded-xl text-xs font-black transition-all hover:scale-105"
                   style={plan.gold
                     ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }
-                    : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
+                    : { background: '#FBF3DD', border: '1px solid rgba(122,98,22,0.16)', color: '#111' }}>
                   {plan.cta}
                 </a>
               </div>
@@ -153,9 +153,9 @@ export default function Precios() {
             <h2 className="text-xl font-black text-center mb-8">Preguntas frecuentes sobre precios</h2>
             <div className="space-y-4 max-w-2xl mx-auto">
               {FAQ.map(f => (
-                <div key={f.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div key={f.q} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                   <p className="text-sm font-bold mb-2">{f.q}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>{f.a}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>{f.a}</p>
                 </div>
               ))}
             </div>
@@ -163,7 +163,7 @@ export default function Precios() {
 
           <div className="p-8 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
             <p className="text-lg font-black mb-2">¿Aún tienes dudas?</p>
-            <p className="text-xs mb-5" style={{ color: '#3d3d4e' }}>Escríbenos a hola@xpeak.es o usa el chat de soporte en el dashboard.</p>
+            <p className="text-xs mb-5" style={{ color: '#374151' }}>Escríbenos a hola@xpeak.es o usa el chat de soporte en el dashboard.</p>
             <a href="/auth" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Empezar →

@@ -849,6 +849,14 @@ const ROUTES = [
     ogType: 'website',
   },
   {
+    path: '/directorio/alquiler-equipos',
+    title: 'Alquiler de equipos para eventos: sonido, DJ, luces y fotomatón | XPEAK',
+    desc: 'Alquiler de equipos para eventos en España: sonido, equipo de DJ, backline, luces, fotomatón, escenarios y mobiliario. Para organizadores y profesionales. Precio por día y contacto directo.',
+    ogTitle: 'Alquiler de equipos para eventos | XPEAK',
+    ogDesc: 'Sonido, DJ, luces, fotomatón, escenarios y mobiliario por día para tu evento.',
+    ogType: 'website',
+  },
+  {
     path: '/directorio/locales-eventos',
     title: 'Alquilar locales para eventos en España | XPEAK',
     desc: 'Directorio de locales para bodas, fiestas corporativas y eventos privados en España. Espacios únicos con opciones de catering. Contacto directo con propietarios.',
@@ -1282,11 +1290,13 @@ for (const catSlug of routedCitySlugs) {
     // repite la misma keyword del principio del title — Bing lo marcó como
     // "Title too long" (hasta 138 caracteres) en las categorías con keyword
     // largo. Mismo sufijo genérico que usa CityLanding.tsx en runtime.
+    // El equipo se alquila, no se contrata (mismo criterio que CityLanding.tsx).
+    const titular = catSlug === 'alquiler-equipos' ? `${cat.label} en ${cityName}` : `Contratar ${cat.keyword} en ${cityName}`;
     ROUTES.push({
       path: routePath,
-      title: `Contratar ${cat.keyword} en ${cityName} | XPEAK | Directorio Profesional de Eventos`,
+      title: `${titular} | XPEAK | Directorio Profesional de Eventos`,
       desc: desc.slice(0, 300),
-      ogTitle: `Contratar ${cat.keyword} en ${cityName} | XPEAK`,
+      ogTitle: `${titular} | XPEAK`,
       ogDesc: desc.slice(0, 200),
       ogType: 'website',
     });
@@ -1320,7 +1330,9 @@ for (const [occSlug, roleSlugs] of Object.entries(OCC_ROLES)) {
     const rol = cat.keyword;
     const routePath = `/${occSlug}/contratar-${roleSlug}`;
     if (existingPaths.has(routePath)) continue;
-    const desc = `Contrata ${rol.toLowerCase()} para ${occLabel.toLowerCase()} en España. Profesionales verificados, precios públicos y contrato directo. Flash Booking en menos de 1h.`;
+    // Siglas intactas ("DJ", no "dj"): mismo criterio que rolEnFrase() en OccasionLanding.tsx.
+    const rolFrase = rol === rol.toUpperCase() ? rol : rol.toLowerCase();
+    const desc = `Contrata ${rolFrase} para ${occLabel.toLowerCase()} en España. Profesionales verificados, precios públicos y contrato directo. Flash Booking en menos de 1h.`;
     ROUTES.push({
       path: routePath,
       title: `Contratar ${rol} para ${occLabel} | XPEAK`,
@@ -1411,7 +1423,7 @@ const ROLE_LABELS = {
   animador: 'Animador/a', speaker: 'Speaker', vestuario: 'Estilista', ambassador: 'Brand ambassador',
   'grupo-musical': 'Grupo musical', event_manager: 'Coordinador/a de eventos',
   'photo-booth': 'Photo booth', peluqueria: 'Peluquería', local_eventos: 'Local para eventos',
-  'tecnico-sonido': 'Técnico de sonido',
+  tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos',
 };
 
 // rol de perfil (BD) → slug de categoría en /contratar-{slug} — para enlazar
@@ -1422,7 +1434,7 @@ const ROLE_TO_CATEGORY_SLUG = {
   mago: 'mago', bailarin: 'bailarin', humorista: 'humorista',
   monologo: 'monologo', animador: 'animador', speaker: 'speaker', vestuario: 'vestuario',
   'grupo-musical': 'grupo-musical', 'photo-booth': 'photo-booth', peluqueria: 'peluqueria',
-  local_eventos: 'locales-eventos', 'tecnico-sonido': 'tecnico-sonido',
+  local_eventos: 'locales-eventos', tecnico: 'tecnico-sonido', alquiler: 'alquiler-equipos',
 };
 
 try {

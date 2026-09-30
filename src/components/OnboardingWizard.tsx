@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, ClipboardList } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, ClipboardList, Speaker } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -37,6 +37,7 @@ const ROLES = [
   { value: 'vestuario',    label: 'Estilista / Vestuario', desc: 'Moda, vestuario y styling',       icon: Shirt,          color: '#10b981' },
   { value: 'photo-booth',  label: 'Photo Booth',         desc: 'Cabinas de fotos y espejos 360',    icon: Camera,         color: '#f43f5e' },
   { value: 'tecnico',      label: 'Técnico de Sonido y Montaje', desc: 'Sonido, iluminación y montaje de escenario', icon: SlidersHorizontal, color: '#38bdf8' },
+  { value: 'alquiler',     label: 'Alquiler de Equipos', desc: 'Sonido, DJ, luces, fotomatón, escenarios, mobiliario', icon: Speaker, color: '#0ea5e9' },
   { value: 'local_eventos', label: 'Local / Sala para Eventos', desc: 'Alquiler de espacio para eventos privados', icon: Briefcase,     color: '#a3a3a3' },
 ];
 
@@ -187,6 +188,14 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
       ['Di qué equipo manejas', 'Mesa, P.A., luces: por marca y modelo'],
       ['Aclara si aportas material', 'Con equipo propio o solo mano de obra'],
       ['Añade tu tarifa', 'Por jornada, por montaje o por evento'],
+    ],
+  },
+  alquiler: {
+    title: 'Tu perfil de Alquiler está listo',
+    tips: [
+      ['Enseña tu material', 'Fotos reales del equipo, con marca y modelo'],
+      ['Aclara qué incluye', 'Transporte, montaje, técnico o solo recogida'],
+      ['Añade tus precios', 'Por día o por fin de semana, y la fianza'],
     ],
   },
   azafata: {
@@ -602,7 +611,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </div>
 
                   <div className="px-1">
-                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu tarifa por hora <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
+                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>{selectedRole === 'alquiler' ? 'Tu precio por día' : 'Tu tarifa por hora'} <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
                     <div className="relative">
                       <Euro size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
                       <input

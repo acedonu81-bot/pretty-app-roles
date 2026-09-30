@@ -78,22 +78,22 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
     {profs.map(p => (
       <a key={p.id} href={p.slug ? `/p/${p.slug}` : '/directorio'}
         className="p-4 rounded-xl transition-all hover:scale-[1.02] block"
-        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+        style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden" style={{ background: 'rgba(212,175,55,0.15)' }}>
             {p.photo_url
               ? <img src={p.photo_url} alt={`${p.display_name}, profesional verificado en XPEAK`} loading="lazy" className="w-full h-full object-cover" />
-              : <div className="w-full h-full flex items-center justify-center text-sm font-black" style={{ color: '#D4AF37' }}>{p.display_name.charAt(0)}</div>}
+              : <div className="w-full h-full flex items-center justify-center text-sm font-black" style={{ color: '#8B6A00' }}>{p.display_name.charAt(0)}</div>}
           </div>
           <div className="min-w-0">
             <p className="text-sm font-bold truncate flex items-center gap-1">
               {p.display_name}
-              {p.is_verified && <CheckCircle size={12} style={{ color: '#D4AF37' }} />}
+              {p.is_verified && <CheckCircle size={12} style={{ color: '#8B6A00' }} />}
             </p>
-            {p.city && <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{p.city}</p>}
+            {p.city && <p className="text-xs truncate" style={{ color: '#6b7280' }}>{p.city}</p>}
           </div>
         </div>
-        {p.bio && <p className="text-xs mt-2 line-clamp-2" style={{ color: 'rgba(255,255,255,0.45)' }}>{p.bio}</p>}
+        {p.bio && <p className="text-xs mt-2 line-clamp-2" style={{ color: '#5b6472' }}>{p.bio}</p>}
       </a>
     ))}
   </div>
@@ -135,12 +135,18 @@ const PRECIO_FIESTA: Record<string, string> = {
   'Local para eventos': '400€-2.500€',
 };
 
-// Constructor de FAQs genérico por ocasión — coherente entre todas
+// Rol en minúscula para meterlo en una frase, respetando siglas: "DJ" sigue
+// siendo "DJ" (antes salía "dj"), "Grupo Musical" pasa a "grupo musical".
+export const rolEnFrase = (rol: string) => (rol === rol.toUpperCase() ? rol : rol.toLowerCase());
+
+// Constructor de FAQs genérico por ocasión — coherente entre todas.
+// Las frases no dependen del número ni del género del rol: antes salían
+// "¿Los dj de XPEAK…?", "acertar con el camareros", "los técnico de sonido".
 const buildFaqs = (occLabel: string, occLong: string, antelacion: string) =>
   (rol: string, precio: string) => [
-    { q: `¿Cuánto cuesta contratar ${rol.toLowerCase()} para ${occLong}?`, a: `El precio orientativo de ${rol.toLowerCase()} para ${occLong} en España es ${precio}, según experiencia, duración y zona. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar, sin sorpresas.` },
-    { q: `¿Con cuánta antelación debo contratar ${rol.toLowerCase()} para ${occLong}?`, a: `${antelacion} Para reservas urgentes, el Flash Booking de XPEAK encuentra disponibilidad en menos de 1 hora.` },
-    { q: `¿Los ${rol.toLowerCase()} de XPEAK están verificados?`, a: 'Sí. Cada semana se verifican perfiles: identidad, experiencia y trabajos previos. Puedes ver valoraciones reales antes de contratar.' },
+    { q: `¿Cuánto cuesta contratar ${rolEnFrase(rol)} para ${occLong}?`, a: `El precio orientativo de ${rolEnFrase(rol)} para ${occLong} en España es ${precio}, según experiencia, duración y zona. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar, sin sorpresas.` },
+    { q: `¿Con cuánta antelación debo contratar ${rolEnFrase(rol)} para ${occLong}?`, a: `${antelacion} Para reservas urgentes, el Flash Booking de XPEAK encuentra disponibilidad en menos de 1 hora.` },
+    { q: `¿Los perfiles de ${rolEnFrase(rol)} en XPEAK están verificados?`, a: 'Sí. Cada semana se verifican perfiles: identidad, experiencia y trabajos previos. Puedes ver valoraciones reales antes de contratar.' },
   ];
 
 export const OCCASIONS: Record<string, OccasionInfo> = {
@@ -148,50 +154,53 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
     label: 'Boda', slug: 'boda', labelLong: 'tu boda',
     precio: PRECIO_BODA,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para una boda en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_BODA[rol] ?? 'variable según el servicio'} y el contrato se firma directamente con el profesional, sin intermediarios.`,
+      `Para contratar ${rolEnFrase(rol)} para una boda en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_BODA[rol] ?? 'variable según el servicio'} y el contrato se firma directamente con el profesional, sin intermediarios.`,
     intro: (rol) =>
-      `Una boda es uno de los eventos donde más importa acertar con el ${rol.toLowerCase()}. En XPEAK conectas directamente con ${rol.toLowerCase()} verificados con experiencia en bodas de toda España: comparas perfiles, precios públicos y valoraciones, y cierras el contrato directamente. Publica tu boda y recibe propuestas reales en menos de una hora con Flash Booking.`,
+      `Una boda es uno de los eventos donde más importa acertar con cada proveedor. En XPEAK conectas directamente con perfiles verificados de ${rolEnFrase(rol)} con experiencia en bodas de toda España: comparas perfiles, precios públicos y valoraciones, y cierras el contrato directamente. Publica tu boda y recibe propuestas reales en menos de una hora con Flash Booking.`,
     faqs: buildFaqs('Boda', 'una boda', 'Los mejores profesionales de boda se reservan con 3-6 meses de antelación, sobre todo en temporada alta (mayo-octubre).'),
   },
   cumpleanos: {
     label: 'Cumpleaños', slug: 'cumpleanos', labelLong: 'tu cumpleaños',
     precio: PRECIO_CUMPLE,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para un cumpleaños en España, publica tu fiesta en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_CUMPLE[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios.`,
+      `Para contratar ${rolEnFrase(rol)} para un cumpleaños en España, publica tu fiesta en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_CUMPLE[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios.`,
     intro: (rol) =>
-      `Un cumpleaños memorable empieza por elegir bien el ${rol.toLowerCase()}. En XPEAK encuentras ${rol.toLowerCase()} verificados para fiestas de cumpleaños de todas las edades en toda España: precios públicos, valoraciones reales y contratación directa. Publica tu fiesta y recibe propuestas en menos de una hora.`,
+      `Un cumpleaños memorable empieza por elegir bien a quién contratas. En XPEAK encuentras perfiles verificados de ${rolEnFrase(rol)} para fiestas de cumpleaños de todas las edades en toda España: precios públicos, valoraciones reales y contratación directa. Publica tu fiesta y recibe propuestas en menos de una hora.`,
     faqs: buildFaqs('Cumpleaños', 'un cumpleaños', 'Para cumpleaños suele bastar con 2-4 semanas de antelación, aunque en fechas señaladas conviene reservar antes.'),
   },
   'evento-empresa': {
     label: 'Evento de Empresa', slug: 'evento-empresa', labelLong: 'tu evento de empresa',
     precio: PRECIO_EMPRESA,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para un evento de empresa en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados con factura en menos de 1 hora. El precio orientativo es ${PRECIO_EMPRESA[rol] ?? 'variable según el servicio'}, con contrato y factura directos.`,
+      `Para contratar ${rolEnFrase(rol)} para un evento de empresa en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados con factura en menos de 1 hora. El precio orientativo es ${PRECIO_EMPRESA[rol] ?? 'variable según el servicio'}, con contrato y factura directos.`,
     intro: (rol) =>
-      `Los eventos corporativos exigen ${rol.toLowerCase()} fiables y con factura. En XPEAK conectas con ${rol.toLowerCase()} verificados con experiencia en juntas, cenas de empresa, galas y team building por toda España: precios públicos, contrato digital y factura. Publica tu evento y recibe propuestas en menos de una hora.`,
+      `Los eventos corporativos exigen proveedores fiables y con factura. En XPEAK conectas con perfiles verificados de ${rolEnFrase(rol)} con experiencia en juntas, cenas de empresa, galas y team building por toda España: precios públicos, contrato digital y factura. Publica tu evento y recibe propuestas en menos de una hora.`,
     faqs: buildFaqs('Evento de Empresa', 'un evento de empresa', 'Para eventos corporativos recomendamos reservar con 3-8 semanas de antelación según el tamaño del evento.'),
   },
   comunion: {
     label: 'Comunión', slug: 'comunion', labelLong: 'tu comunión',
     precio: PRECIO_COMUNION,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para una comunión en España, publica tu celebración en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_COMUNION[rol] ?? 'variable según el servicio'} y contratas directamente al profesional.`,
+      `Para contratar ${rolEnFrase(rol)} para una comunión en España, publica tu celebración en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_COMUNION[rol] ?? 'variable según el servicio'} y contratas directamente al profesional.`,
     intro: (rol) =>
-      `Una comunión reúne a toda la familia y merece un buen ${rol.toLowerCase()}. En XPEAK encuentras ${rol.toLowerCase()} verificados especializados en comuniones por toda España: precios públicos, valoraciones y contratación directa. Publica tu celebración y recibe propuestas en menos de una hora.`,
+      `Una comunión reúne a toda la familia y merece acertar con cada proveedor. En XPEAK encuentras perfiles verificados de ${rolEnFrase(rol)} especializados en comuniones por toda España: precios públicos, valoraciones y contratación directa. Publica tu celebración y recibe propuestas en menos de una hora.`,
     faqs: buildFaqs('Comunión', 'una comunión', 'La temporada de comuniones (mayo-junio) concentra mucha demanda: reserva con 2-4 meses de antelación.'),
   },
   'fiesta-privada': {
     label: 'Fiesta Privada', slug: 'fiesta-privada', labelLong: 'tu fiesta privada',
     precio: PRECIO_FIESTA,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para una fiesta privada en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_FIESTA[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios.`,
+      `Para contratar ${rolEnFrase(rol)} para una fiesta privada en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_FIESTA[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios.`,
     intro: (rol) =>
-      `Una fiesta privada en villa, ático o local necesita un ${rol.toLowerCase()} a la altura. En XPEAK conectas con ${rol.toLowerCase()} verificados con experiencia en eventos privados por toda España, incluidos destinos como Ibiza y Marbella: precios públicos y contrato directo. Publica tu fiesta y recibe propuestas en menos de una hora.`,
+      `Una fiesta privada en villa, ático o local necesita proveedores a la altura. En XPEAK conectas con perfiles verificados de ${rolEnFrase(rol)} con experiencia en eventos privados por toda España, incluidos destinos como Ibiza y Marbella: precios públicos y contrato directo. Publica tu fiesta y recibe propuestas en menos de una hora.`,
     faqs: buildFaqs('Fiesta Privada', 'una fiesta privada', 'Para fiestas privadas conviene reservar con 2-4 semanas; en destinos y fechas de temporada alta, con más margen.'),
   },
 };
 
-// Qué roles tienen sentido para cada ocasión (evita combinaciones absurdas)
+// Qué roles tienen sentido para cada ocasión (evita combinaciones absurdas).
+// 'alquiler-equipos' NO va aquí: las plantillas de arriba hablan de personas
+// ("¿Los ${rol} están verificados?", "acertar con el ${rol}") y con un
+// servicio de alquiler el texto sale roto. Lo cubren su landing y las de ciudad.
 export const ROLES_POR_OCASION: Record<string, string[]> = {
   boda: ['dj', 'fotografo', 'catering', 'camareros', 'grupo-musical', 'animador', 'tecnico-sonido', 'locales-eventos'],
   cumpleanos: ['dj', 'fotografo', 'catering', 'animador', 'mago'],
@@ -275,28 +284,28 @@ export default function OccasionLanding() {
         <script type="application/ld+json">{JSON.stringify(breadcrumbData)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#FFFFFF', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3 sm:gap-4">
-            <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Precios</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Blog</a>
+            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Precios</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-8">
           <div className="flex items-center gap-2 mb-4">
-            <Sparkles size={14} style={{ color: '#D4AF37' }} />
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>{occ.label} · España</span>
+            <Sparkles size={14} style={{ color: '#8B6A00' }} />
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#8B6A00' }}>{occ.label} · España</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">{h1}</h1>
-          <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{occ.intro(rol)}</p>
+          <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: '#4b5563' }}>{occ.intro(rol)}</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href="/auth" className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Publicar {occ.label.toLowerCase()}
             </a>
-            <a href={`/directorio/${categorySlug}`} className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
+            <a href={`/directorio/${categorySlug}`} className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: '#FFFFFF', border: '1.5px solid #2563EB', color: '#2563EB' }}>
               Ver directorio <ArrowRight size={14} />
             </a>
           </div>
@@ -305,22 +314,22 @@ export default function OccasionLanding() {
         {/* Answer box extraíble — la señal que Perplexity/AI Overviews copian */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-4">
           <div className="rounded-2xl px-5 py-4" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.04))', border: '1px solid rgba(212,175,55,0.25)' }}>
-            <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>Respuesta rápida</p>
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>{occ.answer(rol)}</p>
+            <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#8B6A00' }}>Respuesta rápida</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{occ.answer(rol)}</p>
           </div>
         </section>
 
-        <section className="border-y" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(212,175,55,0.03)' }}>
+        <section className="border-y" style={{ borderColor: 'rgba(122,98,22,0.14)', background: '#FBF6E8' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { label: `Precio ${rol} para ${occ.label.toLowerCase()}`, value: precio, icon: <Star size={16} /> },
-              { label: 'Flash Booking', value: 'En menos de 1h', icon: <Zap size={16} /> },
-              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} /> },
+              { label: `Precio ${rol} para ${occ.label.toLowerCase()}`, value: precio, icon: <Star size={16} />, tono: '#8B6A00' },
+              { label: 'Flash Booking', value: 'En menos de 1h', icon: <Zap size={16} />, tono: '#2563EB' },
+              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} />, tono: '#059669' },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{s.icon}</div>
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${s.tono}1A`, color: s.tono }}>{s.icon}</div>
                 <div>
-                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{s.label}</p>
+                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: '#6b7280' }}>{s.label}</p>
                   <p className="text-sm font-black">{s.value}</p>
                 </div>
               </div>
@@ -331,10 +340,10 @@ export default function OccasionLanding() {
         {loaded && profs.length > 0 && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
             <h2 className="text-xl sm:text-2xl font-black mb-2">{rol} disponibles para {occ.labelLong}</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>Profesionales verificados activos en XPEAK. Contacto directo, sin intermediarios.</p>
+            <p className="text-sm mb-6" style={{ color: '#5b6472' }}>Profesionales verificados activos en XPEAK. Contacto directo, sin intermediarios.</p>
             <ProfGrid profs={profs} />
             <div style={{ textAlign: 'center', marginTop: 24 }}>
-              <a href={`/directorio/${categorySlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 24px', borderRadius: 12, fontWeight: 700, fontSize: 13, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none' }}>
+              <a href={`/directorio/${categorySlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 24px', borderRadius: 12, fontWeight: 700, fontSize: 13, background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#111', textDecoration: 'none' }}>
                 Ver todos los {rol} <ArrowRight size={13} />
               </a>
             </div>
@@ -349,10 +358,10 @@ export default function OccasionLanding() {
               { step: '02', title: 'Publica tu evento', body: `Describe ${occ.labelLong}, fecha, horario y presupuesto. Flash Booking lo distribuye al instante.` },
               { step: '03', title: 'Cierra el contrato', body: 'Elige al profesional y firma el contrato digital con un clic. PDF listo para facturación.' },
             ].map(s => (
-              <div key={s.step} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                <p className="text-3xl font-black mb-3" style={{ color: 'rgba(212,175,55,0.25)' }}>{s.step}</p>
+              <div key={s.step} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+                <p className="text-3xl font-black mb-3" style={{ color: 'rgba(184,148,30,0.45)' }}>{s.step}</p>
                 <p className="text-sm font-bold mb-1.5">{s.title}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{s.body}</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>{s.body}</p>
               </div>
             ))}
           </div>
@@ -362,9 +371,9 @@ export default function OccasionLanding() {
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes: {rol} para {occ.label}</h2>
           <div className="space-y-4">
             {occ.faqs(rol, precio).map(faq => (
-              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={faq.q} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 <h3 className="text-sm font-bold mb-2">{faq.q}</h3>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#5b6472' }}>{faq.a}</p>
               </div>
             ))}
           </div>
@@ -377,7 +386,7 @@ export default function OccasionLanding() {
             {otrosRoles.map(slug => (
               <a key={slug} href={`/${occ.slug}/contratar-${slug}`}
                 className="flex items-center gap-2 p-4 rounded-xl font-bold text-sm transition-all hover:scale-105"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 {CATEGORIES[slug]?.keyword ?? slug}
               </a>
             ))}
@@ -385,9 +394,9 @@ export default function OccasionLanding() {
         </section>
 
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20 text-center">
-          <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'linear-gradient(135deg,#FFFDF7,#FBF3DD)', border: '1px solid rgba(212,175,55,0.35)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {rol} para {occ.labelLong}?</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>Únete: contratos automáticos, Flash Booking en menos de 1h.</p>
+            <p className="text-sm mb-6" style={{ color: '#5b6472' }}>Únete: contratos automáticos, Flash Booking en menos de 1h.</p>
             <a href="/auth" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Empezar
             </a>

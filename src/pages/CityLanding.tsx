@@ -27,7 +27,7 @@ const ROLE_MAP: Record<string, string[]> = {
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],
   payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
   'photo-booth': ['photo-booth'],
-  'tecnico-sonido': ['tecnico'],
+  'tecnico-sonido': ['tecnico'], 'alquiler-equipos': ['alquiler'],
   'locales-eventos': ['local_eventos'],
 };
 
@@ -541,6 +541,20 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
       { q: `¿Con cuánta antelación se contrata el montaje en ${c}?`, a: 'Entre 2 y 3 meses en temporada alta. El montaje suele pedir visita previa o plano del espacio, y el equipo se reserva igual que el personal. Para urgencias, el Flash Booking distribuye tu oferta a los técnicos disponibles en la zona.' },
     ],
   },
+  'alquiler-equipos': {
+    label: 'Alquiler de Equipos',
+    // keyword en plural de cosa, no de oficio: la plantilla dice "Ver todos
+    // los {keyword}", "¿Buscas {keyword} en…?", "Todavía no hay {keyword}".
+    keyword: 'Equipos en alquiler',
+    unidad: '/día',
+    desc: (c) => `Alquiler de equipo de sonido, luces y DJ en ${c}. Sonido, equipo de DJ, backline, luces, fotomatón, escenarios y mobiliario para fiestas, bodas y eventos. Para organizadores y profesionales.`,
+    intro: (c, venues) => `Tanto si organizas una fiesta como si eres DJ, músico o fotógrafo y te falta material, en ${c} tienes proveedores que alquilan sonido, equipo de DJ, backline, iluminación, fotomatón, escenarios y mobiliario por día. XPEAK te conecta con empresas de alquiler y profesionales que alquilan su propio equipo, con precio visible y contacto directo, para eventos en fincas, salas o espacios como ${venues.slice(0,2).join(' y ')}.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta alquilar equipo de sonido en ${c}?`, a: `En ${c} el alquiler va de ${precio} según el material. Un par de altavoces con mesa sencilla es lo más barato; un equipo completo para boda con subwoofer, micros y luces, o una cabina de DJ con CDJs, sube bastante. El transporte y el montaje suelen cobrarse aparte.` },
+      { q: `Soy DJ en ${c}, ¿puedo alquilar solo una parte del equipo?`, a: 'Sí. Es habitual alquilar solo lo que falta para un bolo concreto: un subwoofer extra, un segundo par de CDJs, un micro inalámbrico o unas luces. Contacta directamente con el proveedor y pide solo esas piezas.' },
+      { q: `¿Incluye transporte y montaje en ${c}?`, a: 'Depende del proveedor. Unos entregan el material para recogerlo en su local, otros lo llevan y lo montan, y algunos incluyen técnico durante el evento. Cada ficha lo indica, igual que la fianza que piden.' },
+    ],
+  },
   'photo-booth': {
     label: 'Photo Booth',
     keyword: 'Photo Booth',
@@ -617,19 +631,19 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
     {profs.map(p => (
       <a key={p.id}
         href={p.slug ? `/p/${p.slug}` : `/p/${p.id}`}
-        style={{ textDecoration: 'none', display: 'block', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.2s' }}
+        style={{ textDecoration: 'none', display: 'block', background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.2s' }}
         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}>
-        <div style={{ aspectRatio: '3/2', overflow: 'hidden', background: 'rgba(255,255,255,0.05)', position: 'relative' }}>
+        <div style={{ aspectRatio: '3/2', overflow: 'hidden', background: '#FFFDF7', position: 'relative' }}>
           {p.photo_url
             ? <img src={p.photo_url} alt={p.display_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
-            : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 900, color: '#D4AF37' }}>{p.display_name.charAt(0)}</div>
+            : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 900, color: '#8B6A00' }}>{p.display_name.charAt(0)}</div>
           }
         </div>
         <div style={{ padding: '12px 14px' }}>
-          <p style={{ fontWeight: 900, fontSize: 14, color: '#fff', margin: '0 0 4px' }}>{p.display_name}</p>
-          {p.city && <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 4 }}>{p.city}</p>}
-          {p.bio && <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.bio}</p>}
+          <p style={{ fontWeight: 900, fontSize: 14, color: '#111', margin: '0 0 4px' }}>{p.display_name}</p>
+          {p.city && <p style={{ fontSize: 11, color: '#6b7280', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 4 }}>{p.city}</p>}
+          {p.bio && <p style={{ fontSize: 12, color: '#4b5563', margin: 0, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.bio}</p>}
         </div>
       </a>
     ))}
@@ -676,6 +690,7 @@ const FACTOR_PRECIO: Record<string, [number, number]> = {
   maquillaje: [0.9, 0.3],    // 60→54€, 300→90€
   peluqueria: [0.7, 0.25],
   catering: [0.5, 0.15],     // por persona: 60→30€, 300→45€
+  'alquiler-equipos': [2, 1],  // por día: 60→120€, 300→300€
   'tecnico-sonido': [2.5, 1],  // por jornada: 60→150€, 300→300€
   // Por evento — el precio ya es el alquiler final del local, no escala por
   // duración como un técnico por horas extra. Madrid: 60→390€, 300→2.400€.
@@ -720,7 +735,12 @@ export default function CityLanding() {
   const precio = precioPara(categorySlug, cityData);
   const canonicalBase = `/contratar-${categorySlug}/${cityData.slug}`;
   const { profs: professionals, suggestions: profSuggestions, loaded: profsLoaded } = useCityProfessionals(cityData.ciudad, categorySlug);
-  const h1 = `Contratar ${catData.keyword} en ${cityData.ciudad}`;
+  // El equipo se alquila, no se contrata: "Contratar Alquiler de Equipos" no
+  // se dice. Esa categoría usa su label como título y "alquilar" como verbo.
+  const esAlquiler = categorySlug === 'alquiler-equipos';
+  const h1 = esAlquiler
+    ? `${catData.label} en ${cityData.ciudad}`
+    : `Contratar ${catData.keyword} en ${cityData.ciudad}`;
 
   const structuredData = {
     '@context': 'https://schema.org',
@@ -730,7 +750,7 @@ export default function CityLanding() {
     areaServed: { '@type': 'City', name: cityData.ciudad },
     description: catData.desc(cityData.ciudad),
     url: `https://xpeak.es${canonicalBase}`,
-    serviceType: `Contratación de ${catData.keyword}`,
+    serviceType: esAlquiler ? catData.label : `Contratación de ${catData.keyword}`,
     dateModified: BUILD_DATE,
     termsOfService: 'El precio del profesional se consulta en su perfil y se acuerda directamente entre las partes.',
   };
@@ -750,7 +770,7 @@ export default function CityLanding() {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
-      { '@type': 'ListItem', position: 2, name: `Contratar ${catData.keyword}`, item: `https://xpeak.es/contratar-${categorySlug}` },
+      { '@type': 'ListItem', position: 2, name: esAlquiler ? catData.label : `Contratar ${catData.keyword}`, item: `https://xpeak.es/contratar-${categorySlug}` },
       { '@type': 'ListItem', position: 3, name: cityData.ciudad, item: `https://xpeak.es${canonicalBase}` },
     ],
   };
@@ -788,13 +808,13 @@ export default function CityLanding() {
         <script type="application/ld+json">{JSON.stringify(breadcrumbData)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#FFFFFF', color: '#111' }}>
 
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3 sm:gap-4">
-            <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Precios</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Blog</a>
+            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Precios</a>
             <a href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
@@ -805,13 +825,13 @@ export default function CityLanding() {
 
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-12 sm:pb-16">
           <div className="flex items-center gap-2 mb-4">
-            <MapPin size={14} style={{ color: '#D4AF37' }} />
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>
+            <MapPin size={14} style={{ color: '#8B6A00' }} />
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#8B6A00' }}>
               {cityData.ciudad} · España
             </span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">{h1}</h1>
-          <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: '#4b5563' }}>
             {catData.intro(cityData.ciudad, cityData.venues)}
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
@@ -822,7 +842,7 @@ export default function CityLanding() {
             </a>
             <a href={`/directorio/${categorySlug}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
+              style={{ background: '#FFFFFF', border: '1.5px solid #2563EB', color: '#2563EB' }}>
               Ver directorio <ArrowRight size={14} />
             </a>
           </div>
@@ -834,12 +854,12 @@ export default function CityLanding() {
             <div className="rounded-2xl px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3"
               style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.04))', border: '1px solid rgba(212,175,55,0.25)' }}>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <span className="text-sm font-black px-2.5 py-1 rounded-lg" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+                <span className="text-sm font-black px-2.5 py-1 rounded-lg" style={{ background: 'rgba(212,175,55,0.15)', color: '#8B6A00' }}>
                   {cityData.seasonal.badge}
                 </span>
-                <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{cityData.seasonal.months}</span>
+                <span className="text-xs font-bold" style={{ color: '#8B6A00' }}>{cityData.seasonal.months}</span>
               </div>
-              <p className="text-xs leading-relaxed flex-1" style={{ color: 'rgba(255,255,255,0.55)' }}>
+              <p className="text-xs leading-relaxed flex-1" style={{ color: '#4b5563' }}>
                 {cityData.seasonal.highlight}
               </p>
             </div>
@@ -847,7 +867,7 @@ export default function CityLanding() {
             <div className="flex flex-wrap gap-2 mt-3">
               {cityData.seasonal.keywords.map(k => (
                 <span key={k} className="text-xs px-2.5 py-1 rounded-full font-bold"
-                  style={{ background: 'rgba(212,175,55,0.06)', color: 'rgba(212,175,55,0.7)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                  style={{ background: 'rgba(212,175,55,0.06)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.15)' }}>
                   {k}
                 </span>
               ))}
@@ -855,20 +875,20 @@ export default function CityLanding() {
           </section>
         )}
 
-        <section className="border-y" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(212,175,55,0.03)' }}>
+        <section className="border-y" style={{ borderColor: 'rgba(122,98,22,0.14)', background: '#FBF6E8' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { label: `Precio ${catData.keyword} en ${cityData.ciudad}`, value: `${precio}${catData.unidad}`, icon: <Star size={16} /> },
-              { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(categorySlug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} /> },
-              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} /> },
+              { label: `Precio ${catData.keyword} en ${cityData.ciudad}`, value: `${precio}${catData.unidad}`, icon: <Star size={16} />, tono: '#8B6A00' },
+              { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(categorySlug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} />, tono: '#2563EB' },
+              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} />, tono: '#059669' },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+                  style={{ background: `${s.tono}1A`, color: s.tono }}>
                   {s.icon}
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{s.label}</p>
+                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: '#6b7280' }}>{s.label}</p>
                   <p className="text-sm font-black">{s.value}</p>
                 </div>
               </div>
@@ -879,13 +899,13 @@ export default function CityLanding() {
         {cityData.venues.length > 0 && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
             <h2 className="text-xl sm:text-2xl font-black mb-2">Espacios y venues en {cityData.ciudad}</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            <p className="text-sm mb-6" style={{ color: '#4b5563' }}>
               Profesionales con experiencia en los principales espacios de la ciudad.
             </p>
             <div className="flex flex-wrap gap-2">
               {cityData.venues.map(v => (
                 <span key={v} className="px-3 py-1.5 rounded-lg text-xs font-bold"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)' }}>
+                  style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#374151' }}>
                   {v}
                 </span>
               ))}
@@ -901,22 +921,22 @@ export default function CityLanding() {
                 <h2 className="text-xl sm:text-2xl font-black mb-2">
                   {catData.keyword} disponibles en {cityData.ciudad}
                 </h2>
-                <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <p className="text-sm mb-6" style={{ color: '#5b6472' }}>
                   Profesionales verificados activos en XPEAK. Contacto directo, sin intermediarios.
                 </p>
                 <ProfGrid profs={professionals} />
               </>
             ) : (
               <>
-                <div className="rounded-2xl p-6 mb-8 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="rounded-2xl p-6 mb-8 text-center" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                   <p className="text-base font-black mb-1">Todavía no hay {catData.keyword} en {cityData.ciudad}</p>
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                  <p className="text-sm" style={{ color: '#5b6472' }}>
                     Cuestión de tiempo.
                   </p>
                 </div>
                 {profSuggestions.length > 0 && (
                   <>
-                    <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                    <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: '#6b7280' }}>
                       Sugerencias · Disponibles en toda España
                     </p>
                     <ProfGrid profs={profSuggestions} />
@@ -925,7 +945,7 @@ export default function CityLanding() {
               </>
             )}
             <div style={{ textAlign: 'center', marginTop: 24 }}>
-              <a href={`/directorio/${categorySlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 24px', borderRadius: 12, fontWeight: 700, fontSize: 13, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none' }}>
+              <a href={`/directorio/${categorySlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 24px', borderRadius: 12, fontWeight: 700, fontSize: 13, background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#111', textDecoration: 'none' }}>
                 Ver todos los {catData.keyword} <ArrowRight size={13} />
               </a>
             </div>
@@ -933,17 +953,17 @@ export default function CityLanding() {
         )}
 
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
-          <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Cómo contratar {catData.keyword} en {cityData.ciudad} con XPEAK</h2>
+          <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">{esAlquiler ? `Cómo alquilar equipo en ${cityData.ciudad} con XPEAK` : `Cómo contratar ${catData.keyword} en ${cityData.ciudad} con XPEAK`}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               { step: '01', title: 'Crea tu cuenta', body: `Regístrate como sala, promotora u organizador en menos de 2 minutos. Sin tarjeta.` },
               { step: '02', title: 'Publica tu oferta', body: `Describe el evento en ${cityData.ciudad}, fecha, horario y presupuesto. Flash Booking lo distribuye al instante.` },
               { step: '03', title: 'Cierra el contrato', body: `Elige al profesional, firma el contrato digital con un clic. PDF listo para facturación.` },
             ].map(s => (
-              <div key={s.step} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                <p className="text-3xl font-black mb-3" style={{ color: 'rgba(212,175,55,0.25)' }}>{s.step}</p>
+              <div key={s.step} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+                <p className="text-3xl font-black mb-3" style={{ color: 'rgba(184,148,30,0.45)' }}>{s.step}</p>
                 <p className="text-sm font-bold mb-1.5">{s.title}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{s.body}</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>{s.body}</p>
               </div>
             ))}
           </div>
@@ -953,9 +973,9 @@ export default function CityLanding() {
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes: {catData.keyword} en {cityData.ciudad}</h2>
           <div className="space-y-4">
             {catData.faqs(cityData.ciudad, precio).map(faq => (
-              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={faq.q} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#5b6472' }}>{faq.a}</p>
               </div>
             ))}
           </div>
@@ -970,7 +990,7 @@ export default function CityLanding() {
               .map(slug => (
                 <a key={slug} href={`/contratar-${slug}/${cityData.slug}`}
                   className="flex items-center gap-2 p-4 rounded-xl font-bold text-sm transition-all hover:scale-105"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                   {CATEGORIES[slug].keyword}
                 </a>
               ))}
@@ -978,9 +998,9 @@ export default function CityLanding() {
         </section>
 
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20 text-center">
-          <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'linear-gradient(135deg,#FFFDF7,#FBF3DD)', border: '1px solid rgba(212,175,55,0.35)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {catData.keyword} en {cityData.ciudad}?</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mb-6" style={{ color: '#5b6472' }}>
               {['promotores', 'azafata', 'peluqueria'].includes(categorySlug)
                 ? 'Únete: contratos automáticos, Flash Booking para necesidades urgentes.'
                 : 'Únete: contratos automáticos, Flash Booking en menos de 1h.'}

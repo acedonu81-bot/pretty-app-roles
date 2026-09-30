@@ -19,6 +19,8 @@ export interface DBProfile {
   subscription_tier: string;
   photo_url: string | null;
   genres: string[] | null;
+  roles?: string[] | null;
+  rental_equipment?: string[] | null;
   bio: string | null;
   tiktok?: string | null;
   languages?: string[] | null;

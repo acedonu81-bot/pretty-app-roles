@@ -7,7 +7,7 @@ import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import { supabase } from '@/integrations/supabase/client';
-import { ROLE_ES } from '@/lib/constants';
+import { ROLE_ES, unidadTarifa } from '@/lib/constants';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { expandRole } from '@/lib/constants';
 import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
@@ -66,7 +66,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
   ].join(',');
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level, show_new_badge, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, rental_equipment, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level, show_new_badge, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
     .or(orFilter)
     // Excluye empresarios que tengan este oficio en `roles` por dato legacy o
     // error de alta — buscan y contratan, no les contratan (caso real: MAGIG
@@ -185,10 +185,12 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
       zone: row.zone || '',
       experience: '',
       price: row.hourly_rate ?? 0,
-      priceUnit: '/hora',
+      priceUnit: unidadTarifa((row as { role?: string }).role),
       avatar: (row.display_name || 'X').charAt(0).toUpperCase(),
       gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)',
-      badges: row.genres ?? [],
+      // En el directorio de alquiler la tarjeta enseña el equipo, no los
+      // géneros: un DJ que también alquila saldría aquí con 'Tech House'.
+      badges: role === 'alquiler' ? ((row as { rental_equipment?: string[] | null }).rental_equipment ?? []) : (row.genres ?? []),
       description: row.bio || '',
       phone: '',
       // Antes hardcodeado a '' — el enlace real de Instagram del modal del

@@ -6,7 +6,7 @@ import { directorioSlugDeRol, ROLE_CONFIG } from './DirectorioPublico';
 const OFICIOS = [
   'dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata',
   'promotor', 'catering', 'mago', 'humorista', 'animador', 'bailarin',
-  'speaker', 'vestuario', 'photo-booth', 'tecnico', 'local_eventos',
+  'speaker', 'vestuario', 'photo-booth', 'tecnico', 'alquiler', 'local_eventos',
   'event_manager', 'camarero',
 ];
 

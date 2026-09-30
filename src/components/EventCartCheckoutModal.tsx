@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Calendar, MapPin, MessageSquare, Trash2, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { useEventCart } from '@/lib/eventCart';
+import { useEventCart, cobraPorDia, importeEstimado, removeFromCart } from '@/lib/eventCart';
 
 interface Props {
   onClose: () => void;
@@ -55,6 +55,9 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   const [legalError, setLegalError] = useState(false);
   // Nº de solicitudes realmente enviadas, congelado antes de vaciar la cesta.
   const [sentCount, setSentCount] = useState(0);
+  // Solicitudes que fallaron: se quedan en la cesta para reintentar.
+  const [failedCount, setFailedCount] = useState(0);
+  const [rateLimited, setRateLimited] = useState(false);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -64,7 +67,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   };
 
   const estimatedHours = hours === '' ? 0 : hours;
-  const estimatedTotal = items.reduce((sum, i) => sum + (i.hourlyRate ? i.hourlyRate * estimatedHours : 0), 0);
+  const estimatedTotal = items.reduce((sum, i) => sum + importeEstimado(i, estimatedHours), 0);
   const itemsWithoutRate = items.filter(i => !i.hourlyRate).length;
 
   // Si se vacía la cesta desde dentro del modal (última papelera), cerramos solos.
@@ -108,7 +111,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
         // Presupuesto estimado que se le mostró al organizador (tarifa × horas).
         // Guardarlo como null hacía que el trabajo figurase a 0€ en el Historial
         // y en Gastos del empresario, pese a haberle enseñado una cifra.
-        agreed_price: item.hourlyRate && estimatedHours > 0 ? item.hourlyRate * estimatedHours : null,
+        agreed_price: item.hourlyRate && (estimatedHours > 0 || cobraPorDia(item)) ? importeEstimado(item, estimatedHours) : null,
         status: 'pending',
         created_by: user?.id ?? null,
       };
@@ -121,8 +124,10 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
       });
     }));
 
-    const anySuccess = results.some(r => r.status === 'fulfilled');
-    if (!anySuccess) { setStatus('error'); return; }
+    const enviados = items.filter((_, idx) => results[idx].status === 'fulfilled');
+    const fallidos = items.length - enviados.length;
+    setRateLimited(results.some(r => r.status === 'rejected' && String((r.reason as { message?: string })?.message ?? '').includes('rate_limit')));
+    if (enviados.length === 0) { setStatus('error'); return; }
 
     // Confirmación única al organizador (reutiliza flash_booking_confirm)
     if (form.contact.includes('@')) {
@@ -134,7 +139,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
             requester_contact: form.contact,
             event_date: form.date || 'Por confirmar',
             event_location: form.location,
-            professional_name: items.map(i => i.displayName).join(', '),
+            professional_name: enviados.map(i => i.displayName).join(', '),
           },
         },
       }).catch((err: unknown) => console.warn('[EventCart] confirm email failed:', err));
@@ -143,9 +148,14 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
     // Congelar el nº de envíos ANTES de vaciar: la pantalla de éxito lee este
     // valor, y si leyera `items` (ya vacío tras clear()) diría "Los 0
     // profesionales de tu evento recibirán tu mensaje".
-    setSentCount(items.length);
+    // Antes se vaciaba la cesta entera y se decía "Los N profesionales" aunque
+    // alguna solicitud hubiera fallado: esas se perdían sin avisar. Ahora solo
+    // salen de la cesta las enviadas y las fallidas quedan para reintentar.
+    setSentCount(enviados.length);
+    setFailedCount(fallidos);
     setStatus('done');
-    clear();
+    if (fallidos === 0) clear();
+    else enviados.forEach(i => removeFromCart(i.userId));
   }
 
   return (
@@ -167,6 +177,12 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
             <p className="text-sm mb-6" style={{ color: '#333' }}>
               {sentCount === 1 ? 'El profesional' : `Los ${sentCount} profesionales`} de tu evento {sentCount === 1 ? 'recibirá' : 'recibirán'} tu mensaje y te contactará{sentCount === 1 ? '' : 'n'} directamente.
             </p>
+            {failedCount > 0 && (
+              <p className="text-xs mb-6 px-3 py-2 rounded-lg" style={{ background: 'rgba(220,38,38,0.06)', color: '#b91c1c' }}>
+                {failedCount === 1 ? 'Una solicitud no se pudo enviar' : `${failedCount} solicitudes no se pudieron enviar`}
+                {rateLimited ? ' porque has enviado varias seguidas. Espera unos minutos y' : '.'} Siguen en tu evento para que {rateLimited ? 'las' : 'puedas'} reintentar.
+              </p>
+            )}
             <button onClick={onClose} className="px-6 py-2.5 rounded-xl text-sm font-bold"
               style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}>
               Cerrar
@@ -199,7 +215,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold truncate" style={{ color: '#111' }}>{item.displayName}</p>
                     <p className="text-[0.7rem]" style={{ color: '#333' }}>
-                      {item.zone || 'España'}{item.hourlyRate ? ` · desde ${item.hourlyRate}€/h` : ''}
+                      {item.zone || 'España'}{item.hourlyRate ? ` · desde ${item.hourlyRate}€${cobraPorDia(item) ? '/día' : '/h'}` : ''}
                     </p>
                   </div>
                   <button type="button" onClick={() => remove(item.userId)}
@@ -288,7 +304,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                   {items.filter(i => i.hourlyRate).map(i => (
                     <div key={i.userId} className="flex items-center justify-between text-[0.7rem]" style={{ color: '#555' }}>
                       <span className="truncate mr-2">{i.displayName}</span>
-                      <span className="flex-shrink-0">{i.hourlyRate}€/h × {estimatedHours}h = <span className="font-bold" style={{ color: '#222' }}>{(i.hourlyRate ?? 0) * estimatedHours}€</span></span>
+                      <span className="flex-shrink-0">{cobraPorDia(i) ? `${i.hourlyRate}€/día × 1 día` : `${i.hourlyRate}€/h × ${estimatedHours}h`} = <span className="font-bold" style={{ color: '#222' }}>{importeEstimado(i, estimatedHours)}€</span></span>
                     </div>
                   ))}
                 </div>
@@ -333,7 +349,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
             </label>
 
             {status === 'error' && (
-              <p className="text-xs mt-3" style={{ color: '#dc2626' }}>Algo ha fallado enviando las solicitudes. Intenta de nuevo o escríbenos a info@xpeak.es</p>
+              <p className="text-xs mt-3" style={{ color: '#dc2626' }}>{rateLimited ? 'Has enviado varias solicitudes seguidas. Espera unos minutos y vuelve a intentarlo.' : 'Algo ha fallado enviando las solicitudes. Intenta de nuevo o escríbenos a info@xpeak.es'}</p>
             )}
 
             <button type="submit" disabled={status === 'sending' || items.length === 0}

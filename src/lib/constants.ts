@@ -24,6 +24,7 @@ export const ROLE_ES: Record<string, string> = {
   peluqueria:    'Peluquería a Domicilio',
   media:         'Media / Fotografía',
   tecnico:       'Técnico de Sonido y Montaje',
+  alquiler:      'Alquiler de Equipos',
   local_eventos: 'Locales para eventos',
   'grupo-musical': 'Grupo Musical',
   mago:          'Mago & Ilusionista',
@@ -84,6 +85,7 @@ export const JOB_WORD: Record<string, string> = {
   peluqueria: 'encargo',
   media: 'encargo',
   tecnico: 'montaje',
+  alquiler: 'alquiler',
   local_eventos: 'reserva',
   'grupo-musical': 'bolo',
   humorista: 'actuación',
@@ -115,6 +117,10 @@ export const ROL_UI_A_SLUG: Record<string, string> = {
   'Promotor / RRPP': 'promotor',
   'Photo Booth': 'photo-booth',
   'Catering': 'catering',
+  // Mismas etiquetas que flash_rol_ui_a_roles() en BD (aviso de peticiones):
+  // si se cambia el texto aquí, cambiarlo también allí.
+  'Técnico de sonido': 'tecnico',
+  'Alquiler de equipos': 'alquiler',
 };
 
 /** Zona por defecto cuando el usuario no ha configurado su ciudad */
@@ -131,6 +137,31 @@ export const DJ_GENRES = ['Tech House','Deep House','House','Afro House','Organi
  * cabina y no encontraba a una cantante por "acustico" o "voz y guitarra".
  * Se comparte aqui para que el perfil y el buscador usen las mismas.
  */
+// Catálogo de "Alquiler de Equipos", agrupado para que el selector de la
+// ficha no sea una lista de 90 chips. Se guarda en profiles.rental_equipment,
+// NO en genres: un DJ que además alquila conserva sus géneros aparte.
+export const ALQUILER_TAG_GROUPS: { label: string; items: string[] }[] = [
+  { label: 'Packs', items: ['Equipo completo (pack)','Pack fiesta pequeña (hasta 50 pax)','Pack boda (100-200 pax)','Pack concierto / festival'] },
+  { label: 'Potencia', items: ['Hasta 1.000 W','1.000 - 3.000 W','3.000 - 10.000 W','Más de 10.000 W'] },
+  { label: 'Sonido', items: ['Altavoces / P.A.','Line array','Subwoofers','Monitores de escenario','Etapas de potencia','Mesas de mezclas analógicas','Mesas de mezclas digitales','Procesadores / crossover','Microfonía inalámbrica','Microfonía de cable','Micros de diadema / solapa','Sistemas in-ear','DI boxes','Cableado y multipar'] },
+  { label: 'DJ', items: ['Equipo de DJ','Controladoras','CDJs / reproductores','Mesas de mezclas DJ','Platos de vinilo','Cabina / booth de DJ','Auriculares DJ'] },
+  { label: 'Músicos', items: ['Backline','Amplificadores de guitarra','Amplificadores de bajo','Baterías acústicas','Baterías electrónicas','Percusión','Teclados / pianos digitales','Pianos de cola / verticales','Guitarras y bajos','Atriles y soportes','Tarimas para banda'] },
+  { label: 'Iluminación', items: ['Iluminación','Focos PAR / LED','Cabezas móviles','Barras LED','Uplighting / luz ambiente','Seguidores (cañón)','Luz negra / UV','Estroboscopios','Guirnaldas y luces decorativas','Letras luminosas','Bolas de espejo','Láser','Mesas de iluminación DMX'] },
+  { label: 'Efectos', items: ['Máquinas de humo','Humo bajo / nube','Hazers (neblina)','Chispas frías','Confeti / CO2','Cañones de CO2','Máquina de pompas / burbujas','Nieve artificial','Pirotecnia fría','Ventiladores de efecto'] },
+  { label: 'Imagen y vídeo', items: ['Pantallas LED','Proyectores','Pantallas de proyección','Televisores / monitores','Streaming','Cámaras de vídeo','Mezcladores de vídeo'] },
+  { label: 'Foto y animación', items: ['Fotomatón / photo booth','Plataforma 360','Espejo mágico','Cámaras y objetivos','Flashes y focos de foto','Fondos y photocall','Drones','Karaoke'] },
+  { label: 'Escenario y espacio', items: ['Escenarios / tarimas','Estructuras / truss','Pistas de baile','Pistas de baile LED','Carpas','Mobiliario de eventos','Barras móviles','Menaje y cocina','Calefactores','Climatización','Generadores','Baños portátiles'] },
+  { label: 'Servicio', items: ['Con transporte','Con montaje','Con técnico','Recogida en local','Fianza','Para DJs y músicos','Para fotógrafos','Bodas','Eventos corporativos','Festivales','Fiestas privadas'] },
+];
+
+/** Unidad de la tarifa de un perfil: el equipo se alquila por día, el resto
+ *  cobra por hora. Solo cuenta el oficio PRINCIPAL: un DJ que además alquila
+ *  sigue publicando su caché por hora. */
+export const unidadTarifa = (role: string | null | undefined, corta = false): string =>
+  role === 'alquiler' ? '/día' : (corta ? '/h' : '/hora');
+
+export const ALQUILER_TAGS = ALQUILER_TAG_GROUPS.flatMap(g => g.items);
+
 export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     dj:        { label: 'Géneros musicales',    tags: DJ_GENRES },
     // Musica en vivo: repertorio y formato, NO los generos de cabina de un DJ.

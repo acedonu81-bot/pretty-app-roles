@@ -19,15 +19,28 @@ export const MAX_CART_ITEMS = 8;
 function readCart(): CartItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const parsed = raw ? JSON.parse(raw) : [];
+    // Un valor corrupto o de una versión antigua no puede tumbar la página.
+    return Array.isArray(parsed) ? parsed.filter(i => i && typeof i.userId === 'string') : [];
   } catch {
     return [];
   }
 }
 
 function writeCart(items: CartItem[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  // Safari en modo privado o con el almacenamiento lleno lanza aquí: sin el
+  // try, el clic en "Añadir a mi evento" rompía sin avisar.
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch { /* sin persistencia */ }
   window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
+}
+
+/** El equipo de alquiler cobra por día; el resto de oficios, por hora. */
+export const cobraPorDia = (item: Pick<CartItem, 'role'>) => item.role === 'alquiler';
+
+/** Importe estimado de un profesional del carrito para un evento de `horas` horas. */
+export function importeEstimado(item: CartItem, horas: number): number {
+  if (!item.hourlyRate) return 0;
+  return cobraPorDia(item) ? item.hourlyRate : item.hourlyRate * horas;
 }
 
 export type AddToCartResult = 'added' | 'duplicate' | 'limit_reached';

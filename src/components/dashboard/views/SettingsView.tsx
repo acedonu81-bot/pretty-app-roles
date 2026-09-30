@@ -67,6 +67,9 @@ const ROLE_OPTIONS = [
   { value: 'media',           label: 'Media & Contenido' },
   { value: 'fotografo',       label: 'Fotógrafo' },
   { value: 'photo-booth',     label: 'Photo Booth' },
+  { value: 'tecnico',         label: 'Técnico de Sonido y Montaje' },
+  { value: 'alquiler',        label: 'Alquiler de Equipos' },
+  { value: 'local_eventos',   label: 'Local para eventos' },
   { value: 'makeup',          label: 'Maquillaje' },
   { value: 'peluqueria',      label: 'Peluquería a Domicilio' },
   { value: 'vestuario',       label: 'Vestuario / Estilismo' },
@@ -1064,8 +1067,16 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         {!isEmpresario && (
         <ToggleRow label="Mostrar tarifa en mi ficha" desc="Si está desactivado, aparece 'A consultar' en tu perfil" checked={showRate} onChange={async () => {
           const next = !showRate;
+          // Ocultar pone la tarifa a 0, así que tras recargar no queda ninguna
+          // que recuperar: antes se reactivaba a 0 (o se inventaba 40€). Sin
+          // tarifa guardada se pide escribirla en el perfil en vez de inventarla.
+          const guardada = (localRate ?? 0) > 0 ? localRate! : (profile.hourly_rate ?? 0);
+          if (next && !(guardada > 0)) {
+            toast.info('Escribe tu tarifa en Perfil para mostrarla en tu ficha.');
+            return;
+          }
           setShowRate(next);
-          const newRate = next ? (localRate ?? profile.hourly_rate ?? 40) : 0;
+          const newRate = next ? guardada : 0;
           setLocalRate(newRate);
           await profile.updateField({ hourly_rate: newRate });
         }} />

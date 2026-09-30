@@ -19,6 +19,7 @@ const ROLE_LABEL: Record<string, string> = {
   azafata: 'Azafata', promotor: 'Promotor', promotores: 'Promotor', catering: 'Catering',
   mago: 'Mago', humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
   speaker: 'Speaker', vestuario: 'Vestuario', 'photo-booth': 'Photo Booth',
+  tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos', local_eventos: 'Local para eventos',
   'diseno-grafico': 'Diseño gráfico', 'wedding-planner': 'Wedding Planner',
   ambassador: 'Embajador', empresario: 'Empresa / Sala', rookie: 'Artista emergente',
 };

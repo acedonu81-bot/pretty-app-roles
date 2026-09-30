@@ -1,4 +1,4 @@
-import { ROLE_ES } from '@/lib/constants';
+import { ROLE_ES, unidadTarifa } from '@/lib/constants';
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -110,6 +110,8 @@ const ROLE_CFG: Record<string, {
   'photo-booth': { color: '#A78BFA', glow: 'rgba(167,139,250,0.35)', label: 'Photo Booth',      tagline: 'El recuerdo que se llevan',     icon: Camera },
   event_manager: { color: '#F472B6', glow: 'rgba(244,114,182,0.35)', label: 'Encargada de Eventos', tagline: 'Todo bajo control',         icon: Users },
   camarero:  { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Sala & Barra',        tagline: 'El engranaje invisible del show', icon: Users },
+  tecnico:   { color: '#38BDF8', glow: 'rgba(56,189,248,0.35)',   label: 'Técnico · Sonido y Montaje', tagline: 'Que todo suene como debe', icon: Music },
+  alquiler:  { color: '#0EA5E9', glow: 'rgba(14,165,233,0.35)',   label: 'Alquiler de Equipos', tagline: 'El equipo que tu evento necesita', icon: Music },
 };
 
 /** Sin entrada propia NO se cae en 'dj': eso etiquetaba de DJ a quien no lo es.
@@ -254,6 +256,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     isVerified?: boolean;
     offersClasses?: boolean;
     classStyles?: string[];
+    rentalEquipment?: string[];
     classPrice?: number | null;
     seekingDancePartner?: boolean;
     danceLevel?: string | null;
@@ -275,7 +278,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         // dashboard) nunca mostraba la sección "Sesiones" que sí tiene el
         // perfil público (PublicProfile.tsx), aunque el profesional tuviera
         // varias sesiones reales guardadas (p. ej. Dj Poly, 2 en Mixcloud).
-        .select('audio_embed_url, audio_session_urls, video_session_urls, portfolio_urls, bio, specialty, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
+        .select('audio_embed_url, audio_session_urls, video_session_urls, portfolio_urls, bio, specialty, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role')
         .eq('user_id', p.userId)
         .maybeSingle();
       if (!data) return;
@@ -293,6 +296,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         isVerified: (data as any).is_verified ?? p.isVerified,
         offersClasses: (data as any).offers_classes ?? false,
         classStyles: (data as any).class_styles ?? [],
+        rentalEquipment: (data as any).rental_equipment ?? [],
         classPrice: (data as any).class_price ?? null,
         seekingDancePartner: (data as any).seeking_dance_partner ?? false,
         danceLevel: (data as any).dance_level ?? null,
@@ -444,7 +448,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                   {!priceHidden && price > 0 && (
                     <>
                       <span style={{ color: 'rgba(255,255,255,0.35)' }}>·</span>
-                      <span className="text-sm font-black" style={{ color: '#fff' }}>€{price}<span className="font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>/h</span></span>
+                      <span className="text-sm font-black" style={{ color: '#fff' }}>€{price}<span className="font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>{unidadTarifa(p.role, true)}</span></span>
                     </>
                   )}
                   {p.isFlashActive && (
@@ -506,6 +510,23 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                     {l}
                   </span>
                 ))}
+              </motion.div>
+            )}
+
+            {/* Equipo en alquiler (rol 'alquiler', principal o secundario) */}
+            {full.rentalEquipment && full.rentalEquipment.length > 0 && (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}
+                className="rounded-2xl p-5" style={{ background: `${cfg.color}0A`, border: `1px solid ${cfg.color}25` }}>
+                <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>Equipo en alquiler</p>
+                <p className="text-sm mb-3" style={{ color: '#333' }}>{p.name} alquila este equipo para eventos.</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {full.rentalEquipment.map((s: string) => (
+                    <span key={s} className="text-xs font-bold px-2.5 py-1 rounded-full"
+                      style={{ background: '#fff', border: `1px solid ${cfg.color}30`, color: '#555' }}>
+                      {s}
+                    </span>
+                  ))}
+                </div>
               </motion.div>
             )}
 

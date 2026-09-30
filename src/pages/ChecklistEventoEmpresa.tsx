@@ -132,24 +132,24 @@ export default function ChecklistEventoEmpresa() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#FFFFFF', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-4xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <a href="/auth?mode=register&role=empresario" className="px-3 py-2 rounded-lg text-xs font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             Unirse
           </a>
         </nav>
 
         <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-4">
-          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>Eventos de empresa · Checklist con countdown</p>
+          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#8B6A00' }}>Eventos de empresa · Checklist con countdown</p>
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight mb-2" style={{ lineHeight: 1.15 }}>
             Checklist para organizar tu evento de empresa
           </h1>
-          <p className="text-sm max-w-2xl leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm max-w-2xl leading-relaxed mb-3" style={{ color: '#374151' }}>
             Marca las tareas hechas, pon la fecha de tu evento y sabrás exactamente qué toca esta semana. Se guarda automáticamente en tu navegador.
           </p>
-          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
-            Por <a href="/sobre-nosotros" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Daniel</a>, fundador de XPEAK y especialista en el sector de eventos y entretenimiento nocturno en España.
+          <p className="text-xs" style={{ color: '#6b7280' }}>
+            Por <a href="/sobre-nosotros" className="underline hover:opacity-80" style={{ color: '#8B6A00' }}>Daniel</a>, fundador de XPEAK y especialista en el sector de eventos y entretenimiento nocturno en España.
           </p>
         </section>
 
@@ -157,29 +157,29 @@ export default function ChecklistEventoEmpresa() {
           <div className="rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3"
             style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.12),rgba(184,148,30,0.06))', border: '1px solid rgba(212,175,55,0.3)' }}>
             <div className="flex items-center gap-3">
-              <ClipboardList size={20} style={{ color: '#D4AF37' }} />
+              <ClipboardList size={20} style={{ color: '#8B6A00' }} />
               <div>
-                <p className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.6)' }}>Fecha de tu evento</p>
+                <p className="text-xs font-bold" style={{ color: '#374151' }}>Fecha de tu evento</p>
                 {days !== null ? (
-                  <p className="text-xl font-black" style={{ color: '#D4AF37' }}>{days} días para el evento</p>
+                  <p className="text-xl font-black" style={{ color: '#8B6A00' }}>{days} días para el evento</p>
                 ) : (
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>Añade la fecha para activar la cuenta atrás</p>
+                  <p className="text-sm" style={{ color: '#6b7280' }}>Añade la fecha para activar la cuenta atrás</p>
                 )}
               </div>
             </div>
             <input type="date" value={eventDate} onChange={e => setEventDate(e.target.value)}
               className="px-3 py-2 rounded-lg text-sm font-bold"
-              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: eventDate ? '#D4AF37' : 'rgba(255,255,255,0.3)', outline: 'none', colorScheme: 'dark' }} />
+              style={{ background: '#FBF3DD', border: '1px solid rgba(122,98,22,0.16)', color: eventDate ? '#8B6A00' : '#6b7280', outline: 'none', colorScheme: 'dark' }} />
           </div>
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-8">
           <div className="mb-6 rounded-2xl p-4" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm font-black" style={{ color: '#D4AF37' }}>Progreso</p>
-              <p className="text-sm font-black" style={{ color: '#D4AF37' }}>{doneCount}/{totalCount}</p>
+              <p className="text-sm font-black" style={{ color: '#8B6A00' }}>Progreso</p>
+              <p className="text-sm font-black" style={{ color: '#8B6A00' }}>{doneCount}/{totalCount}</p>
             </div>
-            <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: '#FBF3DD' }}>
               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${Math.round((doneCount / totalCount) * 100)}%`, background: 'linear-gradient(90deg,#D4AF37,#B8941E)' }} />
             </div>
           </div>
@@ -192,25 +192,24 @@ export default function ChecklistEventoEmpresa() {
               return (
                 <div key={phase.phase} className="rounded-xl p-4"
                   style={{
-                    background: isActive ? 'rgba(212,175,55,0.06)' : 'rgba(255,255,255,0.02)',
-                    border: isActive ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(255,255,255,0.06)',
-                    borderTop: `3px solid ${phase.color}`,
-                  }}>
+                    background: isActive ? 'rgba(212,175,55,0.06)' : '#FFFDF7',
+                    border: isActive ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(122,98,22,0.16)',
+                    borderTop: `3px solid ${phase.color}`}}>
                   <div className="flex items-center justify-between mb-1">
                     <p className="text-xs font-black" style={{ color: phase.color }}>{phase.phase} {isActive && '· ahora'}</p>
-                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>{phaseDone}/{phase.tasks.length}</span>
+                    <span className="text-xs" style={{ color: '#6b7280' }}>{phaseDone}/{phase.tasks.length}</span>
                   </div>
-                  <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>{phase.label}</p>
+                  <p className="text-xs mb-3" style={{ color: '#6b7280' }}>{phase.label}</p>
                   <div className="space-y-2">
                     {phaseTasks.map(task => {
                       const done = checkedTasks.has(task.id);
                       return (
                         <button key={task.id} onClick={() => toggleTask(task.id)} className="w-full flex items-start gap-2.5 text-left">
                           <div className="w-4 h-4 rounded flex-shrink-0 mt-0.5 flex items-center justify-center"
-                            style={{ background: done ? phase.color : 'transparent', border: `1.5px solid ${done ? phase.color : 'rgba(255,255,255,0.2)'}` }}>
+                            style={{ background: done ? phase.color : 'transparent', border: `1.5px solid ${done ? phase.color : 'rgba(122,98,22,0.16)'}` }}>
                             {done && <svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3L3 5L7 1" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                           </div>
-                          <p className="text-xs" style={{ color: done ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.7)', textDecoration: done ? 'line-through' : 'none' }}>{task.text}</p>
+                          <p className="text-xs" style={{ color: done ? '#6b7280' : '#374151', textDecoration: done ? 'line-through' : 'none' }}>{task.text}</p>
                         </button>
                       );
                     })}
@@ -222,29 +221,29 @@ export default function ChecklistEventoEmpresa() {
         </div>
 
         <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-10">
-          <h2 className="text-xl sm:text-2xl font-black mb-3" style={{ color: '#D4AF37' }}>Cómo usar este checklist</h2>
-          <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+          <h2 className="text-xl sm:text-2xl font-black mb-3" style={{ color: '#8B6A00' }}>Cómo usar este checklist</h2>
+          <p className="text-sm leading-relaxed mb-3" style={{ color: '#374151' }}>
             El checklist está dividido en cuatro fases según el tiempo que falta para tu evento: desde las 8-12 semanas de antelación, cuando toca bloquear espacio y catering antes de que se agote la disponibilidad, hasta la última semana, donde el foco pasa a briefings y planes B. Introduce la fecha de tu evento arriba y la fase activa se resaltará automáticamente para que sepas qué tareas tocan ahora mismo.
           </p>
-          <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+          <p className="text-sm leading-relaxed mb-3" style={{ color: '#374151' }}>
             El orden importa: el espacio y el catering condicionan la fecha y son los primeros en agotarse, así que se reservan antes que el resto. DJ, música en vivo y producción audiovisual van en la fase intermedia, y el staff, la fotografía y la decoración suelen tener más margen para cerrarse más tarde.
           </p>
-          <h2 className="text-xl sm:text-2xl font-black mb-3 mt-6" style={{ color: '#D4AF37' }}>Proveedores que necesitarás</h2>
-          <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+          <h2 className="text-xl sm:text-2xl font-black mb-3 mt-6" style={{ color: '#8B6A00' }}>Proveedores que necesitarás</h2>
+          <p className="text-sm leading-relaxed mb-3" style={{ color: '#374151' }}>
             La mayoría de eventos de empresa presentaciones, cenas, team building, galas o congresos comparten un núcleo de proveedores: catering, staff de sala, DJ o música en vivo, y producción audiovisual. Puedes comparar profesionales verificados directamente en el directorio:
           </p>
-          <ul className="text-sm leading-relaxed mb-3 list-disc pl-5 space-y-1" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            <li><a href="/contratar-catering/madrid" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Catering para eventos en Madrid</a></li>
-            <li><a href="/contratar-camareros/madrid" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Camareros y staff de sala en Madrid</a></li>
-            <li><a href="/organizar-eventos" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Guía completa para organizar cualquier tipo de evento</a></li>
+          <ul className="text-sm leading-relaxed mb-3 list-disc pl-5 space-y-1" style={{ color: '#374151' }}>
+            <li><a href="/contratar-catering/madrid" className="underline hover:opacity-80" style={{ color: '#8B6A00' }}>Catering para eventos en Madrid</a></li>
+            <li><a href="/contratar-camareros/madrid" className="underline hover:opacity-80" style={{ color: '#8B6A00' }}>Camareros y staff de sala en Madrid</a></li>
+            <li><a href="/organizar-eventos" className="underline hover:opacity-80" style={{ color: '#8B6A00' }}>Guía completa para organizar cualquier tipo de evento</a></li>
           </ul>
 
-          <h2 className="text-xl sm:text-2xl font-black mb-4 mt-8" style={{ color: '#D4AF37' }}>Preguntas frecuentes</h2>
+          <h2 className="text-xl sm:text-2xl font-black mb-4 mt-8" style={{ color: '#8B6A00' }}>Preguntas frecuentes</h2>
           <div className="space-y-4 mb-10">
             {faqStructured.mainEntity.map((f) => (
-              <div key={f.name} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <p className="text-sm font-black mb-1" style={{ color: '#fff' }}>{f.name}</p>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{f.acceptedAnswer.text}</p>
+              <div key={f.name} className="rounded-xl p-4" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+                <p className="text-sm font-black mb-1" style={{ color: '#111' }}>{f.name}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{f.acceptedAnswer.text}</p>
               </div>
             ))}
           </div>
@@ -254,9 +253,9 @@ export default function ChecklistEventoEmpresa() {
           <div className="rounded-2xl p-6 sm:p-8" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.18)' }}>
             {sent ? (
               <div className="text-center py-6">
-                <CheckCircle size={40} style={{ color: '#D4AF37', marginBottom: 12 }} />
-                <p className="text-xl font-black mb-2" style={{ color: '#D4AF37' }}>Solicitud enviada</p>
-                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Los profesionales disponibles te contactarán. También puedes buscarlos tú directamente en el directorio.</p>
+                <CheckCircle size={40} style={{ color: '#8B6A00', marginBottom: 12 }} />
+                <p className="text-xl font-black mb-2" style={{ color: '#8B6A00' }}>Solicitud enviada</p>
+                <p className="text-sm" style={{ color: '#4b5563' }}>Los profesionales disponibles te contactarán. También puedes buscarlos tú directamente en el directorio.</p>
                 <a href="/directorio/staff" className="inline-flex items-center gap-2 mt-4 px-6 py-2.5 rounded-xl text-sm font-black" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                   Ver directorio →
                 </a>
@@ -264,10 +263,10 @@ export default function ChecklistEventoEmpresa() {
             ) : (
               <>
                 <div className="flex items-start gap-3 mb-5">
-                  <Send size={20} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 2 }} />
+                  <Send size={20} style={{ color: '#8B6A00', flexShrink: 0, marginTop: 2 }} />
                   <div>
                     <p className="text-lg font-black" style={{ lineHeight: 1.2 }}>¿Quieres que los profesionales te contacten?</p>
-                    <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                    <p className="text-sm mt-1" style={{ color: '#4b5563' }}>
                       Solo tu nombre y contacto.
                     </p>
                   </div>

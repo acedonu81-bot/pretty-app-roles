@@ -91,7 +91,7 @@ serve(async (req) => {
 
       const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${serviceKey}` },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${serviceKey}`, 'x-internal-secret': Deno.env.get('INTERNAL_SECRET') ?? '' },
         body: JSON.stringify({
           type: 'organizador_segundo_perfil',
           data: {

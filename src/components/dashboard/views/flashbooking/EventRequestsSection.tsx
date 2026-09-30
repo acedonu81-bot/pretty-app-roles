@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { ROLE_TAGS, ROL_UI_A_SLUG, jobWord, canonicalRole } from '@/lib/constants';
+import { ROLE_TAGS, ALQUILER_TAGS, ROL_UI_A_SLUG, jobWord, canonicalRole } from '@/lib/constants';
 import ContractModal, { type ContractPrefill } from '@/components/dashboard/ContractModal';
 import type { Profile } from '@/data/profiles';
 
@@ -47,12 +47,14 @@ const FAMILIAS_DJ: { label: string; incluye: string[] }[] = [
 // Etiqueta del formulario → slug real de profiles.role: ROL_UI_A_SLUG vive en
 // constants.ts para poder leer ROLE_TAGS y saber qué especialidades tiene ese
 // rol (lo mismo que ya declara cada profesional en su perfil).
-const ROLES_LIST = ['DJ / Artista', 'Fotógrafo', 'Camarero / Staff', 'Maquilladora', 'Grupo musical', 'Animador', 'Promotor / RRPP', 'Photo Booth', 'Catering'];
+const ROLES_LIST = ['DJ / Artista', 'Fotógrafo', 'Camarero / Staff', 'Maquilladora', 'Grupo musical', 'Animador', 'Promotor / RRPP', 'Photo Booth', 'Catering', 'Técnico de sonido', 'Alquiler de equipos'];
 
 // Opciones de estilo para un rol pedido: familias para DJ, tags sueltos (los
 // mismos que declara el profesional en su perfil) para el resto.
 const opcionesEstilo = (rolesUI: string[]): { label: string; incluye: string[] }[] => {
   if (rolesUI.includes('DJ / Artista')) return FAMILIAS_DJ;
+  // Alquiler guarda su equipo en rental_equipment, no en ROLE_TAGS.
+  if (rolesUI.includes('Alquiler de equipos')) return ALQUILER_TAGS.map(t => ({ label: t, incluye: [t] }));
   const slug = rolesUI.map(r => ROL_UI_A_SLUG[r]).find(s => s && ROLE_TAGS[s]);
   if (!slug) return [];
   return ROLE_TAGS[slug].tags.map(t => ({ label: t, incluye: [t] }));

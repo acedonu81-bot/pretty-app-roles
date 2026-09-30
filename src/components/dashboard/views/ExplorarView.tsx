@@ -61,7 +61,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
     items: [
       { id: 'staff', view: 'staff', nombre: 'Sala & Barra', gancho: 'Camareros, bartenders y personal de sala' },
       { id: 'catering', view: 'catering', nombre: 'Catering & Chef', gancho: 'Cocina, barra y showcooking' },
-      { id: 'local_eventos', view: 'local_eventos', nombre: 'Locales para eventos', gancho: 'Discotecas, salas, terrazas y fincas', nuevo: true },
+      { id: 'local_eventos', view: 'local_eventos', nombre: 'Locales para eventos', gancho: 'Discotecas, salas, terrazas y fincas' },
     ],
   },
   {
@@ -101,6 +101,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
     titulo: 'Técnica & Producción',
     items: [
       { id: 'tecnico', view: 'tecnico', nombre: 'Técnicos de Sonido y Montaje', gancho: 'Sonido, iluminación y escenario' },
+      { id: 'alquiler', view: 'alquiler', nombre: 'Alquiler de Equipos', gancho: 'Sonido, luces, fotomatón y más', nuevo: true },
     ],
   },
 ];

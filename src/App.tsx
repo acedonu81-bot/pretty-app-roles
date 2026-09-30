@@ -414,7 +414,7 @@ const App = () => (
             el chunk lazy. Si un import() falla del todo (chunk viejo tras un
             deploy, red cortada), AppErrorBoundary de arriba lo atrapa y muestra
             algo en vez de dejar esto colgado para siempre. */}
-        <Suspense fallback={<div style={{ minHeight: '100vh', background: '#090909' }} />}>
+        <Suspense fallback={<div style={{ minHeight: '100vh', background: '#FFFDF7' }} />}>
           <Routes>
             <Route path="/" element={isNative ? <NativeRootRedirect /> : <Landing />} />
             <Route path="/descubrir" element={<Descubrir />} />
@@ -463,6 +463,7 @@ const App = () => (
             <Route path="/contratar-grupo-musical" element={<CategoryLanding />} />
             <Route path="/contratar-photo-booth" element={<CategoryLanding />} />
             <Route path="/contratar-tecnico-sonido" element={<CategoryLanding />} />
+            <Route path="/contratar-alquiler-equipos" element={<CategoryLanding />} />
             <Route path="/contratar-locales-eventos" element={<CategoryLanding />} />
             <Route path="/contratar-monologo" element={<CategoryLanding />} />
             {/* City landings */}
@@ -490,6 +491,7 @@ const App = () => (
             <Route path="/contratar-grupo-musical/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-photo-booth/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-tecnico-sonido/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-alquiler-equipos/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-locales-eventos/:ciudad" element={<CityLanding />} />
               </>
             )}

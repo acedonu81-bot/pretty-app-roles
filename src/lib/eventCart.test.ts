@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { addToCart, removeFromCart, clearCart, isInCart, useEventCart, MAX_CART_ITEMS, type CartItem } from './eventCart';
+import { addToCart, removeFromCart, clearCart, isInCart, useEventCart, MAX_CART_ITEMS, importeEstimado, type CartItem } from './eventCart';
 
 function makeItem(userId: string, overrides: Partial<CartItem> = {}): CartItem {
   return {
@@ -143,5 +143,23 @@ describe('eventCart', () => {
       const { result: hook } = renderHook(() => useEventCart());
       expect(hook.current.items).toEqual([]);
     });
+  });
+
+  describe('importeEstimado', () => {
+    it('multiplica por horas a quien cobra por hora', () => {
+      expect(importeEstimado(makeItem('dj1', { role: 'dj', hourlyRate: 80 }), 5)).toBe(400);
+    });
+    it('alquiler de equipos cobra por día, no por horas', () => {
+      expect(importeEstimado(makeItem('alq1', { role: 'alquiler', hourlyRate: 150 }), 6)).toBe(150);
+    });
+    it('sin tarifa pública estima 0', () => {
+      expect(importeEstimado(makeItem('x', { hourlyRate: null }), 4)).toBe(0);
+    });
+  });
+
+  it('un valor corrupto en localStorage no rompe la cesta', () => {
+    localStorage.setItem('xpeak_event_cart', '{"no":"es una lista"}');
+    expect(isInCart('a')).toBe(false);
+    expect(addToCart(makeItem('a'))).toBe('added');
   });
 });

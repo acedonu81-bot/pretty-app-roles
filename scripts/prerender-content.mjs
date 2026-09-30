@@ -40,7 +40,7 @@ const ROLE_MAP = {
   humorista: ['humorista'], monologo: ['humorista'], monologos: ['humorista'],
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],
   payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
-  'photo-booth': ['photo-booth'], 'tecnico-sonido': ['tecnico'],
+  'photo-booth': ['photo-booth'], 'tecnico-sonido': ['tecnico'], 'alquiler-equipos': ['alquiler'],
   'locales-eventos': ['local_eventos'],
 };
 

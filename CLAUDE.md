@@ -31,7 +31,7 @@ scripts/            — prerender-meta.mjs, update-sitemap.mjs
 ## Convenciones
 - Responder siempre en español
 - No crear archivos .md de documentación salvo que se pida
-- Colores brand: dorado `#D4AF37`, fondo `#0a0908`
+- Colores brand: crema (`#FFFDF7`/`#FBF3DD`), dorado `#D4AF37` (texto `#8B6A00`), azul `#2563EB`, verde `#059669`. Fondo blanco/crema. NUNCA fondos negros en páginas públicas ni blogs (decisión del usuario, 30 sep 2026)
 - Auth: auto-confirm ON en Supabase, trigger `handle_new_user` crea profile
 - VITE_SITE_URL configurada en Vercel env vars (production + preview)
 - Edge functions usan `info@xpeak.site` como FROM (no cambiar sin reconfigurar SMTP)

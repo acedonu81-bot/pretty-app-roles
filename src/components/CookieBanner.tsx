@@ -115,24 +115,23 @@ const CookieBanner = () => {
           className="fixed bottom-4 left-4 right-4 z-[9999] max-w-xl mx-auto"
         >
           <div style={{
-            background: 'rgba(8,8,8,0.97)',
+            background: 'rgba(255,253,247,0.98)',
             backdropFilter: 'blur(24px)',
             border: '1px solid rgba(212,175,55,0.2)',
             borderRadius: 16,
-            boxShadow: '0 -8px 40px rgba(0,0,0,0.6)',
-          }}>
+            boxShadow: '0 -8px 40px rgba(122,98,22,0.18)'}}>
             {/* Header */}
             <div className="flex items-start gap-3 p-5 pb-3">
-              <Cookie size={18} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 2 }} />
+              <Cookie size={18} style={{ color: '#8B6A00', flexShrink: 0, marginTop: 2 }} />
               <div className="flex-1">
                 <p className="text-sm font-bold mb-1">Preferencias de cookies</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>
                   Usamos cookies propias para mejorar tu experiencia. Las cookies técnicas son necesarias para el funcionamiento de la plataforma.{' '}
-                  <Link to="/cookies" className="underline font-medium" style={{ color: '#D4AF37' }}>Política de cookies</Link>
+                  <Link to="/cookies" className="underline font-medium" style={{ color: '#8B6A00' }}>Política de cookies</Link>
                 </p>
               </div>
-              <button onClick={rejectAll} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/10 flex-shrink-0">
-                <X size={13} style={{ color: 'rgba(255,255,255,0.6)' }} />
+              <button onClick={rejectAll} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-black/5 flex-shrink-0">
+                <X size={13} style={{ color: '#374151' }} />
               </button>
             </div>
 
@@ -149,10 +148,10 @@ const CookieBanner = () => {
                   <div className="px-5 pb-3 space-y-2.5">
                     {CATEGORIES.map(cat => (
                       <div key={cat.key} className="flex items-start gap-3 p-3 rounded-xl"
-                        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                        style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                         <div className="flex-1">
                           <p className="text-xs font-bold mb-0.5">{cat.label}</p>
-                          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{cat.desc}</p>
+                          <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{cat.desc}</p>
                         </div>
                         {cat.locked ? (
                           <span className="text-xs font-bold px-2 py-0.5 rounded-md mt-0.5 flex-shrink-0"
@@ -165,8 +164,7 @@ const CookieBanner = () => {
                             onClick={() => toggle(cat.key as keyof Omit<CookiePrefs, 'necessary'>)}
                             className="relative flex-shrink-0 mt-0.5 w-9 h-5 rounded-full transition-all duration-200"
                             style={{
-                              background: prefs[cat.key as keyof CookiePrefs] ? 'linear-gradient(90deg,#D4AF37,#B8941E)' : 'rgba(255,255,255,0.1)',
-                            }}
+                              background: prefs[cat.key as keyof CookiePrefs] ? 'linear-gradient(90deg,#D4AF37,#B8941E)' : '#FBF3DD'}}
                           >
                             <span className="absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all duration-200"
                               style={{ left: prefs[cat.key as keyof CookiePrefs] ? 'calc(100% - 18px)' : 2 }} />
@@ -185,8 +183,8 @@ const CookieBanner = () => {
                 <button
                   type="button"
                   onClick={() => setExpanded(e => !e)}
-                  className="flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all hover:bg-white/5"
-                  style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', minWidth: 0, flex: '0 0 auto' }}
+                  className="flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all hover:bg-black/5"
+                  style={{ border: '1px solid rgba(122,98,22,0.16)', color: '#374151', minWidth: 0, flex: '0 0 auto' }}
                 >
                   {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                   {expanded ? 'Cerrar' : 'Personalizar'}
@@ -199,8 +197,8 @@ const CookieBanner = () => {
                   </button>
                 )}
                 <button type="button" onClick={rejectAll}
-                  className="flex-1 py-2 rounded-lg text-xs font-semibold transition-all hover:bg-white/5"
-                  style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                  className="flex-1 py-2 rounded-lg text-xs font-semibold transition-all hover:bg-black/5"
+                  style={{ border: '1px solid rgba(122,98,22,0.16)', color: '#4b5563' }}>
                   Solo necesarias
                 </button>
               </div>

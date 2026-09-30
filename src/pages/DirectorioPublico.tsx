@@ -223,6 +223,14 @@ export const ROLE_CONFIG: Record<string, {
     seoDesc: 'Directorio de técnicos de sonido, iluminación y montaje de escenario en España. Perfiles reales, tarifa por jornada y contacto directo.',
     cta: 'Contratar técnico',
   },
+  'alquiler-equipos': {
+    dbRole: 'alquiler',
+    title: 'Alquiler de equipos para eventos',
+    subtitle: 'Sonido y equipo de DJ, backline, luces y efectos, pantallas, fotomatón, escenarios, carpas y mobiliario. Para organizadores y para DJs, músicos, fotógrafos y demás profesionales que necesitan material extra.',
+    seoTitle: 'Alquiler de equipos para eventos: sonido, DJ, luces y fotomatón | XPEAK',
+    seoDesc: 'Alquiler de equipos para eventos en España: sonido, equipo de DJ, backline, luces, fotomatón, escenarios y mobiliario. Precio por día y contacto directo.',
+    cta: 'Pedir disponibilidad',
+  },
   'locales-eventos': {
     dbRole: 'local_eventos',
     title: 'Locales y fincas para eventos',
@@ -265,6 +273,7 @@ export const ALL_ROLES = [
   { slug: 'wedding-planner', label: 'Wedding Planners' },
   { slug: 'diseno-grafico', label: 'Diseño Gráfico' },
   { slug: 'tecnico-sonido', label: 'Técnicos de Sonido y Montaje' },
+  { slug: 'alquiler-equipos', label: 'Alquiler de Equipos' },
   { slug: 'locales-eventos', label: 'Locales para eventos' },
 ];
 
@@ -299,7 +308,8 @@ const RELATED_ROLES: Record<string, string[]> = {
   vestuario: ['maquillaje', 'wedding-planner'],
   catering: ['staff', 'wedding-planner'],
   promotores: ['staff', 'dj'],
-  'tecnico-sonido': ['dj', 'grupo-musical', 'diseno-grafico'],
+  'tecnico-sonido': ['alquiler-equipos', 'dj', 'grupo-musical'],
+  'alquiler-equipos': ['dj', 'tecnico-sonido', 'grupo-musical', 'photo-booth'],
   'locales-eventos': ['dj', 'catering', 'staff'],
 };
 const DEFAULT_RELATED = ['dj', 'fotografo', 'staff'];

@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt } from 'lucide-react';
+import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt, Mic, SlidersHorizontal, Speaker, Building2 } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 
 const BLOG_LINKS: Record<string, { href: string; emoji: string; title: string; desc: string }[]> = {
@@ -732,6 +732,43 @@ export const CATEGORY_DATA: Record<string, {
       { title: 'Cierra el contrato', body: 'Firma digital con horario de montaje, material incluido y condiciones. Listo para facturar.' },
     ],
   },
+  'alquiler-equipos': {
+    slug: 'alquiler-equipos',
+    emoji: '🔊',
+    h1: 'Alquiler de Equipos para Eventos',
+    tagline: 'Sonido, equipo de DJ, backline, luces, fotomatón, escenarios y mobiliario para eventos y profesionales en toda España',
+    desc: 'Alquila equipo para tu evento: sonido, equipo de DJ, backline, iluminación, efectos, pantallas, fotomatón, escenarios y mobiliario. Por día, para organizadores y profesionales. Precio y contacto directo.',
+    intro: 'Unas veces lo necesita quien organiza la fiesta y otras el propio DJ o el grupo que tiene un bolo más grande de lo habitual, el fotógrafo que necesita más focos o el catering que se queda corto de barras. XPEAK conecta a todos con empresas de alquiler y profesionales que alquilan su propio material: sonido y equipo de DJ, backline e instrumentos, iluminación y efectos, pantallas, fotomatón y plataforma 360, cámaras y focos, escenarios, pistas de baile, carpas y mobiliario. Cada ficha indica qué equipo tiene, si incluye transporte o montaje y el precio por día.',
+    // Plural de cosa: la plantilla dice "¿Buscas {keyword} para tu evento?".
+    keyword: 'equipos en alquiler',
+    keywords: 'alquiler equipo de sonido, alquiler equipo DJ, alquiler backline, alquiler fotomatón, alquiler plataforma 360, alquiler chispas frías, alquiler pista de baile, alquiler carpas eventos, alquiler altavoces fiesta, alquiler controladora DJ, alquiler CDJ Pioneer, alquiler luces para fiesta, alquiler equipo sonido boda, alquiler pantallas LED eventos, alquiler equipo sonido Madrid',
+    precio: 'desde 40€/día',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Murcia', slug: 'murcia' },
+      { name: 'Palma', slug: 'palma' },
+      { name: 'Ibiza', slug: 'ibiza' },
+    ],
+    roles: ['Equipo completo (pack)', 'Altavoces / P.A.', 'Mesas de mezclas y etapas', 'Controladoras y CDJs', 'Backline e instrumentos', 'Microfonía', 'Iluminación de pista y ambiente', 'Guirnaldas y letras luminosas', 'Luz negra y estroboscopios', 'Efectos: humo, chispas, CO2, pompas', 'Karaoke', 'Pantallas LED y proyectores', 'Fotomatón y plataforma 360', 'Cámaras y focos de foto', 'Escenarios y pistas de baile', 'Carpas y mobiliario', 'Barras y menaje'],
+    faqs: [
+      { q: '¿Cuánto cuesta alquilar un equipo de sonido para una fiesta?', a: 'Un par de altavoces autoamplificados con mesa sencilla sale desde unos 40-80€ al día. Un equipo completo para una boda de 100-150 invitados, con subwoofer, microfonía y luces básicas, suele moverse entre 150€ y 400€. Una cabina de DJ profesional con CDJs y mesa de gama alta puede superar los 400€ al día. El transporte y el montaje se cobran aparte en muchos casos, y cada ficha en XPEAK lo indica.' },
+      { q: 'Soy DJ, músico o fotógrafo, ¿puedo alquilar solo lo que me falta?', a: 'Sí, y es de lo más habitual: un sub extra o un segundo par de CDJs para el DJ, un ampli o una batería para el grupo, focos o un fondo para el fotógrafo, o un fotomatón para completar el servicio de una boda. Puedes filtrar por lo que necesitas y contactar directamente con quien lo alquila, sin tener que coger un pack completo.' },
+      { q: '¿Cuántos vatios de sonido necesito?', a: 'Como referencia: hasta 50 personas en interior basta con unos 500-1.000 W; para una boda de 100-200 invitados se suele ir a 2.000-3.000 W con subwoofer; y un evento al aire libre o de más de 300 personas pide 5.000 W o más. Influyen el espacio, si es exterior y el tipo de música. En XPEAK cada proveedor indica la potencia de sus equipos y puedes pedir un pack completo ya dimensionado.' },
+      { q: '¿El alquiler incluye transporte, montaje o técnico?', a: 'Depende de cada proveedor. Hay quien solo entrega el material para que lo recojas y lo montes tú, quien lo lleva y lo monta, y quien incluye un técnico durante el evento. Cada perfil lo detalla. Si prefieres que alguien opere el sonido, mira también la categoría de técnicos de sonido.' },
+      { q: '¿Se pide fianza?', a: 'Casi siempre, sobre todo con equipo de DJ y material caro. Lo normal es una fianza que se devuelve al entregar el equipo en buen estado, o una copia del DNI. Pregúntalo antes de reservar y deja por escrito el estado del material al recogerlo.' },
+    ],
+    steps: [
+      { title: 'Busca por lo que necesitas', body: 'Altavoces, equipo de DJ, luces o escenario. Filtra por ciudad y mira qué incluye cada proveedor.' },
+      { title: 'Cuenta el evento', body: 'Aforo, interior o exterior, fecha y si necesitas transporte o montaje. Con eso te dan precio cerrado.' },
+      { title: 'Reserva y recoge', body: 'Cierra fechas, fianza y condiciones por la plataforma. Sin intermediarios.' },
+    ],
+  },
   'locales-eventos': {
     slug: 'locales-eventos',
     emoji: '🏛️',
@@ -789,7 +826,7 @@ const DIRECTORIO_SLUG: Record<string, string> = {
   animador: 'animador', animadores: 'animador', payaso: 'animador', payasos: 'animador',
   speaker: 'speaker', mago: 'mago', bailarin: 'bailarin',
   'photo-booth': 'photo-booth', 'grupo-musical': 'grupo-musical',
-  'locales-eventos': 'locales-eventos', 'tecnico-sonido': 'tecnico-sonido',
+  'locales-eventos': 'locales-eventos', 'tecnico-sonido': 'tecnico-sonido', 'alquiler-equipos': 'alquiler-equipos',
 };
 const directorioHref = (slug: string) => `/directorio/${DIRECTORIO_SLUG[slug] ?? 'dj'}`;
 
@@ -815,6 +852,10 @@ const ICON: Record<string, React.ReactNode> = {
   payasos: <Users size={20} />,
   'photo-booth': <Camera size={20} />,
   'grupo-musical': <Music size={20} />,
+  monologo: <Mic size={20} />,
+  'tecnico-sonido': <SlidersHorizontal size={20} />,
+  'alquiler-equipos': <Speaker size={20} />,
+  'locales-eventos': <Building2 size={20} />,
 };
 
 export default function CategoryLanding() {
@@ -837,7 +878,7 @@ export default function CategoryLanding() {
     areaServed: { '@type': 'Country', name: 'España' },
     description: data.desc,
     url: `https://xpeak.es/contratar-${data.slug}`,
-    serviceType: `Contratación de ${data.keyword}`,
+    serviceType: data.slug === 'alquiler-equipos' ? 'Alquiler de equipos para eventos' : `Contratación de ${data.keyword}`,
   };
 
   const faqStructured = {
@@ -879,14 +920,14 @@ export default function CategoryLanding() {
         <script type="application/ld+json">{JSON.stringify(breadcrumbData)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#FFFFFF', color: '#111' }}>
 
         {/* Nav mínima */}
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3 sm:gap-4">
-            <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Precios</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Blog</a>
+            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Precios</a>
             <a href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
@@ -899,20 +940,20 @@ export default function CategoryLanding() {
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-12 sm:pb-16">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00' }}>
               {ICON[data.slug]}
             </div>
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#8B6A00' }}>
               España · Directorio Profesional
             </span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">
             {data.h1}
           </h1>
-          <p className="text-sm sm:text-lg mb-3 max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm sm:text-lg mb-3 max-w-2xl leading-relaxed" style={{ color: '#4b5563' }}>
             {data.intro}
           </p>
-          <p className="text-sm font-bold mb-8" style={{ color: 'rgba(212,175,55,0.7)' }}>{data.tagline}</p>
+          <p className="text-sm font-bold mb-8" style={{ color: '#8B6A00' }}>{data.tagline}</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href={directorioHref(data.slug)}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
@@ -921,27 +962,27 @@ export default function CategoryLanding() {
             </a>
             <a href="/auth?mode=register&role=profesional"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
+              style={{ background: '#FFFFFF', border: '1.5px solid #2563EB', color: '#2563EB' }}>
               Soy profesional: crear perfil
             </a>
           </div>
         </section>
 
         {/* Stats */}
-        <section className="border-y" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(212,175,55,0.03)' }}>
+        <section className="border-y" style={{ borderColor: 'rgba(122,98,22,0.14)', background: '#FBF6E8' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8">
             {[
-              { label: `Precio medio ${data.keyword}`, value: data.precio, icon: <Star size={16} /> },
-              { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(data.slug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} /> },
-              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} /> },
+              { label: `Precio medio ${data.keyword}`, value: data.precio, icon: <Star size={16} />, tono: '#8B6A00' },
+              { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(data.slug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} />, tono: '#2563EB' },
+              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} />, tono: '#059669' },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+                  style={{ background: `${s.tono}1A`, color: s.tono }}>
                   {s.icon}
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{s.label}</p>
+                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: '#6b7280' }}>{s.label}</p>
                   <p className="text-sm font-black">{s.value}</p>
                 </div>
               </div>
@@ -951,14 +992,14 @@ export default function CategoryLanding() {
 
         {/* Especialidades */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-          <h2 className="text-xl sm:text-2xl font-black mb-2">Especialidades disponibles</h2>
-          <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <h2 className="text-xl sm:text-2xl font-black mb-2">{data.slug === 'alquiler-equipos' ? 'Equipo que se alquila' : 'Especialidades disponibles'}</h2>
+          <p className="text-sm mb-6" style={{ color: '#4b5563' }}>
             Filtra por especialidad directamente en el directorio XPEAK.
           </p>
           <div className="flex flex-wrap gap-2">
             {data.roles.map(r => (
               <span key={r} className="px-3 py-1.5 rounded-lg text-xs font-bold"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)' }}>
+                style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#374151' }}>
                 {r}
               </span>
             ))}
@@ -968,16 +1009,16 @@ export default function CategoryLanding() {
         {/* Ciudades */}
         {data.cities.length > 0 && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
-            <h2 className="text-xl sm:text-2xl font-black mb-2">Contratar {data.keyword} por ciudad</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            <h2 className="text-xl sm:text-2xl font-black mb-2">{data.slug === 'alquiler-equipos' ? 'Alquiler de equipos por ciudad' : <>Contratar {data.keyword} por ciudad</>}</h2>
+            <p className="text-sm mb-6" style={{ color: '#4b5563' }}>
               Guías detalladas con precios locales, venues y preguntas frecuentes.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {data.cities.map(c => (
                 <a key={c.slug} href={`/contratar-${data.slug}/${c.slug}`}
                   className="flex items-center gap-2 p-4 rounded-xl font-bold text-sm transition-all hover:scale-105"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <MapPin size={13} style={{ color: '#D4AF37' }} /> {c.name}
+                  style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+                  <MapPin size={13} style={{ color: '#8B6A00' }} /> {c.name}
                 </a>
               ))}
             </div>
@@ -986,13 +1027,13 @@ export default function CategoryLanding() {
 
         {/* Cómo funciona */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
-          <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Cómo contratar {data.keyword} con XPEAK</h2>
+          <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">{data.slug === 'alquiler-equipos' ? 'Cómo alquilar equipo con XPEAK' : <>Cómo contratar {data.keyword} con XPEAK</>}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {data.steps.map((s, i) => (
-              <div key={s.title} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                <p className="text-3xl font-black mb-3" style={{ color: 'rgba(212,175,55,0.25)' }}>0{i + 1}</p>
+              <div key={s.title} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+                <p className="text-3xl font-black mb-3" style={{ color: 'rgba(184,148,30,0.45)' }}>0{i + 1}</p>
                 <p className="text-sm font-bold mb-1.5">{s.title}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{s.body}</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>{s.body}</p>
               </div>
             ))}
           </div>
@@ -1003,9 +1044,9 @@ export default function CategoryLanding() {
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes</h2>
           <div className="space-y-4">
             {data.faqs.map(faq => (
-              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={faq.q} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#5b6472' }}>{faq.a}</p>
               </div>
             ))}
           </div>
@@ -1015,18 +1056,18 @@ export default function CategoryLanding() {
         {BLOG_LINKS[data.slug] && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
             <h2 className="text-xl sm:text-2xl font-black mb-2">Guías relacionadas</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            <p className="text-sm mb-6" style={{ color: '#4b5563' }}>
               Artículos para preparar mejor tu contratación.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {BLOG_LINKS[data.slug].map(post => (
                 <a key={post.href} href={post.href}
                   className="flex items-start gap-4 p-5 rounded-xl transition-all hover:scale-[1.02]"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                   <span className="text-2xl flex-shrink-0">{post.emoji}</span>
                   <div>
                     <p className="text-sm font-black leading-snug mb-1.5">{post.title}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{post.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>{post.desc}</p>
                   </div>
                 </a>
               ))}
@@ -1036,9 +1077,9 @@ export default function CategoryLanding() {
 
         {/* CTA final */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20 text-center">
-          <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'linear-gradient(135deg,#FFFDF7,#FBF3DD)', border: '1px solid rgba(212,175,55,0.35)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {data.keyword} para tu evento?</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mb-6" style={{ color: '#5b6472' }}>
               Contacta directamente, sin registro, respuesta directa del profesional.
             </p>
             <a href={directorioHref(data.slug)}

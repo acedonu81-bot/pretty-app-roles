@@ -11,7 +11,7 @@ import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import MisCondicionesSection from './profile/MisCondicionesSection';
 import LocalEventosExtraFields from '@/components/dashboard/LocalEventosExtraFields';
 import { sanitizeInput } from '@/lib/contentFilter';
-import { DJ_GENRES, ROLE_TAGS } from '@/lib/constants';
+import { DJ_GENRES, ROLE_TAGS, ALQUILER_TAG_GROUPS } from '@/lib/constants';
 import { computeProfileCompleteness } from '@/hooks/useProfileCompleteness';
 
 const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
@@ -43,6 +43,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [rewardedReferrals, setRewardedReferrals] = useState<number | null>(null);
   const [offersClasses, setOffersClasses] = useState<boolean | null>(null);
   const [classStyles, setClassStyles] = useState<string[] | null>(null);
+  const [rentalEquipment, setRentalEquipment] = useState<string[] | null>(null);
+  const [customEquipment, setCustomEquipment] = useState('');
   const [classPrice, setClassPrice] = useState<string | null>(null);
   const [seekingPartner, setSeekingPartner] = useState<boolean | null>(null);
   const [danceLevel, setDanceLevel] = useState<string | null>(null);
@@ -128,6 +130,12 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const roleTagConfig = ROLE_TAGS[profile.role ?? ''];
   const [selectedGenres, setSelectedGenres] = useState<string[] | null>(null);
   const [genreOpen, setGenreOpen] = useState(false);
+  const [customTag, setCustomTag] = useState('');
+  const addCustomTag = () => {
+    const t = customTag.trim().replace(/\s+/g, ' ').slice(0, 40);
+    if (t && !activeGenres.some((g: string) => g.toLowerCase() === t.toLowerCase())) setSelectedGenres([...activeGenres, t]);
+    setCustomTag('');
+  };
   const activeGenres = selectedGenres ?? profile.genres ?? [];
   const toggleGenre = (g: string) => {
     const next = activeGenres.includes(g) ? activeGenres.filter((x: string) => x !== g) : [...activeGenres, g];
@@ -163,6 +171,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     { value: 'speaker',       label: 'Speaker / Presentador' },
     { value: 'vestuario',     label: 'Estilista / Vestuario' },
     { value: 'design',        label: 'Diseño & Visuales' },
+    { value: 'tecnico',       label: 'Técnico de Sonido y Montaje' },
+    { value: 'alquiler',      label: 'Alquiler de Equipos (alquilas tu material)' },
   ];
   const activeRoles = (selectedRoles ?? (profile.roles?.length ? profile.roles : (profile.role ? [profile.role] : [])))
     .filter(r => r && r !== 'pending');
@@ -283,6 +293,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     }
     if (offersClasses !== null) updates.offers_classes = offersClasses;
     if (classStyles !== null) updates.class_styles = classStyles;
+    if (rentalEquipment !== null) updates.rental_equipment = rentalEquipment;
     if (classPrice !== null) updates.class_price = classPrice.trim() === '' ? null : parseInt(classPrice) || 0;
     if (seekingPartner !== null) updates.seeking_dance_partner = seekingPartner;
     if (danceLevel !== null) updates.dance_level = danceLevel;
@@ -721,7 +732,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             {profile.role !== 'empresario' && (
               <div className="mb-3">
                 <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
-                  Caché / Tarifa por hora
+                  {profile.role === 'alquiler' ? 'Precio de alquiler por día' : 'Caché / Tarifa por hora'}
                   <span className="ml-2 normal-case tracking-normal font-normal" style={{ color: '#333' }}> · solo visible para empresarios
                   </span>
                 </label>
@@ -861,6 +872,24 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                           </button>
                         ))}
                       </div>
+                      {/* Hueco libre: lo que no esté en la lista lo escribe el propio profesional. */}
+                      <div className="flex items-center gap-2 px-3 py-2" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                        <input
+                          type="text"
+                          value={customTag}
+                          onChange={e => setCustomTag(e.target.value)}
+                          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomTag(); } }}
+                          maxLength={40}
+                          placeholder="¿Algo que no está en la lista? Escríbelo"
+                          className="flex-1 min-w-0 px-2.5 py-1.5 rounded-lg text-xs"
+                          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
+                        />
+                        <button type="button" onClick={addCustomTag} disabled={!customTag.trim()}
+                          className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all disabled:opacity-40"
+                          style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
+                          Añadir
+                        </button>
+                      </div>
                       <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
                         <span className="text-xs text-muted-foreground">{activeGenres.length} seleccionados</span>
                         <button type="button" onClick={() => setGenreOpen(false)}
@@ -874,6 +903,71 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   })()}
                 </div>
             )}
+            {/* Equipo en alquiler: sale si 'alquiler' es oficio principal O
+                secundario (un DJ que alquila su equipo). Va en rental_equipment,
+                separado de genres, para no mezclar géneros con altavoces. */}
+            {activeRoles.includes('alquiler') && (() => {
+              const equipo = rentalEquipment ?? profile.rental_equipment ?? [];
+              const toggle = (t: string) => setRentalEquipment(equipo.includes(t) ? equipo.filter(x => x !== t) : [...equipo, t]);
+              const conocidos = new Set(ALQUILER_TAG_GROUPS.flatMap(g => g.items));
+              const propios = equipo.filter(t => !conocidos.has(t));
+              const addCustom = () => {
+                const t = customEquipment.trim().replace(/\s+/g, ' ').slice(0, 40);
+                if (t && !equipo.some(g => g.toLowerCase() === t.toLowerCase())) setRentalEquipment([...equipo, t]);
+                setCustomEquipment('');
+              };
+              const chip = (t: string) => {
+                const active = equipo.includes(t);
+                return (
+                  <button key={t} type="button" onClick={() => toggle(t)}
+                    className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                    style={{
+                      background: active ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
+                      border: `1px solid ${active ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
+                      color: active ? '#8A6D0F' : '#333',
+                    }}>
+                    {t}
+                  </button>
+                );
+              };
+              return (
+                <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
+                  <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-1" style={{ color: 'rgba(212,175,55,0.4)' }}>Equipo que alquilo</p>
+                  <p className="text-xs text-muted-foreground mb-3">Marca lo que tienes para alquilar. Es lo que verán quienes busquen equipo.{equipo.length > 0 ? ` ${equipo.length} marcado${equipo.length > 1 ? 's' : ''}.` : ''}</p>
+                  <div className="space-y-3">
+                    {ALQUILER_TAG_GROUPS.map(g => (
+                      <div key={g.label}>
+                        <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.55)' }}>{g.label}</p>
+                        <div className="flex flex-wrap gap-1.5">{g.items.map(chip)}</div>
+                      </div>
+                    ))}
+                    {propios.length > 0 && (
+                      <div>
+                        <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.55)' }}>Añadido por ti</p>
+                        <div className="flex flex-wrap gap-1.5">{propios.map(chip)}</div>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={customEquipment}
+                        onChange={e => setCustomEquipment(e.target.value)}
+                        onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } }}
+                        maxLength={40}
+                        placeholder="¿Algo que no está en la lista? Escríbelo"
+                        className="flex-1 min-w-0 px-2.5 py-2 rounded-lg text-sm"
+                        style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
+                      />
+                      <button type="button" onClick={addCustom} disabled={!customEquipment.trim()}
+                        className="text-xs font-bold px-3 py-2 rounded-lg transition-all disabled:opacity-40"
+                        style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
+                        Añadir
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
             {profile.role === 'bailarin' && (
               <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
                 <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Clases particulares</p>

@@ -73,6 +73,7 @@ serve(async (req) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${serviceKey}`,
+          'x-internal-secret': Deno.env.get('INTERNAL_SECRET') ?? '',
         },
         body: JSON.stringify({
           type: 'six_months_anniversary',

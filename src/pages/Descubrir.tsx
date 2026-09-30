@@ -38,6 +38,7 @@ const ROLE_ICON: Record<string, LucideIcon> = {
   speaker: Presentation, vestuario: Shirt, 'photo-booth': Aperture,
   'wedding-planner': CalendarHeart, 'diseno-grafico': PenTool,
   'tecnico-sonido': SlidersHorizontal,
+  'alquiler-equipos': SlidersHorizontal,
   'locales-eventos': Building2,
 };
 
@@ -52,7 +53,7 @@ const ROLE_GROUPS: { label: string; slugs: string[] }[] = [
   { label: 'Azafatas & RRPP', slugs: ['azafata', 'promotores', 'speaker', 'wedding-planner'] },
   { label: 'Belleza & Estética', slugs: ['maquillaje', 'vestuario'] },
   { label: 'Entretenimiento', slugs: ['animador', 'mago', 'humorista', 'bailarin'] },
-  { label: 'Técnica & Producción', slugs: ['tecnico-sonido'] },
+  { label: 'Técnica & Producción', slugs: ['tecnico-sonido', 'alquiler-equipos'] },
   { label: 'Locales para eventos', slugs: ['locales-eventos'] },
 ];
 

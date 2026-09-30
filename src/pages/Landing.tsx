@@ -322,7 +322,7 @@ const ROLE_DETAILS = [
     ],
   },
   {
-    key: 'tecnica', title: 'Técnica & Producción', icon: <SlidersHorizontal size={28} />, tagline: 'Técnicos de sonido, iluminación y montaje de escenario',
+    key: 'tecnica', title: 'Técnica & Producción', icon: <SlidersHorizontal size={28} />, tagline: 'Técnicos de sonido, montaje y alquiler de equipos',
     steps: [
       { icon: <SlidersHorizontal size={22} />, image: px(1540406), title: '¿Qué es este rol?',      body: 'Técnicos de sonido, iluminadores y equipos de montaje para bodas, festivales, salas y eventos corporativos: desde cubrir una boda en finca hasta montar el escenario de un festival.' },
       { icon: <Zap size={22} />,               image: px(1190297), title: 'Con equipo o sin equipo', body: 'Deja claro en tu ficha si aportas material propio (P.A., mesa, microfonía, luces) o trabajas como mano de obra sobre la instalación del local. Es la primera pregunta que hace quien contrata.' },
@@ -430,7 +430,7 @@ const CATEGORY_ROLES: Record<string, string[]> = {
   // vacía, aunque al pulsarla lleva a /directorio/staff y sí hay gente.
   gastro: ['staff', 'camarero', 'catering'],
   animacion: ['animador', 'mago', 'humorista', 'bailarin'],
-  tecnica: ['tecnico'],
+  tecnica: ['tecnico', 'alquiler'],
   locales: ['local_eventos'],
 };
 

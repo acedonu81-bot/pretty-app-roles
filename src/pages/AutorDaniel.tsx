@@ -19,7 +19,7 @@ const jsonLd = {
 
 const AutorDaniel = () => {
   return (
-    <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#090909' }}>
+    <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#FFFFFF' }}>
       <Helmet>
         <title>Daniel, Fundador de XPEAK | Autor</title>
         <meta name="description" content="Daniel es el fundador de XPEAK y autor de las guías del blog: precios, contratos y tendencias del sector de eventos en España." />
@@ -29,7 +29,7 @@ const AutorDaniel = () => {
       <AmbientBackground />
 
       <div className="flex-1 z-10 max-w-3xl mx-auto px-4 py-12 w-full">
-        <Link to="/blog" className="inline-block mb-8 text-xs font-bold transition-colors" style={{ color: '#D4AF37' }}>
+        <Link to="/blog" className="inline-block mb-8 text-xs font-bold transition-colors" style={{ color: '#8B6A00' }}>
           ← Volver al blog
         </Link>
 
@@ -40,27 +40,27 @@ const AutorDaniel = () => {
           </div>
           <div>
             <h1 className="text-3xl font-black tracking-tight">Daniel</h1>
-            <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>Fundador de XPEAK</p>
+            <p className="text-sm mt-1" style={{ color: '#374151' }}>Fundador de XPEAK</p>
           </div>
         </div>
 
-        <div className="space-y-6 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>
-          <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="space-y-6 text-sm leading-relaxed" style={{ color: '#374151' }}>
+          <div className="glass-panel p-6 md:p-8" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
             <p>
-              Daniel es el fundador de <Link to="/" style={{ color: '#D4AF37' }}>XPEAK</Link>, el directorio profesional de eventos en España. Es el autor de las guías del <Link to="/blog" style={{ color: '#D4AF37' }}>blog de XPEAK</Link> sobre precios, contratos y tendencias del sector de eventos.
+              Daniel es el fundador de <Link to="/" style={{ color: '#8B6A00' }}>XPEAK</Link>, el directorio profesional de eventos en España. Es el autor de las guías del <Link to="/blog" style={{ color: '#8B6A00' }}>blog de XPEAK</Link> sobre precios, contratos y tendencias del sector de eventos.
             </p>
           </div>
 
-          <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <h2 className="text-lg font-black mb-3" style={{ color: '#fff' }}>Enlaces</h2>
+          <div className="glass-panel p-6 md:p-8" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+            <h2 className="text-lg font-black mb-3" style={{ color: '#111' }}>Enlaces</h2>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span style={{ color: 'rgba(255,255,255,0.6)' }}>Web personal:</span>
-                <a href="https://danieltorrez.es" target="_blank" rel="noopener noreferrer" className="font-bold transition-all hover:opacity-80" style={{ color: '#D4AF37' }}>danieltorrez.es</a>
+                <span style={{ color: '#374151' }}>Web personal:</span>
+                <a href="https://danieltorrez.es" target="_blank" rel="noopener noreferrer" className="font-bold transition-all hover:opacity-80" style={{ color: '#8B6A00' }}>danieltorrez.es</a>
               </div>
               <div className="flex items-center gap-2">
-                <span style={{ color: 'rgba(255,255,255,0.6)' }}>XPEAK:</span>
-                <Link to="/" className="font-bold transition-all hover:opacity-80" style={{ color: '#D4AF37' }}>xpeak.es</Link>
+                <span style={{ color: '#374151' }}>XPEAK:</span>
+                <Link to="/" className="font-bold transition-all hover:opacity-80" style={{ color: '#8B6A00' }}>xpeak.es</Link>
               </div>
             </div>
           </div>

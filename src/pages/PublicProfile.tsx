@@ -1,3 +1,4 @@
+import { unidadTarifa } from '@/lib/constants';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -469,6 +470,7 @@ interface SupabaseProfile {
   portfolio_urls: string[] | null;
   offers_classes: boolean | null;
   class_styles: string[] | null;
+  rental_equipment: string[] | null;
   class_price: number | null;
   seeking_dance_partner: boolean | null;
   dance_level: string | null;
@@ -603,11 +605,11 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .eq('user_id', slug)
           .maybeSingle()
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -646,12 +648,10 @@ const PublicProfile = () => {
           }
         }
         if (data?.user_id) {
-          // Track profile view — increment score column
-          supabase.from('profiles').select('score').eq('user_id', data.user_id).maybeSingle()
-            .then(({ data: s }) => {
-              const current = (s?.score as number) ?? 0;
-              supabase.from('profiles').update({ score: current + 1 } as any).eq('user_id', data.user_id).then(() => {});
-            });
+          // (Aquí se sumaba +1 a profiles.score en cada visita. La RLS solo deja
+          // editar la fila propia, así que solo contaba cuando el dueño se miraba
+          // a sí mismo; y desde el 30 sep score es solo de admin/servidor, porque
+          // el directorio ordena por él. Las visitas reales van abajo.)
           // Log every real visit in profile_business_views — one insert per
           // view, used two ways downstream: (1) RecentBusinessViewLine shows
           // "una sala de {zona} ha visto tu perfil" only when viewer_zone is
@@ -772,6 +772,7 @@ const PublicProfile = () => {
     subscriptionTier: sbProfile.subscription_tier,
     offersClasses: sbProfile.offers_classes ?? false,
     classStyles: sbProfile.class_styles ?? [],
+    rentalEquipment: sbProfile.rental_equipment ?? [],
     classPrice: sbProfile.class_price ?? null,
     seekingDancePartner: sbProfile.seeking_dance_partner ?? false,
     danceLevel: sbProfile.dance_level ?? null,
@@ -826,7 +827,7 @@ const PublicProfile = () => {
     monologo: 'Monólogo & Stand-Up', animador: 'Animador Infantil', speaker: 'Speaker & Presentador',
     vestuario: 'Personal Shopper & Vestuario', 'photo-booth': 'Photo Booth',
     'grupo-musical': 'Grupo Musical', 'wedding-planner': 'Wedding Planner', 'diseno-grafico': 'Diseño Gráfico',
-    tecnico: 'Técnico de Sonido y Montaje', local_eventos: 'Local para eventos', camarero: 'Camarero',
+    tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', local_eventos: 'Local para eventos', camarero: 'Camarero',
   };
 
   // Related profiles: Supabase results for real profiles, static data for
@@ -1153,7 +1154,7 @@ const PublicProfile = () => {
               {(profile as any).price > 0 ? (
                 <>
                   <span className="text-3xl font-black" style={{ color: '#111' }}>{(profile as any).price}€</span>
-                  <span className="text-sm font-semibold ml-1" style={{ color: '#333' }}>/hora</span>
+                  <span className="text-sm font-semibold ml-1" style={{ color: '#333' }}>{unidadTarifa((profile as any).role)}</span>
                 </>
               ) : (
                 <span className="text-2xl font-black" style={{ color: '#111' }}>Precio a consultar</span>
@@ -1267,6 +1268,28 @@ const PublicProfile = () => {
                   </div>
                 )}
               </div>
+            </motion.div>
+          )}
+
+          {/* Equipo en alquiler (rol 'alquiler', principal o secundario) */}
+          {(profile as any).rentalEquipment && (profile as any).rentalEquipment.length > 0 && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
+              className="rounded-2xl p-5" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>Equipo en alquiler</h2>
+              <p className="text-sm mb-3" style={{ color: '#333' }}>{profile.name} alquila este equipo para eventos.</p>
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {(profile as any).rentalEquipment.map((s: string) => (
+                  <span key={s} className="text-xs font-bold px-2.5 py-1 rounded-full"
+                    style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)', color: '#555' }}>
+                    {s}
+                  </span>
+                ))}
+              </div>
+              <button onClick={handleContactClick}
+                className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all hover:scale-[1.02]"
+                style={{ background: '#D4AF37', color: '#000' }}>
+                Pedir disponibilidad
+              </button>
             </motion.div>
           )}
 

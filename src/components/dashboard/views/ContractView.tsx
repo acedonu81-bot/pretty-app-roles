@@ -94,6 +94,7 @@ const ROLE_LABEL: Record<string, string> = {
   speaker: 'Speaker / Presentador', design: 'Diseño & Visuales',
   monologo: 'Monologuista', empresario: 'Empresa / Sala',
   azafata: 'Azafata', 'grupo-musical': 'Grupo musical', 'photo-booth': 'Photo Booth',
+  tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', local_eventos: 'Local para eventos',
   fotografo: 'Fotógrafo', 'wedding-planner': 'Wedding Planner',
   'diseno-grafico': 'Diseño gráfico', promotores: 'Promotor / RRPP',
   maquillaje: 'Maquillaje',
@@ -106,7 +107,7 @@ const ROLE_LABEL: Record<string, string> = {
 // equivocada acababa impresa en el PDF del contrato.
 const CONTRACT_ROLE_OPTIONS = [
   'dj', 'grupo-musical', 'staff', 'azafata', 'event_manager', 'bailarin',
-  'makeup', 'peluqueria', 'media', 'fotografo', 'photo-booth',
+  'makeup', 'peluqueria', 'media', 'fotografo', 'photo-booth', 'tecnico', 'alquiler', 'local_eventos',
   'mago', 'humorista', 'monologo', 'animador', 'catering', 'vestuario',
   'promotor', 'speaker', 'wedding-planner', 'design', 'diseno-grafico',
 ];

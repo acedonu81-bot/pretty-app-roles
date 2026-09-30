@@ -5,7 +5,7 @@ import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import type { Pro } from './types';
 import { ZONES } from './types';
-import { DJ_GENRES, ROLE_TAGS } from '@/lib/constants';
+import { DJ_GENRES, ROLE_TAGS, ALQUILER_TAGS } from '@/lib/constants';
 import { canonicalRole } from '@/lib/constants';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -31,7 +31,9 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
   // comun que tenga sentido, asi que se mantienen los generos musicales.
   const roleTagConfig = filterRole === 'Todos'
     ? { label: 'Estilo musical', tags: DJ_GENRES }
-    : ROLE_TAGS[filterRole];
+    : filterRole === 'alquiler'
+      ? { label: 'Equipo', tags: ALQUILER_TAGS }
+      : ROLE_TAGS[filterRole];
   const [maxPrice, setMaxPrice]       = useState(1000);
   const [proNotes, setProNotes]       = useState<Record<string, string>>({});
   const [notesTarget, setNotesTarget] = useState<string | null>(null);
@@ -62,8 +64,11 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
     // camarero->staff, así que un perfil 'peluqueria' se perdía al filtrar
     // por 'makeup'.
     const effectiveRole = canonicalRole(p.role);
-    if (filterRole !== 'Todos' && effectiveRole !== filterRole) return false;
-    if (filterGenre !== 'Todos' && !(p.genres ?? []).includes(filterGenre)) return false;
+    // Oficios secundarios cuentan: un DJ que también alquila su equipo tiene
+    // role='dj' y 'alquiler' solo en roles.
+    if (filterRole !== 'Todos' && effectiveRole !== filterRole && !(p.roles ?? []).map(canonicalRole).includes(filterRole)) return false;
+    const etiquetas = filterRole === 'alquiler' ? (p.rental_equipment ?? []) : (p.genres ?? []);
+    if (filterGenre !== 'Todos' && !etiquetas.includes(filterGenre)) return false;
     if (p.hourly_rate > maxPrice) return false;
     if (showFavoritesOnly && !favorites.includes(p.id)) return false;
     return true;
@@ -141,6 +146,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                 { value: 'photo-booth', label: 'Photo Booth' },
                 { value: 'vestuario', label: 'Estilista / Vestuario' },
                 { value: 'tecnico', label: 'Técnico de Sonido y Montaje' },
+                { value: 'alquiler', label: 'Alquiler de Equipos' },
                 { value: 'local_eventos', label: 'Locales para eventos' },
               ]}
               active={filterRole !== 'Todos'}

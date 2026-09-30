@@ -94,6 +94,31 @@ function toSlug(name) {
     .replace(/^-|-$/g, '');
 }
 
+// ─── Coherencia sitemap ↔ robots ──────────────────────────────────────────
+// Este script corre DESPUÉS de prerender-content.mjs, que marca noindex las
+// páginas sin inventario (directorio vacío, ciudad sin profesionales). Si esa
+// URL sigue en el sitemap, Google recibe dos órdenes contrarias ("indexa" en el
+// sitemap, "no indexes" en la página) y Search Console lo reporta como error.
+// Medido 30 sep 2026: 6 URLs /directorio/* en esa situación. Se descarta
+// cualquier URL cuyo HTML prerenderizado lleve noindex; si no hay HTML
+// (build parcial, ruta sin prerender) se conserva.
+function quitarUrlsNoindex(xml) {
+  const distDir = path.join(ROOT, 'dist');
+  if (!fs.existsSync(distDir)) return { xml, quitadas: [] };
+  const quitadas = [];
+  const out = xml.split('\n').filter(line => {
+    const m = line.match(/<loc>https:\/\/xpeak\.es([^<]*)<\/loc>/);
+    if (!m) return true;
+    const ruta = m[1].replace(/\/$/, '');
+    const html = path.join(distDir, ruta, 'index.html');
+    if (!ruta || !fs.existsSync(html)) return true;
+    const noindex = /<meta name="robots" content="noindex/.test(fs.readFileSync(html, 'utf8'));
+    if (noindex) quitadas.push(ruta);
+    return !noindex;
+  });
+  return { xml: out.join('\n'), quitadas };
+}
+
 // ─── URL helpers ──────────────────────────────────────────────────────────
 function url(loc, lastmod, changefreq, priority) {
   return `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
@@ -152,15 +177,15 @@ function staticUrls(today, indexableCities, cityContentDates) {
 
   // Category landings
   lines.push('\n  <!-- Category landings -->');
-  const cats = ['dj','staff','azafata','fotografo','camareros','catering','maquillaje','peluqueria','promotores','vestuario','disco-movil','mago','humorista','animador','animadores','speaker','bailarin','payaso','payasos','grupo-musical','photo-booth','monologo','tecnico-sonido','locales-eventos'];
-  const catPri = { dj: '0.9', staff: '0.9', azafata: '0.9', camareros: '0.9', catering: '0.9', fotografo: '0.8', maquillaje: '0.8', peluqueria: '0.8', promotores: '0.8', 'disco-movil': '0.8', vestuario: '0.7', mago: '0.8', humorista: '0.8', animador: '0.8', animadores: '0.8', speaker: '0.7', bailarin: '0.7', payaso: '0.7', payasos: '0.7', 'grupo-musical': '0.75', 'photo-booth': '0.75', monologo: '0.75', 'tecnico-sonido': '0.8', 'locales-eventos': '0.8' };
+  const cats = ['dj','staff','azafata','fotografo','camareros','catering','maquillaje','peluqueria','promotores','vestuario','disco-movil','mago','humorista','animador','animadores','speaker','bailarin','payaso','payasos','grupo-musical','photo-booth','monologo','tecnico-sonido','alquiler-equipos','locales-eventos'];
+  const catPri = { dj: '0.9', staff: '0.9', azafata: '0.9', camareros: '0.9', catering: '0.9', fotografo: '0.8', maquillaje: '0.8', peluqueria: '0.8', promotores: '0.8', 'disco-movil': '0.8', vestuario: '0.7', mago: '0.8', humorista: '0.8', animador: '0.8', animadores: '0.8', speaker: '0.7', bailarin: '0.7', payaso: '0.7', payasos: '0.7', 'grupo-musical': '0.75', 'photo-booth': '0.75', monologo: '0.75', 'tecnico-sonido': '0.8', 'alquiler-equipos': '0.8', 'locales-eventos': '0.8' };
   for (const c of cats) {
     lines.push(url(`https://xpeak.es/contratar-${c}`, categoryLandingDate, 'weekly', catPri[c] || '0.8'));
   }
 
   // Directorio público — páginas core de producto
   lines.push('\n  <!-- Directorio público -->');
-  const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','wedding-planner','diseno-grafico','tecnico-sonido','djs-emergentes','locales-eventos'];
+  const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','wedding-planner','diseno-grafico','tecnico-sonido','alquiler-equipos','djs-emergentes','locales-eventos'];
   for (const s of dirSlugs) {
     lines.push(url(`https://xpeak.es/directorio/${s}`, directorioDate, 'daily', '0.9'));
   }
@@ -220,7 +245,7 @@ function staticUrls(today, indexableCities, cityContentDates) {
     torrevieja:'0.65', benidorm:'0.70', gandia:'0.65', denia:'0.65', castellon:'0.68',
     reus:'0.65', sitges:'0.67', menorca:'0.68', ceuta:'0.63', melilla:'0.63',
   };
-  const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','peluqueria','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth','tecnico-sonido','locales-eventos'];
+  const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','peluqueria','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth','tecnico-sonido','alquiler-equipos','locales-eventos'];
 
   // Solo se publican las ciudades con al menos un profesional real. Una página
   // que dice "Aún no hay" es thin content: enseña a Google que el dominio
@@ -341,7 +366,7 @@ async function main() {
   // cuenta cualquier perfil real.
   const inventoryProfiles = profiles;
   // Set de claves "categoria/ciudad" con inventario real.
-  const CATS_BY_CITY = ['dj','camareros','fotografo','catering','maquillaje','peluqueria','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth'];
+  const CATS_BY_CITY = ['dj','camareros','fotografo','catering','maquillaje','peluqueria','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth','tecnico-sonido','alquiler-equipos'];
   const indexableCities = new Set();
   const cityContentDates = new Map();
   // Universo de ciudades = las de CITIES (que aportan copy editorial: venues,
@@ -402,7 +427,7 @@ async function main() {
     eventLines.push(url(`https://xpeak.es/socials/${slug}`, lastmod, 'weekly', '0.6'));
   }
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+  const sitemapBruto = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 ${staticUrls(TODAY, indexableCities, cityContentDates)}
@@ -411,6 +436,8 @@ ${eventLines.join('\n')}
 
 </urlset>`;
 
+  const { xml: sitemap, quitadas } = quitarUrlsNoindex(sitemapBruto);
+  if (quitadas.length) console.log(`  → ${quitadas.length} URL(s) fuera del sitemap por noindex: ${quitadas.join(', ')}`);
   fs.writeFileSync(OUT, sitemap, 'utf-8');
   if (fs.existsSync(path.dirname(OUT_DIST))) fs.writeFileSync(OUT_DIST, sitemap, 'utf-8');
   const lineCount = sitemap.split('\n').length;

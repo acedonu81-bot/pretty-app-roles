@@ -418,7 +418,7 @@ const Auth = () => {
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
-        const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'event_manager', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'tecnico', 'local_eventos'];
+        const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'event_manager', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'tecnico', 'alquiler', 'local_eventos'];
         const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
@@ -470,15 +470,8 @@ const Auth = () => {
         // nunca pasan por este bloque (ver migracion
         // 20260910120000_emails_alta_cubren_oauth.sql).
 
-        supabase.from('profiles')
-          .select('user_id', { count: 'exact', head: true })
-          .then(({ count }) => {
-            if (typeof count === 'number' && count <= 20) {
-              supabase.functions.invoke('send-email', {
-                body: { type: 'early_adopter', data: { name: safeName, email } },
-              }).catch((err: unknown) => console.warn('[email] early_adopter failed:', err));
-            }
-          });
+        // (El aviso "early_adopter" se quitó el 30 sep 2026: el programa se
+        // eliminó el 27 sep y la plantilla prometía "Elite 6 meses gratis".)
 
         if (signUpData.session) {
           toast.success('¡Cuenta creada! Bienvenido a XPEAK');

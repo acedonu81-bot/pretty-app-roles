@@ -77,13 +77,13 @@ export default function OrganizadoresLanding() {
         <script type="application/ld+json">{JSON.stringify(breadcrumbData)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#FFFFFF', color: '#111' }}>
 
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3 sm:gap-4">
-            <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Precios</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Blog</a>
+            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Precios</a>
             <a href="/auth?mode=register&role=empresario"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
@@ -98,16 +98,16 @@ export default function OrganizadoresLanding() {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
               <Calendar size={16} />
             </div>
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#8B6A00' }}>
               España · Panel de Gestión de Eventos
             </span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">{H1}</h1>
-          <p className="text-sm sm:text-lg mb-3 max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm sm:text-lg mb-3 max-w-2xl leading-relaxed" style={{ color: '#374151' }}>
             Compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos: todo desde un único panel.
           </p>
-          <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>
-            Por <a href="/sobre-nosotros" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Daniel</a>, fundador de XPEAK y especialista en el sector de eventos y entretenimiento nocturno en España.
+          <p className="text-xs mb-3" style={{ color: '#6b7280' }}>
+            Por <a href="/sobre-nosotros" className="underline hover:opacity-80" style={{ color: '#8B6A00' }}>Daniel</a>, fundador de XPEAK y especialista en el sector de eventos y entretenimiento nocturno en España.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-6">
             <a href="/auth?mode=register&role=empresario"
@@ -117,14 +117,14 @@ export default function OrganizadoresLanding() {
             </a>
             <a href="/directorio/dj"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
+              style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#111' }}>
               Ver directorio de profesionales
             </a>
           </div>
         </section>
 
         {/* Stats */}
-        <section className="border-y" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(212,175,55,0.03)' }}>
+        <section className="border-y" style={{ borderColor: 'rgba(122,98,22,0.16)', background: 'rgba(212,175,55,0.03)' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8">
             {[
               { label: 'Pago', value: 'Directo con el profesional', icon: <Shield size={16} /> },
@@ -136,7 +136,7 @@ export default function OrganizadoresLanding() {
                   {s.icon}
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{s.label}</p>
+                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: '#6b7280' }}>{s.label}</p>
                   <p className="text-sm font-black">{s.value}</p>
                 </div>
               </div>
@@ -147,18 +147,18 @@ export default function OrganizadoresLanding() {
         {/* Herramientas */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
           <h2 className="text-xl sm:text-2xl font-black mb-2">Todo lo que necesitas para organizar un evento</h2>
-          <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm mb-6" style={{ color: '#374151' }}>
             Sin hojas de cálculo sueltas ni cadenas de WhatsApp con diez proveedores distintos.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {HERRAMIENTAS.map(h => (
-              <div key={h.title} className="p-5 rounded-xl flex gap-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={h.title} className="p-5 rounded-xl flex gap-4" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
                   {h.icon}
                 </div>
                 <div>
                   <p className="text-sm font-black mb-1.5">{h.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{h.body}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{h.body}</p>
                 </div>
               </div>
             ))}
@@ -170,12 +170,12 @@ export default function OrganizadoresLanding() {
           <h2 className="text-xl sm:text-2xl font-black mb-6">¿Quién organiza eventos con XPEAK?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {PARA_QUIEN.map(p => (
-              <div key={p.title} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={p.title} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 <div className="flex items-center gap-2 mb-2">
-                  <CheckCircle size={15} style={{ color: '#D4AF37' }} />
+                  <CheckCircle size={15} style={{ color: '#8B6A00' }} />
                   <p className="text-sm font-black">{p.title}</p>
                 </div>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.body}</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{p.body}</p>
               </div>
             ))}
           </div>
@@ -184,7 +184,7 @@ export default function OrganizadoresLanding() {
         {/* Categorías disponibles */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
           <h2 className="text-xl sm:text-2xl font-black mb-2">Contrata cualquier perfil desde un mismo panel</h2>
-          <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm mb-6" style={{ color: '#374151' }}>
             Añade varios profesionales a tu evento y compara presupuestos en conjunto.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -200,7 +200,7 @@ export default function OrganizadoresLanding() {
             ].map(c => (
               <a key={c.href} href={c.href}
                 className="flex items-center justify-center p-4 rounded-xl font-bold text-sm transition-all hover:scale-105"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 {c.name}
               </a>
             ))}
@@ -216,10 +216,10 @@ export default function OrganizadoresLanding() {
               { title: 'Contrata sin esperas', body: 'Contacta directamente o publica un Flash Booking para necesidades puntuales, según la disponibilidad de cada zona.' },
               { title: 'Firma y controla gastos', body: 'Genera el contrato digital con un clic y sigue el presupuesto de todo el evento desde tu panel.' },
             ].map((s, i) => (
-              <div key={s.title} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                <p className="text-3xl font-black mb-3" style={{ color: 'rgba(212,175,55,0.25)' }}>0{i + 1}</p>
+              <div key={s.title} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+                <p className="text-3xl font-black mb-3" style={{ color: '#8B6A00' }}>0{i + 1}</p>
                 <p className="text-sm font-bold mb-1.5">{s.title}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{s.body}</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{s.body}</p>
               </div>
             ))}
           </div>
@@ -230,9 +230,9 @@ export default function OrganizadoresLanding() {
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes</h2>
           <div className="space-y-4">
             {FAQS.map(faq => (
-              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={faq.q} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>{faq.a}</p>
               </div>
             ))}
           </div>
@@ -242,7 +242,7 @@ export default function OrganizadoresLanding() {
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20 text-center">
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Organizas un evento en España?</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mb-6" style={{ color: '#4b5563' }}>
               Únete: contratos automáticos y Flash Booking para necesidades puntuales.
             </p>
             <a href="/auth?mode=register&role=empresario"

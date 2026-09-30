@@ -33,9 +33,9 @@ export default function BajaEmails() {
         <title>Anular suscripción | XPEAK</title>
         <meta name="robots" content="noindex" />
       </Helmet>
-      <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#FFFFFF', color: '#111' }}>
         <div className="w-full max-w-sm text-center">
-          <a href="/" className="inline-block text-lg font-black tracking-tight mb-10" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="inline-block text-lg font-black tracking-tight mb-10" style={{ color: '#8B6A00' }}>XPEAK</a>
 
           {status === 'done' ? (
             <div>
@@ -44,18 +44,18 @@ export default function BajaEmails() {
                 <span style={{ fontSize: 22 }}>✓</span>
               </div>
               <h1 className="text-xl font-black mb-3">Suscripción anulada</h1>
-              <p className="text-sm mb-6" style={{ color: '#3d3d4e' }}>
-                Ya no recibirás emails de XPEAK en <strong style={{ color: 'rgba(255,255,255,0.7)' }}>{email}</strong>.
+              <p className="text-sm mb-6" style={{ color: '#374151' }}>
+                Ya no recibirás emails de XPEAK en <strong style={{ color: '#374151' }}>{email}</strong>.
               </p>
-              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+              <p className="text-xs" style={{ color: '#6b7280' }}>
                 ¿Fue un error? Escríbenos a{' '}
-                <a href="mailto:info@xpeak.es" style={{ color: '#D4AF37' }}>info@xpeak.es</a>
+                <a href="mailto:info@xpeak.es" style={{ color: '#8B6A00' }}>info@xpeak.es</a>
               </p>
             </div>
           ) : (
             <form onSubmit={handleUnsubscribe}>
               <h1 className="text-xl font-black mb-2">Anular suscripción</h1>
-              <p className="text-sm mb-8" style={{ color: '#3d3d4e' }}>
+              <p className="text-sm mb-8" style={{ color: '#374151' }}>
                 Confirma tu email para dejar de recibir comunicaciones de XPEAK.
               </p>
               <input
@@ -66,10 +66,9 @@ export default function BajaEmails() {
                 required
                 className="w-full px-4 py-3 rounded-xl text-sm mb-4 outline-none"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  color: '#fff',
-                }}
+                  background: '#FFFDF7',
+                  border: '1px solid rgba(122,98,22,0.16)',
+                  color: '#111'}}
               />
               <button
                 type="submit"
@@ -77,21 +76,20 @@ export default function BajaEmails() {
                 className="w-full py-3 rounded-xl text-sm font-bold transition-all hover:scale-[1.02]"
                 style={{
                   background: status === 'loading'
-                    ? 'rgba(255,255,255,0.05)'
-                    : 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  color: status === 'loading' ? '#3d3d4e' : 'rgba(255,255,255,0.7)',
-                }}
+                    ? '#FFFDF7'
+                    : '#FBF3DD',
+                  border: '1px solid rgba(122,98,22,0.16)',
+                  color: status === 'loading' ? '#374151' : '#374151'}}
               >
                 {status === 'loading' ? 'Procesando…' : 'Anular suscripción'}
               </button>
               {status === 'error' && (
                 <p className="text-xs mt-4" style={{ color: '#ff5f56' }}>
                   Algo ha ido mal. Escríbenos a{' '}
-                  <a href="mailto:info@xpeak.es" style={{ color: '#D4AF37' }}>info@xpeak.es</a>
+                  <a href="mailto:info@xpeak.es" style={{ color: '#8B6A00' }}>info@xpeak.es</a>
                 </p>
               )}
-              <p className="text-xs mt-6" style={{ color: 'rgba(255,255,255,0.2)' }}>
+              <p className="text-xs mt-6" style={{ color: '#9ca3af' }}>
                 Los emails de seguridad (verificación, contraseña) seguirán llegando.
               </p>
             </form>

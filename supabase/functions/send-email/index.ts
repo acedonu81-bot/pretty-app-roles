@@ -33,7 +33,7 @@ const ROL_ES: Record<string, string> = {
   humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
   speaker: 'Speaker', vestuario: 'Estilismo', 'photo-booth': 'Photo Booth',
   empresario: 'Organizador',
-  tecnico: 'Técnico de Sonido y Montaje', local_eventos: 'Local para eventos',
+  tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', local_eventos: 'Local para eventos',
   // Alta por Google OAuth sin rol elegido todavía (handle_new_user cae aquí
   // en vez de inventar un oficio) — sin esta entrada, rolLegible() capitaliza
   // el string crudo y el email dice "Pending" en vez de un texto en español.
@@ -1441,8 +1441,33 @@ async function sendMail(to: string, subject: string, html: string, replyTo?: str
   ]);
 }
 
+// Registro de fallos para "Salud del sistema" (panel admin). Solo cuenta lo
+// que de verdad es un fallo: envíos de confianza (crons, triggers, servicio)
+// que no salen, o errores del servidor (SMTP caído) venga de quien venga. Los
+// 403/429 a visitantes anónimos son la protección funcionando, no fallos.
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  let tipo: string | null = null;
+  try { tipo = (JSON.parse(await req.clone().text()) as { type?: string })?.type ?? null; } catch { /* cuerpo no JSON */ }
+  const res = await atender(req);
+  if (res.status >= 400) {
+    const internal = Deno.env.get('INTERNAL_SECRET') ?? '';
+    const service = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+    const deConfianza = (!!internal && req.headers.get('x-internal-secret') === internal)
+      || (!!service && req.headers.get('authorization') === `Bearer ${service}`);
+    if (deConfianza || res.status >= 500) {
+      let motivo: string | null = null;
+      try { const j = await res.clone().json() as { motivo?: string; error?: string }; motivo = (j.motivo ?? j.error ?? '').slice(0, 200) || null; } catch { /* sin JSON */ }
+      try {
+        await createClient(Deno.env.get('SUPABASE_URL') ?? '', service)
+          .from('email_fallos' as any).insert({ type: tipo, status: res.status, motivo });
+      } catch (err) { console.warn('[send-email] no se pudo registrar el fallo:', err); }
+    }
+  }
+  return res;
+});
+
+async function atender(req: Request): Promise<Response> {
 
   // Verify request comes from our app (JWT or internal secret)
   const authHeader = req.headers.get('authorization') ?? '';
@@ -1452,6 +1477,14 @@ serve(async (req) => {
   if (!hasAuth) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
   }
+
+  // Crons y otras edge functions llaman con la clave de servicio. Se reconoce
+  // comparándola tal cual con la del entorno: leer el claim `role` del JWT
+  // fallaba (atob sin relleno base64 / claves sb_secret_ que no son JWT) y,
+  // desde el cierre del 29 sep, TODOS los recordatorios de los crons recibían
+  // 403 y luego 429 (verificado en logs: 29 sep 11:00 UTC, 0 enviados).
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  const isService = !!serviceKey && authHeader === `Bearer ${serviceKey}`;
 
   // Rate-limit por IP. El check de arriba NO es una barrera real contra
   // spam — el anon key de Supabase es público por diseño (visible en
@@ -1463,7 +1496,9 @@ serve(async (req) => {
   const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     ?? req.headers.get('x-real-ip')
     ?? 'unknown';
-  if (!isInternal) {
+  // El límite por IP es contra spam de visitantes: los envíos internos y de
+  // servicio (un cron manda decenas seguidas) no cuentan.
+  if (!isInternal && !isService) {
     const adminClient = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
     const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
     const { count } = await adminClient
@@ -1494,15 +1529,19 @@ serve(async (req) => {
     let callerRole = 'anon';
     let callerId: string | null = null;
     try {
-      const payload = JSON.parse(atob(authHeader.replace('Bearer ', '').split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      const b64 = authHeader.replace('Bearer ', '').split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4)));
       callerRole = payload.role ?? 'anon';
       callerId = payload.sub ?? null;
     } catch { /* token no JWT: se trata como anon */ }
-    const isTrusted = isInternal || callerRole === 'service_role';
+    const isTrusted = isInternal || isService || callerRole === 'service_role';
 
     if (!isTrusted) {
       // Flujos publicos sin sesion (contacto, Flash Booking publico, blog, registro, reseñas).
-      const PUBLIC_TYPES = ['contact_form', 'flash_booking', 'flash_booking_confirm', 'booking_received', 'lead_welcome', 'early_adopter', 'new_review_pending'];
+      // 'early_adopter' fuera (30 sep 2026): el programa se eliminó el 27 sep y
+      // la plantilla promete "Elite 6 meses gratis" a la dirección que mande el
+      // navegador. Solo los envíos internos pueden seguir usándola.
+      const PUBLIC_TYPES = ['contact_form', 'flash_booking', 'flash_booking_confirm', 'booking_received', 'lead_welcome', 'new_review_pending'];
       // Avisos lanzados desde el dashboard con sesion iniciada.
       const LOGGED_TYPES = ['booking_status_update', 'contract_generated', 'bolo_new_confirmation', 'fast_responder_badge', 'flash_job_nuevo', 'new_message', 'subscription_cancelled', 'verification_request'];
       const ADMIN_TYPES = ['admin_approved', 'admin_rejected'];
@@ -1517,10 +1556,56 @@ serve(async (req) => {
         const { data: isAdmin } = await adminClient.from('user_roles').select('role').eq('user_id', callerId).eq('role', 'admin').maybeSingle();
         if (!isAdmin) return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: corsHeaders });
       }
-      // Avisos a un usuario concreto: el destino sale SIEMPRE de su user_id,
-      // nunca de un email que mande el navegador.
-      if (['booking_received', 'new_message'].includes(type) && data && (data.professional_user_id || data.user_id)) {
+      // ── Destinatario verificado (30 sep 2026) ─────────────────────────────
+      // Antes varios tipos enviaban a la dirección que escribía el navegador
+      // (d.email / d.requester_contact): cualquiera podía mandar correos con
+      // nuestra marca desde info@xpeak.site a direcciones ajenas. Ahora el
+      // destino sale de un user_id, de quien llama, o de un registro real y
+      // reciente (reserva o lead) con esa misma dirección.
+      const sb = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+      const hace15min = new Date(Date.now() - 15 * 60 * 1000).toISOString();
+      const prohibido = (motivo: string) =>
+        new Response(JSON.stringify({ error: 'Forbidden', motivo }), { status: 403, headers: corsHeaders });
+      if (!data || typeof data !== 'object') return prohibido('sin datos');
+
+      if (type === 'bolo_new_confirmation') {
+        // Confirmación a quien crea el bolo: siempre a su propio email.
+        if (!callerId) return prohibido('sin sesión');
+        const { data: u } = await sb.auth.admin.getUserById(callerId);
+        if (!u?.user?.email) return prohibido('sin email');
+        data.email = u.user.email;
+      } else if (type === 'booking_status_update') {
+        // El profesional avisa a quien le pidió la reserva: tiene que existir
+        // una reserva suya con ese contacto.
+        const { count } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
+          .eq('professional_user_id', callerId ?? '').eq('requester_contact', String(data.email ?? ''));
+        if (!count) return prohibido('sin reserva que lo respalde');
+      } else if (type === 'flash_booking_confirm') {
+        const { count } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
+          .eq('requester_contact', String(data.requester_contact ?? '')).gte('created_at', hace15min);
+        if (!count) return prohibido('sin reserva reciente');
+      } else if (type === 'lead_welcome') {
+        const email = String(data.email ?? '').trim().toLowerCase();
+        let hay = 0;
+        for (const tabla of ['leads', 'newsletter_leads']) {
+          const { count } = await sb.from(tabla).select('id', { count: 'exact', head: true })
+            .eq('email', email).gte('created_at', hace15min);
+          hay += count ?? 0;
+        }
+        if (!hay) return prohibido('sin lead reciente');
+      } else if (type === 'booking_received') {
+        // Solo al profesional de una reserva real recién creada.
+        if (!data.professional_user_id) return prohibido('sin profesional');
+        const { count } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
+          .eq('professional_user_id', data.professional_user_id).gte('created_at', hace15min);
+        if (!count) return prohibido('sin reserva reciente');
         delete data.email;
+      } else if (data.professional_user_id || data.user_id) {
+        // Avisos a un usuario concreto: el destino sale SIEMPRE de su user_id.
+        delete data.email;
+      } else if (!['contact_form', 'flash_booking', 'new_review_pending', 'subscription_cancelled', 'verification_request'].includes(type)) {
+        // Resto de tipos que escriben a d.email: sin user_id no hay destino fiable.
+        return prohibido('sin destinatario verificable');
       }
     }
 
@@ -1659,4 +1744,4 @@ serve(async (req) => {
     console.error('[send-email]', e);
     return new Response(JSON.stringify({ error: String(e) }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
-});
+}
