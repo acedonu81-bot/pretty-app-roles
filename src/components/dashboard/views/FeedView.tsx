@@ -32,24 +32,26 @@ const FeedView = () => {
   }
 
   return (
-    <div className="flex flex-col gap-3 p-4 max-w-xl mx-auto">
-      {posts.map(post => (
-        <div key={post.id}>
-          <a href={`/p/${post.authorUserId}`} className="flex items-center gap-2.5 mb-2 hover:opacity-80">
-            {post.authorPhoto ? (
-              <img src={fotoOptimizada(post.authorPhoto, 64)} alt={post.authorName}
-                className="w-8 h-8 rounded-full object-cover" style={{ objectPosition: '50% 15%' }} />
-            ) : (
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black"
-                style={{ background: 'rgba(212,175,55,0.15)', color: '#8B6A00' }}>
-                {post.authorName.charAt(0)}
-              </div>
-            )}
-            <span className="text-sm font-bold" style={{ color: '#111' }}>{post.authorName}</span>
-          </a>
-          <PostCard post={post} />
-        </div>
-      ))}
+    <div className="p-4 sm:p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        {posts.map(post => (
+          <div key={post.id}>
+            <a href={`/p/${post.authorUserId}`} className="flex items-center gap-2.5 mb-2 hover:opacity-80">
+              {post.authorPhoto ? (
+                <img src={fotoOptimizada(post.authorPhoto, 64)} alt={post.authorName}
+                  className="w-8 h-8 rounded-full object-cover" style={{ objectPosition: '50% 15%' }} />
+              ) : (
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black"
+                  style={{ background: 'rgba(212,175,55,0.15)', color: '#8B6A00' }}>
+                  {post.authorName.charAt(0)}
+                </div>
+              )}
+              <span className="text-sm font-bold" style={{ color: '#111' }}>{post.authorName}</span>
+            </a>
+            <PostCard post={post} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

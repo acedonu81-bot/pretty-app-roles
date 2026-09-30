@@ -29,7 +29,7 @@ function mockTables({ follows, posts, profiles }: { follows: { followed_user_id:
   });
 }
 
-const baseProfile = { photo_url: null, role: 'dj', portfolio_urls: null, updated_at: '2026-09-01T00:00:00Z' };
+const baseProfile = { photo_url: null, role: 'dj', portfolio_urls: null, audio_session_urls: null, audio_embed_url: null, updated_at: '2026-09-01T00:00:00Z' };
 
 describe('useFeedPosts', () => {
   beforeEach(() => {
@@ -91,14 +91,35 @@ describe('useFeedPosts', () => {
     expect(result.current.posts.map(p => p.media_url)).toEqual(['https://x/a.jpg', 'https://x/b.jpg']);
   });
 
-  it('shows real posts instead of portfolio when a profile has both', async () => {
+  it('mixes real posts, audio sessions and portfolio from the same profile', async () => {
     mockTables({
       follows: [{ followed_user_id: 'pro-4' }],
       posts: [
         { id: 'post-4', user_id: 'pro-4', content: 'Novedad real', post_type: 'text', media_url: null, created_at: '2026-09-30T10:00:00Z' },
       ],
       profiles: [
-        { user_id: 'pro-4', display_name: 'DJ Cuatro', ...baseProfile, portfolio_urls: ['https://x/c.jpg'] },
+        {
+          user_id: 'pro-4', display_name: 'DJ Cuatro', ...baseProfile,
+          portfolio_urls: ['https://x/c.jpg'],
+          audio_session_urls: ['https://soundcloud.com/set-1'],
+        },
+      ],
+    });
+
+    const { result } = renderHook(() => useFeedPosts('viewer-1'));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(result.current.posts).toHaveLength(3);
+    const types = result.current.posts.map(p => p.post_type).sort();
+    expect(types).toEqual(['audio', 'image', 'text']);
+  });
+
+  it('includes the main audio_embed_url when there are no audio_session_urls', async () => {
+    mockTables({
+      follows: [{ followed_user_id: 'pro-5' }],
+      posts: [],
+      profiles: [
+        { user_id: 'pro-5', display_name: 'DJ Cinco', ...baseProfile, audio_embed_url: 'https://hearthis.at/perfil/' },
       ],
     });
 
@@ -106,6 +127,6 @@ describe('useFeedPosts', () => {
 
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.posts).toHaveLength(1);
-    expect(result.current.posts[0]).toMatchObject({ id: 'post-4' });
+    expect(result.current.posts[0]).toMatchObject({ post_type: 'audio', media_url: 'https://hearthis.at/perfil/' });
   });
 });
