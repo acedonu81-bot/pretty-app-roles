@@ -1386,9 +1386,10 @@ function replaceOgProp(html, prop, content) {
 
 // Espejo de fotoOptimizada() de src/lib/imagen.ts (este script es .mjs y no
 // importa TS): foto de Supabase Storage redimensionada por su CDN.
+// resize=contain obligatorio — ver comentario en src/lib/imagen.ts.
 function fotoOptimizadaMeta(url, ancho, calidad = 72) {
   if (!url || !url.includes('/storage/v1/object/public/') || url.includes('?')) return url;
-  return `${url.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/')}?width=${ancho}&quality=${calidad}`;
+  return `${url.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/')}?width=${ancho}&resize=contain&quality=${calidad}`;
 }
 
 function escHtml(s) {

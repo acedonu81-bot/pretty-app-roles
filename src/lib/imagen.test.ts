@@ -5,7 +5,7 @@ const base = 'https://x.supabase.co/storage/v1/object/public/audio-sessions/u/fo
 
 describe('fotoOptimizada', () => {
   it('pide a Supabase la foto redimensionada', () => {
-    expect(fotoOptimizada(base, 600)).toBe('https://x.supabase.co/storage/v1/render/image/public/audio-sessions/u/foto.jpg?width=600&quality=72');
+    expect(fotoOptimizada(base, 600)).toBe('https://x.supabase.co/storage/v1/render/image/public/audio-sessions/u/foto.jpg?width=600&resize=contain&quality=72');
   });
   it('no toca URLs que no son de Storage', () => {
     expect(fotoOptimizada('/images/pexels/roles/dj.jpg', 600)).toBe('/images/pexels/roles/dj.jpg');
