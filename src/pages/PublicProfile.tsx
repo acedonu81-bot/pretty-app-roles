@@ -541,14 +541,10 @@ const PublicProfile = () => {
   const [flashBookingDate, setFlashBookingDate] = useState<string | null>(null);
   const [showCalendarHelp, setShowCalendarHelp] = useState(false);
 
-  useEffect(() => {
-    if (!sbProfile) return;
-    const seenKey = 'xpeak_calendar_intro_seen_organizador';
-    if (!localStorage.getItem(seenKey)) {
-      setShowCalendarHelp(true);
-      localStorage.setItem(seenKey, '1');
-    }
-  }, [sbProfile]);
+  // (Antes se abría solo en la primera visita a cualquier ficha: en móvil tapaba
+  // medio perfil a todo cliente recién llegado desde Google o un enlace
+  // compartido, antes de ver a quién iba a contratar. 30 sep 2026: se abre solo
+  // desde el botón de ayuda junto al calendario.)
   const [related, setRelated] = useState<RelatedProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [publicPosts, setPublicPosts] = useState<{ id: string; content: string; post_type: string; created_at: string; media_url: string | null }[]>([]);
