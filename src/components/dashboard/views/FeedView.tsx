@@ -1,14 +1,33 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Rss } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { useFeedPosts } from '@/hooks/useFeedPosts';
+import { useFeedPosts, type FeedPost } from '@/hooks/useFeedPosts';
 import { useFeedAlert } from '@/hooks/useFeedAlert';
 import PostCard from '@/components/PostCard';
 import { fotoOptimizada } from '@/lib/imagen';
 
+// Un profesional puede aportar varias entradas (posts + sesiones de audio +
+// portfolio) — agrupadas bajo su nombre una sola vez, en vez de repetir la
+// cabecera por cada pieza de contenido suya.
+function agruparPorAutor(posts: FeedPost[]) {
+  const grupos: { authorUserId: string; authorName: string; authorPhoto: string | null; posts: FeedPost[] }[] = [];
+  const indexPorAutor = new Map<string, number>();
+  for (const post of posts) {
+    let idx = indexPorAutor.get(post.authorUserId);
+    if (idx === undefined) {
+      idx = grupos.length;
+      indexPorAutor.set(post.authorUserId, idx);
+      grupos.push({ authorUserId: post.authorUserId, authorName: post.authorName, authorPhoto: post.authorPhoto, posts: [] });
+    }
+    grupos[idx].posts.push(post);
+  }
+  return grupos;
+}
+
 const FeedView = () => {
   const { user } = useAuth();
   const { posts, loading } = useFeedPosts(user?.id);
+  const grupos = useMemo(() => agruparPorAutor(posts), [posts]);
   // Marcar como visto AL SALIR, no al entrar — igual que AdminActivity.tsx:
   // si se marcara al entrar, lo que llega mientras miras la pestaña quedaría
   // fuera de la ventana de "nuevo" en la próxima visita.
@@ -34,21 +53,23 @@ const FeedView = () => {
   return (
     <div className="p-4 sm:p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-        {posts.map(post => (
-          <div key={post.id}>
-            <a href={`/p/${post.authorUserId}`} className="flex items-center gap-2.5 mb-2 hover:opacity-80">
-              {post.authorPhoto ? (
-                <img src={fotoOptimizada(post.authorPhoto, 64)} alt={post.authorName}
+        {grupos.map(grupo => (
+          <div key={grupo.authorUserId}>
+            <a href={`/p/${grupo.authorUserId}`} className="flex items-center gap-2.5 mb-2 hover:opacity-80">
+              {grupo.authorPhoto ? (
+                <img src={fotoOptimizada(grupo.authorPhoto, 64)} alt={grupo.authorName}
                   className="w-8 h-8 rounded-full object-cover" style={{ objectPosition: '50% 15%' }} />
               ) : (
                 <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black"
                   style={{ background: 'rgba(212,175,55,0.15)', color: '#8B6A00' }}>
-                  {post.authorName.charAt(0)}
+                  {grupo.authorName.charAt(0)}
                 </div>
               )}
-              <span className="text-sm font-bold" style={{ color: '#111' }}>{post.authorName}</span>
+              <span className="text-sm font-bold" style={{ color: '#111' }}>{grupo.authorName}</span>
             </a>
-            <PostCard post={post} />
+            <div className="flex flex-col gap-2">
+              {grupo.posts.map(post => <PostCard key={post.id} post={post} />)}
+            </div>
           </div>
         ))}
       </div>

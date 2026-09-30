@@ -44,9 +44,12 @@ export default function EmbedDiferido({ src, alto, tipo, titulo, className, styl
         style={{ width: 44, height: 44, background: 'linear-gradient(135deg,#D4AF37,#B8941E)' }}>
         <Play size={16} fill="#000" color="#000" style={{ marginLeft: 2 }} />
       </span>
+      {/* Estáticas hasta pulsar play — nada suena todavía en este estado,
+          así que no deben moverse. Solo animan una vez cargado el iframe
+          real (ver .eq-bar--sonando más abajo). */}
       <span className="flex items-end gap-[3px] h-6 flex-shrink-0" aria-hidden="true">
         {barras.map((h, i) => (
-          <span key={i} className="eq-bar" style={{ '--h': h, animationDelay: `${i * 0.12}s` } as React.CSSProperties} />
+          <span key={i} className="eq-bar" style={{ '--h': h } as React.CSSProperties} />
         ))}
       </span>
       <span className="min-w-0">
@@ -59,15 +62,7 @@ export default function EmbedDiferido({ src, alto, tipo, titulo, className, styl
           border-radius: 2px;
           background: linear-gradient(180deg, #D4AF37, #B8941E);
           height: calc(var(--h) * 100%);
-          animation: eq-bounce 0.9s ease-in-out infinite alternate;
           transform-origin: bottom;
-        }
-        @keyframes eq-bounce {
-          from { transform: scaleY(0.35); opacity: 0.7; }
-          to { transform: scaleY(1); opacity: 1; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .eq-bar { animation: none; transform: scaleY(var(--h)); }
         }
       `}</style>
     </button>

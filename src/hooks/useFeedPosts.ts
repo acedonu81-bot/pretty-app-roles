@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Post } from '@/components/PostCard';
+import { fechaSubidaStorage } from '@/lib/storageTimestamp';
 
 export interface FeedPost extends Post {
   authorUserId: string;
@@ -75,7 +76,12 @@ export const useFeedPosts = (viewerId: string | undefined): FeedState => {
             content: '',
             post_type: 'audio',
             media_url: url,
-            created_at: author.updated_at,
+            // fechaSubidaStorage lee el timestamp real del nombre del archivo
+            // (solo audios subidos como .mp3, no links externos pegados de
+            // SoundCloud/HearThis/Mixcloud). Sin eso, updated_at del perfil
+            // entero es lo único disponible — menos preciso pero sirve para
+            // ordenar el feed.
+            created_at: fechaSubidaStorage(url) ?? author.updated_at,
             authorUserId: author.user_id,
             authorName: author.display_name ?? 'Profesional',
             authorPhoto: author.photo_url ?? null,
@@ -91,7 +97,7 @@ export const useFeedPosts = (viewerId: string | undefined): FeedState => {
               content: '',
               post_type: 'image',
               media_url: url,
-              created_at: author.updated_at,
+              created_at: fechaSubidaStorage(url) ?? author.updated_at,
               authorUserId: author.user_id,
               authorName: author.display_name ?? 'Profesional',
               authorPhoto: author.photo_url ?? null,
