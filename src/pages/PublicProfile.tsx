@@ -722,8 +722,8 @@ const PublicProfile = () => {
   // Loading state (only for UUID profiles)
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#090909' }}>
-        <p className="text-white/30 text-sm animate-pulse">Cargando perfil…</p>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#FFFDF7' }}>
+        <p className="text-sm animate-pulse" style={{ color: '#6b7280' }}>Cargando perfil…</p>
       </div>
     );
   }
@@ -736,9 +736,9 @@ const PublicProfile = () => {
           <title>Perfil no encontrado | XPEAK</title>
           <meta name="robots" content="noindex" />
         </Helmet>
-        <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ background: '#090909' }}>
-          <p className="text-white/50">Perfil no encontrado</p>
-          <button onClick={() => navigate('/')} className="text-sm font-bold" style={{ color: '#D4AF37' }}>
+        <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ background: '#FFFDF7' }}>
+          <p style={{ color: '#4b5563' }}>Perfil no encontrado</p>
+          <button onClick={() => navigate('/')} className="text-sm font-bold" style={{ color: '#8B6A00' }}>
             ← Volver a XPEAK
           </button>
         </div>

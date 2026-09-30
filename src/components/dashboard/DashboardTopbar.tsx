@@ -188,7 +188,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           </button>
         )}
 
-        <div className="flex items-center gap-2 px-4 py-2.5 sm:py-2 rounded-full flex-1 min-w-0 max-w-[360px] transition-all"
+        <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2.5 sm:py-2 rounded-full flex-1 min-w-0 max-w-[360px] transition-all"
           style={{
             background: searchQuery ? 'rgba(212,175,55,0.05)' : '#f5f5f5',
             border: searchQuery ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(0,0,0,0.1)',
@@ -202,7 +202,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             // reportado por el usuario). text-overflow: ellipsis (abajo)
             // cubre el resto de anchos intermedios sin depender solo de
             // acortar el texto.
-            placeholder={isMobile ? 'Buscar...' : 'Buscar por zona, rol o nombre...'}
+            placeholder={isMobile ? 'Buscar' : 'Buscar por zona, rol o nombre...'}
             className="bg-transparent border-none outline-none w-full text-sm sm:text-xs"
             style={{ color: '#111', textOverflow: 'ellipsis' }}
             value={searchQuery}

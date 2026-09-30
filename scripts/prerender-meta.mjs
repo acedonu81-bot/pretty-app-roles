@@ -242,6 +242,16 @@ const ROUTES = [
   },
   // Blogs
   {
+    // Faltaba: el post existía (App.tsx + blogPosts.ts + sitemap) pero sin
+    // entrada aquí no se generaba dist/…/index.html y Vercel lo servía con 404.
+    path: '/blog/peluqueria-domicilio-eventos-precio',
+    title: 'Peluquería a domicilio para eventos: precios 2026 | XPEAK',
+    desc: 'Cuánto cobra una peluquera a domicilio para bodas, eventos corporativos y el día a día en España 2026. Precios por servicio y qué incluye cada paquete.',
+    ogTitle: 'Peluquería a domicilio para eventos: precios 2026',
+    ogDesc: 'Cuánto cobra una peluquera a domicilio para bodas y eventos en España 2026. Precios por servicio y qué incluye cada paquete.',
+    ogType: 'article',
+  },
+  {
     path: '/blog/cuanto-cobra-un-dj-en-espana',
     title: '¿Cuánto Cobra un DJ? Precio Real 400€-1.200€ (2026) | XPEAK',
     desc: 'Un DJ para boda cuesta entre 400€ y 1.200€ por actuación (30€-500€/hora según experiencia y ciudad). Tabla de precios reales 2026, por perfil y por ciudad.',

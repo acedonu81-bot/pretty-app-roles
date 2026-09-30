@@ -22,13 +22,13 @@ const CATEGORIES = [
   {
     key: 'analytics' as const,
     label: 'Analítica',
-    desc: 'Nos ayudan a entender cómo usas XPEAK para mejorar la experiencia (datos anónimos).',
+    desc: 'Google Analytics y Microsoft Clarity: páginas vistas, origen de la visita y grabación de cómo navegas (clics y desplazamiento, sin el texto que escribes) para detectar fallos y mejorar la web.',
     locked: false,
   },
   {
     key: 'marketing' as const,
     label: 'Marketing',
-    desc: 'Permiten mostrar contenido y ofertas relevantes según tus intereses dentro de la plataforma.',
+    desc: 'Píxel de Meta: mide si nuestras campañas de Instagram y Facebook traen visitas y registros.',
     locked: false,
   },
   {

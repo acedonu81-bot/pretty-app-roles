@@ -41,7 +41,7 @@ const SobreNosotros = () => {
       </Helmet>
       <AmbientBackground />
 
-      <div className="flex-1 z-10 max-w-3xl mx-auto px-4 py-12 w-full">
+      <div className="flex-1 z-10 w-full min-w-0 max-w-3xl mx-auto px-4 py-12 w-full">
         <Link to="/" className="inline-block mb-8 text-xs font-bold transition-colors" style={{ color: '#8B6A00' }}>
           ← Volver al inicio
         </Link>

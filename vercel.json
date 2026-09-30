@@ -325,6 +325,8 @@
 
     { "src": "^/dashboard$", "dest": "/index.html" },
 
+    { "src": "^/(auth|eliminar-cuenta|admin-beta)$", "dest": "/index.html" },
+
     { "src": "/(.*)", "status": 404, "dest": "/index.html" }
   ]
 }

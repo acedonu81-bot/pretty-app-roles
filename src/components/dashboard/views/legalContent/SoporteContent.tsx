@@ -13,7 +13,7 @@ export function SoporteContent() {
           Si tienes dudas sobre tu cuenta, un problema técnico con la app o la web, una pregunta sobre cómo funciona XPEAK, o necesitas ayuda con un contrato o una solicitud, escríbenos directamente y te respondemos lo antes posible.
         </p>
         <p>
-          Antes de escribir, puede que tu duda ya esté resuelta en las <a href="/#faq" className="font-bold transition-all hover:opacity-80" style={{ color: '#D4AF37' }}>preguntas frecuentes</a> de la página principal.
+          Antes de escribir, puede que tu duda ya esté resuelta en las <a href="/#faq" className="font-bold transition-all hover:opacity-80" style={{ color: '#8B6A00' }}>preguntas frecuentes</a> de la página principal.
         </p>
       </div>
 
@@ -22,11 +22,11 @@ export function SoporteContent() {
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Email:</span>
-            <a href="mailto:info@xpeak.es" className="font-bold transition-all hover:opacity-80" style={{ color: '#D4AF37' }}>info@xpeak.es</a>
+            <a href="mailto:info@xpeak.es" className="font-bold transition-all hover:opacity-80" style={{ color: '#8B6A00' }}>info@xpeak.es</a>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Web:</span>
-            <a href="https://xpeak.es" className="font-bold transition-all hover:opacity-80" style={{ color: '#D4AF37' }}>xpeak.es</a>
+            <a href="https://xpeak.es" className="font-bold transition-all hover:opacity-80" style={{ color: '#8B6A00' }}>xpeak.es</a>
           </div>
         </div>
         <div className="mt-6 flex flex-wrap gap-3">

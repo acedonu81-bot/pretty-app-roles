@@ -22,17 +22,17 @@ const NotFound = () => {
   ];
 
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ background: '#000' }}>
+    <div className="flex min-h-screen items-center justify-center" style={{ background: '#FFFDF7' }}>
       <Helmet>
         <title>{isProfile ? "Perfil no encontrado | XPEAK" : "Página no encontrada | XPEAK"}</title>
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       <div className="text-center px-6 max-w-sm">
-        <p className="text-7xl font-black mb-4" style={{ color: '#D4AF37' }}>404</p>
-        <h1 className="text-xl font-bold text-white mb-2">
+        <p className="text-7xl font-black mb-4" style={{ color: '#8B6A00' }}>404</p>
+        <h1 className="text-xl font-bold text-[#111] mb-2">
           {isProfile ? "Perfil no encontrado" : "Página no encontrada"}
         </h1>
-        <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.6)' }}>
+        <p className="text-sm mb-8" style={{ color: '#374151' }}>
           {isProfile
             ? "Este perfil no existe o ha sido eliminado. Puede que el profesional haya cambiado su URL."
             : "La página que buscas no existe o ha sido movida."}
@@ -49,13 +49,13 @@ const NotFound = () => {
           <Link
             to="/dashboard"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80"
-            style={{ background: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.8)', border: '1px solid rgba(255,255,255,0.1)' }}
+            style={{ background: '#FBF3DD', color: '#111', border: '1px solid rgba(122,98,22,0.16)' }}
           >
             <Search size={15} />
             Buscar profesionales
           </Link>
         </div>
-        <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>
+        <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6b7280' }}>
           O explora por categoría
         </p>
         <div className="flex flex-wrap gap-2 justify-center">
@@ -64,7 +64,7 @@ const NotFound = () => {
               key={c.to}
               to={c.to}
               className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
-              style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.75)', border: '1px solid rgba(255,255,255,0.1)' }}
+              style={{ background: '#FBF3DD', color: '#374151', border: '1px solid rgba(122,98,22,0.16)' }}
             >
               {c.label}
             </Link>

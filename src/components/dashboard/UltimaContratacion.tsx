@@ -131,7 +131,7 @@ const UltimaContratacion = () => {
         <CheckCircle2 size={13} />
       </span>
       <p key={indice} className="xpk-ultima-contratacion-texto text-xs leading-snug" style={{ color: '#222' }}>
-        <span className="font-black" style={{ color: AZUL }}>Última contratación:</span>{' '}
+        <span className="font-black" style={{ color: AZUL }}>Última contratación en XPEAK:</span>{' '}
         <span className="font-bold">{dato.nombre}</span>
         {dato.rol && <span style={{ color: 'rgba(10,9,8,0.6)' }}> · {dato.rol}</span>}
         {cuando && <span style={{ color: 'rgba(10,9,8,0.5)' }}> · {cuando}</span>}

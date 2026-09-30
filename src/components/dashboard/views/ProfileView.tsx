@@ -684,7 +684,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               {roleToConfirm && (
                 <div className="mt-2 p-3 rounded-lg" style={{ background: 'rgba(226,190,80,0.08)', border: '1px solid rgba(226,190,80,0.35)' }}>
                   <p className="text-xs font-bold mb-1" style={{ color: '#8A6D0F' }}>
-                    ¿Te contratan como {ROLE_OPTIONS.find(o => o.value === roleToConfirm)?.label ?? roleToConfirm}?
+                    {roleToConfirm === 'alquiler'
+                      ? '¿Alquilas tu propio equipo (sonido, luces, DJ, escenario...)?'
+                      : `¿Te contratan como ${ROLE_OPTIONS.find(o => o.value === roleToConfirm)?.label ?? roleToConfirm}?`}
                   </p>
                   <p className="text-xs text-muted-foreground mb-2.5">
                     Aparecerás en ese directorio y los clientes te pedirán ese servicio.
@@ -932,18 +934,18 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               };
               return (
                 <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
-                  <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-1" style={{ color: 'rgba(212,175,55,0.4)' }}>Equipo que alquilo</p>
+                  <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-1" style={{ color: '#8B6A00' }}>Equipo que alquilo</p>
                   <p className="text-xs text-muted-foreground mb-3">Marca lo que tienes para alquilar. Es lo que verán quienes busquen equipo.{equipo.length > 0 ? ` ${equipo.length} marcado${equipo.length > 1 ? 's' : ''}.` : ''}</p>
                   <div className="space-y-3">
                     {ALQUILER_TAG_GROUPS.map(g => (
                       <div key={g.label}>
-                        <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.55)' }}>{g.label}</p>
+                        <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: '#8B6A00' }}>{g.label}</p>
                         <div className="flex flex-wrap gap-1.5">{g.items.map(chip)}</div>
                       </div>
                     ))}
                     {propios.length > 0 && (
                       <div>
-                        <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.55)' }}>Añadido por ti</p>
+                        <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: '#8B6A00' }}>Añadido por ti</p>
                         <div className="flex flex-wrap gap-1.5">{propios.map(chip)}</div>
                       </div>
                     )}

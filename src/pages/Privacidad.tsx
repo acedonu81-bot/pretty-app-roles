@@ -5,7 +5,7 @@ import LegalFooter from '@/components/LegalFooter';
 
 const Privacidad = () => {
   return (
-    <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#000' }}>
+    <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#FFFFFF' }}>
       <Helmet>
         <title>Política de Privacidad | XPEAK</title>
         <meta name="robots" content="noindex, follow" />
@@ -13,24 +13,24 @@ const Privacidad = () => {
       </Helmet>
       <AmbientBackground />
 
-      <div className="flex-1 z-10 max-w-3xl mx-auto px-4 py-12">
-        <Link to="/" className="inline-block mb-6 text-xs font-bold transition-colors" style={{ color: '#D4AF37' }}>
+      <div className="flex-1 z-10 w-full min-w-0 max-w-3xl mx-auto px-4 py-12">
+        <Link to="/" className="inline-block mb-6 text-xs font-bold transition-colors" style={{ color: '#8B6A00' }}>
           ← Volver al inicio
         </Link>
 
         <h1 className="text-3xl font-bold mb-2">
           🔐 Política de <span className="text-gradient">Privacidad</span>
         </h1>
-        <p className="text-xs mb-8" style={{ color: '#333' }}>Última actualización: 9 de septiembre de 2026</p>
+        <p className="text-xs mb-8" style={{ color: '#333' }}>Última actualización: 30 de septiembre de 2026</p>
 
         <div className="glass-panel p-6 md:p-8 space-y-6 text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.78)' }}>
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>1. Responsable del Tratamiento</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>1. Responsable del Tratamiento</h2>
             <p>El responsable del tratamiento de tus datos personales es XPEAK, con domicilio social en España, y correo electrónico de contacto: info@xpeak.es. Los datos se almacenan en servidores seguros gestionados mediante infraestructura cloud (Supabase).</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>2. Datos que Recopilamos</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>2. Datos que Recopilamos</h2>
             <p className="mb-2">Para el funcionamiento técnico de la plataforma, recogemos los siguientes datos:</p>
             <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
               <li><strong style={{ color: '#222' }}>Datos de Registro:</strong> Nombre, apellidos, correo electrónico y teléfono.</li>
@@ -41,7 +41,7 @@ const Privacidad = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>3. Finalidad del Tratamiento</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>3. Finalidad del Tratamiento</h2>
             <p className="mb-2">Tus datos se utilizan exclusivamente para:</p>
             <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
               <li>Gestionar la conexión entre profesionales del sector de eventos y empresarios/organizadores.</li>
@@ -51,29 +51,33 @@ const Privacidad = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>4. Base Legal</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>4. Base Legal</h2>
             <p>La base legal para el tratamiento de tus datos es el consentimiento explícito al registrarte y la ejecución de un contrato (aceptación de los Términos y Condiciones) al utilizar los servicios de la plataforma.</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>5. Conservación de los Datos</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>5. Conservación de los Datos</h2>
             <p>Los datos y archivos multimedia se conservarán mientras se mantenga la relación con la plataforma o hasta que el usuario solicite su supresión.</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>6. Destinatarios y Transferencias Internacionales</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>6. Destinatarios y Transferencias Internacionales</h2>
             <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
               <li><strong style={{ color: '#222' }}>Empresas del Sector:</strong> Tus datos profesionales y multimedia son públicos para los usuarios registrados como "Empresa" con el fin de facilitar tu contratación.</li>
               <li><strong style={{ color: '#222' }}>Supabase (infraestructura):</strong> Los datos se almacenan en servidores de Supabase Inc. ubicados en la Unión Europea (Irlanda, AWS eu-west-1). La transferencia está amparada por las Cláusulas Contractuales Estándar de la Comisión Europea conforme al art. 46.2.c del RGPD.</li>
-              <li><strong style={{ color: '#222' }}>Google Ireland Ltd. (Google Analytics 4 / Google Tag Manager):</strong> datos de navegación anónimos (páginas vistas, origen del tráfico), solo si aceptas la categoría "Analítica" en el banner de cookies. Más información en nuestra <Link to="/cookies" className="underline font-bold" style={{ color: '#D4AF37' }}>Política de Cookies</Link>.</li>
+              <li><strong style={{ color: '#222' }}>Google Ireland Ltd. (Google Analytics 4 / Google Tag Manager):</strong> datos de navegación anónimos (páginas vistas, origen del tráfico), solo si aceptas la categoría "Analítica" en el banner de cookies. Más información en nuestra <Link to="/cookies" className="underline font-bold" style={{ color: '#8B6A00' }}>Política de Cookies</Link>.</li>
               <li><strong style={{ color: '#222' }}>Meta Platforms Ireland Ltd. (Meta Pixel):</strong> datos de navegación para medir conversiones de nuestras campañas publicitarias, solo si aceptas la categoría "Marketing" en el banner de cookies.</li>
+              <li><strong style={{ color: '#222' }}>Microsoft Ireland Operations Ltd. (Microsoft Clarity):</strong> grabación anónima de la navegación (clics, desplazamiento, movimientos del ratón) y mapas de calor para mejorar la usabilidad, con el texto de formularios enmascarado. Solo si aceptas la categoría "Analítica" en el banner de cookies.</li>
+              <li><strong style={{ color: '#222' }}>Cloudflare, Inc. (Turnstile):</strong> verificación antibots en el acceso y el registro; trata la dirección IP y datos técnicos del navegador con finalidad de seguridad (interés legítimo, art. 6.1.f RGPD). Transferencia a EE. UU. amparada por el Marco de Privacidad de Datos UE-EE. UU.</li>
+              <li><strong style={{ color: '#222' }}>Vercel Inc. (alojamiento web):</strong> sirve la web y registra datos técnicos de conexión (IP, navegador) en sus registros de servidor. Transferencia a EE. UU. amparada por el Marco de Privacidad de Datos UE-EE. UU. y cláusulas contractuales tipo.</li>
+              <li><strong style={{ color: '#222' }}>Hostinger International Ltd. (correo electrónico):</strong> envío de los emails transaccionales de la plataforma (avisos de reservas, mensajes, recordatorios) desde servidores en la Unión Europea.</li>
               <li><strong style={{ color: '#222' }}>Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
             </ul>
             <p className="mt-2" style={{ color: '#222' }}>Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en info@xpeak.es (RGPD arts. 44-49).</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Tus Derechos</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>7. Tus Derechos</h2>
             <p className="mb-3">Conforme al RGPD (UE) 2016/679 y la LOPDGDD (LO 3/2018) tienes los siguientes derechos:</p>
             <ul className="list-disc pl-5 space-y-1.5" style={{ color: '#222' }}>
               <li><strong style={{ color: '#222' }}>Acceso (Art. 15)</strong>: solicitar confirmación de si tratamos tus datos y obtener una copia.</li>
@@ -83,16 +87,16 @@ const Privacidad = () => {
               <li><strong style={{ color: '#222' }}>Limitación del tratamiento (Art. 18)</strong>: solicitar que suspendamos el tratamiento mientras se resuelve una impugnación.</li>
               <li><strong style={{ color: '#222' }}>Oposición (Art. 21)</strong>: oponerte al tratamiento basado en interés legítimo, incluyendo elaboración de perfiles con fines de marketing directo.</li>
             </ul>
-            <p className="text-sm mt-3" style={{ color: '#222' }}>Para ejercer cualquiera de estos derechos envía un correo a <span style={{ color: '#D4AF37' }}>info@xpeak.es</span> con una copia de tu DNI o documento equivalente. Responderemos en el plazo máximo de <strong>30 días naturales</strong> (RGPD Art. 12.3).</p>
+            <p className="text-sm mt-3" style={{ color: '#222' }}>Para ejercer cualquiera de estos derechos envía un correo a <span style={{ color: '#8B6A00' }}>info@xpeak.es</span> con una copia de tu DNI o documento equivalente. Responderemos en el plazo máximo de <strong>30 días naturales</strong> (RGPD Art. 12.3).</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>8. Reclamaciones ante la Autoridad de Control</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>8. Reclamaciones ante la Autoridad de Control</h2>
             <p className="text-sm" style={{ color: '#222' }}>
               Si consideras que el tratamiento de tus datos infringe la normativa de protección de datos, tienes derecho a presentar una reclamación ante la <strong style={{ color: '#222' }}>Agencia Española de Protección de Datos (AEPD)</strong>, sin perjuicio de cualquier otro recurso administrativo o acción judicial.
             </p>
             <p className="text-sm mt-2">
-              <span style={{ color: '#D4AF37' }}>www.aepd.es</span> · C/ Jorge Juan, 6 · 28001 Madrid · Tel. 901 100 099
+              <span style={{ color: '#8B6A00' }}>www.aepd.es</span> · C/ Jorge Juan, 6 · 28001 Madrid · Tel. 901 100 099
             </p>
           </section>
         </div>

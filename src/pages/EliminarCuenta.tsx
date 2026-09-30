@@ -10,7 +10,7 @@ export default function EliminarCuenta() {
         <link rel="canonical" href="https://xpeak.es/eliminar-cuenta" />
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#0A0A0A', color: '#F5F5F0' }}>
+      <div className="min-h-screen" style={{ background: '#FFFFFF', color: '#111' }}>
         <div className="max-w-2xl mx-auto px-4 py-16">
           <h1 className="text-3xl font-black mb-6">Eliminación de cuenta y datos</h1>
 
@@ -20,7 +20,7 @@ export default function EliminarCuenta() {
 
           <div className="space-y-8">
             <section>
-              <h2 className="text-xl font-bold mb-3" style={{ color: '#D4AF37' }}>Opción 1: Desde la app (recomendado)</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: '#8B6A00' }}>Opción 1: Desde la app (recomendado)</h2>
               <ol className="list-decimal list-inside space-y-2 text-neutral-300">
                 <li>Inicia sesión en XPEAK</li>
                 <li>Ve a tu perfil → Ajustes</li>
@@ -32,8 +32,8 @@ export default function EliminarCuenta() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold mb-3" style={{ color: '#D4AF37' }}>Opción 2: Por email</h2>
-              <p className="text-neutral-300 mb-3">Envía un email a <a href="mailto:acedonu81@gmail.com" className="underline" style={{ color: '#D4AF37' }}>acedonu81@gmail.com</a> con el asunto <strong>"Solicitud eliminación de cuenta"</strong> e indica:</p>
+              <h2 className="text-xl font-bold mb-3" style={{ color: '#8B6A00' }}>Opción 2: Por email</h2>
+              <p className="text-neutral-300 mb-3">Envía un email a <a href="mailto:acedonu81@gmail.com" className="underline" style={{ color: '#8B6A00' }}>acedonu81@gmail.com</a> con el asunto <strong>"Solicitud eliminación de cuenta"</strong> e indica:</p>
               <ul className="list-disc list-inside space-y-1 text-neutral-300">
                 <li>El email con el que estás registrado en XPEAK</li>
                 <li>Si quieres eliminar solo algunos datos o la cuenta completa</li>
@@ -42,7 +42,7 @@ export default function EliminarCuenta() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold mb-3" style={{ color: '#D4AF37' }}>Datos que se eliminan</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: '#8B6A00' }}>Datos que se eliminan</h2>
               <ul className="list-disc list-inside space-y-1 text-neutral-300">
                 <li>Perfil público (nombre, foto, descripción, especialidad)</li>
                 <li>Historial de mensajes y conversaciones</li>
@@ -53,14 +53,14 @@ export default function EliminarCuenta() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold mb-3" style={{ color: '#D4AF37' }}>Datos que se conservan</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: '#8B6A00' }}>Datos que se conservan</h2>
               <p className="text-neutral-300">Por obligación legal, conservamos durante 5 años los registros de facturación y contratos firmados electrónicamente, conforme a la legislación española vigente.</p>
             </section>
           </div>
 
           <div className="mt-12 p-4 rounded-xl border border-white/10 text-sm text-neutral-400">
             Para cualquier consulta sobre privacidad o protección de datos, contacta con nosotros en{' '}
-            <a href="mailto:acedonu81@gmail.com" style={{ color: '#D4AF37' }}>acedonu81@gmail.com</a>
+            <a href="mailto:acedonu81@gmail.com" style={{ color: '#8B6A00' }}>acedonu81@gmail.com</a>
           </div>
         </div>
         <FooterPublic />
