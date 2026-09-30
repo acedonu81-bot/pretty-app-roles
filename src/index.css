@@ -17,7 +17,7 @@
 }
 
 /* Ensure the root fills the full viewport including notch areas */
-html, body, #root {
+html, body, #root, #ssr-snapshot {
   height: 100%;
   overscroll-behavior-y: none;
   -webkit-overflow-scrolling: touch;

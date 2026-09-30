@@ -5,6 +5,7 @@ import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toSlug } from '@/data/profiles';
+import { fotoOptimizada } from '@/lib/imagen';
 // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
 // DirectorioPublico.tsx para el motivo).
 const gateNoPhoto = <T extends { photo_url: string | null }>(rows: T[]): T[] =>
@@ -636,7 +637,7 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}>
         <div style={{ aspectRatio: '3/2', overflow: 'hidden', background: '#FFFDF7', position: 'relative' }}>
           {p.photo_url
-            ? <img src={p.photo_url} alt={p.display_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
+            ? <img src={fotoOptimizada(p.photo_url, 500)} alt={p.display_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
             : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 900, color: '#8B6A00' }}>{p.display_name.charAt(0)}</div>
           }
         </div>

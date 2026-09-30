@@ -253,12 +253,10 @@
     <!-- Preload critical fonts to remove them from the render-blocking chain -->
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9G78HEY.woff2" as="font" type="font/woff2" crossorigin />
-
-    <!-- Preload del poster del hero: es el LCP de la portada (Landing.tsx) y
-         estaba solo en el <picture> del JSX, así que el navegador no lo
-         descubría hasta parsear/hidratar React. Medido con Geoptie (13 sep
-         2026): LCP 6.6s sin este preload. -->
-    <link rel="preload" href="/videos/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />
+    <!-- (El preload del poster del hero se añade SOLO en '/' desde
+         scripts/prerender-meta.mjs: aquí estaba en la plantilla común y todas
+         las páginas, blog y fichas incluidas, descargaban con prioridad alta
+         una imagen que no usan, compitiendo con su propio LCP. 30 sep 2026.) -->
 
     <!-- Hoja de estilos de las fuentes. Estaba como @import dentro de
          src/index.css, lo que encadenaba las descargas: la petición no salía

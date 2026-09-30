@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle } from 'lucide-react';
 import InstallPwaBanner from '@/components/InstallPwaBanner';
+import { fotoOptimizada } from '@/lib/imagen';
 
 /**
  * DiscoverList — lista de /descubrir. Reemplazó a un feed swipe a pantalla
@@ -59,7 +60,7 @@ function ProfileCard({ p, imgError, onImgError, cardRef }: {
       style={{ background: '#141210', border: '1px solid rgba(255,255,255,0.08)' }}>
       <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
         {p.photo_url && !imgError ? (
-          <img src={p.photo_url} alt={p.display_name} loading="lazy" onError={onImgError}
+          <img src={fotoOptimizada(p.photo_url, 500)} alt={p.display_name} loading="lazy" onError={onImgError}
             className="absolute inset-0 w-full h-full object-cover" />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-6xl font-black"

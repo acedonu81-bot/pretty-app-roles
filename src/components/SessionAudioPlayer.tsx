@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack, resolveSoundcloudShort } from '@/lib/streaming';
+import EmbedDiferido from '@/components/EmbedDiferido';
 
 const formatTime = (seconds: number) => {
   if (!Number.isFinite(seconds)) return '0:00';
@@ -114,15 +115,8 @@ const SessionAudioPlayer = ({ url }: { url: string }) => {
   if (parsed) {
     if (!embedSrc) return null;
     return (
-      <iframe
-        src={embedSrc}
-        width="100%"
-        height={parsed.type === 'SoundCloud' ? 166 : 120}
-        allow="autoplay"
-        className="rounded-xl"
-        style={{ border: 'none' }}
-        title="Sesión de audio"
-      />
+      <EmbedDiferido src={embedSrc} alto={parsed.type === 'SoundCloud' ? 166 : 120} tipo={parsed.type}
+        titulo="Sesión de audio" className="rounded-xl" />
     );
   }
   return <CustomAudioPlayer url={url} />;

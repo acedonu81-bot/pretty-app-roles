@@ -20,6 +20,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { instagramUrl, extractInstagramHandle } from '@/lib/social';
 import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
+import { fotoOptimizada } from '@/lib/imagen';
+import EmbedDiferido from '@/components/EmbedDiferido';
 
 /* ── Reviews ─────────────────────────────────────────────────────────────── */
 interface Review {
@@ -997,7 +999,7 @@ const PublicProfile = () => {
               {/* El hero mide hasta 80vw de alto: con object-top la cara
                   queda fuera de encuadre en la mayoría de fotos (retrato
                   vertical estirado). 50% 15% la mantiene visible. */}
-              <img src={profile.photo} alt={profile.name} className="w-full h-full object-cover" style={{ objectPosition: '50% 15%' }} />
+              <img src={fotoOptimizada(profile.photo, 1200)} alt={profile.name} className="w-full h-full object-cover" style={{ objectPosition: '50% 15%' }} />
             </div>
           ) : (
             <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(135deg, #C8820A 0%, #D4511A 35%, #C23460 65%, #8B1A6B 100%)' }}>
@@ -1347,9 +1349,8 @@ const PublicProfile = () => {
                 <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Mix</span>
               </div>
               <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-                <iframe src={audioEmbed.embedUrl} width="100%"
-                  height={audioEmbed.type === 'SoundCloud' ? '166' : audioEmbed.type === 'HearThis' ? '150' : '120'}
-                  frameBorder="0" allow="autoplay; encrypted-media" title="Mix" loading="lazy" />
+                <EmbedDiferido src={audioEmbed.embedUrl} tipo={audioEmbed.type} titulo="Mix"
+                  alto={audioEmbed.type === 'SoundCloud' ? 166 : audioEmbed.type === 'HearThis' ? 150 : 120} />
               </div>
             </motion.div>
           )}
@@ -1518,7 +1519,7 @@ const PublicProfile = () => {
                     className="flex items-center gap-3 p-3 rounded-xl transition-all hover:scale-[1.01]"
                     style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.06)' }}>
                     {r.photo ? (
-                      <img src={r.photo} alt={r.name} loading="lazy"
+                      <img src={fotoOptimizada(r.photo, 400)} alt={r.name} loading="lazy"
                         className="w-9 h-9 rounded-xl object-cover flex-shrink-0" />
                     ) : (
                       <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0"

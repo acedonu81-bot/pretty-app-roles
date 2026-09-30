@@ -11,6 +11,7 @@ import ContractModal from './ContractModal';
 import { useProfile } from '@/hooks/useProfile';
 import { timeAgo } from '@/lib/timeAgo';
 import { isNative } from '@/lib/capacitor';
+import { fotoOptimizada } from '@/lib/imagen';
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -136,7 +137,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       <div className="relative pb-[125%] sm:pb-[100%]">
         <div className="absolute inset-0 rounded-t-2xl sm:rounded-b-none" style={{ overflow: 'hidden' }}>
           {hasPhoto ? (
-            <img src={p.photo} alt={p.name} loading="lazy" className="w-full h-full object-cover"
+            <img src={fotoOptimizada(p.photo, 600)} alt={p.name} loading="lazy" className="w-full h-full object-cover"
               // Los retratos traen la cara en el tercio superior: centrar el
               // recorte la dejaba a ras del borde. 10% da aire sobre la cabeza.
               style={{ objectPosition: '50% 10%' }}

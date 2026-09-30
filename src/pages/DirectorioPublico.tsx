@@ -16,6 +16,7 @@ import TruncatedDescription from '@/components/TruncatedDescription';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
 import { expandRole, canonicalRole } from '@/lib/constants';
+import { fotoOptimizada } from '@/lib/imagen';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -845,7 +846,7 @@ function DirectorioPublicoContenido() {
                         // no pedía la foto hasta tener el layout: medido, 918ms de
                         // espera para una imagen que se descarga en 0,8ms. Cargarlas
                         // con prioridad alta quita esa espera; el resto sigue lazy.
-                        <img src={p.photo_url} alt={p.display_name}
+                        <img src={fotoOptimizada(p.photo_url, 600)} alt={p.display_name}
                           loading={i < 4 ? 'eager' : 'lazy'}
                           fetchPriority={i < 4 ? 'high' : undefined}
                           onError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}

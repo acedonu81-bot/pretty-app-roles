@@ -51,4 +51,40 @@ if ('serviceWorker' in navigator) {
 // auto-recarga, no quedar bloqueado por el intento de una sesión anterior.
 try { sessionStorage.removeItem('xpeak_chunk_reload_attempted'); } catch { /* noop */ }
 
-createRoot(document.getElementById("root")!).render(<App />);
+// Mantener visible el HTML prerenderizado hasta que React tenga contenido.
+// createRoot vacía #root en su primer render, y como las rutas son lazy ese
+// primer render es el fallback de Suspense: la página ya pintada desaparecía y
+// no volvía hasta cargar el chunk y los datos. Medido con Lighthouse móvil
+// (30 sep 2026): LCP 18 s en /p/, 21 s en /directorio/dj, 6 s en blog, con un
+// "render delay" de 5-15 s sobre contenido que ya estaba en el HTML.
+// Ahora el prerender se aparta a #ssr-snapshot (visible, enlaces funcionales)
+// y React monta en #root oculto (con tamaño real, para que lo que mide al
+// montar no lea 0). Se intercambian cuando React ya pinta el contenido de
+// verdad (un h1 o texto suficiente), con un tope de 6 s por si acaso.
+const rootEl = document.getElementById("root")!;
+if (rootEl.firstElementChild) {
+  const snapshot = document.createElement("div");
+  snapshot.id = "ssr-snapshot";
+  while (rootEl.firstChild) snapshot.appendChild(rootEl.firstChild);
+  rootEl.parentNode!.insertBefore(snapshot, rootEl);
+  const oculto = "position:fixed;inset:0;visibility:hidden;overflow:hidden;pointer-events:none;z-index:-1";
+  rootEl.setAttribute("style", oculto);
+  let hecho = false;
+  const mostrar = () => {
+    if (hecho) return;
+    hecho = true;
+    obs.disconnect();
+    const scroll = window.scrollY;
+    rootEl.removeAttribute("style");
+    snapshot.remove();
+    window.scrollTo(0, scroll);
+  };
+  const listo = () => !!rootEl.querySelector("h1") || (rootEl.textContent ?? "").trim().length > 400;
+  const obs = new MutationObserver(() => {
+    if (listo()) requestAnimationFrame(() => requestAnimationFrame(mostrar));
+  });
+  obs.observe(rootEl, { childList: true, subtree: true, characterData: true });
+  window.setTimeout(mostrar, 6000);
+}
+
+createRoot(rootEl).render(<App />);

@@ -1384,6 +1384,13 @@ function replaceOgProp(html, prop, content) {
   return html.replace('</head>', `  ${tag}\n  </head>`);
 }
 
+// Espejo de fotoOptimizada() de src/lib/imagen.ts (este script es .mjs y no
+// importa TS): foto de Supabase Storage redimensionada por su CDN.
+function fotoOptimizadaMeta(url, ancho, calidad = 72) {
+  if (!url || !url.includes('/storage/v1/object/public/') || url.includes('?')) return url;
+  return `${url.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/')}?width=${ancho}&quality=${calidad}`;
+}
+
 function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -1561,10 +1568,13 @@ try {
           ogDesc: desc.slice(0, 200),
           ogType: 'profile',
           jsonLd: personSchema,
-          bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#fff">` +
+          bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#111">` +
             `<h1>${escHtml(p.display_name)}</h1>` +
             `<p><strong>${escHtml(roleLabel)}${escHtml(where)}</strong>${p.specialty ? ` · ${escHtml(p.specialty)}` : ''}${p.is_verified ? ' · Perfil verificado' : ''}${antiguedad ? ` · ${escHtml(antiguedad)}` : ''}</p>` +
-            (p.photo_url ? `<img src="${escHtml(p.photo_url)}" alt="${escHtml(p.display_name)}" style="max-width:280px;border-radius:12px" loading="lazy" />` : '') +
+            // Misma URL que pide React (fotoOptimizada en src/lib/imagen.ts): así la foto
+            // del HTML inicial es la que se queda y no se descarga dos veces. Es el
+            // LCP de la ficha, de ahí eager + fetchpriority alta.
+            (p.photo_url ? `<img src="${escHtml(fotoOptimizadaMeta(p.photo_url, 1200))}" alt="${escHtml(p.display_name)}" style="width:100%;max-height:70vh;object-fit:cover;object-position:50% 15%;border-radius:12px" loading="eager" fetchpriority="high" />` : '') +
             (p.bio ? `<p>${escHtml(p.bio)}</p>` : '') +
             portfolioHtml +
             postsHtml +
@@ -1653,7 +1663,7 @@ try {
           ogDesc: desc.slice(0, 200),
           ogType: 'event',
           jsonLd: eventSchema,
-          bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#fff">` +
+          bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#111">` +
             `<h1>${escHtml(e.event_name)}</h1>` +
             `<p><strong>${escHtml(e.style)}</strong> · ${escHtml(dateLong)} · ${e.venue ? `${escHtml(e.venue)}, ` : ''}${escHtml(e.city)}</p>` +
             (e.description ? `<p>${escHtml(e.description)}</p>` : '') +
@@ -1700,7 +1710,7 @@ for (const route of ROUTES) {
   // el <head>, sin esperar a JS. Solo en '/' — las demás rutas no usan este
   // recurso y no deben competir por su ancho de banda.
   if (route.path === '/') {
-    html = html.replace('</head>', `  <link rel="preload" href="/videos/hero-poster.jpg" as="image" fetchpriority="high" />\n  </head>`);
+    html = html.replace('</head>', `  <link rel="preload" href="/videos/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />\n  </head>`);
   }
   if (route.bodyHtml) {
     html = html.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<script|\n\s*<script|<\/body>|\n\s*<\/body>)/, `<div id="root">${route.bodyHtml}</div>\n  `);
