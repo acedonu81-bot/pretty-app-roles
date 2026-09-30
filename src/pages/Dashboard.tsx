@@ -576,7 +576,7 @@ const Dashboard = () => {
       case 'legal-soporte': return <LegalView document="soporte" />;
       case 'empresario': return <EmpresarioView onMessage={handleMessage} />;
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;
-      case 'feed': return <FeedView />;
+      case 'feed': return <FeedView onNavigate={handleViewChange} />;
       case 'calendar':   return <CalendarView />;
       case 'contracts':  return <ContractView />;
       case 'profile': return <ProfileView onNavigate={nav} />;

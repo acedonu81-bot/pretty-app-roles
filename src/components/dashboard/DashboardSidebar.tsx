@@ -158,7 +158,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
   );
 };
 
-const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert }: {
+const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, iconColor }: {
   icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
   label: string;
   isActive: boolean;
@@ -169,6 +169,11 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
    *  Se ve incluso con el sidebar colapsado a iconos, que es cuando el número
    *  del badge queda oculto. */
   iconAlert?: boolean;
+  /** Color fijo del icono en reposo (no activo, sin iconAlert) — para
+   *  diferenciar visualmente un item concreto del resto del sidebar
+   *  (ej. Feed en azul) sin afectar a los demás. iconAlert manda si ambos
+   *  están presentes. */
+  iconColor?: string;
 }) => (
   <SidebarMenuItem>
     <SidebarMenuButton
@@ -189,7 +194,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
         className={`flex-shrink-0 flex items-center justify-center rounded-full${iconAlert ? ' motion-safe:[animation:adminAlertPulse_1.4s_ease-in-out_infinite]' : ''}`}
         style={iconAlert
           ? { width: 26, height: 26, margin: -4.5, color: '#fff', background: '#16a34a' }
-          : { width: 17, height: 17, color: isActive ? '#B8941E' : 'rgba(10,9,8,0.55)' }}
+          : { width: 17, height: 17, color: isActive ? '#B8941E' : (iconColor ?? 'rgba(10,9,8,0.55)') }}
       >
         <Icon size={iconAlert ? 15 : 17} />
       </span>
@@ -313,7 +318,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
             <NavItem icon={LayoutGrid} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} />
             <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} badge={flashBadge} badgeColor="gold" />
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} badge={msgBadge} badgeColor="blue" />
-            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} />
+            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#4285F4" />
           </SidebarMenu>
         </div>
 
