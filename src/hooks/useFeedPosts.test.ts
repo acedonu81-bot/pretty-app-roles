@@ -129,4 +129,42 @@ describe('useFeedPosts', () => {
     expect(result.current.posts).toHaveLength(1);
     expect(result.current.posts[0]).toMatchObject({ post_type: 'audio', media_url: 'https://hearthis.at/perfil/' });
   });
+
+  it('flags dateIsApproximate=true for external links without a real storage timestamp', async () => {
+    mockTables({
+      follows: [{ followed_user_id: 'pro-6' }],
+      posts: [],
+      profiles: [
+        { user_id: 'pro-6', display_name: 'DJ Seis', ...baseProfile, audio_session_urls: ['https://on.soundcloud.com/abc123'] },
+      ],
+    });
+
+    const { result } = renderHook(() => useFeedPosts('viewer-1'));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(result.current.posts[0]).toMatchObject({ dateIsApproximate: true });
+  });
+
+  it('flags dateIsApproximate=false for a real post and for storage uploads with a real timestamp', async () => {
+    mockTables({
+      follows: [{ followed_user_id: 'pro-7' }],
+      posts: [
+        { id: 'post-7', user_id: 'pro-7', content: 'Hola', post_type: 'text', media_url: null, created_at: '2026-09-30T10:00:00Z' },
+      ],
+      profiles: [
+        {
+          user_id: 'pro-7', display_name: 'DJ Siete', ...baseProfile,
+          portfolio_urls: ['https://x.supabase.co/storage/v1/object/public/audio-sessions/u/portfolio/1789651404214-foto.jpg'],
+        },
+      ],
+    });
+
+    const { result } = renderHook(() => useFeedPosts('viewer-1'));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    const post = result.current.posts.find(p => p.post_type === 'text')!;
+    const photo = result.current.posts.find(p => p.post_type === 'image')!;
+    expect(post.dateIsApproximate).toBe(false);
+    expect(photo.dateIsApproximate).toBe(false);
+  });
 });

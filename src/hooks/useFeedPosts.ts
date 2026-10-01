@@ -8,6 +8,14 @@ export interface FeedPost extends Post {
   authorName: string;
   authorPhoto: string | null;
   authorRole: string;
+  // true cuando created_at viene de profiles.updated_at (fallback) en vez de
+  // una fecha real de esa pieza de contenido — un link externo de SoundCloud/
+  // HearThis pegado no lleva ningún timestamp propio. La UI no debe mostrar
+  // "hace Xd" con esta fecha: es la de la última edición del perfil entero,
+  // no la de cuándo se añadió ese contenido, y puede inducir a error (ver
+  // caso real 1 oct 2026: Amhara Sound mostraba "hace 1d" por haber tocado
+  // otro campo del perfil, no por subir nada nuevo).
+  dateIsApproximate: boolean;
 }
 
 interface FeedState {
@@ -56,6 +64,7 @@ export const useFeedPosts = (viewerId: string | undefined): FeedState => {
             post_type: post.post_type,
             media_url: post.media_url,
             created_at: post.created_at,
+            dateIsApproximate: false,
             authorUserId: post.user_id,
             authorName: author?.display_name ?? 'Profesional',
             authorPhoto: author?.photo_url ?? null,
@@ -71,38 +80,46 @@ export const useFeedPosts = (viewerId: string | undefined): FeedState => {
             : author.audio_embed_url
               ? [author.audio_embed_url]
               : [];
-          return urls.map((url, i) => ({
-            id: `audio-${author.user_id}-${i}`,
-            content: '',
-            post_type: 'audio',
-            media_url: url,
+          return urls.map((url, i) => {
             // fechaSubidaStorage lee el timestamp real del nombre del archivo
             // (solo audios subidos como .mp3, no links externos pegados de
             // SoundCloud/HearThis/Mixcloud). Sin eso, updated_at del perfil
-            // entero es lo único disponible — menos preciso pero sirve para
-            // ordenar el feed.
-            created_at: fechaSubidaStorage(url) ?? author.updated_at,
-            authorUserId: author.user_id,
-            authorName: author.display_name ?? 'Profesional',
-            authorPhoto: author.photo_url ?? null,
-            authorRole: author.role ?? '',
-          }));
+            // entero es lo único disponible para ordenar el feed, pero NO es
+            // una fecha real de esta pieza — se marca como aproximada.
+            const fechaReal = fechaSubidaStorage(url);
+            return {
+              id: `audio-${author.user_id}-${i}`,
+              content: '',
+              post_type: 'audio',
+              media_url: url,
+              created_at: fechaReal ?? author.updated_at,
+              dateIsApproximate: !fechaReal,
+              authorUserId: author.user_id,
+              authorName: author.display_name ?? 'Profesional',
+              authorPhoto: author.photo_url ?? null,
+              authorRole: author.role ?? '',
+            };
+          });
         });
 
         const portfolioPosts: FeedPost[] = (profiles ?? [])
           .filter((author: any) => author.portfolio_urls?.length)
           .flatMap((author: any) =>
-            author.portfolio_urls.map((url: string, i: number) => ({
-              id: `portfolio-${author.user_id}-${i}`,
-              content: '',
-              post_type: 'image',
-              media_url: url,
-              created_at: fechaSubidaStorage(url) ?? author.updated_at,
-              authorUserId: author.user_id,
-              authorName: author.display_name ?? 'Profesional',
-              authorPhoto: author.photo_url ?? null,
-              authorRole: author.role ?? '',
-            }))
+            author.portfolio_urls.map((url: string, i: number) => {
+              const fechaReal = fechaSubidaStorage(url);
+              return {
+                id: `portfolio-${author.user_id}-${i}`,
+                content: '',
+                post_type: 'image',
+                media_url: url,
+                created_at: fechaReal ?? author.updated_at,
+                dateIsApproximate: !fechaReal,
+                authorUserId: author.user_id,
+                authorName: author.display_name ?? 'Profesional',
+                authorPhoto: author.photo_url ?? null,
+                authorRole: author.role ?? '',
+              };
+            })
           );
 
         const feedPosts = [...realPosts, ...audioPosts, ...portfolioPosts]
