@@ -58,7 +58,7 @@ const FeedPostCard = ({ post, viewerId }: { post: FeedPost; viewerId: string | u
 
   return (
     <div className="rounded-[24px] overflow-hidden flex flex-col transition-transform hover:-translate-y-0.5 mb-4 break-inside-avoid"
-      style={{ background: `linear-gradient(170deg, ${tone.card}33, ${HZ.surface} 40%)`, boxShadow: clay(tone.rgb, 'md'), fontFamily: HZ.body }}>
+      style={{ background: `linear-gradient(170deg, ${tone.bubble}66, ${HZ.surface} 55%)`, boxShadow: clay(tone.rgb, 'lg'), fontFamily: HZ.body }}>
       <a href={`/p/${post.authorUserId}`} className="flex items-center gap-2 px-4 pt-4 pb-1 hover:opacity-80">
         {post.authorPhoto ? (
           <img src={fotoOptimizada(post.authorPhoto, 48)} alt={post.authorName}
@@ -95,7 +95,7 @@ const FeedPostCard = ({ post, viewerId }: { post: FeedPost; viewerId: string | u
         {!isPhoto && (
           <div className="flex items-center gap-2">
             <span className="flex items-center justify-center w-7 h-7 rounded-full flex-shrink-0"
-              style={{ background: tone.card, color: tone.stroke }}>
+              style={{ background: tone.bubble, color: '#fff' }}>
               <Icon size={13} />
             </span>
             <span className="text-[0.7rem]" style={{ color: tone.stroke, fontFamily: HZ.display, fontWeight: 800, letterSpacing: '0.02em' }}>
