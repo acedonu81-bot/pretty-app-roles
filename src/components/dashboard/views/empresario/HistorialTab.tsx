@@ -42,8 +42,9 @@ const HistorialTab = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
-  // Reseñas: qué profesionales ya valoró este usuario + booking abierto en el modal.
-  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
+  // Reseñas: qué profesionales ya valoró este usuario, con el contenido de esa
+  // reseña (rating + comment) para mostrarla en la tarjeta + booking abierto en el modal.
+  const [reviewedById, setReviewedById] = useState<Map<string, { rating: number; comment: string | null }>>(new Map());
   const [reviewing, setReviewing] = useState<Booking | null>(null);
   // Reputación propia: reseñas que profesionales han dejado sobre este organizador.
   const [ownReviews, setOwnReviews] = useState<{ id: string; rating: number; comment: string | null; reviewer_name: string | null; created_at: string | null; llego_puntual: boolean | null; cumplio_acordado: boolean | null; volveria_contratar: boolean | null; reviewed_user_id: string }[]>([]);
@@ -105,17 +106,6 @@ const HistorialTab = () => {
     const all = [...flashItems, ...requestItems].sort((a, b) => (b.created_at ?? '').localeCompare(a.created_at ?? ''));
     setBookings(all);
 
-    // Cargar qué profesionales ya valoró este usuario (para ocultar el botón).
-    const reviewedTargets = all.map(b => b.professional_user_id).filter(Boolean) as string[];
-    if (reviewedTargets.length) {
-      const { data: rev } = await supabase
-        .from('reviews')
-        .select('reviewed_user_id')
-        .eq('reviewer_id', user.id)
-        .in('reviewed_user_id', reviewedTargets);
-      setReviewedIds(new Set((rev ?? []).map(r => r.reviewed_user_id).filter(Boolean) as string[]));
-    }
-
     const { data: own } = await supabase
       .from('reviews')
       .select('id, rating, comment, reviewer_name, created_at, llego_puntual, cumplio_acordado, volveria_contratar, reviewed_user_id')
@@ -124,13 +114,20 @@ const HistorialTab = () => {
       .order('created_at', { ascending: false });
     setOwnReviews(own ?? []);
 
-    // Reseñas que este empresario ESCRIBIÓ sobre profesionales (para completar
-    // las antiguas sin llego_puntual/cumplio_acordado/volveria_contratar).
+    // Reseñas que este empresario ESCRIBIÓ sobre profesionales: para ocultar
+    // el botón "Valorar" Y mostrar en la propia tarjeta qué puso (rating +
+    // comment, pedido por el usuario el 5 oct 2026 al no recordar qué había
+    // valorado), además de completar las antiguas sin las 3 preguntas sí/no.
     const { data: written } = await supabase
       .from('reviews')
-      .select('id, llego_puntual, cumplio_acordado, volveria_contratar, reviewed_user_id')
+      .select('id, rating, comment, llego_puntual, cumplio_acordado, volveria_contratar, reviewed_user_id')
       .eq('reviewer_id', user.id);
     setOwnWrittenReviews(written ?? []);
+    const map = new Map<string, { rating: number; comment: string | null }>();
+    for (const w of (written ?? []) as any[]) {
+      if (w.reviewed_user_id) map.set(w.reviewed_user_id, { rating: w.rating, comment: w.comment });
+    }
+    setReviewedById(map);
   }, [user]);
 
   useEffect(() => { fetchBookings(); }, [fetchBookings]);
@@ -651,13 +648,29 @@ const HistorialTab = () => {
                     </div>
                   )}
                   {/* Valorar: para contrataciones cerradas (confirmadas/completadas)
-                      con profesional identificado y aún sin reseña de este usuario. */}
+                      con profesional identificado y aún sin reseña de este usuario.
+                      Si ya valoró, se muestra qué puso (rating + comentario) en vez
+                      de solo el sello — pedido por el usuario el 5 oct 2026. */}
                   {(b.status === 'confirmed' || b.status === 'completed') && b.professional_user_id && (
-                    reviewedIds.has(b.professional_user_id) ? (
-                      <span className="flex items-center gap-1 text-[0.7rem] font-bold mt-0.5" style={{ color: '#22c55e' }}>
-                        <Star size={11} fill="#22c55e" /> Valorado
-                      </span>
-                    ) : (
+                    reviewedById.has(b.professional_user_id) ? (() => {
+                      const r = reviewedById.get(b.professional_user_id)!;
+                      return (
+                        <div className="flex flex-col items-end gap-0.5 px-2 py-1.5 rounded-lg mt-0.5 max-w-xs"
+                          style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.18)' }}>
+                          <div className="flex items-center gap-1">
+                            <span className="flex items-center gap-0.5" aria-label={`${r.rating} de 5 estrellas`}>
+                              {[1, 2, 3, 4, 5].map(n => (
+                                <Star key={n} size={11} fill={n <= r.rating ? '#22c55e' : 'none'} color="#22c55e" />
+                              ))}
+                            </span>
+                            <span className="text-[0.7rem] font-bold" style={{ color: '#22c55e' }}>Valorado</span>
+                          </div>
+                          {r.comment && (
+                            <p className="text-[0.7rem] text-right italic" style={{ color: '#3d5a46' }}>"{r.comment}"</p>
+                          )}
+                        </div>
+                      );
+                    })() : (
                       <button
                         onClick={() => setReviewing(b)}
                         className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black transition-all hover:scale-105 mt-0.5"
@@ -733,8 +746,8 @@ const HistorialTab = () => {
           booking={reviewing}
           reviewerId={user?.id ?? ''}
           onClose={() => setReviewing(null)}
-          onDone={(targetId) => {
-            setReviewedIds(prev => new Set(prev).add(targetId));
+          onDone={(targetId, rating, comment) => {
+            setReviewedById(prev => new Map(prev).set(targetId, { rating, comment }));
             setReviewing(null);
           }}
         />
@@ -820,7 +833,7 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
   booking: Booking;
   reviewerId: string;
   onClose: () => void;
-  onDone: (targetId: string) => void;
+  onDone: (targetId: string, rating: number, comment: string | null) => void;
 }) {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
@@ -860,7 +873,7 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
     setSaving(false);
     if (error) { toast.error('No se pudo enviar la valoración. Inténtalo de nuevo.'); return; }
     toast.success('¡Gracias! Tu valoración se publicará tras revisión.');
-    onDone(booking.professional_user_id);
+    onDone(booking.professional_user_id, rating, comment.trim().slice(0, 500) || null);
   };
 
   return (

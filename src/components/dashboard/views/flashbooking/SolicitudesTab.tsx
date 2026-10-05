@@ -64,8 +64,11 @@ const SolicitudesTab = () => {
   const [updating, setUpdating] = useState<string | null>(null);
   const updatingRef = useRef<string | null>(null);
   const [contractFor, setContractFor] = useState<Solicitud | null>(null);
-  // Reseñas al organizador: qué created_by ya valoró este profesional + booking abierto en el modal.
-  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
+  // Reseñas al organizador: qué created_by ya valoró este profesional (con el
+  // contenido de esa reseña, para mostrarla en la propia tarjeta en vez de
+  // solo el sello "Valorado" — pedido por el usuario el 5 oct 2026 al ver que
+  // no podía recordar qué había puesto) + booking abierto en el modal.
+  const [reviewedById, setReviewedById] = useState<Map<string, { rating: number; comment: string | null }>>(new Map());
   const [reviewing, setReviewing] = useState<Solicitud | null>(null);
 
   const fetch = useCallback(async () => {
@@ -116,15 +119,20 @@ const SolicitudesTab = () => {
     const all = [...flashItems, ...requestItems].sort((a, b) => (b.created_at ?? '').localeCompare(a.created_at ?? ''));
     setItems(all);
 
-    // Cargar qué organizadores ya valoró este profesional (para ocultar el botón).
+    // Cargar qué organizadores ya valoró este profesional, con el contenido
+    // de la reseña (para ocultar el botón Y mostrar lo que puso).
     const reviewedTargets = all.map(b => b.created_by).filter(Boolean) as string[];
     if (reviewedTargets.length) {
       const { data: rev } = await supabase
         .from('reviews')
-        .select('reviewed_user_id')
+        .select('reviewed_user_id, rating, comment')
         .eq('reviewer_id', user.id)
         .in('reviewed_user_id', reviewedTargets);
-      setReviewedIds(new Set((rev ?? []).map(r => r.reviewed_user_id).filter(Boolean) as string[]));
+      const map = new Map<string, { rating: number; comment: string | null }>();
+      for (const r of (rev ?? []) as any[]) {
+        if (r.reviewed_user_id) map.set(r.reviewed_user_id, { rating: r.rating, comment: r.comment });
+      }
+      setReviewedById(map);
     }
   }, [user]);
 
@@ -379,27 +387,45 @@ const SolicitudesTab = () => {
                     </div>
                   )}
                   {(s.status === 'confirmed' || s.status === 'accepted' || s.status === 'completed') && (
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setContractFor(s)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                        style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)', color: '#8A6D0F' }}>
-                        <FileText size={12} /> Generar contrato
-                      </button>
-                      {s.created_by && (
-                        reviewedIds.has(s.created_by) ? (
-                          <span className="flex items-center gap-1 text-[0.7rem] font-bold px-2" style={{ color: '#22c55e' }}>
-                            <Star size={11} fill="#22c55e" /> Valorado
-                          </span>
-                        ) : (
+                    <div className="flex flex-col items-end gap-1.5">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setContractFor(s)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                          style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)', color: '#8A6D0F' }}>
+                          <FileText size={12} /> Generar contrato
+                        </button>
+                        {s.created_by && !reviewedById.has(s.created_by) && (
                           <button
                             onClick={() => setReviewing(s)}
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all hover:scale-105"
                             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                             <Star size={11} /> Valorar
                           </button>
-                        )
-                      )}
+                        )}
+                      </div>
+                      {/* Qué puso el propio profesional al valorar a este organizador
+                          — antes solo se veía el sello "Valorado", sin recordar la
+                          nota ni el comentario (pedido por el usuario, 5 oct 2026). */}
+                      {s.created_by && reviewedById.has(s.created_by) && (() => {
+                        const r = reviewedById.get(s.created_by)!;
+                        return (
+                          <div className="flex flex-col items-end gap-0.5 px-2 py-1.5 rounded-lg max-w-xs"
+                            style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.18)' }}>
+                            <div className="flex items-center gap-1">
+                              <span className="flex items-center gap-0.5" aria-label={`${r.rating} de 5 estrellas`}>
+                                {[1, 2, 3, 4, 5].map(n => (
+                                  <Star key={n} size={11} fill={n <= r.rating ? '#22c55e' : 'none'} color="#22c55e" />
+                                ))}
+                              </span>
+                              <span className="text-[0.7rem] font-bold" style={{ color: '#22c55e' }}>Valorado</span>
+                            </div>
+                            {r.comment && (
+                              <p className="text-[0.7rem] text-right italic" style={{ color: '#3d5a46' }}>"{r.comment}"</p>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </div>
                   )}
                 </div>
@@ -445,8 +471,8 @@ const SolicitudesTab = () => {
           solicitud={reviewing}
           reviewerId={user?.id ?? ''}
           onClose={() => setReviewing(null)}
-          onDone={(targetId) => {
-            setReviewedIds(prev => new Set(prev).add(targetId));
+          onDone={(targetId, rating, comment) => {
+            setReviewedById(prev => new Map(prev).set(targetId, { rating, comment }));
             setReviewing(null);
           }}
         />
@@ -462,7 +488,7 @@ function ReviewOrganizadorModal({ solicitud, reviewerId, onClose, onDone }: {
   solicitud: Solicitud;
   reviewerId: string;
   onClose: () => void;
-  onDone: (targetId: string) => void;
+  onDone: (targetId: string, rating: number, comment: string | null) => void;
 }) {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
@@ -490,7 +516,7 @@ function ReviewOrganizadorModal({ solicitud, reviewerId, onClose, onDone }: {
     setSaving(false);
     if (error) { toast.error('No se pudo enviar la valoración. Inténtalo de nuevo.'); return; }
     toast.success('¡Gracias! Tu valoración se publicará tras revisión.');
-    onDone(solicitud.created_by);
+    onDone(solicitud.created_by, rating, comment.trim().slice(0, 500) || null);
   };
 
   return (
