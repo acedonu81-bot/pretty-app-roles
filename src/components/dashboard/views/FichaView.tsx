@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { FileEdit, Plus, Trash2, Music, Video, Image as ImageIcon, Type, ExternalLink, Loader2, Globe, AlertCircle, X, Upload, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -329,11 +330,11 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
           </p>
         </div>
         {isOwn && slug && (
-          <a href={`/p/${slug}`}
+          <Link to={`/p/${slug}`}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
             style={{ background: BLUE_BG, border: `1px solid ${BLUE_BORDER}`, color: BLUE }}>
             <Globe size={13} /> Ver ficha pública
-          </a>
+          </Link>
         )}
       </div>
 

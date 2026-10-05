@@ -9,7 +9,10 @@ export const exportUserDataZip = async (user: User) => {
   toast.info('Recopilando datos…');
   try {
     const [profileRes, favRes, bookingsRes, convsRes] = await Promise.all([
-      supabase.from('profiles').select('*').eq('user_id', user.id).maybeSingle(),
+      // my_profile() en vez de select('*'): profiles.email está bloqueado
+      // para 'authenticated' en general (SEC-06) — esta RPC sí puede
+      // devolver la fila propia completa porque comprueba el dueño server-side.
+      (supabase.rpc as any)('my_profile'),
       supabase.from('favorites').select('*').eq('user_id', user.id),
       // Un booking pertenece al usuario tanto si lo creó (empresario) como si es
       // el profesional contratado — filtrar solo por created_by dejaba vacío

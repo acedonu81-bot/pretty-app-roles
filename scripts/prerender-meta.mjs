@@ -835,6 +835,14 @@ const ROUTES = [
     ogType: 'website',
   },
   {
+    path: '/directorio/food-truck',
+    title: 'Alquilar Food Truck para bodas y eventos en España | XPEAK',
+    desc: 'Directorio de food trucks para bodas, festivales y eventos de empresa en España. Hamburguesas, tacos, pizza y más. Contacto directo y precios reales.',
+    ogTitle: 'Directorio de food trucks | XPEAK',
+    ogDesc: 'Food trucks para bodas, festivales, eventos de empresa y fiestas privadas.',
+    ogType: 'website',
+  },
+  {
     path: '/directorio/wedding-planner',
     title: 'Contratar wedding planner para tu boda en España: Directorio XPEAK',
     desc: 'Directorio de wedding planners y encargadas de eventos en España. Organización integral de bodas y celebraciones. Precios reales y contacto directo.',
@@ -1440,7 +1448,7 @@ const ROLE_LABELS = {
   bailarin: 'Bailarín/a', humorista: 'Humorista', monologo: 'Monologuista',
   animador: 'Animador/a', speaker: 'Speaker', vestuario: 'Estilista', ambassador: 'Brand ambassador',
   'grupo-musical': 'Grupo musical', event_manager: 'Coordinador/a de eventos',
-  'photo-booth': 'Photo booth', peluqueria: 'Peluquería', local_eventos: 'Local para eventos',
+  'photo-booth': 'Photo booth', 'food-truck': 'Food truck', peluqueria: 'Peluquería', local_eventos: 'Local para eventos',
   tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos',
 };
 
@@ -1451,7 +1459,7 @@ const ROLE_TO_CATEGORY_SLUG = {
   media: 'fotografo', promotor: 'promotores', catering: 'catering',
   mago: 'mago', bailarin: 'bailarin', humorista: 'humorista',
   monologo: 'monologo', animador: 'animador', speaker: 'speaker', vestuario: 'vestuario',
-  'grupo-musical': 'grupo-musical', 'photo-booth': 'photo-booth', peluqueria: 'peluqueria',
+  'grupo-musical': 'grupo-musical', 'photo-booth': 'photo-booth', 'food-truck': 'food-truck', peluqueria: 'peluqueria',
   local_eventos: 'locales-eventos', tecnico: 'tecnico-sonido', alquiler: 'alquiler-equipos',
 };
 

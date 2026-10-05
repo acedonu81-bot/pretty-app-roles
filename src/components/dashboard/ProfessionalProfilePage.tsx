@@ -108,6 +108,7 @@ const ROLE_CFG: Record<string, {
   monologo:  { color: '#F59E0B', glow: 'rgba(245,158,11,0.35)',   label: 'Monólogo · Stand-Up', tagline: 'Una hora, mil risas',           icon: Megaphone },
   animador:  { color: '#22D3EE', glow: 'rgba(34,211,238,0.35)',   label: 'Payaso · Animador',   tagline: 'Que nadie se aburra',           icon: Star },
   speaker:   { color: '#4285F4', glow: 'rgba(66,133,244,0.35)',   label: 'Speaker · Presentador', tagline: 'La voz que conduce el evento', icon: Megaphone },
+  'food-truck': { color: '#D97706', glow: 'rgba(217,119,6,0.35)', label: 'Food Truck',        tagline: 'La cocina llega sobre ruedas',  icon: Star },
   'photo-booth': { color: '#A78BFA', glow: 'rgba(167,139,250,0.35)', label: 'Photo Booth',      tagline: 'El recuerdo que se llevan',     icon: Camera },
   event_manager: { color: '#F472B6', glow: 'rgba(244,114,182,0.35)', label: 'Encargada de Eventos', tagline: 'Todo bajo control',         icon: Users },
   camarero:  { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Sala & Barra',        tagline: 'El engranaje invisible del show', icon: Users },

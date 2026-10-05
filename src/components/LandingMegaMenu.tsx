@@ -42,6 +42,7 @@ const TABS: Tab[] = [
           { label: 'Fotógrafos', href: '/directorio/fotografo' },
           { label: 'Camareros', href: '/directorio/camareros' },
           { label: 'Catering', href: '/directorio/catering' },
+          { label: 'Food trucks', href: '/directorio/food-truck' },
           { label: 'Staff y azafatas', href: '/directorio/staff' },
           { label: 'Maquillaje', href: '/directorio/maquillaje' },
           { label: 'Animadores', href: '/directorio/animador' },

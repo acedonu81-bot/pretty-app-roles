@@ -45,6 +45,7 @@ const DIRECTORY_ITEMS: { id: string; label: string }[] = [
   { id: 'humorista', label: 'Humor, Monólogos & Stand-Up' },
   { id: 'animador', label: 'Payasos & Animadores' },
   { id: 'catering', label: 'Catering & Chef' },
+  { id: 'food-truck', label: 'Food Trucks' },
   { id: 'vestuario', label: 'Vestuario & Moda' },
   { id: 'promotor', label: 'Promotor & RRPP' },
   { id: 'speaker', label: 'Speakers & Presentadores' },
@@ -62,7 +63,7 @@ const DIRECTORY_IDS = new Set(DIRECTORY_ITEMS.map(i => i.id));
 // literalmente a quien contiene.
 const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
   { label: 'Música', ids: ['dj', 'grupo-musical', 'emergentes'] },
-  { label: 'Sala, Barra, Catering & Locales', ids: ['staff', 'catering', 'local_eventos'] },
+  { label: 'Sala, Barra, Catering & Locales', ids: ['staff', 'catering', 'food-truck', 'local_eventos'] },
   { label: 'Imagen & Media', ids: ['media', 'photo-booth', 'design'] },
   { label: 'Azafatas & RRPP', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
   { label: 'Belleza & Estética', ids: ['makeup', 'vestuario'] },
@@ -70,7 +71,7 @@ const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
   { label: 'Técnica & Producción', ids: ['tecnico', 'alquiler'] },
 ];
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth', 'grupo-musical': 'Grupo Musical', tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', emergentes: 'DJs Emergentes', local_eventos: 'Locales para eventos' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', 'food-truck': 'Food Truck', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth', 'grupo-musical': 'Grupo Musical', tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', emergentes: 'DJs Emergentes', local_eventos: 'Locales para eventos' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();
@@ -194,9 +195,11 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
         className={`flex-shrink-0 flex items-center justify-center rounded-full${iconAlert ? ' motion-safe:[animation:adminAlertPulse_1.4s_ease-in-out_infinite]' : ''}`}
         style={iconAlert
           ? { width: 26, height: 26, margin: -4.5, color: '#fff', background: '#16a34a' }
-          : { width: 17, height: 17, color: isActive ? '#B8941E' : (iconColor ?? 'rgba(10,9,8,0.55)') }}
+          : iconColor && !isActive
+            ? { width: 24, height: 24, margin: -3.5, color: '#fff', background: iconColor }
+            : { width: 17, height: 17, color: isActive ? '#B8941E' : 'rgba(10,9,8,0.55)' }}
       >
-        <Icon size={iconAlert ? 15 : 17} />
+        <Icon size={iconAlert ? 15 : (iconColor && !isActive ? 14 : 17)} strokeWidth={iconColor && !isActive ? 2.5 : 2} />
       </span>
       <span className="flex-1">{label}</span>
     </SidebarMenuButton>
@@ -204,7 +207,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
       <SidebarMenuBadge
         className="text-[0.62rem] px-1.5 py-0.5 rounded-full font-black leading-none static ml-auto mr-1 group-data-[collapsible=icon]:hidden"
         style={badgeColor === 'blue'
-          ? { background: 'rgba(66,133,244,0.14)', color: '#4285F4' }
+          ? { background: 'rgba(37,99,235,0.14)', color: '#2563EB' }
           : { background: 'rgba(212,175,55,0.18)', color: '#8A6D0F' }}
       >
         {badge}
@@ -318,7 +321,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
             <NavItem icon={LayoutGrid} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} />
             <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} badge={flashBadge} badgeColor="gold" />
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} badge={msgBadge} badgeColor="blue" />
-            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#4285F4" />
+            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" />
           </SidebarMenu>
         </div>
 

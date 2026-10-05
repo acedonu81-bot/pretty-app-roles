@@ -447,6 +447,7 @@ const App = () => (
             <Route path="/contratar-fotografo" element={<CategoryLanding />} />
             <Route path="/contratar-camareros" element={<CategoryLanding />} />
             <Route path="/contratar-catering" element={<CategoryLanding />} />
+            <Route path="/contratar-food-truck" element={<CategoryLanding />} />
             <Route path="/contratar-maquillaje" element={<CategoryLanding />} />
             <Route path="/contratar-peluqueria" element={<CategoryLanding />} />
             <Route path="/contratar-promotores" element={<CategoryLanding />} />
@@ -473,6 +474,7 @@ const App = () => (
             <Route path="/contratar-azafata/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-fotografo/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-catering/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-food-truck/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-disco-movil/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-speaker/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-mago/:ciudad" element={<CityLanding />} />
@@ -499,6 +501,7 @@ const App = () => (
             <Route path="/boda/contratar-dj" element={<OccasionLanding />} />
             <Route path="/boda/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/boda/contratar-catering" element={<OccasionLanding />} />
+            <Route path="/boda/contratar-food-truck" element={<OccasionLanding />} />
             <Route path="/boda/contratar-camareros" element={<OccasionLanding />} />
             <Route path="/boda/contratar-grupo-musical" element={<OccasionLanding />} />
             <Route path="/boda/contratar-animador" element={<OccasionLanding />} />
@@ -506,22 +509,26 @@ const App = () => (
             <Route path="/cumpleanos/contratar-dj" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-catering" element={<OccasionLanding />} />
+            <Route path="/cumpleanos/contratar-food-truck" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-animador" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-mago" element={<OccasionLanding />} />
             <Route path="/evento-empresa/contratar-dj" element={<OccasionLanding />} />
             <Route path="/evento-empresa/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/evento-empresa/contratar-catering" element={<OccasionLanding />} />
+            <Route path="/evento-empresa/contratar-food-truck" element={<OccasionLanding />} />
             <Route path="/evento-empresa/contratar-camareros" element={<OccasionLanding />} />
             <Route path="/evento-empresa/contratar-speaker" element={<OccasionLanding />} />
             <Route path="/evento-empresa/contratar-locales-eventos" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-catering" element={<OccasionLanding />} />
+            <Route path="/comunion/contratar-food-truck" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-animador" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-mago" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-dj" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-dj" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-catering" element={<OccasionLanding />} />
+            <Route path="/fiesta-privada/contratar-food-truck" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-camareros" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-animador" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-locales-eventos" element={<OccasionLanding />} />

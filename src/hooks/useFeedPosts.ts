@@ -21,6 +21,10 @@ export interface FeedPost extends Post {
 interface FeedState {
   posts: FeedPost[];
   loading: boolean;
+  // Distingue "no sigues a nadie" de "sigues a gente pero sin contenido
+  // todavía" — mismo posts.length===0 en ambos casos, pero el mensaje de
+  // feed vacío debe invitar a seguir gente solo en el primero.
+  followingCount: number;
 }
 
 // Feed personalizado del dashboard: mezcla todo lo que cada profesional
@@ -35,6 +39,7 @@ interface FeedState {
 export const useFeedPosts = (viewerId: string | undefined): FeedState => {
   const [posts, setPosts] = useState<FeedPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [followingCount, setFollowingCount] = useState(0);
 
   useEffect(() => {
     if (!viewerId) { setLoading(false); return; }
@@ -45,6 +50,7 @@ export const useFeedPosts = (viewerId: string | undefined): FeedState => {
       .then(async ({ data: follows }) => {
         if (cancelled) return;
         const followedIds = (follows ?? []).map((f: { followed_user_id: string }) => f.followed_user_id);
+        setFollowingCount(followedIds.length);
         if (followedIds.length === 0) { setPosts([]); setLoading(false); return; }
 
         const [{ data: rawPosts }, { data: profiles }] = await Promise.all([
@@ -131,5 +137,5 @@ export const useFeedPosts = (viewerId: string | undefined): FeedState => {
     return () => { cancelled = true; };
   }, [viewerId]);
 
-  return { posts, loading };
+  return { posts, loading, followingCount };
 };

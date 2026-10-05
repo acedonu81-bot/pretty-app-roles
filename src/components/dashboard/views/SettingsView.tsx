@@ -64,6 +64,7 @@ const ROLE_OPTIONS = [
   { value: 'event_manager',   label: 'Encargada de Eventos' },
   { value: 'promotor',        label: 'Promotor / RRPP' },
   { value: 'catering',        label: 'Catering / Cocina' },
+  { value: 'food-truck',      label: 'Food Truck' },
   { value: 'media',           label: 'Media & Contenido' },
   { value: 'fotografo',       label: 'Fotógrafo' },
   { value: 'photo-booth',     label: 'Photo Booth' },
@@ -295,7 +296,10 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
     toast.info('Recopilando tus datos…');
     try {
       const [profileRes, favRes, bookingsRes, convsRes, msgsRes, reviewsRes, jobsRes] = await Promise.all([
-        supabase.from('profiles').select('*').eq('user_id', user.id).maybeSingle(),
+        // my_profile() en vez de select('*'): profiles.email está bloqueado
+        // para 'authenticated' en general (SEC-06) — esta RPC sí puede
+        // devolver la fila propia completa porque comprueba el dueño server-side.
+        (supabase.rpc as any)('my_profile'),
         supabase.from('favorites').select('*').eq('user_id', user.id),
         // Un booking pertenece al usuario tanto si lo creó (empresario) como si es
         // el profesional contratado — filtrar solo por created_by dejaba vacíos
@@ -363,7 +367,8 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
     toast.info('Generando informe anual…');
     try {
       const [profileRes, bookingsRes] = await Promise.all([
-        supabase.from('profiles').select('*').eq('user_id', user.id).maybeSingle(),
+        // my_profile() en vez de select('*'), ver nota en handleExportData.
+        (supabase.rpc as any)('my_profile'),
         // Igual que en el export ZIP: un booking es del usuario tanto si lo creó
         // (empresario) como si es el profesional contratado.
         supabase.from('flash_bookings').select('*').or(`created_by.eq.${user.id},professional_user_id.eq.${user.id}`),

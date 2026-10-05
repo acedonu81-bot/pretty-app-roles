@@ -1351,6 +1351,7 @@ export type Database = {
           price_per_event: number | null
           price_per_hour: number | null
           priority_badge_until: string | null
+          production_urls: string[] | null
           referral_code: string | null
           region: string | null
           rental_equipment: string[] | null
@@ -1442,6 +1443,7 @@ export type Database = {
           price_per_event?: number | null
           price_per_hour?: number | null
           priority_badge_until?: string | null
+          production_urls?: string[] | null
           referral_code?: string | null
           region?: string | null
           rental_equipment?: string[] | null
@@ -1533,6 +1535,7 @@ export type Database = {
           price_per_event?: number | null
           price_per_hour?: number | null
           priority_badge_until?: string | null
+          production_urls?: string[] | null
           referral_code?: string | null
           region?: string | null
           rental_equipment?: string[] | null

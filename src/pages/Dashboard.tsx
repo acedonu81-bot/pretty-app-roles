@@ -7,6 +7,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
+import PendingReviewsBanner from '@/components/dashboard/PendingReviewsBanner';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import { NativeStackTransition } from '@/components/dashboard/NativeStackTransition';
 import { isNative } from '@/lib/capacitor';
@@ -49,6 +50,7 @@ const StatsView = lazy(() => import('@/components/dashboard/views/StatsView'));
 const AdminView = lazy(() => import('@/components/dashboard/views/AdminView'));
 const EmpresarioView = lazy(() => import('@/components/dashboard/views/EmpresarioView'));
 const PhotoBoothView = lazy(() => import('@/components/dashboard/views/PhotoBoothView'));
+const FoodTruckView = lazy(() => import('@/components/dashboard/views/FoodTruckView'));
 const TecnicoView = lazy(() => import('@/components/dashboard/views/TecnicoView'));
 const AlquilerView = lazy(() => import('@/components/dashboard/views/AlquilerView'));
 const ExplorarView = lazy(() => import('@/components/dashboard/views/ExplorarView'));
@@ -206,6 +208,7 @@ const ROLE_TO_VIEW: Record<string, string> = {
   dj: 'dj', staff: 'staff', camarero: 'staff', makeup: 'makeup', media: 'media',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
   event_manager: 'event_manager', empresario: 'empresario', catering: 'catering',
+  'food-truck': 'food-truck',
   mago: 'mago', bailarin: 'bailarin', humorista: 'humorista', animador: 'animador',
   speaker: 'speaker', monologo: 'monologo', ambassador: 'ambassador',
   // Faltaban aquí y solo funcionaban por el `?? profileRole` de respaldo, que
@@ -274,6 +277,7 @@ const BUSQUEDA_POR_VISTA: Record<string, string[]> = {
   azafata: ['azafata', 'azafato', 'hostess', 'congreso'],
   promotor: ['promotor', 'rrpp', 'promocion'],
   catering: ['catering', 'chef', 'cocina', 'cocinero'],
+  'food-truck': ['food truck', 'foodtruck', 'food-truck', 'foodtrucks'],
   mago: ['mago', 'maga', 'magia', 'ilusionista'],
   humorista: ['humorista', 'comico', 'comica', 'monologuista', 'stand-up', 'standup'],
   animador: ['animador', 'animadora', 'payaso'],
@@ -487,11 +491,39 @@ const Dashboard = () => {
     setNavDirection(HOME_VIEWS.has(view) ? 'back' : 'forward');
     setActiveView(view);
     localStorage.setItem('xpeak_view', view);
+    // ?view= y location.state tienen prioridad sobre la vista guardada al cargar
+    // (ver resolverVistaInicial) y sobreviven a la recarga: sin limpiarlos aquí,
+    // entrar una vez por un enlace a Flash Booking dejaba la URL fija en
+    // ?view=flashbooking y cada recarga devolvía ahí aunque estuvieras en otra sección.
+    if (location.search || location.state) navigate('/dashboard', { replace: true });
     if (isMobile) setSidebarOpen(false);
     if (!keepSearch) setSearchQuery('');
   };
 
   const nav = (view: string) => handleViewChange(view);
+
+  // FlashBookingWallView abre en la pestaña "oferta" por defecto y solo lee
+  // "solicitudes" vía ?tab= en location.search (mismo mecanismo que usa el
+  // botón del email "Nueva solicitud Flash Booking") — handleViewChange solo
+  // cambia el state interno activeView, no toca la URL, así que sin este
+  // navigate() el aviso "solicitud recibida hoy" abriría Flash Booking en la
+  // pestaña equivocada.
+  const goToSolicitudesFlashBooking = () => {
+    handleViewChange('flashbooking');
+    navigate('/dashboard?view=flashbooking&tab=solicitudes', { replace: true });
+  };
+
+  // El botón "Valorar" vive en sitios distintos según el rol: el profesional
+  // lo ve en Flash Booking → Solicitudes, el organizador en Empresario →
+  // Historial (mismo destino que ya usa el email pedir_valoracion).
+  const goToPendingReviews = () => {
+    if (profileRole === 'empresario') {
+      handleViewChange('empresario');
+      navigate('/dashboard?view=empresario&tab=historial', { replace: true });
+    } else {
+      goToSolicitudesFlashBooking();
+    }
+  };
 
   // Swipe-back desde el borde izquierdo (solo iOS nativo, ver useSwipeBack):
   // vuelve al "home" del stack, igual que el back gesture nativo. Reutiliza
@@ -514,7 +546,7 @@ const Dashboard = () => {
     'dj', 'staff', 'azafata', 'event_manager', 'makeup', 'peluqueria', 'media',
     'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering',
     'mago', 'bailarin', 'humorista', 'monologo', 'animador', 'speaker',
-    'photo-booth', 'grupo-musical', 'tecnico', 'alquiler', 'emergentes', 'local_eventos',
+    'photo-booth', 'food-truck', 'grupo-musical', 'tecnico', 'alquiler', 'emergentes', 'local_eventos',
   ]);
 
   const handleSearch = (q: string) => {
@@ -559,6 +591,7 @@ const Dashboard = () => {
       case 'animador':  return <AnimadorView  onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'speaker':   return <SpeakerView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'photo-booth': return <PhotoBoothView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'food-truck': return <FoodTruckView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'grupo-musical': return <GrupoMusicalView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'emergentes': return <EmergentesView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'tecnico':   return <TecnicoView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
@@ -658,9 +691,10 @@ const Dashboard = () => {
         >
           <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} userId={user?.id} isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange} />
           <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
+          <PendingReviewsBanner onGoToReviews={goToPendingReviews} />
           <MarketingConsentBanner />
           <RecentBusinessViewLine />
-          <TodaysRequestsLine />
+          <TodaysRequestsLine onNavigate={goToSolicitudesFlashBooking} />
           <div className={`p-3 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(64px+max(env(safe-area-inset-bottom),12px)+1.5rem)]' : 'pb-6'}`}
             ref={viewContentRef}>
             <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} /></div>}>

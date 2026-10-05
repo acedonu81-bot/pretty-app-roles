@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { tarifaCerrada } from '@/lib/constants';
 
 export interface CartItem {
   userId: string;
@@ -34,13 +35,14 @@ function writeCart(items: CartItem[]) {
   window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
 }
 
-/** El equipo de alquiler cobra por día; el resto de oficios, por hora. */
-export const cobraPorDia = (item: Pick<CartItem, 'role'>) => item.role === 'alquiler';
+/** Alquiler (por día) y food truck (por evento) tienen precio cerrado; el
+ *  resto de oficios cobra por hora. */
+export const precioCerrado = (item: Pick<CartItem, 'role'>) => tarifaCerrada(item.role);
 
 /** Importe estimado de un profesional del carrito para un evento de `horas` horas. */
 export function importeEstimado(item: CartItem, horas: number): number {
   if (!item.hourlyRate) return 0;
-  return cobraPorDia(item) ? item.hourlyRate : item.hourlyRate * horas;
+  return precioCerrado(item) ? item.hourlyRate : item.hourlyRate * horas;
 }
 
 export type AddToCartResult = 'added' | 'duplicate' | 'limit_reached';

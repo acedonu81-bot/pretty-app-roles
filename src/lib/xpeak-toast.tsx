@@ -169,11 +169,25 @@ export const XPeakToastProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const add = useCallback((item: Omit<ToastItem, 'id'>) => {
-    const id = crypto.randomUUID();
-    const duration = item.duration ?? 4000;
-    setToasts(prev => [{ ...item, id }, ...prev].slice(0, 5));
-    const t = setTimeout(() => remove(id), duration + 300);
-    timers.current.set(id, t);
+    // Deduplicar por título+tipo: un doble tap en móvil (muy común cuando el
+    // usuario no ve reacción inmediata) podía disparar el mismo submit fallido
+    // dos veces y apilar el mismo aviso duplicado uno encima del otro (ej.
+    // "Completa todos los campos" x2, visto en grabación real de Clarity).
+    setToasts(prev => {
+      const dupe = prev.find(t => t.type === item.type && t.title === item.title);
+      if (dupe) {
+        clearTimeout(timers.current.get(dupe.id));
+        const duration = item.duration ?? 4000;
+        const t = setTimeout(() => remove(dupe.id), duration + 300);
+        timers.current.set(dupe.id, t);
+        return prev;
+      }
+      const id = crypto.randomUUID();
+      const duration = item.duration ?? 4000;
+      const t = setTimeout(() => remove(id), duration + 300);
+      timers.current.set(id, t);
+      return [{ ...item, id }, ...prev].slice(0, 5);
+    });
   }, [remove]);
 
   // Register the add function in the module-level variable so the shim can call it

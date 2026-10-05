@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt, Mic, SlidersHorizontal, Speaker, Building2 } from 'lucide-react';
+import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt, Mic, SlidersHorizontal, Speaker, Building2, Truck } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 
 const BLOG_LINKS: Record<string, { href: string; emoji: string; title: string; desc: string }[]> = {
@@ -15,6 +15,10 @@ const BLOG_LINKS: Record<string, { href: string; emoji: string; title: string; d
   catering: [
     { href: '/blog/catering-para-eventos-de-empresa', emoji: '🏢', title: 'Catering para eventos de empresa 2026', desc: 'Formatos, precios por persona y cómo elegir el servicio correcto.' },
     { href: '/blog/cuanto-cuesta-una-boda-en-espana', emoji: '💒', title: '¿Cuánto cuesta una boda en España?', desc: 'Desglose por partidas: catering, DJ, personal y más.' },
+  ],
+  'food-truck': [
+    { href: '/blog/cuanto-cuesta-un-food-truck-para-evento', emoji: '', title: '¿Cuánto cuesta un food truck para un evento?', desc: 'Precios por formato, por comensal y por ciudad en 2026.' },
+    { href: '/blog/catering-para-eventos-de-empresa', emoji: '', title: 'Catering para eventos de empresa 2026', desc: 'Cuándo encaja un food truck y cuándo un catering con servicio de sala.' },
   ],
   fotografo: [
     { href: '/blog/contratar-fotografo-de-bodas', emoji: '📸', title: 'Cómo contratar un fotógrafo de bodas 2026', desc: 'Precios por ciudad, qué incluye y cómo elegir el profesional.' },
@@ -250,7 +254,7 @@ export const CATEGORY_DATA: Record<string, {
       { name: 'Palma', slug: 'palma' },
       { name: 'Ibiza', slug: 'ibiza' },
     ],
-    roles: ['Catering de boda', 'Catering corporativo', 'Cóctel y finger food', 'Banquete sentado', 'Servicio de barra libre', 'Food trucks', 'Cata de vinos', 'Coffee break', 'Cena de gala', 'Buffet libre'],
+    roles: ['Catering de boda', 'Catering corporativo', 'Cóctel y finger food', 'Banquete sentado', 'Servicio de barra libre', 'Cata de vinos', 'Coffee break', 'Cena de gala', 'Buffet libre'],
     faqs: [
       { q: '¿Cuánto cuesta el catering para una boda en España?', a: 'El precio del catering para bodas varía entre 50€ y 150€ por persona según el menú, el servicio y la ciudad. Un banquete sentado completo con vinos incluidos suele estar entre 70€ y 120€/persona. En XPEAK puedes comparar precios reales de diferentes proveedores.' },
       { q: '¿Qué incluye un servicio de catering completo?', a: 'Un servicio de catering completo incluye: aperitivo, cóctel, banquete o buffet, barra libre, montaje y desmontaje, personal de sala y limpieza. Los proveedores en XPEAK detallan exactamente qué incluye cada propuesta.' },
@@ -261,6 +265,40 @@ export const CATEGORY_DATA: Record<string, {
       { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública. Sin registro ni tarjeta.' },
       { title: 'Describe tu evento', body: 'Indica número de asistentes, tipo de servicio, fecha y presupuesto aproximado. Los proveedores de tu zona reciben la solicitud al instante.' },
       { title: 'Elige y firma', body: 'Compara propuestas, elige el catering que mejor se adapta y firma el contrato digital. Todo en la plataforma, sin llamadas ni correos.' },
+    ],
+  },
+  'food-truck': {
+    slug: 'food-truck',
+    emoji: '',
+    h1: 'Contratar Food Truck para Bodas y Eventos',
+    tagline: 'Food trucks para bodas, festivales, eventos de empresa y fiestas privadas',
+    desc: 'Alquila un food truck para tu boda, evento de empresa o fiesta privada. Hamburguesas, tacos, pizza, café y cocina del mundo. Desde 350€ por servicio o 15€ por comensal.',
+    intro: 'Un food truck convierte la comida en parte del espectáculo: los invitados ven cocinar, eligen lo que quieren y la cola se vuelve punto de encuentro. XPEAK reúne food trucks para bodas, festivales, eventos de empresa y fiestas privadas en toda España. Compara su cocina, su capacidad y su precio, y habla directamente con quien lleva el camión.',
+    keyword: 'Food Truck',
+    keywords: 'alquilar food truck, contratar food truck, food truck para eventos, food truck boda, food truck precio, food truck evento empresa, food truck madrid, food truck barcelona, food truck valencia, alquiler food truck fiesta',
+    precio: 'desde 350€',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Alicante', slug: 'alicante' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+    ],
+    roles: ['Hamburguesas gourmet', 'Tacos y cocina mexicana', 'Pizza al horno', 'Barbacoa y brasa', 'Cocina argentina', 'Cocina asiática', 'Vegano y vegetariano', 'Café y coffee truck', 'Postres, crepes y helados', 'Barra móvil y cócteles'],
+    faqs: [
+      { q: '¿Cuánto cuesta alquilar un food truck para un evento?', a: 'Un food truck cuesta entre 350€ y 2.000€ por servicio según el formato y el número de comensales. Un camión con un solo producto para 30-60 personas parte de 350€-600€; un menú de 2-3 opciones para 50-100 personas, 600€-1.200€; y un servicio premium con chef, 1.200€-2.000€. Por persona, entre 15€ y 70€.' },
+      { q: '¿El food truck cobra por hora o por evento?', a: 'Casi siempre por evento: un precio cerrado que incluye el vehículo, el personal de cocina y el menú pactado para un número de comensales y unas horas de servicio. El desplazamiento suele ir aparte si el evento está lejos de su base. En XPEAK cada food truck publica su precio desde por evento.' },
+      { q: '¿Qué necesita un food truck para montar en mi evento?', a: 'Acceso para el vehículo, una zona llana de unos 4x3 metros y, según el camión, una toma de corriente o espacio para su generador. Si el evento es en una finca o un recinto privado, confirma con el espacio que permite vehículos de cocina. En la ficha de cada food truck verás sus requisitos.' },
+      { q: '¿Food truck o catering tradicional?', a: 'Para eventos informales o de menos de 100 personas el food truck suele salir más económico y crea ambiente. Para un banquete sentado con varios platos y servicio en mesa, encaja mejor un catering. En bodas grandes es habitual combinar los dos: catering para la cena y food truck para el recena.' },
+      { q: '¿Puedo contratar varios food trucks para el mismo evento?', a: 'Sí. En festivales, bodas de más de 150 invitados y eventos de empresa grandes se monta a menudo un pequeño street food market con 2-4 food trucks de cocinas distintas. Reduce colas y da variedad. Desde XPEAK puedes añadir varios al mismo evento y pedir presupuesto a la vez.' },
+    ],
+    steps: [
+      { title: 'Busca en el directorio', body: 'Filtra food trucks por ciudad y tipo de cocina. Cada ficha muestra fotos reales, capacidad y precio desde.' },
+      { title: 'Cuenta tu evento', body: 'Indica fecha, lugar, número de invitados y si hay toma de corriente. El food truck te confirma disponibilidad y menú.' },
+      { title: 'Cierra el servicio', body: 'Acordad menú, horas de servicio y desplazamiento, y firma el contrato digital desde la plataforma.' },
     ],
   },
   maquillaje: {
@@ -820,7 +858,7 @@ CATEGORY_DATA.payasos = CATEGORY_DATA.payaso;
 const DIRECTORIO_SLUG: Record<string, string> = {
   dj: 'dj', fotografo: 'fotografo', staff: 'staff', camareros: 'staff',
   maquillaje: 'maquillaje', peluqueria: 'maquillaje',
-  promotores: 'promotores', azafata: 'azafata', catering: 'catering',
+  promotores: 'promotores', azafata: 'azafata', catering: 'catering', 'food-truck': 'food-truck',
   vestuario: 'vestuario', 'disco-movil': 'dj',
   humorista: 'humorista', monologo: 'humorista',
   animador: 'animador', animadores: 'animador', payaso: 'animador', payasos: 'animador',
@@ -837,6 +875,7 @@ const ICON: Record<string, React.ReactNode> = {
   fotografo: <Camera size={20} />,
   camareros: <UtensilsCrossed size={20} />,
   catering: <UtensilsCrossed size={20} />,
+  'food-truck': <Truck size={20} />,
   maquillaje: <Sparkles size={20} />,
   peluqueria: <Scissors size={20} />,
   promotores: <Megaphone size={20} />,

@@ -152,6 +152,9 @@ describe('eventCart', () => {
     it('alquiler de equipos cobra por día, no por horas', () => {
       expect(importeEstimado(makeItem('alq1', { role: 'alquiler', hourlyRate: 150 }), 6)).toBe(150);
     });
+    it('food truck cobra precio cerrado por evento, no por horas', () => {
+      expect(importeEstimado(makeItem('ft1', { role: 'food-truck', hourlyRate: 800 }), 5)).toBe(800);
+    });
     it('sin tarifa pública estima 0', () => {
       expect(importeEstimado(makeItem('x', { hourlyRate: null }), 4)).toBe(0);
     });

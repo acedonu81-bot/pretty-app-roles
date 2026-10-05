@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { logEvent } from '@/lib/track';
 import { HZ_MATCH_IDS, type HZMatchRole } from '@/data/healthyZoneMatches';
@@ -76,8 +77,8 @@ export default function HZMatchCard({ role, seed, origin }: { role: HZMatchRole;
 
   return (
     <div className="mt-4 flex flex-col gap-2">
-      <a
-        href={`/p/${profile.user_id}`}
+      <Link
+        to={`/p/${profile.user_id}`}
         onClick={() => { void logEvent('hz_match_click', origin, `${role}:${profile.user_id}`); }}
         className="flex items-center gap-4 rounded-[24px] p-4 no-underline transition-transform hover:-translate-y-0.5"
         style={{ background: HZ.surface, boxShadow: clay(SURFACE_RGB, 'sm') }}
@@ -103,11 +104,11 @@ export default function HZMatchCard({ role, seed, origin }: { role: HZMatchRole;
         <span className="ml-auto shrink-0 rounded-full px-4 py-2 text-sm whitespace-nowrap" style={{ background: HZ.green, color: '#fff', fontWeight: 800 }}>
           Ver perfil
         </span>
-      </a>
+      </Link>
       {esOtraCiudad && (
-        <a href={ROLE_DIRECTORIO[role]} className="self-start pl-2 text-xs no-underline" style={{ color: HZ.inkSoft }}>
+        <Link to={ROLE_DIRECTORIO[role]} className="self-start pl-2 text-xs no-underline" style={{ color: HZ.inkSoft }}>
           ¿No eres de {profile.city_ref}? <span style={{ color: HZ.green, fontWeight: 800 }}>Consulta tu zona en el directorio →</span>
-        </a>
+        </Link>
       )}
     </div>
   );

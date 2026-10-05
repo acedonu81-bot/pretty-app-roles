@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Calendar, MapPin, MessageSquare, Trash2, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { useEventCart, cobraPorDia, importeEstimado, removeFromCart } from '@/lib/eventCart';
+import { useEventCart, precioCerrado, importeEstimado, removeFromCart } from '@/lib/eventCart';
+import { unidadTarifa } from '@/lib/constants';
 
 interface Props {
   onClose: () => void;
@@ -111,7 +112,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
         // Presupuesto estimado que se le mostró al organizador (tarifa × horas).
         // Guardarlo como null hacía que el trabajo figurase a 0€ en el Historial
         // y en Gastos del empresario, pese a haberle enseñado una cifra.
-        agreed_price: item.hourlyRate && (estimatedHours > 0 || cobraPorDia(item)) ? importeEstimado(item, estimatedHours) : null,
+        agreed_price: item.hourlyRate && (estimatedHours > 0 || precioCerrado(item)) ? importeEstimado(item, estimatedHours) : null,
         status: 'pending',
         created_by: user?.id ?? null,
       };
@@ -215,7 +216,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold truncate" style={{ color: '#111' }}>{item.displayName}</p>
                     <p className="text-[0.7rem]" style={{ color: '#333' }}>
-                      {item.zone || 'España'}{item.hourlyRate ? ` · desde ${item.hourlyRate}€${cobraPorDia(item) ? '/día' : '/h'}` : ''}
+                      {item.zone || 'España'}{item.hourlyRate ? ` · desde ${item.hourlyRate}€${unidadTarifa(item.role, true)}` : ''}
                     </p>
                   </div>
                   <button type="button" onClick={() => remove(item.userId)}
@@ -304,7 +305,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                   {items.filter(i => i.hourlyRate).map(i => (
                     <div key={i.userId} className="flex items-center justify-between text-[0.7rem]" style={{ color: '#555' }}>
                       <span className="truncate mr-2">{i.displayName}</span>
-                      <span className="flex-shrink-0">{cobraPorDia(i) ? `${i.hourlyRate}€/día × 1 día` : `${i.hourlyRate}€/h × ${estimatedHours}h`} = <span className="font-bold" style={{ color: '#222' }}>{importeEstimado(i, estimatedHours)}€</span></span>
+                      <span className="flex-shrink-0">{precioCerrado(i) ? `${i.hourlyRate}€${unidadTarifa(i.role, true)}` : `${i.hourlyRate}€/h × ${estimatedHours}h`} = <span className="font-bold" style={{ color: '#222' }}>{importeEstimado(i, estimatedHours)}€</span></span>
                     </div>
                   ))}
                 </div>

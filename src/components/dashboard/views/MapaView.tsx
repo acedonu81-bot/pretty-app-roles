@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { MapPin, Search, Users, CheckCircle, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
@@ -166,9 +167,9 @@ const MapaView = () => {
           {!loading && cityProfiles.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {cityProfiles.map(pro => (
-                <a
+                <Link
                   key={pro.user_id}
-                  href={`/p/${pro.user_id}`}
+                  to={`/p/${pro.user_id}`}
                   className="glass-panel p-4 flex items-center gap-3 transition-all hover:border-primary/20 hover:scale-[1.01]"
                 >
                   <div className="flex-shrink-0">
@@ -189,7 +190,7 @@ const MapaView = () => {
                     </p>
                   </div>
                   <ExternalLink size={12} style={{ color: 'rgba(0,0,0,0.1)', flexShrink: 0 }} />
-                </a>
+                </Link>
               ))}
             </div>
           )}

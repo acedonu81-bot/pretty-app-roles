@@ -169,6 +169,14 @@ export const ROLE_CONFIG: Record<string, {
     seoDesc: 'Directorio de catering y chefs para bodas y eventos en España. Menús por persona, barra libre y showcooking. Precios reales.',
     cta: 'Pedir presupuesto',
   },
+  'food-truck': {
+    dbRole: 'food-truck',
+    title: 'Food trucks para bodas y eventos',
+    subtitle: 'Food trucks de hamburguesas, tacos, pizza, café y cocina del mundo para bodas, festivales, eventos de empresa y fiestas privadas.',
+    seoTitle: 'Alquilar Food Truck para bodas y eventos en España | XPEAK',
+    seoDesc: 'Directorio de food trucks para bodas, festivales y eventos de empresa en España. Hamburguesas, tacos, pizza y más. Contacto directo y precios reales.',
+    cta: 'Pedir presupuesto',
+  },
   humorista: {
     dbRole: 'humorista',
     title: 'Humoristas y monologuistas para eventos',
@@ -264,6 +272,7 @@ export const ALL_ROLES = [
   { slug: 'maquillaje', label: 'Maquillaje y Peluquería' },
   { slug: 'promotores', label: 'Promotores' },
   { slug: 'catering', label: 'Catering' },
+  { slug: 'food-truck', label: 'Food Trucks' },
   { slug: 'grupo-musical', label: 'Grupos' },
   { slug: 'animador', label: 'Animadores Infantiles' },
   { slug: 'mago', label: 'Magos & Ilusionismo' },
@@ -298,21 +307,27 @@ export function cityFromParam(raw: string | null): string {
 // Sugerencias de categorías relacionadas cuando una queda sin resultados —
 // agrupadas por tipo de necesidad, no alfabético, para que la sugerencia tenga sentido real.
 const RELATED_ROLES: Record<string, string[]> = {
+  dj: ['grupo-musical', 'tecnico-sonido', 'alquiler-equipos'],
   mago: ['animador', 'humorista', 'bailarin'],
   animador: ['mago', 'humorista', 'bailarin'],
   humorista: ['mago', 'speaker', 'animador'],
   speaker: ['humorista', 'wedding-planner'],
   bailarin: ['animador', 'grupo-musical', 'dj'],
   'grupo-musical': ['dj', 'bailarin'],
+  fotografo: ['photo-booth', 'diseno-grafico'],
   'photo-booth': ['fotografo', 'diseno-grafico'],
   'diseno-grafico': ['photo-booth', 'fotografo'],
   'wedding-planner': ['speaker', 'catering', 'vestuario'],
   vestuario: ['maquillaje', 'wedding-planner'],
-  catering: ['staff', 'wedding-planner'],
+  maquillaje: ['vestuario', 'fotografo'],
+  catering: ['food-truck', 'staff', 'wedding-planner'],
+  'food-truck': ['catering', 'dj', 'locales-eventos'],
+  staff: ['azafata', 'catering'],
+  azafata: ['staff', 'promotores'],
   promotores: ['staff', 'dj'],
   'tecnico-sonido': ['alquiler-equipos', 'dj', 'grupo-musical'],
   'alquiler-equipos': ['dj', 'tecnico-sonido', 'grupo-musical', 'photo-booth'],
-  'locales-eventos': ['dj', 'catering', 'staff'],
+  'locales-eventos': ['dj', 'catering', 'food-truck', 'staff'],
 };
 const DEFAULT_RELATED = ['dj', 'fotografo', 'staff'];
 
@@ -540,6 +555,10 @@ function DirectorioPublicoContenido() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const city = cityFromParam(searchParams.get('ciudad'));
+  // Presente solo cuando el buscador de portada no reconoció el término
+  // (resolverVistaDeBusqueda devolvió null) y aterrizó aquí por el fallback
+  // a DJ: antes no se avisaba de nada y parecía que "todo lleva a DJs".
+  const unmatchedQuery = searchParams.get('q');
   // La ciudad vive en la URL, no en useState: así el enlace es compartible,
   // el botón atrás funciona y el HTML servido a Google corresponde al filtro.
   const setCity = (c: string) => {
@@ -683,6 +702,11 @@ function DirectorioPublicoContenido() {
         </nav>
 
         <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
+          {unmatchedQuery && (
+            <div className="mb-6 p-4 rounded-xl text-sm" style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.3)', color: '#444' }}>
+              No encontramos "{unmatchedQuery}" como categoría. Te mostramos <strong>{config.title}</strong> mientras tanto — elige otra categoría abajo si buscabas algo distinto.
+            </div>
+          )}
           {/* Header */}
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>Directorio · XPEAK</p>

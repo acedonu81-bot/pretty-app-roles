@@ -123,6 +123,7 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
   const [showGenres, setShowGenres] = useState(false);
   const [savingGenres, setSavingGenres] = useState(false);
   const [rightsConfirmed, setRightsConfirmed] = useState(false);
+  const [rightsAttentionPing, setRightsAttentionPing] = useState(false);
   const [linkInput, setLinkInput] = useState('');
   const [showLinkInput, setShowLinkInput] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -134,6 +135,12 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
       setSelectedGenres(profile.genres);
     }
   }, [profile.genres?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!rightsAttentionPing) return;
+    const t = setTimeout(() => setRightsAttentionPing(false), 2000);
+    return () => clearTimeout(t);
+  }, [rightsAttentionPing]);
 
   // Load existing sessions: files from storage + external links from profile
   useEffect(() => {
@@ -386,13 +393,18 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
         </div>
       )}
 
-      {/* Rights confirmation */}
+      {/* Rights confirmation — antes el botón de subir quedaba simplemente
+          disabled hasta marcar esto, sin ningún aviso: en Clarity (3 oct
+          2026) un usuario dio varios clics "muertos" en "Subir archivo" sin
+          saber por qué no pasaba nada. rightsAttentionPing lo resalta y
+          dispara un toast explicando el motivo en vez de no hacer nada. */}
       {canAdd && (
-        <label className="flex items-start gap-2 mb-3 cursor-pointer group">
+        <label className={`flex items-start gap-2 mb-3 cursor-pointer group rounded-lg transition-all ${rightsAttentionPing ? 'animate-pulse' : ''}`}
+          style={rightsAttentionPing ? { outline: '2px solid #D4AF37', outlineOffset: '4px' } : undefined}>
           <input
             type="checkbox"
             checked={rightsConfirmed}
-            onChange={e => setRightsConfirmed(e.target.checked)}
+            onChange={e => { setRightsConfirmed(e.target.checked); setRightsAttentionPing(false); }}
             className="mt-0.5 flex-shrink-0 accent-[#D4AF37]"
           />
           <span className="text-xs leading-relaxed" style={{ color: '#222' }}>
@@ -430,8 +442,11 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
       {canAdd && (
         <div className="flex gap-2">
           <button
-            onClick={() => { if (rightsConfirmed) inputRef.current?.click(); }}
-            disabled={uploading || !rightsConfirmed}
+            onClick={() => {
+              if (!rightsConfirmed) { toast.error('Marca primero la casilla de derechos de autor, arriba.'); setRightsAttentionPing(true); return; }
+              inputRef.current?.click();
+            }}
+            disabled={uploading}
             className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01] disabled:opacity-40"
             style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#8A6D0F', background: 'rgba(212,175,55,0.03)' }}>
             <Upload size={16} />
@@ -443,9 +458,11 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
             </div>
           )}
           <button
-            onClick={() => { if (rightsConfirmed) setShowLinkInput(!showLinkInput); }}
-            disabled={!rightsConfirmed}
-            className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01] disabled:opacity-40"
+            onClick={() => {
+              if (!rightsConfirmed) { toast.error('Marca primero la casilla de derechos de autor, arriba.'); setRightsAttentionPing(true); return; }
+              setShowLinkInput(!showLinkInput);
+            }}
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01]"
             style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#8A6D0F', background: 'rgba(212,175,55,0.03)' }}>
             <Link size={16} />
             <span className="text-sm font-bold">Link</span>

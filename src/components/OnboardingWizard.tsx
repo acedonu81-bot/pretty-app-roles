@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, ClipboardList, Speaker } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, ClipboardList, Speaker, Truck } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -29,6 +29,7 @@ const ROLES = [
   { value: 'event_manager', label: 'Encargada de Eventos', desc: 'Coordinación y producción de eventos', icon: ClipboardList, color: '#818cf8' },
   { value: 'promotor',     label: 'Promotor / RRPP',     desc: 'Relaciones públicas y listas',      icon: Megaphone,      color: '#a78bfa' },
   { value: 'catering',     label: 'Catering / Chef',     desc: 'Cocina, barra y cócteles',          icon: UtensilsCrossed, color: '#fb923c' },
+  { value: 'food-truck',   label: 'Food Truck',          desc: 'Cocina sobre ruedas para eventos',  icon: Truck,          color: '#f59e0b' },
   { value: 'mago',         label: 'Mago / Ilusionista',  desc: 'Magia de cerca y escenario',        icon: Wand2,          color: '#8b5cf6' },
   { value: 'humorista',    label: 'Humorista / Cómico',  desc: 'Monólogos y stand-up',              icon: Laugh,          color: '#f97316' },
   { value: 'animador',     label: 'Animador / Payaso',   desc: 'Animación infantil y familiar',     icon: PartyPopper,    color: '#ec4899' },
@@ -172,6 +173,14 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
       ['Sube tu book', 'Looks y styling de trabajos reales'],
       ['Define tu especialidad', 'Novias, artistas, producciones...'],
       ['Añade tu tarifa', 'Por sesión o por proyecto'],
+    ],
+  },
+  'food-truck': {
+    title: 'Tu perfil de Food Truck está listo',
+    tips: [
+      ['Sube fotos de tu food truck', 'El camión montado en un evento y tus platos'],
+      ['Define tu cocina', 'Hamburguesas, tacos, pizza, café...'],
+      ['Añade tu tarifa', 'Por evento o por comensal'],
     ],
   },
   'photo-booth': {
@@ -611,7 +620,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </div>
 
                   <div className="px-1">
-                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>{selectedRole === 'alquiler' ? 'Tu precio por día' : 'Tu tarifa por hora'} <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
+                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>{selectedRole === 'alquiler' ? 'Tu precio por día' : selectedRole === 'food-truck' ? 'Tu precio por evento (desde)' : 'Tu tarifa por hora'} <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
                     <div className="relative">
                       <Euro size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
                       <input

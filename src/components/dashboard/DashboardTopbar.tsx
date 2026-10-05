@@ -33,6 +33,11 @@ interface TopbarProps {
 
 const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', onHome, userId, isEmpresario = false, onViewChange }: TopbarProps) => {
   const navigate = useNavigate();
+  // En móvil el campo de texto competía por ancho con logo, menú, campana y
+  // avatar y el placeholder se cortaba a mitad de palabra ("Q" + letra suelta
+  // reportado por el usuario). En vez de seguir acortando texto: solo lupa
+  // hasta que se toca, y entonces el input ocupa el sitio del logo/menú.
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
   // Único por instancia además de por usuario: dos montajes del mismo
   // componente compartirían canal y el segundo fallaría al suscribirse.
@@ -172,7 +177,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       }}
     >
       <div className="flex items-center gap-3 flex-1 min-w-0">
-        {isMobile && (
+        {isMobile && !mobileSearchOpen && (
           <button
             onClick={onMenuToggle}
             aria-label="Abrir menú"
@@ -182,39 +187,54 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             <Menu size={20} />
           </button>
         )}
-        {isMobile && (
+        {isMobile && !mobileSearchOpen && (
           <button onClick={() => onHome?.()} className="font-black tracking-widest text-base transition-opacity hover:opacity-70 flex-shrink-0 font-display">
             X<span style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>PEAK</span>
           </button>
         )}
 
-        <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2.5 sm:py-2 rounded-full flex-1 min-w-0 max-w-[360px] transition-all"
-          style={{
-            background: searchQuery ? 'rgba(212,175,55,0.05)' : '#f5f5f5',
-            border: searchQuery ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(0,0,0,0.1)',
-          }}>
-          <Search size={15} className="flex-shrink-0" style={{ color: searchQuery ? '#D4AF37' : '#999' }} />
-          <input
-            type="text"
-            // Placeholder corto en móvil: el contenedor compite por ancho con
-            // logo, menú, campana y avatar, y sin overflow declarado el texto
-            // se cortaba en seco a mitad de palabra ("Q" + una letra suelta,
-            // reportado por el usuario). text-overflow: ellipsis (abajo)
-            // cubre el resto de anchos intermedios sin depender solo de
-            // acortar el texto.
-            placeholder={isMobile ? 'Buscar' : 'Buscar por zona, rol o nombre...'}
-            className="bg-transparent border-none outline-none w-full text-sm sm:text-xs"
-            style={{ color: '#111', textOverflow: 'ellipsis' }}
-            value={searchQuery}
-            onChange={e => onSearch?.(e.target.value)}
-            onKeyDown={e => e.key === 'Escape' && onSearch?.('')}
-          />
-          {searchQuery && (
-            <button onClick={() => onSearch?.('')} aria-label="Borrar búsqueda" className="flex-shrink-0 transition-opacity hover:opacity-70">
-              <X size={12} style={{ color: '#444' }} />
-            </button>
-          )}
-        </div>
+        {isMobile && !mobileSearchOpen ? (
+          <button
+            onClick={() => setMobileSearchOpen(true)}
+            aria-label="Buscar"
+            className="p-3 rounded-full flex-shrink-0 transition-colors"
+            style={{ background: '#f5f5f5', border: '1px solid rgba(0,0,0,0.1)', color: '#999' }}
+          >
+            <Search size={15} />
+          </button>
+        ) : (
+          <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2.5 sm:py-2 rounded-full flex-1 min-w-0 max-w-[360px] transition-all"
+            style={{
+              background: searchQuery ? 'rgba(212,175,55,0.05)' : '#f5f5f5',
+              border: searchQuery ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(0,0,0,0.1)',
+            }}>
+            <Search size={15} className="flex-shrink-0" style={{ color: searchQuery ? '#D4AF37' : '#999' }} />
+            <input
+              type="text"
+              autoFocus={isMobile}
+              placeholder={isMobile ? 'Buscar' : 'Buscar por zona, rol o nombre...'}
+              className="bg-transparent border-none outline-none w-full text-sm sm:text-xs"
+              style={{ color: '#111', textOverflow: 'ellipsis' }}
+              value={searchQuery}
+              onChange={e => onSearch?.(e.target.value)}
+              onKeyDown={e => e.key === 'Escape' && (onSearch?.(''), setMobileSearchOpen(false))}
+            />
+            {searchQuery && (
+              <button onClick={() => onSearch?.('')} aria-label="Borrar búsqueda" className="flex-shrink-0 transition-opacity hover:opacity-70">
+                <X size={12} style={{ color: '#444' }} />
+              </button>
+            )}
+            {isMobile && (
+              <button
+                onClick={() => { onSearch?.(''); setMobileSearchOpen(false); }}
+                aria-label="Cerrar búsqueda"
+                className="flex-shrink-0 transition-opacity hover:opacity-70"
+              >
+                <X size={14} style={{ color: '#444' }} />
+              </button>
+            )}
+          </div>
+        )}
 
         {!isMobile && <GigWonPopup variant="inline" />}
       </div>

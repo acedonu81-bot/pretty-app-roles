@@ -21,6 +21,17 @@ const FlashBookingWallView = () => {
   );
   const [pendingCount, setPendingCount] = useState(0);
 
+  // El valor inicial de tab solo se evalúa al MONTAR el componente. Si el
+  // usuario ya estaba dentro de esta vista (otra pestaña) y llega aquí vía
+  // notificación/email con ?tab=solicitudes, React Router no remonta
+  // FlashBookingWallView (misma ruta base) — sin este efecto, el clic en la
+  // notificación "no hacía nada" visualmente porque la pestaña no cambiaba
+  // (reportado por el usuario el 3 oct 2026, tras valorar y querer volver).
+  useEffect(() => {
+    if (tabFromQuery === 'solicitudes' && !isEmpresario) setTab('solicitudes');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabFromQuery]);
+
   // Count pending incoming requests for professionals.
   // Se recuenta con cada cambio en flash_bookings: antes se leía una sola vez
   // al montar, así que el badge seguía mostrando el número viejo después de

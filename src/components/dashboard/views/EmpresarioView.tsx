@@ -124,6 +124,15 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
   const [tab, setTab] = useState<'discover' | 'flash' | 'favorites' | 'stats' | 'benchmark' | 'media' | 'historial' | 'gastos'>(
     tabFromQuery === 'historial' ? 'historial' : 'discover'
   );
+  // El valor inicial de tab solo se evalúa al MONTAR — si el usuario ya
+  // estaba dentro de esta vista y llega vía notificación/email con
+  // ?tab=historial, React Router no remonta el componente (misma ruta base)
+  // y el clic "no hacía nada" visualmente. Mismo bug y mismo fix que
+  // FlashBookingWallView.tsx (3 oct 2026).
+  useEffect(() => {
+    if (tabFromQuery === 'historial') setTab('historial');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabFromQuery]);
   const [pros, setPros] = useState<Pro[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { ROLE_ES } from '@/lib/constants';
@@ -24,7 +25,7 @@ import { ROLE_ES } from '@/lib/constants';
  * función) o esta desaparece sola al pasar los 60 días.
  */
 
-type Contratacion = { nombre: string; rol: string; fecha: string };
+type Contratacion = { nombre: string; rol: string; fecha: string; userId: string };
 
 const AZUL = '#2563EB';
 const INTERVALO_ROTACION_MS = 5000;
@@ -75,11 +76,12 @@ const UltimaContratacion = () => {
         const items: Contratacion[] = filas
           .map((f) => {
             const perfil = f.professional_user_id ? perfilPorId.get(f.professional_user_id) : null;
-            if (!perfil?.display_name || !f.fecha) return null;
+            if (!perfil?.display_name || !f.fecha || !f.professional_user_id) return null;
             return {
               nombre: perfil.display_name,
               rol: ROLE_ES[perfil.role as string] ?? (perfil.role as string) ?? '',
               fecha: f.fecha,
+              userId: f.professional_user_id,
             };
           })
           .filter((x): x is Contratacion => x !== null);
@@ -105,8 +107,9 @@ const UltimaContratacion = () => {
   const cuando = haceCuanto(dato.fecha);
 
   return (
-    <div
-      className="xpk-ultima-contratacion flex items-center gap-2.5 mb-4 px-3.5 py-2.5 rounded-xl"
+    <Link
+      to={`/p/${dato.userId}`}
+      className="xpk-ultima-contratacion flex items-center gap-2.5 mb-4 px-3.5 py-2.5 rounded-xl cursor-pointer transition-transform hover:scale-[1.01]"
       style={{ background: 'rgba(37,99,235,0.07)', border: '1px solid rgba(37,99,235,0.2)' }}
     >
       <style>{`
@@ -135,8 +138,9 @@ const UltimaContratacion = () => {
         <span className="font-bold">{dato.nombre}</span>
         {dato.rol && <span style={{ color: 'rgba(10,9,8,0.6)' }}> · {dato.rol}</span>}
         {cuando && <span style={{ color: 'rgba(10,9,8,0.5)' }}> · {cuando}</span>}
+        <span className="font-bold" style={{ color: AZUL }}> · Ver ficha →</span>
       </p>
-    </div>
+    </Link>
   );
 };
 

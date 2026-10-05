@@ -27,7 +27,7 @@ const ROLE_MAP: Record<string, string[]> = {
   humorista: ['humorista'], monologo: ['humorista'], monologos: ['humorista'],
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],
   payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
-  'photo-booth': ['photo-booth'],
+  'photo-booth': ['photo-booth'], 'food-truck': ['food-truck'],
   'tecnico-sonido': ['tecnico'], 'alquiler-equipos': ['alquiler'],
   'locales-eventos': ['local_eventos'],
 };
@@ -568,6 +568,18 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
       { q: `¿Con cuánta antelación contratar un photo booth en ${c}?`, a: 'Con 3-4 meses de antelación suele ser suficiente. En temporada alta (mayo-septiembre) se recomienda reservar con 6 meses.' },
     ],
   },
+  'food-truck': {
+    label: 'Food Truck',
+    keyword: 'Food Truck',
+    unidad: '/evento',
+    desc: (c) => `Alquilar food truck en ${c} para bodas, eventos de empresa, festivales y fiestas privadas. Hamburguesas, tacos, pizza, café y más. Contacto directo y precio por evento.`,
+    intro: (c) => `Encuentra food trucks en ${c} para tu boda, evento de empresa o fiesta privada: hamburguesas gourmet, tacos, pizza, brasa, cocina del mundo, café o postres. XPEAK te pone en contacto directo con quien lleva el camión, sin intermediarios.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta alquilar un food truck en ${c}?`, a: `Un food truck en ${c} cuesta entre ${precio} por servicio según el menú, el número de comensales y las horas. Por persona suele estar entre 15€ y 70€. El desplazamiento puede ir aparte si el evento está lejos de su base.` },
+      { q: `¿Qué necesita un food truck para montar en ${c}?`, a: 'Acceso para el vehículo, una zona llana de unos 4x3 metros y toma de corriente o espacio para su generador. Si el evento es en una finca o un recinto privado, confirma antes que admite vehículos de cocina.' },
+      { q: '¿Con cuánta antelación debo reservar un food truck?', a: 'Para bodas y fines de semana de mayo a septiembre, de 3 a 6 meses. Para un evento de empresa entre semana suele bastar con unas semanas. Con Flash Booking puedes pedir disponibilidad a varios food trucks a la vez.' },
+    ],
+  },
   promotores: {
     label: 'Promotor',
     keyword: 'Promotor y RRPP',
@@ -678,6 +690,7 @@ const FACTOR_PRECIO: Record<string, [number, number]> = {
   'grupo-musical': [10, 4],  // 60→600€, 300→1.200€
   'disco-movil': [6, 1.7],
   'photo-booth': [5, 1.3],
+  'food-truck': [6, 5],      // por evento: 60→360€, 300→1.500€
   mago: [4, 1.3],
   animador: [3.5, 1],
   bailarin: [3, 1],

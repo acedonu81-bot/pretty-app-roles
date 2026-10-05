@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
+import ProductionsUpload from '@/components/dashboard/ProductionsUpload';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import MisCondicionesSection from './profile/MisCondicionesSection';
@@ -155,6 +156,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     { value: 'event_manager', label: 'Encargada de Eventos' },
     { value: 'promotor',      label: 'Promotor' },
     { value: 'catering',      label: 'Catering / Cocina' },
+    { value: 'food-truck',    label: 'Food Truck' },
+    { value: 'photo-booth',   label: 'Photo Booth' },
     { value: 'makeup',        label: 'Maquillaje' },
     { value: 'peluqueria',    label: 'Peluquería a Domicilio' },
     // La etiqueta debe ser la MISMA que la del directorio ("Media & Contenido"),
@@ -734,7 +737,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             {profile.role !== 'empresario' && (
               <div className="mb-3">
                 <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
-                  {profile.role === 'alquiler' ? 'Precio de alquiler por día' : 'Caché / Tarifa por hora'}
+                  {profile.role === 'alquiler' ? 'Precio de alquiler por día' : profile.role === 'food-truck' ? 'Precio por evento (desde)' : 'Caché / Tarifa por hora'}
                   <span className="ml-2 normal-case tracking-normal font-normal" style={{ color: '#333' }}> · solo visible para empresarios
                   </span>
                 </label>
@@ -1097,6 +1100,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     ? 'Ej: Camarero de sala y barra. Coctelería básica. Traje propio. Inglés fluido. Experiencia en bodas de 200+ invitados.'
                   : profile.role === 'catering'
                     ? 'Ej: Catering para bodas y eventos de empresa. Menú cerrado o buffet. Opciones veganas y sin gluten. Personal de sala incluido.'
+                  : profile.role === 'food-truck'
+                    ? 'Ej: Food truck de hamburguesas gourmet. Servimos hasta 200 comensales. Generador propio, solo necesitamos acceso para el camión y 4x3 m de espacio.'
                   : 'Describe tu especialidad y requisitos...';
                 const PRESETS: Record<string, string[]> = {
                   dj:     ['CDJ-3000 + DJM-900NXS2', 'Mesa propia', '2 enchufes', 'Monitor lateral', 'Rider estándar Pioneer', 'Necesita backline', 'Acepta Serato', 'Acepta Traktor'],
@@ -1110,6 +1115,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   staff:         ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala'],
                   camarero:      ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala', 'Coctelería'],
                   catering:      ['Menú cerrado', 'Buffet', 'Cocina en directo', 'Opciones veganas', 'Personal incluido'],
+                  'food-truck':  ['Generador propio', 'Necesita toma de corriente', 'Hasta 100 comensales', 'Más de 200 comensales', 'Opciones veganas', 'Sin gluten', 'Registro sanitario al día'],
                   event_manager: ['Coordinación integral', 'Presupuesto detallado', 'Gestión de proveedores', 'On-site el día del evento', 'Experiencia en bodas', 'Experiencia en festivales'],
                 };
                 const presets = PRESETS[profile.role ?? ''] ?? [];
@@ -1264,6 +1270,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             )}
           </div>
           {(profile.role === 'dj') && <AudioUpload legacyEmbedUrl={profile.audio_embed_url} onMigrated={() => profile.updateField({ audio_embed_url: null })} />}
+          {(profile.role === 'dj') && <ProductionsUpload />}
           {profile.role !== 'dj' && profile.role !== 'empresario' && <PortfolioUpload />}
 
           {/* Export ZIP - GDPR */}

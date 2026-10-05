@@ -11,11 +11,17 @@ const formatTime = (seconds: number) => {
 };
 
 // Reproductor propio para archivos de audio directos (no embebibles vía
-// iframe de Mixcloud/SoundCloud/HearThis) — antes caía en <audio controls>,
-// los controles grises nativos del navegador desentonaban con el resto del
-// diseño dorado/negro de la marca.
-const CustomAudioPlayer = ({ url }: { url: string }) => {
+// iframe de Mixcloud/SoundCloud/HearThis). Mismo placeholder "pulsa para
+// escuchar" que EmbedDiferido.tsx (círculo dorado + ecualizador + texto) —
+// antes tenía su propio estilo (botón verde pequeño + barra de progreso
+// visible desde el principio), y al lado de las tarjetas de SoundCloud/
+// HearThis en el feed se veía como un componente roto o de otra app
+// (reportado por el usuario 2 oct 2026: "porque solo uno tiene un play").
+// Los controles reales (play/pausa, progreso, volumen) solo aparecen tras
+// pulsar, igual que el iframe diferido de las otras plataformas.
+const CustomAudioPlayer = ({ url, alto = 70 }: { url: string; alto?: number }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [cargado, setCargado] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [current, setCurrent] = useState(0);
@@ -44,12 +50,39 @@ const CustomAudioPlayer = ({ url }: { url: string }) => {
     );
   }
 
+  if (!cargado) {
+    const barras = [0.4, 0.75, 1, 0.55, 0.85, 0.35, 0.65];
+    return (
+      <button type="button" onClick={() => setCargado(true)} aria-label="Escuchar sesión de audio"
+        className="embed-diferido-btn w-full flex items-center gap-3 px-4 text-left transition-colors hover:bg-black/[0.03] rounded-xl"
+        style={{ height: alto, background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+        <span className="flex items-center justify-center rounded-full flex-shrink-0"
+          style={{ width: 44, height: 44, background: 'linear-gradient(135deg,#D4AF37,#B8941E)' }}>
+          <Play size={16} fill="#000" color="#000" style={{ marginLeft: 2 }} />
+        </span>
+        <span className="flex items-end gap-[3px] h-6 flex-shrink-0" aria-hidden="true">
+          {barras.map((h, i) => (
+            <span key={i} className="eq-bar" style={{ '--h': h } as React.CSSProperties} />
+          ))}
+        </span>
+        <span className="min-w-0">
+          <span className="block text-sm font-bold" style={{ color: '#111' }}>Escuchar sesión de audio</span>
+          <span className="block text-xs" style={{ color: '#6b7280' }}>Audio</span>
+        </span>
+        <style>{`
+          .eq-bar { width: 3px; border-radius: 2px; background: linear-gradient(180deg, #D4AF37, #B8941E); height: calc(var(--h) * 100%); transform-origin: bottom; }
+        `}</style>
+      </button>
+    );
+  }
+
   return (
     <div className="w-full flex items-center gap-3 rounded-xl px-4 py-3"
       style={{ background: 'rgba(10,9,8,0.03)', border: '1px solid rgba(212,175,55,0.15)' }}>
       <audio
         ref={audioRef}
         src={url}
+        autoPlay
         preload="metadata"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}

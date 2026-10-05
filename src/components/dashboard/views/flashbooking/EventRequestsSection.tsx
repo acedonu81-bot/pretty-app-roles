@@ -47,7 +47,7 @@ const FAMILIAS_DJ: { label: string; incluye: string[] }[] = [
 // Etiqueta del formulario → slug real de profiles.role: ROL_UI_A_SLUG vive en
 // constants.ts para poder leer ROLE_TAGS y saber qué especialidades tiene ese
 // rol (lo mismo que ya declara cada profesional en su perfil).
-const ROLES_LIST = ['DJ / Artista', 'Fotógrafo', 'Camarero / Staff', 'Maquilladora', 'Grupo musical', 'Animador', 'Promotor / RRPP', 'Photo Booth', 'Catering', 'Técnico de sonido', 'Alquiler de equipos'];
+const ROLES_LIST = ['DJ / Artista', 'Fotógrafo', 'Camarero / Staff', 'Maquilladora', 'Grupo musical', 'Animador', 'Promotor / RRPP', 'Photo Booth', 'Catering', 'Food truck', 'Técnico de sonido', 'Alquiler de equipos'];
 
 // Opciones de estilo para un rol pedido: familias para DJ, tags sueltos (los
 // mismos que declara el profesional en su perfil) para el resto.

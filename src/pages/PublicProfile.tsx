@@ -2,12 +2,13 @@ import { unidadTarifa } from '@/lib/constants';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2, Building2, Moon, Navigation, Flag } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, Disc3, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2, Building2, Moon, Navigation, Flag } from 'lucide-react';
 import { toast } from 'sonner';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import CondicionesPublicas from '@/components/CondicionesPublicas';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import SessionAudioPlayer from '@/components/SessionAudioPlayer';
+import ProductionLink from '@/components/ProductionLink';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
 import { useScarcitySignal } from '@/hooks/useScarcitySignal';
@@ -24,6 +25,7 @@ import { fotoOptimizada } from '@/lib/imagen';
 import EmbedDiferido from '@/components/EmbedDiferido';
 import FollowButton from '@/components/FollowButton';
 import PostCard from '@/components/PostCard';
+import { canSubmitReview, YesNoToggle } from '@/components/ReviewQuestions';
 
 /* ── Reviews ─────────────────────────────────────────────────────────────── */
 interface Review {
@@ -129,6 +131,15 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
   // podía dejar una valoración sin haber contratado nunca.
   const [eligibleBooking, setEligibleBooking] = useState<{ requester_name: string } | null | 'loading'>('loading');
   const [form, setForm] = useState({ event_type: '', rating: 5, comment: '' });
+  // Solo tiene sentido en este sentido (organizador valora a un profesional):
+  // es quien llega a un sitio y cumple un servicio acordado. Antes se pedían
+  // aparte, como un paso de "completar" en HistorialTab.tsx que casi nadie
+  // usaba — integradas aquí para que no quede ninguna reseña a medias
+  // (reportado por el usuario el 3 oct 2026, su propia reseña había quedado
+  // incompleta sin estas 3 respuestas).
+  const [llegoPuntual, setLlegoPuntual] = useState<boolean | null>(null);
+  const [cumplioAcordado, setCumplioAcordado] = useState<boolean | null>(null);
+  const [volveriaContratar, setVolveriaContratar] = useState<boolean | null>(null);
   const [reportingReviewId, setReportingReviewId] = useState<string | null>(null);
   const [reportedReviewIds, setReportedReviewIds] = useState<Set<string>>(new Set());
 
@@ -200,7 +211,12 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !eligibleBooking || eligibleBooking === 'loading' || !form.comment.trim() || form.rating < 1) return;
+    if (!user || !eligibleBooking || eligibleBooking === 'loading') return;
+    if (!canSubmitReview(form.rating, form.comment, llegoPuntual, cumplioAcordado, volveriaContratar)) {
+      if (form.comment.trim().length < 5) { toast.error('Escribe un comentario breve (mín. 5 caracteres).'); return; }
+      toast.error('Responde las 3 preguntas antes de enviar tu valoración.');
+      return;
+    }
     setSubmitting(true);
     const { error } = await supabase.from('reviews').insert({
       reviewer_id: user.id,
@@ -210,8 +226,11 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
       event_type: form.event_type || null,
       rating: form.rating,
       comment: form.comment.trim(),
+      llego_puntual: llegoPuntual,
+      cumplio_acordado: cumplioAcordado,
+      volveria_contratar: volveriaContratar,
       approved: false,
-    });
+    } as any);
     setSubmitting(false);
     if (error) { toast.error('Error al enviar. Inténtalo de nuevo.'); return; }
     toast.success('¡Gracias! Tu valoración se publicará tras revisión.');
@@ -232,6 +251,9 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
     }).catch((err: unknown) => console.warn('[email] new_review_pending failed:', err));
     setShowForm(false);
     setForm({ event_type: '', rating: 5, comment: '' });
+    setLlegoPuntual(null);
+    setCumplioAcordado(null);
+    setVolveriaContratar(null);
     setJustSubmitted(true);
   };
 
@@ -414,6 +436,9 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none resize-none"
                     style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
+                <YesNoToggle label="¿Llegó puntual al evento?" value={llegoPuntual} onChange={setLlegoPuntual} />
+                <YesNoToggle label="¿Cumplió con lo acordado?" value={cumplioAcordado} onChange={setCumplioAcordado} />
+                <YesNoToggle label="¿Volverías a contratarlo/a?" value={volveriaContratar} onChange={setVolveriaContratar} />
                 <button type="submit" disabled={submitting}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm transition-all"
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', opacity: submitting ? 0.7 : 1 }}>
@@ -550,7 +575,7 @@ const PublicProfile = () => {
   const [related, setRelated] = useState<RelatedProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [publicPosts, setPublicPosts] = useState<{ id: string; content: string; post_type: string; created_at: string; media_url: string | null }[]>([]);
-  const [extraMedia, setExtraMedia] = useState<{ bio_video_url?: string | null; bg_music_url?: string | null; audio_session_urls?: string[] | null; video_session_urls?: string[] | null }>({});
+  const [extraMedia, setExtraMedia] = useState<{ bio_video_url?: string | null; bg_music_url?: string | null; audio_session_urls?: string[] | null; video_session_urls?: string[] | null; production_urls?: string[] | null }>({});
 
   const { user: authUser } = useAuth();
   const { items: cartItems } = useEventCart();
@@ -703,7 +728,7 @@ const PublicProfile = () => {
           // Load extended media fields (may not exist yet if migration pending)
           supabase
             .from('profiles')
-            .select('bio_video_url, bg_music_url, audio_session_urls, video_session_urls')
+            .select('bio_video_url, bg_music_url, audio_session_urls, video_session_urls, production_urls')
             .eq('user_id', data.user_id)
             .maybeSingle()
             .then(({ data: m }) => { if (m) setExtraMedia(m as any); })
@@ -825,7 +850,7 @@ const PublicProfile = () => {
     promotor: 'Promotor', ambassador: 'Embajador', catering: 'Catering & Chef',
     mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico',
     monologo: 'Monólogo & Stand-Up', animador: 'Animador Infantil', speaker: 'Speaker & Presentador',
-    vestuario: 'Personal Shopper & Vestuario', 'photo-booth': 'Photo Booth',
+    vestuario: 'Personal Shopper & Vestuario', 'photo-booth': 'Photo Booth', 'food-truck': 'Food Truck',
     'grupo-musical': 'Grupo Musical', 'wedding-planner': 'Wedding Planner', 'diseno-grafico': 'Diseño Gráfico',
     tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', local_eventos: 'Local para eventos', camarero: 'Camarero',
   };
@@ -1366,6 +1391,22 @@ const PublicProfile = () => {
                 {extraMedia.audio_session_urls.slice(0, 5).map((url, i) => (
                   <div key={i} className="w-full">
                     <SessionAudioPlayer url={url} />
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {extraMedia.production_urls && extraMedia.production_urls.length > 0 && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <div className="flex items-center gap-2 mb-4">
+                <Disc3 size={14} style={{ color: '#D4AF37' }} />
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Producciones</span>
+              </div>
+              <div className="flex flex-col gap-3">
+                {extraMedia.production_urls.slice(0, 5).map((url, i) => (
+                  <div key={i} className="w-full">
+                    <ProductionLink url={url} />
                   </div>
                 ))}
               </div>

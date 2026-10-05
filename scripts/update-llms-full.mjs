@@ -44,7 +44,7 @@ const CATEGORY_LABELS = {
   'disco-movil': 'Disco móvil', vestuario: 'Vestuario', azafata: 'Azafatas',
   bailarin: 'Bailarines', 'grupo-musical': 'Grupos musicales', humorista: 'Humoristas',
   monologo: 'Monologuistas', mago: 'Magos', animador: 'Animadores', payaso: 'Payasos',
-  speaker: 'Speakers', 'photo-booth': 'Photo Booth', 'tecnico-sonido': 'Técnicos de sonido', 'alquiler-equipos': 'Alquiler de equipos',
+  speaker: 'Speakers', 'photo-booth': 'Photo Booth', 'food-truck': 'Food trucks', 'tecnico-sonido': 'Técnicos de sonido', 'alquiler-equipos': 'Alquiler de equipos',
 };
 
 const ROLE_TO_CATEGORY = {
@@ -53,6 +53,7 @@ const ROLE_TO_CATEGORY = {
   vestuario: 'vestuario', bailarin: 'bailarin', 'grupo-musical': 'grupo-musical',
   humorista: 'humorista', mago: 'mago', animador: 'animador', payaso: 'payaso',
   speaker: 'speaker', 'photo-booth': 'photo-booth', tecnico: 'tecnico-sonido', alquiler: 'alquiler-equipos',
+  catering: 'catering', 'food-truck': 'food-truck',
 };
 
 async function fetchProfiles(supabaseUrl, anonKey) {

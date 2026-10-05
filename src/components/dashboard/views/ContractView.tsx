@@ -89,7 +89,7 @@ const ROLE_LABEL: Record<string, string> = {
   bailarin: 'Instructor / Bailarín',
   makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Foto / Vídeo',
   mago: 'Mago / Ilusionista', humorista: 'Humorista', animador: 'Animador / Payaso',
-  catering: 'Catering / Chef', vestuario: 'Vestuario / Estilismo',
+  catering: 'Catering / Chef', 'food-truck': 'Food Truck', vestuario: 'Vestuario / Estilismo',
   promotor: 'Promotor / RRPP', ambassador: 'Promotor / Embajador',
   speaker: 'Speaker / Presentador', design: 'Diseño & Visuales',
   monologo: 'Monologuista', empresario: 'Empresa / Sala',
@@ -108,7 +108,7 @@ const ROLE_LABEL: Record<string, string> = {
 const CONTRACT_ROLE_OPTIONS = [
   'dj', 'grupo-musical', 'staff', 'azafata', 'event_manager', 'bailarin',
   'makeup', 'peluqueria', 'media', 'fotografo', 'photo-booth', 'tecnico', 'alquiler', 'local_eventos',
-  'mago', 'humorista', 'monologo', 'animador', 'catering', 'vestuario',
+  'mago', 'humorista', 'monologo', 'animador', 'catering', 'food-truck', 'vestuario',
   'promotor', 'speaker', 'wedding-planner', 'design', 'diseno-grafico',
 ];
 

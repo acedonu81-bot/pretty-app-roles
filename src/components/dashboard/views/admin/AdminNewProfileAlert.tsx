@@ -126,7 +126,12 @@ const AdminNewProfileAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}
                 const sinZona = !p.region;
                 const sinFoto = !p.photo_url || p.photo_url.length < 10;
                 return (
-                  <li key={p.user_id} className="text-xs" style={{ color: '#166534' }}>
+                  <li
+                    key={p.user_id}
+                    onClick={() => window.open(`/p/${p.user_id}`, '_blank', 'noopener,noreferrer')}
+                    className="text-xs rounded-lg -mx-1.5 px-1.5 py-1 cursor-pointer transition-colors hover:bg-black/[0.03]"
+                    style={{ color: '#166534' }}
+                  >
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
                       <span className="font-bold">{p.display_name || 'Sin nombre'}</span>
                       <span>· {roleLabel(p.role)}</span>
@@ -140,17 +145,9 @@ const AdminNewProfileAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}
                       {sinFoto && (
                         <span className="px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(217,119,6,0.14)', color: '#92400e' }}>sin foto</span>
                       )}
+                      <span className="font-bold underline ml-auto" style={{ color: '#14532d' }}>Ver ficha →</span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                      <a
-                        href={`/p/${p.user_id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 font-bold underline"
-                        style={{ color: '#14532d' }}
-                      >
-                        Ver ficha completa →
-                      </a>
+                    <div className="flex flex-wrap items-center gap-2 mt-1.5" onClick={e => e.stopPropagation()}>
                       <button
                         onClick={() => approveProfile(p)}
                         disabled={processingId === p.user_id}
@@ -169,7 +166,7 @@ const AdminNewProfileAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}
                       </button>
                     </div>
                     {rejectingId === p.user_id && (
-                      <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                      <div className="flex flex-wrap items-center gap-2 mt-1.5" onClick={e => e.stopPropagation()}>
                         <input
                           value={rejectReason}
                           onChange={e => setRejectReason(e.target.value)}

@@ -428,7 +428,7 @@ const CATEGORY_ROLES: Record<string, string[]> = {
   // Contando solo 'catering' esta categoría daba 0 con 7 camareros dados de
   // alta: quedaba la última del bento y sin marca de "nuevo", como si estuviera
   // vacía, aunque al pulsarla lleva a /directorio/staff y sí hay gente.
-  gastro: ['staff', 'camarero', 'catering'],
+  gastro: ['staff', 'camarero', 'catering', 'food-truck'],
   animacion: ['animador', 'mago', 'humorista', 'bailarin'],
   tecnica: ['tecnico', 'alquiler'],
   locales: ['local_eventos'],
@@ -441,7 +441,7 @@ const BENTO_CARD_DATA: Record<string, { image: string; icon: React.ReactNode; ti
   staff:   { image: bentoStaff, icon: <Users size={20} />, title: 'Azafatas & RRPP', subtitle: 'Azafatas, RRPP, promotores y speakers', freshRoles: ['promotor', 'azafata', 'event_manager', 'speaker'] },
   imagen:  { image: bentoImagen, icon: <Camera size={20} />, title: 'Imagen & Media', subtitle: 'Fotógrafos, videógrafos y creadores', freshRoles: ['media'] },
   belleza: { image: '/images/pexels/2681751.jpg', icon: <Scissors size={20} />, title: 'Belleza & Estética', subtitle: 'Maquilladores y peluquería a domicilio', freshRoles: ['makeup', 'peluqueria'] },
-  gastro:  { image: bentoGastro, icon: <UtensilsCrossed size={20} />, title: 'Camareros & Catering', subtitle: 'Camareros, bartenders, chefs y catering', freshRoles: ['staff', 'camarero', 'catering'] },
+  gastro:  { image: bentoGastro, icon: <UtensilsCrossed size={20} />, title: 'Camareros & Catering', subtitle: 'Camareros, bartenders, chefs, catering y food trucks', freshRoles: ['staff', 'camarero', 'catering', 'food-truck'] },
   animacion: { image: bentoAnimacion, icon: <Sparkles size={20} />, title: 'Animación', subtitle: 'Magos, humoristas, bailarines y animadores', freshRoles: ['animador', 'mago', 'humorista', 'bailarin'] },
 };
 
@@ -821,8 +821,12 @@ const Landing = () => {
                 } else {
                   const slug = directorioSlugDeRol(dbRole);
                   const params = new URLSearchParams();
-                  if (q) params.set('q', q);
-                  if (city) params.set('city', city);
+                  // Sin match de oficio: se avisa en el directorio de que
+                  // "q" no se reconoció en vez de aterrizar en DJs en
+                  // silencio (antes "city" no coincidía con el nombre que
+                  // lee DirectorioPublico, "ciudad", y el filtro se perdía).
+                  if (!vistaResuelta && q) params.set('q', q);
+                  if (city) params.set('ciudad', city);
                   navigate(`/directorio/${slug}` + (params.toString() ? '?' + params.toString() : ''));
                 }
               }}

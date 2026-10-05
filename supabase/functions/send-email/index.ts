@@ -31,7 +31,7 @@ const ROL_ES: Record<string, string> = {
   catering: 'Catering', makeup: 'Maquillaje', peluqueria: 'Peluquería',
   media: 'Media & Fotografía', 'grupo-musical': 'Grupo Musical', mago: 'Mago',
   humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
-  speaker: 'Speaker', vestuario: 'Estilismo', 'photo-booth': 'Photo Booth',
+  speaker: 'Speaker', vestuario: 'Estilismo', 'photo-booth': 'Photo Booth', 'food-truck': 'Food Truck',
   empresario: 'Organizador',
   tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', local_eventos: 'Local para eventos',
   // Alta por Google OAuth sin rol elegido todavía (handle_new_user cae aquí
@@ -421,6 +421,35 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     `),
   }),
 
+  // Anuncio de la sección Producciones a DJs. Solo envío interno (no está en
+  // PUBLIC_TYPES ni LOGGED_TYPES). sin_foto añade el aviso de foto porque sin
+  // ella la ficha no se publica en el directorio.
+  novedad_producciones: (d) => {
+    const nombre = String(d.name ?? '').trim();
+    return {
+      subject: nombre ? `${esc(nombre)}, ya puedes enlazar tus producciones en XPEAK` : 'Ya puedes enlazar tus producciones en XPEAK',
+      to: d.email,
+      html: base(`
+        <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Nueva sección: <span style="color:#D4AF37">Producciones</span></h2>
+        <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+          ${nombre ? `Hola <strong>${esc(nombre)}</strong>, tu` : 'Tu'} perfil tiene una sección nueva. Junto a tus sesiones, ahora puedes enlazar tus lanzamientos para que los organizadores escuchen también lo que produces.
+        </p>
+        <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.3);border-radius:8px;padding:18px 20px;margin:20px 0">
+          <p style="color:#7a6216;font-weight:700;font-size:13px;margin:0 0 8px;text-transform:uppercase;letter-spacing:1px">Plataformas admitidas</p>
+          <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 8px">Spotify · Apple Music · YouTube · Bandcamp · Beatport · Patreon</p>
+          <p style="color:#6B7280;font-size:12px;line-height:1.6;margin:0">Spotify, Apple Music y YouTube se reproducen directamente en tu ficha. El resto aparece con un botón para escucharlo en su plataforma.</p>
+        </div>
+        <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 4px">
+          Ve a <strong>Mi perfil</strong>, baja hasta <strong>Producciones</strong> y pulsa <strong>Añadir enlace</strong>. Es cuestión de un minuto.
+        </p>
+        ${d.sin_foto ? `<p style="color:#0a0908;font-size:14px;line-height:1.7;margin:16px 0 0">
+          Aprovecha también para subir tu <strong>foto de perfil</strong>: sin ella tu ficha no aparece en el directorio.
+        </p>` : ''}
+        ${btn('Añadir mis producciones →', 'https://xpeak.es/dashboard?view=profile')}
+      `, 'Spotify, Bandcamp, Beatport y más, directamente en tu ficha'),
+    };
+  },
+
   // 2c. La oferta se cubrió — aviso a quien se apuntó y no salió elegido.
   //
   // 10 sep 2026: dos DJs se apuntaron al Burger Gourmet Fest en 17 minutos y el
@@ -739,8 +768,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     to: d.email,
     html: base(`
       <h2 style="font-size:20px;font-weight:900;margin:0 0 10px;color:#0a0908">Solicitud recibida</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hola <strong>${esc(d.name)}</strong>, hemos recibido tu solicitud de cuenta empresario en XPEAK.
+      </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Hola <strong>${esc(d.name)}</strong>, hemos recibido tu solicitud de cuenta empresario en XPEAK.<br><br>
         Nuestro equipo revisará tu perfil en las próximas <strong style="color:#D4AF37">24-48 horas</strong> y te notificaremos cuando esté activo.
       </p>
       <p style="color:#9CA3AF;font-size:12px;text-align:center">
@@ -965,8 +996,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     to: d.email,
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 6px;color:#0a0908">¡6 meses ya!</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hace exactamente 6 meses creaste tu perfil en XPEAK como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong>.
+      </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hace exactamente 6 meses creaste tu perfil en XPEAK como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong>.<br><br>
         ${d.views > 0 ? `Tu ficha ha recibido <strong style="color:#D4AF37">${esc(String(d.views))} visitas</strong> hasta hoy.` : 'Tu perfil está activo y listo para que lo encuentren.'}
       </p>
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:10px;padding:16px;margin-bottom:20px;text-align:center;box-shadow:0 6px 16px rgba(212,175,55,0.16)">
@@ -1126,6 +1159,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       humorista:       { q: 'además de actuar', quienes: 'Muchos humoristas no solo actúan: montan sus propias noches de comedia', necesitan: 'técnico de sonido, camareros o fotógrafo', perfil: 'humorista', ficha: 'tu espectáculo, tu tarifa y tus vídeos' },
       animador:        { q: 'además de animar', quienes: 'Muchos animadores no solo animan: organizan la fiesta entera', necesitan: 'DJ, catering o photo booth', perfil: 'animador', ficha: 'tus actividades, tu tarifa y tus fotos' },
       media:           { q: 'además de fotografiar', quienes: 'Muchos fotógrafos no solo hacen fotos: producen el evento o la sesión completa', necesitan: 'maquillaje, modelos o DJ', perfil: 'fotógrafo', ficha: 'tu estilo, tu tarifa y tu portfolio' },
+      'food-truck':    { q: 'además del food truck', quienes: 'Muchos food trucks no solo ponen la comida: montan el evento completo', necesitan: 'DJ, camareros o photo booth', perfil: 'food truck', ficha: 'tu carta, tu precio por evento y tus fotos' },
       'photo-booth':   { q: 'además del photo booth', quienes: 'Muchos photo booths no solo ponen el fotomatón: montan el evento completo', necesitan: 'DJ, camareros o animador', perfil: 'photo booth', ficha: 'tu servicio, tu tarifa y tus fotos' },
       vestuario:       { q: 'además del vestuario', quienes: 'Mucha gente de vestuario no solo viste: produce desfiles, rodajes o eventos', necesitan: 'maquillaje, peluquería o fotógrafo', perfil: 'vestuario', ficha: 'tu trabajo, tu tarifa y tu portfolio' },
       event_manager:   { q: 'y necesitas equipo', quienes: 'Si coordinas eventos, necesitas encontrar profesionales rápido', necesitan: 'DJ, camareros, catering o fotógrafo', perfil: 'event manager', ficha: 'tu experiencia, tu tarifa y tus fotos' },

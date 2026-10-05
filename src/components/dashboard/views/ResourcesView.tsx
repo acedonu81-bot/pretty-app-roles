@@ -82,6 +82,11 @@ const GUIDES_BY_ROLE: Record<string, Guide[]> = {
     { title: 'Precio de catering de boda por persona', desc: 'Rangos por menú y por formato de servicio.', href: '/blog/catering-boda-precio-por-persona' },
     { title: 'Contrato con proveedores de eventos', desc: 'Qué firmar antes de un servicio.', href: '/blog/contrato-proveedores-eventos' },
   ],
+  'food-truck': [
+    { title: 'Cuánto cuesta un food truck para un evento', desc: 'Precios por formato, comensales y ciudad.', href: '/blog/cuanto-cuesta-un-food-truck-para-evento' },
+    { title: 'Dónde publicar tu food truck para conseguir eventos', desc: 'Comparativa de plataformas, coste y contacto.', href: '/blog/donde-publicar-food-truck-eventos' },
+    { title: 'Contrato con proveedores de eventos', desc: 'Qué firmar antes de un servicio.', href: '/blog/contrato-proveedores-eventos' },
+  ],
   bailarin: [
     { title: 'Precio de bailarín e instructor', desc: 'Tarifas de clase, animación y actuación.', href: '/blog/precio-bailarin-instructor-salsa-bachata' },
     { title: 'Contrato con proveedores de eventos', desc: 'Qué firmar antes de un servicio.', href: '/blog/contrato-proveedores-eventos' },

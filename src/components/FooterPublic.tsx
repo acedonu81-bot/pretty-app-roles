@@ -5,6 +5,7 @@ const FOOTER_LINKS = {
     { label: 'Contratar Fotógrafo', href: '/contratar-fotografo' },
     { label: 'Contratar Staff', href: '/contratar-staff' },
     { label: 'Contratar Catering', href: '/contratar-catering' },
+    { label: 'Contratar Food Truck', href: '/contratar-food-truck' },
     { label: 'Disco Móvil', href: '/contratar-disco-movil' },
     { label: 'Promotores', href: '/contratar-promotores' },
   ],

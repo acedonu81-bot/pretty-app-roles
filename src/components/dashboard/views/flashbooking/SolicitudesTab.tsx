@@ -308,16 +308,16 @@ const SolicitudesTab = () => {
               <div key={s.id} className="glass-panel p-4"
                 style={{ border: isPending ? '1px solid rgba(212,175,55,0.2)' : '1px solid rgba(0,0,0,0.05)' }}>
                 <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
                       <User size={15} style={{ color: '#8A6D0F' }} />
                     </div>
-                    <div>
-                      <p className="text-sm font-bold">{s.requester_name || 'Empresario'}</p>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold truncate">{s.requester_name || 'Empresario'}</p>
                       {s.requester_contact && (
-                        <p className="text-xs text-muted-foreground flex items-center gap-1">
-                          <Phone size={9} /> {s.requester_contact}
+                        <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
+                          <Phone size={9} className="flex-shrink-0" /> <span className="truncate">{s.requester_contact}</span>
                         </p>
                       )}
                     </div>
@@ -378,7 +378,7 @@ const SolicitudesTab = () => {
                       </button>
                     </div>
                   )}
-                  {(s.status === 'confirmed' || s.status === 'accepted') && (
+                  {(s.status === 'confirmed' || s.status === 'accepted' || s.status === 'completed') && (
                     <div className="flex gap-2">
                       <button
                         onClick={() => setContractFor(s)}

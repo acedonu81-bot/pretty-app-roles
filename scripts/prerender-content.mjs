@@ -34,13 +34,13 @@ function loadEnv() {
 // debe mantenerse en sincronía si ese mapeo cambia.
 const ROLE_MAP = {
   dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
-  catering: ['empresario'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
+  catering: ['catering'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
   'disco-movil': ['dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
   bailarin: ['bailarin'], 'grupo-musical': ['grupo-musical'],
   humorista: ['humorista'], monologo: ['humorista'], monologos: ['humorista'],
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],
   payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
-  'photo-booth': ['photo-booth'], 'tecnico-sonido': ['tecnico'], 'alquiler-equipos': ['alquiler'],
+  'photo-booth': ['photo-booth'], 'food-truck': ['food-truck'], 'tecnico-sonido': ['tecnico'], 'alquiler-equipos': ['alquiler'],
   'locales-eventos': ['local_eventos'],
 };
 

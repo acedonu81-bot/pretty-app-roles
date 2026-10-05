@@ -97,7 +97,8 @@ const AdminUserManagement = () => {
   };
 
   const boostScore = async (user: DBProfile) => {
-    const newScore = Math.max(user.score ?? 0, 500) + 200;
+    const previousScore = user.score ?? 0;
+    const newScore = Math.max(previousScore, 500) + 200;
     const { error } = await supabase
       .from('profiles')
       .update({ score: newScore })
@@ -105,6 +106,16 @@ const AdminUserManagement = () => {
     if (error) { toast.error('Error al subir score'); return; }
     toast.success(`Score subido a ${newScore}`);
     setUsers(prev => prev.map(u => u.id === user.id ? { ...u, score: newScore } : u));
+
+    const adminId = (await supabase.auth.getUser()).data.user?.id ?? null;
+    supabase.from('admin_actions_log').insert({
+      admin_user_id: adminId,
+      target_user_id: user.user_id,
+      action: 'boost_score',
+      details: { previous_score: previousScore, new_score: newScore },
+    } as any).then(({ error: logError }) => {
+      if (logError) console.warn('[AdminUserManagement] no se pudo registrar boostScore en el log:', logError);
+    });
   };
 
   const filtered = useMemo(() => {

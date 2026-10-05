@@ -321,12 +321,12 @@
 
     { "src": "^/assets/.+", "status": 404 },
 
-    { "src": "^/p/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", "dest": "/index.html" },
+    { "src": "^/p/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", "dest": "/app-shell.html" },
 
-    { "src": "^/dashboard$", "dest": "/index.html" },
+    { "src": "^/dashboard$", "dest": "/app-shell.html" },
 
-    { "src": "^/(auth|eliminar-cuenta|admin-beta)$", "dest": "/index.html" },
+    { "src": "^/(auth|eliminar-cuenta|admin-beta)$", "dest": "/app-shell.html" },
 
-    { "src": "/(.*)", "status": 404, "dest": "/index.html" }
+    { "src": "/(.*)", "status": 404, "dest": "/app-shell.html" }
   ]
 }

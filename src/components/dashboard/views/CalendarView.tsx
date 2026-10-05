@@ -379,21 +379,22 @@ const CalendarView = () => {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      <div className="mb-6 flex items-start justify-between gap-3">
+      <div className="mb-6 flex items-start justify-between gap-3 flex-wrap">
         <div className="min-w-0">
           <h2 className="text-2xl font-bold mb-1"><span className="text-gradient">Calendario</span></h2>
           <p className="text-sm text-muted-foreground">{isEmpresario ? 'Tu agenda de eventos.' : 'Tu agenda de trabajos y eventos.'}</p>
         </div>
         <div className="flex gap-2 flex-shrink-0">
           <button onClick={toggleAllAlerts}
+            aria-label={notificationsEnabled ? 'Alertas activadas' : 'Activar alertas'}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
             style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)', border: notificationsEnabled ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)', color: notificationsEnabled ? '#D4AF37' : '#3d3d4e' }}>
-            <Bell size={13} /> <span className="hidden sm:inline">{notificationsEnabled ? 'Alertas ON' : 'Alertas'}</span>
+            <Bell size={13} className="flex-shrink-0" /> <span className="hidden sm:inline">{notificationsEnabled ? 'Alertas ON' : 'Alertas'}</span>
           </button>
           <button onClick={() => setShowForm(true)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            <Plus size={13} /> <span className="hidden sm:inline">Añadir</span> {workWord}
+            <Plus size={13} className="flex-shrink-0" /> <span className="hidden sm:inline">Añadir</span> {workWord}
           </button>
         </div>
       </div>

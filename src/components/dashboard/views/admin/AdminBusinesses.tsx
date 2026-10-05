@@ -34,15 +34,26 @@ const AdminBusinesses = () => {
     const load = async () => {
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('user_id, display_name, zone, photo_url, bio, instagram, phone, email, is_verified, created_at')
+        .select('user_id, display_name, zone, photo_url, bio, instagram, phone, is_verified, created_at')
         .eq('role', 'empresario')
         .order('created_at', { ascending: false })
         .limit(500);
 
-      const businesses = (profiles ?? []) as BusinessProfile[];
+      const businesses = (profiles ?? []).map(p => ({ ...p, email: null })) as BusinessProfile[];
       if (businesses.length === 0) { setRows([]); setLoading(false); return; }
 
       const ids = businesses.map(b => b.user_id);
+      // profiles.email ya no es legible por 'authenticated' en general (SEC-06,
+      // 2 oct 2026, cerraba una fuga que permitía a cualquier cuenta — incluido
+      // un "empresario" registrado gratis sin verificación — leer el email de
+      // cualquier profesional vía API directa). Este panel es admin-only
+      // (AdminGuard en Dashboard.tsx), así que lee el email vía RPC dedicada
+      // que comprueba el rol server-side antes de devolverlo.
+      const { data: emailRows } = await (supabase.rpc as any)('profile_emails_for_admin', { p_user_ids: ids });
+      const emailByUserId = new Map(
+        ((emailRows ?? []) as { user_id: string; email: string | null }[]).map(r => [r.user_id, r.email])
+      );
+      businesses.forEach(b => { b.email = emailByUserId.get(b.user_id) ?? null; });
       // event_requests va aparte: las ofertas publicadas desde Flash Booking
       // viven en su propia tabla y sin esto un organizador con una oferta viva
       // salía como "Inactivo" con 0 en todo (caso Burger Gourmet Fest, 10 sep).

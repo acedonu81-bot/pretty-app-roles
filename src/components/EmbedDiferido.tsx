@@ -25,6 +25,7 @@ const conAutoplay = (src: string) =>
 
 export default function EmbedDiferido({ src, alto, tipo, titulo, className, style }: Props) {
   const [cargado, setCargado] = useState(false);
+
   if (cargado) {
     return (
       <iframe src={conAutoplay(src)} width="100%" height={alto} allow="autoplay; encrypted-media"

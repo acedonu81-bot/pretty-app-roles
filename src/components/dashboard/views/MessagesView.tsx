@@ -16,7 +16,7 @@ import { RefreshCw } from 'lucide-react';
 const ROLE_LABEL: Record<string, string> = {
   dj: 'DJ / Artista', 'grupo-musical': 'Grupo musical', media: 'Media', fotografo: 'Fotógrafo',
   makeup: 'Maquillaje', maquillaje: 'Maquillaje', peluqueria: 'Peluquería', staff: 'Staff / Camarero',
-  azafata: 'Azafata', promotor: 'Promotor', promotores: 'Promotor', catering: 'Catering',
+  azafata: 'Azafata', promotor: 'Promotor', promotores: 'Promotor', catering: 'Catering', 'food-truck': 'Food truck',
   mago: 'Mago', humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
   speaker: 'Speaker', vestuario: 'Vestuario', 'photo-booth': 'Photo Booth',
   tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos', local_eventos: 'Local para eventos',

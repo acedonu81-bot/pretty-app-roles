@@ -5,6 +5,7 @@ import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CATEGORIES } from '@/pages/CityLanding';
+import { toSlug } from '@/data/profiles';
 
 /**
  * OccasionLanding — eje ocasión × rol (ej: /boda/contratar-dj).
@@ -29,7 +30,7 @@ const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], fotografo: ['media'], catering: ['catering'],
   camareros: ['staff', 'camarero'], 'grupo-musical': ['grupo-musical'],
   animador: ['animador'], mago: ['mago'], maquillaje: ['makeup', 'peluqueria'],
-  'locales-eventos': ['local_eventos'],
+  'locales-eventos': ['local_eventos'], 'food-truck': ['food-truck'],
 };
 
 function useRoleProfessionals(categorySlug: string) {
@@ -40,7 +41,10 @@ function useRoleProfessionals(categorySlug: string) {
     setLoaded(false);
     setProfs([]);
     const roles = ROLE_MAP[categorySlug] ?? ['dj'];
-    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.city, role: p.role, score: p.score ?? 0, slug: p.slug, is_verified: p.is_verified ?? false });
+    // profiles no tiene columnas city ni slug: pedirlas hacía fallar la
+    // consulta entera (400) y estas páginas nunca enseñaban a nadie. Mismo
+    // criterio que CityLanding: ciudad de city_ref/zone y slug del nombre.
+    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.city_ref ?? p.zone, role: p.role, score: p.score ?? 0, slug: toSlug(p.display_name ?? p.user_id), is_verified: p.is_verified ?? false });
     // Match por el array `roles` ademas de por el `role` singular — ver
     // CityLanding.tsx: filtrar solo por `role` deja fuera a quien tenga un
     // segundo rol, que es donde se guarda.
@@ -50,7 +54,7 @@ function useRoleProfessionals(categorySlug: string) {
     ].join(',');
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,created_at')
+      .select('user_id,display_name,photo_url,bio,zone,city_ref,role,score,is_verified,created_at')
       .or(roleFilter)
       // Ver CityLanding.tsx: excluye empresarios que tengan este oficio en
       // `roles` por dato legacy o error — buscan y contratan, no les contratan.
@@ -114,25 +118,27 @@ type OccasionInfo = {
 const PRECIO_BODA: Record<string, string> = {
   DJ: '400€-900€', Fotógrafo: '800€-2.500€', Catering: '60€-140€/persona',
   Camareros: '120€-180€/servicio', 'Grupo Musical': '900€-3.000€', Animador: '150€-400€', Mago: '250€-600€',
-  'Local para eventos': '3.000€-12.000€',
+  'Local para eventos': '3.000€-12.000€', 'Food Truck': '600€-2.000€',
 };
 const PRECIO_CUMPLE: Record<string, string> = {
   DJ: '200€-500€', Fotógrafo: '250€-600€', Catering: '25€-50€/persona',
   Camareros: '100€-150€/servicio', Animador: '100€-250€', Mago: '150€-350€',
+  'Food Truck': '350€-800€',
 };
 const PRECIO_EMPRESA: Record<string, string> = {
   DJ: '350€-800€', Fotógrafo: '400€-1.200€', Catering: '40€-90€/persona',
   Camareros: '120€-180€/servicio', Speaker: '600€-3.000€', 'Grupo Musical': '800€-2.500€',
-  'Local para eventos': '600€-4.000€',
+  'Local para eventos': '600€-4.000€', 'Food Truck': '15€-40€/persona',
 };
 const PRECIO_COMUNION: Record<string, string> = {
   Fotógrafo: '300€-800€', Catering: '30€-65€/persona', Camareros: '100€-160€/servicio',
   Animador: '120€-300€', Mago: '180€-400€', DJ: '250€-550€',
+  'Food Truck': '350€-900€',
 };
 const PRECIO_FIESTA: Record<string, string> = {
   DJ: '250€-700€', Fotógrafo: '250€-600€', Catering: '30€-70€/persona',
   Camareros: '100€-170€/servicio', Animador: '120€-300€', Mago: '180€-450€',
-  'Local para eventos': '400€-2.500€',
+  'Local para eventos': '400€-2.500€', 'Food Truck': '350€-1.200€',
 };
 
 // Rol en minúscula para meterlo en una frase, respetando siglas: "DJ" sigue
@@ -202,11 +208,11 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
 // ("¿Los ${rol} están verificados?", "acertar con el ${rol}") y con un
 // servicio de alquiler el texto sale roto. Lo cubren su landing y las de ciudad.
 export const ROLES_POR_OCASION: Record<string, string[]> = {
-  boda: ['dj', 'fotografo', 'catering', 'camareros', 'grupo-musical', 'animador', 'tecnico-sonido', 'locales-eventos'],
-  cumpleanos: ['dj', 'fotografo', 'catering', 'animador', 'mago'],
-  'evento-empresa': ['dj', 'fotografo', 'catering', 'camareros', 'speaker', 'tecnico-sonido', 'locales-eventos'],
-  comunion: ['fotografo', 'catering', 'animador', 'mago', 'dj'],
-  'fiesta-privada': ['dj', 'fotografo', 'catering', 'camareros', 'animador', 'locales-eventos'],
+  boda: ['dj', 'fotografo', 'catering', 'food-truck', 'camareros', 'grupo-musical', 'animador', 'tecnico-sonido', 'locales-eventos'],
+  cumpleanos: ['dj', 'fotografo', 'catering', 'food-truck', 'animador', 'mago'],
+  'evento-empresa': ['dj', 'fotografo', 'catering', 'food-truck', 'camareros', 'speaker', 'tecnico-sonido', 'locales-eventos'],
+  comunion: ['fotografo', 'catering', 'food-truck', 'animador', 'mago', 'dj'],
+  'fiesta-privada': ['dj', 'fotografo', 'catering', 'food-truck', 'camareros', 'animador', 'locales-eventos'],
 };
 
 export default function OccasionLanding() {

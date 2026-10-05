@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Sparkles, MapPin, Star, Zap, BadgeCheck, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { useSmartMatch, MatchedProfessional } from '@/hooks/useSmartMatch';
 import { isNative } from '@/lib/capacitor';
@@ -13,6 +14,7 @@ const ROLES = [
   { value: 'media', label: 'Fotógrafo / Vídeo' },
   { value: 'promotor', label: 'Promotor / RRPP' },
   { value: 'catering', label: 'Catering & Chef' },
+  { value: 'food-truck', label: 'Food Truck' },
   { value: 'mago', label: 'Mago & Ilusionista' },
   { value: 'bailarin', label: 'Instructor / Bailarín' },
   { value: 'animador', label: 'Payaso & Animador' },
@@ -23,7 +25,7 @@ const EVENT_TYPES = ['Boda', 'Comunión', 'Evento corporativo', 'Fiesta privada'
 const MatchCard = ({ m, onContact }: { m: MatchedProfessional; onContact: (userId: string) => void }) => (
   <div className="p-3 rounded-xl flex gap-3 items-start"
     style={{ background: '#fafaf8', border: '1px solid rgba(212,175,55,0.12)' }}>
-    <a href={`/p/${m.user_id}`} className="flex-shrink-0">
+    <Link to={`/p/${m.user_id}`} className="flex-shrink-0">
       {m.photo_url ? (
         <img src={m.photo_url} alt={m.display_name} loading="lazy" className="w-12 h-12 rounded-xl object-cover" />
       ) : (
@@ -32,12 +34,12 @@ const MatchCard = ({ m, onContact }: { m: MatchedProfessional; onContact: (userI
           {m.display_name.charAt(0)}
         </div>
       )}
-    </a>
+    </Link>
     <div className="flex-1 min-w-0">
       <div className="flex items-center gap-1.5 flex-wrap">
-        <a href={`/p/${m.user_id}`} className="text-sm font-bold hover:opacity-70 truncate" style={{ color: '#111' }}>
+        <Link to={`/p/${m.user_id}`} className="text-sm font-bold hover:opacity-70 truncate" style={{ color: '#111' }}>
           {m.display_name}
-        </a>
+        </Link>
       </div>
       {m.specialty && <p className="text-xs truncate" style={{ color: '#8A6D0F' }}>{m.specialty}</p>}
       <div className="flex flex-wrap gap-1.5 mt-1.5">

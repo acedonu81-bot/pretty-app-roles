@@ -124,6 +124,12 @@ const Auth = () => {
   // Marca si goAfterLogin (disparado por SIGNED_IN) ya navegó, para que el
   // fallback de seguridad tras signInWithPassword no navegue una segunda vez.
   const loggedInNavigated = useRef(false);
+  // Bloquea reentradas de handleSubmit desde el primer instante. `loading`
+  // (estado React) no sirve aquí: solo se activa tras pasar la validación de
+  // campos, así que un doble tap en móvil con campos vacíos disparaba el
+  // validate dos veces y apilaba el mismo toast "Completa todos los campos"
+  // dos veces (visto en grabación real de Clarity, 2 oct).
+  const submitInFlight = useRef(false);
   // Vuelta de Google con ?code=... — el SDK aún no ha intercambiado el código
   // por una sesión. Sin esta pantalla, el usuario ve el login "normal" y le da
   // otra vez, lo que pisa el code_verifier PKCE del primer intento y rompe el login.
@@ -197,6 +203,26 @@ const Auth = () => {
       }
       if (isRegistering.current) return;
       if (session && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
+        // El registro por email/password trackea signup/trackLead justo tras
+        // supabase.auth.signUp() (línea ~468), pero el alta por Google OAuth
+        // nunca pasa por ahí: Google redirige aquí con la sesión ya creada,
+        // directa a SIGNED_IN, y hasta ahora nada distinguía "primera vez que
+        // entra" de "login normal" — el sign_up de altas por Google (el canal
+        // dominante en GA4) nunca se registraba. Solo SIGNED_IN (no
+        // INITIAL_SESSION, que dispara en cada carga con sesión ya activa) y
+        // solo si created_at/last_sign_in_at están a <10s: la ventana real
+        // entre que Supabase crea la cuenta y confirma el primer login.
+        if (event === 'SIGNED_IN') {
+          const createdAt = new Date(session.user.created_at).getTime();
+          const lastSignIn = session.user.last_sign_in_at ? new Date(session.user.last_sign_in_at).getTime() : createdAt;
+          if (Math.abs(lastSignIn - createdAt) < 10_000) {
+            const role = (session.user.user_metadata as any)?.role || 'pending';
+            track('auth_success', { mode: 'register', role });
+            track('sign_up', { method: 'google', role });
+            trackLead('registro', { role });
+            logSignup(role);
+          }
+        }
         goAfterLogin(session.user.id);
       } else if (oauthCallbackPending) {
         // El code_verifier no coincidía (p.ej. doble clic previo) o el código
@@ -297,10 +323,12 @@ const Auth = () => {
   const [fieldError, setFieldError] = useState<string | null>(null);
   const nameRef = useRef<HTMLDivElement>(null);
   const legalRef = useRef<HTMLLabelElement>(null);
+  const emailRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLDivElement>(null);
   const fieldRefs: Record<string, React.RefObject<HTMLElement>> = {
     name: nameRef,
     legal: legalRef,
+    email: emailRef,
     password: passwordRef,
   };
   const authFieldError = (field: string, message: string) => {
@@ -342,16 +370,30 @@ const Auth = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    track('auth_submit', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
-    if (!email || !password) {
-      track('auth_validation_error', { mode: isLogin ? 'login' : 'register', reason: 'missing_fields' });
-      authAlert('Completa todos los campos');
-      return;
+    if (submitInFlight.current) return;
+    submitInFlight.current = true;
+    try {
+      track('auth_submit', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
+      if (!email || !password) {
+        track('auth_validation_error', { mode: isLogin ? 'login' : 'register', reason: 'missing_fields' });
+        // Señalar el campo que falta en vez de un toast genérico: con el
+        // botón grande de submit justo debajo, un aviso pequeño arriba
+        // pasaba desapercibido (grabación real de Clarity, 2 oct — el
+        // usuario no entendía qué le faltaba y volvía a pulsar el botón).
+        authFieldError(!email ? 'email' : 'password', !email ? 'Introduce tu email' : 'Introduce tu contraseña');
+        return;
+      }
+      if (!captchaToken) {
+        authAlert('Espera a que termine la verificación de seguridad e inténtalo de nuevo.');
+        return;
+      }
+      await submitAuth();
+    } finally {
+      submitInFlight.current = false;
     }
-    if (!captchaToken) {
-      authAlert('Espera a que termine la verificación de seguridad e inténtalo de nuevo.');
-      return;
-    }
+  };
+
+  const submitAuth = async () => {
     setLoading(true);
     try {
       if (isLogin) {
@@ -418,7 +460,7 @@ const Auth = () => {
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
-        const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'event_manager', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'tecnico', 'alquiler', 'local_eventos'];
+        const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'event_manager', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'food-truck', 'tecnico', 'alquiler', 'local_eventos'];
         const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
@@ -442,6 +484,12 @@ const Auth = () => {
 
         setFieldError(null);
         track('auth_success', { mode: 'register', role: roleParam || 'pending' });
+        // "sign_up" es el nombre estándar que GA4 reconoce automáticamente
+        // como evento de registro — nunca se mandaba en ningún flujo (ni
+        // email ni Google), solo auth_success (custom) y generate_lead,
+        // así que el informe de altas por canal en GA4 siempre daba 0
+        // (verificado 4 oct 2026: 0 sign_up en GA4 en toda la historia).
+        track('sign_up', { method: 'email', role: roleParam || 'pending' });
         trackLead('registro', { role: roleParam || 'pending' });
         logSignup(roleParam || 'pending');
         if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'CompleteRegistration');
@@ -774,12 +822,13 @@ const Auth = () => {
                 )}
 
                 {/* Email */}
-                <div className="relative">
+                <div ref={emailRef} className={`relative rounded-xl ${fieldError === 'email' ? 'animate-field-shake' : ''}`}
+                  style={fieldError === 'email' ? { boxShadow: '0 0 0 2px #ef4444' } : undefined}>
                   <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <input
                     type="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => { setEmail(e.target.value); if (fieldError === 'email') setFieldError(null); }}
                     placeholder="tu@email.com"
                     maxLength={254}
                     autoComplete="email"
@@ -874,19 +923,26 @@ const Auth = () => {
                   </label>
                 )}
 
-                {/* Verificación anti-bot — invisible la mayoría de las veces */}
-                <TurnstileWidget
-                  onVerify={token => { setCaptchaToken(token); setTurnstileStalled(false); }}
-                  onExpire={() => setCaptchaToken(null)}
-                  onStall={() => setTurnstileStalled(true)}
-                  onStallCleared={() => setTurnstileStalled(false)}
-                />
+                {/* Verificación anti-bot — invisible la mayoría de las veces.
+                    No se monta en isInAppBrowser: ya sabemos que el iframe de
+                    Turnstile no resuelve ahí, así que cargarlo solo añade un
+                    timeout de 8s inútil antes de mostrar el aviso de salida. */}
+                {!isInAppBrowser && (
+                  <TurnstileWidget
+                    onVerify={token => { setCaptchaToken(token); setTurnstileStalled(false); }}
+                    onExpire={() => setCaptchaToken(null)}
+                    onStall={() => setTurnstileStalled(true)}
+                    onStallCleared={() => setTurnstileStalled(false)}
+                  />
+                )}
 
                 {/* El webview de Facebook/Instagram/TikTok rompe Turnstile igual que
                     rompe Google OAuth (arriba) — sin salida, el usuario se queda
                     mirando "Verificando seguridad…" para siempre. Este es el caso
-                    real: 63% del tráfico de /auth llega desde facebook.com. */}
-                {isInAppBrowser && turnstileStalled && (
+                    real: 63% del tráfico de /auth llega desde facebook.com. Se avisa
+                    de inmediato (sin esperar el timeout de 8s de Turnstile) porque
+                    ya sabemos por user-agent que el captcha va a fallar aquí. */}
+                {isInAppBrowser && (
                   <div className="rounded-xl px-4 py-3.5 text-xs leading-relaxed"
                     style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.3)', color: '#5c4a12' }}>
                     <p className="font-bold mb-1.5">Este navegador no permite completar el registro.</p>
@@ -923,22 +979,27 @@ const Auth = () => {
                   </div>
                 )}
 
-                {/* CTA principal */}
-                <button
-                  type="submit"
-                  disabled={loading || !captchaToken}
-                  className="w-full py-3.5 rounded-xl font-black text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
-                  style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
-                  {loading
-                    ? 'Procesando...'
-                    : !captchaToken
-                      ? 'Verificando seguridad…'
-                      : isLogin
-                        ? 'Iniciar Sesión'
-                        : roleParam === 'empresario'
-                          ? 'Empezar a contratar →'
-                          : 'Publicar mi perfil →'}
-                </button>
+                {/* CTA principal — oculto en isInAppBrowser: el aviso de arriba ya
+                    ofrece la única salida real (abrir en Chrome/Safari); mostrar
+                    este botón solo lleva a reintentar un captcha que no va a
+                    resolver dentro del webview. */}
+                {!isInAppBrowser && (
+                  <button
+                    type="submit"
+                    disabled={loading || !captchaToken}
+                    className="w-full py-3.5 rounded-xl font-black text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
+                    style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
+                    {loading
+                      ? 'Procesando...'
+                      : !captchaToken
+                        ? 'Verificando seguridad…'
+                        : isLogin
+                          ? 'Iniciar Sesión'
+                          : roleParam === 'empresario'
+                            ? 'Empezar a contratar →'
+                            : 'Publicar mi perfil →'}
+                  </button>
+                )}
 
               </form>
 

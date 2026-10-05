@@ -5,7 +5,7 @@ import {
   Sparkles, Loader2, Menu, X, LayoutDashboard, ArrowLeft,
   Disc3, Camera, Users, Wine, Palette, Megaphone, UtensilsCrossed,
   Music, PartyPopper, Wand2, Mic, Drama, Presentation, Shirt,
-  Aperture, CalendarHeart, PenTool, Grid3x3, SlidersHorizontal, Building2, type LucideIcon,
+  Aperture, CalendarHeart, PenTool, Grid3x3, SlidersHorizontal, Building2, Truck, type LucideIcon,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,7 +33,7 @@ import {
 
 const ROLE_ICON: Record<string, LucideIcon> = {
   dj: Disc3, fotografo: Camera, staff: Users, azafata: Users, camareros: Wine, maquillaje: Palette,
-  promotores: Megaphone, catering: UtensilsCrossed, 'grupo-musical': Music,
+  promotores: Megaphone, catering: UtensilsCrossed, 'food-truck': Truck, 'grupo-musical': Music,
   animador: PartyPopper, mago: Wand2, humorista: Mic, bailarin: Drama,
   speaker: Presentation, vestuario: Shirt, 'photo-booth': Aperture,
   'wedding-planner': CalendarHeart, 'diseno-grafico': PenTool,
@@ -48,7 +48,7 @@ const ROLE_ICON: Record<string, LucideIcon> = {
 // agrupación, difícil de escanear de un vistazo.
 const ROLE_GROUPS: { label: string; slugs: string[] }[] = [
   { label: 'Música', slugs: ['grupo-musical', 'dj'] },
-  { label: 'Camareros & Catering', slugs: ['staff', 'catering'] },
+  { label: 'Camareros & Catering', slugs: ['staff', 'catering', 'food-truck'] },
   { label: 'Imagen & Media', slugs: ['fotografo', 'photo-booth', 'diseno-grafico'] },
   { label: 'Azafatas & RRPP', slugs: ['azafata', 'promotores', 'speaker', 'wedding-planner'] },
   { label: 'Belleza & Estética', slugs: ['maquillaje', 'vestuario'] },

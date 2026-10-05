@@ -135,6 +135,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                 { value: 'ambassador', label: 'Relaciones Públicas' },
                 { value: 'promotor', label: 'Promotor' },
                 { value: 'catering', label: 'Catering / Cocina' },
+                { value: 'food-truck', label: 'Food Truck' },
                 // Faltaban roles que ya existen en el alta: un empresario no
                 // podía filtrar por ellos y parecía que no había nadie.
                 { value: 'grupo-musical', label: 'Grupo Musical' },

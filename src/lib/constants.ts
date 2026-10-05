@@ -35,6 +35,7 @@ export const ROLE_ES: Record<string, string> = {
   speaker:       'Speaker & Presentador',
   vestuario:     'Estilista & Vestuario',
   'photo-booth': 'Photo Booth',
+  'food-truck':  'Food Truck',
   design:        'Diseño & Visuales',
   empresario:    'Organizador',
   pending:       'Pendiente de elegir oficio',
@@ -93,6 +94,7 @@ export const JOB_WORD: Record<string, string> = {
   payaso: 'actuación',
   vestuario: 'encargo',
   'photo-booth': 'evento',
+  'food-truck': 'evento',
   bailarin: 'actuación',
   mago: 'actuación',
   speaker: 'evento',
@@ -117,6 +119,7 @@ export const ROL_UI_A_SLUG: Record<string, string> = {
   'Promotor / RRPP': 'promotor',
   'Photo Booth': 'photo-booth',
   'Catering': 'catering',
+  'Food truck': 'food-truck',
   // Mismas etiquetas que flash_rol_ui_a_roles() en BD (aviso de peticiones):
   // si se cambia el texto aquí, cambiarlo también allí.
   'Técnico de sonido': 'tecnico',
@@ -154,11 +157,16 @@ export const ALQUILER_TAG_GROUPS: { label: string; items: string[] }[] = [
   { label: 'Servicio', items: ['Con transporte','Con montaje','Con técnico','Recogida en local','Fianza','Para DJs y músicos','Para fotógrafos','Bodas','Eventos corporativos','Festivales','Fiestas privadas'] },
 ];
 
-/** Unidad de la tarifa de un perfil: el equipo se alquila por día, el resto
- *  cobra por hora. Solo cuenta el oficio PRINCIPAL: un DJ que además alquila
- *  sigue publicando su caché por hora. */
+/** Unidad de la tarifa de un perfil: el equipo se alquila por día, el food
+ *  truck cobra un precio cerrado por evento y el resto cobra por hora. Solo
+ *  cuenta el oficio PRINCIPAL: un DJ que además alquila sigue publicando su
+ *  caché por hora. */
 export const unidadTarifa = (role: string | null | undefined, corta = false): string =>
-  role === 'alquiler' ? '/día' : (corta ? '/h' : '/hora');
+  role === 'alquiler' ? '/día' : role === 'food-truck' ? '/evento' : (corta ? '/h' : '/hora');
+
+/** Oficios cuyo precio no se multiplica por las horas del evento. */
+export const tarifaCerrada = (role: string | null | undefined): boolean =>
+  role === 'alquiler' || role === 'food-truck';
 
 export const ALQUILER_TAGS = ALQUILER_TAG_GROUPS.flatMap(g => g.items);
 
@@ -170,7 +178,7 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     // minimamente de la lista de DJ (caso Aurora, 2 sep 2026).
     'grupo-musical': { label: 'Repertorio y formato', tags: ['Pop español','Pop internacional','Rock','Versiones','Acústico','Voz y guitarra','Jazz','Bossa nova','Soul','Funk en vivo','Flamenco','Rumba','Copla','Boleros','Baladas','Música clásica','Góspel','Country','Indie','Cantautor','Ceremonia','Cóctel','Banda completa','Dúo','Trío'] },
     azafata:    { label: 'Especialidades', tags: ['Azafata de congresos','Azafata de imagen','Ferias y stands','Protocolo','Acreditaciones','Recepción','Bienvenida','Sala VIP','Promoción','Azafata de eventos deportivos','Traducción / idiomas','Reparto de merchandising'] },
-    catering:   { label: 'Especialidades', tags: ['Catering de bodas','Cóctel','Banquete','Show cooking','Finger food','Barbacoa / brasa','Paellas','Cocina mediterránea','Cocina internacional','Menú vegano','Sin gluten','Food truck','Servicio de barra','Postres y repostería'] },
+    catering:   { label: 'Especialidades', tags: ['Catering de bodas','Cóctel','Banquete','Show cooking','Finger food','Barbacoa / brasa','Paellas','Cocina mediterránea','Cocina internacional','Menú vegano','Sin gluten','Servicio de barra','Postres y repostería'] },
     humorista:  { label: 'Estilos', tags: ['Monólogo','Stand-up','Humor blanco','Humor negro','Improvisación','Humor musical','Parodia','Presentación de eventos','Humor corporativo','Bodas','Despedidas','Clubs de comedia'] },
     mago:       { label: 'Especialidades', tags: ['Magia de cerca','Magia de escenario','Mentalismo','Magia infantil','Magia cómica','Ilusionismo','Cartomagia','Magia de bodas','Walking magic','Grandes ilusiones'] },
     animador:   { label: 'Especialidades', tags: ['Animación infantil','Fiestas de cumpleaños','Hinchables','Pintacaras','Globoflexia','Talleres','Juegos','Espectáculo infantil','Bodas','Comuniones','Parques','Hoteles'] },
@@ -183,6 +191,7 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     // general a lo especialista, que es como las busca quien contrata.
     camarero:   { label: 'Especialidades', tags: ['Camarero/a de sala','Barra','Coctelería','Bartender','Coctelería de autor','Flair','Sumiller','Vinos','Barista','Café de especialidad','Servicio de bodas','Banquetes','Protocolo y servicio de gala','Emplatado','Show cooking','Catering','Bottle service','Terraza','Barra libre','Ayudante de cocina','Office','Carnet de manipulador','Idiomas: EN/FR'] },
     'photo-booth': { label: 'Servicios', tags: ['Photocall','Cabina de fotos','Espejo mágico','360 booth','Impresión al momento','Atrezzo','GIFs','Libro de firmas','Bodas','Eventos corporativos'] },
+    'food-truck': { label: 'Cocina y servicio', tags: ['Hamburguesas gourmet','Pizza','Tacos / mexicano','Barbacoa / brasa','Bocadillos y sándwiches','Cocina argentina','Cocina asiática','Vegano / vegetariano','Sin gluten','Postres y crepes','Helados','Café / coffee truck','Barra móvil y cócteles','Cerveza artesana','Bodas','Eventos corporativos','Festivales','Fiestas privadas'] },
     // staff recoge perfiles muy distintos (azafatas, RRPP y camareros), así que
     // lleva también las especialidades de barra y sala: la mayoría de camareros
     // se dan de alta con este rol, no con 'camarero', y sin estas etiquetas no
