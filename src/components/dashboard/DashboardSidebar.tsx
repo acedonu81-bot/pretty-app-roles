@@ -1,7 +1,7 @@
 import {
   LayoutGrid, Home, Search, MessageSquare, Megaphone, Settings,
   BarChart3, FileText, FileEdit, CalendarDays, Sparkles, Rss,
-  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield,
+  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield, Star,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
@@ -25,6 +25,12 @@ interface SidebarProps {
   // duplicar la navegación — ahí nunca debe colapsar a icon-rail (no hay
   // Sidebar-en-Sheet anidado: el Sheet ya lo pone el padre).
   forceExpanded?: boolean;
+  // Mismo destino que ya usa PendingReviewsBanner y el email pedir_valoracion:
+  // Flash Booking → Solicitudes (profesional) o Empresario → Historial
+  // (organizador). El sidebar necesita navigate() de react-router para fijar
+  // ?tab=solicitudes, que no tiene aquí — se recibe ya resuelto desde
+  // Dashboard.tsx en vez de duplicar esa lógica.
+  onGoToReviews?: () => void;
 }
 
 // El directorio ya no usa un color distinto por rol (arcoíris sin
@@ -252,7 +258,7 @@ const SidebarCollapseToggle = () => {
   );
 };
 
-export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded }: SidebarProps) => {
+export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded, onGoToReviews }: SidebarProps) => {
   const { role, subscription_tier } = useProfile();
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
@@ -475,6 +481,14 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
             <NavItem icon={CalendarDays} label="Calendario" isActive={activeView === 'calendar'} onClick={() => onViewChange('calendar')} />
             <NavItem icon={FileText} label="Contratos" isActive={activeView === 'contracts'} onClick={() => onViewChange('contracts')} />
             <NavItem icon={Sparkles} label="Recursos" isActive={activeView === 'resources'} onClick={() => onViewChange('resources')} />
+            {/* Mismo destino que el banner "colaboraciones pendientes de
+                valorar" — acceso siempre visible, no solo cuando hay pendientes,
+                para quien no vio la notificación o el banner y quiere entrar
+                a valorar o revisar sus reseñas por su cuenta (pedido por el
+                usuario el 5 oct 2026). Sin onGoToReviews cae a 'resources'
+                en vez de navegar a ningún sitio, para no romper si algún
+                caller aún no pasa la prop nueva. */}
+            <NavItem icon={Star} label="Reseñas" isActive={false} onClick={() => (onGoToReviews ?? (() => onViewChange('resources')))()} />
           </SidebarMenu>
         </div>
 

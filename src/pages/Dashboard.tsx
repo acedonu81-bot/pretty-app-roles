@@ -672,7 +672,7 @@ const Dashboard = () => {
                 así que el título solo hace falta para accesibilidad, no visible. */}
             <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
             <SheetDescription className="sr-only">Accede a las secciones del panel: inicio, directorio, mensajes, perfil y ajustes.</SheetDescription>
-            <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} forceExpanded />
+            <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} onGoToReviews={goToPendingReviews} forceExpanded />
           </SheetContent>
         </Sheet>
       )}
@@ -686,7 +686,7 @@ const Dashboard = () => {
           (ver ui/sidebar.tsx). */}
       <SidebarProvider defaultOpen={false} style={{ minHeight: 0, height: '100%' }} className="flex-1 min-w-0">
         {!isMobile && (
-          <DashboardSidebarInner activeView={activeView} onViewChange={handleViewChange} />
+          <DashboardSidebarInner activeView={activeView} onViewChange={handleViewChange} onGoToReviews={goToPendingReviews} />
         )}
 
         <main
