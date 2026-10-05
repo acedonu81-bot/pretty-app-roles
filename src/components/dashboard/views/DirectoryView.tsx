@@ -417,7 +417,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#D4AF37' }} />
           <span style={{ color: '#222' }}>
             <span style={{ color: '#8A6D0F', fontWeight: 700 }}>
-              {activeEmployerCount} {activeEmployerCount === 1 ? 'sala & club' : 'salas & clubs'}
+              {activeEmployerCount} {activeEmployerCount === 1 ? 'organizador' : 'organizadores'}
             </span>
             {' '}registrados en XPEAK están buscando profesionales como tú
           </span>
