@@ -34,7 +34,8 @@ interface ProfileCardProps {
   showPortfolio?: boolean;
   onMessage?: (userId: string, name: string) => void;
   onNavigateSubscription?: () => void;
-  onViewProfile?: (profile: Profile) => void;
+  /** `'resenas'` abre la ficha directamente en las reseñas (clic en la nota). */
+  onViewProfile?: (profile: Profile, seccion?: 'resenas') => void;
 }
 
 const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription, onViewProfile }: ProfileCardProps) => {
@@ -262,10 +263,13 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         <div className="flex items-start justify-between gap-2">
           <h3 className="text-[0.95rem] font-bold leading-snug line-clamp-2 break-words min-w-0" style={{ fontFamily: 'Inter, sans-serif', color: '#111', letterSpacing: '-0.01em' }}>{p.name}</h3>
           {p.rating > 0 && (
-            <span className="flex items-center gap-0.5 shrink-0 text-xs" style={{ color: '#111' }}>
+            <button type="button" disabled={!onViewProfile}
+              onClick={e => { e.stopPropagation(); onViewProfile?.(p, 'resenas'); }}
+              aria-label={`Ver reseñas de ${p.name}`}
+              className="flex items-center gap-0.5 shrink-0 text-xs enabled:hover:underline" style={{ color: '#111' }}>
               <Star size={11} style={{ color: '#111' }} fill="#111" />
               <span className="font-semibold">{p.rating}</span>
-            </span>
+            </button>
           )}
         </div>
         <p className="text-xs truncate mt-0.5" style={{ color: '#717171' }}>
@@ -280,12 +284,17 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
         {/* Rating + zona — desktop only (mobile shows it below photo) */}
         <div className="hidden sm:flex items-center gap-2 text-xs" style={{ color: '#3d3d4e' }}>
+          {/* La nota lleva a leer las reseñas: una media sin poder ver qué
+              hay detrás (y con una sola reseña) no genera confianza. */}
           {p.rating > 0 && (
-            <span className="flex items-center gap-1">
+            <button type="button" disabled={!onViewProfile}
+              onClick={e => { e.stopPropagation(); onViewProfile?.(p, 'resenas'); }}
+              title="Ver reseñas"
+              className="flex items-center gap-1 enabled:hover:underline underline-offset-2">
               <Star size={11} style={{ color: '#8A6D0F' }} fill="#D4AF37" />
               <span className="font-bold" style={{ color: '#222' }}>{p.rating}</span>
-              <span>({p.reviews})</span>
-            </span>
+              <span>({p.reviews} {p.reviews === 1 ? 'reseña' : 'reseñas'})</span>
+            </button>
           )}
           {p.zone && (
             <span className="flex items-center gap-1"><MapPin size={10} />{p.zone.split(',')[0]}</span>

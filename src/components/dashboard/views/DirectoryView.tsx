@@ -28,7 +28,7 @@ interface DirectoryViewProps {
   onMessage?: (userId: string, name: string) => void;
   wideCards?: boolean;
   searchQuery?: string;
-  onViewProfile?: (profile: Profile) => void;
+  onViewProfile?: (profile: Profile, seccion?: 'resenas') => void;
   // Emergentes: 'only' filtra solo perfiles marcados como emergente (para el
   // directorio EmergentesView), 'exclude' los saca del directorio normal de
   // DJs para no mezclar profesionales con perfiles que aún se están iniciando.

@@ -383,8 +383,12 @@ const Dashboard = () => {
   // Envoltorio para registrar la apertura de ficha en un solo punto: se pasa
   // como onViewProfile a las ~20 vistas de rol, así que hacerlo aquí evita
   // repetir la llamada (y olvidarla) en cada una.
-  const setSelectedProfile = useCallback((p: Profile | null) => {
+  // `seccion` = 'resenas' cuando se abre desde la nota de una tarjeta: la
+  // ficha arranca en las reseñas en vez de arriba del todo.
+  const [seccionPerfil, setSeccionPerfil] = useState<'resenas' | null>(null);
+  const setSelectedProfile = useCallback((p: Profile | null, seccion?: 'resenas') => {
     if (p) logProfileView(p.role ?? 'desconocido');
+    setSeccionPerfil(seccion ?? null);
     setSelectedProfileRaw(p);
   }, []);
   // El buscador de Landing pasa el término escrito en location.state.search
@@ -735,6 +739,7 @@ const Dashboard = () => {
           <Suspense fallback={null}>
             <ProfessionalProfilePage
               profile={selectedProfile}
+              abrirEn={seccionPerfil}
               onClose={() => setSelectedProfile(null)}
               onMessage={handleMessage}
             />

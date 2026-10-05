@@ -22,6 +22,7 @@ import { instagramUrl, extractInstagramHandle } from '@/lib/social';
 import { toSlug } from '@/data/profiles';
 import type { Profile } from '@/data/profiles';
 import FollowButton from '@/components/FollowButton';
+import ReviewsSection from '@/components/ReviewsSection';
 
 const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel: string; url: string }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -226,11 +227,13 @@ const RoleHeroAnim = ({ role, color }: { role: string; color: string }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 interface Props {
   profile: Profile;
+  /** 'resenas': al abrir, baja hasta las reseñas (clic en la nota de la tarjeta). */
+  abrirEn?: 'resenas' | null;
   onClose: () => void;
   onMessage?: (userId: string, name: string) => void;
 }
 
-const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
+const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Props) => {
   const me = useMyProfile();
   const cfg = getRoleCfg(p.role);
   const scarcity = useScarcitySignal(p.userId);
@@ -256,6 +259,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     genres?: string[];
     hourlyRate?: number;
     isVerified?: boolean;
+    googleReviewUrl?: string | null;
     offersClasses?: boolean;
     classStyles?: string[];
     rentalEquipment?: string[];
@@ -269,20 +273,27 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
   const [isSmallPhoto, setIsSmallPhoto] = useState(false);
   const [tab, setTab] = useState<'overview' | 'media' | 'contact'>('overview');
   const scrollRef = useRef<HTMLDivElement>(null);
+  const resenasRef = useRef<HTMLDivElement>(null);
+  const yaSaltoAResenas = useRef(false);
 
   // Fetch full data from Supabase
   useEffect(() => {
     if (!p.userId) return;
     const load = async () => {
-      const { data } = await supabase
+      const { data: rowsData } = await supabase
         .from('profiles')
         // audio_session_urls faltaba aquí — este modal (usado desde el
         // dashboard) nunca mostraba la sección "Sesiones" que sí tiene el
         // perfil público (PublicProfile.tsx), aunque el profesional tuviera
         // varias sesiones reales guardadas (p. ej. Dj Poly, 2 en Mixcloud).
-        .select('audio_embed_url, audio_session_urls, video_session_urls, portfolio_urls, bio, specialty, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role')
-        .eq('user_id', p.userId)
-        .maybeSingle();
+        .select('audio_embed_url, audio_session_urls, video_session_urls, portfolio_urls, bio, specialty, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, google_review_url, role')
+        .eq('user_id', p.userId);
+      // Un mismo usuario puede tener varios perfiles (p. ej. organizador +
+      // food truck). Con .maybeSingle() eso devolvía error y la ficha se
+      // quedaba sin bio, sesiones ni portfolio de BD. Se elige el del oficio
+      // de la tarjeta y, si no, el primero que no sea de organizador.
+      const rows = (rowsData ?? []) as any[];
+      const data = rows.find(r => r.role === p.role) ?? rows.find(r => r.role !== 'empresario') ?? rows[0];
       if (!data) return;
 
       setFull({
@@ -296,6 +307,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         genres: (data as any).genres ?? p.badges ?? [],
         hourlyRate: (data as any).hourly_rate ?? p.price,
         isVerified: (data as any).is_verified ?? p.isVerified,
+        googleReviewUrl: (data as any).google_review_url ?? null,
         offersClasses: (data as any).offers_classes ?? false,
         classStyles: (data as any).class_styles ?? [],
         rentalEquipment: (data as any).rental_equipment ?? [],
@@ -307,6 +319,21 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     };
     load();
   }, [p.userId, p.description, p.languages, p.badges, p.price, p.isVerified]);
+
+  // Abierta desde la nota de una tarjeta: bajar a las reseñas cuando ya ha
+  // cargado el contenido de arriba (sesiones, portfolio), o el ancla se
+  // movería después del salto.
+  // Si la carga tarda o falla, se salta igualmente pasado un momento.
+  useEffect(() => {
+    if (abrirEn !== 'resenas' || yaSaltoAResenas.current) return;
+    const listo = full.genres !== undefined;
+    const t = setTimeout(() => {
+      if (yaSaltoAResenas.current) return;
+      yaSaltoAResenas.current = true;
+      resenasRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, listo ? 450 : 1500);
+    return () => clearTimeout(t);
+  }, [abrirEn, full]);
 
   const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
   const [audioLoading, setAudioLoading] = useState(false);
@@ -738,6 +765,18 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
 
             {showCalendarHelp && (
               <CalendarHowItWorksModal audience="organizador" onClose={() => setShowCalendarHelp(false)} />
+            )}
+
+            {/* Reseñas: antes esta ficha no las enseñaba en ningún sitio (solo
+                la pública /p/), así que la nota de la tarjeta no llevaba a nada. */}
+            {p.userId && (
+              <div ref={resenasRef} style={{ scrollMarginTop: 16 }}>
+                <ReviewsSection
+                  professionalUserId={p.userId}
+                  professionalName={p.name}
+                  googleReviewUrl={full.googleReviewUrl ?? null}
+                />
+              </div>
             )}
 
             {/* Redes sociales — registrados */}
