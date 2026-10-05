@@ -1,7 +1,7 @@
 import {
   LayoutGrid, Home, Search, MessageSquare, Megaphone, Settings,
   BarChart3, FileText, FileEdit, CalendarDays, Sparkles, Rss,
-  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield, Star,
+  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield, MessageSquareText,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
@@ -488,7 +488,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                 usuario el 5 oct 2026). Sin onGoToReviews cae a 'resources'
                 en vez de navegar a ningún sitio, para no romper si algún
                 caller aún no pasa la prop nueva. */}
-            <NavItem icon={Star} label="Reseñas" isActive={false} onClick={() => (onGoToReviews ?? (() => onViewChange('resources')))()} />
+            <NavItem icon={MessageSquareText} label="Reseñas" isActive={false} onClick={() => (onGoToReviews ?? (() => onViewChange('resources')))()} />
           </SidebarMenu>
         </div>
 
