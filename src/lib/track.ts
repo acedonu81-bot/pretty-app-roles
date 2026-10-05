@@ -249,9 +249,24 @@ export function logContactClick(contexto: string) {
   void logEvent('contact_click', location.pathname, contexto.slice(0, 120));
 }
 
-/** Alta y acceso, para cerrar el embudo visita → registro. */
-export function logSignup(rol?: string) { void logEvent('signup', location.pathname, rol); }
-export function logLogin() { void logEvent('login'); }
+/**
+ * Alta y acceso, para cerrar el embudo visita → registro.
+ *
+ * También van a GA4 vía track(): el comentario de arriba del archivo decía
+ * que GA4-vía-GTM era "la única fuente de analítica del proyecto", pero
+ * logSignup/logLogin solo llamaban a logEvent (tabla propia). GA4 nunca
+ * recibió un solo sign_up — el informe de registros en GA4 estaba
+ * permanentemente a 0 pese a haber altas reales (detectado 5 oct 2026).
+ * Nombres "sign_up" y "login" son los estándar que GA4 reconoce.
+ */
+export function logSignup(rol?: string) {
+  void logEvent('signup', location.pathname, rol);
+  track('sign_up', rol ? { method: rol } : undefined);
+}
+export function logLogin() {
+  void logEvent('login');
+  track('login');
+}
 
 /** Filtro de rol usado en el directorio: qué categorías se buscan más. */
 export function logFiltroRol(rol: string) {

@@ -36,6 +36,25 @@ scripts/            — prerender-meta.mjs, update-sitemap.mjs
 - VITE_SITE_URL configurada en Vercel env vars (production + preview)
 - Edge functions usan `info@xpeak.site` como FROM (no cambiar sin reconfigurar SMTP)
 
+## INNEGOCIABLE: XDS (XPEAK Decision System) antes de construir (decisión del usuario, 5 oct 2026)
+Fuente: "The XPEAK Book, Edición Fundacional v1.0". Ninguna funcionalidad, oficio/categoría, alianza, plan de precios o campaña pasa a desarrollo por intuición, presión o entusiasmo. Antes de escribir código para algo nuevo, entregar una **Ficha XDS** y esperar el visto bueno:
+1. Idea en una frase · usuario afectado · problema real que resuelve.
+2. **Gate eliminatorio** (1-5): Confianza ≥4, Problema real ≥4, Valor usuario ≥4. Si falla uno, no se construye: backlog o replantear.
+3. **Matriz** (nota 1-5 × peso): Confianza x5, Problema real x5, Valor usuario x5, Efecto dominó x4, Diferenciación x4, Demanda validada x3, Oferta suficiente x3, Timing x3, Escalabilidad x3, Comunidad x3, Monetización ética x2, Desarrollo x2, Riesgo inverso x5 (5 = riesgo controlado). **Score = Σ(nota×peso) / 235 × 100.**
+4. **Evidencias** de cada nota (datos de Supabase/GA4, búsquedas, leads, entrevistas). Nota sin evidencia: bajarla o marcarla "pendiente".
+5. **Death Line** (condición que rompe la idea) + **mitigación concreta**. Sin mitigación no se aprueba.
+6. **Veredicto** por bandas: 90-100 construir ya · 80-89 próximo trimestre · 70-79 validar (prueba manual/prototipo) · 60-69 backlog · <60 descartar o replantear.
+- Pregunta obligatoria: ¿esto hace que organizadores y profesionales confíen más en XPEAK? Roadmap: Directorio confiable → Flash manual → XPEAK Guard → Business → IA contextual; no se construye un nivel sin validar el anterior.
+- Bugs, seguridad y mantenimiento NO pasan por XDS. Las métricas de las evidencias excluyen admins, cuentas demo y autocontratos.
+
+## INNEGOCIABLE: tarjetas de categoría en home y dashboard (decisión del usuario, 5 oct 2026)
+Datos 5 sep–5 oct 2026: el 100% de la demanda real (conversaciones con empresarios, Flash Booking y leads) fue de Música; el resto de categorías tuvo interés pero 0 demanda.
+- **Todas las categorías y subcategorías se muestran SIEMPRE** en la home y el dashboard (bento de `Landing.tsx`, `ExplorarView.tsx`, sidebar, `/descubrir`), **aunque tengan 0 perfiles**. Nunca ocultar una tarjeta por falta de perfiles: transmite que XPEAK cubre todos los oficios del mundo de los eventos y da buena imagen. Se propuso ocultar las vacías (y un mínimo de 3, luego de 1) y el usuario lo rechazó.
+- Recomendado (no innegociable): que el directorio vacío de una categoría no sea un callejón sin salida (captar lead, ofrecer Flash Booking o roles relacionados).
+- EN CUARENTENA (no es regla todavía, revisar ~5 nov 2026): medir las categorías por demanda real (conversaciones empresario→profesional, Flash sin autocontrato, leads). Con 8 señales al mes no da para decidir; mientras tanto NO se usa para quitar ni reordenar categorías.
+- **Ningún oficio o categoría nueva sin ficha XDS** del XPEAK Book (Gate de confianza, problema y valor ≥4/5) que pruebe oferta y demanda.
+- Interés sin oferta (clics o búsquedas sin resultado) = objetivo de captación, no de tarjeta.
+
 ## MCP
 - `.mcp.json` en la raíz declara `chrome-devtools` (npx chrome-devtools-mcp) para que `verify-flows` funcione en cualquier sesión/máquina sin depender de config global
 
