@@ -1,5 +1,5 @@
 import {
-  LayoutGrid, Search, MessageSquare, Megaphone, Settings,
+  LayoutGrid, Home, Search, MessageSquare, Megaphone, Settings,
   BarChart3, FileText, FileEdit, CalendarDays, Sparkles, Rss,
   ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield,
 } from 'lucide-react';
@@ -288,7 +288,16 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
   // respaldo hacía que un grupo musical (o cualquiera que no terminase el
   // wizard) viera la pantalla de DJs y creyera que se le había asignado ese
   // rol. Sin rol, lo que necesita es completar su perfil.
-  const homeView = !role || role === 'pending' ? 'profile' : role;
+  //
+  // Mismo destino que el aterrizaje tras el login y que "Inicio" en el móvil
+  // (resolverVistaInicial en Dashboard.tsx, MobileBottomNav): el mapa de
+  // categorías. Aquí seguía llevando al listado del propio oficio, así que a
+  // un DJ le abría el directorio de DJs (su competencia) mientras en el
+  // móvil el mismo botón abría Explorar. Excepciones, igual que allí: el
+  // empresario tiene su panel y rookie/sin rol van a completar el perfil.
+  const homeView = !role || role === 'pending' || role === 'rookie' ? 'profile'
+    : role === 'empresario' ? 'empresario'
+    : 'explorar';
   const directoryItems = DIRECTORY_ITEMS;
 
   return (
@@ -318,7 +327,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
         <div className="mb-1">
           <GroupLabel>Panel</GroupLabel>
           <SidebarMenu>
-            <NavItem icon={LayoutGrid} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} />
+            <NavItem icon={Home} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} />
             <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} badge={flashBadge} badgeColor="gold" />
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} badge={msgBadge} badgeColor="blue" />
             <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" />
@@ -339,7 +348,11 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
                 aquí se puede volver a ella en cualquier momento. Va antes que
                 el Directorio: quien no sabe navegar necesita ver el mapa, no
                 un desplegable de 18 roles. */}
-            <NavItem icon={LayoutGrid} label="Explorar categorías" isActive={activeView === 'explorar'} onClick={() => onViewChange('explorar')} />
+            {/* Si "Inicio" ya lleva al mapa, este botón sería un duplicado
+                exacto (mismo destino, los dos encendidos a la vez). */}
+            {homeView !== 'explorar' && (
+              <NavItem icon={LayoutGrid} label="Explorar categorías" isActive={activeView === 'explorar'} onClick={() => onViewChange('explorar')} />
+            )}
             <SidebarMenuItem>
               <SidebarMenuButton
                 onClick={() => {
