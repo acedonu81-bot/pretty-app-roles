@@ -360,7 +360,26 @@ const AdminActivity = () => {
                     <span className="text-[0.65rem] font-black uppercase tracking-wider" style={{ color: e.color }}>
                       {e.etiqueta}
                     </span>
-                    <span className="text-sm font-bold truncate">{m.quien}</span>
+                    {/* El nombre nunca llevaba a ningún sitio — había que ir a
+                        buscar al usuario a mano en otra pestaña del admin para
+                        ver su ficha (reportado por el usuario, 5 oct 2026).
+                        _blank + mismo patrón que AdminUserManagement/
+                        AdminBusinesses/AdminNewProfileAlert: no pierde el
+                        panel de actividad al mirar la ficha. */}
+                    {m.user_id ? (
+                      <a
+                        href={`/p/${m.user_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Ver ficha pública"
+                        className="text-sm font-bold truncate hover:underline"
+                        style={{ color: '#111' }}
+                      >
+                        {m.quien}
+                      </a>
+                    ) : (
+                      <span className="text-sm font-bold truncate">{m.quien}</span>
+                    )}
                     {m.user_id && <EmailsTooltip userId={m.user_id} />}
                     {m.detalle && <span className="text-xs" style={{ color: '#555' }}>· {m.detalle}</span>}
                     {m.lugar && m.lugar !== '—' && <span className="text-xs" style={{ color: '#777' }}>· {m.lugar}</span>}
