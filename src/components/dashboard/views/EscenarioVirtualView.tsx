@@ -105,7 +105,7 @@ const ReportModal = ({
           onChange={e => setDetail(e.target.value.slice(0, 300))}
           placeholder="Detalles adicionales (opcional, máx. 300 caracteres)"
           rows={3}
-          className="nightlife-input w-full text-xs !py-2 mb-3 resize-none"
+          className="nightlife-input w-full text-base sm:text-xs !py-2 mb-3 resize-none"
         />
 
         <button
@@ -417,10 +417,10 @@ const EscenarioVirtualView = () => {
           )}
 
           <input value={streamTitle} onChange={e => setStreamTitle(e.target.value)}
-            placeholder="Título del directo" className="nightlife-input text-sm !py-2.5 mb-2" />
+            placeholder="Título del directo" className="nightlife-input text-base sm:text-sm !py-2.5 mb-2" />
           <div className="flex gap-2">
             <input value={streamUrl} onChange={e => setStreamUrl(e.target.value)}
-              placeholder="Twitch, YouTube, Mixcloud, SoundCloud, Vimeo, Spotify..." className="nightlife-input text-sm !py-2.5 flex-1" />
+              placeholder="Twitch, YouTube, Mixcloud, SoundCloud, Vimeo, Spotify..." className="nightlife-input text-base sm:text-sm !py-2.5 flex-1" />
             {streamUrl && (
               <button type="button" onClick={() => setStreamUrl('')}
                 className="px-3 rounded-lg flex items-center flex-shrink-0"
@@ -564,7 +564,7 @@ const EscenarioVirtualView = () => {
               onKeyDown={e => e.key === 'Enter' && sendChat()}
               placeholder={isLive ? 'Escribe un mensaje...' : 'Solo disponible en directo'}
               disabled={!isLive}
-              className="nightlife-input flex-1 text-xs !py-2 disabled:opacity-40" />
+              className="nightlife-input flex-1 text-base sm:text-xs !py-2 disabled:opacity-40" />
             <button onClick={sendChat} disabled={!isLive}
               className="px-3 rounded-lg disabled:opacity-40"
               style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>

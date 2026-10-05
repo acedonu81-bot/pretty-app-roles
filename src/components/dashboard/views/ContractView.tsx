@@ -557,7 +557,7 @@ const ContractView = () => {
                 <select
                   value={csvYear}
                   onChange={e => setCsvYear(Number(e.target.value))}
-                  className="text-xs px-2 py-1.5 rounded-lg outline-none"
+                  className="text-base sm:text-xs px-2 py-1.5 rounded-lg outline-none"
                   style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#222', cursor: 'pointer' }}>
                   {availableYears.map(y => (
                     <option key={y} value={y} style={{ background: '#0a0a0e' }}>{y}</option>

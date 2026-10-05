@@ -148,7 +148,7 @@ const AdminBusinesses = () => {
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Buscar por nombre, zona o bio..."
-            className="nightlife-input text-sm w-full !pl-9"
+            className="nightlife-input text-base sm:text-sm w-full !pl-9"
           />
         </div>
       </div>

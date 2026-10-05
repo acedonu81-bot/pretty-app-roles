@@ -165,10 +165,10 @@ const MultiProfileSection = () => {
         <div className="p-4 rounded-xl space-y-3" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(212,175,55,0.15)' }}>
           <p className="text-xs font-bold" style={{ color: '#8A6D0F' }}>Nuevo perfil</p>
           <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Nombre artístico o profesional"
-            maxLength={60} className="nightlife-input !py-2.5 text-sm w-full" />
+            maxLength={60} className="nightlife-input !py-2.5 text-base sm:text-sm w-full" />
           <NightlifeSelect value={newRole} onChange={setNewRole} options={ROLE_OPTIONS} active />
           <input value={newZone} onChange={e => setNewZone(e.target.value)} placeholder="Ciudad (ej. Barcelona)"
-            maxLength={80} className="nightlife-input !py-2.5 text-sm w-full" />
+            maxLength={80} className="nightlife-input !py-2.5 text-base sm:text-sm w-full" />
           <div className="flex gap-2">
             <button onClick={() => setAdding(false)} className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
               style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
@@ -796,28 +796,28 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-xs text-muted-foreground mb-1.5 font-medium">{isEmpresario ? 'Nombre de la empresa o sala' : 'Nombre artístico'}</label>
-            <input type="text" value={displayName ?? ''} onChange={e => setLocalName(e.target.value)} className="nightlife-input text-sm" />
+            <input type="text" value={displayName ?? ''} onChange={e => setLocalName(e.target.value)} className="nightlife-input text-base sm:text-sm" />
           </div>
           <div>
             <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Email</label>
-            <input type="email" defaultValue={user?.email || ''} className="nightlife-input text-sm opacity-60" readOnly />
+            <input type="email" defaultValue={user?.email || ''} className="nightlife-input text-base sm:text-sm opacity-60" readOnly />
           </div>
           <div>
             <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Ubicación base</label>
-            <input type="text" value={city} onChange={e => setLocalCity(e.target.value)} className="nightlife-input text-sm" />
+            <input type="text" value={city} onChange={e => setLocalCity(e.target.value)} className="nightlife-input text-base sm:text-sm" />
           </div>
           <div>
             <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Teléfono</label>
-            <input type="tel" value={localPhone ?? profile.phone ?? ''} onChange={e => setLocalPhone(e.target.value)} placeholder="+34 600 000 000" className="nightlife-input text-sm" />
+            <input type="tel" value={localPhone ?? profile.phone ?? ''} onChange={e => setLocalPhone(e.target.value)} placeholder="+34 600 000 000" className="nightlife-input text-base sm:text-sm" />
           </div>
           <div>
             <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Fecha de cumpleaños</label>
-            <input type="date" value={localBirthday ?? profile.birthday ?? ''} onChange={e => setLocalBirthday(e.target.value)} className="nightlife-input text-sm" />
+            <input type="date" value={localBirthday ?? profile.birthday ?? ''} onChange={e => setLocalBirthday(e.target.value)} className="nightlife-input text-base sm:text-sm" />
           </div>
           {!isEmpresario && (
           <div>
             <label className="block text-xs text-muted-foreground mb-1.5 font-medium" style={{ color: '#8A6D0F' }}>Caché base (€/hora)</label>
-            <input type="number" value={rate ?? ''} onChange={e => setLocalRate(Number(e.target.value))} min={20} step={5} className="nightlife-input text-sm font-bold" style={{ color: '#8A6D0F' }} />
+            <input type="number" value={rate ?? ''} onChange={e => setLocalRate(Number(e.target.value))} min={20} step={5} className="nightlife-input text-base sm:text-sm font-bold" style={{ color: '#8A6D0F' }} />
           </div>
           )}
         </div>
@@ -845,7 +845,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                   <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Años pinchando (orientativo)</label>
                   <input type="number" min={0} step={0.5} value={emergenteAnios}
                     onChange={e => setLocalEmergenteAnios(e.target.value)}
-                    placeholder="ej. 1.5" className="nightlife-input text-sm w-full sm:w-40" />
+                    placeholder="ej. 1.5" className="nightlife-input text-base sm:text-sm w-full sm:w-40" />
                 </div>
                 <p className="text-[0.7rem] text-muted-foreground mt-2 leading-snug">
                   Aparecerás en el directorio <strong>DJs Emergentes</strong>, separado del de profesionales. Sube tus sesiones y añade tu Instagram: un admin las revisa y así vas subiendo de nivel dentro de DJs Emergentes, hasta graduarte a profesional. El ascenso siempre lo confirma una persona, nunca es automático por los años que declares.
@@ -1299,7 +1299,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                     onChange={e => setDeleteConfirmEmail(e.target.value)}
                     placeholder="Tu email de cuenta"
                     maxLength={100}
-                    className="nightlife-input text-sm w-full"
+                    className="nightlife-input text-base sm:text-sm w-full"
                     style={{ borderColor: 'rgba(255,95,86,0.3)' }}
                   />
                 </div>
@@ -1334,7 +1334,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                     onChange={e => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     placeholder="123456"
                     maxLength={6}
-                    className="nightlife-input text-sm w-full text-center tracking-[0.4em] font-bold"
+                    className="nightlife-input text-base sm:text-sm w-full text-center tracking-[0.4em] font-bold"
                     style={{ borderColor: 'rgba(255,95,86,0.3)', fontSize: '1.1rem' }}
                   />
                 </div>

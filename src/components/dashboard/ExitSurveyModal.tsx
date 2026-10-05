@@ -99,7 +99,7 @@ const ExitSurveyModal = ({ onDone }: Props) => {
             onChange={e => setComment(e.target.value.slice(0, 1000))}
             placeholder="¿Quieres contarnos algo más? (opcional)"
             rows={3}
-            className="w-full rounded-lg px-3 py-2 text-sm mb-4 resize-none"
+            className="w-full rounded-lg px-3 py-2 text-base sm:text-sm mb-4 resize-none"
             style={{
               background: 'rgba(255,255,255,0.03)',
               border: '1px solid rgba(255,255,255,0.09)',

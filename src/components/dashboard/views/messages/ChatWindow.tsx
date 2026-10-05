@@ -386,7 +386,7 @@ const ChatWindow = ({
               }}
               placeholder="Escribe un mensaje..."
               maxLength={1000}
-              className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all"
+              className="w-full px-4 py-2.5 rounded-xl text-base sm:text-sm outline-none transition-all"
               style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
               onFocus={e => (e.target.style.borderColor = 'rgba(212,175,55,0.3)')}
               onBlur={e => (e.target.style.borderColor = 'rgba(0,0,0,0.08)')}

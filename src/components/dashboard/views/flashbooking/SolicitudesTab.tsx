@@ -510,7 +510,7 @@ function ReviewOrganizadorModal({ solicitud, reviewerId, onClose, onDone }: {
           value={comment}
           onChange={e => setComment(e.target.value)}
           placeholder="¿Qué tal la experiencia con este organizador?"
-          className="nightlife-input text-sm w-full resize-y mb-4"
+          className="nightlife-input text-base sm:text-sm w-full resize-y mb-4"
         />
         <div className="flex gap-2">
           <button onClick={onClose} className="flex-1 py-2.5 rounded-lg text-xs font-bold"

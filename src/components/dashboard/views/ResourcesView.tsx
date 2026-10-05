@@ -190,7 +190,7 @@ export default function ResourcesView() {
             <select
               value={selected ?? ''}
               onChange={e => setSelected(e.target.value || null)}
-              className="appearance-none rounded-full pl-4 pr-9 py-2.5 text-xs font-bold cursor-pointer outline-none"
+              className="appearance-none rounded-full pl-4 pr-9 py-2.5 text-base sm:text-xs font-bold cursor-pointer outline-none"
               style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.35)', color: '#E0BC4B' }}
             >
               <option value="" style={{ color: '#0a0908' }}>Ver equipo y guías de tu oficio…</option>

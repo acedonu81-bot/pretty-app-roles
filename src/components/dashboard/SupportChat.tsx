@@ -739,7 +739,7 @@ const SupportChat = () => {
                   onKeyDown={handleKey}
                   placeholder="Escribe tu pregunta..."
                   maxLength={400}
-                  className="flex-1 bg-transparent outline-none text-xs py-2 px-3 rounded-xl"
+                  className="flex-1 bg-transparent outline-none text-base sm:text-xs py-2 px-3 rounded-xl"
                   style={{
                     background: '#ffffff',
                     border: '1px solid rgba(0,0,0,0.12)',

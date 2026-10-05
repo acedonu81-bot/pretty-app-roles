@@ -892,7 +892,7 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
           placeholder="¿Cómo fue tu experiencia con este profesional? Puntualidad, trato, resultado…"
           rows={4}
           maxLength={500}
-          className="w-full p-3 rounded-xl text-sm resize-none focus:outline-none mb-4"
+          className="w-full p-3 rounded-xl text-base sm:text-sm resize-none focus:outline-none mb-4"
           style={{ background: '#f7f7f8', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
         />
 

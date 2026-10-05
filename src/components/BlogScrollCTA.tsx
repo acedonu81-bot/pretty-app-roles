@@ -15,7 +15,7 @@ type ProfessionalRole =
   | 'profesional_pro';
 
 interface BlogScrollCTAProps {
-  role?: 'dj' | 'staff' | 'azafata' | 'fotografo' | 'bailarin' | 'general' | 'empresario' | ProfessionalRole;
+  role?: 'dj' | 'staff' | 'azafata' | 'fotografo' | 'bailarin' | 'makeup' | 'general' | 'empresario' | ProfessionalRole;
   storageKey?: string;
   articlePath?: string;
 }
@@ -56,6 +56,12 @@ const CONFIG = {
     sub: 'Bailarines para eventos e instructores de salsa/bachata.',
     cta: 'Ver bailarines disponibles →',
     href: '/auth?mode=register&intent=contratar-bailarin',
+  },
+  makeup: {
+    label: '¿Buscas maquilladora para tu evento?',
+    sub: 'Recibe presupuestos de maquilladoras verificadas.',
+    cta: 'Ver maquilladoras →',
+    href: '/auth?mode=register&intent=contratar-makeup',
   },
   general: {
     label: '¿Buscas profesionales para tu evento?',

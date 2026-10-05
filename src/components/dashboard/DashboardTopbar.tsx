@@ -212,8 +212,14 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             <input
               type="text"
               autoFocus={isMobile}
+              // Placeholder corto en móvil: el contenedor compite por ancho con
+              // logo, menú, campana y avatar, y sin overflow declarado el texto
+              // se cortaba en seco a mitad de palabra ("Q" + una letra suelta,
+              // reportado por el usuario). text-overflow: ellipsis (abajo)
+              // cubre el resto de anchos intermedios sin depender solo de
+              // acortar el texto.
               placeholder={isMobile ? 'Buscar' : 'Buscar por zona, rol o nombre...'}
-              className="bg-transparent border-none outline-none w-full text-sm sm:text-xs"
+              className="bg-transparent border-none outline-none w-full text-base sm:text-sm sm:text-xs"
               style={{ color: '#111', textOverflow: 'ellipsis' }}
               value={searchQuery}
               onChange={e => onSearch?.(e.target.value)}

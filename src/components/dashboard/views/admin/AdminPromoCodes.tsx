@@ -103,7 +103,7 @@ const AdminPromoCodes = () => {
               onChange={e => setNewCode(p => ({ ...p, code: e.target.value.toUpperCase() }))}
               placeholder="XPEAK20"
               maxLength={32}
-              className="nightlife-input text-sm w-full"
+              className="nightlife-input text-base sm:text-sm w-full"
             />
           </div>
           <div>
@@ -112,7 +112,7 @@ const AdminPromoCodes = () => {
               type="number" min={1} max={100}
               value={newCode.discount_percent}
               onChange={e => setNewCode(p => ({ ...p, discount_percent: Number(e.target.value) }))}
-              className="nightlife-input text-sm w-full"
+              className="nightlife-input text-base sm:text-sm w-full"
             />
           </div>
           <div>
@@ -120,7 +120,7 @@ const AdminPromoCodes = () => {
             <select
               value={newCode.plan_id}
               onChange={e => setNewCode(p => ({ ...p, plan_id: e.target.value }))}
-              className="nightlife-input text-sm w-full appearance-none"
+              className="nightlife-input text-base sm:text-sm w-full appearance-none"
             >
               <option value="">Todos los planes</option>
               {/* Tiers reales usados por la lógica de negocio (DashboardSidebar.tsx,
@@ -138,7 +138,7 @@ const AdminPromoCodes = () => {
               type="date"
               value={newCode.valid_until}
               onChange={e => setNewCode(p => ({ ...p, valid_until: e.target.value }))}
-              className="nightlife-input text-sm w-full"
+              className="nightlife-input text-base sm:text-sm w-full"
             />
           </div>
           <div>
@@ -148,7 +148,7 @@ const AdminPromoCodes = () => {
               value={newCode.max_uses}
               onChange={e => setNewCode(p => ({ ...p, max_uses: e.target.value }))}
               placeholder="∞"
-              className="nightlife-input text-sm w-full"
+              className="nightlife-input text-base sm:text-sm w-full"
             />
           </div>
           <div className="col-span-2 md:col-span-1">
@@ -158,7 +158,7 @@ const AdminPromoCodes = () => {
               onChange={e => setNewCode(p => ({ ...p, description: e.target.value }))}
               placeholder="Ej. Lanzamiento Madrid"
               maxLength={100}
-              className="nightlife-input text-sm w-full"
+              className="nightlife-input text-base sm:text-sm w-full"
             />
           </div>
         </div>

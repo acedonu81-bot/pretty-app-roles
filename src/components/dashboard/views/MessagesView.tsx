@@ -504,7 +504,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
               value={searchUsers}
               onChange={e => searchUsersHandler(e.target.value)}
               placeholder="Buscar por nombre..."
-              className="nightlife-input w-full text-sm mb-3"
+              className="nightlife-input w-full text-base sm:text-sm mb-3"
             />
             {searchingUsers && <p className="text-xs text-muted-foreground text-center py-2">Buscando...</p>}
             {!searchingUsers && userResults.length === 0 && searchUsers.length >= 2 && (

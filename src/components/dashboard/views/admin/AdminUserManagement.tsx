@@ -138,7 +138,7 @@ const AdminUserManagement = () => {
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Buscar por nombre, rol o zona..."
-            className="nightlife-input text-sm w-full !pl-9"
+            className="nightlife-input text-base sm:text-sm w-full !pl-9"
           />
         </div>
       </div>

@@ -313,7 +313,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           placeholder="Buscar profesional por nombre..."
-          className="nightlife-input w-full text-sm"
+          className="nightlife-input w-full text-base sm:text-sm"
           style={{ paddingLeft: '2.25rem' }}
         />
         {searchQuery && (

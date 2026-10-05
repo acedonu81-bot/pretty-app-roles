@@ -145,7 +145,7 @@ export default function BlogMaquilladoraConseguirClientes() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquilladora-conseguir-clientes' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquilladora_conseguir_clientes" articlePath="/blog/maquilladora-conseguir-clientes" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquilladora_conseguir_clientes" articlePath="/blog/maquilladora-conseguir-clientes" />
       </div>
     </>
   );
