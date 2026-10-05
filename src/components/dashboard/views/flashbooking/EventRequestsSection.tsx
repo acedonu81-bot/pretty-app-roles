@@ -828,7 +828,7 @@ const EventRequestsSection = () => {
                             onChange={e => setApplyText(t => ({ ...t, [req.id]: e.target.value }))}
                             placeholder="Preséntate en una línea (opcional): disponibilidad, equipo, experiencia…"
                             rows={2} maxLength={300}
-                            className="w-full px-3 py-2 rounded-xl text-xs focus:outline-none resize-none"
+                            className="w-full px-3 py-2 rounded-xl text-base sm:text-xs focus:outline-none resize-none"
                             style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                           <button
                             type="button"
@@ -877,14 +877,14 @@ const EventRequestsSection = () => {
                   <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>TU NOMBRE O EMPRESA *</label>
                   <input value={form.client_name} onChange={e => setForm(f => ({ ...f, client_name: e.target.value }))}
                     placeholder="María García / Eventos Sol" required
-                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
+                    className="w-full px-3 py-2.5 rounded-xl text-base sm:text-sm focus:outline-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
 
                 <div>
                   <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>TIPO DE EVENTO *</label>
                   <select value={form.event_type} onChange={e => setForm(f => ({ ...f, event_type: e.target.value }))} required
-                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none appearance-none"
+                    className="w-full px-3 py-2.5 rounded-xl text-base sm:text-sm focus:outline-none appearance-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }}>
                     <option value="">Seleccionar...</option>
                     {EVENT_TYPES.map(t => <option key={t}>{t}</option>)}
@@ -895,7 +895,7 @@ const EventRequestsSection = () => {
                   <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>CIUDAD *</label>
                   <input value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))}
                     placeholder="Madrid, Sevilla..." required
-                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
+                    className="w-full px-3 py-2.5 rounded-xl text-base sm:text-sm focus:outline-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
 
@@ -908,7 +908,7 @@ const EventRequestsSection = () => {
                       solo ve la ciudad, para que nadie se salte la plataforma. */}
                   <input value={form.exact_address} onChange={e => setForm(f => ({ ...f, exact_address: e.target.value }))}
                     placeholder="Calle Mayor 1, 28001 Madrid"
-                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
+                    className="w-full px-3 py-2.5 rounded-xl text-base sm:text-sm focus:outline-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
 
@@ -942,7 +942,7 @@ const EventRequestsSection = () => {
                         ? f
                         : { ...f, event_dates: [...f.event_dates, v].sort() });
                     }}
-                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
+                    className="w-full px-3 py-2.5 rounded-xl text-base sm:text-sm focus:outline-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                   <p className="text-[10px] mt-1" style={{ color: '#888' }}>
                     Añade un día cada vez si el evento dura varias jornadas.
@@ -953,10 +953,10 @@ const EventRequestsSection = () => {
                   <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>PRESUPUESTO (€)</label>
                   <div className="flex gap-2">
                     <input type="number" value={form.budget_min} onChange={e => setForm(f => ({ ...f, budget_min: e.target.value }))}
-                      placeholder="Mín" className="w-1/2 px-3 py-2.5 rounded-xl text-sm focus:outline-none"
+                      placeholder="Mín" className="w-1/2 px-3 py-2.5 rounded-xl text-base sm:text-sm focus:outline-none"
                       style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                     <input type="number" value={form.budget_max} onChange={e => setForm(f => ({ ...f, budget_max: e.target.value }))}
-                      placeholder="Máx" className="w-1/2 px-3 py-2.5 rounded-xl text-sm focus:outline-none"
+                      placeholder="Máx" className="w-1/2 px-3 py-2.5 rounded-xl text-base sm:text-sm focus:outline-none"
                       style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                   </div>
                 </div>
@@ -1048,7 +1048,7 @@ const EventRequestsSection = () => {
                 <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>DESCRIPCIÓN</label>
                 <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                   placeholder="Cuéntanos más sobre el evento: nº de personas, estilo, necesidades especiales..."
-                  rows={3} className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none resize-none"
+                  rows={3} className="w-full px-3 py-2.5 rounded-xl text-base sm:text-sm focus:outline-none resize-none"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
               </div>
 

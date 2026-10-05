@@ -601,7 +601,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
                         value={leadEmail}
                         onChange={e => setLeadEmail(e.target.value)}
                         placeholder="tu@email.com"
-                        className="flex-1 px-3 py-1.5 rounded-full text-xs outline-none"
+                        className="flex-1 px-3 py-1.5 rounded-full text-base sm:text-xs outline-none"
                         style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.12)' }}
                       />
                       <button type="submit" disabled={leadStatus === 'loading'}

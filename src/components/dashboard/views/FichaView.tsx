@@ -397,7 +397,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
                 }
                 maxLength={1000}
                 rows={3}
-                className="nightlife-input w-full text-sm resize-none mb-2"
+                className="nightlife-input w-full text-base sm:text-sm resize-none mb-2"
               />
 
               {(postType === 'image' || postType === 'video') && (
@@ -406,7 +406,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
                   value={mediaUrl}
                   onChange={e => setMediaUrl(e.target.value)}
                   placeholder={postType === 'video' ? 'URL de YouTube o Vimeo' : 'URL de la imagen'}
-                  className="nightlife-input w-full text-sm mb-2"
+                  className="nightlife-input w-full text-base sm:text-sm mb-2"
                 />
               )}
 
@@ -571,7 +571,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
                   value={videoUrl}
                   onChange={e => setVideoUrl(e.target.value)}
                   placeholder="https://youtu.be/... o vimeo.com/..."
-                  className="nightlife-input text-sm flex-1"
+                  className="nightlife-input text-base sm:text-sm flex-1"
                 />
                 {videoUrl && (
                   <button type="button" onClick={() => saveVideoUrl('')}
@@ -589,7 +589,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
                 </button>
               </div>
             ) : (
-              <input type="url" value={videoUrl} readOnly className="nightlife-input text-sm w-full" />
+              <input type="url" value={videoUrl} readOnly className="nightlife-input text-base sm:text-sm w-full" />
             )}
 
             {videoUrl && (() => {
@@ -678,7 +678,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
                   value={musicUrl}
                   onChange={e => setMusicUrl(e.target.value)}
                   placeholder="https://soundcloud.com/... o youtu.be/..."
-                  className="nightlife-input text-sm flex-1"
+                  className="nightlife-input text-base sm:text-sm flex-1"
                 />
                 {musicUrl && (
                   <button type="button" onClick={() => saveMusicUrl('')}
@@ -696,7 +696,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
                 </button>
               </div>
             ) : (
-              <input type="url" value={musicUrl} readOnly className="nightlife-input text-sm w-full" />
+              <input type="url" value={musicUrl} readOnly className="nightlife-input text-base sm:text-sm w-full" />
             )}
 
             {musicUrl && (() => {

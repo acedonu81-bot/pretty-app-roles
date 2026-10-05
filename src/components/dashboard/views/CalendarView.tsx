@@ -602,22 +602,22 @@ const CalendarView = () => {
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Título *</label>
                 <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                  placeholder="Ej: Boda de Marta y Javi" className="nightlife-input text-sm w-full" maxLength={80} />
+                  placeholder="Ej: Boda de Marta y Javi" className="nightlife-input text-base sm:text-sm w-full" maxLength={80} />
               </div>
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Fecha *</label>
                 <input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                  className="nightlife-input text-sm w-full" style={{ colorScheme: 'light' }} />
+                  className="nightlife-input text-base sm:text-sm w-full" style={{ colorScheme: 'light' }} />
               </div>
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Lugar</label>
                 <input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
-                  placeholder="Ej: Madrid, Sala X" className="nightlife-input text-sm w-full" maxLength={80} />
+                  placeholder="Ej: Madrid, Sala X" className="nightlife-input text-base sm:text-sm w-full" maxLength={80} />
               </div>
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Notas</label>
                 <input value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                  placeholder={isEmpresario ? 'Presupuesto, horario, contacto...' : 'Cache, horario, contacto...'} className="nightlife-input text-sm w-full" maxLength={200} />
+                  placeholder={isEmpresario ? 'Presupuesto, horario, contacto...' : 'Cache, horario, contacto...'} className="nightlife-input text-base sm:text-sm w-full" maxLength={200} />
               </div>
             </div>
             <div className="flex gap-2 mt-5">

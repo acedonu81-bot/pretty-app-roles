@@ -185,10 +185,10 @@ const FlashTab = () => {
           <div className="space-y-3">
             <input value={title} onChange={e => setTitle(e.target.value)}
               placeholder="Título (ej: DJ Techno urgente para sábado)" maxLength={80}
-              className="nightlife-input text-sm w-full" />
+              className="nightlife-input text-base sm:text-sm w-full" />
             <textarea value={desc} onChange={e => setDesc(e.target.value)}
               placeholder="Descripción del evento (horario, tipo de sala, requisitos...)" rows={3}
-              maxLength={300} className="nightlife-input text-sm resize-none w-full" />
+              maxLength={300} className="nightlife-input text-base sm:text-sm resize-none w-full" />
             <div className="flex items-center gap-2 text-xs font-bold" style={{ color: '#333' }}>
               Duración de la oferta:
               <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid var(--nightlife-border)' }}>
@@ -205,12 +205,12 @@ const FlashTab = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <input value={pay} onChange={e => setPay(e.target.value)}
-                placeholder="Pago (ej: €350)" maxLength={30} className="nightlife-input text-sm" />
+                placeholder="Pago (ej: €350)" maxLength={30} className="nightlife-input text-base sm:text-sm" />
               <input value={location} onChange={e => setLocation(e.target.value)}
-                placeholder="Ciudad / Sala" maxLength={80} className="nightlife-input text-sm" />
+                placeholder="Ciudad / Sala" maxLength={80} className="nightlife-input text-base sm:text-sm" />
               <input value={role} onChange={e => setRole(e.target.value)}
                 placeholder="Rol necesario" list="flash-role-suggestions"
-                maxLength={60} className="nightlife-input text-sm" />
+                maxLength={60} className="nightlife-input text-base sm:text-sm" />
               <datalist id="flash-role-suggestions">
                 {['DJ', 'DJ Techno', 'DJ House', 'DJ Comercial', 'DJ Urbano', 'Staff / Camarero',
                   'Hostess / Azafata', 'RRPP', 'Seguridad', 'Maquillaje', 'Fotógrafo', 'Videógrafo'].map(v => (

@@ -174,7 +174,7 @@ const AdminNewProfileAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}
                           value={rejectReason}
                           onChange={e => setRejectReason(e.target.value)}
                           placeholder="Motivo del rechazo (se envía al profesional)"
-                          className="nightlife-input text-xs flex-1 min-w-[200px]"
+                          className="nightlife-input text-base sm:text-xs flex-1 min-w-[200px]"
                         />
                         <button
                           onClick={() => rejectProfile(p, rejectReason)}

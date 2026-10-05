@@ -92,7 +92,7 @@ const MapaView = () => {
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             placeholder="Buscar ciudad..."
-            className="bg-transparent border-none outline-none text-foreground w-full text-sm"
+            className="bg-transparent border-none outline-none text-foreground w-full text-base sm:text-sm"
           />
         </div>
       </div>

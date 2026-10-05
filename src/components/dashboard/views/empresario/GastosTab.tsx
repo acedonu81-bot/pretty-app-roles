@@ -172,7 +172,7 @@ const GastosTab = () => {
           <select
             value={yearFilter}
             onChange={e => setYearFilter(Number(e.target.value))}
-            className="nightlife-input !py-1.5 !px-3 text-xs font-bold w-auto"
+            className="nightlife-input !py-1.5 !px-3 text-base sm:text-xs font-bold w-auto"
           >
             {years.map(y => <option key={y} value={y}>{y}</option>)}
           </select>

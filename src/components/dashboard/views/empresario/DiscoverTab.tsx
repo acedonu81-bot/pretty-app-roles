@@ -340,7 +340,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               )}
               <textarea value={notesDraft} onChange={e => setNotesDraft(e.target.value)}
                 placeholder="Ej: Trae mesa propia. Pago en efectivo. Contactar por WA los viernes."
-                rows={4} className="nightlife-input w-full text-xs resize-none"
+                rows={4} className="nightlife-input w-full text-base sm:text-xs resize-none"
                 style={{ borderColor: 'rgba(139,92,246,0.3)' }} />
               <div className="flex gap-2 mt-3">
                 <button onClick={saveNotes}

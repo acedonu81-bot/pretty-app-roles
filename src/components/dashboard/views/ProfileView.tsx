@@ -883,7 +883,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomTag(); } }}
                           maxLength={40}
                           placeholder="¿Algo que no está en la lista? Escríbelo"
-                          className="flex-1 min-w-0 px-2.5 py-1.5 rounded-lg text-xs"
+                          className="flex-1 min-w-0 px-2.5 py-1.5 rounded-lg text-base sm:text-xs"
                           style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
                         />
                         <button type="button" onClick={addCustomTag} disabled={!customTag.trim()}
@@ -957,7 +957,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                         onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } }}
                         maxLength={40}
                         placeholder="¿Algo que no está en la lista? Escríbelo"
-                        className="flex-1 min-w-0 px-2.5 py-2 rounded-lg text-sm"
+                        className="flex-1 min-w-0 px-2.5 py-2 rounded-lg text-base sm:text-sm"
                         style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
                       />
                       <button type="button" onClick={addCustom} disabled={!customEquipment.trim()}
@@ -1143,7 +1143,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                       value={currentRider}
                       onChange={e => setRider(e.target.value)}
                       placeholder={placeholder}
-                      className="nightlife-input mt-1 text-sm resize-y w-full"
+                      className="nightlife-input mt-1 text-base sm:text-sm resize-y w-full"
                     />
                   </>
                 );

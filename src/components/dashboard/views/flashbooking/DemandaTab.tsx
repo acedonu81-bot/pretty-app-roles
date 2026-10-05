@@ -307,11 +307,11 @@ const DemandaTab = () => {
             <Megaphone size={13} style={{ color: '#8A6D0F' }} /> Nueva oferta urgente (caduca en {durationHours}h)
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-            <input value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder="Título (ej: DJ Techno URGENTE)" maxLength={80} className="nightlife-input !py-2.5 text-sm" />
-            <input value={newLocation} onChange={e => setNewLocation(e.target.value)} placeholder="Ubicación" maxLength={60} className="nightlife-input !py-2.5 text-sm" />
-            <input value={newPay} onChange={e => setNewPay(e.target.value)} placeholder="Pago (ej: €300)" maxLength={30} className="nightlife-input !py-2.5 text-sm" />
-            <input value={newRole} onChange={e => setNewRole(e.target.value)} placeholder="Rol necesario (ej: DJ Techno)" maxLength={60} className="nightlife-input !py-2.5 text-sm" />
-            <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="Descripción breve" maxLength={200} className="nightlife-input !py-2.5 text-sm md:col-span-2" />
+            <input value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder="Título (ej: DJ Techno URGENTE)" maxLength={80} className="nightlife-input !py-2.5 text-base sm:text-sm" />
+            <input value={newLocation} onChange={e => setNewLocation(e.target.value)} placeholder="Ubicación" maxLength={60} className="nightlife-input !py-2.5 text-base sm:text-sm" />
+            <input value={newPay} onChange={e => setNewPay(e.target.value)} placeholder="Pago (ej: €300)" maxLength={30} className="nightlife-input !py-2.5 text-base sm:text-sm" />
+            <input value={newRole} onChange={e => setNewRole(e.target.value)} placeholder="Rol necesario (ej: DJ Techno)" maxLength={60} className="nightlife-input !py-2.5 text-base sm:text-sm" />
+            <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="Descripción breve" maxLength={200} className="nightlife-input !py-2.5 text-base sm:text-sm md:col-span-2" />
           </div>
           <div className="flex items-center gap-2 text-xs font-bold mb-3" style={{ color: '#333' }}>
             Duración:
@@ -429,7 +429,7 @@ const DemandaTab = () => {
                         placeholder="Escribe tu respuesta..."
                         rows={2}
                         maxLength={500}
-                        className="nightlife-input flex-1 text-xs resize-none !py-2"
+                        className="nightlife-input flex-1 text-base sm:text-xs resize-none !py-2"
                       />
                       <button type="button" onClick={() => sendReply(offer)}
                         disabled={sending || !replyText.trim()}

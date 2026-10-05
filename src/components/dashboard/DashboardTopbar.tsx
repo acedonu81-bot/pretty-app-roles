@@ -203,7 +203,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             // cubre el resto de anchos intermedios sin depender solo de
             // acortar el texto.
             placeholder={isMobile ? 'Buscar' : 'Buscar por zona, rol o nombre...'}
-            className="bg-transparent border-none outline-none w-full text-sm sm:text-xs"
+            className="bg-transparent border-none outline-none w-full text-base sm:text-sm sm:text-xs"
             style={{ color: '#111', textOverflow: 'ellipsis' }}
             value={searchQuery}
             onChange={e => onSearch?.(e.target.value)}
