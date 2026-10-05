@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Music, Image as ImageIcon, MessageSquareText } from 'lucide-react';
+import { Music, Image as ImageIcon, MessageSquareText, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { FeedPost } from '@/hooks/useFeedPosts';
 import type { FeedGroup } from '@/components/dashboard/views/FeedView';
 import LikeButton from '@/components/LikeButton';
@@ -82,6 +82,12 @@ const FeedPostCard = ({ group, viewerId }: { group: FeedGroup; viewerId: string 
   const audios = posts.filter(p => p.post_type === 'audio' && p.media_url);
   const texts = posts.filter(p => p.post_type === 'text' || (!p.media_url && p.content));
 
+  // Ninguna foto del grid abría nada al pinchar — el "+N" de la 4ª miniatura
+  // era puramente decorativo, sin onClick (reportado por el usuario el 5 oct
+  // 2026). lightboxIndex guarda qué foto de `photos` está abierta a pantalla
+  // completa; null = cerrado.
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
   // Fecha más reciente real del bloque (ignora las aproximadas si hay alguna
   // exacta disponible, igual que antes se hacía por pieza individual).
   const tiempoPost = posts.find(p => !p.dateIsApproximate) ?? first;
@@ -107,7 +113,9 @@ const FeedPostCard = ({ group, viewerId }: { group: FeedGroup; viewerId: string 
       {photos.length > 0 && (
         <div className={`mt-2 ${photos.length === 1 ? '' : 'grid grid-cols-2 gap-0.5'}`}>
           {photos.slice(0, 4).map((p, i) => (
-            <div key={p.id} className="relative" style={{ aspectRatio: photos.length === 1 ? '4/5' : '1/1', background: tone.card }}>
+            <button key={p.id} type="button" onClick={() => setLightboxIndex(i)}
+              className="relative text-left cursor-zoom-in"
+              style={{ aspectRatio: photos.length === 1 ? '4/5' : '1/1', background: tone.card }}>
               <img src={p.media_url!} alt={`Foto de ${first.authorName}`} loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover"
                 onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
@@ -122,7 +130,7 @@ const FeedPostCard = ({ group, viewerId }: { group: FeedGroup; viewerId: string 
                   +{photos.length - 4}
                 </div>
               )}
-            </div>
+            </button>
           ))}
         </div>
       )}
@@ -162,6 +170,130 @@ const FeedPostCard = ({ group, viewerId }: { group: FeedGroup; viewerId: string 
           </div>
         )}
       </div>
+
+      {lightboxIndex !== null && (
+        <PhotoLightbox
+          photos={photos}
+          index={lightboxIndex}
+          authorName={first.authorName}
+          onIndexChange={setLightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
+    </div>
+  );
+};
+
+// Visor a pantalla completa, estilo stories: la foto "se levanta" con un
+// pequeño scale+fade de entrada, y se navega arrastrándola a un lado — igual
+// que pedido por el usuario ("levante la foto y la puedas quitar para ver
+// las demás"), en vez de solo flechas estáticas. El swipe se mide con
+// pointer events nativos (sin librería): se sigue el dedo/ratón mientras
+// arrastra y, al soltar, si pasó el umbral, la foto termina de salir hacia
+// ese lado y entra la siguiente/anterior; si no, vuelve a su sitio con un
+// pequeño rebote. Las flechas y el teclado (← →, Esc) cubren desktop.
+const PhotoLightbox = ({ photos, index, authorName, onIndexChange, onClose }: {
+  photos: FeedPost[];
+  index: number;
+  authorName: string;
+  onIndexChange: (i: number) => void;
+  onClose: () => void;
+}) => {
+  const [dragX, setDragX] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const [exiting, setExiting] = useState<'left' | 'right' | null>(null);
+  const startXRef = useRef(0);
+
+  const go = (dir: 1 | -1) => {
+    const next = index + dir;
+    if (next < 0 || next >= photos.length) return;
+    setExiting(dir === 1 ? 'left' : 'right');
+    setTimeout(() => { onIndexChange(next); setExiting(null); setDragX(0); }, 180);
+  };
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    startXRef.current = e.clientX;
+    setDragging(true);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragging) return;
+    setDragX(e.clientX - startXRef.current);
+  };
+  const onPointerUp = () => {
+    if (!dragging) return;
+    setDragging(false);
+    const threshold = 90;
+    if (dragX <= -threshold && index < photos.length - 1) { go(1); return; }
+    if (dragX >= threshold && index > 0) { go(-1); return; }
+    setDragX(0);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') onClose();
+    else if (e.key === 'ArrowRight') go(1);
+    else if (e.key === 'ArrowLeft') go(-1);
+  };
+
+  const photo = photos[index];
+  const translate = exiting === 'left' ? -120 : exiting === 'right' ? 120 : dragX;
+  const opacity = exiting ? 0 : 1 - Math.min(Math.abs(dragX) / 400, 0.5);
+
+  return (
+    <div
+      role="dialog" aria-modal="true" aria-label={`Foto ${index + 1} de ${photos.length} de ${authorName}`}
+      tabIndex={-1} onKeyDown={onKeyDown}
+      ref={el => el?.focus()}
+      className="fixed inset-0 z-[100] flex items-center justify-center"
+      style={{ background: 'rgba(10,9,8,0.92)', backdropFilter: 'blur(4px)' }}
+      onClick={onClose}
+    >
+      <button type="button" onClick={e => { e.stopPropagation(); onClose(); }}
+        aria-label="Cerrar" className="absolute top-4 right-4 p-2 rounded-full transition-opacity hover:opacity-70"
+        style={{ background: 'rgba(255,255,255,0.12)', color: '#fff' }}>
+        <X size={20} />
+      </button>
+
+      {photos.length > 1 && (
+        <span className="absolute top-4 left-4 text-xs font-bold px-2.5 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.12)', color: '#fff' }}>
+          {index + 1} / {photos.length}
+        </span>
+      )}
+
+      {index > 0 && (
+        <button type="button" onClick={e => { e.stopPropagation(); go(-1); }}
+          aria-label="Foto anterior"
+          className="hidden sm:flex absolute left-3 items-center justify-center w-10 h-10 rounded-full transition-opacity hover:opacity-70"
+          style={{ background: 'rgba(255,255,255,0.12)', color: '#fff' }}>
+          <ChevronLeft size={22} />
+        </button>
+      )}
+      {index < photos.length - 1 && (
+        <button type="button" onClick={e => { e.stopPropagation(); go(1); }}
+          aria-label="Foto siguiente"
+          className="hidden sm:flex absolute right-3 items-center justify-center w-10 h-10 rounded-full transition-opacity hover:opacity-70"
+          style={{ background: 'rgba(255,255,255,0.12)', color: '#fff' }}>
+          <ChevronRight size={22} />
+        </button>
+      )}
+
+      <img
+        key={photo.id}
+        src={fotoOptimizada(photo.media_url!, 1200, 85)}
+        alt={`Foto de ${authorName}`}
+        onClick={e => e.stopPropagation()}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        className="max-w-[92vw] max-h-[86vh] object-contain select-none touch-none motion-safe:animate-[lightboxIn_200ms_ease-out]"
+        style={{
+          transform: `translateX(${translate}px) rotate(${translate / 28}deg)`,
+          opacity,
+          transition: dragging ? 'none' : 'transform 220ms cubic-bezier(0.32,0.72,0,1), opacity 220ms',
+          cursor: dragging ? 'grabbing' : 'grab',
+        }}
+      />
     </div>
   );
 };
