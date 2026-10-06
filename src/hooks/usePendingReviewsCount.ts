@@ -44,14 +44,18 @@ export function usePendingReviewsCount(): { count: number; loading: boolean } {
 
     const reviewedIds = new Set((reviewed ?? []).map(r => r.reviewed_user_id));
     const targets = new Set<string>();
+    // id === user.id: autorregistro (el profesional apuntó él mismo un bolo
+    // con alguien sin cuenta, created_by = professional_user_id). No hay a
+    // quién valorar y la BD rechaza la auto-reseña (reviews_no_self_review):
+    // contarlo dejaba el banner fijo y el envío fallando (DJ Poly, 6 oct 2026).
     for (const b of (flash ?? []) as any[]) {
       const id = isEmpresario ? b.professional_user_id : b.created_by;
-      if (id && !reviewedIds.has(id)) targets.add(id);
+      if (id && id !== user.id && !reviewedIds.has(id)) targets.add(id);
     }
     for (const r of (requests ?? []) as any[]) {
       if (isEmpresario && r.event_requests?.client_user_id !== user.id) continue;
       const id = isEmpresario ? r.professional_user_id : r.event_requests?.client_user_id;
-      if (id && !reviewedIds.has(id)) targets.add(id);
+      if (id && id !== user.id && !reviewedIds.has(id)) targets.add(id);
     }
 
     setCount(targets.size);

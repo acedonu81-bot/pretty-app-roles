@@ -395,7 +395,9 @@ const SolicitudesTab = () => {
                           style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)', color: '#8A6D0F' }}>
                           <FileText size={12} /> Generar contrato
                         </button>
-                        {s.created_by && !reviewedById.has(s.created_by) && (
+                        {/* created_by === user.id: autorregistro, no hay organizador
+                            con cuenta a quien valorar (ver usePendingReviewsCount). */}
+                        {s.created_by && s.created_by !== user?.id && !reviewedById.has(s.created_by) && (
                           <button
                             onClick={() => setReviewing(s)}
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all hover:scale-105"

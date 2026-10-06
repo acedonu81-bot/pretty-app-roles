@@ -651,7 +651,7 @@ const HistorialTab = () => {
                       con profesional identificado y aún sin reseña de este usuario.
                       Si ya valoró, se muestra qué puso (rating + comentario) en vez
                       de solo el sello — pedido por el usuario el 5 oct 2026. */}
-                  {(b.status === 'confirmed' || b.status === 'completed') && b.professional_user_id && (
+                  {(b.status === 'confirmed' || b.status === 'completed') && b.professional_user_id && b.professional_user_id !== user?.id && (
                     reviewedById.has(b.professional_user_id) ? (() => {
                       const r = reviewedById.get(b.professional_user_id)!;
                       return (
