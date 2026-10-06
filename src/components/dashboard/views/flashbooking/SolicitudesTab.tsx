@@ -396,10 +396,14 @@ const SolicitudesTab = () => {
                           <FileText size={12} /> Generar contrato
                         </button>
                         {/* created_by === user.id: autorregistro, no hay organizador
-                            con cuenta a quien valorar (ver usePendingReviewsCount). */}
-                        {s.created_by && s.created_by !== user?.id && !reviewedById.has(s.created_by) && (
+                            con cuenta a quien valorar y la BD rechaza la auto-reseña
+                            (reviews_no_self_review). El botón se queda y avisa en vez
+                            de abrir el modal (pedido por el usuario, 6 oct 2026). */}
+                        {s.created_by && !reviewedById.has(s.created_by) && (
                           <button
-                            onClick={() => setReviewing(s)}
+                            onClick={() => s.created_by === user?.id
+                              ? toast.info('No puedes valorarte a ti mismo: este bolo lo apuntaste tú.')
+                              : setReviewing(s)}
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all hover:scale-105"
                             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                             <Star size={11} /> Valorar
