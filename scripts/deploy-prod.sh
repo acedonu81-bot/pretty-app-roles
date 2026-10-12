@@ -18,21 +18,26 @@ if [ "$PENDIENTES" != "0" ]; then
   git status --short | sed 's/^/     /'
 fi
 
-# Copia limpia de HEAD. .env y .vercel no están en git y el build los necesita
-# (prerender-meta / update-sitemap leen Supabase desde .env).
+# Copia limpia de HEAD SIN carpeta .git (git archive, no worktree): con .git la
+# CLI manda el autor del commit, Vercel no lo reconoce como miembro del equipo
+# (email local del Mac) y deja el deploy bloqueado en UNKNOWN sin compilar
+# (TEAM_ACCESS_REQUIRED, 12 oct 2026). .env y .vercel no están en git y el
+# build los necesita (prerender-meta / update-sitemap leen Supabase de .env).
 TMP="$(mktemp -d)/xpeak-deploy"
-git worktree add --detach "$TMP" HEAD >/dev/null
-trap 'cd "$ROOT"; git worktree remove --force "$TMP" >/dev/null 2>&1 || true' EXIT
+mkdir -p "$TMP"
+git archive HEAD | tar -x -C "$TMP"
+trap 'rm -rf "$TMP"' EXIT
 cp .env "$TMP/"
 [ -f .env.production ] && cp .env.production "$TMP/"
 cp -R .vercel "$TMP/"
 
 cd "$TMP"
 echo "🚀 Desplegando $SHA a producción..."
-URL=$(npx vercel --prod --force --yes 2>/dev/null | tail -1)
+# Sin terminal: si la CLI pregunta algo, falla en vez de quedarse esperando.
+URL=$(npx vercel --prod --force --yes < /dev/null 2>"$TMP.log" | tail -1) || true
 case "$URL" in
   https://*) ;;
-  *) echo "❌ vercel no devolvió una URL de deploy: '$URL'"; exit 1 ;;
+  *) echo "❌ vercel no devolvió una URL de deploy: '$URL'"; tail -20 "$TMP.log"; exit 1 ;;
 esac
 echo "✅ Deploy listo: $URL"
 
