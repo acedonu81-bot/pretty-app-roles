@@ -84,11 +84,13 @@ function groupConsecutiveByAuthor(posts: FeedPost[]): FeedGroup[] {
 const FeedView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
   const { user } = useAuth();
   const { posts, loading, followingCount } = useFeedPosts(user?.id);
-  // Marcar como visto AL SALIR, no al entrar — igual que AdminActivity.tsx:
-  // si se marcara al entrar, lo que llega mientras miras la pestaña quedaría
-  // fuera de la ventana de "nuevo" en la próxima visita.
+  // Marcar como visto al cargar Y al salir: solo al salir dejaba el icono
+  // verde mientras mirabas el feed, y recargar o cerrar la pestaña no
+  // desmonta el componente, así que nunca se apagaba. Lo que llegue después
+  // tendrá fecha posterior y volverá a encenderlo.
   const { marcarVisto } = useFeedAlert(user?.id);
   useEffect(() => () => { marcarVisto(); }, [marcarVisto]);
+  useEffect(() => { if (!loading && user?.id) marcarVisto(); }, [loading, user?.id, marcarVisto]);
 
   const groups = useMemo(() => groupConsecutiveByAuthor(posts), [posts]);
   const numCols = useColumnCount();
@@ -119,7 +121,7 @@ const FeedView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
             <Rss size={30} style={{ color: '#fff' }} strokeWidth={2.5} />
           </div>
           <p className="text-sm" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>Tu feed está vacío</p>
-          <p className="text-xs max-w-xs" style={{ color: HZ.inkSoft }}>
+          <p className="text-base max-w-xs" style={{ color: HZ.inkSoft }}>
             {yaSigueAAlguien
               ? 'Los profesionales que sigues todavía no han publicado nada. Vuelve pronto o sigue a alguien más.'
               : 'Sigue a los profesionales que te interesen para ver aquí sus fotos, sesiones y novedades.'}

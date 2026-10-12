@@ -16,6 +16,8 @@ import AdminGuard from '@/components/AdminGuard';
 import type { Profile } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
+import PushAskCard from '@/components/PushAskCard';
+import { askForPush } from '@/lib/pushAsk';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { ProfileProvider } from '@/hooks/useProfile';
@@ -51,6 +53,7 @@ const AdminView = lazy(() => import('@/components/dashboard/views/AdminView'));
 const EmpresarioView = lazy(() => import('@/components/dashboard/views/EmpresarioView'));
 const PhotoBoothView = lazy(() => import('@/components/dashboard/views/PhotoBoothView'));
 const FoodTruckView = lazy(() => import('@/components/dashboard/views/FoodTruckView'));
+const DiscoMovilView = lazy(() => import('@/components/dashboard/views/DiscoMovilView'));
 const TecnicoView = lazy(() => import('@/components/dashboard/views/TecnicoView'));
 const AlquilerView = lazy(() => import('@/components/dashboard/views/AlquilerView'));
 const ExplorarView = lazy(() => import('@/components/dashboard/views/ExplorarView'));
@@ -65,6 +68,7 @@ const ProfessionalProfilePage = lazy(() => import('@/components/dashboard/Profes
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
 const LocalEventosView = lazy(() => import('@/components/dashboard/views/LocalEventosView'));
 const OnboardingTour = lazy(() => import('@/components/dashboard/OnboardingTour'));
+const ConsejosPanel = lazy(() => import('@/components/dashboard/ConsejosPanel'));
 const OnboardingWizard = lazy(() => import('@/components/OnboardingWizard'));
 const AmbientBackground = lazy(() => import('@/components/AmbientBackground'));
 import { logProfileView } from '@/lib/track';
@@ -208,7 +212,7 @@ const ROLE_TO_VIEW: Record<string, string> = {
   dj: 'dj', staff: 'staff', camarero: 'staff', makeup: 'makeup', media: 'media',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
   event_manager: 'event_manager', empresario: 'empresario', catering: 'catering',
-  'food-truck': 'food-truck',
+  'food-truck': 'food-truck', 'disco-movil': 'disco-movil',
   mago: 'mago', bailarin: 'bailarin', humorista: 'humorista', animador: 'animador',
   speaker: 'speaker', monologo: 'monologo', ambassador: 'ambassador',
   // Faltaban aquí y solo funcionaban por el `?? profileRole` de respaldo, que
@@ -268,7 +272,8 @@ const SIN_EXPLORAR = new Set(['empresario', 'pending', 'rookie']);
 // ambassador) — estos últimos con menos sinónimos porque nadie nuevo elige
 // ya ese oficio, pero un perfil existente sigue siendo buscable.
 const BUSQUEDA_POR_VISTA: Record<string, string[]> = {
-  dj: ['dj', 'disc jockey', 'pincha', 'discomovil'],
+  dj: ['dj', 'disc jockey', 'pincha'],
+  'disco-movil': ['disco movil', 'discomovil', 'disco-movil', 'discomoviles', 'discoteca movil', 'sonido y luces'],
   'grupo-musical': ['grupo musical', 'grupo', 'banda', 'orquesta', 'musico', 'musicos', 'saxofonista', 'saxofon', 'violinista', 'trio musical', 'cuarteto'],
   media: ['fotografo', 'fotografa', 'foto', 'video', 'videografo', 'videografa'],
   makeup: ['maquillaje', 'maquilladora', 'maquillador', 'makeup'],
@@ -550,7 +555,7 @@ const Dashboard = () => {
     'dj', 'staff', 'azafata', 'event_manager', 'makeup', 'peluqueria', 'media',
     'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering',
     'mago', 'bailarin', 'humorista', 'monologo', 'animador', 'speaker',
-    'photo-booth', 'food-truck', 'grupo-musical', 'tecnico', 'alquiler', 'emergentes', 'local_eventos',
+    'photo-booth', 'food-truck', 'disco-movil', 'grupo-musical', 'tecnico', 'alquiler', 'emergentes', 'local_eventos',
   ]);
 
   const handleSearch = (q: string) => {
@@ -596,6 +601,7 @@ const Dashboard = () => {
       case 'speaker':   return <SpeakerView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'photo-booth': return <PhotoBoothView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'food-truck': return <FoodTruckView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'disco-movil': return <DiscoMovilView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'grupo-musical': return <GrupoMusicalView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'emergentes': return <EmergentesView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'tecnico':   return <TecnicoView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
@@ -720,14 +726,16 @@ const Dashboard = () => {
 
       <Suspense fallback={null}>
         {!showWizard && <OnboardingTour onNavigate={handleViewChange} />}
+        {!showWizard && <ConsejosPanel isMobile={isMobile} onNavigate={handleViewChange} onGoToReviews={goToPendingReviews} />}
         {activeView !== 'messages' && <div className="hidden sm:block"><SupportChat /></div>}
         {showWizard && (
           <OnboardingWizard
-            onClose={() => setShowWizard(false)}
+            onClose={() => { setShowWizard(false); askForPush('alta'); }}
             onNavigate={handleViewChange}
           />
         )}
       </Suspense>
+      {user && <PushAskCard userId={user.id} />}
 
       {/* AnimatePresence aquí, no dentro de ProfessionalProfilePage: el exit de
           framer-motion solo se reproduce si el componente que lo declara sigue

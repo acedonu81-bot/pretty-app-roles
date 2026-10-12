@@ -120,12 +120,16 @@ const CookieBanner = () => {
             border: '1px solid rgba(212,175,55,0.2)',
             borderRadius: 16,
             boxShadow: '0 -8px 40px rgba(122,98,22,0.18)'}}>
-            {/* Header */}
+            {/* Header — en móvil, sin el panel expandido, el texto largo se
+                oculta para no tapar el formulario que haya debajo (bajón de
+                altas verificado 10 oct 2026: el banner cubría los campos de
+                /auth en pantallas pequeñas). Sigue visible al pulsar
+                "Personalizar" o en pantallas sm+. */}
             <div className="flex items-start gap-3 p-5 pb-3">
               <Cookie size={18} style={{ color: '#8B6A00', flexShrink: 0, marginTop: 2 }} />
               <div className="flex-1">
                 <p className="text-sm font-bold mb-1">Preferencias de cookies</p>
-                <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>
+                <p className={`text-xs leading-relaxed ${expanded ? '' : 'hidden sm:block'}`} style={{ color: '#374151' }}>
                   Usamos cookies propias para mejorar tu experiencia. Las cookies técnicas son necesarias para el funcionamiento de la plataforma.{' '}
                   <Link to="/cookies" className="underline font-medium" style={{ color: '#8B6A00' }}>Política de cookies</Link>
                 </p>

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isReviewIncomplete } from './HistorialTab';
+import { isReviewIncomplete } from '@/components/ReviewQuestions';
 
 describe('isReviewIncomplete', () => {
   it('is incomplete if any of the three answers is null', () => {

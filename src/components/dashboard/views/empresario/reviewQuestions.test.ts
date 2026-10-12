@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { canSubmitReview } from './HistorialTab';
+import { canSubmitReview } from '@/components/ReviewQuestions';
 
 describe('canSubmitReview', () => {
   it('requires all three answers to be non-null', () => {

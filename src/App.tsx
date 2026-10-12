@@ -7,9 +7,10 @@ import { lazy, Suspense, useEffect } from "react";
 const Landing = lazy(() => import("./pages/Landing"));
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
+import InstallAppBar from "./components/InstallAppBar";
 import AppErrorBoundary from "./components/AppErrorBoundary";
 import EventCartWidget from "./components/EventCartWidget";
-import { logPageView } from "@/lib/track";
+import { logPageView, logPwaInstalled, logPwaSessionIfStandalone } from "@/lib/track";
 import { NativeRootRedirect, useNativeGuardedPath } from "./lib/nativeEntry";
 import { isNative } from "./lib/capacitor";
 
@@ -271,6 +272,7 @@ const HubStaff = lazy(() => import("./pages/HubStaff"));
 const BlogDJComunion = lazy(() => import("./pages/BlogDJComunion"));
 const BlogFotografoComunion = lazy(() => import("./pages/BlogFotografoComunion"));
 const BlogContratoDJ = lazy(() => import("./pages/BlogContratoDJ"));
+const BlogCodigoBuenasPracticasDJ = lazy(() => import("./pages/BlogCodigoBuenasPracticasDJ"));
 const BodasLanding = lazy(() => import("./pages/BodasLanding"));
 const OrganizadoresLanding = lazy(() => import("./pages/OrganizadoresLanding"));
 const BlogOrganizarEventoEmpresaPasoAPaso = lazy(() => import("./pages/BlogOrganizarEventoEmpresaPasoAPaso"));
@@ -394,6 +396,12 @@ const RastreadorDeRutas = () => {
   useEffect(() => {
     logPageView(location.pathname, location.search);
   }, [location.pathname, location.search]);
+  useEffect(() => {
+    const handler = () => logPwaInstalled();
+    window.addEventListener('appinstalled', handler);
+    return () => window.removeEventListener('appinstalled', handler);
+  }, []);
+  useEffect(() => { logPwaSessionIfStandalone(); }, []);
   if (blocked) {
     return <Navigate to="/auth" replace />;
   }
@@ -407,6 +415,7 @@ const App = () => (
     <XPeakToastProvider>
     <TooltipProvider>
       <BrowserRouter basename={import.meta.env.BASE_URL} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <InstallAppBar />
         <RastreadorDeRutas />
         {/* Un solo pixel visible durante la carga (no un color plano a pantalla
             completa) para que un "se queda pensando y luego en blanco" real se
@@ -502,6 +511,7 @@ const App = () => (
             <Route path="/boda/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/boda/contratar-catering" element={<OccasionLanding />} />
             <Route path="/boda/contratar-food-truck" element={<OccasionLanding />} />
+            <Route path="/boda/contratar-disco-movil" element={<OccasionLanding />} />
             <Route path="/boda/contratar-camareros" element={<OccasionLanding />} />
             <Route path="/boda/contratar-grupo-musical" element={<OccasionLanding />} />
             <Route path="/boda/contratar-animador" element={<OccasionLanding />} />
@@ -510,6 +520,7 @@ const App = () => (
             <Route path="/cumpleanos/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-catering" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-food-truck" element={<OccasionLanding />} />
+            <Route path="/cumpleanos/contratar-disco-movil" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-animador" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-mago" element={<OccasionLanding />} />
             <Route path="/evento-empresa/contratar-dj" element={<OccasionLanding />} />
@@ -522,6 +533,7 @@ const App = () => (
             <Route path="/comunion/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-catering" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-food-truck" element={<OccasionLanding />} />
+            <Route path="/comunion/contratar-disco-movil" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-animador" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-mago" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-dj" element={<OccasionLanding />} />
@@ -529,6 +541,7 @@ const App = () => (
             <Route path="/fiesta-privada/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-catering" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-food-truck" element={<OccasionLanding />} />
+            <Route path="/fiesta-privada/contratar-disco-movil" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-camareros" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-animador" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-locales-eventos" element={<OccasionLanding />} />
@@ -779,6 +792,7 @@ const App = () => (
             <Route path="/blog/dj-para-comunion-precio" element={<BlogDJComunion />} />
             <Route path="/blog/fotografo-para-comunion-precio" element={<BlogFotografoComunion />} />
             <Route path="/blog/contrato-dj-que-debe-incluir" element={<BlogContratoDJ />} />
+            <Route path="/blog/codigo-buenas-practicas-dj" element={<BlogCodigoBuenasPracticasDJ />} />
             {/* Hub pages */}
             <Route path="/blog/dj-para-eventos" element={<HubDJ />} />
             <Route path="/blog/profesionales-bodas" element={<HubBodas />} />

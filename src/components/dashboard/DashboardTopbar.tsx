@@ -121,14 +121,18 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
     ...(!profile.loading && !profile.display_name ? [{
       id: 'incomplete_profile',
       title: 'Perfil incompleto',
-      desc: 'Añade tu nombre artístico y guarda para aparecer en el directorio.',
+      desc: isEmpresario
+        ? 'Añade el nombre de tu empresa o sala y guarda.'
+        : 'Añade tu nombre artístico y guarda para aparecer en el directorio.',
       time: 'Pendiente',
       icon: 'spark' as const,
       urgent: true,
       link: null,
       real: false,
     }] : []),
-    ...(isNewUser ? [{
+    // Los empresarios no tienen ficha pública ni fans (decisión 30 sep 2026):
+    // esta novedad solo tiene sentido para profesionales.
+    ...(isNewUser && !isEmpresario ? [{
       id: 'ficha_nueva',
       title: 'Nueva: Tu Ficha Pública',
       desc: 'Comparte posts, audio, vídeo e imágenes con fans y empresarios desde Mi Ficha.',

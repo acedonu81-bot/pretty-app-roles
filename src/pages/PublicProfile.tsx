@@ -244,7 +244,20 @@ const PublicProfile = () => {
       ? supabase.from('profiles')
           .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .eq('user_id', slug)
-          .maybeSingle()
+          // Un mismo user_id puede tener varios perfiles (varios roles, ej.
+          // food-truck + empresario): .maybeSingle() con 2+ filas devuelve
+          // error ("more than one row") y la página caía en "Perfil no
+          // encontrado" (reportado 8 oct 2026, caso real: Vulcano Grill,
+          // reseñado como food-truck pero también con perfil empresario).
+          // Se elige un perfil profesional (los empresarios no tienen ficha
+          // pública, decisión 30 sep 2026) y, entre ellos, el principal.
+          // Ojo: el principal puede ser justo el de empresario (Vulcano Grill).
+          .order('is_primary', { ascending: false, nullsFirst: false })
+          .then(({ data, error }) => {
+            const filas = data ?? [];
+            const elegido = filas.find(p => p.role !== 'empresario') ?? filas[0] ?? null;
+            return { data: elegido, error };
+          })
       : supabase.from('profiles')
           .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .not('display_name', 'is', null)
@@ -462,7 +475,7 @@ const PublicProfile = () => {
     promotor: 'Promotor', ambassador: 'Embajador', catering: 'Catering & Chef',
     mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico',
     monologo: 'Monólogo & Stand-Up', animador: 'Animador Infantil', speaker: 'Speaker & Presentador',
-    vestuario: 'Personal Shopper & Vestuario', 'photo-booth': 'Photo Booth', 'food-truck': 'Food Truck',
+    vestuario: 'Personal Shopper & Vestuario', 'photo-booth': 'Photo Booth', 'food-truck': 'Food Truck', 'disco-movil': 'Disco Móvil',
     'grupo-musical': 'Grupo Musical', 'wedding-planner': 'Wedding Planner', 'diseno-grafico': 'Diseño Gráfico',
     tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', local_eventos: 'Local para eventos', camarero: 'Camarero',
   };
@@ -634,7 +647,13 @@ const PublicProfile = () => {
               {/* El hero mide hasta 80vw de alto: con object-top la cara
                   queda fuera de encuadre en la mayoría de fotos (retrato
                   vertical estirado). 50% 15% la mantiene visible. */}
-              <img src={fotoOptimizada(profile.photo, 1200)} alt={profile.name} className="w-full h-full object-cover" style={{ objectPosition: '50% 15%' }} />
+              {/* Es el elemento LCP de la página (foto a pantalla completa en el
+                  hero). Sin eager/fetchPriority el navegador la trataba como
+                  baja prioridad hasta medir el layout, igual que ya corrige
+                  el HTML del prerender (prerender-meta.mjs) — aquí faltaba en
+                  el componente React real que monta después. */}
+              <img src={fotoOptimizada(profile.photo, 1200)} alt={profile.name} className="w-full h-full object-cover"
+                style={{ objectPosition: '50% 15%' }} loading="eager" fetchPriority="high" />
             </div>
           ) : (
             <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(135deg, #C8820A 0%, #D4511A 35%, #C23460 65%, #8B1A6B 100%)' }}>
@@ -1201,6 +1220,8 @@ const PublicProfile = () => {
             <button
               onClick={handleAddToCart}
               disabled={inCart}
+              aria-label={inCart ? 'Ya está en Mi evento' : 'Añadir a Mi evento'}
+              title={inCart ? 'Ya está en Mi evento' : 'Añadir a Mi evento'}
               className="flex-shrink-0 w-14 flex items-center justify-center rounded-2xl font-black text-base transition-all active:scale-95 disabled:active:scale-100"
               style={inCart
                 ? { background: 'rgba(34,197,94,0.1)', border: '1.5px solid rgba(34,197,94,0.4)', color: '#16a34a' }

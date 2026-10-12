@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Music, Image as ImageIcon, MessageSquareText, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { FeedPost } from '@/hooks/useFeedPosts';
@@ -114,10 +115,13 @@ const FeedPostCard = ({ group, viewerId }: { group: FeedGroup; viewerId: string 
         <div className={`mt-2 ${photos.length === 1 ? '' : 'grid grid-cols-2 gap-0.5'}`}>
           {photos.slice(0, 4).map((p, i) => (
             <button key={p.id} type="button" onClick={() => setLightboxIndex(i)}
-              className="relative text-left cursor-zoom-in"
-              style={{ aspectRatio: photos.length === 1 ? '4/5' : '1/1', background: tone.card }}>
-              <img src={p.media_url!} alt={`Foto de ${first.authorName}`} loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover"
+              className="relative block w-full text-left cursor-zoom-in"
+              style={photos.length === 1
+                ? { background: tone.card }
+                : { aspectRatio: '1/1', background: tone.card }}>
+              <img src={fotoOptimizada(p.media_url!, photos.length === 1 ? 800 : 400)} alt={`Foto de ${first.authorName}`} loading="lazy"
+                className={photos.length === 1 ? 'block w-full max-h-[70vh] object-contain mx-auto' : 'absolute inset-0 w-full h-full object-cover'}
+                style={photos.length === 1 ? undefined : { objectPosition: '50% 20%' }}
                 onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
               {i === 0 && (
                 <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 text-[0.65rem] px-2.5 py-1 rounded-full"
@@ -203,12 +207,24 @@ const PhotoLightbox = ({ photos, index, authorName, onIndexChange, onClose }: {
   const [dragging, setDragging] = useState(false);
   const [exiting, setExiting] = useState<'left' | 'right' | null>(null);
   const startXRef = useRef(0);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<number>();
+
+  useEffect(() => {
+    dialogRef.current?.focus();
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const go = (dir: 1 | -1) => {
     const next = index + dir;
     if (next < 0 || next >= photos.length) return;
     setExiting(dir === 1 ? 'left' : 'right');
-    setTimeout(() => { onIndexChange(next); setExiting(null); setDragX(0); }, 180);
+    timeoutRef.current = window.setTimeout(() => { onIndexChange(next); setExiting(null); setDragX(0); }, 180);
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -239,11 +255,15 @@ const PhotoLightbox = ({ photos, index, authorName, onIndexChange, onClose }: {
   const translate = exiting === 'left' ? -120 : exiting === 'right' ? 120 : dragX;
   const opacity = exiting ? 0 : 1 - Math.min(Math.abs(dragX) / 400, 0.5);
 
-  return (
+  // Portal a body: la tarjeta (hover translate + overflow-hidden) y el
+  // contenedor de vista del Dashboard (viewEnter con fill-mode both) tienen
+  // transform, que convierte a `fixed` en relativo a ellos — el visor quedaba
+  // recortado dentro de la tarjeta y parpadeaba al entrar/salir el hover.
+  return createPortal(
     <div
       role="dialog" aria-modal="true" aria-label={`Foto ${index + 1} de ${photos.length} de ${authorName}`}
       tabIndex={-1} onKeyDown={onKeyDown}
-      ref={el => el?.focus()}
+      ref={dialogRef}
       className="fixed inset-0 z-[100] flex items-center justify-center"
       style={{ background: 'rgba(10,9,8,0.92)', backdropFilter: 'blur(4px)' }}
       onClick={onClose}
@@ -294,7 +314,8 @@ const PhotoLightbox = ({ photos, index, authorName, onIndexChange, onClose }: {
           cursor: dragging ? 'grabbing' : 'grab',
         }}
       />
-    </div>
+    </div>,
+    document.body
   );
 };
 

@@ -1,3 +1,20 @@
+import { Instagram, Linkedin, Facebook } from 'lucide-react';
+
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M16.6 5.82c-.9-.95-1.4-2.17-1.4-3.46h-3.14v13.5c0 1.63-1.32 2.95-2.95 2.95a2.95 2.95 0 0 1 0-5.9c.26 0 .51.03.76.1v-3.2a6.15 6.15 0 0 0-.76-.05A6.1 6.1 0 0 0 3 15.86a6.1 6.1 0 0 0 6.1 6.1 6.1 6.1 0 0 0 6.1-6.1V9.4a8.25 8.25 0 0 0 4.8 1.54V7.8a4.85 4.85 0 0 1-3.4-1.98Z" />
+    </svg>
+  );
+}
+
+const SOCIAL_LINKS = [
+  { label: 'Instagram', href: 'https://www.instagram.com/xpeaksite?utm_source=xpeak_web&utm_medium=social&utm_campaign=footer', Icon: Instagram },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/xpeak-site-79a8a3436/?utm_source=xpeak_web&utm_medium=social&utm_campaign=footer', Icon: Linkedin },
+  { label: 'TikTok', href: 'https://www.tiktok.com/@xpeak30?utm_source=xpeak_web&utm_medium=social&utm_campaign=footer', Icon: TikTokIcon },
+  { label: 'Facebook', href: null, Icon: Facebook },
+];
+
 const FOOTER_LINKS = {
   contratar: [
     { label: 'Contratar DJ', href: '/contratar-dj' },
@@ -20,7 +37,7 @@ const FOOTER_LINKS = {
   xpeak: [
     { label: 'Cómo funciona', href: '/' },
     { label: 'Precios', href: '/precios' },
-    { label: 'Únete', href: '/auth' },
+    { label: 'Únete', href: '/auth?mode=register' },
     { label: 'Sobre nosotros', href: '/sobre-nosotros' },
   ],
   legal: [
@@ -103,10 +120,20 @@ export default function FooterPublic() {
             <span className="text-[0.65rem]" style={{ color: '#333' }}>El directorio profesional de eventos en España</span>
           </div>
           <div className="flex items-center gap-4">
-            <a href="https://www.instagram.com/xpeaksite" target="_blank" rel="noopener noreferrer"
-              className="text-[0.65rem] transition-opacity hover:opacity-80" style={{ color: '#333' }}>
-              @xpeak.es
-            </a>
+            <div className="flex items-center gap-3">
+              {SOCIAL_LINKS.map(({ label, href, Icon }) =>
+                href ? (
+                  <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
+                    className="transition-opacity hover:opacity-70" style={{ color: '#333' }}>
+                    <Icon className="w-4 h-4" />
+                  </a>
+                ) : (
+                  <span key={label} aria-label={label} style={{ color: 'rgba(0,0,0,0.3)' }}>
+                    <Icon className="w-4 h-4" />
+                  </span>
+                )
+              )}
+            </div>
             <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.55)' }}>© 2026 XPEAK</span>
           </div>
         </div>
