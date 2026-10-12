@@ -11,6 +11,7 @@ import { ALL_CITIES } from '@/lib/regions';
 import { isNative } from '@/lib/capacitor';
 import { isInAppBrowser as detectInAppBrowser, openInExternalBrowser } from '@/lib/inAppBrowser';
 import { useMedirPermanencia } from '@/hooks/useMedirPermanencia';
+import { REGISTRO_PENDIENTE_META } from '@/components/CookieBanner';
 import { Browser } from '@capacitor/browser';
 import { App as CapacitorApp } from '@capacitor/app';
 
@@ -551,7 +552,10 @@ const Auth = () => {
         track('sign_up', { method: 'email', role: roleParam || 'pending' });
         trackLead('registro', { role: roleParam || 'pending' });
         logSignup(roleParam || 'pending');
-        if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'CompleteRegistration');
+        // Sin consentimiento de marketing no hay píxel: se apunta y el aviso
+        // de cookies (que en /auth no sale) lo manda a Meta si acepta después.
+        if ((window as any).fbq) (window as any).fbq('track', 'CompleteRegistration');
+        else { try { sessionStorage.setItem(REGISTRO_PENDIENTE_META, '1'); } catch { /* sin efecto */ } }
         if (typeof window !== 'undefined' && (window as any).ttq) {
           (window as any).ttq.identify({ email });
           (window as any).ttq.track('CompleteRegistration');

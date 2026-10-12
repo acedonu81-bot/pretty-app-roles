@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Cookie, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const COOKIE_KEY = 'xpeak-cookie-consent';
+// Lo deja Auth.tsx al registrarse sin píxel de Meta cargado.
+export const REGISTRO_PENDIENTE_META = 'xpeak-registro-pendiente-meta';
 
 interface CookiePrefs {
   necessary: true;
@@ -42,6 +44,13 @@ const CATEGORIES = [
 const CookieBanner = () => {
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  // En /auth no se muestra (12 oct 2026): la mitad del tráfico del anuncio de
+  // Instagram se iba en menos de 3 s con el aviso tapando el tercio inferior
+  // del formulario. Se pide después del alta, en la siguiente pantalla. Es
+  // legal porque en /auth no se carga nada opcional sin consentimiento: el
+  // píxel de Meta, GA4 y Clarity siguen esperando a que acepte.
+  const { pathname } = useLocation();
+  const enRegistro = pathname.startsWith('/auth');
   const [prefs, setPrefs] = useState<CookiePrefs>({ necessary: true, analytics: false, marketing: false, personalization: false });
 
   useEffect(() => {
@@ -90,7 +99,17 @@ const CookieBanner = () => {
       ad_personalization: p.marketing ? 'granted' : 'denied',
       analytics_storage: p.analytics ? 'granted' : 'denied',
     });
-    if (p.marketing) cargarMetaPixelSiHaceFalta();
+    if (p.marketing) {
+      cargarMetaPixelSiHaceFalta();
+      // El alta se hizo sin píxel (el aviso ya no sale en /auth): se le
+      // cuenta a Meta ahora que ha aceptado. Ver REGISTRO_PENDIENTE_META.
+      try {
+        if (sessionStorage.getItem(REGISTRO_PENDIENTE_META)) {
+          (window as any).fbq?.('track', 'CompleteRegistration');
+          sessionStorage.removeItem(REGISTRO_PENDIENTE_META);
+        }
+      } catch { /* sessionStorage bloqueado: sin efecto */ }
+    }
     // Carga Clarity si hace falta y le pasa el consentimiento (también al
     // rechazar, para que no grabe si GTM ya lo había cargado). Ver index.html.
     (window as any).__xpeakClarity?.(p);
@@ -106,7 +125,7 @@ const CookieBanner = () => {
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && !enRegistro && (
         <motion.div
           initial={{ y: 120, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
