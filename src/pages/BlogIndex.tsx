@@ -65,18 +65,18 @@ export default function BlogIndex() {
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#222' }}>
 
-        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto" style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto" style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#1a1208' }}>X<span style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>PEAK</span></a>
           <div className="flex items-center gap-3">
             <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#444' }}>Precios</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
+            <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Unirse
             </a>
           </div>
         </nav>
 
-        <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-10 pb-20">
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-10 pb-20">
 
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#7a6216' }}>Blog · XPEAK</p>
@@ -147,7 +147,7 @@ export default function BlogIndex() {
           <div className="mt-12 pt-8" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
             <p className="text-xs text-center" style={{ color: '#555' }}>
               ¿Buscas profesionales verificados?{' '}
-              <a href="/auth" className="underline font-bold" style={{ color: '#8A6D0F' }}>Únete a XPEAK</a>
+              <a href="/auth?mode=register" className="underline font-bold" style={{ color: '#8A6D0F' }}>Únete a XPEAK</a>
             </p>
           </div>
 

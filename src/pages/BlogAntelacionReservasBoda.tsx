@@ -38,7 +38,7 @@ export default function BlogAntelacionReservasBoda() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
       <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
-        <div className="max-w-2xl mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#D4AF37', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
             <span style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Bodas · Planificación</span>
@@ -117,7 +117,7 @@ export default function BlogAntelacionReservasBoda() {
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="font-black text-lg mb-2">Contrata tus proveedores de boda en XPEAK</p>
               <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>DJ, fotógrafo, camareros y catering verificados. Contratos digitales automáticos.</p>
-              <a href="/auth" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Buscar profesionales →</a>
+              <a href="/auth?mode=register&role=empresario" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Buscar profesionales →</a>
             </div>
 
             <BlogAuthor />

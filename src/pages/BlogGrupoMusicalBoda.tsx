@@ -60,7 +60,7 @@ export default function BlogGrupoMusicalBoda() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
-        <article className="max-w-3xl mx-auto px-4 py-12">
+        <article className="max-w-5xl mx-auto px-4 py-12">
           <nav className="text-xs text-[#666] mb-6 flex gap-2">
             <a href="/" className="hover:text-[#8A6D0F]">Inicio</a><span>/</span>
             <a href="/blog" className="hover:text-[#8A6D0F]">Blog</a><span>/</span>
@@ -77,7 +77,7 @@ export default function BlogGrupoMusicalBoda() {
             La música en vivo marca la diferencia entre una boda memorable y una boda corriente. El grupo musical crea momentos únicos que ningún playlist puede reproducir. Pero contratar el grupo equivocado, o pagarlo de más, es uno de los errores más frecuentes en la planificación de bodas.
           </p>
 
-          <BlogInlineCTA role="dj" text="¿Buscas grupo musical para tu boda? Compara artistas verificados y tarifas reales en XPEAK." articlePath="/blog/grupo-musical-para-boda-precio" />
+          <BlogInlineCTA role="grupo-musical" text="¿Buscas grupo musical para tu boda? Compara artistas verificados y tarifas reales en XPEAK." articlePath="/blog/grupo-musical-para-boda-precio" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios por tipo de grupo musical para boda 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -125,7 +125,7 @@ export default function BlogGrupoMusicalBoda() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/grupo-musical-para-boda-precio' tag='Bodas' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_grupo_musical_boda" articlePath="/blog/grupo-musical-para-boda-precio" />
+        <BlogScrollCTA role="grupo_musical_pro" storageKey="xpeak_scrollcta_grupo_musical_boda" articlePath="/blog/grupo-musical-para-boda-precio" />
       </div>
     </>
   );

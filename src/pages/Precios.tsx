@@ -22,7 +22,7 @@ const PLANES = [
       'Badge verificado prioritario',
     ],
     cta: 'Crear perfil',
-    href: '/auth',
+    href: '/auth?mode=register&role=profesional',
   },
   {
     nombre: 'Empresario',
@@ -43,7 +43,7 @@ const PLANES = [
       'Gestión de pagos integrada (próx.)',
     ],
     cta: 'Unirse',
-    href: '/auth',
+    href: '/auth?mode=register&role=empresario',
     gold: true,
   },
 ];
@@ -90,7 +90,7 @@ export default function Precios() {
       <div className="min-h-screen" style={{ background: '#FFFFFF', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
-          <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
+          <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             Unirse
           </a>
@@ -164,7 +164,7 @@ export default function Precios() {
           <div className="p-8 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
             <p className="text-lg font-black mb-2">¿Aún tienes dudas?</p>
             <p className="text-xs mb-5" style={{ color: '#374151' }}>Escríbenos a hola@xpeak.es o usa el chat de soporte en el dashboard.</p>
-            <a href="/auth" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black transition-all hover:scale-105"
+            <a href="/auth?mode=register" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Empezar →
             </a>

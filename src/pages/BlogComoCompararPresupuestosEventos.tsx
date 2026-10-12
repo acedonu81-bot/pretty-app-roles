@@ -58,7 +58,7 @@ export default function BlogComoCompararPresupuestosEventos() {
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
-        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
+        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#0D9488' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
@@ -68,7 +68,7 @@ export default function BlogComoCompararPresupuestosEventos() {
           </div>
         </nav>
 
-        <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">

@@ -94,17 +94,17 @@ export default function BlogFoodTruckPrecio() {
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
 
         {/* Nav */}
-        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
+        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
-          <a href="/auth"
+          <a href="/auth?mode=register"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             Unirse
           </a>
         </nav>
 
-        <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
-        <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
+        <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-5xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
+        <article className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
           <BlogTopCTA href="/contratar-catering" label="Ver proveedores →" articlePath="/blog/cuanto-cuesta-un-food-truck-para-evento" />
 
           {/* Breadcrumb */}
@@ -262,7 +262,7 @@ export default function BlogFoodTruckPrecio() {
                   </span>
                 ))}
               </div>
-              <a href="/auth?mode=register&role=catering"
+              <a href="/auth?mode=register&role=food-truck"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105 hover:shadow-lg"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 <Zap size={15} /> Crear mi perfil
@@ -278,7 +278,7 @@ export default function BlogFoodTruckPrecio() {
                   Directorio con tarifas públicas · Contacto directo sin intermediarios
                 </p>
               </div>
-              <a href="/contratar-catering"
+              <a href="/contratar-food-truck"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
                 style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)', whiteSpace: 'nowrap' }}>
                 Ver food trucks disponibles →

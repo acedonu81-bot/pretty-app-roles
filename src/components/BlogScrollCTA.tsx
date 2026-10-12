@@ -12,6 +12,7 @@ type ProfessionalRole =
   | 'speaker_pro'
   | 'makeup_pro'
   | 'vestuario_pro'
+  | 'grupo_musical_pro'
   | 'profesional_pro';
 
 interface BlogScrollCTAProps {
@@ -129,6 +130,12 @@ const CONFIG = {
     cta: 'Crear mi perfil →',
     href: '/auth?mode=register&role=profesional',
   },
+  grupo_musical_pro: {
+    label: '¿Eres un grupo musical?',
+    sub: 'Publica tu tarifa y consigue bolos en bodas y eventos.',
+    cta: 'Crear mi perfil →',
+    href: '/auth?mode=register&role=grupo-musical',
+  },
 };
 
 export default function BlogScrollCTA({ role = 'general', storageKey, articlePath = '' }: BlogScrollCTAProps) {
@@ -181,7 +188,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey, articlePat
       style={{ transform: visible ? 'translateY(0)' : 'translateY(100%)' }}
     >
       <div
-        className={`max-w-3xl mx-3 mb-3 sm:mx-auto rounded-2xl px-4 py-4 sm:px-6 sm:py-4 flex items-center justify-between gap-4 ${pulse ? 'xpeak-cta-pulse' : ''}`}
+        className={`max-w-5xl mx-3 mb-3 sm:mx-auto rounded-2xl px-4 py-4 sm:px-6 sm:py-4 flex items-center justify-between gap-4 ${pulse ? 'xpeak-cta-pulse' : ''}`}
         style={{
           background: 'linear-gradient(90deg,#FFFDF7,#FBF3DD)',
           border: '3px solid #D4AF37',

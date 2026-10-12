@@ -38,7 +38,7 @@ export default function BlogPersonalExtraHosteleria() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
       <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
-        <div className="max-w-2xl mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#2563EB', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
             <span style={{ background: 'rgba(37,99,235,0.1)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Hostelería · B2B</span>

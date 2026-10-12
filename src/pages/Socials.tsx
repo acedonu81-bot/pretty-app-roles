@@ -128,7 +128,7 @@ const Socials = () => {
                 <Plus size={14} /> Publicar evento
               </button>
             ) : (
-              <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
+              <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Publicar evento</a>
             )}
           </div>

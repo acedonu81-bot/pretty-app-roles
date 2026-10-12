@@ -75,17 +75,17 @@ export default function BlogDJBodaVsDiscoteca() {
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
-        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
+        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
-          <a href="/auth"
+          <a href="/auth?mode=register"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             Unirse
           </a>
         </nav>
-        <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
+        <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-5xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
-        <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
+        <article className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/contratar-dj" className="inline-flex items-center gap-1.5 text-xs mb-6 transition-opacity hover:opacity-60"
             style={{ color: 'rgba(212,175,55,0.7)' }}>
             <ArrowLeft size={12} /> Contratar DJ

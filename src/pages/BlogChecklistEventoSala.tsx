@@ -38,7 +38,7 @@ export default function BlogChecklistEventoSala() {
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
       </Helmet>
       <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
-        <div className="max-w-2xl mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#6D28D9', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
             <span style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Organización · Checklist</span>
@@ -162,7 +162,7 @@ export default function BlogChecklistEventoSala() {
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.2)' }}>
               <p className="font-black text-lg mb-2">¿Necesitas contratar proveedores para tu evento?</p>
               <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>En XPEAK encuentras DJ, camareros, catering y más, con contratos digitales automáticos y Flash Booking en menos de 1 hora.</p>
-              <a href="/auth" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Publicar oferta →</a>
+              <a href="/auth?mode=register&role=empresario" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Publicar oferta →</a>
             </div>
 
             <BlogAuthor />

@@ -148,7 +148,7 @@ export default function BodasLanding() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3 sm:gap-4">
             <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth"
+            <a href="/auth?mode=register"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Unirse
@@ -175,7 +175,7 @@ export default function BodasLanding() {
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Calcular presupuesto
             </a>
-            <a href="/auth"
+            <a href="/auth?mode=register&role=empresario"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.12)', color: '#222' }}>
               Publicar oferta <ArrowRight size={14} />
@@ -286,7 +286,7 @@ export default function BodasLanding() {
             <p className="text-sm mb-6" style={{ color: 'rgba(0,0,0,0.55)' }}>
               Únete: contratos automáticos, Flash Booking en menos de 1h.
             </p>
-            <a href="/auth"
+            <a href="/auth?mode=register&role=empresario"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Empezar

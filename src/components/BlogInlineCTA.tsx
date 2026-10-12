@@ -1,7 +1,7 @@
 import { trackBlogCtaClick } from '@/lib/blogAnalytics';
 
 interface BlogInlineCTAProps {
-  role?: 'dj' | 'staff' | 'azafata' | 'makeup' | 'peluqueria' | 'fotografo' | 'bailarin' | 'general';
+  role?: 'dj' | 'staff' | 'azafata' | 'makeup' | 'peluqueria' | 'fotografo' | 'bailarin' | 'grupo-musical' | 'general';
   orgLabel?: string;
   variant?: 'default' | 'upgrade';
   articlePath?: string;
@@ -92,9 +92,21 @@ const CONFIG = {
       badge: 'Directorio verificado',
     },
   },
+  'grupo-musical': {
+    pro: { label: '¿Eres un grupo musical?', cta: 'Publica tu tarifa →', href: '/auth?mode=register&role=grupo-musical' },
+    org: { label: '¿Buscas grupo musical para tu evento?', cta: 'Ver grupos disponibles →', href: '/contratar-grupo-musical' },
+    upgrade: {
+      eyebrow: 'XPEAK · Directorio verificado',
+      headline: 'Encuentra grupo musical verificado para tu boda o evento',
+      sub: 'Grupos con repertorio real, tarifas públicas y contrato digital automático. Sin intermediarios.',
+      cta: 'Ver grupos disponibles →',
+      href: '/auth?mode=register&intent=contratar-grupo-musical',
+      badge: 'Directorio verificado',
+    },
+  },
   general: {
     pro: { label: '¿Eres profesional de eventos?', cta: 'Publica tu tarifa →', href: '/auth?mode=register&role=profesional' },
-    org: { label: '¿Necesitas talento para tu evento?', cta: 'Ver profesionales →', href: '/auth' },
+    org: { label: '¿Necesitas talento para tu evento?', cta: 'Ver profesionales →', href: '/auth?mode=register&role=empresario' },
     upgrade: {
       eyebrow: 'XPEAK · Directorio verificado',
       headline: 'Recibe presupuestos de profesionales verificados para tu evento',

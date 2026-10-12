@@ -37,7 +37,7 @@ export default function BlogFlashBookingComoFunciona() {
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
       </Helmet>
       <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
-        <div className="max-w-2xl mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#6D28D9', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
             <span style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>XPEAK · Flash Booking</span>
@@ -106,7 +106,7 @@ export default function BlogFlashBookingComoFunciona() {
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.2)' }}>
               <p className="font-black text-lg mb-2">Prueba el Flash Booking ahora</p>
               <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>Crea tu cuenta y publica tu primera oferta en menos de 2 minutos.</p>
-              <a href="/auth" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Empezar →</a>
+              <a href="/auth?mode=register&role=empresario" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Empezar →</a>
             </div>
 
             <BlogAuthor />

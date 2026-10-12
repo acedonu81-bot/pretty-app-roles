@@ -81,18 +81,18 @@ export default function BlogEventoCorporativo() {
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
-        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
+        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
+            <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
               Unirse
             </a>
           </div>
         </nav>
 
-        <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>
             ← Todos los artículos
           </a>
@@ -187,7 +187,7 @@ export default function BlogEventoCorporativo() {
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.04)', border: '1px solid rgba(109,40,217,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Necesitas staff, DJ o catering para tu evento corporativo?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta organizadores con profesionales verificados en toda España. Contratación rápida, contratos digitales automáticos.</p>
-              <a href="/auth" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
+              <a href="/auth?mode=register&role=empresario" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
                 Buscar profesionales en XPEAK →
               </a>

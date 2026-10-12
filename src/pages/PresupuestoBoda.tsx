@@ -417,7 +417,7 @@ export default function PresupuestoBoda() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/bodas" className="text-xs font-bold hidden sm:block" style={{ color: '#374151' }}>← Bodas</a>
-            <a href="/auth" className="px-3 py-2 rounded-lg text-xs font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
+            <a href="/auth?mode=register" className="px-3 py-2 rounded-lg text-xs font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -704,7 +704,7 @@ export default function PresupuestoBoda() {
                     <p className="text-xs mt-2" style={{ color: '#6b7280' }}>Tu ahorro estimado: <strong style={{ color: '#059669' }}>{fmt(ahorro)}</strong></p>
                   </div>
 
-                  <a href="/auth" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-black text-sm" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                  <a href="/auth?mode=register&role=empresario" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-black text-sm" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                     <Zap size={14} /> Contratar estos servicios
                   </a>
                   <p className="text-xs text-center" style={{ color: '#9ca3af' }}>Flash Booking · Contratos PDF</p>
@@ -920,7 +920,7 @@ export default function PresupuestoBoda() {
               XPEAK conecta novios con los mejores profesionales de boda en España. Contratos digitales y Flash Booking en menos de 1h.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="/auth" className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              <a href="/auth?mode=register&role=empresario" className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 <Zap size={15} /> Publicar oferta
               </a>
               <a href="/bodas" className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#111' }}>

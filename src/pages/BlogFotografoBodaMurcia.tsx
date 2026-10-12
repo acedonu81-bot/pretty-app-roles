@@ -59,7 +59,7 @@ export default function BlogFotografoBodaMurcia() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
-        <article className="max-w-3xl mx-auto px-4 py-12">
+        <article className="max-w-5xl mx-auto px-4 py-12">
           <nav className="text-xs text-[#666] mb-6 flex gap-2">
             <a href="/" className="hover:text-[#8A6D0F]">Inicio</a><span>/</span>
             <a href="/blog" className="hover:text-[#8A6D0F]">Blog</a><span>/</span>
