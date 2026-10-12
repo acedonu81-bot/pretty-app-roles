@@ -26,7 +26,8 @@ fi
 TMP="$(mktemp -d)/xpeak-deploy"
 mkdir -p "$TMP"
 git archive HEAD | tar -x -C "$TMP"
-trap 'rm -rf "$TMP"' EXIT
+LOG="$TMP.log"
+trap 'rm -rf "$TMP" "$LOG"' EXIT
 cp .env "$TMP/"
 [ -f .env.production ] && cp .env.production "$TMP/"
 cp -R .vercel "$TMP/"
@@ -34,10 +35,13 @@ cp -R .vercel "$TMP/"
 cd "$TMP"
 echo "🚀 Desplegando $SHA a producción..."
 # Sin terminal: si la CLI pregunta algo, falla en vez de quedarse esperando.
-URL=$(npx vercel --prod --force --yes < /dev/null 2>"$TMP.log" | tail -1) || true
+# Sin TTY la CLI escribe JSON en stdout, así que la URL se saca del log entero
+# (línea "Production  https://pretty-app-roles-<hash>-...vercel.app").
+npx vercel --prod --force --yes < /dev/null > "$LOG" 2>&1 || true
+URL=$(grep -E "Production" "$LOG" | grep -oE 'https://pretty-app-roles-[a-z0-9]+-acedonu81-bots-projects\.vercel\.app' | tail -1)
 case "$URL" in
   https://*) ;;
-  *) echo "❌ vercel no devolvió una URL de deploy: '$URL'"; tail -20 "$TMP.log"; exit 1 ;;
+  *) echo "❌ vercel no devolvió una URL de deploy: '$URL'"; tail -20 "$LOG"; exit 1 ;;
 esac
 echo "✅ Deploy listo: $URL"
 
