@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { trackBlogLeadSubmit } from '@/lib/blogAnalytics';
 
 interface BlogEmailCaptureProps {
-  intent?: 'contratar-dj' | 'ser-profesional' | 'contratar-staff' | 'contratar-makeup' | 'contratar-fotografo' | 'contratar-musico' | 'contratar-bailarin' | 'contratar-peluqueria' | 'general';
+  intent?: 'contratar-dj' | 'ser-profesional' | 'contratar-staff' | 'contratar-azafata' | 'contratar-makeup' | 'contratar-fotografo' | 'contratar-musico' | 'contratar-bailarin' | 'contratar-peluqueria' | 'general';
   articlePath?: string;
   variant?: 'presupuestos' | 'plantilla' | 'guia';
 }
@@ -11,6 +11,7 @@ interface BlogEmailCaptureProps {
 const PROFILE_LABEL: Record<string, string> = {
   'contratar-dj': 'DJs',
   'contratar-staff': 'profesionales de staff',
+  'contratar-azafata': 'azafatas',
   'contratar-makeup': 'maquilladoras',
   'contratar-fotografo': 'fotógrafos',
   'contratar-musico': 'músicos',

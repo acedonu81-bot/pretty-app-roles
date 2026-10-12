@@ -234,7 +234,7 @@ const faqStructured = {
           <BlogAuthor />
           <BlogShare />
         </article>
-          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/cantante-para-bodas-precio" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-musico" articlePath="/blog/cantante-para-bodas-precio" />
         <BlogRelatedPosts currentSlug='/blog/cantante-para-bodas-precio' tag='Bodas' />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_cantante_bodas" articlePath="/blog/cantante-para-bodas-precio" />

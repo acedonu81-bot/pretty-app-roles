@@ -210,7 +210,7 @@ const faqStructured = {
           <BlogAuthor />
           <BlogShare />
         </article>
-          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/saxofonista-para-bodas-precio" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-musico" articlePath="/blog/saxofonista-para-bodas-precio" />
         <BlogRelatedPosts currentSlug='/blog/saxofonista-para-bodas-precio' tag='Bodas' />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_saxofonista_bodas" articlePath="/blog/saxofonista-para-bodas-precio" />

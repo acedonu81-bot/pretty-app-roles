@@ -170,7 +170,7 @@ const faqStructured = {
               <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 Crea tu perfil en XPEAK, publica tus tarifas y activa Flash Booking para disponibilidad urgente.
               </p>
-              <a href="/auth?mode=register"
+              <a href="/auth?mode=register&role=tecnico"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
                 <Zap size={15} /> Crear mi perfil

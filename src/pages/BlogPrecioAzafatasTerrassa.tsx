@@ -100,7 +100,7 @@ export default function BlogPrecioAzafatasTerrassa() {
               <a href="/contratar-staff/terrassa" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Ver staff en Terrassa →</a>
             </div>
           </div>
-          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-terrassa" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-azafata" articlePath="/blog/precio-azafatas-terrassa" />
         </main>
         <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />

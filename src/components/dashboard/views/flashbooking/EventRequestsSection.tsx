@@ -579,7 +579,7 @@ const EventRequestsSection = () => {
         <div className="py-8 text-center rounded-2xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
           <Calendar size={24} className="mx-auto mb-2" style={{ color: 'rgba(212,175,55,0.3)' }} />
           <p className="text-xs font-bold mb-1" style={{ color: '#333' }}>Sin solicitudes abiertas</p>
-          <p className="text-xs" style={{ color: 'rgba(22,20,18,0.25)' }}>
+          <p className="text-xs" style={{ color: 'rgba(22,20,18,0.5)' }}>
             {isEmpresario ? 'Publica tu evento y los pros disponibles te contactarán.' : 'Cuando un cliente publique un evento aparecerá aquí.'}
           </p>
         </div>

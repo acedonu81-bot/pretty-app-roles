@@ -101,7 +101,7 @@ export default function BlogPrecioAzafatasLogrono() {
               <a href="/contratar-staff/logrono" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Ver staff en Logroño →</a>
             </div>
           </div>
-          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-logrono" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-azafata" articlePath="/blog/precio-azafatas-logrono" />
         </main>
         <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />

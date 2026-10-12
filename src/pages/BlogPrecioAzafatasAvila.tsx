@@ -99,7 +99,7 @@ export default function BlogPrecioAzafatasAvila() {
               <a href="/contratar-staff/avila" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Ver staff en Ávila →</a>
             </div>
           </div>
-          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-avila" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-azafata" articlePath="/blog/precio-azafatas-avila" />
         </main>
         <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />

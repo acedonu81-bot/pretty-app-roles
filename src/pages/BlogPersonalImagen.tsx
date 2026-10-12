@@ -170,7 +170,7 @@ const faqStructured = {
               <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 Publica tu experiencia, idiomas y disponibilidad en XPEAK.
               </p>
-              <a href="/auth?mode=register"
+              <a href="/auth?mode=register&role=azafata"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>
                 <Zap size={15} /> Crear mi perfil

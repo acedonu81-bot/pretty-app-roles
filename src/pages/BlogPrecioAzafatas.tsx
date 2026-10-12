@@ -134,7 +134,7 @@ export default function BlogPrecioAzafatas() {
               <a href="/contratar-staff" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Ver staff en XPEAK →</a>
             </div>
           </div>
-                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-eventos-espana" />
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-azafata" articlePath="/blog/precio-azafatas-eventos-espana" />
 </main>
       <DJResourcesAffiliate role="azafata" />
       <BlogAuthor />

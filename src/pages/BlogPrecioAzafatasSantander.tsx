@@ -100,7 +100,7 @@ export default function BlogPrecioAzafatasSantander() {
               <a href="/contratar-staff/santander" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Ver staff en Santander →</a>
             </div>
           </div>
-          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-santander" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-azafata" articlePath="/blog/precio-azafatas-santander" />
         </main>
         <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
