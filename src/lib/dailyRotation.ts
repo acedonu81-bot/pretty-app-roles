@@ -1,7 +1,4 @@
-// Máximo de la función completeness() duplicada en DirectoryView.tsx y
-// DirectorioPublico.tsx: hasMedia(4) + photo(2) + bio(1). Centralizado aquí
-// para que los tres sitios que la usan no diverjan sobre qué cuenta como
-// "top" a la hora de rotar.
+// Máximo de completeness() (más abajo): hasMedia(4) + photo(2) + bio(1).
 export const COMPLETENESS_MAX = 7;
 
 // Rotación diaria determinista para el directorio (26 sep 2026): entre los
@@ -41,4 +38,52 @@ export function hashDaily(id: string, date = new Date()): number {
   hash ^= hash >>> 15;
   // Normaliza a [0, 1) — >>> 0 pasa el int32 con signo a unsigned antes de dividir.
   return (hash >>> 0) / 4294967296;
+}
+
+interface PerfilOrden {
+  user_id?: string | null;
+  id?: string | null;
+  photo_url?: string | null;
+  bio?: string | null;
+  audio_embed_url?: string | null;
+  audio_session_urls?: unknown;
+  portfolio_urls?: unknown;
+  is_verified?: boolean | null;
+  priority_badge_until?: string | null;
+  score?: number | null;
+}
+
+// Perfil completo sube: media (sesión/portfolio) > foto > bio (modelo GigSalad).
+export function completeness(p: PerfilOrden): number {
+  const hasMedia = !!(p.audio_embed_url?.trim())
+    || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
+    || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
+  return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
+}
+
+// Orden único del directorio (DirectoryView, /directorio y /descubrir).
+//
+// 12 oct 2026: "verificado" iba ANTES que completeness y la rotación, así que
+// la rotación solo mezclaba a los verificados con perfil completo. En DJs eran
+// 2 (de 16 completos): siempre salía uno de esos dos arriba, y una verificada
+// sin bio ni sesiones quedaba fija en el 3.º por encima de 14 perfiles
+// completos. Ahora el verificado solo desempata por debajo del máximo, y todos
+// los perfiles completos entran en la rotación diaria.
+export function compararDirectorio(a: PerfilOrden, b: PerfilOrden, date = new Date()): number {
+  // Sin foto siempre al final, sin excepción: en el directorio se ve como una
+  // tarjeta vacía y el feed swipe no puede mostrarla. Recupera posición en
+  // cuanto sube una.
+  const foto = Number(!!b.photo_url) - Number(!!a.photo_url);
+  if (foto) return foto;
+  // Insignia de prioridad vigente (solo la trae DirectoryView).
+  const prioridad = (p: PerfilOrden) => Number(!!p.priority_badge_until && new Date(p.priority_badge_until) > date);
+  const prio = prioridad(b) - prioridad(a);
+  if (prio) return prio;
+  const ca = completeness(a);
+  const cb = completeness(b);
+  if (cb !== ca) return cb - ca;
+  if (ca === COMPLETENESS_MAX) {
+    return hashDaily(a.user_id ?? a.id ?? '', date) - hashDaily(b.user_id ?? b.id ?? '', date);
+  }
+  return (Number(!!b.is_verified) - Number(!!a.is_verified)) || ((b.score ?? 0) - (a.score ?? 0));
 }

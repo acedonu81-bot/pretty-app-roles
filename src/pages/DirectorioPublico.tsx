@@ -14,7 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
-import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
+import { compararDirectorio } from '@/lib/dailyRotation';
 import { expandRole, canonicalRole, passesPhotoGate, DJ_GENRES } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
 import FollowButton from '@/components/FollowButton';
@@ -453,33 +453,12 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   // de la nota (ordena por foto, early adopter, verificado, completitud y
   // score), las tarjetas salen ya con los perfiles y la estrella se rellena
   // cuando llega su propia consulta, en paralelo. Ver useDirectorioRatings.
-  // Puntuación de perfil completo — los perfiles con media suben (modelo GigSalad:
-  // el perfil completo gana visibilidad; incentiva subir sesión/portfolio).
-  const completeness = (p: any): number => {
-    const hasMedia = !!(p.audio_embed_url?.trim())
-      || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
-      || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
-    return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
-  };
   const enriched = filtered.filter((p: any) => p.display_name?.trim().length > 1)
     .map((p: any) => ({ ...p, avgRating: 0, reviewCount: 0 }));
-  // Sin foto siempre al final del rol, sin excepción — un perfil sin foto no
-  // compite en igualdad de condiciones (ni aunque tenga is_verified/early
-  // adopter): en el directorio se ve como una tarjeta vacía, y en el feed
-  // swipe (100% visual) no puede mostrarse en absoluto sin foto. Recupera
-  // posición en cuanto sube una.
-  //
-  // Rotación diaria entre los "top" (completeness al máximo, 26 sep 2026):
-  // ver dailyRotation.ts — sin esto, con pocos perfiles top por rol siempre
-  // ganaba el mismo por score y nunca se veía movimiento.
-  enriched.sort((a: any, b: any) =>
-    (Number(!!b.photo_url) - Number(!!a.photo_url))
-    || (Number(b.is_verified) - Number(a.is_verified))
-    || (completeness(b) - completeness(a))
-    || (completeness(a) === COMPLETENESS_MAX && completeness(b) === COMPLETENESS_MAX
-        ? hashDaily(a.user_id) - hashDaily(b.user_id)
-        : (b.score ?? 0) - (a.score ?? 0))
-  );
+  // Foto → perfil completo → rotación diaria entre los completos (verificado y
+  // score solo desempatan por debajo del máximo). Ver compararDirectorio en
+  // dailyRotation.ts.
+  enriched.sort((a: any, b: any) => compararDirectorio(a, b));
   return enriched;
 }
 
@@ -519,23 +498,9 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
   const filtered = noPhotoGated
     .filter((p: any) => p.display_name?.trim().length > 1);
 
-  const completeness = (p: any): number => {
-    const hasMedia = !!(p.audio_embed_url?.trim())
-      || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
-      || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
-    return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
-  };
   const enriched = filtered.map((p: any) => ({ ...p, avgRating: 0, reviewCount: 0 }));
-  // Rotación diaria entre los "top" — ver comentario en el otro sort de este
-  // archivo, mismo motivo.
-  enriched.sort((a: any, b: any) =>
-    (Number(!!b.photo_url) - Number(!!a.photo_url))
-    || (Number(b.is_verified) - Number(a.is_verified))
-    || (completeness(b) - completeness(a))
-    || (completeness(a) === COMPLETENESS_MAX && completeness(b) === COMPLETENESS_MAX
-        ? hashDaily(a.user_id) - hashDaily(b.user_id)
-        : (b.score ?? 0) - (a.score ?? 0))
-  );
+  // Mismo orden que fetchDirectorioProfiles (compararDirectorio).
+  enriched.sort((a: any, b: any) => compararDirectorio(a, b));
 
   const byRole: Record<string, DirProfile[]> = {};
   for (const p of enriched) {

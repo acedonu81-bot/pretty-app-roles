@@ -5,6 +5,7 @@ import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import { supabase } from '@/integrations/supabase/client';
 import { PHOTO_GATE_OR } from '@/lib/constants';
+import { compararDirectorio } from '@/lib/dailyRotation';
 
 async function fetchTopWeekendProfiles(): Promise<Profile[]> {
   const { data } = await supabase
@@ -17,7 +18,9 @@ async function fetchTopWeekendProfiles(): Promise<Profile[]> {
 
   if (!data) return [];
 
-  const mapped: Profile[] = data.map(row => ({
+  // Antes: verificado → bio → alfabético, sin rotación: arriba salía siempre
+  // el mismo. Ahora el mismo orden que el directorio (compararDirectorio).
+  return [...data].sort((a, b) => compararDirectorio(a, b)).map(row => ({
           id: row.id,
           userId: row.user_id,
           name: row.display_name || 'Sin nombre',
@@ -50,13 +53,6 @@ async function fetchTopWeekendProfiles(): Promise<Profile[]> {
           category: (row.category as Profile['category']) ?? 'professional',
           isVerified: row.is_verified ?? false,
         }));
-
-  // Sort: verified first, then profiles with bio, then alphabetical
-  return mapped.sort((a, b) => {
-    if (a.isVerified !== b.isVerified) return a.isVerified ? -1 : 1;
-    if (!!a.description !== !!b.description) return a.description ? -1 : 1;
-    return a.name.localeCompare(b.name);
-  });
 }
 
 const TopWeekendView = () => {

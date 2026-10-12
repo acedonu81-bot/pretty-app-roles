@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ROLE_ES, unidadTarifa } from '@/lib/constants';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { expandRole, PHOTO_GATE_OR } from '@/lib/constants';
-import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
+import { compararDirectorio } from '@/lib/dailyRotation';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
 import UltimaContratacion from '@/components/dashboard/UltimaContratacion';
@@ -139,38 +139,10 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
 
   return data
     .filter(row => row.display_name && row.display_name.trim().length > 1)
-    .sort((a, b) => {
-      // Perfil completo sube: media (sesión/portfolio) > foto > bio (modelo GigSalad)
-      const completeness = (p: any): number => {
-        const hasMedia = !!(p.audio_embed_url?.trim())
-          || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
-          || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
-        return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
-      };
-      // Sin foto siempre al final, sin excepción (ni con verificado por
-      // delante) — mismo criterio que fetchDirectorioProfiles en
-      // DirectorioPublico.tsx. Recupera posición en cuanto sube una foto.
-      const aHasPhoto = a.photo_url ? 1 : 0;
-      const bHasPhoto = b.photo_url ? 1 : 0;
-      if (bHasPhoto !== aHasPhoto) return bHasPhoto - aHasPhoto;
-      const hasPriority = (p: any) => p.priority_badge_until && new Date(p.priority_badge_until) > new Date();
-      const aPriority = hasPriority(a) ? 1 : 0;
-      const bPriority = hasPriority(b) ? 1 : 0;
-      if (bPriority !== aPriority) return bPriority - aPriority;
-      if ((b.is_verified ? 1 : 0) !== (a.is_verified ? 1 : 0)) return (b.is_verified ? 1 : 0) - (a.is_verified ? 1 : 0);
-      if (completeness(b) !== completeness(a)) return completeness(b) - completeness(a);
-      // Rotación diaria (26 sep 2026): entre quienes tienen el perfil al
-      // máximo (completeness === COMPLETENESS_MAX), el desempate por score
-      // siempre dejaba arriba al mismo — con volumen bajo por rol casi
-      // nunca se veía a nadie más en primera posición. hashDaily da un
-      // orden estable durante todo el día de hoy y distinto mañana, así que
-      // con el tiempo a todos les toca subir. Por debajo del máximo (menos
-      // completo) sigue mandando el score real, sin rotación.
-      if (completeness(a) === COMPLETENESS_MAX && completeness(b) === COMPLETENESS_MAX) {
-        return hashDaily(a.user_id ?? a.id ?? '') - hashDaily(b.user_id ?? b.id ?? '');
-      }
-      return (b.score ?? 0) - (a.score ?? 0);
-    })
+    // Foto → prioridad → perfil completo → rotación diaria entre los completos
+    // (verificado y score solo desempatan por debajo del máximo). Mismo orden
+    // que /directorio y /descubrir: ver compararDirectorio en dailyRotation.ts.
+    .sort((a, b) => compararDirectorio(a, b))
     .map((row) => {
       const stats = ratingMap.get(row.user_id);
       return {
