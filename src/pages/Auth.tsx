@@ -11,6 +11,7 @@ import { ALL_CITIES } from '@/lib/regions';
 import { isNative } from '@/lib/capacitor';
 import { isInAppBrowser as detectInAppBrowser, openInExternalBrowser } from '@/lib/inAppBrowser';
 import { useMedirPermanencia } from '@/hooks/useMedirPermanencia';
+import FichasRealesTira from '@/components/FichasRealesTira';
 import { REGISTRO_PENDIENTE_META } from '@/components/CookieBanner';
 import { Browser } from '@capacitor/browser';
 import { App as CapacitorApp } from '@capacitor/app';
@@ -832,6 +833,9 @@ const Auth = () => {
                   </div>
                 </div>
               )}
+
+              {/* Fichas reales con un poco de scroll (ver FichasRealesTira). */}
+              {!isLogin && <FichasRealesTira />}
 
               {/* === GOOGLE — primary CTA (oculto en webviews: OAuth bloqueado) === */}
               {!isInAppBrowser && (

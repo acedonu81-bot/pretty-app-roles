@@ -1,0 +1,125 @@
+import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { ROLE_ES, canonicalRole } from '@/lib/constants';
+import { compararDirectorio, completeness, COMPLETENESS_MAX } from '@/lib/dailyRotation';
+import { fotoOptimizada } from '@/lib/imagen';
+import { track } from '@/lib/track';
+
+// Fichas reales en /auth (Ficha XDS 70,6, aprobada 13 oct 2026). Quien llega
+// del anuncio de Instagram veía solo un formulario: la mitad se iba en menos
+// de 3 s y del resto casi nadie tocaba nada. Con un poco de scroll ve ahora
+// profesionales reales. Death line: a 7 días, si las altas no pasan del 0,7% y
+// menos del 20% de quienes ven la tira toca una ficha, se quita.
+
+export interface FichaReal {
+  user_id: string;
+  display_name: string | null;
+  role: string | null;
+  zone: string | null;
+  photo_url: string | null;
+  bio?: string | null;
+  audio_embed_url?: string | null;
+  audio_session_urls?: unknown;
+  portfolio_urls?: unknown;
+  is_verified?: boolean | null;
+  score?: number | null;
+}
+
+const MAX_FICHAS = 8;
+// ROLE_ES también nombra a quien no ofrece servicios: fuera de la tira.
+const SIN_OFICIO = new Set(['empresario', 'pending']);
+
+// Solo perfiles completos con foto y oficio conocido (canonicalRole devuelve
+// tal cual un rol desconocido como 'pending'), en el orden y la rotación
+// diaria del directorio.
+export function elegirFichas(filas: FichaReal[], date = new Date()): FichaReal[] {
+  return filas
+    .filter(p => p.photo_url && p.display_name?.trim() && !SIN_OFICIO.has(p.role ?? '')
+      && ROLE_ES[canonicalRole(p.role) ?? ''] && completeness(p) === COMPLETENESS_MAX)
+    .sort((a, b) => compararDirectorio(a, b, date))
+    .slice(0, MAX_FICHAS);
+}
+
+// ROLE_ES trae etiquetas largas ("DJ / Artista / Música en Vivo"): en una
+// ficha de 130 px solo cabe la primera parte.
+const CORTA: Record<string, string> = { media: 'Fotografía', animador: 'Animación' };
+export function oficioCorto(role: string | null): string {
+  const c = canonicalRole(role) ?? role ?? '';
+  return CORTA[c] ?? (ROLE_ES[c] ?? c).split(/\s+[/&]\s+/)[0];
+}
+
+async function fetchFichasReales(): Promise<FichaReal[]> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('user_id, display_name, role, zone, photo_url, bio, audio_embed_url, audio_session_urls, portfolio_urls, is_verified, score')
+    .neq('role', 'empresario')
+    .not('display_name', 'is', null)
+    .not('photo_url', 'is', null)
+    .or('is_public.is.null,is_public.eq.true')
+    .limit(300);
+  if (error) throw error;
+  return elegirFichas((data ?? []) as FichaReal[]);
+}
+
+const FichasRealesTira = () => {
+  const { data: fichas, isLoading } = useQuery({
+    queryKey: ['auth-fichas-reales'],
+    queryFn: fetchFichasReales,
+    staleTime: 10 * 60_000,
+  });
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Cuántos llegan a verla: es la primera condición de la death line.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !fichas?.length || typeof IntersectionObserver === 'undefined') return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { track('auth_fichas_vistas', { n: fichas.length }); obs.disconnect(); }
+    }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [fichas]);
+
+  if (!isLoading && (!fichas || fichas.length < 3)) return null;
+
+  return (
+    <div ref={ref} className="mb-5">
+      <p className="text-[0.7rem] font-black uppercase tracking-wider mb-2" style={{ color: 'rgba(0,0,0,0.45)' }}>
+        Ya están en XPEAK
+      </p>
+      <div className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+        {isLoading
+          ? Array.from({ length: 3 }, (_, i) => (
+              <div key={i} className="shrink-0 w-[130px] rounded-xl" style={{ height: 210, background: '#FBF3DD' }} />
+            ))
+          : fichas!.map((p, i) => (
+              <Link key={p.user_id} to={`/p/${p.user_id}`}
+                onClick={() => track('auth_ficha_click', { rol: canonicalRole(p.role) ?? '', pos: i + 1 })}
+                className="shrink-0 w-[130px] snap-start rounded-xl overflow-hidden transition-transform active:scale-[0.98]"
+                style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.3)' }}>
+                <img src={fotoOptimizada(p.photo_url, 260)} alt={p.display_name ?? ''}
+                  loading="lazy" decoding="async"
+                  className="w-full object-cover" style={{ height: 150, objectPosition: '50% 10%' }} />
+                <div className="px-2.5 py-2">
+                  <p className="text-xs font-black truncate" style={{ color: '#111' }}>{p.display_name}</p>
+                  <p className="text-[0.65rem] truncate" style={{ color: 'rgba(0,0,0,0.55)' }}>
+                    {oficioCorto(p.role)}{p.zone ? ` · ${p.zone}` : ''}
+                  </p>
+                </div>
+              </Link>
+            ))}
+        {!isLoading && (
+          <Link to="/descubrir" onClick={() => track('auth_fichas_ver_todos')}
+            className="shrink-0 w-[110px] snap-start rounded-xl flex items-center justify-center text-xs font-black"
+            style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.35)', color: '#8B6A00' }}>
+            Ver todos →
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default FichasRealesTira;
