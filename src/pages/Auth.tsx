@@ -10,6 +10,7 @@ import TurnstileWidget from '@/components/TurnstileWidget';
 import { ALL_CITIES } from '@/lib/regions';
 import { isNative } from '@/lib/capacitor';
 import { isInAppBrowser as detectInAppBrowser, openInExternalBrowser } from '@/lib/inAppBrowser';
+import { useMedirPermanencia } from '@/hooks/useMedirPermanencia';
 import { Browser } from '@capacitor/browser';
 import { App as CapacitorApp } from '@capacitor/app';
 
@@ -255,6 +256,8 @@ const Auth = () => {
   // Calculado una vez con inicializador lazy: el user agent no cambia durante
   // la vida del componente, así que releerlo en cada render es trabajo repetido.
   const [isInAppBrowser] = useState(() => detectInAppBrowser());
+  // Cuánto aguantan, hasta dónde bajan y qué tocan (ver el hook).
+  useMedirPermanencia();
   // Registro dentro de Instagram/Facebook: sin captcha, vía la edge function
   // signup-inapp (11 oct 2026: 34 visitas del anuncio, 0 altas, y la salida
   // a Chrome solo funcionó 1 de 34 veces). El login sigue mandando al
@@ -740,7 +743,7 @@ const Auth = () => {
                   sin haber visto nada de XPEAK. /descubrir se ve sin cuenta y
                   dentro de Instagram: se le ofrece mirar antes de decidir. */}
               {isInAppBrowser && !isLogin && (
-                <Link to="/descubrir" onClick={() => track('inapp_ver_antes_click')}
+                <Link to="/descubrir" onClick={() => track('auth_ver_antes_click')}
                   className="mb-5 flex items-center justify-between gap-3 rounded-xl px-4 py-3 text-xs font-bold transition-all hover:scale-[1.01]"
                   style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.35)', color: '#5c4a12' }}>
                   <span>¿Quieres ver antes qué hay? Mira perfiles reales sin registrarte.</span>
@@ -874,7 +877,10 @@ const Auth = () => {
                     <input
                       value={displayName}
                       onChange={e => { setDisplayName(e.target.value); if (fieldError === 'name') setFieldError(null); }}
-                      onBlur={() => logAuthFieldTouched('name')}
+                      // Tiene autoFocus: cualquier toque fuera lo desenfoca, así que
+                      // solo cuenta si escribió algo (antes un toque en el aviso de
+                      // cookies salía como "tocó el nombre").
+                      onBlur={() => { if (displayName.trim()) logAuthFieldTouched('name'); }}
                       placeholder={roleParam === 'dj' ? 'DJ NombreArtístico'
                         // Un empresario no tiene "nombre profesional": tiene el
                         // de su sala, empresa o el suyo propio. Pedirle lo otro
