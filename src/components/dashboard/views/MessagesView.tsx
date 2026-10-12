@@ -10,13 +10,14 @@ import ChatWindow, { EmptyChatPlaceholder } from './messages/ChatWindow';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { isNative } from '@/lib/capacitor';
 import { RefreshCw } from 'lucide-react';
+import { askForPush } from '@/lib/pushAsk';
 
 // Los resultados de búsqueda mostraban el rol tal cual sale de BD
 // ('photo-booth', 'grupo-musical'). Etiquetas legibles para el usuario.
 const ROLE_LABEL: Record<string, string> = {
   dj: 'DJ / Artista', 'grupo-musical': 'Grupo musical', media: 'Media', fotografo: 'Fotógrafo',
   makeup: 'Maquillaje', maquillaje: 'Maquillaje', peluqueria: 'Peluquería', staff: 'Staff / Camarero',
-  azafata: 'Azafata', promotor: 'Promotor', promotores: 'Promotor', catering: 'Catering', 'food-truck': 'Food truck',
+  azafata: 'Azafata', promotor: 'Promotor', promotores: 'Promotor', catering: 'Catering', 'food-truck': 'Food truck', 'disco-movil': 'Disco móvil',
   mago: 'Mago', humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
   speaker: 'Speaker', vestuario: 'Vestuario', 'photo-booth': 'Photo Booth',
   tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos', local_eventos: 'Local para eventos',
@@ -280,6 +281,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     await loadMessages(activeConvId);
     await loadConversations();
     setSending(false);
+    askForPush('mensaje');
     // Notify recipient by 2 channels: in-app notification + email (fire and forget)
     if (activeOtherUserId) {
       const senderName = myDisplayName?.trim() || user.user_metadata?.display_name || 'Un usuario';
