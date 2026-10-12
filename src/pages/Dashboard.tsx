@@ -16,6 +16,7 @@ import AdminGuard from '@/components/AdminGuard';
 import type { Profile } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 import PushAskCard from '@/components/PushAskCard';
 import { askForPush } from '@/lib/pushAsk';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -570,6 +571,10 @@ const Dashboard = () => {
   };
 
   const handleMessage = (userId: string, name: string) => {
+    if (userId === user?.id) {
+      toast.info('Esta es tu propia ficha. Los mensajes son para hablar con otros usuarios.');
+      return;
+    }
     setMessagesTarget({ userId, name });
     handleViewChange('messages');
   };

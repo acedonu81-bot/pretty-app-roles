@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { sanitizeInput } from '@/lib/contentFilter';
+import { conversationPair } from '@/lib/conversationPair';
 import { toast } from 'sonner';
 import ConversationList from './messages/ConversationList';
 import ChatWindow, { EmptyChatPlaceholder } from './messages/ChatWindow';
@@ -153,8 +154,12 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       toast.error('Has bloqueado a este usuario. Desbloquéalo para escribirle.');
       return;
     }
-    const a = user.id < targetUserId ? user.id : targetUserId;
-    const b = user.id < targetUserId ? targetUserId : user.id;
+    const pair = conversationPair(user.id, targetUserId);
+    if (!pair) {
+      toast.info('Esta es tu propia ficha. Los mensajes son para hablar con otros usuarios.');
+      return;
+    }
+    const { a, b } = pair;
 
     const { data: existingData, error: fetchError } = await supabase
       .from('conversations').select('id').eq('participant_a', a).eq('participant_b', b).maybeSingle();

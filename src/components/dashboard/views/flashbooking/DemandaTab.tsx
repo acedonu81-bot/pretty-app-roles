@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { sanitizeInput } from '@/lib/contentFilter';
+import { conversationPair } from '@/lib/conversationPair';
 import EventRequestsSection from './EventRequestsSection';
 
 interface Offer {
@@ -204,12 +205,17 @@ const DemandaTab = () => {
       toast.info('No se puede contactar al autor de esta oferta.');
       return;
     }
+    const pair = conversationPair(user.id, offer.posterId);
+    if (!pair) {
+      toast.info('Esta oferta es tuya. No puedes responderte a ti mismo.');
+      return;
+    }
     setSending(true);
     try {
       const myId = user.id;
       const msgText = replyText.trim();
       const employerId = offer.posterId;
-      const [pA, pB] = [myId, employerId].sort();
+      const { a: pA, b: pB } = pair;
 
       const { data: existing, error: fetchErr } = await supabase
         .from('conversations').select('id').eq('participant_a', pA).eq('participant_b', pB).maybeSingle();
