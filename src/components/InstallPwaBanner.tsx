@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { X, Share, PlusSquare } from 'lucide-react';
+import { X } from 'lucide-react';
+import { useInstallPrompt } from '@/hooks/useInstallPrompt';
+import IosInstallSheet from '@/components/IosInstallSheet';
 
 /**
  * Banner sutil para invitar a instalar XPEAK como PWA — solo tiene sentido en
@@ -17,24 +19,9 @@ const DISMISS_KEY = 'xpeak_pwa_banner_dismissed';
 
 export default function InstallPwaBanner() {
   const [dismissed, setDismissed] = useState(() => localStorage.getItem(DISMISS_KEY) === '1');
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showIosSteps, setShowIosSteps] = useState(false);
-
-  // Calculados una vez con inicializador lazy, no en cada render — mismo
-  // patrón que `dismissed` arriba. El valor nunca cambia durante la vida del
-  // componente (no hay evento que anuncie un cambio de user agent o de modo
-  // de visualización), así que recalcularlo en cada render es solo trabajo
-  // repetido, sin ganancia.
-  const [isIOS] = useState(() => /iPad|iPhone|iPod/.test(navigator.userAgent));
-  const [isStandalone] = useState(() =>
-    ('standalone' in navigator && (navigator as any).standalone)
-    || window.matchMedia('(display-mode: standalone)').matches);
-
-  useEffect(() => {
-    const handler = (e: Event) => { e.preventDefault(); setDeferredPrompt(e); };
-    window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
-  }, []);
+  const { platform, iosBrowser, isStandalone, canPromptInstall, promptInstall } = useInstallPrompt();
+  const isIOS = platform === 'ios';
 
   // El banner es `fixed` con z-60 sobre el feed, y los CTAs de cada tarjeta
   // ("Ver perfil" / "Contactar") viven pegados abajo con z-20: sin esto el
@@ -43,7 +30,7 @@ export default function InstallPwaBanner() {
   // Publicamos su altura real para que el contenido de debajo se aparte, y la
   // limpiamos al desmontar o al cerrarlo.
   const bannerRef = useRef<HTMLDivElement>(null);
-  const visible = !isStandalone && !dismissed && (deferredPrompt || isIOS);
+  const visible = !isStandalone && !dismissed && (canPromptInstall || isIOS);
   useEffect(() => {
     const root = document.documentElement;
     if (!visible) { root.style.removeProperty('--install-banner-space'); return; }
@@ -54,20 +41,17 @@ export default function InstallPwaBanner() {
     const ro = new ResizeObserver(apply);
     ro.observe(el);
     return () => { ro.disconnect(); root.style.removeProperty('--install-banner-space'); };
-  }, [visible, showIosSteps]);
+  }, [visible]);
 
   if (isStandalone || dismissed) return null;
   // Solo mostrar si hay algo que ofrecer: prompt nativo de Android, o pasos de iOS.
-  if (!deferredPrompt && !isIOS) return null;
+  if (!canPromptInstall && !isIOS) return null;
 
   const dismiss = () => { setDismissed(true); localStorage.setItem(DISMISS_KEY, '1'); };
 
   const handleInstall = async () => {
     if (isIOS) { setShowIosSteps(true); return; }
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    setDeferredPrompt(null);
+    await promptInstall();
     dismiss();
   };
 
@@ -80,39 +64,23 @@ export default function InstallPwaBanner() {
         border: '1px solid rgba(212,175,55,0.25)',
         boxShadow: '0 8px 30px rgba(0,0,0,0.4)',
       }}>
-      {!showIosSteps ? (
-        <div className="flex items-center gap-3 px-4 py-3.5">
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-black text-white">Instala XPEAK</p>
-            <p className="text-[0.7rem] leading-snug" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Pantalla completa, sin barra del navegador, como Instagram.
-            </p>
-          </div>
-          <button onClick={handleInstall}
-            className="flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Instalar
-          </button>
-          <button onClick={dismiss} aria-label="Cerrar" className="flex-shrink-0 p-1 transition-opacity hover:opacity-70">
-            <X size={16} style={{ color: 'rgba(255,255,255,0.5)' }} />
-          </button>
-        </div>
-      ) : (
-        <div className="px-4 py-3.5 space-y-2">
-          <div className="flex items-center justify-between">
-            <p className="text-xs font-black text-white">Añadir a pantalla de inicio</p>
-            <button onClick={dismiss} aria-label="Cerrar" className="p-1 transition-opacity hover:opacity-70">
-              <X size={16} style={{ color: 'rgba(255,255,255,0.5)' }} />
-            </button>
-          </div>
-          <p className="text-xs flex items-center gap-1.5" style={{ color: 'rgba(255,255,255,0.75)' }}>
-            1. Toca <Share size={13} style={{ color: '#D4AF37' }} /> abajo en Safari
-          </p>
-          <p className="text-xs flex items-center gap-1.5" style={{ color: 'rgba(255,255,255,0.75)' }}>
-            2. Elige <PlusSquare size={13} style={{ color: '#D4AF37' }} /> "Añadir a pantalla de inicio"
+      <div className="flex items-center gap-3 px-4 py-3.5">
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-black text-white">Instala XPEAK</p>
+          <p className="text-[0.7rem] leading-snug" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            Pantalla completa, sin barra del navegador, como Instagram.
           </p>
         </div>
-      )}
+        <button onClick={handleInstall}
+          className="flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition-all hover:scale-105"
+          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+          Instalar
+        </button>
+        <button onClick={dismiss} aria-label="Cerrar" className="flex-shrink-0 p-1 transition-opacity hover:opacity-70">
+          <X size={16} style={{ color: 'rgba(255,255,255,0.5)' }} />
+        </button>
+      </div>
+      {showIosSteps && <IosInstallSheet browser={iosBrowser} onClose={() => setShowIosSteps(false)} />}
     </div>
   );
 }
