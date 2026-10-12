@@ -946,6 +946,40 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
   }),
 
+  // 11c. Datos de contacto difuminados en las fotos (12 oct 2026, Dj eloy):
+  // a diferencia de photo_policy_violation la foto NO se retira, solo se tapa
+  // el teléfono/email. Recuerda los Términos (apartado 12) y pide la bio.
+  photo_contact_blurred: (d) => ({
+    subject: `Tu perfil en XPEAK: hemos ajustado tus fotos`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hemos ajustado tus fotos</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, gracias por unirte a XPEAK.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hemos revisado tu perfil y hemos difuminado ${esc(d.detalle ?? 'el teléfono y el correo que aparecían escritos en tu foto de perfil y en tu foto de portfolio. Tus fotos siguen publicadas, solo esa parte queda tapada')}.
+      </p>
+      ${d.restaurada ? `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        <strong style="color:#0a0908">Tu perfil vuelve a aparecer en el directorio de XPEAK</strong> y ya pueden encontrarte los organizadores.
+      </p>` : ''}
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Nuestros <a href="https://xpeak.es/terminos" style="color:#D4AF37">Términos de uso</a> (apartado 12) no permiten que el perfil muestre datos de contacto directos: teléfono, WhatsApp, email, redes o webs externas. Todo el contacto entre profesionales y clientes pasa por dentro de XPEAK. Así cada solicitud queda registrada y protegida para ambas partes. Si vuelven a aparecer datos de contacto, tendríamos que retirar la foto.
+      </p>
+      ${d.bio_vacia === false ? btn('Ver mi perfil →', 'https://xpeak.es/dashboard') : `<div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:14px 16px;margin:0 0 20px">
+        <p style="margin:0 0 6px;font-size:14px;font-weight:900;color:#0a0908">Te falta un paso: tu bio está vacía.</p>
+        <p style="margin:0 0 8px;font-size:13px;color:#4b5563;line-height:1.6">Es lo primero que leen los organizadores antes de escribirte. Con 3 o 4 líneas basta:</p>
+        <ul style="margin:0;padding-left:18px;font-size:13px;color:#4b5563;line-height:1.7">
+          <li>Qué eventos haces (bodas, comuniones, fiestas, verbenas…)</li>
+          <li>Qué equipo de sonido e iluminación llevas</li>
+          <li>Zona en la que trabajas${d.city ? ` (${esc(d.city)} y alrededores)` : ''}</li>
+          <li>Estilos musicales que pinchas</li>
+        </ul>
+      </div>
+      ${btn('Completar mi bio →', 'https://xpeak.es/dashboard?view=settings')}`}
+      <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
+  }),
+
   // 12. Flash Booking — aviso al profesional (nueva solicitud recibida)
   booking_received: (d) => ({
     subject: `Nueva solicitud Flash Booking: ${esc(d.event_date ?? 'Fecha por confirmar')}`,
