@@ -94,7 +94,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import LandingMegaMenu from '@/components/LandingMegaMenu';
-import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal, LayoutDashboard } from 'lucide-react';
+import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal, LayoutDashboard, PartyPopper } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
@@ -106,6 +106,7 @@ import DemoVideoModal from '@/components/DemoVideoModal';
 import GigWonPopup from '@/components/GigWonPopup';
 
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
+const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
 
 /* ── Fade-in wrapper ── */
 const FadeIn = ({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) => {
@@ -417,7 +418,7 @@ const categoryCountsPromise = supabase.from('profiles' as any)
 
 /* Categoría agregada del bento → roles reales que la componen (mismo mapeo que CATEGORY_DEST/isFresh). */
 const CATEGORY_ROLES: Record<string, string[]> = {
-  musica: ['dj', 'grupo-musical'],
+  musica: ['dj', 'grupo-musical', 'disco-movil'],
   // 'staff' (camareros) cuenta en gastro, no aquí: es la agrupación del sidebar
   // y de /descubrir, y además es a donde apunta CATEGORY_DEST.gastro. Contarlo
   // en las dos categorías lo duplicaría en el ranking del bento.
@@ -484,6 +485,7 @@ const Landing = () => {
   }, []);
 
   const navigate = useNavigate();
+  const [showParticular, setShowParticular] = useState(false);
   const { user, loading: authLoading } = useAuth();
   const [demoOpen, setDemoOpen] = useState(false);
   const [cityValue, setCityValue] = useState('');
@@ -749,11 +751,31 @@ const Landing = () => {
             del tráfico de profesionales llegaba sin un camino claro y
             terminaba navegando a ciegas hasta /auth vía navbar/footer. */}
         <FadeIn delay={0.25}>
-          <div className="max-w-md mx-auto mb-3">
+          <div className="max-w-2xl mx-auto mb-3">
             <p className="text-center text-sm font-black uppercase tracking-[0.15em] mb-4" style={{ color: '#D4AF37', textShadow: '0 0 10px rgba(212,175,55,0.4)' }}>
               ¿Qué quieres hacer?
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Particular: sin registro, solo email. Va a XPEAK como lead
+                  genérico (Ficha XDS 73,6, aprobada 11 oct 2026). */}
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={() => {
+                  (window as any).gtag?.('event', 'select_content', { content_type: 'landing_perfil', item_id: 'particular' });
+                  setShowParticular(true);
+                }}
+                className="relative flex flex-col items-start justify-center gap-1 px-5 py-6 rounded-2xl text-left transition-all overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg,#fff8e1,#f6ecd0 55%,#efe0b8)',
+                  color: '#111',
+                  border: '1px solid rgba(212,175,55,0.7)',
+                  boxShadow: '0 0 0 1px rgba(255,224,130,0.35), 0 0 18px rgba(212,175,55,0.35), 0 12px 28px rgba(0,0,0,0.45)',
+                }}
+              >
+                <span className="flex items-center gap-2 text-lg font-black tracking-tight"><PartyPopper size={20} /> Soy particular</span>
+                <span className="text-xs font-bold" style={{ color: '#333' }}>Boda, cumple, fiesta. Sin registro</span>
+              </motion.button>
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
@@ -769,8 +791,8 @@ const Landing = () => {
                   boxShadow: '0 0 0 1px rgba(255,224,130,0.5), 0 0 18px rgba(0,0,0,0.55), 0 0 36px rgba(0,0,0,0.35), 0 12px 28px rgba(0,0,0,0.5)',
                 }}
               >
-                <span className="flex items-center gap-2 text-lg font-black tracking-tight"><Sparkles size={20} /> Quiero contratar</span>
-                <span className="text-xs font-bold opacity-80">Organizo un evento</span>
+                <span className="flex items-center gap-2 text-lg font-black tracking-tight"><Building2 size={20} /> Soy empresario</span>
+                <span className="text-xs font-bold opacity-80">Local, empresa u organizador</span>
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.04 }}
@@ -1117,6 +1139,9 @@ const Landing = () => {
       <LegalFooter />
       <DemoVideoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
       <GigWonPopup />
+      {showParticular && (
+        <Suspense fallback={null}><ParticularRequestModal onClose={() => setShowParticular(false)} /></Suspense>
+      )}
       <Suspense fallback={null}><div className="hidden sm:block"><SupportChat /></div></Suspense>
     </div>
     </>
