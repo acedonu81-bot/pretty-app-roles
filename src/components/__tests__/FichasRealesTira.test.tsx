@@ -50,6 +50,22 @@ describe('elegirFichas', () => {
     expect(primeros.size).toBeGreaterThan(3);
   });
 
+  it('música delante: 6 de música y luego otros oficios', () => {
+    const elegidas = elegirFichas([
+      ...Array.from({ length: 5 }, (_, i) => completo(`foto-${i}`, { role: 'media' })),
+      ...Array.from({ length: 6 }, (_, i) => completo(`dj-${i}`, { role: 'dj' })),
+      ...Array.from({ length: 3 }, (_, i) => completo(`grupo-${i}`, { role: 'grupo-musical' })),
+    ]);
+    const musica = (id: string) => id.startsWith('dj-') || id.startsWith('grupo-');
+    expect(elegidas.slice(0, 6).every(p => musica(p.user_id))).toBe(true);
+    expect(elegidas.slice(6).every(p => p.user_id.startsWith('foto-'))).toBe(true);
+  });
+
+  it('si no hay otros oficios, rellena con más música', () => {
+    const elegidas = elegirFichas(Array.from({ length: 10 }, (_, i) => completo(`dj-${i}`)));
+    expect(elegidas).toHaveLength(8);
+  });
+
   it('etiquetas de oficio cortas', () => {
     expect(oficioCorto('dj')).toBe('DJ');
     expect(oficioCorto('grupo-musical')).toBe('Grupo Musical');

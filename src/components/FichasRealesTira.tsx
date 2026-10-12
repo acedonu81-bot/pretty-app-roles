@@ -31,15 +31,25 @@ const MAX_FICHAS = 8;
 // ROLE_ES también nombra a quien no ofrece servicios: fuera de la tira.
 const SIN_OFICIO = new Set(['empresario', 'pending']);
 
+// Música delante (decisión del usuario, 13 oct 2026: el 100% de la demanda
+// real es de música): 6 de música y 2 de otros oficios para que se vea que
+// hay de todo. Si falta de un lado se rellena con el otro. Mismos oficios que
+// el grupo "Música" de ExplorarView.
+const MUSICA = new Set(['dj', 'grupo-musical', 'disco-movil']);
+const MAX_MUSICA = 6;
+
 // Solo perfiles completos con foto y oficio conocido (canonicalRole devuelve
 // tal cual un rol desconocido como 'pending'), en el orden y la rotación
 // diaria del directorio.
 export function elegirFichas(filas: FichaReal[], date = new Date()): FichaReal[] {
-  return filas
+  const completos = filas
     .filter(p => p.photo_url && p.display_name?.trim() && !SIN_OFICIO.has(p.role ?? '')
       && ROLE_ES[canonicalRole(p.role) ?? ''] && completeness(p) === COMPLETENESS_MAX)
-    .sort((a, b) => compararDirectorio(a, b, date))
-    .slice(0, MAX_FICHAS);
+    .sort((a, b) => compararDirectorio(a, b, date));
+  const esMusica = (p: FichaReal) => MUSICA.has(canonicalRole(p.role) ?? '');
+  const musica = completos.filter(esMusica);
+  const resto = completos.filter(p => !esMusica(p));
+  return [...musica.slice(0, MAX_MUSICA), ...resto, ...musica.slice(MAX_MUSICA)].slice(0, MAX_FICHAS);
 }
 
 // ROLE_ES trae etiquetas largas ("DJ / Artista / Música en Vivo"): en una
