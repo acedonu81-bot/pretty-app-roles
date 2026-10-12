@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, Sparkles, Building2, type LucideIcon } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, Sparkles, Building2, PartyPopper, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { track, trackLead, logSignup, logLogin, logAuthFieldTouched } from '@/lib/track';
@@ -12,6 +12,9 @@ import { isNative } from '@/lib/capacitor';
 import { isInAppBrowser as detectInAppBrowser, openInExternalBrowser } from '@/lib/inAppBrowser';
 import { useMedirPermanencia } from '@/hooks/useMedirPermanencia';
 import FichasRealesTira from '@/components/FichasRealesTira';
+import CiudadBuscador from '@/components/CiudadBuscador';
+
+const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
 import { REGISTRO_PENDIENTE_META } from '@/components/CookieBanner';
 import { Browser } from '@capacitor/browser';
 import { App as CapacitorApp } from '@capacitor/app';
@@ -117,6 +120,7 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [city, setCity] = useState('');
+  const [showParticular, setShowParticular] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [legalAccepted, setLegalAccepted] = useState(false);
@@ -792,7 +796,7 @@ const Auth = () => {
                   <div className="grid grid-cols-2 gap-2.5">
                     {([
                       { rol: 'profesional', titulo: 'Ofrezco mis servicios', sub: 'DJ, camarero, fotógrafo…', icono: Sparkles },
-                      { rol: 'empresario',  titulo: 'Quiero contratar',      sub: 'Sala, boda, empresa',      icono: Building2 },
+                      { rol: 'empresario',  titulo: 'Soy empresa o sala',    sub: 'Sala, bar, empresa',       icono: Building2 },
                     ] as const).map(op => {
                       const activo = op.rol === 'empresario'
                         ? roleParam === 'empresario'
@@ -831,6 +835,28 @@ const Auth = () => {
                       );
                     })}
                   </div>
+                  {/* Particular (13 oct 2026): quien organiza su boda o su
+                      cumpleaños no es una empresa. Desde el anuncio de Instagram
+                      tocaba "Quiero contratar", le pedían el nombre de su
+                      empresa y se iba. Pide presupuesto sin registrarse, con el
+                      mismo formulario que "Soy particular" de la portada. */}
+                  <button type="button"
+                    onClick={() => { track('auth_particular_abre'); setShowParticular(true); }}
+                    className="mt-2.5 w-full text-left p-3 rounded-xl flex items-center gap-3 transition-all hover:scale-[1.01]"
+                    style={{ background: '#fff', border: '2px solid rgba(0,0,0,0.09)' }}>
+                    <PartyPopper size={17} className="shrink-0" style={{ color: 'rgba(0,0,0,0.4)' }} />
+                    <span className="flex-1 min-w-0">
+                      <span className="block text-[0.8rem] font-black leading-tight" style={{ color: '#111' }}>Soy particular</span>
+                      <span className="block text-[0.65rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.5)' }}>Boda, cumpleaños, fiesta… Pide presupuesto sin registrarte</span>
+                    </span>
+                    <span className="shrink-0 text-xs font-black" style={{ color: '#8B6A00' }}>→</span>
+                  </button>
+                  {showParticular && (
+                    <Suspense fallback={null}>
+                      <ParticularRequestModal onClose={() => setShowParticular(false)}
+                        onEnviado={() => track('auth_particular_enviado')} />
+                    </Suspense>
+                  )}
                 </div>
               )}
 
@@ -910,19 +936,7 @@ const Auth = () => {
                     aparecian en NINGUNA /contratar-camareros/:ciudad, que es
                     justo la pagina a la que llega quien busca contratar. */}
                 {!isLogin && roleParam !== 'empresario' && (
-                  <div className="relative">
-                    <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
-                    <select
-                      value={city}
-                      onChange={e => setCity(e.target.value)}
-                      onBlur={() => logAuthFieldTouched('city')}
-                      className="nightlife-input !py-3 !pl-9 text-base w-full"
-                      aria-label="Tu ciudad"
-                    >
-                      <option value="">¿En qué ciudad trabajas?</option>
-                      {ALL_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
-                  </div>
+                  <CiudadBuscador value={city} onChange={setCity} onBlur={() => logAuthFieldTouched('city')} />
                 )}
 
                 {/* Email */}

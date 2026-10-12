@@ -30,9 +30,11 @@ const BUDGETS = ['Menos de 300 €', '300 a 600 €', '600 a 1.000 €', 'Más d
 
 interface Props {
   onClose: () => void;
+  // Para medir desde dónde llega la solicitud (p. ej. /auth) sin tocar la fila.
+  onEnviado?: () => void;
 }
 
-export default function ParticularRequestModal({ onClose }: Props) {
+export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
   const [form, setForm] = useState({
     name: '', email: '', eventType: '', service: '', date: '', location: '',
     budget: '', message: '', website: '',
@@ -73,6 +75,7 @@ export default function ParticularRequestModal({ onClose }: Props) {
       return;
     }
     setStatus('done');
+    onEnviado?.();
 
     if (typeof window !== 'undefined') {
       (window as any).fbq?.('track', 'Lead', { content_name: 'particular' });
