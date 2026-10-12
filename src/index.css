@@ -387,13 +387,14 @@ body.is-native-app .clay-btn-primary {
   50% { box-shadow: 0 10px 32px rgba(15,61,46,0.4), 0 0 0 10px rgba(74,222,128,0); }
 }
 
-/* Escudo de Panel Admin cuando hay algo nuevo que revisar: mucho más
-   llamativo que un simple cambio de color de icono — anillo verde que se
-   expande y se desvanece, más un latido de escala, para que se note incluso
-   con el sidebar colapsado a solo iconos. */
+/* Icono verde cuando hay algo nuevo que revisar (Panel Admin, Feed,
+   Mensajes, Flash Booking): se nota incluso con el sidebar colapsado a solo
+   iconos, pero sin el anillo expansivo original — con varios iconos a la vez
+   latiendo fuerte y en bucle infinito resultaba demasiado intenso. Solo un
+   latido leve de escala. */
 @keyframes adminAlertPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.55); transform: scale(1); }
-  50%      { box-shadow: 0 0 0 8px rgba(22,163,74,0); transform: scale(1.12); }
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
 }
 
 @keyframes viewEnter {
@@ -575,3 +576,12 @@ body.is-native-app .clay-btn-primary {
 /* Reserva espacio al final de la página mientras el widget flotante "Mi evento" está visible,
    para que no tape contenido al llegar al final del scroll (ver EventCartWidget.tsx). */
 body.has-event-cart-widget { padding-bottom: 76px; }
+
+/* CTA "Crear cuenta" en /auth: pulso de brillo dorado para que no pase
+   desapercibido. Suave (2s) y desactivado con reducción de movimiento. */
+@keyframes xp-cta-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.75); }
+  50% { box-shadow: 0 0 0 10px rgba(212,175,55,0); }
+}
+.xp-cta-glow { animation: xp-cta-glow 2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .xp-cta-glow { animation: none; } }

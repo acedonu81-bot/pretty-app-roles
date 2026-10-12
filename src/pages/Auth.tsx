@@ -4,11 +4,12 @@ import { Helmet } from 'react-helmet-async';
 import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, Sparkles, Building2, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { track, trackLead, logSignup, logLogin } from '@/lib/track';
+import { track, trackLead, logSignup, logLogin, logAuthFieldTouched } from '@/lib/track';
 import { VISTA_TRAS_LOGIN } from '@/pages/Dashboard';
 import TurnstileWidget from '@/components/TurnstileWidget';
 import { ALL_CITIES } from '@/lib/regions';
 import { isNative } from '@/lib/capacitor';
+import { isInAppBrowser as detectInAppBrowser, openInExternalBrowser } from '@/lib/inAppBrowser';
 import { Browser } from '@capacitor/browser';
 import { App as CapacitorApp } from '@capacitor/app';
 
@@ -102,7 +103,13 @@ const Auth = () => {
   const refParam = searchParams.get('ref') ?? '';
   const content = ROLE_CONTENT[roleParam] ?? DEFAULT_CONTENT;
 
-  const [isLogin, setIsLogin] = useState(modeParam !== 'register');
+  // Quien llega desde un anuncio de Meta (?fbclid=) sin ?mode no tiene
+  // cuenta: el anuncio apuntaba a /auth a secas y caían en "Accede a XPEAK"
+  // (login). 10-11 oct 2026: ~79 visitas de la campaña, 71 vieron solo esa
+  // pantalla y se fueron, 0 intentos de alta. ?mode=login sigue mandando.
+  const [isLogin, setIsLogin] = useState(
+    modeParam === 'login' || (modeParam !== 'register' && !searchParams.has('fbclid')),
+  );
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -135,6 +142,15 @@ const Auth = () => {
   // otra vez, lo que pisa el code_verifier PKCE del primer intento y rompe el login.
   const [oauthCallbackPending, setOauthCallbackPending] = useState(() => searchParams.has('code'));
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  // El token de Turnstile es de un solo uso: tras un intento fallido Supabase
+  // ya lo ha consumido y el siguiente envío (p. ej. pasar de "Entrar" a "Crear
+  // cuenta") fallaba por captcha. Cambiar la key vuelve a montar el widget.
+  const [captchaKey, setCaptchaKey] = useState(0);
+  const renewCaptcha = () => { setCaptchaToken(null); setCaptchaKey(k => k + 1); };
+  // Login fallido con credenciales inválidas: casi siempre es alguien nuevo
+  // que llegó al formulario de entrar (los "Unirse" del blog apuntaban a /auth)
+  // y metió email+contraseña sin tener cuenta. Se le ofrece crearla ahí mismo.
+  const [loginFailed, setLoginFailed] = useState(false);
   const [forgotCaptchaToken, setForgotCaptchaToken] = useState<string | null>(null);
   const [turnstileStalled, setTurnstileStalled] = useState(false);
 
@@ -238,8 +254,22 @@ const Auth = () => {
   // "disallowed_useragent" — en esos casos solo ofrecemos registro por email.
   // Calculado una vez con inicializador lazy: el user agent no cambia durante
   // la vida del componente, así que releerlo en cada render es trabajo repetido.
-  const [isInAppBrowser] = useState(() =>
-    /TikTok|musical_ly|Instagram|FBAN|FBAV|FB_IAB|Line\//i.test(navigator.userAgent));
+  const [isInAppBrowser] = useState(() => detectInAppBrowser());
+  // Registro dentro de Instagram/Facebook: sin captcha, vía la edge function
+  // signup-inapp (11 oct 2026: 34 visitas del anuncio, 0 altas, y la salida
+  // a Chrome solo funcionó 1 de 34 veces). El login sigue mandando al
+  // navegador: son cuentas que ya existen y no merece abrir otra puerta.
+  // Apagado hasta publicar la edge function signup-inapp y su tabla: sin
+  // ellas el alta fallaría. Mientras, el registro también usa el aviso.
+  const INAPP_SIGNUP_ENABLED = false;
+  const inAppSignup = INAPP_SIGNUP_ENABLED && isInAppBrowser && !isLogin;
+  const [honeypot, setHoneypot] = useState('');
+
+
+  const handleOpenInBrowser = () => {
+    track('inapp_escape_click');
+    openInExternalBrowser();
+  };
 
   const handleCopyAuthLink = () => {
     navigator.clipboard.writeText(window.location.href)
@@ -368,6 +398,24 @@ const Auth = () => {
     return null;
   };
 
+  // Alta sin captcha desde el webview (ver inAppSignup). La edge function crea
+  // la cuenta y devuelve un token de magic link; verifyOtp no pide captcha y
+  // deja la misma sesión que un signUp normal, así que el resto del flujo
+  // (tracking, referidos, redirección) no cambia.
+  const signUpInApp = async (email: string, password: string, data: Record<string, unknown>, website: string) => {
+    const { data: res, error: fnError } = await supabase.functions.invoke('signup-inapp', {
+      body: { email, password, data, website },
+    });
+    if (fnError || !res?.token_hash) {
+      let message = res?.error as string | undefined;
+      if (!message && fnError && 'context' in fnError) {
+        try { message = (await (fnError as any).context.json())?.error; } catch { /* sin cuerpo */ }
+      }
+      return { data: { user: null, session: null }, error: new Error(message || 'No se pudo crear la cuenta') };
+    }
+    return supabase.auth.verifyOtp({ token_hash: res.token_hash, type: 'magiclink' });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitInFlight.current) return;
@@ -383,7 +431,7 @@ const Auth = () => {
         authFieldError(!email ? 'email' : 'password', !email ? 'Introduce tu email' : 'Introduce tu contraseña');
         return;
       }
-      if (!captchaToken) {
+      if (!captchaToken && !inAppSignup) {
         authAlert('Espera a que termine la verificación de seguridad e inténtalo de nuevo.');
         return;
       }
@@ -406,7 +454,12 @@ const Auth = () => {
         if (error) {
           recordLoginFailure();
           track('auth_error', { mode: 'login', message: error.message });
-          authAlert(error.message.includes('Invalid login credentials') ? 'Email o contraseña incorrectos.' : (error.message || 'Error de autenticación'));
+          renewCaptcha();
+          if (error.message.includes('Invalid login credentials')) {
+            setLoginFailed(true);
+          } else {
+            authAlert(error.message || 'Error de autenticación');
+          }
           setLoading(false);
           return;
         }
@@ -460,23 +513,26 @@ const Auth = () => {
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
-        const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'event_manager', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'food-truck', 'tecnico', 'alquiler', 'local_eventos'];
-        const { data: signUpData, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              display_name: safeName,
-              role: KNOWN_ROLES.includes(roleParam) ? roleParam : 'pending',
-              hourly_rate: 0,
-              category: 'pending',
-              zone: city || 'España',
-              marketing_consent: marketingConsent,
+        const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'event_manager', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'food-truck', 'disco-movil', 'tecnico', 'alquiler', 'local_eventos'];
+        const signUpMeta = {
+          display_name: safeName,
+          role: KNOWN_ROLES.includes(roleParam) ? roleParam : 'pending',
+          hourly_rate: 0,
+          category: 'pending',
+          zone: city || 'España',
+          marketing_consent: marketingConsent,
+        };
+        const { data: signUpData, error } = inAppSignup
+          ? await signUpInApp(email, password, signUpMeta, honeypot)
+          : await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: signUpMeta,
+              emailRedirectTo: `${SITE_URL}/auth`,
+              captchaToken,
             },
-            emailRedirectTo: `${SITE_URL}/auth`,
-            captchaToken,
-          },
-        });
+          });
         if (error) {
           track('auth_error', { mode: 'register', message: error.message });
           throw error;
@@ -536,6 +592,7 @@ const Auth = () => {
         isRegistering.current = false;
       }
     } catch (err: any) {
+      renewCaptcha();
       authAlert(err.message || 'Error de autenticación');
     } finally {
       setLoading(false);
@@ -672,12 +729,43 @@ const Auth = () => {
                 <h3 className="text-lg font-black mb-1 leading-normal pb-0.5" style={{ color: '#111' }}>
                   {isLogin ? 'Accede a XPEAK' : 'Crear cuenta'}
                 </h3>
-                <p className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
-                  {isLogin
-                    ? '¿Primera vez? → Pulsa "Crear cuenta" abajo.'
-                    : 'Solo 30 segundos · Sin tarjeta de crédito'}
-                </p>
+                {!isLogin && (
+                  <p className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
+                    Solo 30 segundos · Sin tarjeta de crédito
+                  </p>
+                )}
               </div>
+
+              {/* Quien llega del anuncio de Instagram cae directo en el formulario
+                  sin haber visto nada de XPEAK. /descubrir se ve sin cuenta y
+                  dentro de Instagram: se le ofrece mirar antes de decidir. */}
+              {isInAppBrowser && !isLogin && (
+                <Link to="/descubrir" onClick={() => track('inapp_ver_antes_click')}
+                  className="mb-5 flex items-center justify-between gap-3 rounded-xl px-4 py-3 text-xs font-bold transition-all hover:scale-[1.01]"
+                  style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.35)', color: '#5c4a12' }}>
+                  <span>¿Quieres ver antes qué hay? Mira perfiles reales sin registrarte.</span>
+                  <span className="shrink-0" style={{ color: '#8B6A00' }}>Ver →</span>
+                </Link>
+              )}
+
+              {/* Crear cuenta en grande y ANTES de los campos: la gente nueva
+                  llegaba al formulario de entrar, escribía email y contraseña
+                  sin tener cuenta y recibía "incorrectos" (7 oct 2026). El
+                  enlace pequeño de abajo no lo veía nadie. */}
+              {isLogin && (
+                <button type="button"
+                  onClick={() => { track('auth_toggle_mode', { to: 'register', from: 'big_cta' }); setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
+                  className="xp-cta-glow w-full mb-6 py-5 px-4 rounded-2xl font-black text-xl sm:text-2xl leading-tight transition-transform hover:scale-[1.02]"
+                  style={{ background: '#111', color: '#fff' }}>
+                  ¿Primera vez en XPEAK?
+                  <span className="block mt-1" style={{ color: '#D4AF37' }}>Crear cuenta →</span>
+                </button>
+              )}
+              {isLogin && (
+                <p className="text-xs font-bold text-center mb-4" style={{ color: 'rgba(0,0,0,0.5)' }}>
+                  ¿Ya tienes cuenta? Entra aquí:
+                </p>
+              )}
 
               {/* Selector de tipo de cuenta — solo al registrarse.
                   Antes no existía: quien llegaba a /auth?mode=register sin más
@@ -786,6 +874,7 @@ const Auth = () => {
                     <input
                       value={displayName}
                       onChange={e => { setDisplayName(e.target.value); if (fieldError === 'name') setFieldError(null); }}
+                      onBlur={() => logAuthFieldTouched('name')}
                       placeholder={roleParam === 'dj' ? 'DJ NombreArtístico'
                         // Un empresario no tiene "nombre profesional": tiene el
                         // de su sala, empresa o el suyo propio. Pedirle lo otro
@@ -812,6 +901,7 @@ const Auth = () => {
                     <select
                       value={city}
                       onChange={e => setCity(e.target.value)}
+                      onBlur={() => logAuthFieldTouched('city')}
                       className="nightlife-input !py-3 !pl-9 text-base w-full"
                       aria-label="Tu ciudad"
                     >
@@ -828,7 +918,8 @@ const Auth = () => {
                   <input
                     type="email"
                     value={email}
-                    onChange={e => { setEmail(e.target.value); if (fieldError === 'email') setFieldError(null); }}
+                    onChange={e => { setEmail(e.target.value); setLoginFailed(false); if (fieldError === 'email') setFieldError(null); }}
+                    onBlur={() => { if (!isLogin) logAuthFieldTouched('email'); }}
                     placeholder="tu@email.com"
                     maxLength={254}
                     autoComplete="email"
@@ -845,6 +936,7 @@ const Auth = () => {
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={e => { setPassword(e.target.value); if (fieldError === 'password') setFieldError(null); }}
+                    onBlur={() => { if (!isLogin) logAuthFieldTouched('password'); }}
                     placeholder="Contraseña"
                     maxLength={128}
                     autoComplete={isLogin ? 'current-password' : 'new-password'}
@@ -886,7 +978,7 @@ const Auth = () => {
                       name="legalAccepted"
                       type="checkbox"
                       checked={legalAccepted}
-                      onChange={(e) => { setLegalAccepted(e.target.checked); if (e.target.checked) setFieldError(null); }}
+                      onChange={(e) => { setLegalAccepted(e.target.checked); if (e.target.checked) { setFieldError(null); logAuthFieldTouched('legal'); } }}
                       className="w-6 h-6 flex-shrink-0 rounded-md accent-[#D4AF37]"
                     />
                     <span className="text-xs leading-relaxed" style={{ color: fieldError === 'legal' ? '#b91c1c' : 'rgba(0,0,0,0.65)' }}>
@@ -923,40 +1015,17 @@ const Auth = () => {
                   </label>
                 )}
 
-                {/* Verificación anti-bot — invisible la mayoría de las veces.
-                    No se monta en isInAppBrowser: ya sabemos que el iframe de
-                    Turnstile no resuelve ahí, así que cargarlo solo añade un
-                    timeout de 8s inútil antes de mostrar el aviso de salida. */}
-                {!isInAppBrowser && (
+                {/* Verificación anti-bot: invisible la mayoría de las veces.
+                    También se monta dentro de Instagram/Facebook; si ahí se
+                    cuelga, onStall muestra el aviso de abrir el navegador. */}
+                {!inAppSignup && (
                   <TurnstileWidget
-                    onVerify={token => { setCaptchaToken(token); setTurnstileStalled(false); }}
+                    key={captchaKey}
+                    onVerify={token => { if (!captchaToken) track('auth_captcha_ok'); setCaptchaToken(token); setTurnstileStalled(false); }}
                     onExpire={() => setCaptchaToken(null)}
-                    onStall={() => setTurnstileStalled(true)}
+                    onStall={() => { track('auth_captcha_atascado', { inapp: isInAppBrowser }); setTurnstileStalled(true); }}
                     onStallCleared={() => setTurnstileStalled(false)}
                   />
-                )}
-
-                {/* El webview de Facebook/Instagram/TikTok rompe Turnstile igual que
-                    rompe Google OAuth (arriba) — sin salida, el usuario se queda
-                    mirando "Verificando seguridad…" para siempre. Este es el caso
-                    real: 63% del tráfico de /auth llega desde facebook.com. Se avisa
-                    de inmediato (sin esperar el timeout de 8s de Turnstile) porque
-                    ya sabemos por user-agent que el captcha va a fallar aquí. */}
-                {isInAppBrowser && (
-                  <div className="rounded-xl px-4 py-3.5 text-xs leading-relaxed"
-                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.3)', color: '#5c4a12' }}>
-                    <p className="font-bold mb-1.5">Este navegador no permite completar el registro.</p>
-                    <p className="mb-2.5">
-                      Estás dentro de la app de Facebook/Instagram, que bloquea la verificación de seguridad.
-                      Toca <strong>⋮ o ···</strong> arriba y elige <strong>"Abrir en Chrome"</strong> o{' '}
-                      <strong>"Abrir en el navegador"</strong>.
-                    </p>
-                    <button type="button" onClick={handleCopyAuthLink}
-                      className="w-full py-2.5 rounded-lg font-bold text-xs transition-all hover:scale-[1.01]"
-                      style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.4)', color: '#8B6A00' }}>
-                      Copiar enlace para pegarlo en el navegador
-                    </button>
-                  </div>
                 )}
 
                 {/* Caso general: navegador normal pero Turnstile bloqueado por red/VPN/
@@ -979,19 +1048,80 @@ const Auth = () => {
                   </div>
                 )}
 
-                {/* CTA principal — oculto en isInAppBrowser: el aviso de arriba ya
-                    ofrece la única salida real (abrir en Chrome/Safari); mostrar
-                    este botón solo lleva a reintentar un captcha que no va a
-                    resolver dentro del webview. */}
-                {!isInAppBrowser && (
+                {/* Gancho de fricción — la duda de último momento antes de enviar.
+                    Solo en registro: en login no hay nada que "decidir". */}
+                {!isLogin && (
+                  <p className="text-center text-xs font-bold" style={{ color: '#8B6A00' }}>
+                    Menos de 1 minuto para crear tu perfil
+                  </p>
+                )}
+
+                {isLogin && loginFailed && (
+                  <div className="rounded-xl p-4 text-sm" role="alert"
+                    style={{ background: 'rgba(212,175,55,0.10)', border: '1px solid rgba(212,175,55,0.45)', color: '#111' }}>
+                    <p className="font-bold mb-1">No hay ninguna cuenta con ese email y contraseña.</p>
+                    <p className="text-xs mb-3" style={{ color: 'rgba(0,0,0,0.65)' }}>
+                      ¿Es tu primera vez en XPEAK? Crea tu cuenta con estos mismos datos.
+                    </p>
+                    <button type="button"
+                      onClick={() => { track('auth_toggle_mode', { to: 'register', from: 'login_failed' }); setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
+                      className="w-full py-2.5 rounded-lg font-black text-sm"
+                      style={{ background: '#111', color: '#fff' }}>
+                      Crear cuenta con este email
+                    </button>
+                    <button type="button"
+                      onClick={() => { setLoginFailed(false); setForgotEmail(email); setShowForgot(true); }}
+                      className="w-full mt-2 text-xs font-bold" style={{ color: '#8B6A00' }}>
+                      Ya tengo cuenta: recuperar contraseña
+                    </button>
+                  </div>
+                )}
+
+                {/* Dentro de Instagram/Facebook se intenta el captcha como en cualquier
+                      navegador (11 oct 2026: en Android casi nunca se había
+                      probado; el aviso fijo anterior impedía registrarse a todos).
+                      Solo si Turnstile no responde en 8 s se ofrece abrir el
+                      navegador, en el sitio del botón de enviar. */}
+                {isInAppBrowser && turnstileStalled && (
+                  <div className="rounded-xl px-4 py-3.5 text-xs leading-relaxed"
+                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.3)', color: '#5c4a12' }}>
+                    <p className="font-bold mb-1.5">Termina en tu navegador: es un toque.</p>
+                    <p className="mb-3">
+                      La verificación de seguridad no carga dentro de Instagram o Facebook.
+                      Pulsa el botón y se abre XPEAK en tu navegador en esta misma página.
+                    </p>
+                    <button type="button" onClick={handleOpenInBrowser}
+                      className="w-full py-3.5 rounded-xl font-black text-sm transition-all hover:scale-[1.01]"
+                      style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
+                      Abrir en el navegador
+                    </button>
+                    <p className="mt-3 text-[0.7rem]" style={{ color: 'rgba(92,74,18,0.8)' }}>
+                      ¿No se abre? Toca <strong>⋮ o ···</strong> arriba y elige <strong>"Abrir en el navegador"</strong>, o{' '}
+                      <button type="button" onClick={handleCopyAuthLink} className="underline font-bold" style={{ color: '#8B6A00' }}>
+                        copia el enlace
+                      </button>.
+                    </p>
+                  </div>
+                )}
+
+                {/* CTA principal: en el webview se oculta solo si Turnstile se
+                    colgó (el aviso de arriba lo sustituye). El campo "website"
+                    es la trampa para bots del alta sin captcha (inAppSignup,
+                    apagado): fuera de pantalla, sin tabulación ni autocompletado. */}
+                {inAppSignup && (
+                  <input type="text" name="website" value={honeypot} onChange={e => setHoneypot(e.target.value)}
+                    tabIndex={-1} autoComplete="off" aria-hidden="true"
+                    style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+                )}
+                {!(isInAppBrowser && turnstileStalled) && (
                   <button
                     type="submit"
-                    disabled={loading || !captchaToken}
+                    disabled={loading || (!captchaToken && !inAppSignup)}
                     className="w-full py-3.5 rounded-xl font-black text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
                     style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
                     {loading
                       ? 'Procesando...'
-                      : !captchaToken
+                      : !captchaToken && !inAppSignup
                         ? 'Verificando seguridad…'
                         : isLogin
                           ? 'Iniciar Sesión'
@@ -1055,7 +1185,7 @@ const Auth = () => {
                   {isLogin ? '¿Nuevo en XPEAK?' : '¿Ya tienes cuenta?'}
                 </span>
                 <button
-                  onClick={() => { track('auth_toggle_mode', { to: isLogin ? 'register' : 'login' }); setIsLogin(!isLogin); setShowForgot(false); setForgotSent(false); }}
+                  onClick={() => { track('auth_toggle_mode', { to: isLogin ? 'register' : 'login' }); setIsLogin(!isLogin); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
                   className="text-xs font-bold transition-opacity hover:opacity-80"
                   style={{ color: '#8B6A00' }}>
                   {isLogin ? 'Crear cuenta →' : 'Inicia sesión →'}

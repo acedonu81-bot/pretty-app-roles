@@ -14,6 +14,14 @@ declare global {
 
 export function track(eventName: string, props?: Record<string, string | number | boolean>) {
   window.dataLayer?.push({ event: eventName, ...props });
+  // Los pasos de /auth (auth_view, auth_submit, auth_error, auth_captcha_*…)
+  // también van a la analítica propia: GA4 no recibe eventos custom (falta la
+  // etiqueta en GTM) y además solo cuenta a quien acepta cookies, así que el
+  // embudo de registro de la campaña de Instagram era invisible (11 oct 2026).
+  if (eventName.startsWith('auth_')) {
+    const extra = props ? Object.entries(props).map(([k, v]) => `${k}=${v}`).join(' ') : '';
+    void logEvent('auth_paso', '/auth', `${eventName.slice(5)} ${extra}`.trim().slice(0, 120));
+  }
 }
 
 /**
@@ -212,7 +220,11 @@ export async function logEvent(
  * que agrupan por path exacto.
  */
 export function logPageView(path: string = location.pathname, search: string = location.search) {
-  const detalle = path === '/auth' && search ? search.replace(/^\?/, '') : undefined;
+  // En el directorio se guarda el género con el que se entra desde los chips
+  // de /contratar-dj: es la única forma de saber qué estilos se buscan, porque
+  // log_analytics_event solo admite una lista cerrada de event_name.
+  const genero = path.startsWith('/directorio/') ? new URLSearchParams(search).get('genero') : null;
+  const detalle = path === '/auth' && search ? search.replace(/^\?/, '') : genero ? `genero=${genero}` : undefined;
   void logEvent('page_view', path, detalle);
 }
 
@@ -268,7 +280,54 @@ export function logLogin() {
   track('login');
 }
 
+/** Ventana de consejo del panel (ConsejosPanel): cuántas se ven y cuántas llevan al apartado. */
+export function logConsejo(accion: 'visto' | 'ir' | 'cerrar', id: string) {
+  void logEvent('cta_click', location.pathname, `consejo_${accion}:${id}`);
+}
+
 /** Filtro de rol usado en el directorio: qué categorías se buscan más. */
 export function logFiltroRol(rol: string) {
   void logEvent('filtro_rol', location.pathname, rol.slice(0, 60));
+}
+/**
+ * Último campo del formulario de /auth con el que interactuó alguien que
+ * nunca llegó a enviar. El único rastro que había de un registro abandonado
+ * era "page_view" seguido de silencio — sin saber si se fue nada más entrar,
+ * a mitad del email, o ya con el formulario lleno pero sin pulsar el botón.
+ * Se llama en el blur de cada campo; Auth.tsx para de llamarlo en cuanto el
+ * submit sale adelante, así que el último valor guardado es justo donde se
+ * quedó quien abandonó.
+ */
+export function logAuthFieldTouched(campo: string) {
+  void logEvent('auth_field_touched', '/auth', campo);
+}
+
+/**
+ * Instalación de la PWA completada (evento nativo `appinstalled` del
+ * navegador). Solo Chrome/Edge lo disparan — Safari (iOS) nunca, ni siquiera
+ * tras "Añadir a pantalla de inicio" manual, así que esto no cuenta
+ * instalaciones en iOS.
+ */
+export function logPwaInstalled() {
+  void logEvent('pwa_installed', location.pathname);
+  track('pwa_installed');
+}
+
+/**
+ * Sesión abierta ya en modo app instalada (display-mode: standalone / iOS
+ * navigator.standalone). Complementa a logPwaInstalled: ese solo captura el
+ * MOMENTO de instalar (y nunca en iOS), así que no sirve para medir cuánta
+ * gente YA tenía la PWA puesta antes de que ese evento existiera. Una vez por
+ * sesión (sessionStorage), no en cada cambio de ruta.
+ */
+const PWA_SESSION_KEY = 'xpeak_pwa_session_logged';
+export function logPwaSessionIfStandalone() {
+  try {
+    if (sessionStorage.getItem(PWA_SESSION_KEY)) return;
+    const standalone = ('standalone' in navigator && (navigator as any).standalone)
+      || window.matchMedia('(display-mode: standalone)').matches;
+    if (!standalone) return;
+    sessionStorage.setItem(PWA_SESSION_KEY, '1');
+    void logEvent('pwa_session', location.pathname);
+  } catch { /* storage bloqueado: sin efecto, no es crítico */ }
 }
