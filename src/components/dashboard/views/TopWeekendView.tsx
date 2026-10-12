@@ -4,6 +4,7 @@ import { Crown } from 'lucide-react';
 import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import { supabase } from '@/integrations/supabase/client';
+import { PHOTO_GATE_OR } from '@/lib/constants';
 
 async function fetchTopWeekendProfiles(): Promise<Profile[]> {
   const { data } = await supabase
@@ -11,7 +12,7 @@ async function fetchTopWeekendProfiles(): Promise<Profile[]> {
     .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url, role, audio_embed_url, audio_session_urls, portfolio_urls')
     .neq('role', 'empresario')
     .not('display_name', 'is', null)
-    .not('photo_url', 'is', null)
+    .or(PHOTO_GATE_OR)
     .limit(200);
 
   if (!data) return [];

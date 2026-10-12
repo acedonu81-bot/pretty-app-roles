@@ -27,6 +27,7 @@ export const ROLE_ES: Record<string, string> = {
   alquiler:      'Alquiler de Equipos',
   local_eventos: 'Locales para eventos',
   'grupo-musical': 'Grupo Musical',
+  'disco-movil': 'Disco Móvil',
   mago:          'Mago & Ilusionista',
   humorista:     'Humorista & Cómico',
   monologo:      'Monólogo & Stand-Up',
@@ -89,6 +90,7 @@ export const JOB_WORD: Record<string, string> = {
   alquiler: 'alquiler',
   local_eventos: 'reserva',
   'grupo-musical': 'bolo',
+  'disco-movil': 'evento',
   humorista: 'actuación',
   animador: 'evento',
   payaso: 'actuación',
@@ -115,6 +117,7 @@ export const ROL_UI_A_SLUG: Record<string, string> = {
   'Camarero / Staff': 'staff',
   'Maquilladora': 'makeup',
   'Grupo musical': 'grupo-musical',
+  'Disco móvil': 'disco-movil',
   'Animador': 'animador',
   'Promotor / RRPP': 'promotor',
   'Photo Booth': 'photo-booth',
@@ -190,6 +193,7 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     // "sumiller" o "coctelería de autor" compite por perfil. Ordenadas de lo
     // general a lo especialista, que es como las busca quien contrata.
     camarero:   { label: 'Especialidades', tags: ['Camarero/a de sala','Barra','Coctelería','Bartender','Coctelería de autor','Flair','Sumiller','Vinos','Barista','Café de especialidad','Servicio de bodas','Banquetes','Protocolo y servicio de gala','Emplatado','Show cooking','Catering','Bottle service','Terraza','Barra libre','Ayudante de cocina','Office','Carnet de manipulador','Idiomas: EN/FR'] },
+    'disco-movil': { label: 'Equipo y servicio', tags: ['Sonido profesional','Iluminación','Luces LED y robóticas','Máquina de humo','Pantalla / visuales','Microfonía','DJ incluido','Animación','Karaoke','Bodas','Comuniones','Fiestas de pueblo','Verbenas','Cumpleaños','Fiestas privadas','Eventos corporativos'] },
     'photo-booth': { label: 'Servicios', tags: ['Photocall','Cabina de fotos','Espejo mágico','360 booth','Impresión al momento','Atrezzo','GIFs','Libro de firmas','Bodas','Eventos corporativos'] },
     'food-truck': { label: 'Cocina y servicio', tags: ['Hamburguesas gourmet','Pizza','Tacos / mexicano','Barbacoa / brasa','Bocadillos y sándwiches','Cocina argentina','Cocina asiática','Vegano / vegetariano','Sin gluten','Postres y crepes','Helados','Café / coffee truck','Barra móvil y cócteles','Cerveza artesana','Bodas','Eventos corporativos','Festivales','Fiestas privadas'] },
     // staff recoge perfiles muy distintos (azafatas, RRPP y camareros), así que
@@ -211,3 +215,13 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     tecnico:   { label: 'Especialidades',         tags: ['Técnico de sonido','Sonido en directo','Mesa de mezclas','Monitores','Microfonía','P.A. / Line array','Backline','Pruebas de sonido','Técnico de iluminación','Diseño de iluminación','Luces de espectáculo','Máquinas de humo','Montaje de escenario','Desmontaje','Estructuras / truss','Rigging','Carga y descarga','Alquiler de equipo','Técnico de vídeo','Pantallas LED','Proyección','Streaming en directo','Bodas','Festivales','Salas y clubs','Eventos corporativos'] },
     local_eventos: { label: 'Tipo de espacio', tags: ['Discoteca', 'Sala de fiestas', 'Bar de eventos', 'Rooftop / terraza', 'Finca', 'Casa rural', 'Salón de bodas', 'Espacio diáfano', 'Permite pernoctar', 'Zona chill-out', 'Barra libre incluida', 'Catering propio', 'DJ booth', 'Parking privado', 'Acceso adaptado'] },
   }
+
+// Excepciones a "sin foto no se publica" (16 sep 2026), decididas a mano.
+// Se listan por user_id. Copia en scripts/*.mjs (no importan TS de src/).
+export const PHOTO_GATE_EXCEPTIONS: string[] = [
+  '62eee3ec-6b73-4332-b062-567e1d207a00', // Jovenesflamencos, local Córdoba (7 oct 2026)
+];
+export const passesPhotoGate = (p: { photo_url?: string | null; user_id?: string | null }): boolean =>
+  !!p.photo_url || (!!p.user_id && PHOTO_GATE_EXCEPTIONS.includes(p.user_id));
+// Mismo filtro para queries de Supabase en lugar de .not('photo_url', 'is', null).
+export const PHOTO_GATE_OR = `photo_url.not.is.null,user_id.in.(${PHOTO_GATE_EXCEPTIONS.join(',')})`;

@@ -590,6 +590,7 @@ const ROUTES = [
   { path: '/blog/dj-para-comunion-precio',        title: 'DJ para comunión: precio y qué incluye 2026 | XPEAK', desc: 'Cuánto cuesta un DJ para una comunión en España. Precios por horas, disco móvil vs DJ y qué música se pone para niños y adultos.', ogTitle: 'DJ para comunión: precio 2026 | XPEAK Blog', ogDesc: 'Precios de DJ para comuniones en España. Disco móvil vs DJ y música por momentos.', ogType: 'article' },
   { path: '/blog/fotografo-para-comunion-precio', title: 'Fotógrafo para comunión: precio y guía 2026 | XPEAK', desc: 'Cuánto cuesta un fotógrafo para una comunión en España. Precios por paquetes, qué incluye el reportaje y cuándo reservar.', ogTitle: 'Fotógrafo comunión: precio y guía 2026 | XPEAK Blog', ogDesc: 'Precios de fotógrafos para comuniones en España. Paquetes, qué incluye y cuándo reservar.', ogType: 'article' },
   { path: '/blog/contrato-dj-que-debe-incluir',   title: 'Contrato DJ: qué debe incluir 2026 | XPEAK', desc: 'Qué cláusulas debe tener un contrato de DJ para eventos. Checklist legal completo, errores frecuentes y cómo protegerte antes de firmar.', ogTitle: 'Contrato DJ: cláusulas y checklist 2026 | XPEAK Blog', ogDesc: 'Checklist legal para contratos de DJ. Cláusulas obligatorias y errores que cuestan dinero.', ogType: 'article' },
+  { path: '/blog/codigo-buenas-practicas-dj',   title: 'Código de buenas prácticas del DJ profesional 2026 | XPEAK', desc: 'Las normas de conducta que todo DJ de eventos debería seguir: uso legal de música, fiscalidad, puntualidad y trato al cliente. Basado en el decálogo de AEDYP y estándares internacionales.', ogTitle: 'Código de buenas prácticas del DJ profesional | XPEAK Blog', ogDesc: 'Normas de conducta profesional para DJs de eventos, basadas en fuentes reales del sector.', ogType: 'article' },
 
   // Hub pages
   { path: '/blog/dj-para-eventos',       title: 'DJ para eventos España: guía completa 2026 | XPEAK', desc: 'Todo sobre contratar DJ para bodas, cumpleaños, fiestas privadas y eventos corporativos en España. Precios reales y tipos de DJ.', ogTitle: 'DJ para eventos España: guía completa 2026 | XPEAK', ogDesc: 'Precios, tipos de DJ y cómo contratar para cualquier evento en España.', ogType: 'article' },
@@ -840,6 +841,14 @@ const ROUTES = [
     desc: 'Directorio de food trucks para bodas, festivales y eventos de empresa en España. Hamburguesas, tacos, pizza y más. Contacto directo y precios reales.',
     ogTitle: 'Directorio de food trucks | XPEAK',
     ogDesc: 'Food trucks para bodas, festivales, eventos de empresa y fiestas privadas.',
+    ogType: 'website',
+  },
+  {
+    path: '/directorio/disco-movil',
+    title: 'Contratar disco móvil para bodas y fiestas en España | XPEAK',
+    desc: 'Directorio de disco móvil para bodas, comuniones y fiestas de pueblo en España. Sonido, luces y DJ, precios reales y contacto directo.',
+    ogTitle: 'Directorio de disco móvil | XPEAK',
+    ogDesc: 'Sonido, luces y DJ montado en tu boda, comunión o fiesta.',
     ogType: 'website',
   },
   {
@@ -1448,7 +1457,7 @@ const ROLE_LABELS = {
   bailarin: 'Bailarín/a', humorista: 'Humorista', monologo: 'Monologuista',
   animador: 'Animador/a', speaker: 'Speaker', vestuario: 'Estilista', ambassador: 'Brand ambassador',
   'grupo-musical': 'Grupo musical', event_manager: 'Coordinador/a de eventos',
-  'photo-booth': 'Photo booth', 'food-truck': 'Food truck', peluqueria: 'Peluquería', local_eventos: 'Local para eventos',
+  'photo-booth': 'Photo booth', 'food-truck': 'Food truck', 'disco-movil': 'Disco móvil', peluqueria: 'Peluquería', local_eventos: 'Local para eventos',
   tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos',
 };
 
@@ -1459,7 +1468,7 @@ const ROLE_TO_CATEGORY_SLUG = {
   media: 'fotografo', promotor: 'promotores', catering: 'catering',
   mago: 'mago', bailarin: 'bailarin', humorista: 'humorista',
   monologo: 'monologo', animador: 'animador', speaker: 'speaker', vestuario: 'vestuario',
-  'grupo-musical': 'grupo-musical', 'photo-booth': 'photo-booth', 'food-truck': 'food-truck', peluqueria: 'peluqueria',
+  'grupo-musical': 'grupo-musical', 'photo-booth': 'photo-booth', 'food-truck': 'food-truck', 'disco-movil': 'disco-movil', peluqueria: 'peluqueria',
   local_eventos: 'locales-eventos', tecnico: 'tecnico-sonido', alquiler: 'alquiler-equipos',
 };
 
@@ -1577,6 +1586,11 @@ try {
           ogDesc: desc.slice(0, 200),
           ogType: 'profile',
           jsonLd: personSchema,
+          // LCP de la ficha. La misma URL que pide después el componente
+          // React real (fotoOptimizada, 1200px) — así el navegador empieza
+          // a descargarla al parsear el <head>, sin esperar a que cargue el
+          // JS ni a que React monte y pida la imagen por su cuenta.
+          preloadImg: p.photo_url ? fotoOptimizadaMeta(p.photo_url, 1200) : null,
           bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#111">` +
             `<h1>${escHtml(p.display_name)}</h1>` +
             `<p><strong>${escHtml(roleLabel)}${escHtml(where)}</strong>${p.specialty ? ` · ${escHtml(p.specialty)}` : ''}${p.is_verified ? ' · Perfil verificado' : ''}${antiguedad ? ` · ${escHtml(antiguedad)}` : ''}</p>` +
@@ -1720,6 +1734,17 @@ for (const route of ROUTES) {
   // recurso y no deben competir por su ancho de banda.
   if (route.path === '/') {
     html = html.replace('</head>', `  <link rel="preload" href="/videos/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />\n  </head>`);
+  }
+  // Mismo motivo que el preload de arriba, para la foto de fichas de
+  // perfil (LCP de /p/:slug): descubrible al parsear el <head>, antes de
+  // que cargue el JS y de que React monte para pedirla por su cuenta.
+  // p.photo_url viene de la base de datos (campo editable por el propio
+  // profesional) — se escapa para el contexto de atributo y se restringe a
+  // https:// antes de inyectarlo; función reemplazadora para que un '$' en
+  // la URL no se interprete como patrón de reemplazo de String.replace.
+  if (route.preloadImg && /^https:\/\//i.test(route.preloadImg)) {
+    const href = escHtml(route.preloadImg);
+    html = html.replace('</head>', () => `  <link rel="preload" href="${href}" as="image" fetchpriority="high" />\n  </head>`);
   }
   if (route.bodyHtml) {
     html = html.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<script|\n\s*<script|<\/body>|\n\s*<\/body>)/, `<div id="root">${route.bodyHtml}</div>\n  `);

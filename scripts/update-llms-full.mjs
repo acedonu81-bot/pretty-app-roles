@@ -13,6 +13,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasInventory, extractObjectLiteral } from './city-inventory.mjs';
 
+// Copia de PHOTO_GATE_EXCEPTIONS (src/lib/constants.ts): perfiles sin foto que se publican igual.
+const PHOTO_GATE_EXCEPTIONS = ['62eee3ec-6b73-4332-b062-567e1d207a00'];
+const passesPhotoGate = p => !!p.photo_url || PHOTO_GATE_EXCEPTIONS.includes(p.user_id);
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'public', 'llms-full.txt');
@@ -53,7 +57,7 @@ const ROLE_TO_CATEGORY = {
   vestuario: 'vestuario', bailarin: 'bailarin', 'grupo-musical': 'grupo-musical',
   humorista: 'humorista', mago: 'mago', animador: 'animador', payaso: 'payaso',
   speaker: 'speaker', 'photo-booth': 'photo-booth', tecnico: 'tecnico-sonido', alquiler: 'alquiler-equipos',
-  catering: 'catering', 'food-truck': 'food-truck',
+  catering: 'catering', 'food-truck': 'food-truck', 'disco-movil': 'disco-movil',
 };
 
 async function fetchProfiles(supabaseUrl, anonKey) {
@@ -80,7 +84,7 @@ async function main() {
   }
   // Sin foto no se publica, retroactivo desde el 16 sep 2026 (mismo
   // criterio que update-sitemap.mjs) — no es indexable en ningún sitio.
-  const visibleProfiles = profiles.filter(p => !!p.photo_url);
+  const visibleProfiles = profiles.filter(p => passesPhotoGate(p));
 
   const CITIES = extractObjectLiteral(path.join(ROOT, 'src', 'pages', 'CityLanding.tsx'), 'CITIES');
   const cityUniverse = new Map();

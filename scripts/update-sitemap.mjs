@@ -9,6 +9,10 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { hasInventory, contentDate, extractObjectLiteral } from './city-inventory.mjs';
 
+// Copia de PHOTO_GATE_EXCEPTIONS (src/lib/constants.ts): perfiles sin foto que se publican igual.
+const PHOTO_GATE_EXCEPTIONS = ['62eee3ec-6b73-4332-b062-567e1d207a00'];
+const passesPhotoGate = p => !!p.photo_url || PHOTO_GATE_EXCEPTIONS.includes(p.user_id);
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'public', 'sitemap.xml');
@@ -77,7 +81,7 @@ async function fetchProfiles(supabaseUrl, anonKey) {
   }
   if (!res.ok) abortarPorSupabase('profiles', `HTTP ${res.status}`);
   const rows = await res.json();
-  const visibles = rows.filter(p => !!p.photo_url);
+  const visibles = rows.filter(p => passesPhotoGate(p));
   // Responder 200 con una lista vacía también es anómalo: hay 40+ perfiles
   // reales publicados. Si algún día no quedara ninguno de verdad, este guard
   // salta y se quita a mano, que es justo la revisión que uno querría.
@@ -185,7 +189,7 @@ function staticUrls(today, indexableCities, cityContentDates) {
 
   // Directorio público — páginas core de producto
   lines.push('\n  <!-- Directorio público -->');
-  const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','food-truck','wedding-planner','diseno-grafico','tecnico-sonido','alquiler-equipos','djs-emergentes','locales-eventos'];
+  const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','food-truck','disco-movil','wedding-planner','diseno-grafico','tecnico-sonido','alquiler-equipos','djs-emergentes','locales-eventos'];
   for (const s of dirSlugs) {
     lines.push(url(`https://xpeak.es/directorio/${s}`, directorioDate, 'daily', '0.9'));
   }

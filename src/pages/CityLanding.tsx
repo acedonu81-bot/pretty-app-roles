@@ -1,15 +1,17 @@
 import { useParams, useLocation, Link, Navigate } from 'react-router-dom';
+import { useDirectorioConInventario } from '@/hooks/useDirectorioConInventario';
 import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, MapPin, CheckCircle } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toSlug } from '@/data/profiles';
+import { passesPhotoGate } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
 // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
 // DirectorioPublico.tsx para el motivo).
 const gateNoPhoto = <T extends { photo_url: string | null }>(rows: T[]): T[] =>
-  rows.filter(p => !!p.photo_url);
+  rows.filter(p => passesPhotoGate(p));
 
 // Fecha de última modificación (congelada al renderizar; en prerender = build).
 // Señal de frescura para motores generativos, que penalizan contenido stale.
@@ -20,7 +22,7 @@ interface Prof { id: string; display_name: string; photo_url: string | null; bio
 const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
   catering: ['catering'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
-  'disco-movil': ['dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
+  'disco-movil': ['disco-movil', 'dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
   // Categorías que antes caían al fallback ['dj'] y por eso nunca encontraban
   // a nadie, pese a existir esos roles en la BD (bailarin, grupo-musical…).
   bailarin: ['bailarin'], 'grupo-musical': ['grupo-musical'],
@@ -729,6 +731,8 @@ function precioPara(categorySlug: string, city: { precioMin: string; precioMax: 
 export default function CityLanding() {
   const { ciudad } = useParams<{ ciudad: string }>();
   const { pathname } = useLocation();
+  // Antes del return temprano: un hook nunca puede quedar detrás de él.
+  const dirSlug = useDirectorioConInventario(pathname.split('/')[1]?.replace('contratar-', '') ?? 'dj');
 
   const cityData = ciudad ? CITIES[ciudad.toLowerCase()] : null;
   if (!cityData) {
@@ -749,6 +753,7 @@ export default function CityLanding() {
   const precio = precioPara(categorySlug, cityData);
   const canonicalBase = `/contratar-${categorySlug}/${cityData.slug}`;
   const { profs: professionals, suggestions: profSuggestions, loaded: profsLoaded } = useCityProfessionals(cityData.ciudad, categorySlug);
+  const dirKeyword = dirSlug === categorySlug ? catData.keyword : (CATEGORIES[dirSlug]?.keyword ?? catData.keyword);
   // El equipo se alquila, no se contrata: "Contratar Alquiler de Equipos" no
   // se dice. Esa categoría usa su label como título y "alquilar" como verbo.
   const esAlquiler = categorySlug === 'alquiler-equipos';
@@ -829,7 +834,7 @@ export default function CityLanding() {
           <div className="flex items-center gap-3 sm:gap-4">
             <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Blog</a>
             <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Precios</a>
-            <a href="/auth"
+            <a href="/auth?mode=register"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Unirse
@@ -849,12 +854,12 @@ export default function CityLanding() {
             {catData.intro(cityData.ciudad, cityData.venues)}
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href="/auth"
+            <a href="/auth?mode=register&role=empresario"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Publicar oferta
             </a>
-            <a href={`/directorio/${categorySlug}`}
+            <a href={`/directorio/${dirSlug}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: '#FFFFFF', border: '1.5px solid #2563EB', color: '#2563EB' }}>
               Ver directorio <ArrowRight size={14} />
@@ -959,8 +964,8 @@ export default function CityLanding() {
               </>
             )}
             <div style={{ textAlign: 'center', marginTop: 24 }}>
-              <a href={`/directorio/${categorySlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 24px', borderRadius: 12, fontWeight: 700, fontSize: 13, background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#111', textDecoration: 'none' }}>
-                Ver todos los {catData.keyword} <ArrowRight size={13} />
+              <a href={`/directorio/${dirSlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 24px', borderRadius: 12, fontWeight: 700, fontSize: 13, background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#111', textDecoration: 'none' }}>
+                Ver todos los {dirKeyword} <ArrowRight size={13} />
               </a>
             </div>
           </section>
@@ -1019,7 +1024,7 @@ export default function CityLanding() {
                 ? 'Únete: contratos automáticos, Flash Booking para necesidades urgentes.'
                 : 'Únete: contratos automáticos, Flash Booking en menos de 1h.'}
             </p>
-            <a href="/auth"
+            <a href="/auth?mode=register&role=empresario"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Empezar en {cityData.ciudad}

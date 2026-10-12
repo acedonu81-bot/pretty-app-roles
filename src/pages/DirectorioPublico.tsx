@@ -3,7 +3,7 @@ import { ALL_CITIES } from '@/lib/regions';
 import { useParams, Navigate, useSearchParams, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users } from 'lucide-react';
+import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
@@ -15,7 +15,7 @@ import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
-import { expandRole, canonicalRole } from '@/lib/constants';
+import { expandRole, canonicalRole, passesPhotoGate, DJ_GENRES } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
 import FollowButton from '@/components/FollowButton';
 
@@ -136,6 +136,14 @@ export const ROLE_CONFIG: Record<string, {
     seoTitle: 'Contratar grupo musical para boda y eventos en España | XPEAK',
     seoDesc: 'Directorio de grupos musicales para bodas y eventos en España. Jazz, clásica, pop, flamenco. Precios reales y contacto directo.',
     cta: 'Contratar grupo musical',
+  },
+  'disco-movil': {
+    dbRole: 'disco-movil',
+    title: 'Disco móvil para bodas, comuniones y fiestas',
+    subtitle: 'Sonido, luces y DJ montado en tu evento: bodas en finca, comuniones, verbenas, fiestas de pueblo y cumpleaños.',
+    seoTitle: 'Contratar disco móvil para bodas y fiestas en España | XPEAK',
+    seoDesc: 'Directorio de disco móvil para bodas, comuniones y fiestas de pueblo en España. Sonido, luces y DJ, precios reales y contacto directo.',
+    cta: 'Pedir presupuesto',
   },
   animador: {
     dbRole: 'animador',
@@ -274,6 +282,7 @@ export const ALL_ROLES = [
   { slug: 'catering', label: 'Catering' },
   { slug: 'food-truck', label: 'Food Trucks' },
   { slug: 'grupo-musical', label: 'Grupos' },
+  { slug: 'disco-movil', label: 'Disco Móvil' },
   { slug: 'animador', label: 'Animadores Infantiles' },
   { slug: 'mago', label: 'Magos & Ilusionismo' },
   { slug: 'humorista', label: 'Humoristas & Monólogos' },
@@ -307,13 +316,14 @@ export function cityFromParam(raw: string | null): string {
 // Sugerencias de categorías relacionadas cuando una queda sin resultados —
 // agrupadas por tipo de necesidad, no alfabético, para que la sugerencia tenga sentido real.
 const RELATED_ROLES: Record<string, string[]> = {
-  dj: ['grupo-musical', 'tecnico-sonido', 'alquiler-equipos'],
+  dj: ['disco-movil', 'grupo-musical', 'tecnico-sonido', 'alquiler-equipos'],
   mago: ['animador', 'humorista', 'bailarin'],
   animador: ['mago', 'humorista', 'bailarin'],
   humorista: ['mago', 'speaker', 'animador'],
   speaker: ['humorista', 'wedding-planner'],
   bailarin: ['animador', 'grupo-musical', 'dj'],
-  'grupo-musical': ['dj', 'bailarin'],
+  'grupo-musical': ['dj', 'disco-movil', 'bailarin'],
+  'disco-movil': ['dj', 'grupo-musical', 'alquiler-equipos'],
   fotografo: ['photo-booth', 'diseno-grafico'],
   'photo-booth': ['fotografo', 'diseno-grafico'],
   'diseno-grafico': ['photo-booth', 'fotografo'],
@@ -374,7 +384,16 @@ export async function fetchRatings(userIds: string[]): Promise<Record<string, { 
   return out;
 }
 
-export async function fetchDirectorioProfiles(dbRole: string, city: string, experienceLevel?: 'only' | 'exclude'): Promise<DirProfile[]> {
+const sinTildes = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
+// La landing enlaza "Reggaeton" y el perfil guarda "Reggaetón": el filtro
+// pide a la BD todas las grafías del catálogo que coinciden sin tildes.
+function variantesGenero(genero: string): string[] {
+  const clave = sinTildes(genero);
+  return Array.from(new Set([genero, ...DJ_GENRES.filter(g => sinTildes(g) === clave)]));
+}
+
+export async function fetchDirectorioProfiles(dbRole: string, city: string, experienceLevel?: 'only' | 'exclude', genero?: string | null): Promise<DirProfile[]> {
   // Alias de rol (staff/camarero, makeup/peluqueria) desde el canon compartido
   // en lib/constants — antes estaba duplicado aquí, en el prerender y en el
   // panel de empresario, y las tres copias podían divergir.
@@ -407,6 +426,8 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   // en la busqueda de su ciudad grande sin falsear su ficha.
   if (city !== 'Todas') q = q.or(`zone.ilike.%${city}%,city_ref.eq.${city}`);
 
+  if (genero) q = q.overlaps('genres', variantesGenero(genero));
+
   // El toggle "Perfil público en el directorio" (Ajustes) debe tener efecto
   // real aquí. Se aplica como filtro de consulta y no en la RLS: 20260822d
   // quitó a propósito el gate de completitud de la policy porque ocultaba
@@ -421,7 +442,7 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   // todos los perfiles incompletos existentes (2-15 sep 2026) y se cerró el
   // plazo. Antes esto solo aplicaba a altas nuevas y dejaba visibles
   // indefinidamente a los perfiles previos sin foto.
-  const noPhotoGated = (data ?? []).filter((p: any) => !!p.photo_url || p.role === 'empresario');
+  const noPhotoGated = (data ?? []).filter((p: any) => passesPhotoGate(p) || p.role === 'empresario');
 
   const filtered = noPhotoGated;
 
@@ -493,7 +514,7 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
 
   // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver el otro
   // uso de este filtro más arriba en este archivo para el motivo).
-  const noPhotoGated = (data ?? []).filter((p: any) => !!p.photo_url || p.role === 'empresario');
+  const noPhotoGated = (data ?? []).filter((p: any) => passesPhotoGate(p) || p.role === 'empresario');
 
   const filtered = noPhotoGated
     .filter((p: any) => p.display_name?.trim().length > 1);
@@ -559,6 +580,14 @@ function DirectorioPublicoContenido() {
   // (resolverVistaDeBusqueda devolvió null) y aterrizó aquí por el fallback
   // a DJ: antes no se avisaba de nada y parecía que "todo lleva a DJs".
   const unmatchedQuery = searchParams.get('q');
+  // Género de DJ: llega desde los chips de /contratar-dj. Solo aplica a
+  // directorios de DJs; en otras categorías nadie tiene `genres`.
+  const genero = config.dbRole === 'dj' ? (searchParams.get('genero')?.trim().slice(0, 60) || null) : null;
+  const quitarGenero = () => {
+    const next = new URLSearchParams(searchParams);
+    next.delete('genero');
+    setSearchParams(next, { replace: true });
+  };
   // La ciudad vive en la URL, no en useState: así el enlace es compartible,
   // el botón atrás funciona y el HTML servido a Google corresponde al filtro.
   const setCity = (c: string) => {
@@ -593,8 +622,8 @@ function DirectorioPublicoContenido() {
     : undefined;
 
   const { data: baseProfiles = [], isLoading: loading, isError: fetchError, refetch } = useQuery({
-    queryKey: ['directorio-publico', config.dbRole, city, config.experienceLevel],
-    queryFn: () => fetchDirectorioProfiles(config.dbRole, city, config.experienceLevel),
+    queryKey: ['directorio-publico', config.dbRole, city, config.experienceLevel, genero],
+    queryFn: () => fetchDirectorioProfiles(config.dbRole, city, config.experienceLevel, genero),
     staleTime: 60_000,
     gcTime: 10 * 60_000,
     // Los datos del prerender son de build time, así que solo sirven para la
@@ -606,7 +635,7 @@ function DirectorioPublicoContenido() {
     // revalidan en segundo plano — el usuario ve el listado de inmediato y, si
     // alguien se dio de alta después del último build, aparece al refrescarse
     // sin que la primera pintura tenga que esperar a la red.
-    ...(prerendered?.length && city === 'Todas'
+    ...(prerendered?.length && city === 'Todas' && !genero
       ? { initialData: prerendered, initialDataUpdatedAt: 0 }
       : {}),
   });
@@ -696,7 +725,7 @@ function DirectorioPublicoContenido() {
             <a href="/" className="text-xs font-semibold hidden sm:flex items-center gap-1 transition-all hover:opacity-70" style={{ color: '#444' }}>← Inicio</a>
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#444' }}>Blog</a>
             <a href="/auth?role=profesional" className="text-xs font-bold hidden sm:block" style={{ color: '#444' }}>Soy profesional</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
+            <a href="/auth?mode=register&role=empresario" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Contratar ahora</a>
           </div>
         </nav>
@@ -770,6 +799,22 @@ function DirectorioPublicoContenido() {
             </div>
           </div>
 
+          {genero && (
+            <div className="-mt-4 mb-8 flex flex-wrap items-center gap-2">
+              <span className="text-xs font-bold" style={{ color: '#333' }}>Estilo:</span>
+              <button onClick={quitarGenero} aria-label={`Quitar el filtro ${genero}`}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all hover:opacity-80"
+                style={{ background: 'rgba(212,175,55,0.12)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.45)' }}>
+                {genero} <X size={12} />
+              </button>
+              {!loading && !fetchError && profiles.length > 0 && (
+                <span className="text-xs" style={{ color: '#4b5563' }}>
+                  {profiles.length} {profiles.length === 1 ? 'DJ' : 'DJs'}
+                </span>
+              )}
+            </div>
+          )}
+
           {/* Grid de perfiles */}
           {fetchError && (
             <div className="p-12 rounded-2xl text-center" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
@@ -804,7 +849,24 @@ function DirectorioPublicoContenido() {
             </div>
           )}
 
-          {!fetchError && !loading && profiles.length === 0 && city !== 'Todas' && (
+          {!fetchError && !loading && profiles.length === 0 && genero && (
+            <div className="p-12 rounded-2xl text-center" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
+              <p className="text-sm font-bold mb-2">Aún no hay DJs de {genero}{city !== 'Todas' ? ` en ${city}` : ''}</p>
+              <p className="text-xs mb-4" style={{ color: '#444' }}>Muchos DJs pinchan varios estilos. Míralos todos y pregúntales.</p>
+              <div className="flex flex-col sm:flex-row justify-center gap-2">
+                <button onClick={quitarGenero} className="px-4 py-2 rounded-xl text-xs font-bold"
+                  style={{ background: 'rgba(212,175,55,0.1)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.35)' }}>
+                  Ver todos los DJs
+                </button>
+                <a href="/auth?mode=register&role=dj" className="px-4 py-2 rounded-xl text-xs font-bold"
+                  style={{ background: '#ffffff', color: '#333', border: '1px solid rgba(0,0,0,0.12)' }}>
+                  ¿Pinchas {genero}? Publica tu perfil
+                </a>
+              </div>
+            </div>
+          )}
+
+          {!fetchError && !loading && profiles.length === 0 && !genero && city !== 'Todas' && (
             <div className="p-12 rounded-2xl text-center" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
               <p className="text-sm font-bold mb-2">Todavía no hay nadie en {city}</p>
               <p className="text-xs mb-4" style={{ color: '#444' }}>Pero muchos se desplazan. Míralos en el directorio completo.</p>
@@ -815,7 +877,7 @@ function DirectorioPublicoContenido() {
             </div>
           )}
 
-          {!fetchError && !loading && profiles.length === 0 && city === 'Todas' && (
+          {!fetchError && !loading && profiles.length === 0 && !genero && city === 'Todas' && (
             <div className="p-12 rounded-2xl text-center" style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.3)' }}>
               <p className="text-sm font-black mb-2" style={{ color: '#111' }}>Categoría recién abierta</p>
               <p className="text-xs mb-5 max-w-sm mx-auto" style={{ color: '#444' }}>
@@ -1050,6 +1112,7 @@ function DirectorioPublicoContenido() {
                           else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
                         }}
                         title={cartItems.some(i => i.userId === p.user_id) ? 'Ya está en tu evento' : 'Añadir a "Mi evento"'}
+                        aria-label={cartItems.some(i => i.userId === p.user_id) ? `${p.display_name}: ya está en tu evento` : `Añadir ${p.display_name} a "Mi evento"`}
                         className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2.5 rounded-xl transition-all hover:scale-105 disabled:hover:scale-100 disabled:opacity-40"
                         style={cartItems.some(i => i.userId === p.user_id)
                           ? { background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: '#22c55e' }
@@ -1067,8 +1130,10 @@ function DirectorioPublicoContenido() {
           )}
 
           {/* Tarjetas fantasma: solo sin sesión, dan sensación de "hay más
-              contenido" para empujar el registro. No son perfiles reales. */}
-          {!authLoading && !user && !loading && !fetchError && (
+              contenido" para empujar el registro. No son perfiles reales.
+              Nunca con la categoría vacía: dirían "hay más profesionales"
+              donde no hay ninguno. */}
+          {!authLoading && !user && !loading && !fetchError && profiles.length > 0 && (
             <GhostProfileCards role={config.dbRole} className="mt-6" />
           )}
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { passesPhotoGate } from '@/lib/constants';
 
 export interface MatchedProfessional {
   user_id: string;
@@ -152,7 +153,7 @@ export function useSmartMatch(query: MatchQuery | null): { results: MatchedProfe
 
     // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
     // DirectorioPublico.tsx para el motivo).
-    const profiles = (profilesRes.data ?? []).filter((p: any) => !!p.photo_url);
+    const profiles = (profilesRes.data ?? []).filter((p: any) => passesPhotoGate(p));
     const reviews = reviewsRes.data ?? [];
     const blocked = new Set((availRes.data ?? []).map((r: any) => r.user_id));
 

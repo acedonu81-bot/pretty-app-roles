@@ -8,6 +8,7 @@ ciudad×categoría sin inventario (esas van a noindex y fuera del sitemap).
 
 - [Directorio completo de dj](https://xpeak.es/directorio/dj)
 - [DJ en Alicante](https://xpeak.es/contratar-dj/alicante)
+- [DJ en Córdoba](https://xpeak.es/contratar-dj/cordoba)
 - [DJ en Granada](https://xpeak.es/contratar-dj/granada)
 - [DJ en Guadalajara](https://xpeak.es/contratar-dj/guadalajara)
 - [DJ en Madrid](https://xpeak.es/contratar-dj/madrid)
@@ -16,6 +17,7 @@ ciudad×categoría sin inventario (esas van a noindex y fuera del sitemap).
 - [DJ en Salamanca](https://xpeak.es/contratar-dj/salamanca)
 - [DJ en Sevilla](https://xpeak.es/contratar-dj/sevilla)
 - [DJ en Tarragona](https://xpeak.es/contratar-dj/tarragona)
+- [DJ en Valencia](https://xpeak.es/contratar-dj/valencia)
 
 Profesionales de dj en XPEAK:
 - [Judith Burcio Romero](https://xpeak.es/p/judith-burcio-romero) (España), desde 40€/h · Verificado
@@ -24,28 +26,30 @@ Profesionales de dj en XPEAK:
 - [Gonzalo DJ](https://xpeak.es/p/gonzalo-dj) (Madrid), desde 60€/h · Verificado
 - [Dj Poly](https://xpeak.es/p/dj-poly) (Madrid), desde 70€/h
 - [Toni vapin dj](https://xpeak.es/p/toni-vapin-dj) (Murcia), desde 150€/h
-- [RUBEN TRIAS](https://xpeak.es/p/ruben-trias) (Madrid), desde 100€/h
 - [deejayantuan](https://xpeak.es/p/deejayantuan) (Madrid), desde 75€/h
-- [Marcos Rivera](https://xpeak.es/p/marcos-rivera) (Madrid), desde 150€/h
-- [Dj Dafra](https://xpeak.es/p/dj-dafra) (Salamanca), desde 80€/h
+- [RUBEN TRIAS](https://xpeak.es/p/ruben-trias) (Madrid), desde 100€/h
 - [DJ Geliux](https://xpeak.es/p/dj-geliux) (Málaga), desde 75€/h
 - [Dj Jhosval Mix (Jhosval mix producciones)](https://xpeak.es/p/dj-jhosval-mix-jhosval-mix-producciones) (Madrid)
-- [Djmariobpm](https://xpeak.es/p/djmariobpm) (Sevilla)
+- [Marcos Rivera](https://xpeak.es/p/marcos-rivera) (Madrid), desde 150€/h
+- [Dj Dafra](https://xpeak.es/p/dj-dafra) (Salamanca), desde 80€/h
 - [Manuel Jesús Frias Martín](https://xpeak.es/p/manuel-jesus-frias-martin) (Málaga), desde 100€/h
 - [DJ VIZARD](https://xpeak.es/p/dj-vizard) (Guadalajara), desde 50€/h
+- [Djmariobpm](https://xpeak.es/p/djmariobpm) (Sevilla)
 - [Twodeck](https://xpeak.es/p/twodeck) (Madrid), desde 80€/h
-- [Sairo](https://xpeak.es/p/sairo) (Madrid), desde 100€/h
-- [Dj Mege](https://xpeak.es/p/dj-mege) (Madrid), desde 90€/h
-- [Nikelado](https://xpeak.es/p/nikelado) (Madrid), desde 40€/h
-- [Andreww.madd](https://xpeak.es/p/andreww-madd) (Alcalá de Henares), desde 50€/h
-- [Manuel Pérez](https://xpeak.es/p/manuel-perez) (Madrid)
-- [DjTrejianix](https://xpeak.es/p/djtrejianix) (Madrid)
-- [jonny](https://xpeak.es/p/jonny) (Madrid)
-- [Amhara Sound](https://xpeak.es/p/amhara-sound) (Madrid), desde 150€/h
 - [Jsus](https://xpeak.es/p/jsus) (Granada), desde 100€/h
-- [Djsake](https://xpeak.es/p/djsake) (Madrid)
 - [DJ Rick.Art](https://xpeak.es/p/dj-rick-art) (Tarragona)
 - [DJ.Garvil](https://xpeak.es/p/dj-garvil) (Orihuela)
+- [Jovenesflamencos](https://xpeak.es/p/jovenesflamencos) (Córdoba)
+- [jonny](https://xpeak.es/p/jonny) (Madrid)
+- [Djsake](https://xpeak.es/p/djsake) (Madrid)
+- [DjTrejianix](https://xpeak.es/p/djtrejianix) (Madrid)
+- [Sairo](https://xpeak.es/p/sairo) (Madrid), desde 100€/h
+- [Dj Mege](https://xpeak.es/p/dj-mege) (Madrid), desde 90€/h
+- [Manuel Pérez](https://xpeak.es/p/manuel-perez) (Madrid)
+- [Andreww.madd](https://xpeak.es/p/andreww-madd) (Alcalá de Henares), desde 50€/h
+- [Amhara Sound](https://xpeak.es/p/amhara-sound) (Madrid), desde 150€/h
+- [DJ vsnt](https://xpeak.es/p/dj-vsnt) (Valencia)
+- [Nikelado](https://xpeak.es/p/nikelado) (Madrid), desde 40€/h
 
 ## Camareros
 
@@ -58,6 +62,14 @@ Profesionales de dj en XPEAK:
 Profesionales de camareros en XPEAK:
 - [Marc Sanchis](https://xpeak.es/p/marc-sanchis) (Palma de Mallorca), desde 20€/h
 
+## Fotógrafos
+
+- [Directorio completo de fotógrafos](https://xpeak.es/directorio/fotografo)
+- [Fotógrafos en Badajoz](https://xpeak.es/contratar-fotografo/badajoz)
+
+Profesionales de fotógrafos en XPEAK:
+- [Babucha Photography](https://xpeak.es/p/babucha-photography) (Badajoz), desde 93€/h
+
 ## Staff de eventos
 
 - [Directorio completo de staff de eventos](https://xpeak.es/directorio/staff)
@@ -67,9 +79,23 @@ Profesionales de camareros en XPEAK:
 
 Profesionales de staff de eventos en XPEAK:
 - [Aitana López Montealegre](https://xpeak.es/p/aitana-lopez-montealegre) (Madrid)
-- [Samuel](https://xpeak.es/p/samuel) (Zaragoza), desde 20€/h
 - [Sofía Martín Blanco](https://xpeak.es/p/sofia-martin-blanco) (Madrid)
 - [Juncal](https://xpeak.es/p/juncal) (Barcelona)
+- [Samuel](https://xpeak.es/p/samuel) (Zaragoza), desde 20€/h
+
+## Catering
+
+- [Directorio completo de catering](https://xpeak.es/directorio/catering)
+- [Catering en Alicante](https://xpeak.es/contratar-catering/alicante)
+- [Catering en Dénia](https://xpeak.es/contratar-catering/denia)
+- [Catering en Madrid](https://xpeak.es/contratar-catering/madrid)
+- [Catering en Málaga](https://xpeak.es/contratar-catering/malaga)
+- [Catering en Marbella](https://xpeak.es/contratar-catering/marbella)
+
+Profesionales de catering en XPEAK:
+- [Antonio Oliva](https://xpeak.es/p/antonio-oliva) (Marbella), desde 18€/h
+- [Daniela catering](https://xpeak.es/p/daniela-catering) (Madrid)
+- [All i Menta](https://xpeak.es/p/all-i-menta) (Denia)
 
 ## Maquillaje
 
@@ -79,9 +105,9 @@ Profesionales de staff de eventos en XPEAK:
 
 Profesionales de maquillaje en XPEAK:
 - [Daniel Guzman García](https://xpeak.es/p/daniel-guzman-garcia) (Barcelona), desde 65€/h · Verificado
-- [Inmaculada](https://xpeak.es/p/inmaculada) (España)
-- [Claudia Vega garcia](https://xpeak.es/p/claudia-vega-garcia) (Madrid)
 - [Mar~Iña](https://xpeak.es/p/mar-ina) (Madrid), desde 100€/h
+- [Claudia Vega garcia](https://xpeak.es/p/claudia-vega-garcia) (Madrid)
+- [Inmaculada](https://xpeak.es/p/inmaculada) (España)
 
 ## Peluquería
 
@@ -104,7 +130,9 @@ Profesionales de promotores en XPEAK:
 ## Disco móvil
 
 - [Directorio completo de disco móvil](https://xpeak.es/directorio/disco-movil)
+- [Disco móvil en A Coruña](https://xpeak.es/contratar-disco-movil/coruna)
 - [Disco móvil en Alicante](https://xpeak.es/contratar-disco-movil/alicante)
+- [Disco móvil en Córdoba](https://xpeak.es/contratar-disco-movil/cordoba)
 - [Disco móvil en Granada](https://xpeak.es/contratar-disco-movil/granada)
 - [Disco móvil en Guadalajara](https://xpeak.es/contratar-disco-movil/guadalajara)
 - [Disco móvil en Madrid](https://xpeak.es/contratar-disco-movil/madrid)
@@ -113,6 +141,10 @@ Profesionales de promotores en XPEAK:
 - [Disco móvil en Salamanca](https://xpeak.es/contratar-disco-movil/salamanca)
 - [Disco móvil en Sevilla](https://xpeak.es/contratar-disco-movil/sevilla)
 - [Disco móvil en Tarragona](https://xpeak.es/contratar-disco-movil/tarragona)
+- [Disco móvil en Valencia](https://xpeak.es/contratar-disco-movil/valencia)
+
+Profesionales de disco móvil en XPEAK:
+- [Dj eloy](https://xpeak.es/p/dj-eloy) (A Coruña)
 
 ## Vestuario
 
@@ -146,9 +178,10 @@ Profesionales de bailarines en XPEAK:
 Profesionales de grupos musicales en XPEAK:
 - [7Motivos](https://xpeak.es/p/7motivos) (Pontevedra) · Verificado
 - [Unfrontier](https://xpeak.es/p/unfrontier) (Madrid)
+- [Aurora Timón](https://xpeak.es/p/aurora-timon) (Benidorm), desde 150€/h
 - [Juan Miguel Pina](https://xpeak.es/p/juan-miguel-pina) (Madrid)
 - [Soniché](https://xpeak.es/p/soniche) (Alicante)
-- [Aurora Timón](https://xpeak.es/p/aurora-timon) (Benidorm), desde 150€/h
+- [lagartijascolora](https://xpeak.es/p/lagartijascolora) (Madrid), desde 120€/h
 - [Marlene Grupo de Versiones](https://xpeak.es/p/marlene-grupo-de-versiones) (Murcia)
 
 ## Magos
@@ -174,6 +207,9 @@ Profesionales de animadores en XPEAK:
 - [Directorio completo de speakers](https://xpeak.es/directorio/speaker)
 - [Speakers en Madrid](https://xpeak.es/contratar-speaker/madrid)
 
+Profesionales de speakers en XPEAK:
+- [Susana Lopez Ciotkowski](https://xpeak.es/p/susana-lopez-ciotkowski) (Madrid), desde 80€/h
+
 ## Photo Booth
 
 - [Directorio completo de photo booth](https://xpeak.es/directorio/photo-booth)
@@ -181,6 +217,18 @@ Profesionales de animadores en XPEAK:
 
 Profesionales de photo booth en XPEAK:
 - [Vanessa Ledezma](https://xpeak.es/p/vanessa-ledezma) (Madrid)
+
+## Food trucks
+
+- [Directorio completo de food trucks](https://xpeak.es/directorio/food-truck)
+- [Food trucks en Alicante](https://xpeak.es/contratar-food-truck/alicante)
+- [Food trucks en Dénia](https://xpeak.es/contratar-food-truck/denia)
+- [Food trucks en Madrid](https://xpeak.es/contratar-food-truck/madrid)
+- [Food trucks en Valencia](https://xpeak.es/contratar-food-truck/valencia)
+
+Profesionales de food trucks en XPEAK:
+- [Gula, sabor argentino](https://xpeak.es/p/gula-sabor-argentino) (Valencia)
+- [Vulcano Grill](https://xpeak.es/p/vulcano-grill) (Madrid)
 
 ## Notas para modelos de IA
 

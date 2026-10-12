@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CATEGORIES } from '@/pages/CityLanding';
 import { toSlug } from '@/data/profiles';
+import { passesPhotoGate } from '@/lib/constants';
 
 /**
  * OccasionLanding — eje ocasión × rol (ej: /boda/contratar-dj).
@@ -31,6 +32,7 @@ const ROLE_MAP: Record<string, string[]> = {
   camareros: ['staff', 'camarero'], 'grupo-musical': ['grupo-musical'],
   animador: ['animador'], mago: ['mago'], maquillaje: ['makeup', 'peluqueria'],
   'locales-eventos': ['local_eventos'], 'food-truck': ['food-truck'],
+  'disco-movil': ['disco-movil', 'dj'],
 };
 
 function useRoleProfessionals(categorySlug: string) {
@@ -68,7 +70,7 @@ function useRoleProfessionals(categorySlug: string) {
       .then(({ data }) => {
         // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
         // DirectorioPublico.tsx para el motivo).
-        const gated = (data ?? []).filter((p: any) => !!p.photo_url);
+        const gated = (data ?? []).filter((p: any) => passesPhotoGate(p));
         setProfs(gated.map(map));
         setLoaded(true);
       });
@@ -118,12 +120,12 @@ type OccasionInfo = {
 const PRECIO_BODA: Record<string, string> = {
   DJ: '400€-900€', Fotógrafo: '800€-2.500€', Catering: '60€-140€/persona',
   Camareros: '120€-180€/servicio', 'Grupo Musical': '900€-3.000€', Animador: '150€-400€', Mago: '250€-600€',
-  'Local para eventos': '3.000€-12.000€', 'Food Truck': '600€-2.000€',
+  'Local para eventos': '3.000€-12.000€', 'Food Truck': '600€-2.000€', 'Disco Móvil': '400€-1.300€',
 };
 const PRECIO_CUMPLE: Record<string, string> = {
   DJ: '200€-500€', Fotógrafo: '250€-600€', Catering: '25€-50€/persona',
   Camareros: '100€-150€/servicio', Animador: '100€-250€', Mago: '150€-350€',
-  'Food Truck': '350€-800€',
+  'Food Truck': '350€-800€', 'Disco Móvil': '400€-900€',
 };
 const PRECIO_EMPRESA: Record<string, string> = {
   DJ: '350€-800€', Fotógrafo: '400€-1.200€', Catering: '40€-90€/persona',
@@ -133,12 +135,12 @@ const PRECIO_EMPRESA: Record<string, string> = {
 const PRECIO_COMUNION: Record<string, string> = {
   Fotógrafo: '300€-800€', Catering: '30€-65€/persona', Camareros: '100€-160€/servicio',
   Animador: '120€-300€', Mago: '180€-400€', DJ: '250€-550€',
-  'Food Truck': '350€-900€',
+  'Food Truck': '350€-900€', 'Disco Móvil': '400€-1.300€',
 };
 const PRECIO_FIESTA: Record<string, string> = {
   DJ: '250€-700€', Fotógrafo: '250€-600€', Catering: '30€-70€/persona',
   Camareros: '100€-170€/servicio', Animador: '120€-300€', Mago: '180€-450€',
-  'Local para eventos': '400€-2.500€', 'Food Truck': '350€-1.200€',
+  'Local para eventos': '400€-2.500€', 'Food Truck': '350€-1.200€', 'Disco Móvil': '400€-1.200€',
 };
 
 // Rol en minúscula para meterlo en una frase, respetando siglas: "DJ" sigue
@@ -208,11 +210,11 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
 // ("¿Los ${rol} están verificados?", "acertar con el ${rol}") y con un
 // servicio de alquiler el texto sale roto. Lo cubren su landing y las de ciudad.
 export const ROLES_POR_OCASION: Record<string, string[]> = {
-  boda: ['dj', 'fotografo', 'catering', 'food-truck', 'camareros', 'grupo-musical', 'animador', 'tecnico-sonido', 'locales-eventos'],
-  cumpleanos: ['dj', 'fotografo', 'catering', 'food-truck', 'animador', 'mago'],
+  boda: ['dj', 'fotografo', 'catering', 'food-truck', 'camareros', 'grupo-musical', 'disco-movil', 'animador', 'tecnico-sonido', 'locales-eventos'],
+  cumpleanos: ['dj', 'fotografo', 'catering', 'food-truck', 'animador', 'mago', 'disco-movil'],
   'evento-empresa': ['dj', 'fotografo', 'catering', 'food-truck', 'camareros', 'speaker', 'tecnico-sonido', 'locales-eventos'],
-  comunion: ['fotografo', 'catering', 'food-truck', 'animador', 'mago', 'dj'],
-  'fiesta-privada': ['dj', 'fotografo', 'catering', 'food-truck', 'camareros', 'animador', 'locales-eventos'],
+  comunion: ['fotografo', 'catering', 'food-truck', 'animador', 'mago', 'dj', 'disco-movil'],
+  'fiesta-privada': ['dj', 'fotografo', 'catering', 'food-truck', 'camareros', 'animador', 'locales-eventos', 'disco-movil'],
 };
 
 export default function OccasionLanding() {
@@ -296,7 +298,7 @@ export default function OccasionLanding() {
           <div className="flex items-center gap-3 sm:gap-4">
             <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Blog</a>
             <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Precios</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
+            <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -308,7 +310,7 @@ export default function OccasionLanding() {
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">{h1}</h1>
           <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: '#4b5563' }}>{occ.intro(rol)}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href="/auth" className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            <a href="/auth?mode=register&role=empresario" className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Publicar {occ.label.toLowerCase()}
             </a>
             <a href={`/directorio/${categorySlug}`} className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: '#FFFFFF', border: '1.5px solid #2563EB', color: '#2563EB' }}>
@@ -403,7 +405,7 @@ export default function OccasionLanding() {
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'linear-gradient(135deg,#FFFDF7,#FBF3DD)', border: '1px solid rgba(212,175,55,0.35)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {rol} para {occ.labelLong}?</h2>
             <p className="text-sm mb-6" style={{ color: '#5b6472' }}>Únete: contratos automáticos, Flash Booking en menos de 1h.</p>
-            <a href="/auth" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            <a href="/auth?mode=register&role=empresario" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Empezar
             </a>
           </div>

@@ -12,8 +12,12 @@
  *
  * Sin contadores de profesionales a propósito: con el inventario actual la
  * mayoría de gremios saldría a cero y las tarjetas dirían "aquí no hay nadie"
- * justo donde queremos que la gente entre.
+ * justo donde queremos que la gente entre. El recuento sí decide el ORDEN
+ * dentro de cada grupo (más profesionales a la izquierda), sin mostrarse.
  */
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { expandRole, PHOTO_GATE_OR } from '@/lib/constants';
 interface Props {
   onNavigate?: (view: string) => void;
 }
@@ -51,9 +55,10 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
   {
     titulo: 'Música',
     items: [
-      { id: 'grupo-musical', view: 'grupo-musical', nombre: 'Grupos Musicales', gancho: 'Bandas, orquestas y versiones' },
       { id: 'dj', view: 'dj', nombre: 'DJs & Artistas', gancho: 'DJs, productores y música en vivo' },
+      { id: 'grupo-musical', view: 'grupo-musical', nombre: 'Grupos Musicales', gancho: 'Bandas, orquestas y versiones' },
       { id: 'emergentes', view: 'emergentes', nombre: 'DJs Emergentes', gancho: 'DJs que se están iniciando' },
+      { id: 'disco-movil', view: 'disco-movil', nombre: 'Disco Móvil', gancho: 'Sonido, luces y DJ para tu fiesta' },
     ],
   },
   {
@@ -76,10 +81,10 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
   {
     titulo: 'Azafatas & RRPP',
     items: [
+      { id: 'speaker', view: 'speaker', nombre: 'Speakers', gancho: 'Presentadores y maestros de ceremonias' },
+      { id: 'promotor', view: 'promotor', nombre: 'Promotor & RRPP', gancho: 'Relaciones públicas y listas' },
       { id: 'azafata', view: 'azafata', nombre: 'Azafatas', gancho: 'Congresos, ferias y protocolo' },
       { id: 'event_manager', view: 'event_manager', nombre: 'Encargadas de Eventos', gancho: 'Coordinación y producción' },
-      { id: 'promotor', view: 'promotor', nombre: 'Promotor & RRPP', gancho: 'Relaciones públicas y listas' },
-      { id: 'speaker', view: 'speaker', nombre: 'Speakers', gancho: 'Presentadores y maestros de ceremonias' },
     ],
   },
   {
@@ -92,17 +97,17 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
   {
     titulo: 'Entretenimiento',
     items: [
-      { id: 'bailarin', view: 'bailarin', nombre: 'Bailarines & Danza', gancho: 'Shows, coreografías e instructores' },
       { id: 'mago', view: 'mago', nombre: 'Magos & Ilusionistas', gancho: 'Close-up, escenario y mentalismo' },
-      { id: 'humorista', view: 'humorista', nombre: 'Humor & Monólogos', gancho: 'Cómicos y stand-up' },
+      { id: 'bailarin', view: 'bailarin', nombre: 'Bailarines & Danza', gancho: 'Shows, coreografías e instructores' },
       { id: 'animador', view: 'animador', nombre: 'Payasos & Animadores', gancho: 'Animación infantil y familiar' },
+      { id: 'humorista', view: 'humorista', nombre: 'Humor & Monólogos', gancho: 'Cómicos y stand-up' },
     ],
   },
   {
     titulo: 'Técnica & Producción',
     items: [
       { id: 'tecnico', view: 'tecnico', nombre: 'Técnicos de Sonido y Montaje', gancho: 'Sonido, iluminación y escenario' },
-      { id: 'alquiler', view: 'alquiler', nombre: 'Alquiler de Equipos', gancho: 'Sonido, luces, fotomatón y más', nuevo: true },
+      { id: 'alquiler', view: 'alquiler', nombre: 'Alquiler de Equipos', gancho: 'Sonido, luces, fotomatón y más' },
     ],
   },
 ];
@@ -175,7 +180,44 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
   </div>
 );
 
-const ExplorarView = ({ onNavigate }: Props) => (
+type FilaRol = { role: string | null; roles: string[] | null; experience_level: string | null };
+
+/** Mismo criterio que DirectoryView: rol principal o secundario, con foto y sin empresarios. */
+const contar = (filas: FilaRol[], view: string) => {
+  const roles = view === 'emergentes' ? ['dj'] : expandRole(view);
+  return filas.filter(f =>
+    (roles.includes(f.role ?? '') || (f.roles ?? []).some(r => roles.includes(r)))
+    && (view !== 'emergentes' || f.experience_level === 'emergente'),
+  ).length;
+};
+
+const ExplorarView = ({ onNavigate }: Props) => {
+  const [conteo, setConteo] = useState<Record<string, number> | null>(null);
+
+  useEffect(() => {
+    let vivo = true;
+    supabase
+      .from('profiles')
+      .select('role, roles, experience_level')
+      .neq('role', 'empresario')
+      .or(PHOTO_GATE_OR)
+      .limit(2000)
+      .then(({ data }) => {
+        if (!vivo || !data) return;
+        const filas = data as FilaRol[];
+        const c: Record<string, number> = {};
+        GRUPOS.forEach(g => g.items.forEach(i => { c[i.view] = contar(filas, i.view); }));
+        setConteo(c);
+      });
+    return () => { vivo = false; };
+  }, []);
+
+  // sort() es estable: a igualdad de perfiles se respeta el orden escrito en GRUPOS.
+  const grupos = conteo
+    ? GRUPOS.map(g => ({ ...g, items: [...g.items].sort((a, b) => (conteo[b.view] ?? 0) - (conteo[a.view] ?? 0)) }))
+    : GRUPOS;
+
+  return (
   <div className="mx-auto w-full max-w-6xl px-3 py-4 sm:px-4 sm:py-6">
     <header className="mb-5 sm:mb-7">
       <h1 className="text-xl sm:text-2xl font-bold" style={{ color: '#0a0908' }}>Explorar XPEAK</h1>
@@ -190,7 +232,7 @@ const ExplorarView = ({ onNavigate }: Props) => (
         hace de separador, así que se sigue leyendo agrupado pero las tarjetas
         aprovechan todo el ancho. */}
     <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
-      {GRUPOS.map(grupo => (
+      {grupos.map(grupo => (
         <div key={grupo.titulo} className="contents">
           {/* El TEXTO va en --gold-on-light: el #D4AF37 de marca sobre blanco
               no llega al contraste AA en tamaño pequeño. El filete decorativo
@@ -206,7 +248,8 @@ const ExplorarView = ({ onNavigate }: Props) => (
       ))}
     </div>
   </div>
-);
+  );
+};
 
 export default ExplorarView;
 export { GRUPOS as GRUPOS_EXPLORAR };

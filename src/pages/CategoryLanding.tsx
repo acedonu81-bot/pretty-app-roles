@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useDirectorioConInventario } from '@/hooks/useDirectorioConInventario';
 import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt, Mic, SlidersHorizontal, Speaker, Building2, Truck } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
@@ -859,14 +860,13 @@ const DIRECTORIO_SLUG: Record<string, string> = {
   dj: 'dj', fotografo: 'fotografo', staff: 'staff', camareros: 'staff',
   maquillaje: 'maquillaje', peluqueria: 'maquillaje',
   promotores: 'promotores', azafata: 'azafata', catering: 'catering', 'food-truck': 'food-truck',
-  vestuario: 'vestuario', 'disco-movil': 'dj',
+  vestuario: 'vestuario', 'disco-movil': 'disco-movil',
   humorista: 'humorista', monologo: 'humorista',
   animador: 'animador', animadores: 'animador', payaso: 'animador', payasos: 'animador',
   speaker: 'speaker', mago: 'mago', bailarin: 'bailarin',
   'photo-booth': 'photo-booth', 'grupo-musical': 'grupo-musical',
   'locales-eventos': 'locales-eventos', 'tecnico-sonido': 'tecnico-sonido', 'alquiler-equipos': 'alquiler-equipos',
 };
-const directorioHref = (slug: string) => `/directorio/${DIRECTORIO_SLUG[slug] ?? 'dj'}`;
 
 const ICON: Record<string, React.ReactNode> = {
   dj: <Music size={20} />,
@@ -903,6 +903,7 @@ export default function CategoryLanding() {
   // pathname is e.g. "/contratar-dj" → strip prefix "contratar-"
   const slug = pathname.replace(/^\/contratar-/, '').split('/')[0];
   const data = CATEGORY_DATA[slug] ?? null;
+  const dirSlug = useDirectorioConInventario(DIRECTORIO_SLUG[slug] ?? 'dj');
 
   if (!data) {
     navigate('/');
@@ -967,7 +968,7 @@ export default function CategoryLanding() {
           <div className="flex items-center gap-3 sm:gap-4">
             <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Blog</a>
             <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#374151' }}>Precios</a>
-            <a href="/auth"
+            <a href="/auth?mode=register"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Unirse
@@ -994,7 +995,7 @@ export default function CategoryLanding() {
           </p>
           <p className="text-sm font-bold mb-8" style={{ color: '#8B6A00' }}>{data.tagline}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={directorioHref(data.slug)}
+            <a href={`/directorio/${dirSlug}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />
@@ -1033,10 +1034,21 @@ export default function CategoryLanding() {
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
           <h2 className="text-xl sm:text-2xl font-black mb-2">{data.slug === 'alquiler-equipos' ? 'Equipo que se alquila' : 'Especialidades disponibles'}</h2>
           <p className="text-sm mb-6" style={{ color: '#4b5563' }}>
-            Filtra por especialidad directamente en el directorio XPEAK.
+            {data.slug === 'dj'
+              ? 'Pulsa un estilo para ver los DJs que lo pinchan.'
+              : 'Lo que encontrarás en el directorio XPEAK.'}
           </p>
+          {/* Solo los DJs tienen géneros en el perfil, así que solo sus chips
+              filtran. Antes todos decían "Filtra por especialidad" sin enlace
+              y la gente pulsaba sin que pasara nada (clics muertos, 10 oct). */}
           <div className="flex flex-wrap gap-2">
-            {data.roles.map(r => (
+            {data.roles.map(r => data.slug === 'dj' ? (
+              <a key={r} href={`/directorio/dj?genero=${encodeURIComponent(r)}`}
+                className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.45)', color: '#7a6216' }}>
+                {r}
+              </a>
+            ) : (
               <span key={r} className="px-3 py-1.5 rounded-lg text-xs font-bold"
                 style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#374151' }}>
                 {r}
@@ -1121,7 +1133,7 @@ export default function CategoryLanding() {
             <p className="text-sm mb-6" style={{ color: '#5b6472' }}>
               Contacta directamente, sin registro, respuesta directa del profesional.
             </p>
-            <a href={directorioHref(data.slug)}
+            <a href={`/directorio/${dirSlug}`}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />

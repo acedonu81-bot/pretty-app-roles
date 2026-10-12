@@ -14,6 +14,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { profileHasRole } from './city-inventory.mjs';
 
+// Copia de PHOTO_GATE_EXCEPTIONS (src/lib/constants.ts): perfiles sin foto que se publican igual.
+const PHOTO_GATE_EXCEPTIONS = ['62eee3ec-6b73-4332-b062-567e1d207a00'];
+const passesPhotoGate = p => !!p.photo_url || PHOTO_GATE_EXCEPTIONS.includes(p.user_id);
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
@@ -35,7 +39,7 @@ function loadEnv() {
 const ROLE_MAP = {
   dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
   catering: ['catering'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
-  'disco-movil': ['dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
+  'disco-movil': ['disco-movil', 'dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
   bailarin: ['bailarin'], 'grupo-musical': ['grupo-musical'],
   humorista: ['humorista'], monologo: ['humorista'], monologos: ['humorista'],
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],
@@ -99,7 +103,7 @@ function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
   const roles = ROLE_MAP[categorySlug] ?? ['dj'];
   // Mismo gate que gateNoPhoto en CityLanding.tsx: sin foto no se publica,
   // retroactivo desde el 16 sep 2026.
-  const byRole = allProfiles.filter(p => profileHasRole(p, roles) && !!p.photo_url);
+  const byRole = allProfiles.filter(p => profileHasRole(p, roles) && passesPhotoGate(p));
   const inCity = byRole
     .filter(p => p.zone && p.zone.toLowerCase().includes(ciudad.toLowerCase()))
     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
@@ -130,7 +134,7 @@ function resolveProfilesForDirectorio(allProfiles, dbRole) {
       // el fetch en vivo, y React Query siempre acababa repintando el grid
       // al llegar la respuesta real — CLS 0.07 medido en producción el 11
       // sep 2026, aunque initialData ya estuviera bien inyectado.
-      && !!p.photo_url)
+      && passesPhotoGate(p))
     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
     .slice(0, 60);
   // Sin mapProfile: ese mapeo es para CityLanding (renombra user_id→id y

@@ -9,7 +9,7 @@ import OffersWidget from '@/components/dashboard/OffersWidget';
 import { supabase } from '@/integrations/supabase/client';
 import { ROLE_ES, unidadTarifa } from '@/lib/constants';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
-import { expandRole } from '@/lib/constants';
+import { expandRole, PHOTO_GATE_OR } from '@/lib/constants';
 import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
@@ -77,7 +77,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
     // hubiera un filtro real que lo hiciera cumplir — se quedaban visibles
     // indefinidamente con el icono placeholder o, en un caso, con el email
     // como nombre (txetxiuriarte@hotmail.com, 16 sep 2026).
-    .not('photo_url', 'is', null)
+    .or(PHOTO_GATE_OR)
     .limit(200);
 
   // Emergentes (16 sep 2026): un perfil que se marca a sí mismo como
@@ -544,7 +544,32 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         </div>
       )}
 
-      {!loadingProfiles && filteredProfiles.length === 0 && (
+      {/* Categoría sin nadie, sin búsqueda ni filtros: el mensaje de "quita
+          filtros, seguro que aparece alguien" era falso aquí y dejaba al
+          organizador sin salida. */}
+      {!loadingProfiles && realProfiles.length === 0 && !searchQuery?.trim()
+        && filterRegion === ALL_REGIONS_LABEL && !filterFlash && !filterVerified && (
+        <div className="glass-panel p-10 flex flex-col items-center text-center gap-3 mb-5">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+            style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <Users size={20} style={{ color: 'rgba(212,175,55,0.35)' }} />
+          </div>
+          <p className="text-sm font-bold" style={{ color: '#333' }}>Categoría recién abierta</p>
+          <p className="text-xs text-muted-foreground max-w-[280px] mx-auto">
+            Todavía no hay perfiles publicados aquí. Estamos dando de alta a los primeros.
+          </p>
+          {onNavigate && (
+            <button onClick={() => onNavigate('explorar')}
+              className="text-xs font-bold px-4 py-2 rounded-full transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              Ver otras categorías
+            </button>
+          )}
+        </div>
+      )}
+
+      {!loadingProfiles && filteredProfiles.length === 0 && !(realProfiles.length === 0 && !searchQuery?.trim()
+        && filterRegion === ALL_REGIONS_LABEL && !filterFlash && !filterVerified) && (
         <div className="glass-panel p-10 flex flex-col items-center text-center gap-3 mb-5">
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
             style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
