@@ -61,7 +61,10 @@ export default class AppErrorBoundary extends Component<Props, State> {
         }
         return supabase;
       })
-      .then((supabase: any) => (supabase.rpc as any)('log_client_error', {
+      // El servidor de desarrollo usa la misma BD que producción: sin esto, los
+      // fallos de recarga en caliente acababan en Panel Admin → Salud como
+      // "pantalla rota para un usuario" (10 oct 2026).
+      .then((supabase: any) => import.meta.env.DEV ? undefined : (supabase.rpc as any)('log_client_error', {
         p_message: error.message,
         p_stack: (error.stack ?? '').slice(0, 4000),
         p_component_stack: (info.componentStack ?? '').slice(0, 4000),

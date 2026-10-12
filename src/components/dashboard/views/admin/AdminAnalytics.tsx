@@ -3,7 +3,7 @@ import {
   ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis,
   CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-import { RefreshCw, Eye, Users, UserPlus, Send, Clock, Globe, Smartphone, HelpCircle, ChevronDown, Monitor, User as UserIcon } from 'lucide-react';
+import { RefreshCw, Eye, Users, UserPlus, Send, Clock, Globe, Smartphone, HelpCircle, ChevronDown, Monitor, User as UserIcon, Download } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { AFFILIATE_CATALOG, resolveAffiliateKey } from '@/lib/affiliate';
 
@@ -34,6 +34,10 @@ type QuienOnline = {
   session_id: string; ultima_pagina: string | null; device: string | null;
   hace_segundos: number; display_name: string | null; rol: string | null;
   detalle: string | null;
+};
+type InstalacionPwa = {
+  instalado_en: string; device: string | null;
+  display_name: string | null; rol: string | null; evento: string;
 };
 
 const GOLD = '#B8941E';
@@ -166,6 +170,7 @@ export default function AdminAnalytics() {
   const [usuariosUnicos, setUsuariosUnicos] = useState<number | null>(null);
   const [quienOnline, setQuienOnline] = useState<QuienOnline[]>([]);
   const [onlineAbierto, setOnlineAbierto] = useState(false);
+  const [instalaciones, setInstalaciones] = useState<InstalacionPwa[]>([]);
 
   const cargar = useCallback(async () => {
     setCargando(true);
@@ -180,9 +185,15 @@ export default function AdminAnalytics() {
       rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }>;
     };
 
-    const [d, h, t, n, bus, afi, blg, emb, rec, uu] = await Promise.all([
+    // "Tráfico por hora" con el filtro Hoy activo necesita la serie real de
+    // hoy (corta en la hora actual), no el patrón histórico agregado que da
+    // panel_analytics_hora — ese sirve para "¿a qué hora entra tu gente?"
+    // pero pintaba horas futuras del día como si ya hubieran pasado.
+    const [d, h, t, n, bus, afi, blg, emb, rec, uu, pwa] = await Promise.all([
       sb.rpc('panel_analytics_dia', { p_dias: dias }),
-      sb.rpc('panel_analytics_hora', { p_dias: Math.min(dias, 30) }),
+      dias === 1 && hoy
+        ? sb.rpc('panel_analytics_hora_hoy', {})
+        : sb.rpc('panel_analytics_hora', { p_dias: Math.min(dias, 30) }),
       sb.rpc('panel_analytics_top', { p_dias: dias, p_limite: 8 }),
       sb.rpc('panel_analytics_negocio', { p_dias: dias }),
       sb.rpc('panel_analytics_busquedas', { p_dias: dias, p_limite: 15 }),
@@ -194,6 +205,7 @@ export default function AdminAnalytics() {
       // hace "sesiones" en panel_analytics_dia, que duplica a quien vuelve
       // varios días). Sustituye a "Visitas" (páginas vistas, no gente).
       sb.rpc('panel_analytics_usuarios_unicos', { p_dias: dias, p_desde_medianoche: hoy }),
+      sb.rpc('panel_analytics_pwa_instalaciones', { p_dias: dias }),
     ]);
 
     const fallo = [d, h, t, n].find(r => r.error);
@@ -222,6 +234,7 @@ export default function AdminAnalytics() {
     setRecursos((rec.data as Recurso[]) ?? []);
     const uuRow = (uu.data as { usuarios: number }[] | null)?.[0];
     setUsuariosUnicos(uuRow ? Number(uuRow.usuarios) : null);
+    setInstalaciones((pwa.data as InstalacionPwa[]) ?? []);
     setCargando(false);
   }, [dias, hoy]);
 
@@ -479,6 +492,70 @@ export default function AdminAnalytics() {
             <Bar dataKey="mensajes" name="Mensajes" fill="#34D399" radius={[3, 3, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
+      </Panel>
+
+      {/* INSTALACIONES PWA — dos señales distintas, no una:
+          'pwa_installed' es el MOMENTO de instalar (evento 'appinstalled' del
+          navegador, nunca en iOS, y solo existe desde el día en que se
+          desplegó este tracking — no cuenta instalaciones anteriores).
+          'pwa_session' es "esta sesión ya abre la web en modo app instalada",
+          sin importar cuándo se instaló — sí incluye iOS y sí incluye a
+          quien ya la tenía puesta antes de este despliegue. */}
+      <Panel
+        title="App instalada (PWA)"
+        hint="Instalaciones nuevas vs. gente que ya la tenía puesta y abre la web en modo app."
+        ayuda="'Instalaron ahora' cuenta el evento 'appinstalled' del navegador — solo Chrome/Edge lo disparan (escritorio y Android), nunca Safari en iOS, y solo desde que se desplegó esta medición. 'Ya la tienen puesta' cuenta sesiones que abren la web en modo standalone sin importar cuándo instalaron — esta sí incluye iOS, y sí cuenta instalaciones de antes de hoy."
+      >
+        {instalaciones.length === 0 ? (
+          <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
+            Sin datos registrados todavía en este rango.
+          </p>
+        ) : (
+          <>
+            <div className="flex items-center gap-4 mb-3 flex-wrap">
+              {(['pwa_installed', 'pwa_session'] as const).map(evento => {
+                const grupo = instalaciones.filter(i => i.evento === evento);
+                if (grupo.length === 0) return null;
+                const porDevice = grupo.reduce<Record<string, number>>((acc, i) => {
+                  const d = i.device || 'desconocido';
+                  acc[d] = (acc[d] || 0) + 1;
+                  return acc;
+                }, {});
+                const label = evento === 'pwa_installed' ? 'Instalaron ahora' : 'Ya la tienen puesta';
+                return (
+                  <span key={evento} className="flex items-center gap-1.5 text-[0.75rem] font-bold px-2.5 py-1 rounded-full"
+                    style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
+                    <Download size={12} /> {label}: {grupo.length}
+                    {' '}({Object.entries(porDevice).map(([d, n]) => `${n} ${d}`).join(', ')})
+                  </span>
+                );
+              })}
+            </div>
+            <div className="flex flex-col divide-y" style={{ borderColor: 'rgba(10,9,8,0.06)' }}>
+              {instalaciones.slice(0, 15).map((i, idx) => (
+                <div key={idx} className="flex items-center gap-3 py-2 first:pt-0 last:pb-0">
+                  <Monitor size={13} style={{ color: 'rgba(10,9,8,0.3)' }} />
+                  <span className="text-[0.75rem] flex-1" style={{ color: 'rgba(10,9,8,0.7)' }}>
+                    {i.display_name
+                      ? <>{i.display_name}{i.rol && <span style={{ color: 'rgba(10,9,8,0.45)' }}> · {i.rol}</span>}</>
+                      : <span style={{ color: 'rgba(10,9,8,0.4)' }}>Visitante anónimo</span>}
+                  </span>
+                  <span className="text-[0.62rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
+                    style={{
+                      background: i.evento === 'pwa_installed' ? 'rgba(52,211,153,0.12)' : 'rgba(10,9,8,0.05)',
+                      color: i.evento === 'pwa_installed' ? '#047857' : 'rgba(10,9,8,0.5)',
+                    }}>
+                    {i.evento === 'pwa_installed' ? 'instaló ahora' : 'ya la tenía'}
+                  </span>
+                  <span className="text-[0.68rem] font-bold" style={{ color: GOLD }}>{i.device}</span>
+                  <span className="text-[0.68rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
+                    {new Date(i.instalado_en).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </Panel>
 
       {/* EMBUDO — la cifra que dice si el tráfico sirve para algo. 400 visitas

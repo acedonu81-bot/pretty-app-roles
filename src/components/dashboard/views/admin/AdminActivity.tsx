@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle, X, HelpCircle, Mail, CheckCheck } from 'lucide-react';
@@ -84,6 +85,7 @@ const EmailsTooltip = ({ userId }: { userId: string }) => {
   return (
     <span
       className="relative inline-flex"
+      onClick={e => e.stopPropagation()}
       onMouseEnter={() => { setAbierto(true); cargar(); }}
       onMouseLeave={() => setAbierto(false)}
     >
@@ -156,6 +158,7 @@ const AdminActivity = () => {
   // Salir de esta pestaña la marca como revisada (el escudo del sidebar se
   // apaga al instante) y además hay un botón "Marcar como visto" explícito.
   const { marcarVisto } = useAdminActivityAlert(true);
+  const navigate = useNavigate();
   const [items, setItems] = useState<Movimiento[]>([]);
   // Nombre de canal único por instancia: con uno fijo, dos montajes a la vez
   // rompen con "cannot add postgres_changes callbacks after subscribe()" y
@@ -322,10 +325,23 @@ const AdminActivity = () => {
             const Icon = e.icon;
             const horas = (Date.now() - new Date(m.cuando).getTime()) / 3600000;
             const urgente = m.pendiente && m.tipo === 'solicitud_pendiente' && horas >= 4;
+            // Clic en cualquier parte de la tarjeta abre la ficha pública del
+            // usuario (en pestaña nueva, no pierde el panel de Actividad) —
+            // antes solo el nombre llevaba ahí, un objetivo pequeño y fácil
+            // de fallar al querer "ver dónde está esto" rápido (6 oct 2026).
+            // Los controles internos (borrar, tooltip de emails, llamar/email)
+            // paran la propagación para no disparar también la navegación.
+            const irAFicha = m.user_id
+              ? () => window.open(`/p/${m.user_id}`, '_blank', 'noopener,noreferrer')
+              : undefined;
             return (
               <li
                 key={`${m.tipo}-${m.ref}`}
-                className="flex items-start gap-3 px-3.5 py-3 rounded-xl"
+                onClick={irAFicha}
+                role={irAFicha ? 'link' : undefined}
+                tabIndex={irAFicha ? 0 : undefined}
+                onKeyDown={irAFicha ? (ev => { if (ev.key === 'Enter') irAFicha(); }) : undefined}
+                className={`flex items-start gap-3 px-3.5 py-3 rounded-xl${irAFicha ? ' cursor-pointer hover:brightness-[0.97] transition-[filter]' : ''}`}
                 style={{
                   background: m.pendiente ? e.fondo : 'rgba(0,0,0,0.02)',
                   border: m.pendiente ? `1px solid ${e.color}33` : '1px solid transparent',
@@ -345,7 +361,7 @@ const AdminActivity = () => {
                 {m.tipo !== 'alta' && (
                   <button
                     type="button"
-                    onClick={() => borrar(m)}
+                    onClick={ev => { ev.stopPropagation(); borrar(m); }}
                     disabled={borrando === m.ref}
                     title="Borrar del historial"
                     className="order-last flex-shrink-0 w-6 h-6 rounded-lg flex items-center justify-center transition-all hover:bg-black/10 disabled:opacity-40"
@@ -412,6 +428,7 @@ const AdminActivity = () => {
                     {m.contacto && (
                       <a
                         href={m.contacto.includes('@') ? `mailto:${m.contacto}` : `tel:${m.contacto}`}
+                        onClick={ev => ev.stopPropagation()}
                         className="text-[0.7rem] font-bold inline-flex items-center gap-1 underline"
                         style={{ color: e.color }}
                       >
