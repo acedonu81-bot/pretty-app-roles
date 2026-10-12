@@ -6,6 +6,7 @@ import {
 import { RefreshCw, Eye, Users, UserPlus, Send, Clock, Globe, Smartphone, HelpCircle, ChevronDown, Monitor, User as UserIcon, Download } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { AFFILIATE_CATALOG, resolveAffiliateKey } from '@/lib/affiliate';
+import { agruparInstalacionesPwa, type EventoPwa } from '@/lib/pwaInstalaciones';
 
 /**
  * Analítica propia de XPEAK, leída de la base de datos del proyecto.
@@ -35,11 +36,6 @@ type QuienOnline = {
   hace_segundos: number; display_name: string | null; rol: string | null;
   detalle: string | null;
 };
-type InstalacionPwa = {
-  instalado_en: string; device: string | null;
-  display_name: string | null; rol: string | null; evento: string;
-};
-
 const GOLD = '#B8941E';
 
 /**
@@ -170,7 +166,8 @@ export default function AdminAnalytics() {
   const [usuariosUnicos, setUsuariosUnicos] = useState<number | null>(null);
   const [quienOnline, setQuienOnline] = useState<QuienOnline[]>([]);
   const [onlineAbierto, setOnlineAbierto] = useState(false);
-  const [instalaciones, setInstalaciones] = useState<InstalacionPwa[]>([]);
+  const [instalaciones, setInstalaciones] = useState<EventoPwa[]>([]);
+  const personasPwa = agruparInstalacionesPwa(instalaciones);
 
   const cargar = useCallback(async () => {
     setCargando(true);
@@ -234,7 +231,7 @@ export default function AdminAnalytics() {
     setRecursos((rec.data as Recurso[]) ?? []);
     const uuRow = (uu.data as { usuarios: number }[] | null)?.[0];
     setUsuariosUnicos(uuRow ? Number(uuRow.usuarios) : null);
-    setInstalaciones((pwa.data as InstalacionPwa[]) ?? []);
+    setInstalaciones((pwa.data as EventoPwa[]) ?? []);
     setCargando(false);
   }, [dias, hoy]);
 
@@ -503,8 +500,8 @@ export default function AdminAnalytics() {
           quien ya la tenía puesta antes de este despliegue. */}
       <Panel
         title="App instalada (PWA)"
-        hint="Instalaciones nuevas vs. gente que ya la tenía puesta y abre la web en modo app."
-        ayuda="'Instalaron ahora' cuenta el evento 'appinstalled' del navegador — solo Chrome/Edge lo disparan (escritorio y Android), nunca Safari en iOS, y solo desde que se desplegó esta medición. 'Ya la tienen puesta' cuenta sesiones que abren la web en modo standalone sin importar cuándo instalaron — esta sí incluye iOS, y sí cuenta instalaciones de antes de hoy."
+        hint="Personas que la instalaron ahora vs. las que ya la tenían puesta y abren la web en modo app."
+        ayuda="Cada persona cuenta una vez, la abra las veces que la abra. 'Instalaron ahora' son quienes dispararon el evento 'appinstalled' del navegador: solo Chrome/Edge lo hacen (escritorio y Android), nunca Safari en iOS, y solo desde que se desplegó esta medición. 'Ya la tenían puesta' son quienes abren la web en modo app sin ese evento en el rango: incluye iOS e instalaciones de antes. La fecha es la última vez que la usaron."
       >
         {instalaciones.length === 0 ? (
           <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
@@ -513,17 +510,17 @@ export default function AdminAnalytics() {
         ) : (
           <>
             <div className="flex items-center gap-4 mb-3 flex-wrap">
-              {(['pwa_installed', 'pwa_session'] as const).map(evento => {
-                const grupo = instalaciones.filter(i => i.evento === evento);
+              {([true, false] as const).map(instalo => {
+                const grupo = personasPwa.filter(p => p.instalo === instalo);
                 if (grupo.length === 0) return null;
-                const porDevice = grupo.reduce<Record<string, number>>((acc, i) => {
-                  const d = i.device || 'desconocido';
+                const porDevice = grupo.reduce<Record<string, number>>((acc, p) => {
+                  const d = p.device || 'desconocido';
                   acc[d] = (acc[d] || 0) + 1;
                   return acc;
                 }, {});
-                const label = evento === 'pwa_installed' ? 'Instalaron ahora' : 'Ya la tienen puesta';
+                const label = instalo ? 'Instalaron ahora' : 'Ya la tenían puesta';
                 return (
-                  <span key={evento} className="flex items-center gap-1.5 text-[0.75rem] font-bold px-2.5 py-1 rounded-full"
+                  <span key={label} className="flex items-center gap-1.5 text-[0.75rem] font-bold px-2.5 py-1 rounded-full"
                     style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
                     <Download size={12} /> {label}: {grupo.length}
                     {' '}({Object.entries(porDevice).map(([d, n]) => `${n} ${d}`).join(', ')})
@@ -532,24 +529,29 @@ export default function AdminAnalytics() {
               })}
             </div>
             <div className="flex flex-col divide-y" style={{ borderColor: 'rgba(10,9,8,0.06)' }}>
-              {instalaciones.slice(0, 15).map((i, idx) => (
+              {personasPwa.slice(0, 15).map((p, idx) => (
                 <div key={idx} className="flex items-center gap-3 py-2 first:pt-0 last:pb-0">
                   <Monitor size={13} style={{ color: 'rgba(10,9,8,0.3)' }} />
                   <span className="text-[0.75rem] flex-1" style={{ color: 'rgba(10,9,8,0.7)' }}>
-                    {i.display_name
-                      ? <>{i.display_name}{i.rol && <span style={{ color: 'rgba(10,9,8,0.45)' }}> · {i.rol}</span>}</>
+                    {p.display_name
+                      ? <>{p.display_name}{p.rol && <span style={{ color: 'rgba(10,9,8,0.45)' }}> · {p.rol}</span>}</>
                       : <span style={{ color: 'rgba(10,9,8,0.4)' }}>Visitante anónimo</span>}
                   </span>
+                  {p.aperturas > 0 && (
+                    <span className="text-[0.68rem]" style={{ color: 'rgba(10,9,8,0.45)' }}>
+                      {p.aperturas === 1 ? '1 apertura' : `${p.aperturas} aperturas`}
+                    </span>
+                  )}
                   <span className="text-[0.62rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
                     style={{
-                      background: i.evento === 'pwa_installed' ? 'rgba(52,211,153,0.12)' : 'rgba(10,9,8,0.05)',
-                      color: i.evento === 'pwa_installed' ? '#047857' : 'rgba(10,9,8,0.5)',
+                      background: p.instalo ? 'rgba(52,211,153,0.12)' : 'rgba(10,9,8,0.05)',
+                      color: p.instalo ? '#047857' : 'rgba(10,9,8,0.5)',
                     }}>
-                    {i.evento === 'pwa_installed' ? 'instaló ahora' : 'ya la tenía'}
+                    {p.instalo ? 'instaló ahora' : 'ya la tenía'}
                   </span>
-                  <span className="text-[0.68rem] font-bold" style={{ color: GOLD }}>{i.device}</span>
+                  <span className="text-[0.68rem] font-bold" style={{ color: GOLD }}>{p.device}</span>
                   <span className="text-[0.68rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
-                    {new Date(i.instalado_en).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
+                    {new Date(p.ultima).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
                   </span>
                 </div>
               ))}
