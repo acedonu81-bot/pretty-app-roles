@@ -89,7 +89,7 @@ const ROLE_LABEL: Record<string, string> = {
   bailarin: 'Instructor / Bailarín',
   makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Foto / Vídeo',
   mago: 'Mago / Ilusionista', humorista: 'Humorista', animador: 'Animador / Payaso',
-  catering: 'Catering / Chef', 'food-truck': 'Food Truck', vestuario: 'Vestuario / Estilismo',
+  catering: 'Catering / Chef', 'food-truck': 'Food Truck', 'disco-movil': 'Disco Móvil', vestuario: 'Vestuario / Estilismo',
   promotor: 'Promotor / RRPP', ambassador: 'Promotor / Embajador',
   speaker: 'Speaker / Presentador', design: 'Diseño & Visuales',
   monologo: 'Monologuista', empresario: 'Empresa / Sala',
@@ -106,7 +106,7 @@ const ROLE_LABEL: Record<string, string> = {
 // contratara uno de esos tenía que elegir "Staff / RRPP", y esa etiqueta
 // equivocada acababa impresa en el PDF del contrato.
 const CONTRACT_ROLE_OPTIONS = [
-  'dj', 'grupo-musical', 'staff', 'azafata', 'event_manager', 'bailarin',
+  'dj', 'grupo-musical', 'disco-movil', 'staff', 'azafata', 'event_manager', 'bailarin',
   'makeup', 'peluqueria', 'media', 'fotografo', 'photo-booth', 'tecnico', 'alquiler', 'local_eventos',
   'mago', 'humorista', 'monologo', 'animador', 'catering', 'food-truck', 'vestuario',
   'promotor', 'speaker', 'wedding-planner', 'design', 'diseno-grafico',

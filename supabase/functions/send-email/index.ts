@@ -31,7 +31,7 @@ const ROL_ES: Record<string, string> = {
   catering: 'Catering', makeup: 'Maquillaje', peluqueria: 'Peluquería',
   media: 'Media & Fotografía', 'grupo-musical': 'Grupo Musical', mago: 'Mago',
   humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
-  speaker: 'Speaker', vestuario: 'Estilismo', 'photo-booth': 'Photo Booth', 'food-truck': 'Food Truck',
+  speaker: 'Speaker', vestuario: 'Estilismo', 'photo-booth': 'Photo Booth', 'food-truck': 'Food Truck', 'disco-movil': 'Disco Móvil',
   empresario: 'Organizador',
   tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', local_eventos: 'Local para eventos',
   // Alta por Google OAuth sin rol elegido todavía (handle_new_user cae aquí
@@ -1160,6 +1160,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       animador:        { q: 'además de animar', quienes: 'Muchos animadores no solo animan: organizan la fiesta entera', necesitan: 'DJ, catering o photo booth', perfil: 'animador', ficha: 'tus actividades, tu tarifa y tus fotos' },
       media:           { q: 'además de fotografiar', quienes: 'Muchos fotógrafos no solo hacen fotos: producen el evento o la sesión completa', necesitan: 'maquillaje, modelos o DJ', perfil: 'fotógrafo', ficha: 'tu estilo, tu tarifa y tu portfolio' },
       'food-truck':    { q: 'además del food truck', quienes: 'Muchos food trucks no solo ponen la comida: montan el evento completo', necesitan: 'DJ, camareros o photo booth', perfil: 'food truck', ficha: 'tu carta, tu precio por evento y tus fotos' },
+      'disco-movil':   { q: 'además de la disco móvil', quienes: 'Muchas disco móviles no solo ponen el sonido: montan la fiesta entera', necesitan: 'animador, photo booth o camareros', perfil: 'disco móvil', ficha: 'tu equipo, tu tarifa y tus fotos' },
       'photo-booth':   { q: 'además del photo booth', quienes: 'Muchos photo booths no solo ponen el fotomatón: montan el evento completo', necesitan: 'DJ, camareros o animador', perfil: 'photo booth', ficha: 'tu servicio, tu tarifa y tus fotos' },
       vestuario:       { q: 'además del vestuario', quienes: 'Mucha gente de vestuario no solo viste: produce desfiles, rodajes o eventos', necesitan: 'maquillaje, peluquería o fotógrafo', perfil: 'vestuario', ficha: 'tu trabajo, tu tarifa y tu portfolio' },
       event_manager:   { q: 'y necesitas equipo', quienes: 'Si coordinas eventos, necesitas encontrar profesionales rápido', necesitan: 'DJ, camareros, catering o fotógrafo', perfil: 'event manager', ficha: 'tu experiencia, tu tarifa y tus fotos' },

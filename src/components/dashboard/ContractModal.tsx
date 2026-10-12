@@ -35,6 +35,7 @@ const ROLE_SERVICE: Record<string, string> = {
   design:    'servicios de diseño gráfico y/o VJing',
   catering:  'servicios de catering y chef profesional para eventos',
   'food-truck': 'servicio de food truck (cocina móvil) para eventos',
+  'disco-movil': 'servicio de disco móvil (equipo de sonido, iluminación y DJ) para eventos',
   mago:      'servicios de magia e ilusionismo para eventos',
   bailarin:  'servicios de baile y danza para eventos',
   humorista: 'servicios de humor y entretenimiento cómico para eventos',

@@ -101,6 +101,7 @@ const ROLE_CFG: Record<string, {
   // Faltaban los 10 de abajo, y como getRoleCfg caía en ROLE_CFG.dj, la ficha
   // de un grupo musical, un mago o un catering se presentaba como
   // "DJ · Artista". El rol se guardaba bien: lo que mentía era esta etiqueta.
+  'disco-movil':   { color: '#0891B2', glow: 'rgba(8,145,178,0.4)',   label: 'Disco Móvil',         tagline: 'Sonido y luces para tu fiesta', icon: Music },
   'grupo-musical': { color: '#DB2777', glow: 'rgba(219,39,119,0.4)',  label: 'Grupo Musical',       tagline: 'Música en directo',             icon: Music },
   catering:  { color: '#B45309', glow: 'rgba(180,83,9,0.35)',     label: 'Catering · Chef',     tagline: 'El sabor de la noche',          icon: Star },
   mago:      { color: '#7C3AED', glow: 'rgba(124,58,237,0.4)',    label: 'Mago · Ilusionista',  tagline: 'Lo imposible, en directo',      icon: Star },

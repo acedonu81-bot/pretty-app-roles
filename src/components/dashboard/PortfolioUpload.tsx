@@ -39,6 +39,7 @@ const EMPTY_CTA: Record<string, { title: string; body: string }> = {
   speaker:      { title: 'Sube un clip presentando: tu voz es tu portfolio', body: 'Un fragmento de una gala, boda o congreso real muestra tu presencia esc\u00e9nica mejor que cualquier descripci\u00f3n. Los perfiles con v\u00eddeo reciben m\u00e1s contactos.' },
   vestuario:    { title: 'Sube tu book: looks y styling de trabajos reales', body: 'Novias, artistas y producciones eligen estilista por su ojo. Tu book es la prueba \u2014 los perfiles con portfolio posicionan mejor en el directorio.' },
   alquiler:     { title: 'Ense\u00f1a tu equipo: fotos reales, no de cat\u00e1logo', body: 'Sube fotos de tu material montado en eventos y del almac\u00e9n: altavoces, luces, cabinas. Quien alquila quiere saber exactamente qu\u00e9 le llega y en qu\u00e9 estado.' },
+  'disco-movil': { title: 'Enseña tu montaje funcionando', body: 'Sube fotos y vídeos de tu equipo montado en un evento real: la pista llena, las luces encendidas y la cabina. Quien organiza quiere ver qué llega a su fiesta.' },
   'food-truck': { title: 'Tu food truck entra por los ojos', body: 'Sube fotos del camión montado en un evento real, de tus platos y de la gente haciendo cola. Quien organiza quiere ver qué llega y cómo queda en su espacio.' },
   'photo-booth': { title: 'Ense\u00f1a tus cabinas en acci\u00f3n', body: 'Fotos de tus photo booth montados en eventos reales, props y ejemplos de impresi\u00f3n. Quien alquila quiere ver exactamente lo que llega a su evento.' },
 };

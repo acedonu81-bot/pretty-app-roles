@@ -15,6 +15,7 @@ const ROLES = [
   { value: 'promotor', label: 'Promotor / RRPP' },
   { value: 'catering', label: 'Catering & Chef' },
   { value: 'food-truck', label: 'Food Truck' },
+  { value: 'disco-movil', label: 'Disco Móvil' },
   { value: 'mago', label: 'Mago & Ilusionista' },
   { value: 'bailarin', label: 'Instructor / Bailarín' },
   { value: 'animador', label: 'Payaso & Animador' },

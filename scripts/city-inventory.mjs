@@ -85,7 +85,7 @@ export function matchesCity(zone, cityName) {
 export const ROLE_MAP = {
   dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
   catering: ['catering'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
-  'disco-movil': ['dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
+  'disco-movil': ['disco-movil', 'dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
   bailarin: ['bailarin'], 'grupo-musical': ['grupo-musical'],
   humorista: ['humorista'], monologo: ['humorista'], monologos: ['humorista'],
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],

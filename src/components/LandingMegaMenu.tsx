@@ -31,6 +31,7 @@ const TABS: Tab[] = [
         links: [
           { label: 'DJs', href: '/directorio/dj' },
           { label: 'Grupos musicales', href: '/directorio/grupo-musical' },
+          { label: 'Disco móvil', href: '/directorio/disco-movil' },
           { label: 'DJs emergentes', href: '/directorio/djs-emergentes' },
           { label: 'Técnicos de sonido', href: '/directorio/tecnico-sonido' },
           { label: 'Alquiler de equipos', href: '/directorio/alquiler-equipos' },

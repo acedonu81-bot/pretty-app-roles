@@ -139,6 +139,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                 // Faltaban roles que ya existen en el alta: un empresario no
                 // podía filtrar por ellos y parecía que no había nadie.
                 { value: 'grupo-musical', label: 'Grupo Musical' },
+                { value: 'disco-movil', label: 'Disco Móvil' },
                 { value: 'bailarin', label: 'Bailarín / Danza' },
                 { value: 'mago', label: 'Mago / Ilusionista' },
                 { value: 'humorista', label: 'Humorista / Cómico' },

@@ -59,6 +59,7 @@ const Section = ({ title, icon, children }: SectionProps) => (
 const ROLE_OPTIONS = [
   { value: 'dj',              label: 'DJ / Artista / Productor' },
   { value: 'grupo-musical',   label: 'Grupo musical' },
+  { value: 'disco-movil',     label: 'Disco Móvil' },
   { value: 'staff',           label: 'Camarero / Sala' },
   { value: 'azafata',         label: 'Azafata' },
   { value: 'event_manager',   label: 'Encargada de Eventos' },

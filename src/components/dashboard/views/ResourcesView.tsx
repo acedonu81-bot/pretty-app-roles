@@ -43,6 +43,7 @@ const GUIDES_BY_ROLE: Record<string, Guide[]> = {
     { title: 'Cuánto cobra un DJ en España', desc: 'Tarifas reales por tipo de evento y zona.', href: '/blog/cuanto-cobra-un-dj-en-espana' },
     { title: 'Calculadora de tarifa DJ', desc: 'Calcula tu caché según horas, desplazamiento y equipo.', href: '/blog/calculadora-tarifa-dj' },
     { title: 'Qué debe incluir un contrato de DJ', desc: 'Las cláusulas que evitan el bolo que no te pagan.', href: '/blog/contrato-dj-que-debe-incluir' },
+    { title: 'Código de buenas prácticas del DJ', desc: 'Las 9 normas de conducta profesional, con fuentes de AEDYP y asociaciones internacionales.', href: '/blog/codigo-buenas-practicas-dj' },
   ],
   camareros: [
     { title: 'Cómo trabajar de camarero de eventos', desc: 'Cómo entrar en el circuito de bodas y caterings.', href: '/blog/como-trabajar-de-camarero-eventos' },
@@ -72,6 +73,10 @@ const GUIDES_BY_ROLE: Record<string, Guide[]> = {
     { title: 'Precio de azafatas para eventos', desc: 'Tarifas por jornada de feria, congreso y promoción.', href: '/blog/precio-azafatas-eventos-espana' },
     { title: 'Cuánto cobra un promotor / RRPP', desc: 'Fijo, comisión y mixto: cómo se paga de verdad.', href: '/blog/cuanto-cobra-un-promotor-rrpp' },
     { title: 'Contrato con proveedores de eventos', desc: 'Qué firmar antes de un servicio.', href: '/blog/contrato-proveedores-eventos' },
+  ],
+  'disco-movil': [
+    { title: 'Disco móvil para comuniones: precios', desc: 'Paquetes, qué incluye y cómo presentar tu servicio.', href: '/blog/disco-movil-para-comuniones' },
+    { title: 'Disco móvil para verbenas y fiestas de pueblo', desc: 'Precios y lo que piden las comisiones de fiestas.', href: '/blog/disco-movil-verbenas-fiestas-pueblo' },
   ],
   'grupo-musical': [
     { title: 'Precio de un grupo musical para boda', desc: 'Qué se cobra por formación y duración.', href: '/blog/grupo-musical-para-boda-precio' },

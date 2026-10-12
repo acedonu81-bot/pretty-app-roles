@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, ClipboardList, Speaker, Truck } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, ClipboardList, Speaker, Truck, Disc3 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -21,6 +21,7 @@ const WIZARD_CITIES = [...ALL_CITIES, 'Otra ciudad'];
 const ROLES = [
   { value: 'dj',           label: 'DJ / Artista',        desc: 'DJ o artista en solitario',         icon: Music2,         color: '#D4AF37' },
   { value: 'grupo-musical', label: 'Grupo Musical',      desc: 'Banda, orquesta o grupo de versiones', icon: Guitar,       color: '#c084fc' },
+  { value: 'disco-movil',  label: 'Disco Móvil',         desc: 'Sonido, luces y DJ para fiestas',   icon: Disc3,          color: '#22d3ee' },
   { value: 'media',        label: 'Fotógrafo / Vídeo',   desc: 'Fotografía y video de eventos',     icon: Camera,         color: '#60a5fa' },
   { value: 'makeup',       label: 'Maquilladora',        desc: 'Maquillaje y estilismo',            icon: Sparkles,       color: '#f472b6' },
   { value: 'peluqueria',   label: 'Peluquería a Domicilio', desc: 'Peluquería a domicilio, eventos y día a día', icon: Scissors, color: '#fb7185' },
@@ -173,6 +174,14 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
       ['Sube tu book', 'Looks y styling de trabajos reales'],
       ['Define tu especialidad', 'Novias, artistas, producciones...'],
       ['Añade tu tarifa', 'Por sesión o por proyecto'],
+    ],
+  },
+  'disco-movil': {
+    title: 'Tu perfil de Disco Móvil está listo',
+    tips: [
+      ['Sube fotos de tu montaje', 'Equipo de sonido y luces funcionando en un evento real'],
+      ['Define qué incluye', 'Sonido, luces, humo, DJ, animación, karaoke...'],
+      ['Añade tu tarifa', 'Precio por hora con el equipo incluido'],
     ],
   },
   'food-truck': {

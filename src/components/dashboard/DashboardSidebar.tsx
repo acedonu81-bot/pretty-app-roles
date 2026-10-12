@@ -38,6 +38,7 @@ interface SidebarProps {
 // coherente con el resto de XPEAK.
 const DIRECTORY_ITEMS: { id: string; label: string }[] = [
   { id: 'grupo-musical', label: 'Grupos Musicales' },
+  { id: 'disco-movil', label: 'Disco Móvil' },
   { id: 'dj', label: 'DJs, Artistas & Música en Vivo' },
   { id: 'emergentes', label: 'DJs Emergentes' },
   { id: 'staff', label: 'Sala & Barra' },
@@ -68,7 +69,7 @@ const DIRECTORY_IDS = new Set(DIRECTORY_ITEMS.map(i => i.id));
 // (que sí son camareros) se confundían entre sí. Ahora cada etiqueta nombra
 // literalmente a quien contiene.
 const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
-  { label: 'Música', ids: ['dj', 'grupo-musical', 'emergentes'] },
+  { label: 'Música', ids: ['dj', 'grupo-musical', 'disco-movil', 'emergentes'] },
   { label: 'Sala, Barra, Catering & Locales', ids: ['staff', 'catering', 'food-truck', 'local_eventos'] },
   { label: 'Imagen & Media', ids: ['media', 'photo-booth', 'design'] },
   { label: 'Azafatas & RRPP', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
@@ -77,7 +78,7 @@ const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
   { label: 'Técnica & Producción', ids: ['tecnico', 'alquiler'] },
 ];
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería', media: 'Media', empresario: 'Organizador', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', 'food-truck': 'Food Truck', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth', 'grupo-musical': 'Grupo Musical', tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', emergentes: 'DJs Emergentes', local_eventos: 'Locales para eventos' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería', media: 'Media', empresario: 'Organizador', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', 'food-truck': 'Food Truck', 'disco-movil': 'Disco Móvil', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth', 'grupo-musical': 'Grupo Musical', tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', emergentes: 'DJs Emergentes', local_eventos: 'Locales para eventos' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();
@@ -165,7 +166,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
   );
 };
 
-const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, iconColor }: {
+const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, iconColor, navId }: {
   icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
   label: string;
   isActive: boolean;
@@ -181,9 +182,12 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
    *  (ej. Feed en azul) sin afectar a los demás. iconAlert manda si ambos
    *  están presentes. */
   iconColor?: string;
+  /** Ancla de la ventana de consejos (ConsejosPanel busca [data-nav]). */
+  navId?: string;
 }) => (
   <SidebarMenuItem>
     <SidebarMenuButton
+      data-nav={navId}
       onClick={onClick}
       isActive={isActive}
       tooltip={label}
@@ -333,10 +337,10 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
         <div className="mb-1">
           <GroupLabel>Panel</GroupLabel>
           <SidebarMenu>
-            <NavItem icon={Home} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} />
-            <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} badge={flashBadge} badgeColor="gold" />
-            <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} badge={msgBadge} badgeColor="blue" />
-            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" />
+            <NavItem icon={Home} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} navId={homeView === 'profile' ? 'inicio' : homeView} />
+            <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} iconAlert={flashBadge > 0} navId="flashbooking" />
+            <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} iconAlert={msgBadge > 0} navId="messages" />
+            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" navId="feed" />
           </SidebarMenu>
         </div>
 
@@ -357,7 +361,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
             {/* Si "Inicio" ya lleva al mapa, este botón sería un duplicado
                 exacto (mismo destino, los dos encendidos a la vez). */}
             {homeView !== 'explorar' && (
-              <NavItem icon={LayoutGrid} label="Explorar categorías" isActive={activeView === 'explorar'} onClick={() => onViewChange('explorar')} />
+              <NavItem icon={LayoutGrid} label="Explorar categorías" isActive={activeView === 'explorar'} onClick={() => onViewChange('explorar')} navId="explorar" />
             )}
             <SidebarMenuItem>
               <SidebarMenuButton
@@ -370,6 +374,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                   setDirOpen(o => !o);
                 }}
                 tooltip="Directorio"
+                data-nav="directorio"
                 className="h-auto py-2 px-2.5 rounded-[11px]"
               >
                 <span className="flex-shrink-0 flex items-center justify-center" style={{ width: 17, height: 17, color: 'rgba(10,9,8,0.55)' }}>
@@ -463,12 +468,12 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
         <div className="mb-1">
           <GroupLabel>Mi cuenta</GroupLabel>
           <SidebarMenu>
-            <NavItem icon={User} label="Mi Perfil" isActive={activeView === 'profile'} onClick={() => onViewChange('profile')} />
-            <NavItem icon={FileEdit} label="Mi Ficha" isActive={activeView === 'ficha'} onClick={() => onViewChange('ficha')} />
+            <NavItem icon={User} label="Mi Perfil" isActive={activeView === 'profile'} onClick={() => onViewChange('profile')} navId="profile" />
+            <NavItem icon={FileEdit} label="Mi Ficha" isActive={activeView === 'ficha'} onClick={() => onViewChange('ficha')} navId="ficha" />
             {isAgency && (
               <NavItem icon={Building2} label="Panel Agencia" isActive={activeView === 'agency'} onClick={() => onViewChange('agency')} />
             )}
-            <NavItem icon={BarChart3} label="Estadísticas" isActive={activeView === 'stats'} onClick={() => onViewChange('stats')} />
+            <NavItem icon={BarChart3} label="Estadísticas" isActive={activeView === 'stats'} onClick={() => onViewChange('stats')} navId="stats" />
           </SidebarMenu>
         </div>
 
@@ -478,9 +483,9 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
         <div className="mb-1">
           <GroupLabel>Herramientas</GroupLabel>
           <SidebarMenu>
-            <NavItem icon={CalendarDays} label="Calendario" isActive={activeView === 'calendar'} onClick={() => onViewChange('calendar')} />
-            <NavItem icon={FileText} label="Contratos" isActive={activeView === 'contracts'} onClick={() => onViewChange('contracts')} />
-            <NavItem icon={Sparkles} label="Recursos" isActive={activeView === 'resources'} onClick={() => onViewChange('resources')} />
+            <NavItem icon={CalendarDays} label="Calendario" isActive={activeView === 'calendar'} onClick={() => onViewChange('calendar')} navId="calendar" />
+            <NavItem icon={FileText} label="Contratos" isActive={activeView === 'contracts'} onClick={() => onViewChange('contracts')} navId="contracts" />
+            <NavItem icon={Sparkles} label="Recursos" isActive={activeView === 'resources'} onClick={() => onViewChange('resources')} navId="resources" />
             {/* Mismo destino que el banner "colaboraciones pendientes de
                 valorar" — acceso siempre visible, no solo cuando hay pendientes,
                 para quien no vio la notificación o el banner y quiere entrar
@@ -488,7 +493,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                 usuario el 5 oct 2026). Sin onGoToReviews cae a 'resources'
                 en vez de navegar a ningún sitio, para no romper si algún
                 caller aún no pasa la prop nueva. */}
-            <NavItem icon={ThumbsUp} label="Reseñas" isActive={false} onClick={() => (onGoToReviews ?? (() => onViewChange('resources')))()} />
+            <NavItem icon={ThumbsUp} label="Reseñas" isActive={false} onClick={() => (onGoToReviews ?? (() => onViewChange('resources')))()} navId="resenas" />
           </SidebarMenu>
         </div>
 
@@ -496,7 +501,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
 
         <div className="mb-1">
           <SidebarMenu>
-            <NavItem icon={Settings} label="Ajustes" isActive={activeView === 'settings'} onClick={() => onViewChange('settings')} />
+            <NavItem icon={Settings} label="Ajustes" isActive={activeView === 'settings'} onClick={() => onViewChange('settings')} navId="settings" />
             {isAdmin && (
               <NavItem
                 icon={Shield}

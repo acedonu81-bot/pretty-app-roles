@@ -157,6 +157,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     { value: 'promotor',      label: 'Promotor' },
     { value: 'catering',      label: 'Catering / Cocina' },
     { value: 'food-truck',    label: 'Food Truck' },
+    { value: 'disco-movil',   label: 'Disco Móvil' },
     { value: 'photo-booth',   label: 'Photo Booth' },
     { value: 'makeup',        label: 'Maquillaje' },
     { value: 'peluqueria',    label: 'Peluquería a Domicilio' },
@@ -1100,6 +1101,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     ? 'Ej: Camarero de sala y barra. Coctelería básica. Traje propio. Inglés fluido. Experiencia en bodas de 200+ invitados.'
                   : profile.role === 'catering'
                     ? 'Ej: Catering para bodas y eventos de empresa. Menú cerrado o buffet. Opciones veganas y sin gluten. Personal de sala incluido.'
+                  : profile.role === 'disco-movil'
+                    ? 'Ej: Disco móvil con equipo propio de sonido y luces, DJ incluido. Montaje en 1 hora, solo necesitamos una toma de corriente. Bodas, comuniones y fiestas de pueblo.'
                   : profile.role === 'food-truck'
                     ? 'Ej: Food truck de hamburguesas gourmet. Servimos hasta 200 comensales. Generador propio, solo necesitamos acceso para el camión y 4x3 m de espacio.'
                   : 'Describe tu especialidad y requisitos...';
@@ -1115,6 +1118,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   staff:         ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala'],
                   camarero:      ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala', 'Coctelería'],
                   catering:      ['Menú cerrado', 'Buffet', 'Cocina en directo', 'Opciones veganas', 'Personal incluido'],
+                  'disco-movil': ['Equipo propio completo', 'Luces incluidas', 'DJ incluido', 'Microfonía inalámbrica', 'Necesita toma de corriente', 'Montaje en 1 hora', 'Hasta 200 invitados', 'Más de 300 invitados'],
                   'food-truck':  ['Generador propio', 'Necesita toma de corriente', 'Hasta 100 comensales', 'Más de 200 comensales', 'Opciones veganas', 'Sin gluten', 'Registro sanitario al día'],
                   event_manager: ['Coordinación integral', 'Presupuesto detallado', 'Gestión de proveedores', 'On-site el día del evento', 'Experiencia en bodas', 'Experiencia en festivales'],
                 };

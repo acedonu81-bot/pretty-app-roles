@@ -33,7 +33,7 @@ import {
 
 const ROLE_ICON: Record<string, LucideIcon> = {
   dj: Disc3, fotografo: Camera, staff: Users, azafata: Users, camareros: Wine, maquillaje: Palette,
-  promotores: Megaphone, catering: UtensilsCrossed, 'food-truck': Truck, 'grupo-musical': Music,
+  promotores: Megaphone, catering: UtensilsCrossed, 'food-truck': Truck, 'grupo-musical': Music, 'disco-movil': Disc3,
   animador: PartyPopper, mago: Wand2, humorista: Mic, bailarin: Drama,
   speaker: Presentation, vestuario: Shirt, 'photo-booth': Aperture,
   'wedding-planner': CalendarHeart, 'diseno-grafico': PenTool,
@@ -47,7 +47,7 @@ const ROLE_ICON: Record<string, LucideIcon> = {
 // Entretenimiento) — antes el menú listaba los 17 roles sueltos sin ninguna
 // agrupación, difícil de escanear de un vistazo.
 const ROLE_GROUPS: { label: string; slugs: string[] }[] = [
-  { label: 'Música', slugs: ['grupo-musical', 'dj'] },
+  { label: 'Música', slugs: ['grupo-musical', 'disco-movil', 'dj'] },
   { label: 'Camareros & Catering', slugs: ['staff', 'catering', 'food-truck'] },
   { label: 'Imagen & Media', slugs: ['fotografo', 'photo-booth', 'diseno-grafico'] },
   { label: 'Azafatas & RRPP', slugs: ['azafata', 'promotores', 'speaker', 'wedding-planner'] },
