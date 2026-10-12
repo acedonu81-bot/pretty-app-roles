@@ -19,12 +19,16 @@ supabase/functions/ — edge functions (send-email)
 scripts/            — prerender-meta.mjs, update-sitemap.mjs
 ```
 
+## Commits y deploys (12 oct 2026)
+- Cada cambio terminado y verificado (tests/build) se commitea en el momento, en un commit por tema. No dejar trabajo sin commitear al acabar una tarea: el 12 oct había 428 archivos acumulados de varias sesiones y cada deploy obligaba a revisar a mano.
+- Lo que no deba salir todavía (p. ej. el concurso DJ) se queda sin commitear o en una rama: `deploy:prod` solo publica HEAD, así que no se cuela.
+
 ## Comandos
 - `npm run dev` — dev server (localhost:5173)
 - `npm run build` — build + prerender + sitemap
 - `npm test` — vitest
 - `npx tsc --noEmit` — type check
-- `npx vercel --prod --yes` — deploy producción (Vercel no auto-despliega desde GitHub)
+- `npm run deploy:prod` — deploy producción del último commit (HEAD) desde una copia limpia, y asigna xpeak.es / www.xpeak.es / xpeak.site. Vercel no auto-despliega desde GitHub. NUNCA `npx vercel --prod` desde esta carpeta: sube también lo que no está commiteado
 - `git push origin main` — sube código a GitHub (token en macOS Keychain; sí funciona)
 - `npm run indexnow` — notifica a Bing/IndexNow las URLs del sitemap. Ejecutar SOLO tras un deploy real a producción, nunca en builds locales de prueba (spamea el ping)
 
