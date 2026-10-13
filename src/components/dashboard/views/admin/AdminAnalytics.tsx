@@ -512,7 +512,7 @@ export default function AdminAnalytics() {
             <div className="flex items-center gap-4 mb-3 flex-wrap">
               {(() => {
                 const porDevice = personasPwa.reduce<Record<string, number>>((acc, p) => {
-                  const d = p.device || 'desconocido';
+                  const d = p.sistema || p.device || 'desconocido';
                   acc[d] = (acc[d] || 0) + 1;
                   return acc;
                 }, {});
@@ -539,7 +539,7 @@ export default function AdminAnalytics() {
                       {p.aperturas === 1 ? '1 apertura' : `${p.aperturas} aperturas`}
                     </span>
                   )}
-                  <span className="text-[0.68rem] font-bold" style={{ color: GOLD }}>{p.device}</span>
+                  <span className="text-[0.68rem] font-bold" style={{ color: GOLD }}>{p.sistema || p.device}</span>
                   <span className="text-[0.68rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
                     {new Date(p.ultima).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
                   </span>

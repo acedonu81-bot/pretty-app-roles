@@ -148,6 +148,18 @@ function deviceType(): string {
   return 'desktop';
 }
 
+/** Sistema del aparato, para saber si la PWA está en iPhone o Android. Va en `detalle` de los eventos pwa_*. */
+function sistemaOperativo(): string {
+  const ua = navigator.userAgent || '';
+  if (/iPhone|iPod/i.test(ua)) return 'iphone';
+  // iPadOS 13+ se anuncia como Macintosh: se distingue por ser táctil.
+  if (/iPad/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return 'ipad';
+  if (/Android/i.test(ua)) return 'android';
+  if (/Windows/i.test(ua)) return 'windows';
+  if (/Macintosh/i.test(ua)) return 'mac';
+  return 'otro';
+}
+
 /** Solo el hostname del referrer: la URL completa puede llevar términos de búsqueda. */
 function referrerHost(): string {
   try {
@@ -309,7 +321,7 @@ export function logAuthFieldTouched(campo: string) {
  * instalaciones en iOS.
  */
 export function logPwaInstalled() {
-  void logEvent('pwa_installed', location.pathname);
+  void logEvent('pwa_installed', location.pathname, sistemaOperativo());
   track('pwa_installed');
 }
 
@@ -328,6 +340,6 @@ export function logPwaSessionIfStandalone() {
       || window.matchMedia('(display-mode: standalone)').matches;
     if (!standalone) return;
     sessionStorage.setItem(PWA_SESSION_KEY, '1');
-    void logEvent('pwa_session', location.pathname);
+    void logEvent('pwa_session', location.pathname, sistemaOperativo());
   } catch { /* storage bloqueado: sin efecto, no es crítico */ }
 }

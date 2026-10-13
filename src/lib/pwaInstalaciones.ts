@@ -2,12 +2,16 @@
 export type EventoPwa = {
   instalado_en: string; device: string | null;
   display_name: string | null; rol: string | null; evento: string;
+  /** Sistema (iphone, android...) desde que se registra; null en eventos anteriores. */
+  detalle?: string | null;
 };
 
 export type PersonaPwa = {
   display_name: string | null; rol: string | null; device: string | null;
   /** Hubo 'pwa_installed' en el rango: la instaló ahora, no "ya la tenía". */
   instalo: boolean;
+  /** iphone, android, ipad, windows, mac, otro; null si solo hay eventos antiguos sin ese dato. */
+  sistema: string | null;
   /** Veces que abrió la web en modo app ('pwa_session'). */
   aperturas: number;
   /** Último evento de esa persona. */
@@ -27,9 +31,11 @@ export function agruparInstalacionesPwa(eventos: EventoPwa[]): PersonaPwa[] {
     const clave = e.display_name ? `${e.display_name}|${e.rol ?? ''}` : `anonimo:${idx}`;
     let p = porPersona.get(clave);
     if (!p) {
-      p = { display_name: e.display_name, rol: e.rol, device: e.device, instalo: false, aperturas: 0, ultima: e.instalado_en };
+      p = { display_name: e.display_name, rol: e.rol, device: e.device, instalo: false, sistema: null, aperturas: 0, ultima: e.instalado_en };
       porPersona.set(clave, p);
     }
+    // Los eventos llegan del más reciente al más antiguo: manda el primer sistema que aparezca.
+    if (!p.sistema && e.detalle) p.sistema = e.detalle;
     if (e.evento === 'pwa_installed') p.instalo = true;
     if (e.evento === 'pwa_session') p.aperturas += 1;
     if (new Date(e.instalado_en) > new Date(p.ultima)) {
