@@ -1880,16 +1880,6 @@ async function atender(req: Request): Promise<Response> {
       if ((hoy ?? 0) >= 5) {
         return new Response(JSON.stringify({ ok: true, skipped: 'tope_diario' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
-      // Ofertas musicales (DJ, grupo musical): solo a quien ha puesto su estilo
-      // de música en el perfil, sea el que sea (decisión del usuario, 13 oct 2026).
-      // Los demás oficios no usan estilos y reciben el aviso igualmente.
-      if (/\b(dj|grupo musical)\b/i.test(String(data.roles ?? ''))) {
-        const { data: perfiles } = await dedupeClient.from('profiles').select('genres').eq('user_id', data.user_id);
-        const conEstilo = (perfiles ?? []).some((p: any) => Array.isArray(p.genres) && p.genres.length > 0);
-        if (!conEstilo) {
-          return new Response(JSON.stringify({ ok: true, skipped: 'sin_estilo' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-        }
-      }
       const { error: reserveError } = await dedupeClient.from('email_logs' as any).insert({
         user_id: data.user_id,
         type: `oferta_nueva_${data.request_id}`,
