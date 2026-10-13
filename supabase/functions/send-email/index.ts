@@ -95,8 +95,8 @@ ${preview ? preheader(preview) : ''}
     ${content}
   </div>
   <div style="padding:20px 32px 28px;text-align:center;border-top:1px solid rgba(10,9,8,0.06)">
-    <p style="color:#9CA3AF;font-size:11px;margin:0 0 6px">XPEAK · <a href="mailto:info@xpeak.site" style="color:#9CA3AF">info@xpeak.site</a> · <a href="https://xpeak.es" style="color:#9CA3AF">xpeak.es</a></p>
-    <p style="color:#C4C7CB;font-size:10px;margin:0">¿No quieres recibir más emails? <a href="${UNSUB_PLACEHOLDER}" style="color:#B0B3B8;text-decoration:underline">Anular suscripción</a></p>
+    <p style="color:#6B7280;font-size:12px;line-height:1.5;margin:0 0 6px">XPEAK · <a href="mailto:info@xpeak.site" style="color:#6B7280">info@xpeak.site</a> · <a href="https://xpeak.es" style="color:#6B7280">xpeak.es</a></p>
+    <p style="color:#6B7280;font-size:12px;line-height:1.5;margin:0">¿No quieres recibir más emails? <a href="${UNSUB_PLACEHOLDER}" style="color:#4B5563;text-decoration:underline">Anular suscripción</a></p>
   </div>
 </div>
 </div>`;
