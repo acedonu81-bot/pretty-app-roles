@@ -186,7 +186,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
   /** Ancla de la ventana de consejos (ConsejosPanel busca [data-nav]). */
   navId?: string;
   /** Etiqueta azul de aviso junto al nombre (p. ej. "Concurso DJ" en Feed).
-   *  Con el sidebar plegado a iconos queda como un punto azul en el icono. */
+   *  Con el sidebar plegado a iconos queda como un punto verde en el icono. */
   etiqueta?: string;
 }) => (
   <SidebarMenuItem>
@@ -222,8 +222,10 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
             style={{ background: '#2563EB', color: '#fff' }}>
             {etiqueta}
           </span>
-          <span aria-hidden className="hidden group-data-[collapsible=icon]:block absolute top-0.5 right-0.5 w-2 h-2 rounded-full"
-            style={{ background: '#2563EB', boxShadow: '0 0 0 2px #fff' }} />
+          {/* Verde de marca (no azul): sobre el icono azul del Feed el punto
+              azul no se distinguía con el menú plegado. */}
+          <span aria-hidden className="hidden group-data-[collapsible=icon]:block absolute top-0 right-0 w-2.5 h-2.5 rounded-full"
+            style={{ background: '#059669', boxShadow: '0 0 0 2px #fff' }} />
         </>
       )}
     </SidebarMenuButton>
