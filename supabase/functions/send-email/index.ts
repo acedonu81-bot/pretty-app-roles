@@ -507,6 +507,46 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     };
   },
 
+  // 13 oct 2026: un DJ se apuntó a Burguerfest y el organizador no se enteró: su
+  // único aviso era la campana (sin push, sin email, sin globo en el menú). Va a
+  // quien publicó la oferta, con enlace que abre la oferta y deja el candidato a
+  // un clic de "Elegir". No lleva teléfono ni correo del profesional: el
+  // contacto va por el chat de XPEAK.
+  oferta_respuesta: (d) => {
+    const id = /^[0-9a-f-]{36}$/i.test(String(d.request_id ?? '')) ? String(d.request_id) : '';
+    const url = `https://xpeak.es/dashboard?view=flashbooking&tab=demanda${id ? `&oferta=${id}` : ''}`;
+    const plano = (v: unknown) => String(v ?? '').replace(/[\r\n<>]+/g, ' ').trim();
+    const pro = d.profesional || 'Un profesional';
+    const titulo = d.titulo || 'tu oferta';
+    return {
+      // El asunto es texto plano: esc() lo dejaría como "Tom &amp; Jerry".
+      subject: `${plano(pro)} se ha apuntado a tu oferta de ${plano(titulo)}`,
+      to: d.email,
+      html: base(`
+        <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Alguien se ha apuntado a tu oferta</h2>
+        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 16px">
+          Hola <strong style="color:#0a0908">${esc(d.name || 'organizador')}</strong>.
+          <strong style="color:#0a0908">${esc(pro)}</strong> quiere hacer el bolo de
+          <strong style="color:#0a0908">${esc(titulo)}</strong>${d.rol ? ` (${esc(d.rol)})` : ''}.
+        </p>
+        ${d.mensaje ? `<div style="background:rgba(10,9,8,0.03);border-left:3px solid #D4AF37;border-radius:4px;padding:10px 14px;margin:0 0 16px">
+          <p style="color:#0a0908;font-size:14px;line-height:1.6;margin:0">${esc(d.mensaje)}</p>
+        </div>` : ''}
+        <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:14px 18px;margin:0 0 6px">
+          <p style="color:#7a6216;font-weight:700;font-size:12px;margin:0 0 8px;text-transform:uppercase;letter-spacing:1px">Para cerrarlo</p>
+          <p style="color:#0a0908;font-size:14px;line-height:1.8;margin:0">
+            1. Pulsa el botón y se abre tu oferta.<br>
+            2. Mira su perfil y pulsa <strong>Elegir</strong>.<br>
+            3. Le avisamos al momento. En cuanto confirme, se abre el chat y puedes hacer el contrato.
+          </p>
+        </div>
+        ${btn('Ver y elegir →', url)}
+        <p style="color:#4b5563;font-size:13px;line-height:1.7;margin:18px 0 0">
+          Si antes quieres preguntarle algo, también puedes escribirle desde esa misma pantalla. Todo se hace dentro de XPEAK.
+        </p>`, `${pro} quiere el bolo de ${titulo}. Elígele con un clic.`),
+    };
+  },
+
   // 10 sep 2026: dos DJs se apuntaron al Burger Gourmet Fest en 17 minutos y el
   // organizador cerró el bolo por teléfono con otro de fuera. Solo se les avisó
   // por campana, que ninguno vio. Quien responde rápido y se queda esperando sin
@@ -1886,6 +1926,26 @@ async function atender(req: Request): Promise<Response> {
         sent_at: new Date().toISOString(),
       });
       if (reserveError) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+    }
+
+    // Respuesta a una oferta: un email por candidatura (pg_net puede reintentar)
+    // y tope de 10 al día por dirección si una racha de gente se apunta a la vez.
+    if (type === 'oferta_respuesta' && data?.response_id && data?.user_id) {
+      const dedupeResp = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+      const hace24hResp = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const { count: hoyResp } = await dedupeResp.from('email_send_log' as any).select('id', { count: 'exact', head: true })
+        .eq('type', 'oferta_respuesta').eq('to_email', to).gte('sent_at', hace24hResp);
+      if ((hoyResp ?? 0) >= 10) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'tope_diario' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+      const { error: reservaResp } = await dedupeResp.from('email_logs' as any).insert({
+        user_id: data.user_id,
+        type: `oferta_respuesta_${data.response_id}`,
+        sent_at: new Date().toISOString(),
+      });
+      if (reservaResp) {
         return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
     }
