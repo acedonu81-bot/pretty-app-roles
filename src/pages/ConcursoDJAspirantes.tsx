@@ -43,7 +43,7 @@ export default function ConcursoDJAspirantes() {
         <span aria-hidden className="absolute bottom-40 -left-20 w-72 h-72 rounded-full opacity-40 pointer-events-none" style={{ background: TONES.leaf.bubble, filter: 'blur(70px)' }} />
 
         <nav className="relative flex items-center justify-between px-4 sm:px-6 py-5 max-w-5xl mx-auto">
-          <a href="/" className="text-xl tracking-tight" style={{ color: GOLD, fontFamily: HZ.display, fontWeight: 800 }}>XPEAK</a>
+          <a href="/" className="text-xl tracking-tight" style={{ color: '#8B6A00', fontFamily: HZ.display, fontWeight: 800 }}>XPEAK</a>
           <div className="flex items-center gap-2 sm:gap-3">
             <a href="/concurso-dj-madrid" className="px-4 py-2 rounded-full text-sm transition-transform hover:-translate-y-0.5"
               style={{ background: HZ.surface, color: TONES.sun.stroke, fontFamily: HZ.body, fontWeight: 800, boxShadow: clay(TONES.sun.rgb, 'sm') }}>

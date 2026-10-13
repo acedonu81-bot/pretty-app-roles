@@ -111,6 +111,15 @@ const AceptacionLegal = ({ accion }: { accion: string }) => (
   </p>
 );
 
+const CLAVE_REDIRECT_GOOGLE = 'xpeak_redirect_google';
+function leerRedirectGoogle(): string | null {
+  try {
+    const v = sessionStorage.getItem(CLAVE_REDIRECT_GOOGLE);
+    sessionStorage.removeItem(CLAVE_REDIRECT_GOOGLE);
+    return v && v.startsWith('/') && !v.startsWith('//') ? v : null;
+  } catch { return null; }
+}
+
 const Auth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -119,7 +128,11 @@ const Auth = () => {
   // Tras login → directo al swipe (experiencia principal). El dashboard clásico
   // queda accesible desde el menú ☰ del feed ("Volver a versión clásica").
   // Un ?redirect= explícito (p.ej. tras registro con onboarding) tiene prioridad.
-  const redirectParam = searchParams.get('redirect') ?? '/descubrir';
+  // Con Google, la vuelta es a /auth sin el ?redirect= (13 oct 2026: quien se
+  // registraba desde el Concurso DJ acababa en el panel), así que se guarda
+  // antes de salir hacia Google y se recupera aquí.
+  const [redirectGoogle] = useState(leerRedirectGoogle);
+  const redirectParam = searchParams.get('redirect') ?? redirectGoogle ?? '/descubrir';
   const refParam = searchParams.get('ref') ?? '';
   const content = ROLE_CONTENT[roleParam] ?? DEFAULT_CONTENT;
 
@@ -327,6 +340,9 @@ const Auth = () => {
       return;
     }
 
+    if (redirectParam !== '/descubrir') {
+      try { sessionStorage.setItem(CLAVE_REDIRECT_GOOGLE, redirectParam); } catch { /* sin almacenamiento */ }
+    }
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${SITE_URL}/auth` },

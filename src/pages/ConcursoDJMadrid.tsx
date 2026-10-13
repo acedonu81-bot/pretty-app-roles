@@ -352,7 +352,7 @@ export default function ConcursoDJMadrid() {
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: GOLD }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-2 sm:gap-3">
             <a href={ASPIRANTES} className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold" style={{ border: `1px solid ${GOLD}`, color: GOLD_TEXT }}>
               Aspirantes
@@ -490,6 +490,7 @@ export default function ConcursoDJMadrid() {
               <li><strong>Votación (fase 1):</strong> cualquier persona con cuenta en XPEAK puede dar un me gusta a cada sesión publicada. No cuenta el me gusta que un participante se dé a sí mismo. Las 3 sesiones con más me gusta válidos pasan a la final. Al cierre, XPEAK analiza quién ha votado y cómo (antigüedad de las cuentas, ráfagas de votos, accesos repetidos) y anula los votos de bots, cuentas falsas o compradas; si un participante se beneficia de votos fraudulentos, puede quedar descalificado.</li>
               <li><strong>Jurado y fallo (fase 2):</strong> un jurado designado por XPEAK valora las 3 sesiones finalistas según técnica de mezcla, selección musical, energía y lectura, y sonido de la grabación, con el mismo peso. El fallo es inapelable y se anuncia el 9 de noviembre de 2026 en esta página y en el Instagram de XPEAK. El concurso puede declararse desierto si ninguna sesión alcanza un nivel mínimo.</li>
               <li><strong>Premio:</strong> unos auriculares Pioneer DJ HDJ-X5 para el ganador, que además sale destacado en la portada de XPEAK y en su Instagram. El premio no se puede cambiar por dinero. XPEAK contactará con el ganador por el chat de XPEAK; si no responde en 15 días, el premio pasa al siguiente clasificado.</li>
+              <li><strong>Cambio de premio:</strong> si por falta de existencias o por causas ajenas a XPEAK no se pudieran entregar los Pioneer DJ HDJ-X5, XPEAK los sustituirá por otros auriculares de DJ de gama y valor equivalentes o superiores.</li>
               <li><strong>Foto con el premio:</strong> al aceptar el premio, el ganador se compromete a publicar en su Instagram, en los 15 días siguientes a recibir los cascos, una foto o vídeo con ellos mencionando o etiquetando a @xpeaksite. XPEAK podrá compartir esa publicación.</li>
               <li><strong>Música y derechos:</strong> cada participante es responsable de que su sesión esté publicada legalmente en SoundCloud. XPEAK solo incrusta el reproductor oficial de SoundCloud y no descarga ni redistribuye la música.</li>
               <li><strong>Instagram:</strong> este concurso no está patrocinado, avalado ni administrado por Instagram ni por Meta, ni asociado a ellos de ningún modo. Los participantes eximen a Instagram y a Meta de toda responsabilidad y sus datos los recibe XPEAK, no Instagram.</li>

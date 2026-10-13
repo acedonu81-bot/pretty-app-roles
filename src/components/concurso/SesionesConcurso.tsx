@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import LikeButton from '@/components/LikeButton';
+import { Play } from 'lucide-react';
 import { HZ, TONES, clay, clayButton, clayInset } from '@/components/healthy-zone/clay';
 
 /**
@@ -33,7 +34,32 @@ const sb = supabase as unknown as {
 };
 
 function playerUrl(url: string) {
-  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23d4af37&auto_play=false&hide_related=true&show_comments=false&show_reposts=false&visual=false`;
+  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23d4af37&auto_play=true&hide_related=true&show_comments=false&show_reposts=false&visual=false`;
+}
+
+// Reproductor bajo demanda (auditoría 13 oct 2026): el iframe de SoundCloud
+// mete cookies de terceros (rastreo y su propio aviso de consentimiento) nada
+// más abrir la página, sin que nadie haya aceptado nada. Se carga solo al
+// pulsar "Escuchar" y entonces arranca solo (hay gesto del usuario).
+function Reproductor({ url, titulo }: { url: string; titulo: string }) {
+  const [abierto, setAbierto] = useState(false);
+  if (abierto) {
+    return <iframe title={titulo} src={playerUrl(url)} className="w-full rounded-xl block" height={120} allow="autoplay" />;
+  }
+  return (
+    <button type="button" onClick={() => setAbierto(true)} aria-label={`Escuchar: ${titulo}`}
+      className="w-full h-[120px] rounded-xl flex items-center gap-4 px-4 text-left transition-transform active:scale-[0.99]"
+      style={{ background: '#ffffff' }}>
+      <span className="w-14 h-14 shrink-0 rounded-full flex items-center justify-center"
+        style={{ background: `linear-gradient(135deg,${GOLD},#B8941E)`, boxShadow: clayButton('184,148,30') }}>
+        <Play size={24} fill="#2a1d00" color="#2a1d00" />
+      </span>
+      <span className="min-w-0">
+        <span className="block text-base" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>Escuchar la sesión</span>
+        <span className="block text-xs mt-0.5" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>Se abre el reproductor de SoundCloud</span>
+      </span>
+    </button>
+  );
 }
 
 const AZUL = '#2563EB';
@@ -116,7 +142,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
             </span>
           </div>
           <div className="rounded-2xl p-2" style={{ background: HZ.surface, boxShadow: clayInset }}>
-            <iframe title="Tu sesión" src={playerUrl(propia.soundcloud_url)} className="w-full rounded-xl block" height={120} loading="lazy" allow="autoplay" />
+            <Reproductor url={propia.soundcloud_url} titulo="Tu sesión" />
           </div>
           <p className="text-sm mt-4" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>
             {propia.estado === 'pendiente'
@@ -164,14 +190,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                   </span>
                 </div>
                 <div className="rounded-2xl p-2" style={{ background: HZ.surface, boxShadow: clayInset }}>
-                  <iframe
-                    title={`Sesión de ${p.display_name ?? 'DJ'}`}
-                    src={playerUrl(p.soundcloud_url)}
-                    className="w-full rounded-xl block"
-                    height={120}
-                    loading="lazy"
-                    allow="autoplay"
-                  />
+                  <Reproductor url={p.soundcloud_url} titulo={`Sesión de ${p.display_name ?? 'DJ'}`} />
                 </div>
                 <div className="flex items-center justify-between gap-2 mt-4 text-sm">
                   {/* Votar solo dentro de plazo y nunca a uno mismo: antes el DJ
