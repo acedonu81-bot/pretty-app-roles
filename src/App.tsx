@@ -288,6 +288,7 @@ const BlogComoElegirMagoEventos = lazy(() => import("./pages/BlogComoElegirMagoE
 const BlogTiposAnimacionEventos = lazy(() => import("./pages/BlogTiposAnimacionEventos"));
 const HealthyZone = lazy(() => import("./pages/HealthyZone"));
 const ConcursoDJMadrid = lazy(() => import("./pages/ConcursoDJMadrid"));
+const ConcursoDJAspirantes = lazy(() => import("./pages/ConcursoDJAspirantes"));
 const BlogTardeoPrivadoMadrid = lazy(() => import("./pages/BlogTardeoPrivadoMadrid"));
 const BlogAfterworkEmpresaMadrid = lazy(() => import("./pages/BlogAfterworkEmpresaMadrid"));
 const BlogEventosSinAlcohol = lazy(() => import("./pages/BlogEventosSinAlcohol"));
@@ -906,6 +907,7 @@ const App = () => (
             <Route path="/blog/tipos-de-animacion-para-eventos" element={<BlogTiposAnimacionEventos />} />
             <Route path="/healthy-zone" element={<HealthyZone />} />
             <Route path="/concurso-dj-madrid" element={<ConcursoDJMadrid />} />
+            <Route path="/concurso-dj-madrid/aspirantes" element={<ConcursoDJAspirantes />} />
             <Route path="/blog/tardeo-privado-madrid" element={<BlogTardeoPrivadoMadrid />} />
             <Route path="/blog/afterwork-empresa-madrid" element={<BlogAfterworkEmpresaMadrid />} />
             <Route path="/blog/eventos-sin-alcohol" element={<BlogEventosSinAlcohol />} />

@@ -70,8 +70,11 @@ export default function AdminConcurso() {
     if (estado === 'rechazada' && !window.confirm('¿Rechazar esta sesión? El DJ verá que no cumple las bases.')) return;
     setGuardando(ins.id);
     const { error } = await sb.from('concurso_inscripciones').update({ estado }).eq('id', ins.id);
-    setGuardando(null);
-    if (error) { toast.error('No se pudo guardar: ' + error.message); return; }
+    if (error) { setGuardando(null); toast.error('No se pudo guardar: ' + error.message); return; }
+    // La tarjeta cambia ya y el botón sigue bloqueado hasta acabar: antes se
+    // reactivaba mientras se enviaba el email y 4 clics mandaron 4 emails al
+    // DJ (13 oct 2026).
+    setLista(l => l?.map(x => (x.id === ins.id ? { ...x, estado } : x)) ?? l);
     if (estado === 'aceptada') {
       const nombre = perfiles[ins.user_id]?.display_name ?? 'DJ';
       const { error: mailErr } = await supabase.functions.invoke('send-email', {
@@ -83,6 +86,7 @@ export default function AdminConcurso() {
     } else {
       toast.success(estado === 'rechazada' ? 'Rechazada' : 'Guardado');
     }
+    setGuardando(null);
     cargar();
   };
 

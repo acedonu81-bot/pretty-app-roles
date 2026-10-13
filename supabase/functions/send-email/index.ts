@@ -1034,7 +1034,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Las 3 sesiones con más me gusta hasta el 2 de noviembre pasan a la final, y el jurado elige al ganador de los Pioneer DJ HDJ-X5. Compártela con tu gente: para votar solo necesitan una cuenta gratis en XPEAK.
       </p>
-      ${btn('Ver mi sesión en el concurso →', 'https://xpeak.es/concurso-dj-madrid#participantes')}`),
+      ${btn('Ver mi sesión en el concurso →', 'https://xpeak.es/concurso-dj-madrid/aspirantes')}`),
   }),
 
   booking_received: (d) => ({
@@ -1780,6 +1780,18 @@ async function atender(req: Request): Promise<Response> {
     // Validate destination email before sending
     if (!to || !to.includes('@')) {
       return new Response(JSON.stringify({ error: 'Invalid recipient email' }), { status: 400, headers: corsHeaders });
+    }
+
+    // Concurso: el aviso de "sesión aceptada" sale una vez por DJ. Un doble
+    // clic en Aceptar del panel le mandó 4 emails iguales (13 oct 2026).
+    if (type === 'concurso_aceptada') {
+      const dedupe = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+      const hace24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const { count: yaEnviado } = await dedupe.from('email_send_log' as any).select('id', { count: 'exact', head: true })
+        .eq('type', 'concurso_aceptada').eq('to_email', to).gte('sent_at', hace24h);
+      if (yaEnviado) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'ya avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
     }
 
     // Throttle de new_message: si el destinatario ya recibió un aviso de

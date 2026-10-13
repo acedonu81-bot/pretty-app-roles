@@ -10,7 +10,8 @@ import { useProfile } from '@/hooks/useProfile';
 // DJs entran a Inicio). Se oculta solo al cerrar el plazo; después se puede
 // borrar el archivo y sus usos en FeedView y ExplorarView.
 const ConcursoFeedBanner = () => {
-  // Un organizador no puede participar, solo votar: su botón lleva a la lista.
+  // Un organizador no puede participar, solo votar: a él solo le sale
+  // "Ver aspirantes" (la página con las sesiones, separada de las bases).
   const { role } = useProfile();
   if (!concursoActivo()) return null;
   const organizador = role === 'empresario';
@@ -19,9 +20,8 @@ const ConcursoFeedBanner = () => {
     <>
     {/* Las tipografías del Feed: en Inicio no están cargadas. */}
     <Helmet><link rel="stylesheet" href={HZ.fontsHref} /></Helmet>
-    <Link
-      to={organizador ? "/concurso-dj-madrid#participantes" : "/concurso-dj-madrid#inscripcion"}
-      className="group relative flex items-center gap-4 overflow-hidden rounded-3xl p-5 sm:p-6 mb-4 transition-transform hover:scale-[1.01] active:scale-[0.99]"
+    <div
+      className="relative flex items-center gap-4 overflow-hidden rounded-3xl p-5 sm:p-6 mb-4"
       style={{
         background: 'linear-gradient(120deg,#1d3fd6 0%,#2b6dff 40%,#a52ee0 100%)',
         boxShadow: '10px 14px 30px rgba(74,60,200,0.35), inset -6px -6px 14px rgba(0,0,0,0.18), inset 6px 6px 14px rgba(255,255,255,0.25)',
@@ -41,10 +41,20 @@ const ConcursoFeedBanner = () => {
         <p className="text-sm mt-1.5 max-w-md" style={{ color: 'rgba(255,255,255,0.88)', fontFamily: HZ.body }}>
           Para DJs de la Comunidad de Madrid. Sube tu sesión: las 3 con más me gusta van a la final y el jurado elige quién se lleva los Pioneer DJ HDJ-X5.
         </p>
-        <span className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-full text-sm bg-white transition-transform group-hover:translate-x-0.5"
-          style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
-          {organizador ? 'Votar' : 'Participar'} <ArrowRight size={15} strokeWidth={2.75} />
-        </span>
+        <div className="flex flex-wrap items-center gap-2 mt-3">
+          {!organizador && (
+            <Link to="/concurso-dj-madrid#inscripcion"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
+              style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
+              Participar <ArrowRight size={15} strokeWidth={2.75} />
+            </Link>
+          )}
+          <Link to="/concurso-dj-madrid/aspirantes"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
+            style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
+            Ver aspirantes <ArrowRight size={15} strokeWidth={2.75} />
+          </Link>
+        </div>
       </div>
 
       <img
@@ -56,7 +66,7 @@ const ConcursoFeedBanner = () => {
         className="relative w-24 sm:w-36 h-auto shrink-0 -rotate-6"
         style={{ filter: 'drop-shadow(0 10px 18px rgba(20,0,60,0.45))' }}
       />
-    </Link>
+    </div>
     </>
   );
 };
