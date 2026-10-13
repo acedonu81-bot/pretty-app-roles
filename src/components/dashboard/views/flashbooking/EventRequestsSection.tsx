@@ -7,7 +7,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { ROLE_TAGS, ALQUILER_TAGS, ROL_UI_A_SLUG, jobWord, canonicalRole } from '@/lib/constants';
 import ContractModal, { type ContractPrefill } from '@/components/dashboard/ContractModal';
-import FechasEvento from './FechasEvento';
+import FechasEvento, { hoyLocalISO } from './FechasEvento';
+import ValorarContratado, { eventoYaOcurrio } from './ValorarContratado';
+import { irAVista } from '@/lib/irAVista';
 import type { Profile } from '@/data/profiles';
 
 interface EventRequest {
@@ -78,6 +80,14 @@ const EventRequestsSection = () => {
   const profile = useProfile();
   const { user } = useAuth();
   const isEmpresario = profile.role === 'empresario';
+  // Profesionales que este organizador ya ha valorado: el botón Valorar de la
+  // tarjeta pasa a "Valorado".
+  const [valorados, setValorados] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    if (!isEmpresario || !user?.id) return;
+    supabase.from('reviews').select('reviewed_user_id').eq('reviewer_id', user.id)
+      .then(({ data }) => setValorados(new Set((data ?? []).map((r: any) => String(r.reviewed_user_id)))));
+  }, [isEmpresario, user?.id]);
 
   const [requests, setRequests] = useState<EventRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -764,6 +774,10 @@ const EventRequestsSection = () => {
                                                   style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
                                                   <FileText size={10} /> {loadingContract ? '…' : 'Contrato'}
                                                 </button>
+                                                <ValorarContratado
+                                                  yaOcurrio={eventoYaOcurrio(req.event_dates ?? [req.event_date], hoyLocalISO())}
+                                                  valorado={valorados.has(resp.professionalUserId)}
+                                                  onValorar={() => irAVista('empresario', '/dashboard?view=empresario&tab=historial')} />
                                               </div>
                                             ) : resp.chosen_at ? (
                                               <span className="text-[10px] font-black flex-shrink-0" style={{ color: '#8A6D0F' }}>
