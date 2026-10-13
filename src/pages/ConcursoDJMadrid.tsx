@@ -4,6 +4,7 @@ import FooterPublic from '@/components/FooterPublic';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { logEvent } from '@/lib/track';
+import { estadoInscripcionMadrid } from '@/lib/concursoMadrid';
 import LikeButton from '@/components/LikeButton';
 
 /**
@@ -34,7 +35,7 @@ const CREAM = '#FBF3DD';
 const MUTED = '#4b5563';
 
 const PASOS = [
-  { t: 'Completa tu perfil de DJ', d: 'Gratis. Con foto y bio: sin perfil completo no se puede entrar al concurso.' },
+  { t: 'Completa tu perfil de DJ', d: 'Gratis. Con foto, bio y tu ciudad de la Comunidad de Madrid: sin perfil completo no se puede entrar al concurso.' },
   { t: 'Pega tu sesión de SoundCloud', d: 'Una mezcla tuya de entre 30 y 60 minutos, publicada en abierto. La revisamos y la publicamos aquí.' },
   { t: 'Consigue me gusta', d: 'Comparte tu sesión. Las 3 con más me gusta pasan a la final y el jurado elige al ganador.' },
 ];
@@ -55,7 +56,7 @@ const CRITERIOS = [
 
 const FAQ = [
   { q: '¿Cuánto cuesta participar?', a: 'Nada. La inscripción es gratis y el perfil de DJ en XPEAK también.' },
-  { q: '¿Quién puede participar?', a: 'DJs mayores de 18 años con perfil en XPEAK y residencia en la Comunidad de Madrid. Una sesión por persona.' },
+  { q: '¿Quién puede participar?', a: 'DJs mayores de 18 años con perfil en XPEAK y residencia en la Comunidad de Madrid. Una sesión por persona. Al ganador le pedimos un documento que lo acredite antes de enviarle el premio.' },
   { q: '¿Por qué SoundCloud?', a: 'Porque casi todos los DJs ya suben ahí sus sesiones y se puede escuchar sin salir de XPEAK. El enlace tiene que ser a una sesión concreta y pública.' },
   { q: '¿Cómo se elige al ganador?', a: 'En dos fases. Los me gusta de esta página eligen a los 3 finalistas y, entre ellos, el jurado decide quién gana con los criterios de esta página.' },
   { q: '¿Quién puede dar me gusta?', a: 'Cualquiera con cuenta en XPEAK, una vez por sesión. El me gusta que un DJ se dé a sí mismo no cuenta.' },
@@ -90,7 +91,7 @@ function playerUrl(url: string) {
 function Inscripcion() {
   const { user, loading } = useAuth();
   const [inscrito, setInscrito] = useState<boolean | null>(null);
-  const [perfilOk, setPerfilOk] = useState<boolean | null>(null);
+  const [perfil, setPerfil] = useState<ReturnType<typeof estadoInscripcionMadrid> | null>(null);
   const [url, setUrl] = useState('');
   const [acepta, setAcepta] = useState(false);
   const [enviando, setEnviando] = useState(false);
@@ -102,9 +103,10 @@ function Inscripcion() {
     if (!user) return;
     sb.from('concurso_inscripciones').select('id').eq('concurso', CONCURSO).eq('user_id', user.id).maybeSingle()
       .then(({ data }) => setInscrito(!!data));
-    // Mismo requisito que la policy de inserción: foto y bio en algún perfil.
-    supabase.from('profiles').select('photo_url, bio').eq('user_id', user.id)
-      .then(({ data }) => setPerfilOk((data ?? []).some((p) => !!p.photo_url?.trim() && !!p.bio?.trim())));
+    // Foto y bio (lo mismo que exige la policy de inserción) y ciudad en la
+    // Comunidad de Madrid (esto solo lo filtra la página: ver concursoMadrid.ts).
+    supabase.from('profiles').select('photo_url, bio, region').eq('user_id', user.id)
+      .then(({ data }) => setPerfil(estadoInscripcionMadrid(data ?? [])));
   }, [user]);
 
   const enviar = async (e: React.FormEvent) => {
@@ -184,7 +186,21 @@ function Inscripcion() {
     );
   }
 
-  if (perfilOk === false) {
+  if (perfil === 'fuera_de_madrid') {
+    return (
+      <div className={caja} style={cajaStyle}>
+        <p className="text-lg font-bold mb-2">Este concurso es para DJs de la Comunidad de Madrid</p>
+        <p className="mb-5" style={{ color: MUTED }}>
+          En tu perfil no aparece una ciudad de la Comunidad de Madrid. Si vives aquí, pon tu ciudad en el perfil y vuelve a esta página para inscribirte.
+        </p>
+        <a href="/dashboard?view=profile" className="inline-block px-5 py-3 rounded-xl font-bold" style={{ background: `linear-gradient(90deg,${GOLD},#B8941E)`, color: '#111' }}>
+          Revisar mi ciudad
+        </a>
+      </div>
+    );
+  }
+
+  if (perfil === 'falta_perfil') {
     return (
       <div className={caja} style={cajaStyle}>
         <p className="text-lg font-bold mb-2">Te falta completar el perfil</p>
@@ -426,7 +442,8 @@ export default function ConcursoDJMadrid() {
             <h2 className="text-xl font-black mb-4">Bases del concurso</h2>
             <ol className="list-decimal pl-5 space-y-2 text-sm leading-relaxed" style={{ color: '#333' }}>
               <li><strong>Organiza:</strong> XPEAK (xpeak.es). Contacto: info@xpeak.site.</li>
-              <li><strong>Participantes:</strong> personas mayores de 18 años, residentes en la Comunidad de Madrid, con perfil de DJ en XPEAK completo (foto y bio). Participar es gratis y no exige compra ni pago de ningún tipo.</li>
+              <li><strong>Participantes:</strong> personas mayores de 18 años, residentes en la Comunidad de Madrid, con perfil de DJ en XPEAK completo (foto, bio y ciudad de la Comunidad de Madrid). Participar es gratis y no exige compra ni pago de ningún tipo.</li>
+              <li><strong>Residencia:</strong> antes de entregar el premio, XPEAK pedirá al ganador un documento que acredite que reside en la Comunidad de Madrid (DNI o certificado de empadronamiento) y una dirección de envío en la Comunidad de Madrid. Si no lo acredita en 15 días, el premio pasa al siguiente clasificado.</li>
               <li><strong>Plazo:</strong> inscripciones y votos desde el 13 de octubre de 2026 a las 00:00 hasta el 2 de noviembre de 2026 a las 23:59 (hora de Madrid).</li>
               <li><strong>Cómo participar:</strong> una sola inscripción por persona, con el enlace a una sesión pública de SoundCloud de entre 30 y 60 minutos, mezclada por el propio participante. No se admiten sesiones de otras personas.</li>
               <li><strong>Revisión:</strong> XPEAK revisa cada inscripción antes de publicarla y puede rechazar las que no cumplan estas bases, incluidas sesiones con contenido ofensivo o que no sean del participante.</li>
