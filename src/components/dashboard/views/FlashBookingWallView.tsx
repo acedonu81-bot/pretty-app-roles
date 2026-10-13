@@ -27,7 +27,7 @@ const FlashBookingWallView = () => {
   // Ofertas nuevas de organizadores que el profesional aún no ha visto. Un
   // profesional buscó la de Burguerfest y "dio vueltas" sin encontrarla (13 oct
   // 2026): Flash Booking abría en "Oferta" (profesionales disponibles) y las
-  // ofertas de organizadores están en "Demanda". Si hay nuevas, abre en Demanda
+  // ofertas de organizadores están en "Nueva oferta" (antes "Demanda"). Si hay nuevas, abre ahí
   // (salvo que el enlace pida otra pestaña a propósito o el usuario ya haya
   // elegido una) y, si está en otra, un aviso verde lo lleva.
   const { demandaBadge } = useDashboardBadges(user?.id, isEmpresario);
@@ -39,7 +39,7 @@ const FlashBookingWallView = () => {
       setTab('demanda');
     }
   }, [demandaBadge, isEmpresario]);
-  // Verlas en Demanda las da por vistas y apaga los globos.
+  // Verlas en "Nueva oferta" las da por vistas y apaga los globos.
   useEffect(() => {
     if (tab === 'demanda' && !isEmpresario && user?.id && demandaBadge > 0) void marcarOfertasVistas(user.id);
   }, [tab, isEmpresario, user?.id, demandaBadge]);
@@ -84,7 +84,7 @@ const FlashBookingWallView = () => {
 
   const tabs = [
     { id: 'oferta' as const, label: 'Oferta', sub: 'profesionales disponibles', color: '#8A6D0F', pulse: false },
-    { id: 'demanda' as const, label: 'Demanda', sub: 'ofertas de empresarios', color: '#22c55e', pulse: true },
+    { id: 'demanda' as const, label: 'Nueva oferta', sub: 'dj, staff, lo que sea', color: '#22c55e', pulse: true },
     ...(!isEmpresario ? [{ id: 'solicitudes' as const, label: 'Solicitudes', sub: 'recibidas', color: '#8A6D0F', pulse: false }] : []),
   ];
 

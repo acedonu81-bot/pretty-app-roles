@@ -34,7 +34,7 @@ describe('Flash Booking del profesional con ofertas nuevas', () => {
   it('sin ofertas nuevas abre como siempre, en Oferta', async () => {
     montar();
     expect(await screen.findByText('CONTENIDO_OFERTA')).toBeTruthy();
-    expect(screen.queryByText(/nueva oferta|nuevas ofertas/i)).toBeNull();
+    expect(screen.queryByText(/Tienes \d+ ofertas? nuevas? de organizadores/)).toBeNull();
   });
 
   it('con ofertas nuevas abre directamente en Demanda y las marca como vistas', async () => {
@@ -52,6 +52,13 @@ describe('Flash Booking del profesional con ofertas nuevas', () => {
     expect(screen.getByText('Tienes 2 ofertas nuevas de organizadores')).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: 'Ver las ofertas' }));
     expect(await screen.findByText('CONTENIDO_DEMANDA')).toBeTruthy();
+  });
+
+  it('la pestaña se llama "Nueva oferta" (dj, staff, lo que sea), ya no "Demanda"', async () => {
+    montar();
+    expect(await screen.findByRole('button', { name: /Nueva oferta/ })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /^Demanda/ })).toBeNull();
+    expect(screen.getByText('(dj, staff, lo que sea)')).toBeTruthy();
   });
 
   it('el enlace ?tab=demanda (email) abre en Demanda', async () => {

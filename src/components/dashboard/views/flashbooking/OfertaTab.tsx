@@ -129,7 +129,7 @@ const OfertaTab = () => {
         >
           <AlertTriangle size={14} style={{ color: '#8A6D0F' }} />
           <p className="text-xs text-muted-foreground">
-            Como empresario puedes ver los profesionales disponibles. Usa la tab <strong>Demanda</strong> para publicar tus propias ofertas.
+            Como empresario puedes ver los profesionales disponibles. Usa la tab <strong>Nueva oferta</strong> para publicar tus propias ofertas.
           </p>
         </div>
       )}
@@ -283,7 +283,7 @@ const OfertaTab = () => {
             </p>
             <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">
               {isEmpresario
-                ? 'Los profesionales activarán su disponibilidad cuando busquen trabajo. Publica una oferta en la tab Demanda para ir más rápido.'
+                ? 'Los profesionales activarán su disponibilidad cuando busquen trabajo. Publica una oferta en la tab Nueva oferta para ir más rápido.'
                 : 'Activa tu disponibilidad con el toggle de arriba para que los empresarios puedan encontrarte.'}
             </p>
           </div>
