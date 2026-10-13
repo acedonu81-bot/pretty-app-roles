@@ -58,7 +58,7 @@ const RESUMEN_BASES = [
   { t: 'Plazo', d: 'del 13 de octubre al 2 de noviembre de 2026. Una sesión por persona.' },
   { t: 'Qué subes', d: 'una sesión tuya y pública de SoundCloud, de 30 a 60 minutos.' },
   { t: 'Cómo se gana', d: 'las 3 sesiones con más me gusta pasan a la final y el jurado elige al ganador. Los votos falsos se anulan.' },
-  { t: 'Premio', d: 'unos Pioneer DJ HDJ-X5. Antes de enviarlos, el ganador acredita que vive en la Comunidad de Madrid.' },
+  { t: 'Premio', d: 'unos Pioneer DJ HDJ-X5. Antes de enviarlos, el ganador acredita que vive en la Comunidad de Madrid, y al recibirlos sube una foto con ellos a su Instagram mencionando a @xpeaksite.' },
 ];
 
 const FAQ = [
@@ -68,7 +68,7 @@ const FAQ = [
   { q: '¿Cómo se elige al ganador?', a: 'En dos fases. Los me gusta de esta página eligen a los 3 finalistas y, entre ellos, el jurado decide quién gana con los criterios de esta página.' },
   { q: '¿Quién puede dar me gusta?', a: 'Cualquiera con cuenta en XPEAK, una vez por sesión. El me gusta que un DJ se dé a sí mismo no cuenta.' },
   { q: '¿Y si alguien hace trampas?', a: 'No hay forma de ganar con bots ni likes comprados. Al cierre revisamos quién ha votado y cómo (cuentas recién creadas, ráfagas de votos, accesos repetidos) y anulamos todo lo que no venga de personas reales. Además, la última palabra la tiene el jurado.' },
-  { q: '¿Qué gana el ganador?', a: 'Unos auriculares Pioneer DJ HDJ-X5 y salir destacado en la portada de XPEAK y en nuestro Instagram.' },
+  { q: '¿Qué gana el ganador?', a: 'Unos auriculares Pioneer DJ HDJ-X5 y salir destacado en la portada de XPEAK y en nuestro Instagram. Al recibirlos, sube una foto o vídeo con ellos a tu Instagram mencionando o etiquetando a @xpeaksite.' },
 ];
 
 type Participante = {
@@ -302,7 +302,7 @@ function Participantes() {
 
   const cargar = useCallback(() => {
     sb.rpc('concurso_participantes', { p_concurso: CONCURSO })
-      .then(({ data, error }) => setLista(error ? [] : ((data as Participante[]) ?? []).sort((a, b) => Number(b.me_gusta) - Number(a.me_gusta))));
+      .then(({ data, error }) => setLista(error ? [] : ((data as Participante[]) ?? [])));
     if (!user) { setPropia(null); return; }
     Promise.all([
       sb.from('concurso_inscripciones').select('estado, soundcloud_url').eq('concurso', CONCURSO).eq('user_id', user.id).maybeSingle(),
@@ -318,12 +318,20 @@ function Participantes() {
   useEffect(() => {
     cargar();
     window.addEventListener('concurso:inscrito', cargar);
-    return () => window.removeEventListener('concurso:inscrito', cargar);
+    // Recuentos al día para que el orden vaya cambiando con los votos.
+    const cada = window.setInterval(() => { if (document.visibilityState === 'visible') cargar(); }, 60_000);
+    return () => { window.removeEventListener('concurso:inscrito', cargar); window.clearInterval(cada); };
   }, [cargar]);
 
   if (lista === null) return <p style={{ color: MUTED }}>Cargando sesiones…</p>;
 
   const activo = concursoActivo();
+  // Puesto por me gusta, de más a menos (empate: quien se inscribió antes).
+  // Las tarjetas NO se reordenan en el DOM: mover un iframe lo recarga y
+  // cortaría la sesión que alguien esté escuchando. Se colocan con CSS order.
+  const puesto = new Map(
+    [...lista].sort((a, b) => Number(b.me_gusta) - Number(a.me_gusta)).map((p, i) => [p.user_id, i]),
+  );
 
   return (
     <div className="rounded-3xl p-4 sm:p-6" style={{ background: CREAM, border: `1px solid ${GOLD}66` }}>
@@ -367,11 +375,12 @@ function Participantes() {
         </p>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
-          {lista.map((p, idx) => {
+          {lista.map((p) => {
+            const idx = puesto.get(p.user_id) ?? 0;
             const enFinal = idx < 3 && Number(p.me_gusta) > 0;
             return (
               <div key={p.user_id} className="rounded-2xl p-4 bg-white"
-                style={{ border: enFinal ? `2px solid ${GOLD}` : `1px solid ${GOLD}40`, boxShadow: enFinal ? `0 8px 22px ${GOLD}33` : undefined }}>
+                style={{ order: idx, border: enFinal ? `2px solid ${GOLD}` : `1px solid ${GOLD}40`, boxShadow: enFinal ? `0 8px 22px ${GOLD}33` : undefined }}>
                 <div className="flex items-center gap-3 mb-3">
                   <span className="w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm font-black"
                     style={enFinal ? { background: `linear-gradient(135deg,${GOLD},#B8941E)`, color: '#111' } : { background: CREAM, color: GOLD_TEXT }}>
@@ -414,7 +423,7 @@ function Participantes() {
                       <span style={{ color: MUTED }}>Votación cerrada</span>
                     </>
                   ) : user ? (
-                    <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} />
+                    <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={cargar} />
                   ) : (
                     <>
                       <span className="font-bold tabular-nums" style={{ color: '#E11D48' }}>{Number(p.me_gusta)} me gusta</span>
@@ -432,19 +441,35 @@ function Participantes() {
 }
 
 export default function ConcursoDJMadrid() {
-  // Enlaces a #bases / #inscripcion (13 oct 2026): la página carga en diferido
-  // y la lista de participantes y las fuentes llegan después del salto del
-  // navegador, así que el ancla se quedaba ~280 px corta (en local ni saltaba).
-  // Se recoloca mientras la página crece, hasta 3 s o hasta que el usuario toque.
+  // Enlaces a #bases / #inscripcion / #participantes (13 oct 2026): el ancla
+  // se quedaba ~200-280 px corta. En producción la página sale primero como
+  // copia prerenderizada (#ssr-snapshot, ver main.tsx) y React monta oculto
+  // debajo: hay dos elementos con el mismo id y, al intercambiarse, se
+  // conserva el scroll pero la sección cae en otro sitio. Se salta a la copia
+  // mientras está y, cuando React se muestra (#root cambia de tamaño), a la
+  // sección buena. Hasta 7 s o hasta que el usuario toque.
   useEffect(() => {
     const id = decodeURIComponent(window.location.hash.slice(1));
     if (!id || typeof ResizeObserver === 'undefined') return;
-    const ir = () => document.getElementById(id)?.scrollIntoView({ block: 'start' });
+    const ir = () => {
+      const copia = document.getElementById('ssr-snapshot');
+      const destino = copia
+        ? Array.from(copia.querySelectorAll<HTMLElement>('[id]')).find((e) => e.id === id)
+        : document.getElementById(id);
+      destino?.scrollIntoView({ block: 'start' });
+    };
     ir();
+    // html, body y #root miden siempre el 100% (index.css): su tamaño no
+    // cambia. Lo que crece es el contenedor de la página, y el cambio de copia
+    // a React se ve cuando se quita #ssr-snapshot.
     const ro = new ResizeObserver(ir);
-    ro.observe(document.body);
+    const raiz = document.getElementById('root');
+    if (raiz?.firstElementChild) ro.observe(raiz.firstElementChild);
+    const mo = new MutationObserver(() => { if (!document.getElementById('ssr-snapshot')) ir(); });
+    if (raiz?.parentElement) mo.observe(raiz.parentElement, { childList: true });
     const parar = () => {
       ro.disconnect();
+      mo.disconnect();
       window.removeEventListener('wheel', parar);
       window.removeEventListener('touchstart', parar);
       window.removeEventListener('keydown', parar);
@@ -452,7 +477,7 @@ export default function ConcursoDJMadrid() {
     window.addEventListener('wheel', parar, { passive: true });
     window.addEventListener('touchstart', parar, { passive: true });
     window.addEventListener('keydown', parar);
-    const t = setTimeout(parar, 3000);
+    const t = setTimeout(parar, 7000);
     return () => { clearTimeout(t); parar(); };
   }, []);
 
@@ -617,7 +642,9 @@ export default function ConcursoDJMadrid() {
               <li><strong>Votación (fase 1):</strong> cualquier persona con cuenta en XPEAK puede dar un me gusta a cada sesión publicada. No cuenta el me gusta que un participante se dé a sí mismo. Las 3 sesiones con más me gusta válidos pasan a la final. Al cierre, XPEAK analiza quién ha votado y cómo (antigüedad de las cuentas, ráfagas de votos, accesos repetidos) y anula los votos de bots, cuentas falsas o compradas; si un participante se beneficia de votos fraudulentos, puede quedar descalificado.</li>
               <li><strong>Jurado y fallo (fase 2):</strong> un jurado designado por XPEAK valora las 3 sesiones finalistas según técnica de mezcla, selección musical, energía y lectura, y sonido de la grabación, con el mismo peso. El fallo es inapelable y se anuncia el 9 de noviembre de 2026 en esta página y en el Instagram de XPEAK. El concurso puede declararse desierto si ninguna sesión alcanza un nivel mínimo.</li>
               <li><strong>Premio:</strong> unos auriculares Pioneer DJ HDJ-X5 para el ganador, que además sale destacado en la portada de XPEAK y en su Instagram. El premio no se puede cambiar por dinero. XPEAK contactará con el ganador por el chat de XPEAK; si no responde en 15 días, el premio pasa al siguiente clasificado.</li>
+              <li><strong>Foto con el premio:</strong> al aceptar el premio, el ganador se compromete a publicar en su Instagram, en los 15 días siguientes a recibir los cascos, una foto o vídeo con ellos mencionando o etiquetando a @xpeaksite. XPEAK podrá compartir esa publicación.</li>
               <li><strong>Música y derechos:</strong> cada participante es responsable de que su sesión esté publicada legalmente en SoundCloud. XPEAK solo incrusta el reproductor oficial de SoundCloud y no descarga ni redistribuye la música.</li>
+              <li><strong>Instagram:</strong> este concurso no está patrocinado, avalado ni administrado por Instagram ni por Meta, ni asociado a ellos de ningún modo. Los participantes eximen a Instagram y a Meta de toda responsabilidad y sus datos los recibe XPEAK, no Instagram.</li>
               <li><strong>Difusión:</strong> al inscribirse, el participante acepta que su nombre de DJ, su foto de perfil y su sesión aparezcan en esta página y en las publicaciones de XPEAK sobre el concurso.</li>
               <li><strong>Datos personales:</strong> los datos se usan solo para gestionar el concurso, según la <a href="/privacidad" className="underline">política de privacidad</a> de XPEAK. Puedes pedir que se borre tu inscripción escribiendo a info@xpeak.site.</li>
               <li><strong>Juego limpio:</strong> XPEAK puede anular cualquier participación fraudulenta o que incumpla estas bases.</li>

@@ -4,13 +4,15 @@ import { useFeedLike } from '@/hooks/useFeedLike';
 interface LikeButtonProps {
   viewerId: string | undefined;
   contentKey: string;
+  /** Tras dar o quitar el me gusta (p. ej. para reordenar el concurso). */
+  onChange?: () => void;
 }
 
-const LikeButton = ({ viewerId, contentKey }: LikeButtonProps) => {
+const LikeButton = ({ viewerId, contentKey, onChange }: LikeButtonProps) => {
   const { count, liked, loading, toggleLike } = useFeedLike(viewerId, contentKey);
 
   return (
-    <button type="button" onClick={toggleLike} disabled={loading || !viewerId}
+    <button type="button" onClick={async () => { await toggleLike(); onChange?.(); }} disabled={loading || !viewerId}
       aria-pressed={liked}
       aria-label={liked ? 'Quitar me gusta' : 'Me gusta'}
       className="inline-flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 disabled:opacity-50"
