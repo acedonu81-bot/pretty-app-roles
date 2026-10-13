@@ -292,18 +292,23 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
   const chooseProfessional = async (req: EventRequest, responseId: string, nombre: string) => {
     setHiring(responseId);
     setConfirmando(null);
+    const ahora = new Date().toISOString();
     // .select() para comprobar que la fila se actualizó de verdad: una política
     // RLS que la oculte no da error, devuelve 0 filas, y el aviso decía
     // "Avisado" sin haber avisado a nadie.
     const { data: actualizadas, error } = await supabase
       .from('event_request_responses' as any)
-      .update({ chosen_at: new Date().toISOString() })
+      // Elegir cierra el bolo (13 oct 2026): apuntarse ya es aceptar, así que no
+      // hay segunda confirmación del profesional. chosen_at + hired_at a la vez:
+      // dispara notify_contratacion (aviso al contratado, calendario, chat, aviso a
+      // los demás y cierre de la plaza).
+      .update({ chosen_at: ahora, hired_at: ahora })
       .eq('id', responseId)
       .select('id');
     setHiring(null);
 
     if (error || !actualizadas || actualizadas.length === 0) {
-      toast.error('No se pudo avisar al profesional. Recarga la página e inténtalo otra vez.');
+      toast.error('No se pudo contratar. Recarga la página e inténtalo otra vez.');
       return;
     }
     window.dispatchEvent(new Event(EVENTO_INTERESADOS));
@@ -311,10 +316,16 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
     setResponses(prev => ({
       ...prev,
       [req.id]: (prev[req.id] ?? []).map(r =>
-        r.id === responseId ? { ...r, chosen_at: new Date().toISOString() } : r
+        r.id === responseId ? { ...r, chosen_at: ahora, hired_at: ahora } : r
       ),
     }));
-    toast.success(`Avisado ${nombre}. Puedes escribirle ya; cuando confirme, la plaza queda cubierta.`);
+    const elegido = (responses[req.id] ?? []).find(r => r.id === responseId);
+    toast.success(`Contratado: ${nombre}. Le hemos avisado y ya puedes escribirle.`, {
+      duration: 12000,
+      action: onMessage && elegido
+        ? { label: 'Escribirle', onClick: () => onMessage(elegido.professionalUserId, nombre) }
+        : undefined,
+    });
   };
 
   // El profesional preseleccionado acepta: esto SÍ dispara notify_contratacion
@@ -905,7 +916,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                           {resp.hired_at && (
                                             <div className="mt-2">
                                               <p className="text-[11px] leading-snug mb-2" style={{ color: '#166534' }}>
-                                                Ha confirmado. La plaza está cubierta. Escríbele para cerrar los detalles.
+                                                Contratado. La plaza está cubierta. Escríbele para cerrar los detalles.
                                               </p>
                                               <button type="button"
                                                 onClick={() => openContract(req, resp.professionalUserId, resp.name)}
@@ -936,7 +947,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                                 ¿Elegir a {resp.name} para {req.client_name}?
                                               </p>
                                               <p className="text-[11px] leading-snug mb-3" style={{ color: '#333' }}>
-                                                Le avisamos ahora mismo. Cuando confirme, la plaza queda cubierta. Puedes escribirle cuando quieras.
+                                                Queda contratado: le avisamos ahora mismo y se avisa a los demás candidatos.
                                               </p>
                                               <div className="flex gap-2">
                                                 <button type="button"
@@ -1001,7 +1012,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                         <div className="flex flex-col gap-2">
                           <div className="px-3 py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5"
                             style={{ background: 'rgba(34,197,94,0.1)', color: '#15803d', border: '1px solid rgba(34,197,94,0.3)' }}>
-                            <Check size={12} /> Bolo confirmado. Está en tu calendario y el chat con {req.client_name} está abierto.
+                            <Check size={12} /> Te han contratado. Está en tu calendario y el chat con {req.client_name} está abierto.
                           </div>
                           {onMessage && req.client_user_id && (
                             <button type="button" onClick={() => onMessage(req.client_user_id as string, req.client_name)}

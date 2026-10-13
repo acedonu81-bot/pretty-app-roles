@@ -86,8 +86,8 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
     render(<EventRequestsSection onMessage={onMessage} />);
     fireEvent.click(await screen.findByRole('button', { name: 'Elegir a este profesional' }));
     expect(await screen.findByText('¿Elegir a Manuel Jesús Frias Martín para Burguerfest?')).toBeTruthy();
-    expect(screen.getByText(/Le avisamos ahora mismo/)).toBeTruthy();
-    expect(screen.getByText(/Cuando confirme, la plaza queda cubierta\. Puedes escribirle cuando quieras/)).toBeTruthy();
+    expect(screen.getByText(/le avisamos ahora mismo y se avisa a los demás candidatos/)).toBeTruthy();
+    expect(screen.getByText(/Queda contratado/)).toBeTruthy();
     expect(estado.updates).toHaveLength(0);
   });
 
@@ -100,16 +100,21 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
     expect(toastOk).not.toHaveBeenCalled();
   });
 
-  it('confirmar guarda la elección y el estado dice, con todas las letras, qué falta', async () => {
+  it('elegir contrata directamente: guarda chosen_at y hired_at, dice CONTRATADO y ofrece escribirle', async () => {
     render(<EventRequestsSection onMessage={onMessage} />);
     fireEvent.click(await screen.findByRole('button', { name: 'Elegir a este profesional' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Sí, elegir a Manuel Jesús Frias Martín' }));
     await waitFor(() => expect(toastOk).toHaveBeenCalled());
     expect(estado.updates).toHaveLength(1);
     expect(estado.updates[0]).toHaveProperty('chosen_at');
-    expect(await screen.findByText('ELEGIDO, ESPERANDO QUE CONFIRME')).toBeTruthy();
-    expect(screen.getByText(/Puedes escribirle ya\. Si no responde, puedes elegir a otro/)).toBeTruthy();
+    expect(estado.updates[0]).toHaveProperty('hired_at');
+    expect(await screen.findByText('CONTRATADO')).toBeTruthy();
+    expect(screen.queryByText('ELEGIDO, ESPERANDO QUE CONFIRME')).toBeNull();
     expect(screen.queryByRole('button', { name: 'Elegir a este profesional' })).toBeNull();
+    const opciones = toastOk.mock.calls[0][1] as { action?: { label: string; onClick: () => void } };
+    expect(opciones.action?.label).toBe('Escribirle');
+    opciones.action?.onClick();
+    expect(onMessage).toHaveBeenCalledWith('pro-manuel', 'Manuel Jesús Frias Martín');
     expect(toastError).not.toHaveBeenCalled();
   });
 
@@ -133,7 +138,7 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
     render(<EventRequestsSection onMessage={onMessage} />);
     fireEvent.click(await screen.findByRole('button', { name: /Ver detalle y contactar/ }));
     expect(await screen.findByText('CONTRATADO')).toBeTruthy();
-    expect(screen.getByText(/Ha confirmado\. La plaza está cubierta\. Escríbele para cerrar los detalles/)).toBeTruthy();
+    expect(screen.getByText(/Contratado\. La plaza está cubierta\. Escríbele para cerrar los detalles/)).toBeTruthy();
     expect(screen.getByRole('button', { name: /Hacer el contrato/ })).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Elegir a este profesional' })).toBeNull();
   });

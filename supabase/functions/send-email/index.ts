@@ -586,7 +586,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   }),
 
   // 2d. Contratación cerrada — aviso al profesional elegido.
-  contratado: (d) => ({
+  contratado: (d) => {
+    const id = /^[0-9a-f-]{36}$/i.test(String(d.request_id ?? '')) ? String(d.request_id) : '';
+    const url = `https://xpeak.es/dashboard?view=flashbooking&tab=demanda${id ? `&oferta=${id}` : ''}`;
+    return {
     subject: `¡Te han contratado para ${esc(d.titulo)}!`,
     to: d.email,
     html: base(`
@@ -602,9 +605,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Dónde', esc(d.lugar ?? 'Por concretar')],
         ['Cuándo', esc(d.fecha ?? 'Por concretar')],
       ])}
-      ${btn('Ver los detalles →', 'https://xpeak.es/dashboard?view=flashbooking')}
+      ${btn('Ver los detalles →', url)}
     `, `${esc(d.titulo)} te ha elegido para el evento`),
-  }),
+    };
+  },
 
   // 2d2. Preselección: el organizador eligió, pero el bolo NO es firme hasta
   // que el profesional confirma dentro de la app (doble aceptación, 11 sep

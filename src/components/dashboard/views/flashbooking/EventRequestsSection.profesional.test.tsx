@@ -87,7 +87,7 @@ describe('Oferta vista por el profesional: cada paso dice qué hacer', () => {
     await waitFor(() => expect(toastOk).toHaveBeenCalled());
     expect(estado.updates[0]).toHaveProperty('hired_at');
     // La tarjeta no desaparece: pasa a "Bolo confirmado" con el botón del chat.
-    expect(await screen.findByText(/Bolo confirmado\. Está en tu calendario y el chat con Burguerfest está abierto/)).toBeTruthy();
+    expect(await screen.findByText(/Te han contratado\. Está en tu calendario y el chat con Burguerfest está abierto/)).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: /Abrir el chat/ }));
     expect(onMessage).toHaveBeenCalledWith('organizador', 'Burguerfest');
     const opciones = toastOk.mock.calls[0][1] as { action?: { label: string } };
@@ -119,7 +119,7 @@ describe('Oferta vista por el profesional: cada paso dice qué hacer', () => {
     estado.yo_contratado = true;
     render(<EventRequestsSection onMessage={onMessage} />);
     await abrir();
-    expect(await screen.findByText(/Bolo confirmado\. Está en tu calendario/)).toBeTruthy();
+    expect(await screen.findByText(/Te han contratado\. Está en tu calendario/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: /Me interesa este bolo/ })).toBeNull();
     expect(screen.getByRole('button', { name: /Abrir el chat/ })).toBeTruthy();
   });
