@@ -97,6 +97,20 @@ const DEFAULT_CONTENT = {
   ],
 };
 
+// Aceptación legal al pulsar (13 oct 2026), como Airbnb, Wallapop o Glovo: la
+// casilla obligatoria "Acepto la Privacidad, Términos y Cookies" era un paso
+// más en el móvil. Los términos se aceptan al pulsar si la frase está junto al
+// botón; la privacidad es información, no algo que se acepte, y las cookies
+// tienen su propio aviso. La fecha queda en terms_accepted_at.
+const AceptacionLegal = ({ accion }: { accion: string }) => (
+  <p className="text-[0.7rem] text-center mt-2.5 leading-relaxed" style={{ color: 'rgba(0,0,0,0.55)' }}>
+    {accion} aceptas los{' '}
+    <Link to="/terminos" target="_blank" className="underline" style={{ color: '#8B6A00' }}>Términos</Link>
+    {' '}y la{' '}
+    <Link to="/privacidad" target="_blank" className="underline" style={{ color: '#8B6A00' }}>Política de privacidad</Link>.
+  </p>
+);
+
 const Auth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -123,7 +137,6 @@ const Auth = () => {
   const [showParticular, setShowParticular] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [legalAccepted, setLegalAccepted] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
@@ -361,12 +374,10 @@ const Auth = () => {
   // al fondo del formulario, fuera de la vista en móvil).
   const [fieldError, setFieldError] = useState<string | null>(null);
   const nameRef = useRef<HTMLDivElement>(null);
-  const legalRef = useRef<HTMLLabelElement>(null);
   const emailRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLDivElement>(null);
   const fieldRefs: Record<string, React.RefObject<HTMLElement>> = {
     name: nameRef,
-    legal: legalRef,
     email: emailRef,
     password: passwordRef,
   };
@@ -502,10 +513,6 @@ const Auth = () => {
           track('auth_validation_error', { mode: 'register', reason: 'missing_name' });
           authFieldError('name', 'Introduce tu nombre profesional'); setLoading(false); return;
         }
-        if (!legalAccepted) {
-          track('auth_validation_error', { mode: 'register', reason: 'legal_not_accepted' });
-          authFieldError('legal', 'Acepta los términos para continuar'); setLoading(false); return;
-        }
 
         const pwdError = validatePassword(password);
         if (pwdError) {
@@ -530,6 +537,9 @@ const Auth = () => {
           category: 'pending',
           zone: city || 'España',
           marketing_consent: marketingConsent,
+          // Aceptación por la frase junto al botón (ver ACEPTACION_LEGAL):
+          // queda en raw_user_meta_data como prueba de cuándo aceptó.
+          terms_accepted_at: new Date().toISOString(),
         };
         const { data: signUpData, error } = inAppSignup
           ? await signUpInApp(email, password, signUpMeta, honeypot)
@@ -892,6 +902,9 @@ const Auth = () => {
                 )}
               </button>
               )}
+              {!isInAppBrowser && !isLogin && (
+                <div className="-mt-2.5 mb-4"><AceptacionLegal accion="Al continuar con Google" /></div>
+              )}
 
               {!isInAppBrowser && (
               <div className="flex items-center gap-3 mb-4">
@@ -989,35 +1002,6 @@ const Auth = () => {
                       </div>
                     ))}
                   </div>
-                )}
-
-                {/* Legal — checkbox nativo real (accesible, robusto en webviews) */}
-                {!isLogin && (
-                  <label
-                    ref={legalRef}
-                    htmlFor="legal-accept"
-                    className={`flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-black/5 ${fieldError === 'legal' ? 'animate-field-shake' : ''}`}
-                    style={{
-                      background: fieldError === 'legal' ? 'rgba(239,68,68,0.06)' : 'rgba(0,0,0,0.03)',
-                      border: fieldError === 'legal' ? '1.5px solid #ef4444' : legalAccepted ? '1px solid rgba(212,175,55,0.5)' : '1px solid rgba(0,0,0,0.1)',
-                    }}>
-                    <input
-                      id="legal-accept"
-                      name="legalAccepted"
-                      type="checkbox"
-                      checked={legalAccepted}
-                      onChange={(e) => { setLegalAccepted(e.target.checked); if (e.target.checked) { setFieldError(null); logAuthFieldTouched('legal'); } }}
-                      className="w-6 h-6 flex-shrink-0 rounded-md accent-[#D4AF37]"
-                    />
-                    <span className="text-xs leading-relaxed" style={{ color: fieldError === 'legal' ? '#b91c1c' : 'rgba(0,0,0,0.65)' }}>
-                      {fieldError === 'legal' && <span className="font-bold">☝️ Marca esta casilla para continuar</span>}
-                      Acepto la{' '}
-                      <Link to="/privacidad" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Privacidad</Link>,{' '}
-                      <Link to="/terminos" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Términos</Link>{' '}
-                      y{' '}
-                      <Link to="/cookies" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Cookies</Link>
-                    </span>
-                  </label>
                 )}
 
                 {/* Marketing — opcional, nunca premarcado, no bloquea el registro */}
@@ -1158,6 +1142,7 @@ const Auth = () => {
                             : 'Publicar mi perfil →'}
                   </button>
                 )}
+                {!isLogin && <AceptacionLegal accion="Al registrarte" />}
 
               </form>
 
