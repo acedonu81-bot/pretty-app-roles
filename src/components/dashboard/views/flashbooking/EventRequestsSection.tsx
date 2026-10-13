@@ -375,7 +375,14 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
   // El organizador relanza la oferta tras la baja del contratado: vuelve a abrirse 7 días.
   const [relanzando, setRelanzando] = useState<string | null>(null);
   const relanzarOferta = async (req: EventRequest) => {
+    const contratado = (responses[req.id] ?? []).find(c => c.hired_at);
+    if (contratado && !window.confirm(`Se anulará la contratación de ${contratado.name} y la oferta volverá a abrirse. ¿Seguro?`)) return;
     setRelanzando(req.id);
+    if (contratado) {
+      // Anula la contratación: el bolo vuelve a estar libre.
+      await supabase.from('event_request_responses' as any).update({ hired_at: null, chosen_at: null }).eq('id', contratado.id);
+      setResponses(prev => ({ ...prev, [req.id]: (prev[req.id] ?? []).map(c => c.id === contratado.id ? { ...c, hired_at: null, chosen_at: null } : c) }));
+    }
     const { data: filas, error } = await supabase
       .from('event_requests' as any)
       .update({ status: 'open', expires_at: new Date(Date.now() + 7 * 86400000).toISOString() })
@@ -814,11 +821,12 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                   )}
 
                   {/* Se cayó el contratado: aviso claro y un botón. */}
-                  {isEmpresario && req.client_user_id === user?.id && req.status === 'closed'
-                    && !(responses[req.id] ?? []).some(c => c.hired_at) && (
+                  {isEmpresario && req.client_user_id === user?.id && req.status === 'closed' && (
                     <div className="mb-3 p-3 rounded-xl" style={{ background: 'rgba(245,158,11,0.12)', border: '1.5px solid #d97706' }}>
                       <p className="text-xs font-black mb-2" style={{ color: '#7c4a03' }}>
-                        El profesional ha dicho que no. Relanza la oferta para buscar a otro.
+                        {(responses[req.id] ?? []).some(c => c.hired_at)
+                          ? '¿Se ha caído el profesional? Relanza la oferta para buscar a otro.'
+                          : 'El profesional ha dicho que no. Relanza la oferta para buscar a otro.'}
                       </p>
                       <button type="button" onClick={() => relanzarOferta(req)} disabled={relanzando === req.id}
                         className="w-full px-3 py-2.5 rounded-lg text-xs font-black disabled:opacity-60"
