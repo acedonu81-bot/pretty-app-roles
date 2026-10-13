@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { sugerirCorreo } from '@/lib/emailErrata';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, Sparkles, Building2, PartyPopper, type LucideIcon } from 'lucide-react';
@@ -144,6 +145,8 @@ const Auth = () => {
     modeParam === 'login' || (modeParam !== 'register' && !searchParams.has('fbclid')),
   );
   const [email, setEmail] = useState('');
+  // Errata de dominio al crear cuenta ("otlook.com"): se avisa al salir del campo.
+  const [correoSugerido, setCorreoSugerido] = useState<string | null>(null);
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [city, setCity] = useState('');
@@ -975,8 +978,14 @@ const Auth = () => {
                   <input
                     type="email"
                     value={email}
-                    onChange={e => { setEmail(e.target.value); setLoginFailed(false); if (fieldError === 'email') setFieldError(null); }}
-                    onBlur={() => { if (!isLogin) logAuthFieldTouched('email'); }}
+                    onChange={e => { setEmail(e.target.value); setCorreoSugerido(null); setLoginFailed(false); if (fieldError === 'email') setFieldError(null); }}
+                    onBlur={() => {
+                      if (isLogin) return;
+                      logAuthFieldTouched('email');
+                      const sugerido = sugerirCorreo(email);
+                      setCorreoSugerido(sugerido);
+                      if (sugerido) track('auth_email_sugerido');
+                    }}
                     placeholder="tu@email.com"
                     maxLength={254}
                     autoComplete="email"
@@ -984,6 +993,15 @@ const Auth = () => {
                     className="nightlife-input !py-3 !pl-9 text-base"
                   />
                 </div>
+                {!isLogin && correoSugerido && (
+                  <p className="-mt-1 text-sm" role="status" style={{ color: '#7a6216' }}>
+                    ¿Querías decir{' '}
+                    <button type="button" className="font-bold underline"
+                      onClick={() => { setEmail(correoSugerido); setCorreoSugerido(null); track('auth_email_corregido'); }}>
+                      {correoSugerido}
+                    </button>?
+                  </p>
+                )}
 
                 {/* Password */}
                 <div ref={passwordRef} className={`relative rounded-xl ${fieldError === 'password' ? 'animate-field-shake' : ''}`}
