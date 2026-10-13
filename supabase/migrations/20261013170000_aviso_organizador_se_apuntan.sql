@@ -148,3 +148,63 @@ UPDATE public.notifications n
    AND q.status = 'open'
    AND r.hired_at IS NULL
    AND r.chosen_at IS NULL;
+
+-- Mismo fallo en el push de mensajes de chat: notify_new_message llamaba a
+-- send-push sin x-internal-secret (401 desde que la función lo exige), así que
+-- nadie recibía push al llegarle un mensaje. Solo se añade la clave y un bloque
+-- de seguridad; el resto (toggle notif_messages, texto, enlace) no cambia.
+CREATE OR REPLACE FUNCTION public.notify_new_message()
+ RETURNS trigger
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+ SET search_path TO 'public'
+AS $function$
+DECLARE
+  v_dest uuid; v_sender_name text; v_preview text; v_secret text;
+BEGIN
+  IF NEW.deleted_at IS NOT NULL THEN RETURN NEW; END IF;
+
+  SELECT CASE WHEN c.participant_a = NEW.sender_id THEN c.participant_b ELSE c.participant_a END
+  INTO v_dest
+  FROM public.conversations c
+  WHERE c.id = NEW.conversation_id;
+
+  IF v_dest IS NULL THEN RETURN NEW; END IF;
+
+  SELECT COALESCE(NULLIF(trim(p.display_name), ''), 'Un usuario') INTO v_sender_name
+  FROM public.profiles p WHERE p.user_id = NEW.sender_id
+  ORDER BY p.is_primary DESC LIMIT 1;
+
+  v_preview := COALESCE(NEW.content, '');
+  IF length(v_preview) > 80 THEN v_preview := left(v_preview, 80) || '…'; END IF;
+  IF v_preview = '' THEN v_preview := 'Te ha enviado un mensaje'; END IF;
+
+  -- Respeta el mismo toggle que ya controla el aviso in-app (Ajustes →
+  -- Notificaciones de mensajes), por defecto activado.
+  IF NOT COALESCE((SELECT pref.notif_messages FROM public.alert_preferences pref WHERE pref.user_id = v_dest), true) THEN
+    RETURN NEW;
+  END IF;
+
+  BEGIN
+    SELECT decrypted_secret INTO v_secret FROM vault.decrypted_secrets WHERE name = 'send_email_internal_secret';
+    IF v_secret IS NOT NULL THEN
+      PERFORM net.http_post(
+        url := 'https://ddrqhwravupjzysriblq.supabase.co/functions/v1/send-push',
+        headers := jsonb_build_object(
+          'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkcnFod3JhdnVwanp5c3JpYmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NjkwMTIsImV4cCI6MjA5MDE0NTAxMn0.sHR3zuVWIj6Xw_UBI_kuQCcfEFS3oQWjs0dKUtr2Puk',
+          'x-internal-secret', v_secret,
+          'Content-Type', 'application/json'),
+        body := jsonb_build_object(
+          'user_id', v_dest,
+          'title', v_sender_name || ' te ha escrito',
+          'body', v_preview,
+          'url', '/dashboard?view=messages')
+      );
+    END IF;
+  EXCEPTION WHEN OTHERS THEN
+    RAISE WARNING 'notify_new_message: push falló: %', SQLERRM;
+  END;
+
+  RETURN NEW;
+END;
+$function$;
