@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import LikeButton from '@/components/LikeButton';
+import { HZ, TONES, clay, clayButton, clayInset } from '@/components/healthy-zone/clay';
 
 /**
  * Lista de aspirantes del Concurso DJ XPEAK Madrid: sesiones publicadas con
@@ -13,9 +14,6 @@ import LikeButton from '@/components/LikeButton';
  */
 const CONCURSO = 'dj-madrid-2026';
 const GOLD = '#D4AF37';
-const GOLD_TEXT = '#7a6216';
-const CREAM = '#FBF3DD';
-const MUTED = '#4b5563';
 
 type Participante = {
   user_id: string;
@@ -39,14 +37,13 @@ function playerUrl(url: string) {
 }
 
 const AZUL = '#2563EB';
-const VERDE = '#059669';
 
 type Propia = { estado: 'pendiente' | 'rechazada'; soundcloud_url: string; display_name: string | null; photo_url: string | null; zone: string | null };
 
-// Lista de sesiones subidas (13 oct 2026, petición del usuario): al enviar el
-// enlace la página baja aquí y el DJ ve su propia sesión aunque esté en
-// revisión (antes solo salían las aceptadas y parecía que no se había subido
-// nada). Colores de la web: crema y dorado, verde publicada, azul en revisión.
+// Lista de sesiones subidas (13 oct 2026, petición del usuario): el DJ ve su
+// propia sesión aunque esté en revisión (antes solo salían las aceptadas y
+// parecía que no se había subido nada). Estilo clay del feed (healthy-zone/
+// clay): finalistas en dorado, el resto alterna cielo, verde y lila.
 export default function SesionesConcurso({ volverA }: { volverA: string }) {
   const { user } = useAuth();
   const [lista, setLista] = useState<Participante[] | null>(null);
@@ -75,7 +72,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
     return () => { window.removeEventListener('concurso:inscrito', cargar); window.clearInterval(cada); };
   }, [cargar]);
 
-  if (lista === null) return <p style={{ color: MUTED }}>Cargando sesiones…</p>;
+  if (lista === null) return <p style={{ color: HZ.inkSoft, fontFamily: HZ.body }}>Cargando sesiones…</p>;
 
   const activo = concursoActivo();
   // Puesto por me gusta, de más a menos (empate: quien se inscribió antes).
@@ -85,35 +82,43 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
     [...lista].sort((a, b) => Number(b.me_gusta) - Number(a.me_gusta)).map((p, i) => [p.user_id, i]),
   );
 
+  const pastilla = (bg: string, color: string, rgb: string) => ({
+    background: bg, color, fontFamily: HZ.body, fontWeight: 800, boxShadow: clay(rgb, 'sm'),
+  });
+
   return (
-    <div className="rounded-3xl p-4 sm:p-6" style={{ background: CREAM, border: `1px solid ${GOLD}66` }}>
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
-        <p className="font-bold" style={{ color: GOLD_TEXT }}>
+    <div>
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
+        <p className="text-lg" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>
           {lista.length === 1 ? '1 sesión publicada' : `${lista.length} sesiones publicadas`}
         </p>
-        <div className="flex items-center gap-2 flex-wrap text-xs font-bold">
-          <span className="px-2.5 py-1 rounded-full" style={{ background: `${GOLD}26`, color: GOLD_TEXT }}>Top 3: a la final</span>
-          <span className="px-2.5 py-1 rounded-full" style={{ background: `${VERDE}1f`, color: VERDE }}>Publicada</span>
-          <span className="px-2.5 py-1 rounded-full" style={{ background: `${AZUL}1a`, color: AZUL }}>En revisión</span>
+        <div className="flex items-center gap-2 flex-wrap text-xs">
+          <span className="px-3 py-1.5 rounded-full" style={pastilla(TONES.sun.card, TONES.sun.stroke, TONES.sun.rgb)}>Top 3: a la final</span>
+          <span className="px-3 py-1.5 rounded-full" style={pastilla(TONES.leaf.card, TONES.leaf.stroke, TONES.leaf.rgb)}>Publicada</span>
+          <span className="px-3 py-1.5 rounded-full" style={pastilla(TONES.sky.card, TONES.sky.stroke, TONES.sky.rgb)}>En revisión</span>
         </div>
       </div>
 
       {propia && (
-        <div className="rounded-2xl p-4 mb-5 bg-white" style={{ border: `2px dashed ${propia.estado === 'pendiente' ? AZUL : '#b91c1c'}` }}>
-          <div className="flex items-center gap-3 mb-3">
+        <div className="rounded-[28px] p-5 mb-7"
+          style={{ background: propia.estado === 'pendiente' ? TONES.sky.card : '#FDE2E2', boxShadow: clay(propia.estado === 'pendiente' ? TONES.sky.rgb : '185,28,28') }}>
+          <div className="flex items-center gap-3 mb-4">
             {propia.photo_url
-              ? <img src={propia.photo_url} alt="" className="w-12 h-12 rounded-full object-cover" />
-              : <div className="w-12 h-12 rounded-full" style={{ background: CREAM }} />}
+              ? <img src={propia.photo_url} alt="" className="w-14 h-14 rounded-full object-cover" style={{ boxShadow: clay(TONES.sky.rgb, 'sm') }} />
+              : <div className="w-14 h-14 rounded-full" style={{ background: HZ.surface }} />}
             <div className="flex-1 min-w-0">
-              <p className="font-bold leading-tight">{propia.display_name ?? 'Tu sesión'}</p>
-              {propia.zone && <p className="text-sm" style={{ color: MUTED }}>{propia.zone}</p>}
+              <p className="text-lg leading-tight truncate" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>{propia.display_name ?? 'Tu sesión'}</p>
+              {propia.zone && <p className="text-sm" style={{ color: HZ.inkSoft, fontFamily: HZ.body }}>{propia.zone}</p>}
             </div>
-            <span className="text-xs font-black px-2.5 py-1 rounded-full text-white" style={{ background: propia.estado === 'pendiente' ? AZUL : '#b91c1c' }}>
+            <span className="text-xs px-3 py-1.5 rounded-full text-white"
+              style={{ background: propia.estado === 'pendiente' ? AZUL : '#b91c1c', fontFamily: HZ.body, fontWeight: 800, boxShadow: clayButton(propia.estado === 'pendiente' ? '37,99,235' : '185,28,28') }}>
               {propia.estado === 'pendiente' ? 'En revisión' : 'No admitida'}
             </span>
           </div>
-          <iframe title="Tu sesión" src={playerUrl(propia.soundcloud_url)} className="w-full rounded-lg" height={120} loading="lazy" allow="autoplay" />
-          <p className="text-sm mt-3" style={{ color: MUTED }}>
+          <div className="rounded-2xl p-2" style={{ background: HZ.surface, boxShadow: clayInset }}>
+            <iframe title="Tu sesión" src={playerUrl(propia.soundcloud_url)} className="w-full rounded-xl block" height={120} loading="lazy" allow="autoplay" />
+          </div>
+          <p className="text-sm mt-4" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>
             {propia.estado === 'pendiente'
               ? 'Solo la ves tú. En cuanto la revisemos sale aquí para todos y te avisamos por email para que la compartas.'
               : 'No cumple las bases. Escríbenos a info@xpeak.site y te contamos qué falta.'}
@@ -122,64 +127,77 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
       )}
 
       {lista.length === 0 ? (
-        <p style={{ color: MUTED }}>
-          Todavía no hay sesiones publicadas. Cada inscripción se revisa a mano y aparece aquí en cuanto está aceptada.
-        </p>
+        <div className="rounded-[28px] p-6" style={{ background: TONES.sun.card, boxShadow: clay(TONES.sun.rgb) }}>
+          <p style={{ color: TONES.sun.stroke, fontFamily: HZ.body, fontWeight: 700 }}>
+            Todavía no hay sesiones publicadas. Cada inscripción se revisa a mano y aparece aquí en cuanto está aceptada.
+          </p>
+        </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2">
           {lista.map((p) => {
             const idx = puesto.get(p.user_id) ?? 0;
             const enFinal = idx < 3 && Number(p.me_gusta) > 0;
+            // Finalistas en dorado; el resto alterna cielo, verde y lila.
+            const tono = enFinal ? TONES.sun : [TONES.sky, TONES.leaf, TONES.lilac][idx % 3];
             return (
-              <div key={p.user_id} className="rounded-2xl p-4 bg-white"
-                style={{ order: idx, border: enFinal ? `2px solid ${GOLD}` : `1px solid ${GOLD}40`, boxShadow: enFinal ? `0 8px 22px ${GOLD}33` : undefined }}>
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm font-black"
-                    style={enFinal ? { background: `linear-gradient(135deg,${GOLD},#B8941E)`, color: '#111' } : { background: CREAM, color: GOLD_TEXT }}>
+              <div key={p.user_id} className="rounded-[28px] p-5 transition-transform hover:-translate-y-0.5"
+                style={{ order: idx, background: tono.card, boxShadow: clay(tono.rgb, enFinal ? 'lg' : 'md') }}>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-base"
+                    style={enFinal
+                      ? { background: `linear-gradient(135deg,${GOLD},#B8941E)`, color: '#2a1d00', fontFamily: HZ.display, fontWeight: 800, boxShadow: clayButton('184,148,30') }
+                      : { background: tono.bubble, color: tono.stroke, fontFamily: HZ.display, fontWeight: 800, boxShadow: clay(tono.rgb, 'sm') }}>
                     {idx + 1}
                   </span>
                   <a href={`/p/${p.user_id}`} className="flex items-center gap-3 flex-1 min-w-0">
                     {p.photo_url
-                      ? <img src={p.photo_url} alt="" className="w-11 h-11 rounded-full object-cover" loading="lazy" />
-                      : <div className="w-11 h-11 rounded-full" style={{ background: CREAM }} />}
+                      ? <img src={p.photo_url} alt="" className="w-12 h-12 rounded-full object-cover" loading="lazy" style={{ boxShadow: clay(tono.rgb, 'sm') }} />
+                      : <div className="w-12 h-12 rounded-full" style={{ background: HZ.surface }} />}
                     <div className="min-w-0">
-                      <p className="font-bold leading-tight truncate">{p.display_name ?? 'DJ'}</p>
-                      {p.zone && <p className="text-sm" style={{ color: MUTED }}>{p.zone}</p>}
+                      <p className="text-lg leading-tight truncate" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>{p.display_name ?? 'DJ'}</p>
+                      {p.zone && <p className="text-sm" style={{ color: tono.stroke, fontFamily: HZ.body, fontWeight: 700 }}>{p.zone}</p>}
                     </div>
                   </a>
-                  <span className="text-[0.7rem] font-black px-2 py-1 rounded-full shrink-0"
-                    style={enFinal ? { background: `${GOLD}26`, color: GOLD_TEXT } : { background: `${VERDE}1f`, color: VERDE }}>
+                  <span className="text-[0.7rem] px-2.5 py-1.5 rounded-full shrink-0"
+                    style={enFinal ? pastilla('#FFF7DB', TONES.sun.stroke, TONES.sun.rgb) : pastilla(TONES.leaf.card, TONES.leaf.stroke, TONES.leaf.rgb)}>
                     {enFinal ? 'Ahora en la final' : 'Publicada'}
                   </span>
                 </div>
-                <iframe
-                  title={`Sesión de ${p.display_name ?? 'DJ'}`}
-                  src={playerUrl(p.soundcloud_url)}
-                  className="w-full rounded-lg"
-                  height={120}
-                  loading="lazy"
-                  allow="autoplay"
-                />
-                <div className="flex items-center justify-between mt-3 text-sm">
+                <div className="rounded-2xl p-2" style={{ background: HZ.surface, boxShadow: clayInset }}>
+                  <iframe
+                    title={`Sesión de ${p.display_name ?? 'DJ'}`}
+                    src={playerUrl(p.soundcloud_url)}
+                    className="w-full rounded-xl block"
+                    height={120}
+                    loading="lazy"
+                    allow="autoplay"
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-2 mt-4 text-sm">
                   {/* Votar solo dentro de plazo y nunca a uno mismo: antes el DJ
                       podía darse me gusta y su contador lo sumaba aunque el ranking
                       no lo cuenta, y se podía seguir votando tras el cierre. */}
                   {user && p.user_id === user.id ? (
                     <>
-                      <span className="font-bold tabular-nums" style={{ color: '#E11D48' }}>{Number(p.me_gusta)} me gusta</span>
-                      <span className="font-semibold" style={{ color: AZUL }}>Tu sesión</span>
+                      <span className="px-3.5 py-2 rounded-full tabular-nums" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>{Number(p.me_gusta)} me gusta</span>
+                      <span className="px-3.5 py-2 rounded-full" style={pastilla(TONES.sky.card, TONES.sky.stroke, TONES.sky.rgb)}>Tu sesión</span>
                     </>
                   ) : !activo ? (
                     <>
-                      <span className="font-bold tabular-nums" style={{ color: '#E11D48' }}>{Number(p.me_gusta)} me gusta</span>
-                      <span style={{ color: MUTED }}>Votación cerrada</span>
+                      <span className="px-3.5 py-2 rounded-full tabular-nums" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>{Number(p.me_gusta)} me gusta</span>
+                      <span style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 700 }}>Votación cerrada</span>
                     </>
                   ) : user ? (
-                    <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={cargar} />
+                    <span className="px-3.5 py-2 rounded-full" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>
+                      <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={cargar} />
+                    </span>
                   ) : (
                     <>
-                      <span className="font-bold tabular-nums" style={{ color: '#E11D48' }}>{Number(p.me_gusta)} me gusta</span>
-                      <a href={`/auth?mode=login&redirect=${encodeURIComponent(volverA)}`} className="font-semibold underline" style={{ color: AZUL }}>Entra para votar</a>
+                      <span className="px-3.5 py-2 rounded-full tabular-nums" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>{Number(p.me_gusta)} me gusta</span>
+                      <a href={`/auth?mode=login&redirect=${encodeURIComponent(volverA)}`} className="px-4 py-2 rounded-full text-white transition-transform hover:-translate-y-0.5"
+                        style={{ background: AZUL, fontFamily: HZ.body, fontWeight: 800, boxShadow: clayButton('37,99,235') }}>
+                        Entra para votar
+                      </a>
                     </>
                   )}
                 </div>
