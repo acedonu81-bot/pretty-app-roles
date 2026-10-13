@@ -5,7 +5,8 @@ import ValorarContratado, { eventoYaOcurrio } from './ValorarContratado';
 // 13 oct 2026: en la tarjeta de una oferta, al profesional contratado solo se
 // le mostraba "Contratado" y "Contrato"; el botón Valorar estaba únicamente en
 // Empresario > Historial, así que el organizador no encontraba cómo valorar a
-// Gonzalo DJ tras el Burger Gourmet Fest.
+// Gonzalo DJ tras el Burger Gourmet Fest. Ahora es un bloque bien visible, con
+// el nombre del profesional, que abre el formulario de valoración ahí mismo.
 describe('eventoYaOcurrio', () => {
   it('es true si la última fecha ya pasó', () => {
     expect(eventoYaOcurrio(['2026-09-11', '2026-09-12'], '2026-10-13')).toBe(true);
@@ -23,21 +24,23 @@ describe('eventoYaOcurrio', () => {
 });
 
 describe('ValorarContratado', () => {
-  it('muestra "Valorar" cuando el evento ya pasó y aún no hay reseña, y lo lanza al pulsar', () => {
+  it('pregunta cómo fue y ofrece "Valorar a <nombre>", que lanza la valoración', () => {
     const onValorar = vi.fn();
-    render(<ValorarContratado yaOcurrio valorado={false} onValorar={onValorar} />);
-    fireEvent.click(screen.getByRole('button', { name: /Valorar/ }));
+    render(<ValorarContratado nombre="Gonzalo DJ" yaOcurrio valorado={false} onValorar={onValorar} />);
+    expect(screen.getByText('¿Cómo fue con Gonzalo DJ?')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Valorar a Gonzalo DJ' }));
     expect(onValorar).toHaveBeenCalledTimes(1);
   });
 
-  it('muestra "Valorado" (sin botón) si ya hay reseña', () => {
-    render(<ValorarContratado yaOcurrio valorado onValorar={() => {}} />);
-    expect(screen.getByText('Valorado')).toBeTruthy();
+  it('si ya valoró, lo dice con el nombre y no ofrece el botón', () => {
+    render(<ValorarContratado nombre="Gonzalo DJ" yaOcurrio valorado onValorar={() => {}} />);
+    expect(screen.getByText('Ya has valorado a Gonzalo DJ. ¡Gracias!')).toBeTruthy();
     expect(screen.queryByRole('button')).toBeNull();
   });
 
-  it('no muestra nada si el evento aún no ha ocurrido', () => {
-    const { container } = render(<ValorarContratado yaOcurrio={false} valorado={false} onValorar={() => {}} />);
-    expect(container.innerHTML).toBe('');
+  it('antes del evento explica cuándo se podrá valorar, sin botón', () => {
+    render(<ValorarContratado nombre="Gonzalo DJ" yaOcurrio={false} valorado={false} onValorar={() => {}} />);
+    expect(screen.getByText('Podrás valorar a Gonzalo DJ cuando termine el evento.')).toBeTruthy();
+    expect(screen.queryByRole('button')).toBeNull();
   });
 });

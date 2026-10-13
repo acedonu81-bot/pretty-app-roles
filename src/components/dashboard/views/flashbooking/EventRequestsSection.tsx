@@ -9,7 +9,7 @@ import { ROLE_TAGS, ALQUILER_TAGS, ROL_UI_A_SLUG, jobWord, canonicalRole } from 
 import ContractModal, { type ContractPrefill } from '@/components/dashboard/ContractModal';
 import FechasEvento, { hoyLocalISO } from './FechasEvento';
 import ValorarContratado, { eventoYaOcurrio } from './ValorarContratado';
-import { irAVista } from '@/lib/irAVista';
+import { ReviewModal, type Booking } from '@/components/dashboard/views/empresario/HistorialTab';
 import type { Profile } from '@/data/profiles';
 
 interface EventRequest {
@@ -83,6 +83,7 @@ const EventRequestsSection = () => {
   // Profesionales que este organizador ya ha valorado: el botón Valorar de la
   // tarjeta pasa a "Valorado".
   const [valorados, setValorados] = useState<Set<string>>(new Set());
+  const [valorando, setValorando] = useState<Booking | null>(null);
   useEffect(() => {
     if (!isEmpresario || !user?.id) return;
     supabase.from('reviews').select('reviewed_user_id').eq('reviewer_id', user.id)
@@ -774,10 +775,6 @@ const EventRequestsSection = () => {
                                                   style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
                                                   <FileText size={10} /> {loadingContract ? '…' : 'Contrato'}
                                                 </button>
-                                                <ValorarContratado
-                                                  yaOcurrio={eventoYaOcurrio(req.event_dates ?? [req.event_date], hoyLocalISO())}
-                                                  valorado={valorados.has(resp.professionalUserId)}
-                                                  onValorar={() => irAVista('empresario', '/dashboard?view=empresario&tab=historial')} />
                                               </div>
                                             ) : resp.chosen_at ? (
                                               <span className="text-[10px] font-black flex-shrink-0" style={{ color: '#8A6D0F' }}>
@@ -793,6 +790,18 @@ const EventRequestsSection = () => {
                                               </button>
                                             )}
                                           </div>
+                                          {isEmpresario && resp.hired_at && (
+                                            <ValorarContratado
+                                              nombre={resp.name}
+                                              yaOcurrio={eventoYaOcurrio(req.event_dates ?? [req.event_date], hoyLocalISO())}
+                                              valorado={valorados.has(resp.professionalUserId)}
+                                              onValorar={() => setValorando({
+                                                id: resp.id, professional_name: resp.name, professional_role: null,
+                                                professional_user_id: resp.professionalUserId, event_date: req.event_date,
+                                                event_location: req.city, event_description: null, agreed_price: null,
+                                                status: 'confirmed', created_at: resp.hired_at, source: 'request',
+                                              })} />
+                                          )}
                                           {resp.message && (
                                             <p className="text-xs mt-0.5" style={{ color: '#333' }}>{resp.message}</p>
                                           )}
@@ -1060,6 +1069,18 @@ const EventRequestsSection = () => {
           </div>
         </div>,
         document.body,
+      )}
+
+      {valorando && user?.id && (
+        <ReviewModal
+          booking={valorando}
+          reviewerId={user.id}
+          onClose={() => setValorando(null)}
+          onDone={(targetId) => {
+            setValorados(prev => new Set(prev).add(targetId));
+            setValorando(null);
+          }}
+        />
       )}
 
       {contractFor && contractProfile && (

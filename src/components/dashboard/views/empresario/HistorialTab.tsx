@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { buildWorkbook, downloadWorkbook, fmtDateISO } from '@/lib/csvExport';
 import { canSubmitReview, isReviewIncomplete, YesNoToggle } from '@/components/ReviewQuestions';
 
-interface Booking {
+export interface Booking {
   id: string;
   professional_name: string;
   professional_role: string | null;
@@ -829,7 +829,7 @@ function CompleteReviewModal({ review, onClose, onDone }: {
 
 // Modal para valorar a un profesional contratado. La reseña queda ligada al
 // professional_user_id y con approved:false (se publica tras moderación admin).
-function ReviewModal({ booking, reviewerId, onClose, onDone }: {
+export function ReviewModal({ booking, reviewerId, onClose, onDone }: {
   booking: Booking;
   reviewerId: string;
   onClose: () => void;

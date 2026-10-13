@@ -9,7 +9,6 @@ import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLin
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
 import PendingReviewsBanner from '@/components/dashboard/PendingReviewsBanner';
 import { marcarFlashVisto } from '@/hooks/useDashboardBadges';
-import { IR_A_VISTA_EVENT } from '@/lib/irAVista';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import { NativeStackTransition } from '@/components/dashboard/NativeStackTransition';
 import { isNative } from '@/lib/capacitor';
@@ -455,19 +454,6 @@ const Dashboard = () => {
     }));
     viewAdjusted.current = true;
   }, [profileRole, location]);
-
-  // Los componentes hijos piden cambiar de vista por evento (irAVista): la
-  // vista activa vive aquí y navigate() a secas no la cambia.
-  useEffect(() => {
-    const alPedirVista = (e: Event) => {
-      const { vista, url } = (e as CustomEvent<{ vista: string; url?: string }>).detail ?? {};
-      if (!vista) return;
-      handleViewChange(vista);
-      if (url) navigate(url, { replace: true });
-    };
-    window.addEventListener(IR_A_VISTA_EVENT, alPedirVista);
-    return () => window.removeEventListener(IR_A_VISTA_EVENT, alPedirVista);
-  });
 
   // Al abrir Flash Booking, el empresario ve las respuestas recibidas: el globo
   // se apaga (antes se quedaba encendido para siempre, 13 oct 2026).
