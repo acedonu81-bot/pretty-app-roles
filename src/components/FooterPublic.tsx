@@ -115,7 +115,7 @@ export default function FooterPublic() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,0.04)' }}>
           <div className="flex items-center gap-3">
-            <a href="/" className="text-base font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+            <a href="/" className="text-base font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
             <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.1)' }}>·</span>
             <span className="text-[0.65rem]" style={{ color: '#333' }}>El directorio profesional de eventos en España</span>
           </div>
@@ -128,7 +128,7 @@ export default function FooterPublic() {
                     <Icon className="w-4 h-4" />
                   </a>
                 ) : (
-                  <span key={label} aria-label={label} style={{ color: 'rgba(0,0,0,0.3)' }}>
+                  <span key={label} role="img" aria-label={`${label} (próximamente)`} style={{ color: 'rgba(0,0,0,0.3)' }}>
                     <Icon className="w-4 h-4" />
                   </span>
                 )

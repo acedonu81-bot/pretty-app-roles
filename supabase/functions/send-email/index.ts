@@ -1037,6 +1037,37 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Ver mi sesión en el concurso →', 'https://xpeak.es/concurso-dj-madrid/aspirantes')}`),
   }),
 
+  // Invitación al Concurso DJ XPEAK Madrid (13 oct 2026) a los DJs de la
+  // Comunidad de Madrid. Dos variantes: perfil completo (foto y bio) invita a
+  // inscribirse; si falta algo, explica qué necesita para poder entrar.
+  concurso_invitacion: (d) => ({
+    subject: d.completo
+      ? `${esc(d.name)}, Concurso DJ XPEAK Madrid: sube tu sesión y gana unos Pioneer DJ HDJ-X5`
+      : `${esc(d.name)}, completa tu perfil y entra en el Concurso DJ XPEAK Madrid`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Concurso DJ XPEAK Madrid</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>. Abrimos el primer concurso de DJs de XPEAK, para DJs de la Comunidad de Madrid, y el premio son unos <strong style="color:#0a0908">Pioneer DJ HDJ-X5</strong>.
+      </p>
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:16px 18px;margin:16px 0">
+        <p style="margin:0 0 6px;font-size:14px;font-weight:900;color:#0a0908">Cómo funciona</p>
+        <ul style="margin:0;padding-left:18px;font-size:13px;color:#4b5563;line-height:1.8">
+          <li>Subes el enlace de una sesión tuya de SoundCloud, de 30 a 80 minutos.</li>
+          <li>Del 13 de octubre al 2 de noviembre, cualquier usuario de XPEAK puede votar con un me gusta.</li>
+          <li>Las 3 sesiones con más me gusta pasan a la final y un jurado elige al ganador el 9 de noviembre.</li>
+          <li>Inscribirse es gratis.</li>
+        </ul>
+      </div>
+      ${d.completo
+        ? `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">Tu perfil ya está completo, así que solo te falta pegar el enlace de tu sesión.</p>
+           ${btn('Inscribirme en el concurso →', 'https://xpeak.es/concurso-dj-madrid#inscripcion')}`
+        : `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">Para entrar, tu perfil necesita ${esc(d.falta ?? 'foto y bio')}. Así el público y el jurado saben quién hay detrás de cada sesión, y los organizadores también te encuentran mejor en el directorio.</p>
+           <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">Complétalo en un par de minutos y vuelve al concurso para inscribirte.</p>
+           ${btn('Completar mi perfil y entrar →', 'https://xpeak.es/concurso-dj-madrid#inscripcion')}`}
+      <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:18px"><a href="https://xpeak.es/concurso-dj-madrid#bases" style="color:#D4AF37">Leer las bases completas</a></p>`),
+  }),
+
   booking_received: (d) => ({
     subject: `Nueva solicitud Flash Booking: ${esc(d.event_date ?? 'Fecha por confirmar')}`,
     to: d.email ?? ADMIN,

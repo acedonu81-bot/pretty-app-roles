@@ -153,7 +153,7 @@ const CookieBanner = () => {
                   <Link to="/cookies" className="underline font-medium" style={{ color: '#8B6A00' }}>Política de cookies</Link>
                 </p>
               </div>
-              <button onClick={rejectAll} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-black/5 flex-shrink-0">
+              <button onClick={rejectAll} aria-label="Cerrar y solo cookies necesarias" className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-black/5 flex-shrink-0">
                 <X size={13} style={{ color: '#374151' }} />
               </button>
             </div>
