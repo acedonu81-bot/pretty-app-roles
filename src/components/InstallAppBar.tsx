@@ -42,11 +42,17 @@ export default function InstallAppBar() {
     : 'pantalla completa, sin barra del navegador, como una app.';
 
   return (
-    <div className="sticky top-0 z-[70] w-full"
+    // Encima del contenido (fixed), no en el flujo: el aviso de instalación
+    // del navegador llega 1-2 s después de cargar y, al aparecer, empujaba
+    // toda la página 60 px hacia abajo (CLS 0,19 en la del Concurso DJ,
+    // auditoría 13 oct 2026). La entrada deslizando no cuenta como salto.
+    <div className="fixed top-0 inset-x-0 z-[70] w-full motion-safe:animate-[installBarIn_0.35s_ease-out]"
       style={{
         background: 'linear-gradient(90deg,#D4AF37,#B8941E)',
         color: '#000',
+        boxShadow: '0 6px 18px rgba(0,0,0,0.12)',
       }}>
+      <style>{'@keyframes installBarIn{from{transform:translateY(-100%)}to{transform:translateY(0)}}'}</style>
       <div className="flex items-center justify-center gap-3 px-4 py-2 text-center">
         <p className="text-xs font-bold leading-snug">
           Instala XPEAK: {copy}
