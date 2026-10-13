@@ -152,6 +152,22 @@ const rows = (pairs: [string, string][]) =>
       + `<td style="padding:10px 0;color:#0a0908;font-size:13px;font-weight:600;line-height:1.6;${borde}">${noAutolink(val)}</td></tr>`;
   }).join('')}</table>`;
 
+// Fechas de una oferta ("2026-10-16", "2026-10-17") a texto: "16 y 17 de octubre".
+const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const fechasLegibles = (fechas: unknown): string => {
+  const ds = (Array.isArray(fechas) ? fechas : []).map((f) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(f));
+    return m ? { d: Number(m[3]), m: Number(m[2]) - 1 } : null;
+  }).filter((x): x is { d: number; m: number } => !!x);
+  if (ds.length === 0) return 'Por confirmar';
+  const porMes = new Map<number, number[]>();
+  for (const x of ds) porMes.set(x.m, [...(porMes.get(x.m) ?? []), x.d]);
+  return [...porMes.entries()].map(([m, dias]) => {
+    const l = dias.length > 1 ? `${dias.slice(0, -1).join(', ')} y ${dias[dias.length - 1]}` : String(dias[0]);
+    return `${l} de ${MESES_ES[m]}`;
+  }).join(' y ');
+};
+
 const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to: string; replyTo?: string }> = {
 
   // Nueva reseña pendiente de aprobar — sin esto, la moderación depende de
@@ -452,6 +468,45 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 2c. La oferta se cubrió — aviso a quien se apuntó y no salió elegido.
   //
+  // 13 oct 2026: la oferta de Burguerfest (DJ en Seseña, 16 y 17 oct) avisó a 43
+  // profesionales solo por campana y push, y solo 2 tenían push. Pasó igual con
+  // el Burger Gourmet Fest el 10 sep. El email es el único canal que llega a
+  // todos. Misma información que ya ve el profesional en la campana: no se
+  // añade teléfono, email ni dirección exacta (el contacto va por el chat).
+  oferta_nueva: (d) => {
+    const dato = (k: string, v: string) =>
+      `<tr><td style="padding:9px 0;border-bottom:1px solid rgba(10,9,8,0.06);color:#6B7280;font-size:13px;width:34%;vertical-align:top">${esc(k)}</td>`
+      + `<td style="padding:9px 0;border-bottom:1px solid rgba(10,9,8,0.06);color:#0a0908;font-size:14px;font-weight:600;line-height:1.5">${esc(v)}</td></tr>`;
+    const presupuesto = d.budget_max
+      ? (d.budget_min && d.budget_min !== d.budget_max ? `${d.budget_min} a ${d.budget_max} €` : `Hasta ${d.budget_max} €`)
+      : 'A convenir';
+    const quien = d.client_name || 'Un organizador';
+    const que = d.roles || 'profesionales';
+    return {
+      subject: `${esc(quien)} busca ${esc(que)}${d.city ? ` en ${esc(d.city)}` : ''}${d.budget_max ? `, hasta ${esc(d.budget_max)} €` : ''}`,
+      to: d.email,
+      html: base(`
+        <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Nueva oferta para ti</h2>
+        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 16px">
+          Hola <strong style="color:#0a0908">${esc(d.name)}</strong>. Un organizador acaba de publicar una oferta que encaja con tu perfil.
+        </p>
+        <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:8px 18px;margin:0 0 6px">
+          <table style="width:100%;border-collapse:collapse">
+            ${dato('Organizador', quien)}
+            ${dato('Se busca', que)}
+            ${d.event_type ? dato('Tipo de evento', d.event_type) : ''}
+            ${dato('Dónde', d.city || 'Por confirmar')}
+            ${dato('Cuándo', fechasLegibles(d.fechas))}
+            ${dato('Presupuesto', presupuesto)}
+          </table>
+        </div>
+        ${btn('Ver la oferta y responder →', 'https://xpeak.es/dashboard?view=flashbooking')}
+        <p style="color:#4b5563;font-size:13px;line-height:1.7;margin:18px 0 0">
+          Responder de los primeros cuenta a tu favor: el organizador suele cerrar con quien contesta antes. Todo el contacto se hace dentro de XPEAK, por el chat.
+        </p>`, `${quien} busca ${que}${d.city ? ` en ${d.city}` : ''}`),
+    };
+  },
+
   // 10 sep 2026: dos DJs se apuntaron al Burger Gourmet Fest en 17 minutos y el
   // organizador cerró el bolo por teléfono con otro de fuera. Solo se les avisó
   // por campana, que ninguno vio. Quien responde rápido y se queda esperando sin
@@ -1811,6 +1866,28 @@ async function atender(req: Request): Promise<Response> {
     // Validate destination email before sending
     if (!to || !to.includes('@')) {
       return new Response(JSON.stringify({ error: 'Invalid recipient email' }), { status: 400, headers: corsHeaders });
+    }
+
+    // Oferta nueva: un email por profesional y oferta. El trigger llama vía
+    // net.http_post (pg_net), que puede reintentar; se reserva en email_logs
+    // (UNIQUE user_id+type+día) antes de enviar. Además, tope de 5 al día por
+    // dirección para que una racha de ofertas no sature la bandeja.
+    if (type === 'oferta_nueva' && data?.request_id && data?.user_id) {
+      const dedupeClient = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+      const hace24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const { count: hoy } = await dedupeClient.from('email_send_log' as any).select('id', { count: 'exact', head: true })
+        .eq('type', 'oferta_nueva').eq('to_email', to).gte('sent_at', hace24h);
+      if ((hoy ?? 0) >= 5) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'tope_diario' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+      const { error: reserveError } = await dedupeClient.from('email_logs' as any).insert({
+        user_id: data.user_id,
+        type: `oferta_nueva_${data.request_id}`,
+        sent_at: new Date().toISOString(),
+      });
+      if (reserveError) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
     }
 
     // Concurso: el aviso de "sesión aceptada" sale una vez por DJ. Un doble
