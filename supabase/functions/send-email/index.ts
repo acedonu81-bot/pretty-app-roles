@@ -981,6 +981,27 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   }),
 
   // 12. Flash Booking — aviso al profesional (nueva solicitud recibida)
+  // Alta como organizador con pinta de DJ (13 oct 2026, Dj MONSTER): los
+  // perfiles de empresario no salen en el directorio, así que si en realidad
+  // quiere que le contraten nadie le encuentra. Solo con clave de servicio.
+  organizador_es_dj: (d) => ({
+    subject: `${esc(d.name)}, ¿te damos de alta como DJ en XPEAK?`,
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">¿Organizador o DJ?</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, bienvenido a XPEAK.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hemos visto que te has dado de alta como organizador de eventos. Si lo que buscas es que te contraten como DJ, responde a este correo y pasamos tu cuenta a perfil de DJ para que aparezcas en el directorio.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Si eres organizador, no tienes que hacer nada.
+      </p>
+      ${btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}`),
+  }),
+
   booking_received: (d) => ({
     subject: `Nueva solicitud Flash Booking: ${esc(d.event_date ?? 'Fecha por confirmar')}`,
     to: d.email ?? ADMIN,
