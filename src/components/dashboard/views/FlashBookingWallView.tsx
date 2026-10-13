@@ -84,7 +84,7 @@ const FlashBookingWallView = () => {
 
   const tabs = [
     { id: 'oferta' as const, label: 'Oferta', sub: 'profesionales disponibles', color: '#8A6D0F', pulse: false },
-    { id: 'demanda' as const, label: 'Nueva oferta', sub: 'dj, staff, lo que sea', color: '#22c55e', pulse: true },
+    { id: 'demanda' as const, label: 'Nueva oferta', sub: 'dj, staff, lo que sea', color: '#22c55e', texto: '#166534', pulse: true },
     ...(!isEmpresario ? [{ id: 'solicitudes' as const, label: 'Solicitudes', sub: 'recibidas', color: '#8A6D0F', pulse: false }] : []),
   ];
 
@@ -104,7 +104,7 @@ const FlashBookingWallView = () => {
           </p>
           <button type="button" onClick={() => elegir('demanda')}
             className="px-3 py-2 rounded-lg text-xs font-black flex-shrink-0"
-            style={{ background: '#16a34a', color: '#fff' }}>
+            style={{ background: '#15803d', color: '#fff' }}>
             Ver las ofertas
           </button>
         </div>
@@ -119,7 +119,9 @@ const FlashBookingWallView = () => {
               // nunca acertaba, así que los tabs dorados salían con fondo verde.
               background: tab === t.id ? `rgba(${t.color === '#22c55e' ? '34,197,94' : '212,175,55'},0.12)` : 'rgba(0,0,0,0.03)',
               border: `1px solid ${tab === t.id ? `rgba(${t.color === '#22c55e' ? '34,197,94' : '212,175,55'},0.4)` : 'var(--nightlife-border)'}`,
-              color: tab === t.id ? t.color : '#3d3d4e',
+              // Texto legible: el verde de marca (#22c55e) sobre su propio fondo
+              // pálido daba 1,86:1; la pestaña verde usa un verde oscuro (5,8:1).
+              color: tab === t.id ? ('texto' in t ? t.texto : t.color) : '#3d3d4e',
             }}>
             <span className="w-2 h-2 rounded-full flex-shrink-0"
               style={{
@@ -129,7 +131,7 @@ const FlashBookingWallView = () => {
             {t.label}
             {t.id === 'demanda' && !isEmpresario && demandaBadge > 0 && (
               <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
-                style={{ background: '#16a34a', color: '#fff' }}>
+                style={{ background: '#15803d', color: '#fff' }}>
                 {demandaBadge} {demandaBadge === 1 ? 'nueva' : 'nuevas'}
               </span>
             )}
@@ -139,7 +141,7 @@ const FlashBookingWallView = () => {
                 {pendingCount}
               </span>
             )}
-            <span className="text-xs opacity-60 ml-0.5 hidden sm:inline">({t.sub})</span>
+            <span className="text-xs opacity-80 ml-0.5 hidden sm:inline">({t.sub})</span>
           </button>
         ))}
       </div>

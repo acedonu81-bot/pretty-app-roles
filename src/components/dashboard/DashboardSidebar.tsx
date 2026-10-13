@@ -215,7 +215,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
       >
         <Icon size={iconAlert ? 15 : (iconColor && !isActive ? 14 : 17)} strokeWidth={iconColor && !isActive ? 2.5 : 2} />
       </span>
-      <span className="flex-1" style={iconAlert ? { color: '#15803d', fontWeight: 800 } : undefined}>{label}</span>
+      <span className="flex-1" style={iconAlert ? { color: '#166534', fontWeight: 800 } : undefined}>{label}</span>
       {etiqueta && (
         <>
           <span className="flex-shrink-0 text-[0.58rem] font-black uppercase tracking-wide px-1.5 py-1 rounded-full leading-none group-data-[collapsible=icon]:hidden"
@@ -235,7 +235,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
         style={badgeColor === 'blue'
           ? { background: 'rgba(37,99,235,0.14)', color: '#2563EB' }
           : badgeColor === 'green'
-            ? { background: '#16a34a', color: '#fff' }
+            ? { background: '#15803d', color: '#fff' }
             : { background: 'rgba(212,175,55,0.18)', color: '#8A6D0F' }}
       >
         {badge}

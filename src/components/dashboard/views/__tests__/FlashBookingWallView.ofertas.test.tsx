@@ -61,6 +61,16 @@ describe('Flash Booking del profesional con ofertas nuevas', () => {
     expect(screen.getByText('(dj, staff, lo que sea)')).toBeTruthy();
   });
 
+  // 13 oct 2026: la pestaña verde activa se veía "fatal": texto #22c55e sobre su
+  // propio fondo verde pálido, contraste 1,86:1. Ahora el texto es verde oscuro.
+  it('la pestaña Nueva oferta activa tiene texto oscuro y legible, no el verde claro de marca', async () => {
+    estado.search = '?tab=demanda';
+    montar();
+    const boton = await screen.findByRole('button', { name: /Nueva oferta/ });
+    expect(boton.style.color).toBe('rgb(22, 101, 52)'); // #166534
+    expect(boton.style.color).not.toBe('rgb(34, 197, 94)'); // #22c55e
+  });
+
   it('el enlace ?tab=demanda (email) abre en Demanda', async () => {
     estado.search = '?tab=demanda';
     montar();

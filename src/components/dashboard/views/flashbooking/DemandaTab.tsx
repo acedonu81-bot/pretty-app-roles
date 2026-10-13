@@ -34,7 +34,8 @@ const fmtCountdown = (s: number) => {
 const urgencyColor = (s: number) => {
   if (s < 1800) return '#ff5f56';
   if (s < 7200) return '#D4AF37';
-  return '#22c55e';
+  // Verde oscuro: el #22c55e como texto daba ~2,3:1 sobre blanco (13 oct 2026).
+  return '#15803d';
 };
 
 const DemandaTab = () => {
@@ -287,9 +288,9 @@ const DemandaTab = () => {
 
       <div className="glass-panel p-4 mb-5 flex items-center gap-3"
         style={{ border: '1px solid rgba(34,197,94,0.15)', background: 'rgba(34,197,94,0.02)' }}>
-        <Megaphone size={16} style={{ color: '#22c55e' }} />
+        <Megaphone size={16} style={{ color: '#15803d' }} />
         <div className="flex-1">
-          <p className="text-xs font-bold" style={{ color: '#22c55e' }}>Ofertas de Empresarios</p>
+          <p className="text-xs font-bold" style={{ color: '#166534' }}>Ofertas de Empresarios</p>
           <p className="text-xs text-muted-foreground">Necesidades urgentes. Responde rápido para asegurar tu contratación.</p>
         </div>
         <button onClick={fetchJobs} className="p-1.5 rounded-lg transition-all hover:scale-105"
@@ -395,7 +396,7 @@ const DemandaTab = () => {
                           <button
                             onClick={() => setNewReplies(r => ({ ...r, [offer.id]: 0 }))}
                             className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                            style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)', color: '#22c55e' }}>
+                            style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)', color: '#166534' }}>
                             <MessageCircle size={11} />
                             {newReplies[offer.id]} nueva{(newReplies[offer.id] ?? 0) > 1 ? 's' : ''}
                           </button>
