@@ -178,6 +178,7 @@ function staticUrls(today, indexableCities, cityContentDates) {
   lines.push(url('https://xpeak.es/autor/daniel', autorDanielDate, 'monthly', '0.4'));
   lines.push(url('https://xpeak.es/soporte', soporteDate, 'monthly', '0.5'));
   lines.push(url('https://xpeak.es/healthy-zone', lastCommitDate('src/pages/HealthyZone.tsx'), 'weekly', '0.7'));
+  lines.push(url('https://xpeak.es/concurso-dj-madrid', lastCommitDate('src/pages/ConcursoDJMadrid.tsx'), 'weekly', '0.7'));
 
   // Category landings
   lines.push('\n  <!-- Category landings -->');

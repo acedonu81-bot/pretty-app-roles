@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useFeedPosts, type FeedPost } from '@/hooks/useFeedPosts';
 import { useFeedAlert } from '@/hooks/useFeedAlert';
 import FeedPostCard from '@/components/dashboard/views/FeedPostCard';
+import ConcursoFeedBanner from '@/components/dashboard/views/ConcursoFeedBanner';
 import { HZ, BLUE_RGB } from '@/components/healthy-zone/clay';
 
 // Nº de columnas por breakpoint — debe coincidir con los breakpoints de
@@ -116,6 +117,7 @@ const FeedView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
     return (
       <>
         {fonts}
+        <div className="p-4 sm:p-6 pb-0 sm:pb-0"><ConcursoFeedBanner /></div>
         <div className="flex flex-col items-center justify-center text-center px-6 py-16 gap-3">
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-1" style={{ background: HZ.blue, boxShadow: `0 8px 20px rgba(${BLUE_RGB},0.45)` }}>
             <Rss size={30} style={{ color: '#fff' }} strokeWidth={2.5} />
@@ -140,6 +142,7 @@ const FeedView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
     <>
       {fonts}
       <div className="p-4 sm:p-6" style={{ background: HZ.bg, minHeight: '100%' }}>
+        <ConcursoFeedBanner />
         <div className="flex gap-4 items-start">
           {columnas.map((columna, i) => (
             <div key={i} className="flex-1 min-w-0 flex flex-col gap-4">
