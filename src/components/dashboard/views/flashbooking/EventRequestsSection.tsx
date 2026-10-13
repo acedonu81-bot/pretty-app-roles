@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { ROLE_TAGS, ALQUILER_TAGS, ROL_UI_A_SLUG, jobWord, canonicalRole } from '@/lib/constants';
 import ContractModal, { type ContractPrefill } from '@/components/dashboard/ContractModal';
+import FechasEvento from './FechasEvento';
 import type { Profile } from '@/data/profiles';
 
 interface EventRequest {
@@ -920,34 +921,8 @@ const EventRequestsSection = () => {
                   {/* Varias fechas: el Burger Gourmet Fest era viernes Y sábado
                       y solo cabía una, así que el segundo día acabó explicado
                       en la descripción, donde ningún recordatorio lo lee. */}
-                  {form.event_dates.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mb-2">
-                      {form.event_dates.map(d => (
-                        <span key={d} className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold"
-                          style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
-                          {new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
-                          <button type="button" aria-label={`Quitar ${d}`}
-                            onClick={() => setForm(f => ({ ...f, event_dates: f.event_dates.filter(x => x !== d) }))}
-                            className="opacity-60 hover:opacity-100">
-                            <X size={10} />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  <input type="date" value=""
-                    onChange={e => {
-                      const v = e.target.value;
-                      if (!v) return;
-                      setForm(f => f.event_dates.includes(v)
-                        ? f
-                        : { ...f, event_dates: [...f.event_dates, v].sort() });
-                    }}
-                    className="w-full px-3 py-2.5 rounded-xl text-base sm:text-sm focus:outline-none"
-                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
-                  <p className="text-[10px] mt-1" style={{ color: '#888' }}>
-                    Añade un día cada vez si el evento dura varias jornadas.
-                  </p>
+                  <FechasEvento fechas={form.event_dates}
+                    onChange={event_dates => setForm(f => ({ ...f, event_dates }))} />
                 </div>
 
                 <div>
