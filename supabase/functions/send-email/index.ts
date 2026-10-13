@@ -610,20 +610,62 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // que el profesional confirma dentro de la app (doble aceptación, 11 sep
   // 2026) — a diferencia de "contratado", aquí falta un paso, así que el
   // texto y el CTA insisten en "confirma" y no en "ya es tuyo".
-  preseleccionado: (d) => ({
-    subject: `${esc(d.titulo)} quiere contratarte: confirma tu plaza`,
-    to: d.email,
-    html: base(`
-      <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.3);border-radius:8px;padding:16px;margin-bottom:20px">
-        <p style="font-size:20px;font-weight:900;margin:0;color:#0a0908">¡Te han elegido!</p>
-      </div>
-      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
-        <strong>${esc(d.titulo)}</strong> quiere contratarte, pero el bolo todavía no es firme:
-        entra en XPEAK y confirma tu plaza antes de que elija a otro profesional.
-      </p>
-      ${btn('Confirmar ahora →', 'https://xpeak.es/dashboard?view=flashbooking')}
-    `, `${esc(d.titulo)} quiere contratarte: confirma tu plaza`),
-  }),
+  preseleccionado: (d) => {
+    const id = /^[0-9a-f-]{36}$/i.test(String(d.request_id ?? '')) ? String(d.request_id) : '';
+    const url = `https://xpeak.es/dashboard?view=flashbooking&tab=demanda${id ? `&oferta=${id}` : ''}`;
+    return {
+      subject: `${esc(d.titulo)} te ha elegido: confirma tu plaza`,
+      to: d.email,
+      html: base(`
+        <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.3);border-radius:8px;padding:16px;margin-bottom:20px">
+          <p style="font-size:20px;font-weight:900;margin:0;color:#0a0908">¡Te han elegido!</p>
+        </div>
+        <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+          <strong>${esc(d.titulo)}</strong> te ha elegido. Falta un paso: confirma tu plaza para cerrar el bolo.
+        </p>
+        <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:14px 18px;margin:0 0 6px">
+          <p style="color:#0a0908;font-size:14px;line-height:1.8;margin:0">
+            1. Pulsa el botón y se abre la oferta.<br>
+            2. Pulsa <strong>Aceptar el bolo</strong>.<br>
+            3. Se abre el chat con el organizador y queda en tu calendario.
+          </p>
+        </div>
+        ${btn('Confirmar mi plaza →', url)}
+        <p style="color:#4b5563;font-size:13px;line-height:1.7;margin:18px 0 0">
+          Si no respondes, el organizador puede elegir a otro profesional.
+        </p>
+      `, `${esc(d.titulo)} te ha elegido. Confirma tu plaza para cerrar el bolo.`),
+    };
+  },
+
+  // 13 oct 2026: cuando el profesional confirma, el organizador solo recibía
+  // campana y push (y 3 de cada 4 no tienen push). Es el momento en que el bolo
+  // se cierra de verdad: lleva un email con el siguiente paso.
+  oferta_aceptada: (d) => {
+    const id = /^[0-9a-f-]{36}$/i.test(String(d.request_id ?? '')) ? String(d.request_id) : '';
+    const url = `https://xpeak.es/dashboard?view=flashbooking&tab=demanda${id ? `&oferta=${id}` : ''}`;
+    const plano = (v: unknown) => String(v ?? '').replace(/[\r\n<>]+/g, ' ').trim();
+    const pro = d.profesional || 'El profesional';
+    const titulo = d.titulo || 'tu oferta';
+    return {
+      subject: `${plano(pro)} ha confirmado el bolo de ${plano(titulo)}`,
+      to: d.email,
+      html: base(`
+        <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.25);border-radius:8px;padding:16px;margin-bottom:20px">
+          <p style="font-size:20px;font-weight:900;margin:0;color:#0a0908">Bolo cerrado</p>
+        </div>
+        <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+          Hola <strong>${esc(d.name || 'organizador')}</strong>.
+          <strong>${esc(pro)}</strong> ha confirmado el bolo de <strong>${esc(titulo)}</strong>.
+          La plaza está cubierta y el chat ya está abierto.
+        </p>
+        <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0">
+          Desde tu oferta puedes escribirle y hacer el contrato.
+        </p>
+        ${btn('Abrir mi oferta →', url)}
+      `, `${pro} ha confirmado el bolo de ${titulo}.`),
+    };
+  },
 
   // 2e. Al día siguiente del bolo: pedir la valoración.
   //
@@ -1946,6 +1988,19 @@ async function atender(req: Request): Promise<Response> {
         sent_at: new Date().toISOString(),
       });
       if (reservaResp) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+    }
+
+    // Bolo cerrado: un email por candidatura confirmada (pg_net puede reintentar).
+    if (type === 'oferta_aceptada' && data?.response_id && data?.user_id) {
+      const dedupeAcep = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+      const { error: reservaAcep } = await dedupeAcep.from('email_logs' as any).insert({
+        user_id: data.user_id,
+        type: `oferta_aceptada_${data.response_id}`,
+        sent_at: new Date().toISOString(),
+      });
+      if (reservaAcep) {
         return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
     }
