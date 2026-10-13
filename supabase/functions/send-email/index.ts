@@ -547,6 +547,22 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     };
   },
 
+  // El organizador anula la contratación: el profesional lo sabe por email.
+  contratacion_anulada: (d) => ({
+    subject: `Se ha caído la contratación de ${String(d.titulo ?? 'tu bolo').replace(/[\r\n<>]+/g, ' ').trim()}`,
+    to: d.email,
+    html: base(`
+      <div style="background:rgba(245,158,11,0.10);border:1px solid rgba(217,119,6,0.4);border-radius:8px;padding:16px;margin-bottom:20px">
+        <p style="font-size:20px;font-weight:900;margin:0;color:#0a0908">Se ha caído la contratación</p>
+      </div>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name || 'profesional')}</strong>. <strong>${esc(d.titulo || 'El organizador')}</strong> ha anulado tu contratación y ha vuelto a abrir la oferta. El bolo ya no está en tu calendario.
+      </p>
+      <p style="color:#4b5563;font-size:13px;line-height:1.7;margin:0">Si quieres saber qué ha pasado, escríbele por el chat de XPEAK.</p>
+      ${btn('Abrir mis mensajes →', 'https://xpeak.es/dashboard?view=messages')}
+    `, 'El organizador ha anulado tu contratación.'),
+  }),
+
   // El profesional contratado ha dicho que no: el organizador tiene que relanzar la oferta.
   oferta_baja: (d) => {
     const id = /^[0-9a-f-]{36}$/i.test(String(d.request_id ?? '')) ? String(d.request_id) : '';
