@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp, Check, Pencil, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
@@ -850,12 +851,12 @@ const EventRequestsSection = () => {
       )}
 
       {/* Form modal */}
-      {showForm && (
-        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-4"
-          style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
+      {showForm && createPortal(
+        <div className="fixed inset-0 z-[80] flex items-end md:items-center justify-center p-4"
+          style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', paddingBottom: 'max(env(safe-area-inset-bottom), 16px)', paddingTop: 'max(env(safe-area-inset-top), 16px)' }}
           onClick={e => { if (e.target === e.currentTarget) { setShowForm(false); setEditingId(null); } }}>
           <div className="w-full max-w-lg rounded-3xl overflow-hidden"
-            style={{ background: '#fff', boxShadow: '0 24px 64px rgba(0,0,0,0.2)', maxHeight: '90vh', overflowY: 'auto' }}>
+            style={{ background: '#fff', boxShadow: '0 24px 64px rgba(0,0,0,0.2)', maxHeight: '100%', overflowY: 'auto', overscrollBehavior: 'contain' }}>
             <div className="sticky top-0 flex items-center justify-between px-6 py-4"
               style={{ background: '#fff', borderBottom: '1px solid rgba(0,0,0,0.07)', zIndex: 1 }}>
               <div>
@@ -1068,7 +1069,8 @@ const EventRequestsSection = () => {
               </button>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
 
       {contractFor && contractProfile && (
