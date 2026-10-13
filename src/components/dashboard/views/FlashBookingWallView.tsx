@@ -150,7 +150,7 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
             </p>
           </div>
           <p className="text-xs mt-1 ml-6" style={{ color: '#166534' }}>
-            Mira su perfil y pulsa Elegir: se le avisa al momento y, en cuanto confirme, se abre el chat y puedes hacer el contrato.
+            Abre la oferta, mira su perfil y pulsa «Elegir a este profesional». Antes de avisarle te explicamos qué pasa y tienes que confirmarlo.
           </p>
           <div className="mt-3 flex flex-col gap-2">
             {pendientes.slice(0, 3).map(p => (

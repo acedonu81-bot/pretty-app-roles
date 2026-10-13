@@ -102,6 +102,8 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  // Candidato cuyo "Elegir a este profesional" espera confirmación explícita.
+  const [confirmando, setConfirmando] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
@@ -273,6 +275,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
   // sigue abierta y los demás inscritos no ven ningún cambio.
   const chooseProfessional = async (req: EventRequest, responseId: string, nombre: string) => {
     setHiring(responseId);
+    setConfirmando(null);
     // .select() para comprobar que la fila se actualizó de verdad: una política
     // RLS que la oculte no da error, devuelve 0 filas, y el aviso decía
     // "Avisado" sin haber avisado a nadie.
@@ -814,7 +817,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                     <div className="flex flex-col gap-2">
                                       {!cubierta && candidatos.some(c => !c.hired_at && !c.chosen_at) && (
                                         <p className="text-[11px] leading-snug" style={{ color: '#166534' }}>
-                                          Pulsa <strong>Elegir</strong>: se le avisa al momento (campana, email y push) y, en cuanto confirme, se abre el chat y puedes hacer el contrato.
+                                          Mira su perfil y, si te encaja, pulsa <strong>Elegir a este profesional</strong>. Antes de avisarle te explicamos qué pasa y tienes que confirmarlo.
                                         </p>
                                       )}
                                       {candidatos.map(resp => (
@@ -823,48 +826,104 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                             background: resp.hired_at ? 'rgba(34,197,94,0.08)' : resp.chosen_at ? 'rgba(212,175,55,0.1)' : 'rgba(212,175,55,0.06)',
                                             border: `1px solid ${resp.hired_at ? 'rgba(34,197,94,0.3)' : resp.chosen_at ? 'rgba(212,175,55,0.4)' : 'rgba(212,175,55,0.18)'}`,
                                           }}>
-                                          <div className="flex items-center justify-between gap-2">
-                                            <div className="flex items-center gap-2 min-w-0">
-                                              {resp.photo ? (
-                                                <img src={resp.photo} alt={resp.name}
-                                                  className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-                                                  style={{ border: '1px solid rgba(0,0,0,0.08)' }} />
-                                              ) : (
-                                                <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0"
-                                                  style={{ background: 'rgba(0,0,0,0.06)', color: '#666' }}>
-                                                  {resp.name.charAt(0).toUpperCase()}
-                                                </div>
-                                              )}
-                                              <p className="text-xs font-bold truncate" style={{ color: '#111' }}>{resp.name}</p>
-                                            </div>
-                                            {resp.hired_at ? (
-                                              <div className="flex items-center gap-2 flex-shrink-0">
-                                                <span className="flex items-center gap-1 text-[10px] font-black"
-                                                  style={{ color: '#16a34a' }}>
+                                          <div className="flex items-center gap-2 min-w-0">
+                                            {resp.photo ? (
+                                              <img src={resp.photo} alt={resp.name}
+                                                className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                                                style={{ border: '1px solid rgba(0,0,0,0.08)' }} />
+                                            ) : (
+                                              <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black flex-shrink-0"
+                                                style={{ background: 'rgba(0,0,0,0.06)', color: '#666' }}>
+                                                {resp.name.charAt(0).toUpperCase()}
+                                              </div>
+                                            )}
+                                            <div className="min-w-0">
+                                              <p className="text-xs font-bold leading-tight break-words" style={{ color: '#111' }}>{resp.name}</p>
+                                              {/* Un estado, escrito con todas las letras. */}
+                                              {resp.hired_at ? (
+                                                <span className="flex items-center gap-1 text-[10px] font-black mt-0.5" style={{ color: '#15803d' }}>
                                                   <Check size={11} /> CONTRATADO
                                                 </span>
+                                              ) : resp.chosen_at ? (
+                                                <span className="block text-[10px] font-black mt-0.5" style={{ color: '#8A6D0F' }}>
+                                                  ELEGIDO, ESPERANDO QUE CONFIRME
+                                                </span>
+                                              ) : cubierta ? (
+                                                <span className="block text-[10px] font-black mt-0.5" style={{ color: '#666' }}>
+                                                  PLAZA YA CUBIERTA
+                                                </span>
+                                              ) : (
+                                                <span className="block text-[10px] font-black mt-0.5" style={{ color: '#15803d' }}>
+                                                  APUNTADO, SIN ELEGIR
+                                                </span>
+                                              )}
+                                            </div>
+                                          </div>
+
+                                          {resp.message && (
+                                            <p className="text-xs mt-1" style={{ color: '#333' }}>{resp.message}</p>
+                                          )}
+
+                                          {/* Qué pasa a continuación, según el estado: sin sobreentendidos. */}
+                                          {resp.hired_at && (
+                                            <div className="mt-2">
+                                              <p className="text-[11px] leading-snug mb-2" style={{ color: '#166534' }}>
+                                                Ha confirmado. El chat está abierto y la plaza cubierta. Ya puedes hacer el contrato.
+                                              </p>
+                                              <button type="button"
+                                                onClick={() => openContract(req, resp.professionalUserId, resp.name)}
+                                                disabled={loadingContract}
+                                                className="flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-black transition-all hover:scale-105 disabled:opacity-60"
+                                                style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
+                                                <FileText size={12} /> {loadingContract ? '…' : 'Hacer el contrato'}
+                                              </button>
+                                            </div>
+                                          )}
+                                          {!resp.hired_at && resp.chosen_at && (
+                                            <p className="text-[11px] leading-snug mt-2" style={{ color: '#6b5200' }}>
+                                              Le hemos avisado por campana, email y push. En cuanto confirme, se abre el chat y puedes hacer el contrato.
+                                              Mientras tanto la oferta sigue abierta: si no responde, puedes elegir a otro candidato.
+                                            </p>
+                                          )}
+                                          {!resp.hired_at && !resp.chosen_at && !cubierta && confirmando !== resp.id && (
+                                            <button type="button"
+                                              onClick={() => setConfirmando(resp.id)}
+                                              className="w-full mt-2 px-3 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-[1.01]"
+                                              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                                              Elegir a este profesional
+                                            </button>
+                                          )}
+                                          {!resp.hired_at && !resp.chosen_at && !cubierta && confirmando === resp.id && (
+                                            <div role="group" aria-label={`Confirmar la elección de ${resp.name}`} className="mt-2 p-3 rounded-lg"
+                                              style={{ background: '#fff', border: '1.5px solid #B8941E' }}>
+                                              <p className="text-xs font-black mb-1.5" style={{ color: '#111' }}>
+                                                ¿Elegir a {resp.name} para {req.client_name}?
+                                              </p>
+                                              <ul className="text-[11px] leading-snug mb-3 pl-4 list-disc" style={{ color: '#333' }}>
+                                                <li>Se le avisa ahora mismo por campana, email y push.</li>
+                                                <li>La plaza sigue abierta hasta que él confirme.</li>
+                                                <li>Cuando confirme, se abre el chat, se cierra la plaza y se avisa a los demás candidatos.</li>
+                                                <li>Si no confirma, puedes elegir a otro.</li>
+                                              </ul>
+                                              <div className="flex gap-2">
                                                 <button type="button"
-                                                  onClick={() => openContract(req, resp.professionalUserId, resp.name)}
-                                                  disabled={loadingContract}
-                                                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black transition-all hover:scale-105 disabled:opacity-60"
-                                                  style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
-                                                  <FileText size={10} /> {loadingContract ? '…' : 'Contrato'}
+                                                  onClick={() => chooseProfessional(req, resp.id, resp.name)}
+                                                  disabled={hiring === resp.id}
+                                                  className="flex-1 px-3 py-2.5 rounded-lg text-xs font-black disabled:opacity-60"
+                                                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                                                  {hiring === resp.id ? 'Avisando…' : `Sí, elegir a ${resp.name}`}
+                                                </button>
+                                                <button type="button"
+                                                  onClick={() => setConfirmando(null)}
+                                                  disabled={hiring === resp.id}
+                                                  className="px-3 py-2.5 rounded-lg text-xs font-bold disabled:opacity-60"
+                                                  style={{ background: 'transparent', color: '#444', border: '1px solid rgba(0,0,0,0.2)' }}>
+                                                  No, volver atrás
                                                 </button>
                                               </div>
-                                            ) : resp.chosen_at ? (
-                                              <span className="text-[10px] font-black flex-shrink-0" style={{ color: '#8A6D0F' }}>
-                                                ESPERANDO SU CONFIRMACIÓN
-                                              </span>
-                                            ) : cubierta ? null : (
-                                              <button type="button"
-                                                onClick={() => chooseProfessional(req, resp.id, resp.name)}
-                                                disabled={hiring === resp.id}
-                                                className="px-3.5 py-2 rounded-lg text-xs font-black transition-all hover:scale-105 disabled:opacity-60 flex-shrink-0"
-                                                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                                                {hiring === resp.id ? 'Avisando…' : 'Elegir'}
-                                              </button>
-                                            )}
-                                          </div>
+                                            </div>
+                                          )}
+
                                           {/* Mirarle antes de elegir, o preguntarle algo: sin salir de XPEAK. */}
                                           <div className="flex flex-wrap gap-2 mt-2">
                                             <a href={`/p/${resp.professionalUserId}`} target="_blank" rel="noopener noreferrer"
@@ -892,9 +951,6 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                                 status: 'confirmed', created_at: resp.hired_at, source: 'request',
                                               })} />
                                           )}
-                                          {resp.message && (
-                                            <p className="text-xs mt-0.5" style={{ color: '#333' }}>{resp.message}</p>
-                                          )}
                                         </div>
                                       ))}
                                     </div>
@@ -920,7 +976,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                               disabled={hiring === applied[req.id].responseId}
                               className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-60"
                               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                              <Check size={12} /> {hiring === applied[req.id].responseId ? '…' : 'Aceptar'}
+                              <Check size={12} /> {hiring === applied[req.id].responseId ? '…' : 'Aceptar el bolo'}
                             </button>
                             <button type="button"
                               onClick={() => rejectChoice(applied[req.id].responseId)}

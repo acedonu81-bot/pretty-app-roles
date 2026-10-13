@@ -70,7 +70,7 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
   it('la tarjeta se abre sola y enseña al candidato con su botón Elegir', async () => {
     render(<EventRequestsSection onMessage={onMessage} />);
     expect(await screen.findByText('Manuel Jesús Frias Martín')).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Elegir' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Elegir a este profesional' })).toBeTruthy();
     expect(screen.getByText(/1 interesado/)).toBeTruthy();
   });
 
@@ -79,26 +79,64 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
     fireEvent.click(await screen.findByRole('button', { name: /Cerrar/ }));
     expect(await screen.findByText('Manuel Jesús Frias Martín se ha apuntado')).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: /Ver y elegir/ }));
-    expect(await screen.findByRole('button', { name: 'Elegir' })).toBeTruthy();
+    expect(await screen.findByRole('button', { name: 'Elegir a este profesional' })).toBeTruthy();
   });
 
-  it('Elegir guarda la elección y avisa de lo que pasa después', async () => {
+  it('Elegir a este profesional NO avisa todavía: primero explica qué pasa y pide confirmar', async () => {
     render(<EventRequestsSection onMessage={onMessage} />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Elegir' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Elegir a este profesional' }));
+    expect(await screen.findByText('¿Elegir a Manuel Jesús Frias Martín para Burguerfest?')).toBeTruthy();
+    expect(screen.getByText(/Se le avisa ahora mismo por campana, email y push/)).toBeTruthy();
+    expect(screen.getByText(/La plaza sigue abierta hasta que él confirme/)).toBeTruthy();
+    expect(screen.getByText(/Si no confirma, puedes elegir a otro/)).toBeTruthy();
+    expect(estado.updates).toHaveLength(0);
+  });
+
+  it('"No, volver atrás" vuelve sin avisar a nadie (y no se confunde con Cancelar la oferta)', async () => {
+    render(<EventRequestsSection onMessage={onMessage} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Elegir a este profesional' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'No, volver atrás' }));
+    expect(await screen.findByRole('button', { name: 'Elegir a este profesional' })).toBeTruthy();
+    expect(estado.updates).toHaveLength(0);
+    expect(toastOk).not.toHaveBeenCalled();
+  });
+
+  it('confirmar guarda la elección y el estado dice, con todas las letras, qué falta', async () => {
+    render(<EventRequestsSection onMessage={onMessage} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Elegir a este profesional' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Sí, elegir a Manuel Jesús Frias Martín' }));
     await waitFor(() => expect(toastOk).toHaveBeenCalled());
     expect(estado.updates).toHaveLength(1);
     expect(estado.updates[0]).toHaveProperty('chosen_at');
-    expect(await screen.findByText('ESPERANDO SU CONFIRMACIÓN')).toBeTruthy();
+    expect(await screen.findByText('ELEGIDO, ESPERANDO QUE CONFIRME')).toBeTruthy();
+    expect(screen.getByText(/si no responde, puedes elegir a otro candidato/)).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Elegir a este profesional' })).toBeNull();
     expect(toastError).not.toHaveBeenCalled();
   });
 
   it('si la base de datos no actualiza ninguna fila, NO dice "avisado": muestra el error', async () => {
     estado.filasActualizadas = [];
     render(<EventRequestsSection onMessage={onMessage} />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Elegir' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Elegir a este profesional' }));
+    fireEvent.click(await screen.findByRole('button', { name: /^Sí, elegir a/ }));
     await waitFor(() => expect(toastError).toHaveBeenCalled());
     expect(toastOk).not.toHaveBeenCalled();
-    expect(screen.queryByText('ESPERANDO SU CONFIRMACIÓN')).toBeNull();
+    expect(screen.queryByText('ELEGIDO, ESPERANDO QUE CONFIRME')).toBeNull();
+  });
+
+  it('un candidato sin elegir lo dice: APUNTADO, SIN ELEGIR', async () => {
+    render(<EventRequestsSection onMessage={onMessage} />);
+    expect(await screen.findByText('APUNTADO, SIN ELEGIR')).toBeTruthy();
+  });
+
+  it('ya contratado: dice que confirmó, que el chat está abierto y ofrece Hacer el contrato', async () => {
+    estado.candidatos = [{ ...manuel, chosen_at: '2026-10-13T20:00:00Z', hired_at: '2026-10-13T20:05:00Z' }];
+    render(<EventRequestsSection onMessage={onMessage} />);
+    fireEvent.click(await screen.findByRole('button', { name: /Ver detalle y contactar/ }));
+    expect(await screen.findByText('CONTRATADO')).toBeTruthy();
+    expect(screen.getByText(/Ha confirmado. El chat está abierto y la plaza cubierta/)).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Hacer el contrato/ })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Elegir a este profesional' })).toBeNull();
   });
 
   it('Escribir abre el chat con el candidato y Ver perfil lleva a su ficha', async () => {
@@ -111,7 +149,7 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
 
   it('con foco en la oferta (enlace del email) la deja abierta y centrada', async () => {
     render(<EventRequestsSection foco={{ requestId: 'q1', n: 1 }} onMessage={onMessage} />);
-    expect(await screen.findByRole('button', { name: 'Elegir' })).toBeTruthy();
+    expect(await screen.findByRole('button', { name: 'Elegir a este profesional' })).toBeTruthy();
     await waitFor(() => expect(Element.prototype.scrollIntoView).toHaveBeenCalled());
   });
 });
