@@ -547,6 +547,28 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     };
   },
 
+  // El profesional contratado ha dicho que no: el organizador tiene que relanzar la oferta.
+  oferta_baja: (d) => {
+    const id = /^[0-9a-f-]{36}$/i.test(String(d.request_id ?? '')) ? String(d.request_id) : '';
+    const url = `https://xpeak.es/dashboard?view=flashbooking&tab=demanda${id ? `&oferta=${id}` : ''}`;
+    const plano = (v: unknown) => String(v ?? '').replace(/[\r\n<>]+/g, ' ').trim();
+    return {
+      subject: `${plano(d.profesional || 'El profesional')} ya no puede: relanza tu oferta de ${plano(d.titulo || 'tu evento')}`,
+      to: d.email,
+      html: base(`
+        <div style="background:rgba(245,158,11,0.10);border:1px solid rgba(217,119,6,0.4);border-radius:8px;padding:16px;margin-bottom:20px">
+          <p style="font-size:20px;font-weight:900;margin:0;color:#0a0908">Hay que buscar a otro</p>
+        </div>
+        <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+          Hola <strong>${esc(d.name || 'organizador')}</strong>.
+          <strong>${esc(d.profesional || 'El profesional')}</strong> ha dicho que ya no puede hacer el bolo de
+          <strong>${esc(d.titulo || 'tu oferta')}</strong>. Relanza la oferta y los profesionales vuelven a verla.
+        </p>
+        ${btn('Relanzar mi oferta →', url)}
+      `, 'Relanza tu oferta para buscar a otro profesional.'),
+    };
+  },
+
   // 10 sep 2026: dos DJs se apuntaron al Burger Gourmet Fest en 17 minutos y el
   // organizador cerró el bolo por teléfono con otro de fuera. Solo se les avisó
   // por campana, que ninguno vio. Quien responde rápido y se queda esperando sin

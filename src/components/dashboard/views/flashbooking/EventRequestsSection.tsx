@@ -353,6 +353,41 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
     });
   };
 
+  // El profesional contratado dice que no: borra su candidatura (el trigger avisa al
+  // organizador de que relance la oferta y quita el bolo del calendario).
+  const [bajando, setBajando] = useState<string | null>(null);
+  const declinarContratado = async (req: EventRequest) => {
+    if (!window.confirm(`¿Seguro que ya no puedes ir a ${req.client_name}? Se avisará al organizador para que busque a otro.`)) return;
+    setBajando(req.id);
+    const { data: filas, error } = await supabase
+      .from('event_request_responses' as any)
+      .delete()
+      .eq('request_id', req.id)
+      .eq('professional_user_id', user?.id ?? '')
+      .select('id');
+    setBajando(null);
+    if (error || !filas || filas.length === 0) { toast.error('No se pudo avisar. Recarga la página e inténtalo otra vez.'); return; }
+    setRequests(prev => prev.filter(r => r.id !== req.id));
+    window.dispatchEvent(new Event(EVENTO_INTERESADOS));
+    toast('Hecho. Hemos avisado al organizador para que busque a otro.');
+  };
+
+  // El organizador relanza la oferta tras la baja del contratado: vuelve a abrirse 7 días.
+  const [relanzando, setRelanzando] = useState<string | null>(null);
+  const relanzarOferta = async (req: EventRequest) => {
+    setRelanzando(req.id);
+    const { data: filas, error } = await supabase
+      .from('event_requests' as any)
+      .update({ status: 'open', expires_at: new Date(Date.now() + 7 * 86400000).toISOString() })
+      .eq('id', req.id)
+      .select('id');
+    setRelanzando(null);
+    if (error || !filas || filas.length === 0) { toast.error('No se pudo relanzar. Inténtalo otra vez.'); return; }
+    setRequests(prev => prev.map(r => r.id === req.id ? ({ ...r, status: 'open', expires_at: new Date(Date.now() + 7 * 86400000).toISOString() } as EventRequest) : r));
+    window.dispatchEvent(new Event(EVENTO_INTERESADOS));
+    toast.success('Oferta relanzada: los profesionales vuelven a verla durante 7 días.');
+  };
+
   // El profesional rechaza: chosen_at vuelve a NULL, la oferta sigue abierta
   // para que el organizador elija a otro.
   const rejectChoice = async (responseId: string, reqId: string) => {
@@ -778,6 +813,21 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                     </div>
                   )}
 
+                  {/* Se cayó el contratado: aviso claro y un botón. */}
+                  {isEmpresario && req.client_user_id === user?.id && req.status === 'closed'
+                    && !(responses[req.id] ?? []).some(c => c.hired_at) && (
+                    <div className="mb-3 p-3 rounded-xl" style={{ background: 'rgba(245,158,11,0.12)', border: '1.5px solid #d97706' }}>
+                      <p className="text-xs font-black mb-2" style={{ color: '#7c4a03' }}>
+                        El profesional ha dicho que no. Relanza la oferta para buscar a otro.
+                      </p>
+                      <button type="button" onClick={() => relanzarOferta(req)} disabled={relanzando === req.id}
+                        className="w-full px-3 py-2.5 rounded-lg text-xs font-black disabled:opacity-60"
+                        style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                        {relanzando === req.id ? 'Relanzando…' : 'Relanzar oferta'}
+                      </button>
+                    </div>
+                  )}
+
                   {/* Qué música se pide, dicho claro antes de apuntarse. */}
                   {(req.roles_needed ?? []).includes('DJ / Artista') && (
                     <p className="text-xs mb-3" style={{ color: '#333' }}>
@@ -1021,6 +1071,11 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                               <MessageSquare size={12} /> Abrir el chat
                             </button>
                           )}
+                          <button type="button" onClick={() => declinarContratado(req)} disabled={bajando === req.id}
+                            className="px-3 py-2 rounded-xl text-xs font-bold disabled:opacity-60"
+                            style={{ background: 'transparent', color: '#b91c1c', border: '1px solid rgba(185,28,28,0.35)' }}>
+                            {bajando === req.id ? 'Avisando…' : 'Ya no puedo ir'}
+                          </button>
                         </div>
                       ) : applied[req.id]?.chosenAt ? (
                         <div className="flex flex-col gap-2">
