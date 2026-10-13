@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { sanitizeInput } from '@/lib/contentFilter';
+import { logAsistente, resumenAsistente } from '@/lib/asistenteAlta';
 
 // Ciudades principales — lista corta a propósito para elegir en segundos
 // dentro del wizard. Quien necesite un barrio/ciudad más específico lo
@@ -296,7 +297,31 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const [savingQuick, setSavingQuick] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Medición (13 oct 2026, ver asistenteAlta.ts): un evento por paso visto y
+  // otro cada vez que la app pasa a segundo plano con lo que le faltaba, así
+  // se sabe dónde se queda quien no termina. El selector de fotos del móvil
+  // también oculta la página: un "oculta" seguido de "foto_elegida" es eso.
+  const abiertoEn = useRef(Date.now());
+  const estadoRef = useRef({ paso: 0, rol: '', foto: false, ciudad: false, bio: 0 });
+  estadoRef.current = { paso: step, rol: selectedRole, foto: !!photoUrl, ciudad: !!effectiveCity, bio: bio.trim().length };
+  useEffect(() => {
+    logAsistente(`paso=${step} rol=${selectedRole || 'ninguno'}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
+  useEffect(() => {
+    let ocultas = 0;
+    const onOculta = () => {
+      if (document.visibilityState !== 'hidden' || ocultas >= 5) return;
+      ocultas += 1;
+      const seg = Math.round((Date.now() - abiertoEn.current) / 1000);
+      logAsistente(`oculta ${resumenAsistente({ ...estadoRef.current, seg })}`);
+    };
+    document.addEventListener('visibilitychange', onOculta);
+    return () => document.removeEventListener('visibilitychange', onOculta);
+  }, []);
+
   const markDone = () => {
+    logAsistente(`fin paso=${step} rol=${selectedRole || 'ninguno'}`);
     if (user) localStorage.setItem(`xpeak_onboarded_${user.id}`, '1');
     onClose();
   };
@@ -304,15 +329,16 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
-    if (!file.type.startsWith('image/')) { toast.error('Solo se permiten archivos de imagen.'); return; }
-    if (file.size > MAX_RAW_IMAGE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_RAW_IMAGE_MB}MB`); return; }
+    logAsistente(`foto_elegida tipo=${file.type || 'desconocido'} mb=${(file.size / 1048576).toFixed(1)}`);
+    if (!file.type.startsWith('image/')) { logAsistente('foto_error motivo=tipo'); toast.error('Solo se permiten archivos de imagen.'); return; }
+    if (file.size > MAX_RAW_IMAGE_MB * 1024 * 1024) { logAsistente('foto_error motivo=tamano'); toast.error(`Máximo ${MAX_RAW_IMAGE_MB}MB`); return; }
     setUploadingPhoto(true);
     const compressed = await compressImage(file);
     const safeName = compressed.name.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
     const path = `${user.id}/photo-${Date.now()}-${safeName}`;
     const { error } = await supabase.storage.from('audio-sessions').upload(path, compressed);
     setUploadingPhoto(false);
-    if (error) { toast.error('Error al subir foto: ' + error.message); return; }
+    if (error) { logAsistente(`foto_error motivo=subida ${error.message}`); toast.error('Error al subir foto: ' + error.message); return; }
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     setPhotoUrl(urlData.publicUrl);
     // Guardar de inmediato, no esperar a handleQuickSave: si el usuario cierra
@@ -320,6 +346,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     // en Storage pero profiles.photo_url nunca se actualiza — caso real 16 sept,
     // perfil con foto en Storage pero photo_url null y updated_at sin tocar.
     const ok = await profile.updateField({ photo_url: urlData.publicUrl });
+    logAsistente(ok ? 'foto_ok' : 'foto_error motivo=guardar');
     if (!ok) toast.error('La foto se subió pero no se pudo guardar en tu perfil. Inténtalo de nuevo.');
   };
 
@@ -353,7 +380,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
       const ok = await profile.updateField(updates);
       // No dar por completado el onboarding si los datos no llegaron a guardarse:
       // markDone() escribe en localStorage y el wizard no vuelve a aparecer.
-      if (!ok) { setSavingQuick(false); return; }
+      if (!ok) { logAsistente('guardado_error'); setSavingQuick(false); return; }
     }
     setSavingQuick(false);
     markDone();
@@ -369,7 +396,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     // updateField ya muestra el motivo, y seguir adelante marcaba el onboarding
     // como hecho dejando el rol en 'pending' para siempre, sin volver a
     // ofrecer el wizard para corregirlo.
-    if (!ok) return;
+    if (!ok) { logAsistente(`rol_error rol=${selectedRole}`); return; }
     setStep(1);
   };
 
@@ -401,6 +428,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     const input = fileInputRef.current;
     if (!input) return;
     const onCancel = () => {
+      logAsistente('foto_cancelada');
       if (!photoUrl) toast.error('Necesitas una foto para aparecer en el directorio.');
     };
     input.addEventListener('cancel', onCancel);
