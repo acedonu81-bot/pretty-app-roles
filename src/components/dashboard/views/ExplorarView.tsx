@@ -16,6 +16,7 @@
  * dentro de cada grupo (más profesionales a la izquierda), sin mostrarse.
  */
 import { useEffect, useState } from 'react';
+import ConcursoFeedBanner from '@/components/dashboard/views/ConcursoFeedBanner';
 import { supabase } from '@/integrations/supabase/client';
 import { expandRole, PHOTO_GATE_OR } from '@/lib/constants';
 interface Props {
@@ -225,6 +226,8 @@ const ExplorarView = ({ onNavigate }: Props) => {
         Todos los profesionales de la plataforma. Toca una categoría para ver quién hay.
       </p>
     </header>
+
+    <ConcursoFeedBanner />
 
     {/* Una única rejilla continua en vez de una por familia: con grupos de 2
         tarjetas, una rejilla de 4 columnas dejaba media fila vacía y la página

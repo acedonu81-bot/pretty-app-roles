@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useEffect, useState, useRef } from 'react';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
+import { concursoActivo } from '@/lib/concursoMadrid';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { useFeedAlert } from '@/hooks/useFeedAlert';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
@@ -166,7 +167,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
   );
 };
 
-const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, iconColor, navId }: {
+const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, iconColor, navId, etiqueta }: {
   icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
   label: string;
   isActive: boolean;
@@ -184,13 +185,16 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
   iconColor?: string;
   /** Ancla de la ventana de consejos (ConsejosPanel busca [data-nav]). */
   navId?: string;
+  /** Etiqueta azul de aviso junto al nombre (p. ej. "Concurso DJ" en Feed).
+   *  Con el sidebar plegado a iconos queda como un punto azul en el icono. */
+  etiqueta?: string;
 }) => (
   <SidebarMenuItem>
     <SidebarMenuButton
       data-nav={navId}
       onClick={onClick}
       isActive={isActive}
-      tooltip={label}
+      tooltip={etiqueta ? `${label} · ${etiqueta} Madrid activo` : label}
       className="h-auto py-2 px-2.5 rounded-[11px] text-[0.82rem]"
       style={{
         fontWeight: isActive ? 700 : 600,
@@ -212,6 +216,16 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
         <Icon size={iconAlert ? 15 : (iconColor && !isActive ? 14 : 17)} strokeWidth={iconColor && !isActive ? 2.5 : 2} />
       </span>
       <span className="flex-1">{label}</span>
+      {etiqueta && (
+        <>
+          <span className="flex-shrink-0 text-[0.58rem] font-black uppercase tracking-wide px-1.5 py-1 rounded-full leading-none group-data-[collapsible=icon]:hidden"
+            style={{ background: '#2563EB', color: '#fff' }}>
+            {etiqueta}
+          </span>
+          <span aria-hidden className="hidden group-data-[collapsible=icon]:block absolute top-0.5 right-0.5 w-2 h-2 rounded-full"
+            style={{ background: '#2563EB', boxShadow: '0 0 0 2px #fff' }} />
+        </>
+      )}
     </SidebarMenuButton>
     {typeof badge === 'number' && badge > 0 && (
       <SidebarMenuBadge
@@ -340,7 +354,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
             <NavItem icon={Home} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} navId={homeView === 'profile' ? 'inicio' : homeView} />
             <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} iconAlert={flashBadge > 0} navId="flashbooking" />
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} iconAlert={msgBadge > 0} navId="messages" />
-            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" navId="feed" />
+            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" navId="feed" etiqueta={concursoActivo() ? 'Concurso DJ' : undefined} />
           </SidebarMenu>
         </div>
 

@@ -11,6 +11,10 @@ vi.mock('@/integrations/supabase/client', () => {
   return { supabase: cadena };
 });
 
+// El banner del concurso necesita router y Helmet, y aquí solo se prueba el
+// orden de las categorías.
+vi.mock('../ConcursoFeedBanner', () => ({ default: () => null }));
+
 import ExplorarView from '../ExplorarView';
 
 const ordenMusica = () =>

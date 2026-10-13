@@ -13,3 +13,13 @@ export function estadoInscripcionMadrid(perfiles: PerfilConcurso[]): 'ok' | 'fal
   if (!perfiles.some(p => p.region === 'Madrid')) return 'fuera_de_madrid';
   return 'ok';
 }
+
+/** Plazo de inscripción y votos (hora de Madrid). Única fuente de las fechas:
+ *  la página, los banners de Inicio y Feed y la etiqueta del menú se apagan
+ *  a la vez al cerrar. */
+export const ABRE_CONCURSO = new Date('2026-10-13T00:00:00+02:00');
+export const CIERRA_CONCURSO = new Date('2026-11-03T00:00:00+01:00');
+
+export function concursoActivo(ahora: Date = new Date()): boolean {
+  return ahora >= ABRE_CONCURSO && ahora < CIERRA_CONCURSO;
+}

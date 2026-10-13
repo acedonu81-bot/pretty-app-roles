@@ -4,7 +4,7 @@ import FooterPublic from '@/components/FooterPublic';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { logEvent } from '@/lib/track';
-import { estadoInscripcionMadrid } from '@/lib/concursoMadrid';
+import { estadoInscripcionMadrid, ABRE_CONCURSO as ABRE, CIERRA_CONCURSO as CIERRA } from '@/lib/concursoMadrid';
 import LikeButton from '@/components/LikeButton';
 
 /**
@@ -23,8 +23,6 @@ const TITLE = 'Concurso DJ Madrid 2026: sube tu sesión y gana unos cascos | XPE
 const DESC = 'Primer concurso DJ de XPEAK en Madrid. Del 13 de octubre al 2 de noviembre de 2026: sube tu sesión de SoundCloud, los me gusta eligen 3 finalistas y el jurado decide. El ganador se lleva unos Pioneer DJ HDJ-X5.';
 
 // Fechas en hora de Madrid (CEST hasta el 25 oct, CET después).
-const ABRE = new Date('2026-10-13T00:00:00+02:00');
-const CIERRA = new Date('2026-11-03T00:00:00+01:00');
 
 const SOUNDCLOUD_RE = /^https:\/\/(www\.|m\.)?soundcloud\.com\/[^/?#]+\/[^/?#]+/i;
 const REGISTRO = `/auth?mode=register&role=dj&redirect=${encodeURIComponent(PATH)}`;
@@ -52,6 +50,14 @@ const CRITERIOS = [
   { t: 'Selección musical', d: 'Que los temas tengan sentido juntos y cuenten algo.' },
   { t: 'Energía y lectura', d: 'Cómo construyes la sesión: subidas, respiros y final.' },
   { t: 'Sonido de la grabación', d: 'Que se escuche bien, sin saturar ni cortes.' },
+];
+
+const RESUMEN_BASES = [
+  { t: 'Quién', d: 'DJs mayores de 18 años que viven en la Comunidad de Madrid, con perfil en XPEAK con foto, bio y ciudad.' },
+  { t: 'Plazo', d: 'del 13 de octubre al 2 de noviembre de 2026. Una sesión por persona.' },
+  { t: 'Qué subes', d: 'una sesión tuya y pública de SoundCloud, de 30 a 60 minutos.' },
+  { t: 'Cómo se gana', d: 'las 3 sesiones con más me gusta pasan a la final y el jurado elige al ganador. Los votos falsos se anulan.' },
+  { t: 'Premio', d: 'unos Pioneer DJ HDJ-X5. Antes de enviarlos, el ganador acredita que vive en la Comunidad de Madrid.' },
 ];
 
 const FAQ = [
@@ -161,7 +167,7 @@ function Inscripcion() {
     return (
       <div className={caja} style={cajaStyle}>
         <p className="text-lg font-bold mb-2">Para inscribirte necesitas un perfil de DJ en XPEAK</p>
-        <p className="mb-5" style={{ color: MUTED }}>Es gratis. Completa tu perfil con foto y bio y vuelve aquí para pegar tu sesión.</p>
+        <p className="mb-5" style={{ color: MUTED }}>Es gratis. Completa tu perfil con foto, bio y tu ciudad y vuelve aquí para pegar tu sesión.</p>
         <div className="flex flex-wrap gap-3">
           <a href={REGISTRO} className="px-5 py-3 rounded-xl font-bold" style={{ background: `linear-gradient(90deg,${GOLD},#B8941E)`, color: '#111' }}>
             Crear mi perfil de DJ
@@ -301,6 +307,30 @@ function Participantes() {
 }
 
 export default function ConcursoDJMadrid() {
+  // Enlaces a #bases / #inscripcion (13 oct 2026): la página carga en diferido
+  // y la lista de participantes y las fuentes llegan después del salto del
+  // navegador, así que el ancla se quedaba ~280 px corta (en local ni saltaba).
+  // Se recoloca mientras la página crece, hasta 3 s o hasta que el usuario toque.
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id || typeof ResizeObserver === 'undefined') return;
+    const ir = () => document.getElementById(id)?.scrollIntoView({ block: 'start' });
+    ir();
+    const ro = new ResizeObserver(ir);
+    ro.observe(document.body);
+    const parar = () => {
+      ro.disconnect();
+      window.removeEventListener('wheel', parar);
+      window.removeEventListener('touchstart', parar);
+      window.removeEventListener('keydown', parar);
+    };
+    window.addEventListener('wheel', parar, { passive: true });
+    window.addEventListener('touchstart', parar, { passive: true });
+    window.addEventListener('keydown', parar);
+    const t = setTimeout(parar, 3000);
+    return () => { clearTimeout(t); parar(); };
+  }, []);
+
   const faqLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -370,6 +400,18 @@ export default function ConcursoDJMadrid() {
 
           <section id="inscripcion" className="mb-12 scroll-mt-6">
             <h2 className="text-2xl sm:text-3xl font-black mb-6">Inscripción</h2>
+            {/* Las reglas antes del formulario (decisión del usuario, 13 oct
+                2026), en resumen: las bases completas son 12 puntos y,
+                puestas aquí, mandaban el formulario al final de la página. */}
+            <div className="rounded-2xl p-5 sm:p-6 mb-5" style={{ background: '#F9F8F6', border: '1px solid #eee' }}>
+              <p className="font-black mb-3">Lo importante de las bases</p>
+              <ul className="space-y-2 text-sm leading-relaxed" style={{ color: MUTED }}>
+                {RESUMEN_BASES.map((r) => (
+                  <li key={r.t}><strong style={{ color: '#111' }}>{r.t}:</strong> {r.d}</li>
+                ))}
+              </ul>
+              <a href="#bases" className="inline-block mt-3 text-sm font-bold underline" style={{ color: GOLD_TEXT }}>Leer las bases completas</a>
+            </div>
             <Inscripcion />
           </section>
 

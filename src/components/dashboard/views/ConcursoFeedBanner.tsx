@@ -1,16 +1,20 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Trophy } from 'lucide-react';
 import { HZ } from '@/components/healthy-zone/clay';
+import { concursoActivo } from '@/lib/concursoMadrid';
 
-// PROVISIONAL: banner del Desafío DJ XPEAK Madrid (13 oct - 2 nov 2026).
-// Se oculta solo al cerrar el plazo; después se puede borrar el archivo y su
-// uso en FeedView.
-const FIN_CONCURSO = new Date('2026-11-02T23:59:59+01:00');
-
+// PROVISIONAL: banner del Concurso DJ XPEAK Madrid (13 oct - 2 nov 2026), en
+// el Feed y en Inicio (en el móvil el Feed no está en la barra de abajo y los
+// DJs entran a Inicio). Se oculta solo al cerrar el plazo; después se puede
+// borrar el archivo y sus usos en FeedView y ExplorarView.
 const ConcursoFeedBanner = () => {
-  if (Date.now() > FIN_CONCURSO.getTime()) return null;
+  if (!concursoActivo()) return null;
 
   return (
+    <>
+    {/* Las tipografías del Feed: en Inicio no están cargadas. */}
+    <Helmet><link rel="stylesheet" href={HZ.fontsHref} /></Helmet>
     <Link
       to="/concurso-dj-madrid"
       className="group relative flex items-center gap-4 overflow-hidden rounded-3xl p-5 sm:p-6 mb-4 transition-transform hover:scale-[1.01] active:scale-[0.99]"
@@ -25,13 +29,13 @@ const ConcursoFeedBanner = () => {
 
       <div className="relative flex-1 min-w-0">
         <p className="inline-flex items-center gap-1.5 text-[0.65rem] uppercase tracking-[0.2em] mb-1.5" style={{ color: '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
-          <Trophy size={12} strokeWidth={2.5} /> Hasta el 2 nov
+          <Trophy size={12} strokeWidth={2.5} /> Hasta el 2 nov · Madrid
         </p>
         <p className="text-xl sm:text-2xl leading-tight text-white" style={{ fontFamily: HZ.display, fontWeight: 800 }}>
-          Desafío DJ XPEAK Madrid
+          Concurso DJ XPEAK Madrid
         </p>
         <p className="text-sm mt-1.5 max-w-md" style={{ color: 'rgba(255,255,255,0.88)', fontFamily: HZ.body }}>
-          Gana unos Pioneer DJ HDJ-X5. Tus me gusta eligen a los 3 finalistas y el jurado decide.
+          Para DJs de la Comunidad de Madrid. Sube tu sesión: las 3 con más me gusta van a la final y el jurado elige quién se lleva los Pioneer DJ HDJ-X5.
         </p>
         <span className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-full text-sm bg-white transition-transform group-hover:translate-x-0.5"
           style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
@@ -49,6 +53,7 @@ const ConcursoFeedBanner = () => {
         style={{ filter: 'drop-shadow(0 10px 18px rgba(20,0,60,0.45))' }}
       />
     </Link>
+    </>
   );
 };
 
