@@ -8,6 +8,7 @@ import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
 import PendingReviewsBanner from '@/components/dashboard/PendingReviewsBanner';
+import { marcarFlashVisto } from '@/hooks/useDashboardBadges';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import { NativeStackTransition } from '@/components/dashboard/NativeStackTransition';
 import { isNative } from '@/lib/capacitor';
@@ -453,6 +454,14 @@ const Dashboard = () => {
     }));
     viewAdjusted.current = true;
   }, [profileRole, location]);
+
+  // Al abrir Flash Booking, el empresario ve las respuestas recibidas: el globo
+  // se apaga (antes se quedaba encendido para siempre, 13 oct 2026).
+  useEffect(() => {
+    if (activeView === 'flashbooking' && profileRole === 'empresario' && user?.id) {
+      void marcarFlashVisto(user.id);
+    }
+  }, [activeView, profileRole, user?.id]);
 
   useEffect(() => {
     if (!selectedProfile) return;

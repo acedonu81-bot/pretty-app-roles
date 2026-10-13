@@ -4,6 +4,34 @@ import { supabase } from '@/integrations/supabase/client';
 // Extraído de DashboardSidebar.tsx (lógica exacta, no reinventada) para que
 // tanto el sidebar como la campanita de notificaciones del topbar (Task 7)
 // compartan el mismo cálculo de badges en vivo.
+// Respuestas ya vistas por el empresario (13 oct 2026). Su globo de Flash
+// Booking contaba TODAS las reservas respondidas, para siempre, y ninguna
+// acción lo apagaba ("las notificaciones se quedan clavadas"). Se guardan los
+// ids ya vistos en este dispositivo y el globo solo cuenta los que faltan.
+const ESTADOS_RESPONDIDOS = ['confirmed', 'accepted', 'rejected', 'declined'];
+const EVENTO_FLASH_VISTO = 'xpeak:flash-visto';
+const claveVistos = (uid: string) => `xpeak_flash_visto_${uid}`;
+
+function leerVistos(uid: string): Set<string> {
+  try {
+    const crudo = JSON.parse(localStorage.getItem(claveVistos(uid)) ?? '[]');
+    return new Set(Array.isArray(crudo) ? crudo.map(String) : []);
+  } catch { return new Set(); }
+}
+
+/** Marca como vistas las respuestas actuales y avisa a los globos abiertos. */
+export async function marcarFlashVisto(uid: string): Promise<void> {
+  const { data } = await supabase.from('flash_bookings' as any)
+    .select('id')
+    .eq('created_by', uid)
+    .in('status', ESTADOS_RESPONDIDOS);
+  const ids = ((data ?? []) as { id: string }[]).map(r => r.id);
+  const vistos = leerVistos(uid);
+  ids.forEach(id => vistos.add(id));
+  try { localStorage.setItem(claveVistos(uid), JSON.stringify([...vistos])); } catch { /* sin almacenamiento */ }
+  window.dispatchEvent(new Event(EVENTO_FLASH_VISTO));
+}
+
 export function useDashboardBadges(userId: string | undefined, isEmpresario: boolean) {
   const [flashBadge, setFlashBadge] = useState(0);
   const [msgBadge, setMsgBadge] = useState(0);
@@ -21,12 +49,20 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
     // canal — ni badge, ni campana, ni email si había dejado teléfono en vez de
     // correo. Es el reverso exacto del fallo del 22 ago, y con la regla de casa
     // ("los empresarios NO esperan") era el lado que menos podía permitírselo.
-    const q = supabase.from('flash_bookings' as any).select('id', { count: 'exact', head: true });
-    const { count } = isEmpresario
-      // Al que contrata le importa lo que le han respondido.
-      ? await q.eq('created_by', uid).in('status', ['confirmed', 'accepted', 'rejected', 'declined'])
-      // Al profesional, lo que tiene pendiente de contestar.
-      : await q.eq('professional_user_id', uid).eq('status', 'pending');
+    if (isEmpresario) {
+      // Al que contrata le importa lo que le han respondido y aún no ha visto.
+      const { data } = await supabase.from('flash_bookings' as any)
+        .select('id')
+        .eq('created_by', uid)
+        .in('status', ESTADOS_RESPONDIDOS);
+      const vistos = leerVistos(uid);
+      setFlashBadge(((data ?? []) as { id: string }[]).filter(r => !vistos.has(r.id)).length);
+      return;
+    }
+    // Al profesional, lo que tiene pendiente de contestar.
+    const { count } = await supabase.from('flash_bookings' as any)
+      .select('id', { count: 'exact', head: true })
+      .eq('professional_user_id', uid).eq('status', 'pending');
     setFlashBadge(count ?? 0);
   };
 
@@ -42,7 +78,13 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
         refreshFlashBadge(userId);
       })
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
+    // Otro globo (sidebar, campanita) o la propia vista marcó lo visto.
+    const alVisto = () => { refreshFlashBadge(userId); };
+    window.addEventListener(EVENTO_FLASH_VISTO, alVisto);
+    return () => {
+      window.removeEventListener(EVENTO_FLASH_VISTO, alVisto);
+      supabase.removeChannel(channel);
+    };
   }, [userId, isEmpresario]);
 
   const refreshMsgBadge = async (uid: string) => {

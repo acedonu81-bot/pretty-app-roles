@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const channelMock = { on: vi.fn().mockReturnThis(), subscribe: vi.fn().mockReturnThis() };
@@ -33,7 +33,7 @@ vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     from: vi.fn((table: string) => {
       if (table === 'flash_bookings') {
-        const c = cadena({ count: 3 });
+        const c = cadena({ count: 3, data: [{ id: 'a' }, { id: 'b' }, { id: 'c' }] });
         flashChains.push(c);
         return c;
       }
@@ -47,7 +47,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 describe('useDashboardBadges', () => {
-  beforeEach(() => { channelMock.on.mockClear(); channelMock.subscribe.mockClear(); });
+  beforeEach(() => { channelMock.on.mockClear(); channelMock.subscribe.mockClear(); localStorage.clear(); });
 
   it('devuelve flashBadge y msgBadge para un profesional', async () => {
     const { useDashboardBadges } = await import('./useDashboardBadges');
@@ -82,6 +82,39 @@ describe('useDashboardBadges', () => {
       'status',
       expect.arrayContaining(['confirmed', 'rejected']),
     );
+  });
+
+  // 13 oct 2026: el globo de Flash Booking del empresario contaba TODAS las
+  // reservas ya respondidas, para siempre ("se quedan clavadas"): ninguna
+  // acción lo apagaba. Ahora cuenta solo las respuestas que aún no ha visto y
+  // se apaga al abrir Flash Booking.
+  it('al empresario solo le cuenta las respuestas que aún no ha visto', async () => {
+    localStorage.setItem('xpeak_flash_visto_user-123', JSON.stringify(['a']));
+    const { useDashboardBadges } = await import('./useDashboardBadges');
+    const { result } = renderHook(() => useDashboardBadges('user-123', true));
+    await waitFor(() => expect(result.current.flashBadge).toBe(2));
+  });
+
+  it('marcarFlashVisto apaga el globo del empresario y se recuerda entre visitas', async () => {
+    const { useDashboardBadges, marcarFlashVisto } = await import('./useDashboardBadges');
+    const { result } = renderHook(() => useDashboardBadges('user-123', true));
+    await waitFor(() => expect(result.current.flashBadge).toBe(3));
+
+    await act(async () => { await marcarFlashVisto('user-123'); });
+    await waitFor(() => expect(result.current.flashBadge).toBe(0));
+    expect(JSON.parse(localStorage.getItem('xpeak_flash_visto_user-123') ?? '[]').sort()).toEqual(['a', 'b', 'c']);
+
+    // Otra visita: sigue en 0 aunque las reservas respondidas sigan existiendo.
+    const segundo = renderHook(() => useDashboardBadges('user-123', true));
+    await waitFor(() => expect(segundo.result.current.msgBadge).toBe(5));
+    expect(segundo.result.current.flashBadge).toBe(0);
+  });
+
+  it('a un profesional no le afecta lo visto: cuenta sus pendientes', async () => {
+    localStorage.setItem('xpeak_flash_visto_user-123', JSON.stringify(['a', 'b', 'c']));
+    const { useDashboardBadges } = await import('./useDashboardBadges');
+    const { result } = renderHook(() => useDashboardBadges('user-123', false));
+    await waitFor(() => expect(result.current.flashBadge).toBe(3));
   });
 
   it('devuelve 0 sin userId, sin lanzar', async () => {
