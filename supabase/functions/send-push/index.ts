@@ -6,7 +6,7 @@ const ALLOWED_ORIGIN = 'https://xpeak.es';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-internal-secret',
 };
 
 interface PushPayload {
@@ -122,6 +122,17 @@ async function sendApns(deviceToken: string, title: string, body: string, url?: 
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+
+  // Solo llamadas de confianza: triggers/crons con x-internal-secret, o clave
+  // de servicio. Sin esto cualquiera con la URL podía mandar un push a
+  // cualquier user_id (hueco detectado en la auditoría del 5 oct 2026).
+  const internal = Deno.env.get('INTERNAL_SECRET') ?? '';
+  const service = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  const deConfianza = (!!internal && req.headers.get('x-internal-secret') === internal)
+    || (!!service && req.headers.get('authorization') === `Bearer ${service}`);
+  if (!deConfianza) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
+  }
 
   try {
     const { user_id, title, body, url, tag } = (await req.json()) as PushPayload;
