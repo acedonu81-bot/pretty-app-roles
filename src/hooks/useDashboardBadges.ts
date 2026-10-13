@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { cargarInteresadosPendientes, leerInteresadosVistos, EVENTO_INTERESADOS } from '@/hooks/useInteresadosPendientes';
 
 // Extraído de DashboardSidebar.tsx (lógica exacta, no reinventada) para que
 // tanto el sidebar como la campanita de notificaciones del topbar (Task 7)
@@ -73,7 +74,15 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
         .eq('created_by', uid)
         .in('status', ESTADOS_RESPONDIDOS);
       const vistos = leerVistos(uid);
-      setFlashBadge(((data ?? []) as { id: string }[]).filter(r => !vistos.has(r.id)).length);
+      const respuestas = ((data ?? []) as { id: string }[]).filter(r => !vistos.has(r.id)).length;
+      // Y quien se ha apuntado a sus ofertas y aún no ha visto (13 oct 2026:
+      // un DJ se apuntó a Burguerfest y el organizador no tenía ningún globo).
+      let interesados = 0;
+      try {
+        const vistosInt = leerInteresadosVistos(uid);
+        interesados = (await cargarInteresadosPendientes(uid)).filter(i => !vistosInt.has(i.responseId)).length;
+      } catch { /* sin interesados no se rompe el resto del globo */ }
+      setFlashBadge(respuestas + interesados);
       return;
     }
     // Al profesional, lo que tiene pendiente de contestar.
@@ -98,8 +107,22 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
     // Otro globo (sidebar, campanita) o la propia vista marcó lo visto.
     const alVisto = () => { refreshFlashBadge(userId); };
     window.addEventListener(EVENTO_FLASH_VISTO, alVisto);
+    // El organizador se entera en vivo de que alguien se apuntó: su aviso
+    // llega a la campana (la tabla de candidaturas no tiene realtime).
+    let canalInteresados: ReturnType<typeof supabase.channel> | null = null;
+    if (isEmpresario) {
+      window.addEventListener(EVENTO_INTERESADOS, alVisto);
+      canalInteresados = supabase
+        .channel(`sidebar_interesados_${userId}_${instanceId}`)
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${userId}` }, () => {
+          refreshFlashBadge(userId);
+        })
+        .subscribe();
+    }
     return () => {
       window.removeEventListener(EVENTO_FLASH_VISTO, alVisto);
+      window.removeEventListener(EVENTO_INTERESADOS, alVisto);
+      if (canalInteresados) supabase.removeChannel(canalInteresados);
       supabase.removeChannel(channel);
     };
   }, [userId, isEmpresario]);

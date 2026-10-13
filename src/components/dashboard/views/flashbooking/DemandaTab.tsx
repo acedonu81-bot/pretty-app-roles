@@ -38,7 +38,13 @@ const urgencyColor = (s: number) => {
   return '#15803d';
 };
 
-const DemandaTab = () => {
+interface DemandaTabProps {
+  /** Oferta que el organizador debe ver abierta (aviso, email o campana). */
+  foco?: { requestId: string; n: number } | null;
+  onMessage?: (userId: string, name: string) => void;
+}
+
+const DemandaTab = ({ foco, onMessage }: DemandaTabProps = {}) => {
   const currentUser = useProfile();
   const { user } = useAuth();
   const isEmpresario = currentUser.role === 'empresario';
@@ -275,7 +281,7 @@ const DemandaTab = () => {
 
   return (
     <div>
-      <EventRequestsSection />
+      <EventRequestsSection foco={foco} onMessage={onMessage} />
 
       {/* ─── Separador Flash Jobs ─── */}
       <div className="flex items-center gap-3 mb-4">

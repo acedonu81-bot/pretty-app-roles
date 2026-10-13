@@ -18,7 +18,7 @@ const channelMock = { on: vi.fn().mockReturnThis(), subscribe: vi.fn().mockRetur
  */
 function cadena(resultado: unknown) {
   const chain: Record<string, unknown> = {};
-  for (const metodo of ['select', 'eq', 'in', 'neq', 'or', 'not', 'gte', 'lte', 'order', 'limit', 'update']) {
+  for (const metodo of ['select', 'eq', 'in', 'neq', 'or', 'not', 'is', 'gte', 'lte', 'order', 'limit', 'update']) {
     chain[metodo] = vi.fn(() => chain);
   }
   (chain as { then: unknown }).then = (resolve: (v: unknown) => unknown) =>
@@ -29,6 +29,8 @@ function cadena(resultado: unknown) {
 /** Última cadena creada para flash_bookings, para inspeccionar sus filtros. */
 const flashChains: Record<string, unknown>[] = [];
 const notifChains: Record<string, unknown>[] = [];
+/** Candidaturas sin elegir a las ofertas abiertas del organizador. */
+let interesados: unknown[] = [];
 
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
@@ -38,6 +40,8 @@ vi.mock('@/integrations/supabase/client', () => ({
         flashChains.push(c);
         return c;
       }
+      if (table === 'event_request_responses') return cadena({ data: interesados });
+      if (table === 'profiles') return cadena({ data: [{ user_id: 'pro-1', display_name: 'Manuel Jesús' }] });
       if (table === 'conversations') return cadena({ data: [{ id: 'c1' }, { id: 'c2' }] });
       if (table === 'messages') return cadena({ count: 5 });
       if (table === 'notifications') {
@@ -53,7 +57,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 describe('useDashboardBadges', () => {
-  beforeEach(() => { channelMock.on.mockClear(); channelMock.subscribe.mockClear(); localStorage.clear(); });
+  beforeEach(() => { channelMock.on.mockClear(); channelMock.subscribe.mockClear(); localStorage.clear(); interesados = []; });
 
   it('devuelve flashBadge y msgBadge para un profesional', async () => {
     const { useDashboardBadges } = await import('./useDashboardBadges');
@@ -114,6 +118,43 @@ describe('useDashboardBadges', () => {
     const segundo = renderHook(() => useDashboardBadges('user-123', true));
     await waitFor(() => expect(segundo.result.current.msgBadge).toBe(5));
     expect(segundo.result.current.flashBadge).toBe(0);
+  });
+
+  // 13 oct 2026: un DJ se apuntó a Burguerfest y el organizador no tenía ningún
+  // globo: solo contaba flash_bookings, no las candidaturas a sus ofertas.
+  const candidatura = (id: string, caduca = new Date(Date.now() + 86400000).toISOString()) => ({
+    id, request_id: 'q1', professional_user_id: 'pro-1', created_at: '2026-10-13T19:54:08Z',
+    event_requests: { client_name: 'Burguerfest', expires_at: caduca },
+  });
+
+  it('al empresario le suma los profesionales apuntados a sus ofertas que aún no ha visto', async () => {
+    interesados = [candidatura('r1')];
+    const { useDashboardBadges } = await import('./useDashboardBadges');
+    const { result } = renderHook(() => useDashboardBadges('user-123', true));
+    await waitFor(() => expect(result.current.flashBadge).toBe(4));
+  });
+
+  it('no cuenta candidaturas de ofertas ya caducadas', async () => {
+    interesados = [candidatura('r1', new Date(Date.now() - 1000).toISOString())];
+    const { useDashboardBadges } = await import('./useDashboardBadges');
+    const { result } = renderHook(() => useDashboardBadges('user-123', true));
+    await waitFor(() => expect(result.current.flashBadge).toBe(3));
+  });
+
+  it('marcarInteresadosVistos apaga ese aviso y se recuerda', async () => {
+    interesados = [candidatura('r1')];
+    const { useDashboardBadges } = await import('./useDashboardBadges');
+    const { cargarInteresadosPendientes, marcarInteresadosVistos } = await import('./useInteresadosPendientes');
+    const { result } = renderHook(() => useDashboardBadges('user-123', true));
+    await waitFor(() => expect(result.current.flashBadge).toBe(4));
+
+    const lista = await cargarInteresadosPendientes('user-123');
+    expect(lista).toHaveLength(1);
+    expect(lista[0]).toMatchObject({ responseId: 'r1', requestId: 'q1', titulo: 'Burguerfest', nombre: 'Manuel Jesús' });
+
+    await act(async () => { marcarInteresadosVistos('user-123', lista); });
+    await waitFor(() => expect(result.current.flashBadge).toBe(3));
+    expect(JSON.parse(localStorage.getItem('xpeak_interesados_visto_user-123') ?? '[]')).toEqual(['r1']);
   });
 
   it('a un profesional no le afecta lo visto: cuenta sus pendientes', async () => {

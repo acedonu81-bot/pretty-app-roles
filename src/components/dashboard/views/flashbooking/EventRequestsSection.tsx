@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp, Check, Pencil, FileText } from 'lucide-react';
+import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp, Check, Pencil, FileText, MessageSquare, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
@@ -11,6 +11,7 @@ import FechasEvento, { hoyLocalISO } from './FechasEvento';
 import ValorarContratado, { eventoYaOcurrio } from './ValorarContratado';
 import { ReviewModal, type Booking } from '@/components/dashboard/views/empresario/HistorialTab';
 import type { Profile } from '@/data/profiles';
+import { EVENTO_INTERESADOS } from '@/hooks/useInteresadosPendientes';
 
 interface EventRequest {
   id: string;
@@ -76,7 +77,14 @@ const fmtDate = (iso: string | null) => {
   return isNaN(d.getTime()) ? iso : d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
-const EventRequestsSection = () => {
+interface EventRequestsSectionProps {
+  /** Oferta que debe quedar abierta y a la vista (aviso, email o campana). */
+  foco?: { requestId: string; n: number } | null;
+  /** Abre el chat con un usuario (lo da el Dashboard). */
+  onMessage?: (userId: string, name: string) => void;
+}
+
+const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {}) => {
   const profile = useProfile();
   const { user } = useAuth();
   const isEmpresario = profile.role === 'empresario';
@@ -194,6 +202,35 @@ const EventRequestsSection = () => {
     return () => { cancelado = true; };
   }, [user?.id, isEmpresario, requests]);
 
+  // Con candidatos sin elegir, la tarjeta se abre sola y se centra: antes el
+  // organizador tenía que adivinar que debía pulsar "Ver detalle" (13 oct 2026,
+  // Burguerfest: un DJ se apuntó y el organizador no veía nada).
+  const tocoTarjetas = useRef(false);
+  const focoAplicado = useRef(0);
+  const centrar = (id: string) => {
+    window.setTimeout(() => {
+      document.getElementById(`oferta-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  };
+  useEffect(() => {
+    if (!foco || foco.n === focoAplicado.current) return;
+    if (!requests.some(r => r.id === foco.requestId)) return;
+    focoAplicado.current = foco.n;
+    tocoTarjetas.current = true;
+    setExpanded(foco.requestId);
+    centrar(foco.requestId);
+  }, [foco, requests]);
+  useEffect(() => {
+    if (!isEmpresario || tocoTarjetas.current) return;
+    const conCandidatos = requests.find(r =>
+      r.client_user_id === user?.id &&
+      (responses[r.id] ?? []).some(c => !c.hired_at && !c.chosen_at));
+    if (!conCandidatos) return;
+    tocoTarjetas.current = true;
+    setExpanded(conCandidatos.id);
+    centrar(conCandidatos.id);
+  }, [isEmpresario, requests, responses, user?.id]);
+
   // Plazas de cada oferta (1 DJ + 2 camareros = 3 filas: dj, camarero, camarero).
   useEffect(() => {
     if (requests.length === 0) return;
@@ -236,13 +273,21 @@ const EventRequestsSection = () => {
   // sigue abierta y los demás inscritos no ven ningún cambio.
   const chooseProfessional = async (req: EventRequest, responseId: string, nombre: string) => {
     setHiring(responseId);
-    const { error } = await supabase
+    // .select() para comprobar que la fila se actualizó de verdad: una política
+    // RLS que la oculte no da error, devuelve 0 filas, y el aviso decía
+    // "Avisado" sin haber avisado a nadie.
+    const { data: actualizadas, error } = await supabase
       .from('event_request_responses' as any)
       .update({ chosen_at: new Date().toISOString() })
-      .eq('id', responseId);
+      .eq('id', responseId)
+      .select('id');
     setHiring(null);
 
-    if (error) { toast.error('No se pudo avisar al profesional.'); return; }
+    if (error || !actualizadas || actualizadas.length === 0) {
+      toast.error('No se pudo avisar al profesional. Recarga la página e inténtalo otra vez.');
+      return;
+    }
+    window.dispatchEvent(new Event(EVENTO_INTERESADOS));
 
     setResponses(prev => ({
       ...prev,
@@ -250,7 +295,7 @@ const EventRequestsSection = () => {
         r.id === responseId ? { ...r, chosen_at: new Date().toISOString() } : r
       ),
     }));
-    toast.success(`Avisado ${nombre}: en cuanto confirme, se cierra la oferta.`);
+    toast.success(`Avisado ${nombre}. En cuanto confirme, se abre el chat y puedes hacer el contrato.`);
   };
 
   // El profesional preseleccionado acepta: esto SÍ dispara notify_contratacion
@@ -323,6 +368,7 @@ const EventRequestsSection = () => {
     setCancelling(null);
     if (error) { toast.error('No se pudo cancelar.'); return; }
     setRequests(prev => prev.filter(r => r.id !== req.id));
+    window.dispatchEvent(new Event(EVENTO_INTERESADOS));
     toast.success('Oferta cancelada.');
   };
 
@@ -604,7 +650,7 @@ const EventRequestsSection = () => {
             const open = expanded === req.id;
             const days = daysLeft(req.expires_at);
             return (
-              <div key={req.id} className="rounded-2xl overflow-hidden transition-all"
+              <div key={req.id} id={`oferta-${req.id}`} className="rounded-2xl overflow-hidden transition-all scroll-mt-4"
                 style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
                 <div className="p-4">
                   {/* Top row */}
@@ -696,8 +742,32 @@ const EventRequestsSection = () => {
                     </div>
                   )}
 
+                  {/* Candidatos sin elegir: se ven SIN abrir la tarjeta. */}
+                  {(() => {
+                    const sinElegir = isEmpresario && req.client_user_id === user?.id
+                      ? (responses[req.id] ?? []).filter(c => !c.hired_at && !c.chosen_at)
+                      : [];
+                    if (sinElegir.length === 0 || open) return null;
+                    return (
+                      <button type="button"
+                        onClick={() => { tocoTarjetas.current = true; setExpanded(req.id); }}
+                        className="w-full flex items-center gap-2 px-3 py-2.5 mb-2 rounded-xl text-left"
+                        style={{ background: 'rgba(22,163,74,0.1)', border: '1.5px solid #16a34a' }}>
+                        <span className="w-2.5 h-2.5 rounded-full flex-shrink-0 motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]" style={{ background: '#16a34a' }} />
+                        <span className="flex-1 min-w-0 text-xs font-black truncate" style={{ color: '#15803d' }}>
+                          {sinElegir.length === 1
+                            ? `${sinElegir[0].name} se ha apuntado`
+                            : `${sinElegir.length} profesionales apuntados`}
+                        </span>
+                        <span className="px-2.5 py-1.5 rounded-lg text-[10px] font-black flex-shrink-0" style={{ background: '#16a34a', color: '#fff' }}>
+                          Ver y elegir
+                        </span>
+                      </button>
+                    );
+                  })()}
+
                   {/* Expand */}
-                  <button onClick={() => setExpanded(open ? null : req.id)}
+                  <button onClick={() => { tocoTarjetas.current = true; setExpanded(open ? null : req.id); }}
                     className="w-full flex items-center justify-center gap-1 py-1.5 rounded-xl text-xs transition-all hover:bg-black/5"
                     style={{ color: '#333', border: '1px solid rgba(0,0,0,0.06)' }}>
                     {open ? <><ChevronUp size={12} /> Cerrar</> : <><ChevronDown size={12} /> Ver detalle y contactar</>}
@@ -742,6 +812,11 @@ const EventRequestsSection = () => {
                                     </p>
                                   ) : (
                                     <div className="flex flex-col gap-2">
+                                      {!cubierta && candidatos.some(c => !c.hired_at && !c.chosen_at) && (
+                                        <p className="text-[11px] leading-snug" style={{ color: '#166534' }}>
+                                          Pulsa <strong>Elegir</strong>: se le avisa al momento (campana, email y push) y, en cuanto confirme, se abre el chat y puedes hacer el contrato.
+                                        </p>
+                                      )}
                                       {candidatos.map(resp => (
                                         <div key={resp.id} className="px-3 py-2 rounded-xl"
                                           style={{
@@ -784,9 +859,24 @@ const EventRequestsSection = () => {
                                               <button type="button"
                                                 onClick={() => chooseProfessional(req, resp.id, resp.name)}
                                                 disabled={hiring === resp.id}
-                                                className="px-2.5 py-1 rounded-lg text-[10px] font-black transition-all hover:scale-105 disabled:opacity-60 flex-shrink-0"
+                                                className="px-3.5 py-2 rounded-lg text-xs font-black transition-all hover:scale-105 disabled:opacity-60 flex-shrink-0"
                                                 style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                                                {hiring === resp.id ? '…' : 'Elegir'}
+                                                {hiring === resp.id ? 'Avisando…' : 'Elegir'}
+                                              </button>
+                                            )}
+                                          </div>
+                                          {/* Mirarle antes de elegir, o preguntarle algo: sin salir de XPEAK. */}
+                                          <div className="flex flex-wrap gap-2 mt-2">
+                                            <a href={`/p/${resp.professionalUserId}`} target="_blank" rel="noopener noreferrer"
+                                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold"
+                                              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.1)', color: '#333' }}>
+                                              <ExternalLink size={11} /> Ver perfil
+                                            </a>
+                                            {onMessage && (
+                                              <button type="button" onClick={() => onMessage(resp.professionalUserId, resp.name)}
+                                                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold"
+                                                style={{ background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.25)', color: '#1d4ed8' }}>
+                                                <MessageSquare size={11} /> Escribir
                                               </button>
                                             )}
                                           </div>

@@ -640,7 +640,7 @@ const Dashboard = () => {
       case 'ficha':   return <FichaView onNavigate={handleViewChange} />;
       case 'mapa': return <MapaView />;
       case 'flashbooking':
-      case 'flash': return <FlashBookingWallView />;
+      case 'flash': return <FlashBookingWallView onMessage={handleMessage} />;
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'agency': return <AgencyView />;
