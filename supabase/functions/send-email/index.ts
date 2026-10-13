@@ -1016,7 +1016,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${d.region !== 'Madrid' ? `<p style="color:#b91c1c;font-size:14px;font-weight:700;margin:0 0 6px">Ojo: su perfil no es de la Comunidad de Madrid.</p>` : ''}
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Sesión: <a href="${esc(d.soundcloud_url)}" style="color:#D4AF37">${esc(d.soundcloud_url)}</a><br>
-        Comprueba que es suya, pública y de 30 a 60 minutos, y acéptala o recházala en el panel.
+        Comprueba que es suya, pública y de 30 a 80 minutos, y acéptala o recházala en el panel.
       </p>
       ${btn('Revisar en el panel →', 'https://xpeak.es/dashboard?view=admin')}`),
   }),

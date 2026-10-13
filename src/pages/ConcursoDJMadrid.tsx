@@ -36,7 +36,7 @@ const MUTED = '#4b5563';
 
 const PASOS = [
   { t: 'Completa tu perfil de DJ', d: 'Gratis. Con foto, bio y tu ciudad de la Comunidad de Madrid: sin perfil completo no se puede entrar al concurso.' },
-  { t: 'Pega tu sesión de SoundCloud', d: 'Una mezcla tuya de entre 30 y 60 minutos, publicada en abierto. La revisamos y la publicamos aquí.' },
+  { t: 'Pega tu sesión de SoundCloud', d: 'Una mezcla tuya de entre 30 y 80 minutos, publicada en abierto. La revisamos y la publicamos aquí.' },
   { t: 'Consigue me gusta', d: 'Comparte tu sesión. Las 3 con más me gusta pasan a la final y el jurado elige al ganador.' },
 ];
 
@@ -57,7 +57,7 @@ const CRITERIOS = [
 const RESUMEN_BASES = [
   { t: 'Quién', d: 'DJs mayores de 18 años que viven en la Comunidad de Madrid, con perfil en XPEAK con foto, bio y ciudad.' },
   { t: 'Plazo', d: 'del 13 de octubre al 2 de noviembre de 2026. Una sesión por persona.' },
-  { t: 'Qué subes', d: 'una sesión tuya y pública de SoundCloud, de 30 a 60 minutos.' },
+  { t: 'Qué subes', d: 'una sesión tuya y pública de SoundCloud, de 30 a 80 minutos.' },
   { t: 'Cómo se gana', d: 'las 3 sesiones con más me gusta pasan a la final y el jurado elige al ganador. Los votos falsos se anulan.' },
   { t: 'Premio', d: 'unos Pioneer DJ HDJ-X5. Antes de enviarlos, el ganador acredita que vive en la Comunidad de Madrid, y al recibirlos sube una foto con ellos a su Instagram mencionando a @xpeaksite.' },
 ];
@@ -485,7 +485,7 @@ export default function ConcursoDJMadrid() {
               <li><strong>Participantes:</strong> personas mayores de 18 años, residentes en la Comunidad de Madrid, con perfil de DJ en XPEAK completo (foto, bio y ciudad de la Comunidad de Madrid). Participar es gratis y no exige compra ni pago de ningún tipo.</li>
               <li><strong>Residencia:</strong> antes de entregar el premio, XPEAK pedirá al ganador un documento que acredite que reside en la Comunidad de Madrid (DNI o certificado de empadronamiento) y una dirección de envío en la Comunidad de Madrid. Si no lo acredita en 15 días, el premio pasa al siguiente clasificado.</li>
               <li><strong>Plazo:</strong> inscripciones y votos desde el 13 de octubre de 2026 a las 00:00 hasta el 2 de noviembre de 2026 a las 23:59 (hora de Madrid).</li>
-              <li><strong>Cómo participar:</strong> una sola inscripción por persona, con el enlace a una sesión pública de SoundCloud de entre 30 y 60 minutos, mezclada por el propio participante. No se admiten sesiones de otras personas.</li>
+              <li><strong>Cómo participar:</strong> una sola inscripción por persona, con el enlace a una sesión pública de SoundCloud de entre 30 y 80 minutos, mezclada por el propio participante. No se admiten sesiones de otras personas.</li>
               <li><strong>Revisión:</strong> XPEAK revisa cada inscripción antes de publicarla y puede rechazar las que no cumplan estas bases, incluidas sesiones con contenido ofensivo o que no sean del participante.</li>
               <li><strong>Votación (fase 1):</strong> cualquier persona con cuenta en XPEAK puede dar un me gusta a cada sesión publicada. No cuenta el me gusta que un participante se dé a sí mismo. Las 3 sesiones con más me gusta válidos pasan a la final. Al cierre, XPEAK analiza quién ha votado y cómo (antigüedad de las cuentas, ráfagas de votos, accesos repetidos) y anula los votos de bots, cuentas falsas o compradas; si un participante se beneficia de votos fraudulentos, puede quedar descalificado.</li>
               <li><strong>Jurado y fallo (fase 2):</strong> un jurado designado por XPEAK valora las 3 sesiones finalistas según técnica de mezcla, selección musical, energía y lectura, y sonido de la grabación, con el mismo peso. El fallo es inapelable y se anuncia el 9 de noviembre de 2026 en esta página y en el Instagram de XPEAK. El concurso puede declararse desierto si ninguna sesión alcanza un nivel mínimo.</li>

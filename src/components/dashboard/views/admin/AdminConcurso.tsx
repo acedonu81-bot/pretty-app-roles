@@ -102,7 +102,7 @@ export default function AdminConcurso() {
           <a href="/concurso-dj-madrid" target="_blank" rel="noreferrer" className="underline">ver la página</a>
         </p>
         <p className="text-xs" style={{ color: 'rgba(10,9,8,0.45)' }}>
-          Comprueba que la sesión es suya, pública, de 30 a 60 minutos y que vive en la Comunidad de Madrid.
+          Comprueba que la sesión es suya, pública, de 30 a 80 minutos y que vive en la Comunidad de Madrid.
         </p>
       </div>
 
