@@ -754,7 +754,7 @@ const Dashboard = () => {
       )}
 
       <Suspense fallback={null}>
-        {!showWizard && <OnboardingTour onNavigate={handleViewChange} />}
+        {!showWizard && <OnboardingTour onNavigate={handleViewChange} oculto={activeView === 'messages'} />}
         {!showWizard && <ConsejosPanel isMobile={isMobile} onNavigate={handleViewChange} onGoToReviews={goToPendingReviews} />}
         {activeView !== 'messages' && <div className="hidden sm:block"><SupportChat /></div>}
         {showWizard && (

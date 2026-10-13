@@ -87,7 +87,7 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Elegir a este profesional' }));
     expect(await screen.findByText('¿Elegir a Manuel Jesús Frias Martín para Burguerfest?')).toBeTruthy();
     expect(screen.getByText(/Le avisamos ahora mismo/)).toBeTruthy();
-    expect(screen.getByText(/Cuando confirme, se abre el chat y la plaza queda cubierta/)).toBeTruthy();
+    expect(screen.getByText(/Cuando confirme, la plaza queda cubierta\. Puedes escribirle cuando quieras/)).toBeTruthy();
     expect(estado.updates).toHaveLength(0);
   });
 
@@ -108,7 +108,7 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
     expect(estado.updates).toHaveLength(1);
     expect(estado.updates[0]).toHaveProperty('chosen_at');
     expect(await screen.findByText('ELEGIDO, ESPERANDO QUE CONFIRME')).toBeTruthy();
-    expect(screen.getByText(/Si no responde, puedes elegir a otro/)).toBeTruthy();
+    expect(screen.getByText(/Puedes escribirle ya\. Si no responde, puedes elegir a otro/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Elegir a este profesional' })).toBeNull();
     expect(toastError).not.toHaveBeenCalled();
   });
@@ -133,7 +133,7 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
     render(<EventRequestsSection onMessage={onMessage} />);
     fireEvent.click(await screen.findByRole('button', { name: /Ver detalle y contactar/ }));
     expect(await screen.findByText('CONTRATADO')).toBeTruthy();
-    expect(screen.getByText(/Ha confirmado\. La plaza está cubierta y el chat abierto/)).toBeTruthy();
+    expect(screen.getByText(/Ha confirmado\. La plaza está cubierta\. Escríbele para cerrar los detalles/)).toBeTruthy();
     expect(screen.getByRole('button', { name: /Hacer el contrato/ })).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Elegir a este profesional' })).toBeNull();
   });

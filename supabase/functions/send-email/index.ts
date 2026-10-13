@@ -537,7 +537,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           <p style="color:#0a0908;font-size:14px;line-height:1.8;margin:0">
             1. Pulsa el botón y se abre tu oferta.<br>
             2. Mira su perfil y pulsa <strong>Elegir</strong>.<br>
-            3. Le avisamos al momento. En cuanto confirme, se abre el chat y puedes hacer el contrato.
+            3. Le avisamos al momento. En cuanto confirme, la plaza queda cubierta y puedes hacer el contrato.
           </p>
         </div>
         ${btn('Ver y elegir →', url)}

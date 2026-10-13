@@ -106,9 +106,9 @@ const BLUE_DIM = 'rgba(66,133,244,0.1)';
 const BLUE_BORDER = 'rgba(66,133,244,0.22)';
 const BLUE_GLOW = 'rgba(66,133,244,0.3)';
 
-interface Props { onNavigate: (view: string) => void; }
+interface Props { onNavigate: (view: string) => void; /** En el chat la tarjeta tapaba el cuadro de escribir (13 oct 2026). */ oculto?: boolean; }
 
-const OnboardingTour = ({ onNavigate }: Props) => {
+const OnboardingTour = ({ onNavigate, oculto }: Props) => {
   const profile = useProfile();
   const [step, setStep] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -129,7 +129,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
     }
   }, [profile.loading]);
 
-  if (!visible) return null;
+  if (!visible || oculto) return null;
 
   const isEmpresario = profile.role === 'empresario';
   const steps = isEmpresario ? EMPRESARIO_STEPS : PROFESSIONAL_STEPS;

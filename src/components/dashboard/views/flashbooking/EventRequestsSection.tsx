@@ -905,7 +905,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                           {resp.hired_at && (
                                             <div className="mt-2">
                                               <p className="text-[11px] leading-snug mb-2" style={{ color: '#166534' }}>
-                                                Ha confirmado. La plaza está cubierta y el chat abierto.
+                                                Ha confirmado. La plaza está cubierta. Escríbele para cerrar los detalles.
                                               </p>
                                               <button type="button"
                                                 onClick={() => openContract(req, resp.professionalUserId, resp.name)}
@@ -918,7 +918,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                           )}
                                           {!resp.hired_at && resp.chosen_at && (
                                             <p className="text-[11px] leading-snug mt-2" style={{ color: '#6b5200' }}>
-                                              Le hemos avisado. Cuando confirme, se abre el chat. Si no responde, puedes elegir a otro.
+                                              Le hemos avisado. Puedes escribirle ya. Si no responde, puedes elegir a otro.
                                             </p>
                                           )}
                                           {!resp.hired_at && !resp.chosen_at && !cubierta && confirmando !== resp.id && (
@@ -936,7 +936,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                                 ¿Elegir a {resp.name} para {req.client_name}?
                                               </p>
                                               <p className="text-[11px] leading-snug mb-3" style={{ color: '#333' }}>
-                                                Le avisamos ahora mismo. Cuando confirme, se abre el chat y la plaza queda cubierta.
+                                                Le avisamos ahora mismo. Cuando confirme, la plaza queda cubierta. Puedes escribirle cuando quieras.
                                               </p>
                                               <div className="flex gap-2">
                                                 <button type="button"
@@ -1033,6 +1033,13 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                               <X size={12} /> Rechazar
                             </button>
                           </div>
+                          {onMessage && req.client_user_id && (
+                            <button type="button" onClick={() => onMessage(req.client_user_id as string, req.client_name)}
+                              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold"
+                              style={{ background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.25)', color: '#1d4ed8' }}>
+                              <MessageSquare size={12} /> Escribir a {req.client_name}
+                            </button>
+                          )}
                         </div>
                       ) : applied[req.id] ? (
                         <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold"
