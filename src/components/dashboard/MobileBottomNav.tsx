@@ -1,4 +1,7 @@
 import { Zap, MessageSquare, User, Home, type LucideIcon } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
+import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 
 interface MobileBottomNavProps {
   activeView: string;
@@ -13,6 +16,8 @@ interface Tab {
   label: string;
   isActive: boolean;
   badge?: number;
+  /** Aviso importante (oferta nueva): icono verde que parpadea y globo verde. */
+  alerta?: boolean;
 }
 
 // Vistas de listado de gremio: con cualquiera de ellas abierta, el tab
@@ -27,26 +32,40 @@ const TabButton = ({ tab, onClick }: { tab: Tab; onClick: () => void }) => (
     className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95 relative"
   >
     <div className="relative">
-      <tab.icon
-        size={22}
-        strokeWidth={tab.isActive ? 2.5 : 1.8}
-        style={{ color: tab.isActive ? '#D4AF37' : '#444' }}
-      />
+      {tab.alerta ? (
+        <span className="flex items-center justify-center rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
+          style={{ width: 30, height: 30, margin: -4, background: '#16a34a' }}>
+          <tab.icon size={18} strokeWidth={2.5} style={{ color: '#fff' }} />
+        </span>
+      ) : (
+        <tab.icon
+          size={22}
+          strokeWidth={tab.isActive ? 2.5 : 1.8}
+          style={{ color: tab.isActive ? '#D4AF37' : '#444' }}
+        />
+      )}
       {tab.badge != null && tab.badge > 0 && (
-        <span className="absolute -top-1 -right-1.5 min-w-[14px] h-[14px] px-0.5 rounded-full flex items-center justify-center text-[0.6rem] font-black"
-          style={{ background: '#ef4444', color: '#fff' }}>
+        <span className="absolute -top-2 -right-3 min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center text-[0.6rem] font-black"
+          style={{ background: tab.alerta ? '#15803d' : '#ef4444', color: '#fff', boxShadow: '0 0 0 2px #fff' }}>
           {tab.badge > 9 ? '9+' : tab.badge}
         </span>
       )}
     </div>
     <span className="text-[0.65rem] font-semibold"
-      style={{ color: tab.isActive ? '#D4AF37' : '#444' }}>
+      style={{ color: tab.alerta ? '#15803d' : tab.isActive ? '#D4AF37' : '#444', fontWeight: tab.alerta ? 800 : undefined }}>
       {tab.label}
     </span>
   </button>
 );
 
 const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount = 0 }: MobileBottomNavProps) => {
+  // Los globos salen del mismo cálculo que el menú lateral. Antes el chat no
+  // recibía ningún contador y Flash Booking no avisaba de ofertas nuevas
+  // (un profesional no encontró la de Burguerfest, 13 oct 2026).
+  const { user } = useAuth();
+  const { role } = useProfile();
+  const { flashBadge, msgBadge, demandaBadge } = useDashboardBadges(user?.id, role === 'empresario');
+  const flashTotal = flashBadge + demandaBadge;
   // "Inicio" lleva al mapa de gremios, que es donde aterriza el dashboard.
   // Antes iba al listado del propio gremio; se queda marcado como activo
   // también en esos listados porque se llega a ellos desde aquí — sin eso,
@@ -58,8 +77,8 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
   // simplifica a un tab bar plano de verdad en vez de fingir simetría).
   const tabs: Tab[] = [
     { id: 'explorar', icon: Home, label: 'Inicio', isActive: activeView === 'explorar' || dirViews.has(activeView) },
-    { id: 'flashbooking', icon: Zap, label: 'Flash', isActive: activeView === 'flashbooking' || activeView === 'flash' },
-    { id: 'messages', icon: MessageSquare, label: 'Chat', isActive: activeView === 'messages', badge: unreadCount },
+    { id: 'flashbooking', icon: Zap, label: 'Flash', isActive: activeView === 'flashbooking' || activeView === 'flash', badge: flashTotal, alerta: flashTotal > 0 },
+    { id: 'messages', icon: MessageSquare, label: 'Chat', isActive: activeView === 'messages', badge: Math.max(unreadCount, msgBadge) },
     { id: 'profile', icon: User, label: 'Perfil', isActive: activeView === 'profile' || activeView === 'settings' },
   ];
 

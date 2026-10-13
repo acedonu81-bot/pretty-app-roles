@@ -500,7 +500,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
             ${dato('Presupuesto', presupuesto)}
           </table>
         </div>
-        ${btn('Ver la oferta y responder →', 'https://xpeak.es/dashboard?view=flashbooking')}
+        ${btn('Ver la oferta y responder →', 'https://xpeak.es/dashboard?view=flashbooking&tab=demanda')}
         <p style="color:#4b5563;font-size:13px;line-height:1.7;margin:18px 0 0">
           Responder de los primeros cuenta a tu favor: el organizador suele cerrar con quien contesta antes. Todo el contacto se hace dentro de XPEAK, por el chat.
         </p>`, `${quien} busca ${que}${d.city ? ` en ${d.city}` : ''}`),

@@ -32,9 +32,26 @@ export async function marcarFlashVisto(uid: string): Promise<void> {
   window.dispatchEvent(new Event(EVENTO_FLASH_VISTO));
 }
 
+// Ofertas nuevas de organizadores que el profesional aún no ha visto (13 oct
+// 2026: un profesional buscó la de Burguerfest y no la encontró; el menú solo
+// avisaba de reservas directas pendientes). Son las notificaciones
+// 'event_request' sin leer: se leen al abrir Flash Booking > Demanda.
+const EVENTO_OFERTAS_VISTAS = 'xpeak:ofertas-vistas';
+
+/** Marca como leídas las ofertas nuevas y apaga los globos abiertos. */
+export async function marcarOfertasVistas(uid: string): Promise<void> {
+  await supabase.from('notifications' as any)
+    .update({ is_read: true })
+    .eq('user_id', uid)
+    .eq('type', 'event_request')
+    .eq('is_read', false);
+  window.dispatchEvent(new Event(EVENTO_OFERTAS_VISTAS));
+}
+
 export function useDashboardBadges(userId: string | undefined, isEmpresario: boolean) {
   const [flashBadge, setFlashBadge] = useState(0);
   const [msgBadge, setMsgBadge] = useState(0);
+  const [demandaBadge, setDemandaBadge] = useState(0);
   // supabase.channel(topic) devuelve la MISMA instancia si ya existe un canal
   // con ese topic — con nombres fijos, el sidebar (que se desmonta al cerrar
   // el Sheet móvil) y la campanita (montada toda la sesión) compartían canal,
@@ -87,6 +104,28 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
     };
   }, [userId, isEmpresario]);
 
+  useEffect(() => {
+    if (!userId || isEmpresario) { setDemandaBadge(0); return; }
+    const cargar = async () => {
+      const { count } = await supabase.from('notifications' as any)
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .eq('type', 'event_request')
+        .eq('is_read', false);
+      setDemandaBadge(count ?? 0);
+    };
+    cargar();
+    const channel = supabase
+      .channel(`badges_ofertas_${userId}_${instanceId}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${userId}` }, () => { cargar(); })
+      .subscribe();
+    window.addEventListener(EVENTO_OFERTAS_VISTAS, cargar);
+    return () => {
+      window.removeEventListener(EVENTO_OFERTAS_VISTAS, cargar);
+      supabase.removeChannel(channel);
+    };
+  }, [userId, isEmpresario]);
+
   const refreshMsgBadge = async (uid: string) => {
     const { data } = await supabase.from('conversations')
       .select('id')
@@ -117,5 +156,5 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
     return () => { supabase.removeChannel(channel); };
   }, [userId]);
 
-  return { flashBadge, msgBadge };
+  return { flashBadge, msgBadge, demandaBadge };
 }

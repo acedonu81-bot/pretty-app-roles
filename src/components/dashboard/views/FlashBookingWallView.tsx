@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { useDashboardBadges, marcarOfertasVistas } from '@/hooks/useDashboardBadges';
 import OfertaTab from './flashbooking/OfertaTab';
 import DemandaTab from './flashbooking/DemandaTab';
 import SolicitudesTab from './flashbooking/SolicitudesTab';
@@ -17,9 +18,31 @@ const FlashBookingWallView = () => {
   // por defecto (oferta/demanda).
   const tabFromQuery = new URLSearchParams(location.search).get('tab');
   const [tab, setTab] = useState<'oferta' | 'demanda' | 'solicitudes'>(
-    tabFromQuery === 'solicitudes' && !isEmpresario ? 'solicitudes' : (isEmpresario ? 'demanda' : 'oferta')
+    tabFromQuery === 'solicitudes' && !isEmpresario ? 'solicitudes'
+      : tabFromQuery === 'demanda' ? 'demanda'
+      : (isEmpresario ? 'demanda' : 'oferta')
   );
   const [pendingCount, setPendingCount] = useState(0);
+
+  // Ofertas nuevas de organizadores que el profesional aún no ha visto. Un
+  // profesional buscó la de Burguerfest y "dio vueltas" sin encontrarla (13 oct
+  // 2026): Flash Booking abría en "Oferta" (profesionales disponibles) y las
+  // ofertas de organizadores están en "Demanda". Si hay nuevas, abre en Demanda
+  // (salvo que el enlace pida otra pestaña a propósito o el usuario ya haya
+  // elegido una) y, si está en otra, un aviso verde lo lleva.
+  const { demandaBadge } = useDashboardBadges(user?.id, isEmpresario);
+  const eligioPestana = useRef(!!tabFromQuery);
+  const elegir = (t: 'oferta' | 'demanda' | 'solicitudes') => { eligioPestana.current = true; setTab(t); };
+  useEffect(() => {
+    if (!isEmpresario && demandaBadge > 0 && !eligioPestana.current) {
+      eligioPestana.current = true;
+      setTab('demanda');
+    }
+  }, [demandaBadge, isEmpresario]);
+  // Verlas en Demanda las da por vistas y apaga los globos.
+  useEffect(() => {
+    if (tab === 'demanda' && !isEmpresario && user?.id && demandaBadge > 0) void marcarOfertasVistas(user.id);
+  }, [tab, isEmpresario, user?.id, demandaBadge]);
 
   // El valor inicial de tab solo se evalúa al MONTAR el componente. Si el
   // usuario ya estaba dentro de esta vista (otra pestaña) y llega aquí vía
@@ -29,6 +52,7 @@ const FlashBookingWallView = () => {
   // (reportado por el usuario el 3 oct 2026, tras valorar y querer volver).
   useEffect(() => {
     if (tabFromQuery === 'solicitudes' && !isEmpresario) setTab('solicitudes');
+    if (tabFromQuery === 'demanda') setTab('demanda');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabFromQuery]);
 
@@ -71,9 +95,24 @@ const FlashBookingWallView = () => {
         <p className="text-sm text-muted-foreground">Oferta y demanda en tiempo real. Contratos cerrados en minutos.</p>
       </div>
 
+      {!isEmpresario && demandaBadge > 0 && tab !== 'demanda' && (
+        <div className="mb-4 flex items-center gap-3 p-3 rounded-xl"
+          style={{ background: 'rgba(22,163,74,0.1)', border: '1.5px solid #16a34a' }}>
+          <span className="w-3 h-3 rounded-full flex-shrink-0 motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]" style={{ background: '#16a34a' }} />
+          <p className="flex-1 text-sm font-black" style={{ color: '#15803d' }}>
+            {demandaBadge === 1 ? 'Tienes 1 oferta nueva de organizadores' : `Tienes ${demandaBadge} ofertas nuevas de organizadores`}
+          </p>
+          <button type="button" onClick={() => elegir('demanda')}
+            className="px-3 py-2 rounded-lg text-xs font-black flex-shrink-0"
+            style={{ background: '#16a34a', color: '#fff' }}>
+            Ver las ofertas
+          </button>
+        </div>
+      )}
+
       <div className="flex gap-2 mb-5 flex-wrap">
         {tabs.map(t => (
-          <button key={t.id} onClick={() => setTab(t.id)}
+          <button key={t.id} onClick={() => elegir(t.id)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all"
             style={{
               // El dorado de estos tabs es '#8A6D0F': comparar con '#D4AF37'
@@ -88,9 +127,15 @@ const FlashBookingWallView = () => {
                 boxShadow: tab === t.id ? `0 0 6px ${t.color}cc` : 'none',
               }} />
             {t.label}
+            {t.id === 'demanda' && !isEmpresario && demandaBadge > 0 && (
+              <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
+                style={{ background: '#16a34a', color: '#fff' }}>
+                {demandaBadge} {demandaBadge === 1 ? 'nueva' : 'nuevas'}
+              </span>
+            )}
             {t.id === 'solicitudes' && pendingCount > 0 && (
-              <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full"
-                style={{ background: 'rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
+              <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
+                style={{ background: 'rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
                 {pendingCount}
               </span>
             )}

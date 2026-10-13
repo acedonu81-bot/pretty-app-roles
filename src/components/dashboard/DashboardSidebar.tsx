@@ -173,7 +173,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
   isActive: boolean;
   onClick: () => void;
   badge?: number;
-  badgeColor?: 'gold' | 'blue';
+  badgeColor?: 'gold' | 'blue' | 'green';
   /** Tiñe el icono de verde y lo hace latir: algo reclama atención aquí.
    *  Se ve incluso con el sidebar colapsado a iconos, que es cuando el número
    *  del badge queda oculto. */
@@ -206,7 +206,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
         <span className="absolute rounded-r-[3px] group-data-[collapsible=icon]:hidden" style={{ left: -14, top: '50%', transform: 'translateY(-50%)', width: 3, height: 16, background: 'linear-gradient(180deg,#D4AF37,#B8941E)' }} />
       )}
       <span
-        className={`flex-shrink-0 flex items-center justify-center rounded-full${iconAlert ? ' motion-safe:[animation:adminAlertPulse_1.4s_ease-in-out_infinite]' : ''}`}
+        className={`flex-shrink-0 flex items-center justify-center rounded-full${iconAlert ? ' motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]' : ''}`}
         style={iconAlert
           ? { width: 26, height: 26, margin: -4.5, color: '#fff', background: '#16a34a' }
           : iconColor && !isActive
@@ -215,7 +215,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
       >
         <Icon size={iconAlert ? 15 : (iconColor && !isActive ? 14 : 17)} strokeWidth={iconColor && !isActive ? 2.5 : 2} />
       </span>
-      <span className="flex-1">{label}</span>
+      <span className="flex-1" style={iconAlert ? { color: '#15803d', fontWeight: 800 } : undefined}>{label}</span>
       {etiqueta && (
         <>
           <span className="flex-shrink-0 text-[0.58rem] font-black uppercase tracking-wide px-1.5 py-1 rounded-full leading-none group-data-[collapsible=icon]:hidden"
@@ -234,7 +234,9 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
         className="text-[0.62rem] px-1.5 py-0.5 rounded-full font-black leading-none static ml-auto mr-1 group-data-[collapsible=icon]:hidden"
         style={badgeColor === 'blue'
           ? { background: 'rgba(37,99,235,0.14)', color: '#2563EB' }
-          : { background: 'rgba(212,175,55,0.18)', color: '#8A6D0F' }}
+          : badgeColor === 'green'
+            ? { background: '#16a34a', color: '#fff' }
+            : { background: 'rgba(212,175,55,0.18)', color: '#8A6D0F' }}
       >
         {badge}
       </SidebarMenuBadge>
@@ -290,7 +292,11 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
   const collapsed = state === 'collapsed';
   const isAgency = subscription_tier === 'agency' || subscription_tier === 'elite';
   const isEmpresario = role === 'empresario';
-  const { flashBadge, msgBadge } = useDashboardBadges(user?.id, isEmpresario);
+  const { flashBadge, msgBadge, demandaBadge } = useDashboardBadges(user?.id, isEmpresario);
+  // Flash Booking se enciende por reservas pendientes Y por ofertas nuevas de
+  // organizadores sin ver (antes solo por lo primero, y un profesional no
+  // encontró la oferta de Burguerfest, 13 oct 2026).
+  const flashTotal = flashBadge + demandaBadge;
   // El directorio arranca siempre cerrado — evita que la lista de 16
   // roles domine la barra; se abre solo si el usuario quiere explorar,
   // o automáticamente si la vista activa ya es una de directorio.
@@ -354,7 +360,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
           <GroupLabel>Panel</GroupLabel>
           <SidebarMenu>
             <NavItem icon={Home} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} navId={homeView === 'profile' ? 'inicio' : homeView} />
-            <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} iconAlert={flashBadge > 0} navId="flashbooking" />
+            <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} iconAlert={flashTotal > 0} badge={flashTotal} badgeColor="green" navId="flashbooking" />
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} iconAlert={msgBadge > 0} navId="messages" />
             <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" navId="feed" etiqueta={concursoActivo() ? 'Concurso DJ' : undefined} />
           </SidebarMenu>

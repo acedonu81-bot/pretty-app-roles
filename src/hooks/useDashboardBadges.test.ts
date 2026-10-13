@@ -18,7 +18,7 @@ const channelMock = { on: vi.fn().mockReturnThis(), subscribe: vi.fn().mockRetur
  */
 function cadena(resultado: unknown) {
   const chain: Record<string, unknown> = {};
-  for (const metodo of ['select', 'eq', 'in', 'neq', 'or', 'not', 'gte', 'lte', 'order', 'limit']) {
+  for (const metodo of ['select', 'eq', 'in', 'neq', 'or', 'not', 'gte', 'lte', 'order', 'limit', 'update']) {
     chain[metodo] = vi.fn(() => chain);
   }
   (chain as { then: unknown }).then = (resolve: (v: unknown) => unknown) =>
@@ -28,6 +28,7 @@ function cadena(resultado: unknown) {
 
 /** Última cadena creada para flash_bookings, para inspeccionar sus filtros. */
 const flashChains: Record<string, unknown>[] = [];
+const notifChains: Record<string, unknown>[] = [];
 
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
@@ -39,6 +40,11 @@ vi.mock('@/integrations/supabase/client', () => ({
       }
       if (table === 'conversations') return cadena({ data: [{ id: 'c1' }, { id: 'c2' }] });
       if (table === 'messages') return cadena({ count: 5 });
+      if (table === 'notifications') {
+        const c = cadena({ count: 4 });
+        notifChains.push(c);
+        return c;
+      }
       throw new Error(`unexpected table: ${table}`);
     }),
     channel: vi.fn(() => channelMock),
@@ -117,10 +123,47 @@ describe('useDashboardBadges', () => {
     await waitFor(() => expect(result.current.flashBadge).toBe(3));
   });
 
+  // 13 oct 2026: un profesional buscó la oferta de Burguerfest y no la encontró
+  // ("ha dado vueltas"): el menú solo avisaba de reservas directas pendientes,
+  // no de ofertas nuevas de organizadores. demandaBadge cuenta las ofertas
+  // nuevas sin ver (notificaciones 'event_request' sin leer).
+  it('al profesional le cuenta las ofertas nuevas sin ver (demandaBadge)', async () => {
+    const { useDashboardBadges } = await import('./useDashboardBadges');
+    const { result } = renderHook(() => useDashboardBadges('user-123', false));
+    await waitFor(() => expect(result.current.demandaBadge).toBe(4));
+
+    const cadenaNotif = notifChains[notifChains.length - 1];
+    expect(cadenaNotif.eq).toHaveBeenCalledWith('user_id', 'user-123');
+    expect(cadenaNotif.eq).toHaveBeenCalledWith('type', 'event_request');
+    expect(cadenaNotif.eq).toHaveBeenCalledWith('is_read', false);
+  });
+
+  it('el empresario no tiene demandaBadge (publica ofertas, no las recibe)', async () => {
+    const { useDashboardBadges } = await import('./useDashboardBadges');
+    const { result } = renderHook(() => useDashboardBadges('user-123', true));
+    await waitFor(() => expect(result.current.msgBadge).toBe(5));
+    expect(result.current.demandaBadge).toBe(0);
+  });
+
+  it('marcarOfertasVistas las marca leídas y apaga el globo', async () => {
+    const { useDashboardBadges, marcarOfertasVistas } = await import('./useDashboardBadges');
+    const { result } = renderHook(() => useDashboardBadges('user-123', false));
+    await waitFor(() => expect(result.current.demandaBadge).toBe(4));
+
+    const { supabase } = await import('@/integrations/supabase/client');
+    const llamadas = (supabase.from as ReturnType<typeof vi.fn>).mock.calls.length;
+    notifChains.length = 0;
+    await act(async () => { await marcarOfertasVistas('user-123'); });
+    const update = notifChains.find(c => (c.update as ReturnType<typeof vi.fn> | undefined)?.mock.calls.length);
+    expect(update).toBeTruthy();
+    expect((update!.update as ReturnType<typeof vi.fn>).mock.calls[0][0]).toEqual({ is_read: true });
+    expect((supabase.from as ReturnType<typeof vi.fn>).mock.calls.length).toBeGreaterThan(llamadas);
+  });
+
   it('devuelve 0 sin userId, sin lanzar', async () => {
     const { useDashboardBadges } = await import('./useDashboardBadges');
     const { result } = renderHook(() => useDashboardBadges(undefined, false));
-    expect(result.current).toEqual({ flashBadge: 0, msgBadge: 0 });
+    expect(result.current).toEqual({ flashBadge: 0, msgBadge: 0, demandaBadge: 0 });
   });
 
   it('usa un nombre de canal único por instancia, no un topic fijo compartido', async () => {
