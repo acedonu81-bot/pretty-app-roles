@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { logEvent } from '@/lib/track';
-import { estadoInscripcionMadrid, ABRE_CONCURSO as ABRE, CIERRA_CONCURSO as CIERRA } from '@/lib/concursoMadrid';
+import { estadoInscripcionMadrid, concursoActivo, ABRE_CONCURSO as ABRE, CIERRA_CONCURSO as CIERRA } from '@/lib/concursoMadrid';
+import { leerEnlaceSoundcloud } from '@/lib/soundcloudEnlace';
 import LikeButton from '@/components/LikeButton';
 
 /**
@@ -94,9 +95,17 @@ function playerUrl(url: string) {
   return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23d4af37&auto_play=false&hide_related=true&show_comments=false&show_reposts=false&visual=false`;
 }
 
+// Quien sale a completar su perfil vuelve aquí al terminar el asistente de
+// bienvenida (OnboardingWizard lee esta clave). Antes acababa en su ficha.
+function marcarVuelta() {
+  try { sessionStorage.setItem('xpeak_volver_a', PATH); } catch { /* sin almacenamiento: no pasa nada */ }
+}
+
 function Inscripcion() {
   const { user, loading } = useAuth();
-  const [inscrito, setInscrito] = useState<boolean | null>(null);
+  // Estado real de su inscripción: antes solo se sabía si existía, y un DJ
+  // pendiente o rechazado veía siempre "Estás dentro".
+  const [inscrito, setInscrito] = useState<'pendiente' | 'aceptada' | 'rechazada' | null>(null);
   const [perfil, setPerfil] = useState<ReturnType<typeof estadoInscripcionMadrid> | null>(null);
   const [url, setUrl] = useState('');
   const [acepta, setAcepta] = useState(false);
@@ -107,8 +116,8 @@ function Inscripcion() {
 
   useEffect(() => {
     if (!user) return;
-    sb.from('concurso_inscripciones').select('id').eq('concurso', CONCURSO).eq('user_id', user.id).maybeSingle()
-      .then(({ data }) => setInscrito(!!data));
+    sb.from('concurso_inscripciones').select('estado').eq('concurso', CONCURSO).eq('user_id', user.id).maybeSingle()
+      .then(({ data }) => setInscrito(((data as { estado?: string } | null)?.estado as 'pendiente' | 'aceptada' | 'rechazada') ?? null));
     // Foto y bio (lo mismo que exige la policy de inserción) y ciudad en la
     // Comunidad de Madrid (esto solo lo filtra la página: ver concursoMadrid.ts).
     supabase.from('profiles').select('photo_url, bio, region').eq('user_id', user.id)
@@ -118,14 +127,27 @@ function Inscripcion() {
   const enviar = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-    const limpia = url.trim();
-    if (!SOUNDCLOUD_RE.test(limpia)) {
-      setError('Pega el enlace completo de la sesión, del tipo soundcloud.com/tu-nombre/tu-sesion. Los enlaces cortos on.soundcloud.com no valen.');
+    const enlace = leerEnlaceSoundcloud(url);
+    if (!enlace) {
+      setError('Pega el enlace de tu sesión de SoundCloud, del tipo soundcloud.com/tu-nombre/tu-sesion. El de tu perfil no vale: tiene que ser el de la sesión.');
       return;
     }
     if (!acepta) { setError('Tienes que aceptar las bases para inscribirte.'); return; }
     setEnviando(true);
     setError(null);
+    // El enlace corto de la app (on.soundcloud.com) se convierte en el largo.
+    let limpia = enlace.url;
+    if (enlace.tipo === 'corto') {
+      const { data: res } = await supabase.functions.invoke('soundcloud-enlace', { body: { url: enlace.url } });
+      const larga = (res as { url?: string } | null)?.url;
+      if (!larga || !SOUNDCLOUD_RE.test(larga)) {
+        setEnviando(false);
+        void logEvent('cta_click', PATH, 'concurso_enlace_corto_fallido');
+        setError('No hemos podido abrir ese enlace. Abre tu sesión en soundcloud.com desde el navegador y copia la dirección de arriba.');
+        return;
+      }
+      limpia = larga;
+    }
     const { error: err } = await sb.from('concurso_inscripciones').insert({
       concurso: CONCURSO, user_id: user.id, soundcloud_url: limpia, acepta_bases: true,
     });
@@ -134,8 +156,14 @@ function Inscripcion() {
       setError(err.code === '23505' ? 'Ya tienes una sesión inscrita en este concurso.' : 'No se ha podido guardar la inscripción. Inténtalo de nuevo en un momento.');
       return;
     }
-    void logEvent('cta_click', PATH, 'concurso_inscripcion');
-    setInscrito(true);
+    void logEvent('cta_click', PATH, enlace.tipo === 'corto' ? 'concurso_inscripcion enlace=corto' : 'concurso_inscripcion');
+    // Aviso al admin para que la revise (antes nadie se enteraba). La función
+    // comprueba que la inscripción existe y saca los datos de la BD.
+    void supabase.functions.invoke('send-email', { body: { type: 'concurso_inscripcion', data: {} } });
+    setInscrito('pendiente');
+    // Al enviar el enlace, a la lista de sesiones: ahí ve la suya en revisión.
+    window.dispatchEvent(new Event('concurso:inscrito'));
+    setTimeout(() => document.getElementById('participantes')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
   };
 
   const caja = 'rounded-2xl p-6 sm:p-8';
@@ -182,12 +210,18 @@ function Inscripcion() {
   }
 
   if (inscrito) {
+    const textos = {
+      pendiente: { t: 'Estás dentro: revisando tu sesión', d: 'Comprobamos que la sesión es tuya y cumple las bases. En cuanto la aceptemos aparecerá en la lista de participantes y te avisaremos por email para que la compartas.' },
+      aceptada: { t: 'Tu sesión ya está publicada', d: 'Ya sale en la lista de participantes. Compártela con tu gente: las 3 sesiones con más me gusta hasta el 2 de noviembre pasan a la final.' },
+      rechazada: { t: 'Tu sesión no cumple las bases', d: 'Escríbenos a info@xpeak.site y te contamos qué falta.' },
+    }[inscrito];
     return (
       <div className={caja} style={cajaStyle}>
-        <p className="text-lg font-bold mb-2">Estás dentro</p>
-        <p style={{ color: MUTED }}>
-          Revisamos tu sesión y, si cumple las bases, aparecerá en la lista de participantes. Entonces compártela: las 3 sesiones con más me gusta pasan a la final.
-        </p>
+        <p className="text-lg font-bold mb-2">{textos.t}</p>
+        <p style={{ color: MUTED }}>{textos.d}</p>
+        {inscrito === 'aceptada' && (
+          <a href="#participantes" className="inline-block mt-4 font-bold underline" style={{ color: GOLD_TEXT }}>Ver mi sesión</a>
+        )}
       </div>
     );
   }
@@ -199,7 +233,7 @@ function Inscripcion() {
         <p className="mb-5" style={{ color: MUTED }}>
           En tu perfil no aparece una ciudad de la Comunidad de Madrid. Si vives aquí, pon tu ciudad en el perfil y vuelve a esta página para inscribirte.
         </p>
-        <a href="/dashboard?view=profile" className="inline-block px-5 py-3 rounded-xl font-bold" style={{ background: `linear-gradient(90deg,${GOLD},#B8941E)`, color: '#111' }}>
+        <a href="/dashboard?view=profile" onClick={marcarVuelta} className="inline-block px-5 py-3 rounded-xl font-bold" style={{ background: `linear-gradient(90deg,${GOLD},#B8941E)`, color: '#111' }}>
           Revisar mi ciudad
         </a>
       </div>
@@ -213,7 +247,7 @@ function Inscripcion() {
         <p className="mb-5" style={{ color: MUTED }}>
           Para entrar al concurso tu perfil necesita foto y bio. Así el público y el jurado saben quién hay detrás de cada sesión.
         </p>
-        <a href="/dashboard" className="inline-block px-5 py-3 rounded-xl font-bold" style={{ background: `linear-gradient(90deg,${GOLD},#B8941E)`, color: '#111' }}>
+        <a href="/dashboard" onClick={marcarVuelta} className="inline-block px-5 py-3 rounded-xl font-bold" style={{ background: `linear-gradient(90deg,${GOLD},#B8941E)`, color: '#111' }}>
           Completar mi perfil
         </a>
       </div>
@@ -225,8 +259,9 @@ function Inscripcion() {
       <label htmlFor="sc" className="block text-lg font-bold mb-2">Enlace de tu sesión en SoundCloud</label>
       <input
         id="sc"
-        type="url"
+        type="text"
         inputMode="url"
+        autoComplete="off"
         placeholder="https://soundcloud.com/tu-nombre/tu-sesion"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
@@ -251,57 +286,147 @@ function Inscripcion() {
   );
 }
 
+const AZUL = '#2563EB';
+const VERDE = '#059669';
+
+type Propia = { estado: 'pendiente' | 'rechazada'; soundcloud_url: string; display_name: string | null; photo_url: string | null; zone: string | null };
+
+// Lista de sesiones subidas (13 oct 2026, petición del usuario): al enviar el
+// enlace la página baja aquí y el DJ ve su propia sesión aunque esté en
+// revisión (antes solo salían las aceptadas y parecía que no se había subido
+// nada). Colores de la web: crema y dorado, verde publicada, azul en revisión.
 function Participantes() {
   const { user } = useAuth();
   const [lista, setLista] = useState<Participante[] | null>(null);
+  const [propia, setPropia] = useState<Propia | null>(null);
 
-  useEffect(() => {
+  const cargar = useCallback(() => {
     sb.rpc('concurso_participantes', { p_concurso: CONCURSO })
       .then(({ data, error }) => setLista(error ? [] : ((data as Participante[]) ?? []).sort((a, b) => Number(b.me_gusta) - Number(a.me_gusta))));
-  }, []);
+    if (!user) { setPropia(null); return; }
+    Promise.all([
+      sb.from('concurso_inscripciones').select('estado, soundcloud_url').eq('concurso', CONCURSO).eq('user_id', user.id).maybeSingle(),
+      supabase.from('profiles').select('display_name, photo_url, zone').eq('user_id', user.id).order('is_primary', { ascending: false }).limit(1).maybeSingle(),
+    ]).then(([ins, pr]) => {
+      const i = ins.data as { estado: string; soundcloud_url: string } | null;
+      setPropia(i && i.estado !== 'aceptada'
+        ? { estado: i.estado as Propia['estado'], soundcloud_url: i.soundcloud_url, display_name: pr.data?.display_name ?? null, photo_url: pr.data?.photo_url ?? null, zone: pr.data?.zone ?? null }
+        : null);
+    });
+  }, [user]);
 
-  if (lista === null) return <p style={{ color: MUTED }}>Cargando participantes…</p>;
-  if (lista.length === 0) {
-    return (
-      <p style={{ color: MUTED }}>
-        Todavía no hay sesiones publicadas. Cada inscripción se revisa a mano y aparece aquí en cuanto está aceptada.
-      </p>
-    );
-  }
+  useEffect(() => {
+    cargar();
+    window.addEventListener('concurso:inscrito', cargar);
+    return () => window.removeEventListener('concurso:inscrito', cargar);
+  }, [cargar]);
+
+  if (lista === null) return <p style={{ color: MUTED }}>Cargando sesiones…</p>;
+
+  const activo = concursoActivo();
 
   return (
-    <div className="grid gap-5 md:grid-cols-2">
-      {lista.map((p) => (
-        <div key={p.user_id} className="rounded-2xl p-4 border bg-white" style={{ borderColor: '#eee' }}>
-          <a href={`/p/${p.user_id}`} className="flex items-center gap-3 mb-3">
-            {p.photo_url
-              ? <img src={p.photo_url} alt="" className="w-12 h-12 rounded-full object-cover" loading="lazy" />
-              : <div className="w-12 h-12 rounded-full" style={{ background: CREAM }} />}
-            <div>
-              <p className="font-bold leading-tight">{p.display_name ?? 'DJ'}</p>
-              {p.zone && <p className="text-sm" style={{ color: MUTED }}>{p.zone}</p>}
-            </div>
-          </a>
-          <iframe
-            title={`Sesión de ${p.display_name ?? 'DJ'}`}
-            src={playerUrl(p.soundcloud_url)}
-            className="w-full rounded-lg"
-            height={120}
-            loading="lazy"
-            allow="autoplay"
-          />
-          <div className="flex items-center justify-between mt-3 text-sm">
-            {user ? (
-              <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} />
-            ) : (
-              <>
-                <span className="font-bold tabular-nums" style={{ color: '#E11D48' }}>{Number(p.me_gusta)} me gusta</span>
-                <a href={`/auth?mode=login&redirect=${encodeURIComponent(PATH)}`} className="font-semibold underline" style={{ color: GOLD_TEXT }}>Entra para votar</a>
-              </>
-            )}
-          </div>
+    <div className="rounded-3xl p-4 sm:p-6" style={{ background: CREAM, border: `1px solid ${GOLD}66` }}>
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
+        <p className="font-bold" style={{ color: GOLD_TEXT }}>
+          {lista.length === 1 ? '1 sesión publicada' : `${lista.length} sesiones publicadas`}
+        </p>
+        <div className="flex items-center gap-2 flex-wrap text-xs font-bold">
+          <span className="px-2.5 py-1 rounded-full" style={{ background: `${GOLD}26`, color: GOLD_TEXT }}>Top 3: a la final</span>
+          <span className="px-2.5 py-1 rounded-full" style={{ background: `${VERDE}1f`, color: VERDE }}>Publicada</span>
+          <span className="px-2.5 py-1 rounded-full" style={{ background: `${AZUL}1a`, color: AZUL }}>En revisión</span>
         </div>
-      ))}
+      </div>
+
+      {propia && (
+        <div className="rounded-2xl p-4 mb-5 bg-white" style={{ border: `2px dashed ${propia.estado === 'pendiente' ? AZUL : '#b91c1c'}` }}>
+          <div className="flex items-center gap-3 mb-3">
+            {propia.photo_url
+              ? <img src={propia.photo_url} alt="" className="w-12 h-12 rounded-full object-cover" />
+              : <div className="w-12 h-12 rounded-full" style={{ background: CREAM }} />}
+            <div className="flex-1 min-w-0">
+              <p className="font-bold leading-tight">{propia.display_name ?? 'Tu sesión'}</p>
+              {propia.zone && <p className="text-sm" style={{ color: MUTED }}>{propia.zone}</p>}
+            </div>
+            <span className="text-xs font-black px-2.5 py-1 rounded-full text-white" style={{ background: propia.estado === 'pendiente' ? AZUL : '#b91c1c' }}>
+              {propia.estado === 'pendiente' ? 'En revisión' : 'No admitida'}
+            </span>
+          </div>
+          <iframe title="Tu sesión" src={playerUrl(propia.soundcloud_url)} className="w-full rounded-lg" height={120} loading="lazy" allow="autoplay" />
+          <p className="text-sm mt-3" style={{ color: MUTED }}>
+            {propia.estado === 'pendiente'
+              ? 'Solo la ves tú. En cuanto la revisemos sale aquí para todos y te avisamos por email para que la compartas.'
+              : 'No cumple las bases. Escríbenos a info@xpeak.site y te contamos qué falta.'}
+          </p>
+        </div>
+      )}
+
+      {lista.length === 0 ? (
+        <p style={{ color: MUTED }}>
+          Todavía no hay sesiones publicadas. Cada inscripción se revisa a mano y aparece aquí en cuanto está aceptada.
+        </p>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2">
+          {lista.map((p, idx) => {
+            const enFinal = idx < 3 && Number(p.me_gusta) > 0;
+            return (
+              <div key={p.user_id} className="rounded-2xl p-4 bg-white"
+                style={{ border: enFinal ? `2px solid ${GOLD}` : `1px solid ${GOLD}40`, boxShadow: enFinal ? `0 8px 22px ${GOLD}33` : undefined }}>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm font-black"
+                    style={enFinal ? { background: `linear-gradient(135deg,${GOLD},#B8941E)`, color: '#111' } : { background: CREAM, color: GOLD_TEXT }}>
+                    {idx + 1}
+                  </span>
+                  <a href={`/p/${p.user_id}`} className="flex items-center gap-3 flex-1 min-w-0">
+                    {p.photo_url
+                      ? <img src={p.photo_url} alt="" className="w-11 h-11 rounded-full object-cover" loading="lazy" />
+                      : <div className="w-11 h-11 rounded-full" style={{ background: CREAM }} />}
+                    <div className="min-w-0">
+                      <p className="font-bold leading-tight truncate">{p.display_name ?? 'DJ'}</p>
+                      {p.zone && <p className="text-sm" style={{ color: MUTED }}>{p.zone}</p>}
+                    </div>
+                  </a>
+                  <span className="text-[0.7rem] font-black px-2 py-1 rounded-full shrink-0"
+                    style={enFinal ? { background: `${GOLD}26`, color: GOLD_TEXT } : { background: `${VERDE}1f`, color: VERDE }}>
+                    {enFinal ? 'Ahora en la final' : 'Publicada'}
+                  </span>
+                </div>
+                <iframe
+                  title={`Sesión de ${p.display_name ?? 'DJ'}`}
+                  src={playerUrl(p.soundcloud_url)}
+                  className="w-full rounded-lg"
+                  height={120}
+                  loading="lazy"
+                  allow="autoplay"
+                />
+                <div className="flex items-center justify-between mt-3 text-sm">
+                  {/* Votar solo dentro de plazo y nunca a uno mismo: antes el DJ
+                      podía darse me gusta y su contador lo sumaba aunque el ranking
+                      no lo cuenta, y se podía seguir votando tras el cierre. */}
+                  {user && p.user_id === user.id ? (
+                    <>
+                      <span className="font-bold tabular-nums" style={{ color: '#E11D48' }}>{Number(p.me_gusta)} me gusta</span>
+                      <span className="font-semibold" style={{ color: AZUL }}>Tu sesión</span>
+                    </>
+                  ) : !activo ? (
+                    <>
+                      <span className="font-bold tabular-nums" style={{ color: '#E11D48' }}>{Number(p.me_gusta)} me gusta</span>
+                      <span style={{ color: MUTED }}>Votación cerrada</span>
+                    </>
+                  ) : user ? (
+                    <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} />
+                  ) : (
+                    <>
+                      <span className="font-bold tabular-nums" style={{ color: '#E11D48' }}>{Number(p.me_gusta)} me gusta</span>
+                      <a href={`/auth?mode=login&redirect=${encodeURIComponent(PATH)}`} className="font-semibold underline" style={{ color: AZUL }}>Entra para votar</a>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -463,8 +588,8 @@ export default function ConcursoDJMadrid() {
             </div>
           </section>
 
-          <section className="mb-12">
-            <h2 className="text-2xl sm:text-3xl font-black mb-6">Participantes</h2>
+          <section id="participantes" className="mb-12 scroll-mt-6">
+            <h2 className="text-2xl sm:text-3xl font-black mb-6">Sesiones subidas</h2>
             <Participantes />
           </section>
 

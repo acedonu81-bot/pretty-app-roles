@@ -320,10 +320,24 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     return () => document.removeEventListener('visibilitychange', onOculta);
   }, []);
 
+  // Si venía de una página que le mandó a completar el perfil (el Concurso DJ
+  // guarda 'xpeak_volver_a'), al terminar vuelve allí en vez de a su ficha.
+  const volverA = () => {
+    try {
+      const v = sessionStorage.getItem('xpeak_volver_a');
+      sessionStorage.removeItem('xpeak_volver_a');
+      return v && v.startsWith('/') && !v.startsWith('//') ? v : null;
+    } catch { return null; }
+  };
+
+  /** Devuelve true si ha salido del panel hacia la página de la que venía. */
   const markDone = () => {
     logAsistente(`fin paso=${step} rol=${selectedRole || 'ninguno'}`);
     if (user) localStorage.setItem(`xpeak_onboarded_${user.id}`, '1');
     onClose();
+    const destino = volverA();
+    if (destino) { window.location.assign(destino); return true; }
+    return false;
   };
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -383,7 +397,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
       if (!ok) { logAsistente('guardado_error'); setSavingQuick(false); return; }
     }
     setSavingQuick(false);
-    markDone();
+    if (markDone()) return;
     onNavigate(selectedRole === 'empresario' ? 'empresario' : 'profile');
   };
 
@@ -465,11 +479,11 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
       if (error || !nuevo) { toast.error('No se pudo crear tu perfil de servicios: ' + (error?.message ?? '')); return; }
       await profile.switchProfile((nuevo as { id: string }).id);
       toast.success('Completa tu perfil para aparecer en el directorio. Tu cuenta de organizador sigue en Ajustes → Mis perfiles.');
-      markDone();
+      if (markDone()) return;
       onNavigate('profile');
       return;
     }
-    markDone();
+    if (markDone()) return;
     onNavigate(selectedRole === 'empresario' ? 'empresario' : 'profile');
   };
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles } from 'lucide-react';
+import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
@@ -20,6 +20,7 @@ import AdminDeletions from './admin/AdminDeletions';
 import AdminAnalytics from './admin/AdminAnalytics';
 import AdminConversations from './admin/AdminConversations';
 import AdminEmergentes from './admin/AdminEmergentes';
+import AdminConcurso from './admin/AdminConcurso';
 
 const TABS = [
   { id: 'activity', label: 'Actividad', icon: Activity },
@@ -29,6 +30,7 @@ const TABS = [
   { id: 'users', label: 'Usuarios', icon: Users },
   { id: 'empresarios', label: 'Empresarios', icon: Building2 },
   { id: 'emergentes', label: 'DJs Emergentes', icon: Sparkles },
+  { id: 'concurso', label: 'Concurso DJ', icon: Trophy },
   { id: 'content', label: 'Reseñas', icon: MessageSquare },
   { id: 'business', label: 'Negocio', icon: TrendingDown },
   { id: 'deletions', label: 'Bajas', icon: UserMinus },
@@ -45,6 +47,8 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
   // Mismo patrón que useDashboardBadges (realtime + refetch en INSERT/UPDATE),
   // pero local a este componente porque solo lo necesita el admin.
   const [reviewsBadge, setReviewsBadge] = useState(0);
+  // Inscripciones del concurso sin revisar: mismo aviso rojo que las reseñas.
+  const [concursoBadge, setConcursoBadge] = useState(0);
   const instanceId = useRef(Math.random().toString(36).slice(2)).current;
 
   useEffect(() => {
@@ -54,6 +58,9 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
         .select('id', { count: 'exact', head: true })
         .eq('approved', false);
       setReviewsBadge(count ?? 0);
+      const { count: pendientes } = await (supabase as unknown as { from: (t: string) => { select: (c: string, o: { count: 'exact'; head: true }) => { eq: (k: string, v: string) => Promise<{ count: number | null }> } } })
+        .from('concurso_inscripciones').select('id', { count: 'exact', head: true }).eq('estado', 'pendiente');
+      setConcursoBadge(pendientes ?? 0);
     };
     refresh();
     const channel = supabase
@@ -61,6 +68,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reviews' }, refresh)
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reviews' }, refresh)
       .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'reviews' }, refresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'concurso_inscripciones' }, refresh)
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [instanceId]);
@@ -97,6 +105,12 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
           >
             <t.icon size={13} />
             {t.label}
+            {t.id === 'concurso' && concursoBadge > 0 && (
+              <span className="flex items-center justify-center rounded-full text-[0.65rem] font-black"
+                style={{ minWidth: 16, height: 16, padding: '0 4px', background: '#dc2626', color: '#fff' }}>
+                {concursoBadge}
+              </span>
+            )}
             {t.id === 'content' && reviewsBadge > 0 && (
               <span className="flex items-center justify-center rounded-full text-[0.65rem] font-black"
                 style={{ minWidth: 16, height: 16, padding: '0 4px', background: '#dc2626', color: '#fff' }}>
@@ -121,6 +135,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       {tab === 'deletions' && <AdminDeletions />}
       {tab === 'empresarios' && <AdminBusinesses />}
       {tab === 'emergentes' && <AdminEmergentes />}
+      {tab === 'concurso' && <AdminConcurso />}
       {tab === 'content' && <AdminReviews />}
       {tab === 'business' && (
         <>

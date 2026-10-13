@@ -3,20 +3,24 @@ import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Trophy } from 'lucide-react';
 import { HZ } from '@/components/healthy-zone/clay';
 import { concursoActivo } from '@/lib/concursoMadrid';
+import { useProfile } from '@/hooks/useProfile';
 
 // PROVISIONAL: banner del Concurso DJ XPEAK Madrid (13 oct - 2 nov 2026), en
 // el Feed y en Inicio (en el móvil el Feed no está en la barra de abajo y los
 // DJs entran a Inicio). Se oculta solo al cerrar el plazo; después se puede
 // borrar el archivo y sus usos en FeedView y ExplorarView.
 const ConcursoFeedBanner = () => {
+  // Un organizador no puede participar, solo votar: su botón lleva a la lista.
+  const { role } = useProfile();
   if (!concursoActivo()) return null;
+  const organizador = role === 'empresario';
 
   return (
     <>
     {/* Las tipografías del Feed: en Inicio no están cargadas. */}
     <Helmet><link rel="stylesheet" href={HZ.fontsHref} /></Helmet>
     <Link
-      to="/concurso-dj-madrid"
+      to={organizador ? "/concurso-dj-madrid#participantes" : "/concurso-dj-madrid#inscripcion"}
       className="group relative flex items-center gap-4 overflow-hidden rounded-3xl p-5 sm:p-6 mb-4 transition-transform hover:scale-[1.01] active:scale-[0.99]"
       style={{
         background: 'linear-gradient(120deg,#1d3fd6 0%,#2b6dff 40%,#a52ee0 100%)',
@@ -39,7 +43,7 @@ const ConcursoFeedBanner = () => {
         </p>
         <span className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-full text-sm bg-white transition-transform group-hover:translate-x-0.5"
           style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
-          Participar <ArrowRight size={15} strokeWidth={2.75} />
+          {organizador ? 'Votar' : 'Participar'} <ArrowRight size={15} strokeWidth={2.75} />
         </span>
       </div>
 

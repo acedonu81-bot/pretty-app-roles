@@ -1002,6 +1002,41 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}`),
   }),
 
+  // Concurso DJ XPEAK Madrid (13 oct 2026). Aviso al admin de cada
+  // inscripción nueva: antes nadie se enteraba y quedaban "pendiente" para
+  // siempre. Los datos los rellena la verificación de abajo desde la BD.
+  concurso_inscripcion: (d) => ({
+    subject: `Concurso DJ: nueva inscripción de ${esc(d.dj_name)}`,
+    to: ADMIN,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Nueva inscripción en el concurso</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        <strong style="color:#0a0908">${esc(d.dj_name)}</strong>${d.zona ? ` · ${esc(d.zona)}` : ''}${d.region ? ` (${esc(d.region)})` : ''}
+      </p>
+      ${d.region !== 'Madrid' ? `<p style="color:#b91c1c;font-size:14px;font-weight:700;margin:0 0 6px">Ojo: su perfil no es de la Comunidad de Madrid.</p>` : ''}
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Sesión: <a href="${esc(d.soundcloud_url)}" style="color:#D4AF37">${esc(d.soundcloud_url)}</a><br>
+        Comprueba que es suya, pública y de 30 a 60 minutos, y acéptala o recházala en el panel.
+      </p>
+      ${btn('Revisar en el panel →', 'https://xpeak.es/dashboard?view=admin')}`),
+  }),
+
+  // Al DJ cuando el admin acepta su sesión: ya sale en la página y empieza a
+  // contar los me gusta. Solo lo puede lanzar un admin (ADMIN_TYPES).
+  concurso_aceptada: (d) => ({
+    subject: `${esc(d.name)}, tu sesión ya está en el Concurso DJ XPEAK Madrid`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Tu sesión ya está publicada</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hemos revisado tu sesión y ya aparece en la página del concurso.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Las 3 sesiones con más me gusta hasta el 2 de noviembre pasan a la final, y el jurado elige al ganador de los Pioneer DJ HDJ-X5. Compártela con tu gente: para votar solo necesitan una cuenta gratis en XPEAK.
+      </p>
+      ${btn('Ver mi sesión en el concurso →', 'https://xpeak.es/concurso-dj-madrid#participantes')}`),
+  }),
+
   booking_received: (d) => ({
     subject: `Nueva solicitud Flash Booking: ${esc(d.event_date ?? 'Fecha por confirmar')}`,
     to: d.email ?? ADMIN,
@@ -1633,8 +1668,8 @@ async function atender(req: Request): Promise<Response> {
       // navegador. Solo los envíos internos pueden seguir usándola.
       const PUBLIC_TYPES = ['contact_form', 'flash_booking', 'flash_booking_confirm', 'booking_received', 'lead_welcome', 'new_review_pending'];
       // Avisos lanzados desde el dashboard con sesion iniciada.
-      const LOGGED_TYPES = ['booking_status_update', 'contract_generated', 'bolo_new_confirmation', 'fast_responder_badge', 'flash_job_nuevo', 'new_message', 'subscription_cancelled', 'verification_request'];
-      const ADMIN_TYPES = ['admin_approved', 'admin_rejected'];
+      const LOGGED_TYPES = ['concurso_inscripcion', 'booking_status_update', 'contract_generated', 'bolo_new_confirmation', 'fast_responder_badge', 'flash_job_nuevo', 'new_message', 'subscription_cancelled', 'verification_request'];
+      const ADMIN_TYPES = ['admin_approved', 'admin_rejected', 'concurso_aceptada'];
       const allowed = PUBLIC_TYPES.includes(type)
         || (callerRole === 'authenticated' && LOGGED_TYPES.includes(type))
         || (callerRole === 'authenticated' && ADMIN_TYPES.includes(type));
@@ -1664,6 +1699,21 @@ async function atender(req: Request): Promise<Response> {
         const { data: u } = await sb.auth.admin.getUserById(callerId);
         if (!u?.user?.email) return prohibido('sin email');
         data.email = u.user.email;
+      } else if (type === 'concurso_inscripcion') {
+        // Aviso al admin de una inscripción al concurso: solo si quien llama
+        // se acaba de inscribir de verdad, y los datos salen de la BD (no del
+        // navegador). Uno por inscripción: si ya se avisó, no se repite.
+        if (!callerId) return prohibido('sin sesión');
+        const { data: ins } = await sb.from('concurso_inscripciones').select('soundcloud_url')
+          .eq('user_id', callerId).gte('created_at', hace15min).maybeSingle();
+        if (!ins) return prohibido('sin inscripción reciente');
+        const { data: pr } = await sb.from('profiles').select('display_name, zone, region')
+          .eq('user_id', callerId).order('is_primary', { ascending: false, nullsFirst: false }).limit(1).maybeSingle();
+        for (const k of Object.keys(data)) delete data[k];
+        Object.assign(data, { dj_name: pr?.display_name ?? 'DJ', zona: pr?.zone ?? '', region: pr?.region ?? '', soundcloud_url: ins.soundcloud_url });
+        const { count: yaAvisado } = await sb.from('email_send_log').select('id', { count: 'exact', head: true })
+          .eq('type', 'concurso_inscripcion').eq('subject', `Concurso DJ: nueva inscripción de ${esc(data.dj_name)}`).gte('sent_at', hace15min);
+        if (yaAvisado) return new Response(JSON.stringify({ ok: true, skipped: 'ya avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       } else if (type === 'booking_status_update') {
         // El profesional avisa a quien le pidió la reserva: tiene que existir
         // una reserva suya con ese contacto.
