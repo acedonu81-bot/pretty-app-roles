@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
-import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle, X, HelpCircle, Mail, CheckCheck } from 'lucide-react';
+import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle, X, HelpCircle, Mail, CheckCheck, Megaphone, Hand, UserCheck, Handshake } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Línea temporal de TODO lo que pasa en XPEAK, en un solo sitio.
@@ -16,7 +16,8 @@ import { toast } from 'sonner';
 // no es mirar estadísticas: es poder actuar sobre lo que está esperando.
 
 interface Movimiento {
-  tipo: 'alta' | 'solicitud' | 'solicitud_pendiente' | 'baja' | 'resena';
+  tipo: 'alta' | 'solicitud' | 'solicitud_pendiente' | 'baja' | 'resena'
+    | 'oferta_evento' | 'oferta_flash' | 'respuesta_oferta' | 'eleccion_oferta' | 'contratacion';
   cuando: string;
   quien: string;
   detalle: string | null;
@@ -49,6 +50,14 @@ const ESTILO: Record<Movimiento['tipo'], { icon: typeof UserPlus; color: string;
   solicitud_pendiente: { icon: CalendarClock, color: '#b45309', fondo: 'rgba(180,83,9,0.12)',   etiqueta: 'Solicitud' },
   baja:                { icon: UserMinus,     color: '#b91c1c', fondo: 'rgba(185,28,28,0.10)',  etiqueta: 'Baja' },
   resena:              { icon: Star,          color: '#a16207', fondo: 'rgba(161,98,7,0.10)',   etiqueta: 'Reseña' },
+  // Estos cinco venían de la vista pero la pantalla solo conocía los de arriba:
+  // todos caían en el estilo "Alta" y una contratación se leía como un alta nueva
+  // (13 oct 2026).
+  oferta_evento:       { icon: Megaphone,     color: '#0369a1', fondo: 'rgba(3,105,161,0.10)',  etiqueta: 'Oferta' },
+  oferta_flash:        { icon: Megaphone,     color: '#0369a1', fondo: 'rgba(3,105,161,0.10)',  etiqueta: 'Oferta urgente' },
+  respuesta_oferta:    { icon: Hand,          color: '#b45309', fondo: 'rgba(180,83,9,0.12)',   etiqueta: 'Se apuntó' },
+  eleccion_oferta:     { icon: UserCheck,     color: '#7c3aed', fondo: 'rgba(124,58,237,0.10)', etiqueta: 'Elegido' },
+  contratacion:        { icon: Handshake,     color: '#16a34a', fondo: 'rgba(22,163,74,0.12)',  etiqueta: 'Contratado' },
 };
 
 const FILTROS = [
@@ -59,6 +68,7 @@ const FILTROS = [
   { id: 'todo',      label: 'Todo' },
   { id: 'pendiente', label: 'Pendientes' },
   { id: 'solicitud', label: 'Solicitudes' },
+  { id: 'oferta',    label: 'Ofertas' },
   { id: 'alta',      label: 'Altas' },
 ] as const;
 
@@ -239,6 +249,7 @@ const AdminActivity = () => {
     : filtro === 'todo' ? [...pendientes, ...resto]
     : filtro === 'pendiente' ? pendientes
     : filtro === 'solicitud' ? items.filter(i => i.tipo.startsWith('solicitud'))
+    : filtro === 'oferta' ? items.filter(i => ['oferta_evento', 'oferta_flash', 'respuesta_oferta', 'eleccion_oferta', 'contratacion'].includes(i.tipo))
     : items.filter(i => i.tipo === 'alta');
 
   return (
@@ -284,6 +295,7 @@ const AdminActivity = () => {
             : f.id === 'todo' ? items.length
             : f.id === 'pendiente' ? pendientes.length
             : f.id === 'solicitud' ? items.filter(i => i.tipo.startsWith('solicitud')).length
+            : f.id === 'oferta' ? items.filter(i => ['oferta_evento', 'oferta_flash', 'respuesta_oferta', 'eleccion_oferta', 'contratacion'].includes(i.tipo)).length
             : items.filter(i => i.tipo === 'alta').length;
           const activo = filtro === f.id;
           return (

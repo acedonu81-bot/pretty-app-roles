@@ -314,7 +314,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
         r.id === responseId ? { ...r, chosen_at: new Date().toISOString() } : r
       ),
     }));
-    toast.success(`Avisado ${nombre}. En cuanto confirme, se abre el chat y puedes hacer el contrato.`);
+    toast.success(`Avisado ${nombre}. Puedes escribirle ya; cuando confirme, la plaza queda cubierta.`);
   };
 
   // El profesional preseleccionado acepta: esto SÍ dispara notify_contratacion
