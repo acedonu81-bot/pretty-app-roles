@@ -116,3 +116,64 @@ export function useInteresadosPendientes(userId: string | undefined, activo: boo
 
   return { pendientes, cargado, recargar };
 }
+
+// Lado del profesional: el organizador ya le ha elegido y falta SU confirmación.
+// Es lo único que tiene que hacer para cerrar el bolo, y antes no tenía ningún
+// aviso fijo: solo la campana y un enlace que no abría la oferta (13 oct 2026).
+export interface PorConfirmar {
+  responseId: string;
+  requestId: string;
+  titulo: string;
+  organizadorId: string | null;
+}
+
+export async function cargarPorConfirmar(uid: string): Promise<PorConfirmar[]> {
+  const { data, error } = await supabase
+    .from('event_request_responses' as any)
+    .select('id, request_id, event_requests!inner(client_user_id, client_name, status, expires_at)')
+    .eq('professional_user_id', uid)
+    .is('hired_at', null)
+    .not('chosen_at', 'is', null)
+    .eq('event_requests.status', 'open');
+  if (error || !Array.isArray(data)) return [];
+  type Fila = { id: string; request_id: string; event_requests: { client_user_id: string | null; client_name: string | null; expires_at: string | null } | null };
+  const ahora = Date.now();
+  return (data as unknown as Fila[])
+    .filter(f => (f.event_requests?.expires_at ? new Date(f.event_requests.expires_at).getTime() : Infinity) > ahora)
+    .map(f => ({
+      responseId: f.id,
+      requestId: f.request_id,
+      titulo: f.event_requests?.client_name?.trim() || 'Un organizador',
+      organizadorId: f.event_requests?.client_user_id ?? null,
+    }));
+}
+
+/** Ofertas en las que el profesional está elegido y aún no ha confirmado. */
+export function usePorConfirmar(userId: string | undefined, activo: boolean) {
+  const [porConfirmar, setPorConfirmar] = useState<PorConfirmar[]>([]);
+  const instanceId = useRef(Math.random().toString(36).slice(2)).current;
+
+  const recargar = useCallback(async () => {
+    if (!userId || !activo) return;
+    try { setPorConfirmar(await cargarPorConfirmar(userId)); } catch { setPorConfirmar([]); }
+  }, [userId, activo]);
+
+  useEffect(() => {
+    if (!userId || !activo) { setPorConfirmar([]); return; }
+    void recargar();
+    const channel = supabase
+      .channel(`por_confirmar_${userId}_${instanceId}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${userId}` }, () => { void recargar(); })
+      .subscribe();
+    const alVolver = () => { if (document.visibilityState === 'visible') void recargar(); };
+    window.addEventListener(EVENTO_INTERESADOS, recargar);
+    document.addEventListener('visibilitychange', alVolver);
+    return () => {
+      window.removeEventListener(EVENTO_INTERESADOS, recargar);
+      document.removeEventListener('visibilitychange', alVolver);
+      supabase.removeChannel(channel);
+    };
+  }, [userId, activo, recargar, instanceId]);
+
+  return { porConfirmar, recargar };
+}

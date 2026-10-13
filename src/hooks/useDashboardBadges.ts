@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { cargarInteresadosPendientes, leerInteresadosVistos, EVENTO_INTERESADOS } from '@/hooks/useInteresadosPendientes';
+import { cargarInteresadosPendientes, cargarPorConfirmar, leerInteresadosVistos, EVENTO_INTERESADOS } from '@/hooks/useInteresadosPendientes';
 
 // Extraído de DashboardSidebar.tsx (lógica exacta, no reinventada) para que
 // tanto el sidebar como la campanita de notificaciones del topbar (Task 7)
@@ -85,11 +85,14 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
       setFlashBadge(respuestas + interesados);
       return;
     }
-    // Al profesional, lo que tiene pendiente de contestar.
+    // Al profesional, lo que tiene pendiente de contestar: reservas directas y
+    // ofertas en las que ya le han elegido y falta que confirme.
     const { count } = await supabase.from('flash_bookings' as any)
       .select('id', { count: 'exact', head: true })
       .eq('professional_user_id', uid).eq('status', 'pending');
-    setFlashBadge(count ?? 0);
+    let porConfirmar = 0;
+    try { porConfirmar = (await cargarPorConfirmar(uid)).length; } catch { /* sin esto no se rompe el globo */ }
+    setFlashBadge((count ?? 0) + porConfirmar);
   };
 
   useEffect(() => {
@@ -110,15 +113,13 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
     // El organizador se entera en vivo de que alguien se apuntó: su aviso
     // llega a la campana (la tabla de candidaturas no tiene realtime).
     let canalInteresados: ReturnType<typeof supabase.channel> | null = null;
-    if (isEmpresario) {
-      window.addEventListener(EVENTO_INTERESADOS, alVisto);
-      canalInteresados = supabase
-        .channel(`sidebar_interesados_${userId}_${instanceId}`)
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${userId}` }, () => {
-          refreshFlashBadge(userId);
-        })
-        .subscribe();
-    }
+    window.addEventListener(EVENTO_INTERESADOS, alVisto);
+    canalInteresados = supabase
+      .channel(`sidebar_interesados_${userId}_${instanceId}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${userId}` }, () => {
+        refreshFlashBadge(userId);
+      })
+      .subscribe();
     return () => {
       window.removeEventListener(EVENTO_FLASH_VISTO, alVisto);
       window.removeEventListener(EVENTO_INTERESADOS, alVisto);

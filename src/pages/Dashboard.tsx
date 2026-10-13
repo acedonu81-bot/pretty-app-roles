@@ -439,13 +439,27 @@ const Dashboard = () => {
   // ver su listado, no el de DJs. Solo ajusta si el usuario no eligió otra vista
   // ni viene de un enlace con vista específica.
   const viewAdjusted = useRef(false);
+  const urlAplicada = useRef<string | null>(null);
   useEffect(() => {
     // 'pending' (registro sin pasar por el wizard de rol) ya NO se ignora.
     // Antes se salía aquí sin ajustar nada y activeView se quedaba en su valor
     // inicial —'dj'—, así que un grupo musical, una azafata o cualquiera que no
     // terminase el wizard aterrizaba en el directorio de DJs y parecía que el
     // sistema le había asignado ese rol.
-    if (viewAdjusted.current || !profileRole) return;
+    if (!profileRole) return;
+    if (viewAdjusted.current) {
+      // Pulsar una notificación de la campana (navigate('/dashboard?view=...'))
+      // estando ya dentro del panel no cambiaba de sección: este efecto salía
+      // aquí siempre. El aviso "X se ha apuntado" no llevaba a ningún sitio
+      // (13 oct 2026). Un ?view= nuevo se aplica una vez por navegación.
+      const destino = new URLSearchParams(location.search).get('view');
+      if (destino && urlAplicada.current !== location.key) {
+        setActiveView(destino);
+        try { localStorage.setItem('xpeak_view', destino); } catch { /* sin almacenamiento */ }
+      }
+      urlAplicada.current = location.key;
+      return;
+    }
     setActiveView(resolverVistaInicial({
       stateView: (location.state as { view?: string })?.view,
       queryView: new URLSearchParams(location.search).get('view'),
@@ -453,6 +467,7 @@ const Dashboard = () => {
       rol: profileRole,
     }));
     viewAdjusted.current = true;
+    urlAplicada.current = location.key;
   }, [profileRole, location]);
 
   // Al abrir Flash Booking, el empresario ve las respuestas recibidas: el globo

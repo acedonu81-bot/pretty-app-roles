@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useDashboardBadges, marcarOfertasVistas } from '@/hooks/useDashboardBadges';
-import { useInteresadosPendientes, marcarInteresadosVistos } from '@/hooks/useInteresadosPendientes';
+import { useInteresadosPendientes, marcarInteresadosVistos, usePorConfirmar } from '@/hooks/useInteresadosPendientes';
 import OfertaTab from './flashbooking/OfertaTab';
 import DemandaTab from './flashbooking/DemandaTab';
 import SolicitudesTab from './flashbooking/SolicitudesTab';
@@ -69,6 +69,8 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
   }, [ofertaFromQuery, location.key]);
 
   const { pendientes, cargado } = useInteresadosPendientes(user?.id, isEmpresario);
+  // Profesional elegido por un organizador: solo le falta confirmar.
+  const { porConfirmar } = usePorConfirmar(user?.id, !isEmpresario);
   const interesadosPrevios = useRef<Set<string> | null>(null);
   useEffect(() => {
     if (!isEmpresario || !user?.id || !cargado) return;
@@ -150,7 +152,7 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
             </p>
           </div>
           <p className="text-xs mt-1 ml-6" style={{ color: '#166534' }}>
-            Abre la oferta, mira su perfil y pulsa «Elegir a este profesional». Antes de avisarle te explicamos qué pasa y tienes que confirmarlo.
+            Pulsa Ver y elegir para decidir.
           </p>
           <div className="mt-3 flex flex-col gap-2">
             {pendientes.slice(0, 3).map(p => (
@@ -176,6 +178,36 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
             {pendientes.length > 3 && (
               <p className="text-xs" style={{ color: '#166534' }}>y {pendientes.length - 3} más en tus ofertas</p>
             )}
+          </div>
+        </div>
+      )}
+
+      {!isEmpresario && porConfirmar.length > 0 && (
+        <div role="alert" className="mb-4 p-4 rounded-xl"
+          style={{ background: 'rgba(22,163,74,0.1)', border: '1.5px solid #16a34a' }}>
+          <div className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full flex-shrink-0 motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]" style={{ background: '#16a34a' }} />
+            <p className="flex-1 text-sm font-black" style={{ color: '#15803d' }}>
+              {porConfirmar.length === 1
+                ? `${porConfirmar[0].titulo} te ha elegido`
+                : `${porConfirmar.length} organizadores te han elegido`}
+            </p>
+          </div>
+          <p className="text-xs mt-1 ml-6" style={{ color: '#166534' }}>
+            Confirma tu plaza para cerrar el bolo.
+          </p>
+          <div className="mt-3 flex flex-col gap-2">
+            {porConfirmar.slice(0, 3).map(p => (
+              <div key={p.responseId} className="flex flex-wrap items-center gap-2 px-3 py-2 rounded-lg"
+                style={{ background: '#fff', border: '1px solid rgba(22,163,74,0.35)' }}>
+                <p className="flex-1 min-w-[140px] text-xs font-bold truncate" style={{ color: '#111' }}>{p.titulo}</p>
+                <button type="button" onClick={() => verOferta(p.requestId)}
+                  className="px-3 py-2 rounded-lg text-xs font-black flex-shrink-0"
+                  style={{ background: '#16a34a', color: '#fff' }}>
+                  Ver y confirmar
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       )}

@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 const estado = {
   pendientes: [] as unknown[],
+  porConfirmar: [] as unknown[],
   search: '',
   focoRecibido: null as null | { requestId: string; n: number },
 };
@@ -19,6 +20,7 @@ vi.mock('@/hooks/useDashboardBadges', () => ({
 vi.mock('@/hooks/useInteresadosPendientes', () => ({
   useInteresadosPendientes: () => ({ pendientes: estado.pendientes, cargado: true, recargar: vi.fn() }),
   marcarInteresadosVistos: (...a: unknown[]) => marcarInteresadosVistos(...a),
+  usePorConfirmar: () => ({ porConfirmar: estado.porConfirmar, recargar: vi.fn() }),
 }));
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 vi.mock('@/integrations/supabase/client', () => ({
@@ -51,7 +53,7 @@ const montar = () => render(
 // plegada. Ahora hay un aviso fijo arriba, con botones que actúan.
 describe('Flash Booking del organizador con profesionales apuntados', () => {
   beforeEach(() => {
-    estado.pendientes = []; estado.search = ''; estado.focoRecibido = null;
+    estado.pendientes = []; estado.porConfirmar = []; estado.search = ''; estado.focoRecibido = null;
     marcarInteresadosVistos.mockClear(); onMessage.mockClear();
   });
 

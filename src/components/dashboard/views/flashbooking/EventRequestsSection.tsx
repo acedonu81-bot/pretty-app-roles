@@ -207,6 +207,9 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
   // Con candidatos sin elegir, la tarjeta se abre sola y se centra: antes el
   // organizador tenía que adivinar que debía pulsar "Ver detalle" (13 oct 2026,
   // Burguerfest: un DJ se apuntó y el organizador no veía nada).
+  const hiredByMe = (r: EventRequest) => !!user?.id &&
+    ((r as unknown as { event_request_responses?: { hired_at: string | null; professional_user_id: string }[] }).event_request_responses ?? [])
+      .some(x => x.professional_user_id === user.id && !!x.hired_at);
   const tocoTarjetas = useRef(false);
   const focoAplicado = useRef(0);
   const centrar = (id: string) => {
@@ -303,29 +306,44 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
 
   // El profesional preseleccionado acepta: esto SÍ dispara notify_contratacion
   // (avisa a los descartados, cierra la oferta).
-  const acceptChoice = async (responseId: string, reqId: string) => {
+  const acceptChoice = async (responseId: string, req: EventRequest) => {
     setHiring(responseId);
-    const { error } = await supabase
+    const ahora = new Date().toISOString();
+    const { data: filas, error } = await supabase
       .from('event_request_responses' as any)
-      .update({ hired_at: new Date().toISOString() })
-      .eq('id', responseId);
+      .update({ hired_at: ahora })
+      .eq('id', responseId)
+      .select('id');
     setHiring(null);
-    if (error) { toast.error('No se pudo confirmar.'); return; }
-    setRequests(prev => prev.filter(r => r.id !== reqId));
-    toast.success('¡Bolo confirmado!');
+    if (error || !filas || filas.length === 0) { toast.error('No se pudo confirmar. Recarga la página e inténtalo otra vez.'); return; }
+    // La tarjeta se queda, ahora en "contratado", en vez de desaparecer sin decir qué sigue.
+    setRequests(prev => prev.map(r => r.id === req.id
+      ? ({ ...r, status: 'closed', event_request_responses: [{ hired_at: ahora, professional_user_id: user?.id ?? '' }] } as unknown as EventRequest)
+      : r));
+    window.dispatchEvent(new Event(EVENTO_INTERESADOS));
+    toast.success(`Bolo confirmado. Ya está en tu calendario y el chat con ${req.client_name} está abierto.`, {
+      duration: 15000,
+      action: onMessage && req.client_user_id
+        ? { label: 'Abrir el chat', onClick: () => onMessage(req.client_user_id as string, req.client_name) }
+        : undefined,
+    });
   };
 
   // El profesional rechaza: chosen_at vuelve a NULL, la oferta sigue abierta
   // para que el organizador elija a otro.
-  const rejectChoice = async (responseId: string) => {
+  const rejectChoice = async (responseId: string, reqId: string) => {
     setHiring(responseId);
-    const { error } = await supabase
+    const { data: filas, error } = await supabase
       .from('event_request_responses' as any)
       .update({ chosen_at: null })
-      .eq('id', responseId);
+      .eq('id', responseId)
+      .select('id');
     setHiring(null);
-    if (error) { toast.error('No se pudo rechazar.'); return; }
-    toast('Has rechazado la oferta.');
+    if (error || !filas || filas.length === 0) { toast.error('No se pudo rechazar. Recarga la página e inténtalo otra vez.'); return; }
+    // Antes la tarjeta seguía diciendo "Te han elegido" hasta recargar.
+    setApplied(a => ({ ...a, [reqId]: { ...(a[reqId] ?? { responseId }), chosenAt: null } }));
+    window.dispatchEvent(new Event(EVENTO_INTERESADOS));
+    toast('Has rechazado. La plaza queda libre para otro candidato.');
   };
 
   // El profesional ya está contratado (hired_at) pero ContractModal exige un
@@ -431,21 +449,12 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
     }
 
     setApplied(a => ({ ...a, [req.id]: { responseId: (data as { id: string }).id, chosenAt: null } }));
-    toast.success('¡Enviado! El organizador ya lo ve en su panel.');
-
-    // Email de refuerzo al organizador. La campana ya la escribe el trigger;
-    // si el correo falla, el aviso principal sigue estando.
-    if (req.client_user_id) {
-      supabase.functions.invoke('send-email', {
-        body: {
-          type: 'new_message',
-          data: {
-            user_id: req.client_user_id,
-            sender_name: profile.display_name || 'Un profesional',
-          },
-        },
-      }).catch(() => {});
-    }
+    toast.success('Te has apuntado. El organizador ya lo sabe. Si te elige, te avisamos y tendrás que confirmar.');
+    // El aviso al organizador (campana, push y email "se ha apuntado a tu
+    // oferta") lo manda el trigger de base de datos. Aquí se mandaba además un
+    // email de tipo new_message ("X te ha enviado un mensaje") cuando no había
+    // ningún mensaje: el organizador de Burguerfest lo abrió, entró a Mensajes y
+    // no encontró nada (13 oct 2026).
   };
 
   // El organizador se equivoca en la ciudad o el pago y hasta ahora tenía que
@@ -815,11 +824,6 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                     </p>
                                   ) : (
                                     <div className="flex flex-col gap-2">
-                                      {!cubierta && candidatos.some(c => !c.hired_at && !c.chosen_at) && (
-                                        <p className="text-[11px] leading-snug" style={{ color: '#166534' }}>
-                                          Mira su perfil y, si te encaja, pulsa <strong>Elegir a este profesional</strong>. Antes de avisarle te explicamos qué pasa y tienes que confirmarlo.
-                                        </p>
-                                      )}
                                       {candidatos.map(resp => (
                                         <div key={resp.id} className="px-3 py-2 rounded-xl"
                                           style={{
@@ -868,7 +872,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                           {resp.hired_at && (
                                             <div className="mt-2">
                                               <p className="text-[11px] leading-snug mb-2" style={{ color: '#166534' }}>
-                                                Ha confirmado. El chat está abierto y la plaza cubierta. Ya puedes hacer el contrato.
+                                                Ha confirmado. La plaza está cubierta y el chat abierto.
                                               </p>
                                               <button type="button"
                                                 onClick={() => openContract(req, resp.professionalUserId, resp.name)}
@@ -881,8 +885,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                           )}
                                           {!resp.hired_at && resp.chosen_at && (
                                             <p className="text-[11px] leading-snug mt-2" style={{ color: '#6b5200' }}>
-                                              Le hemos avisado por campana, email y push. En cuanto confirme, se abre el chat y puedes hacer el contrato.
-                                              Mientras tanto la oferta sigue abierta: si no responde, puedes elegir a otro candidato.
+                                              Le hemos avisado. Cuando confirme, se abre el chat. Si no responde, puedes elegir a otro.
                                             </p>
                                           )}
                                           {!resp.hired_at && !resp.chosen_at && !cubierta && confirmando !== resp.id && (
@@ -899,12 +902,9 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                               <p className="text-xs font-black mb-1.5" style={{ color: '#111' }}>
                                                 ¿Elegir a {resp.name} para {req.client_name}?
                                               </p>
-                                              <ul className="text-[11px] leading-snug mb-3 pl-4 list-disc" style={{ color: '#333' }}>
-                                                <li>Se le avisa ahora mismo por campana, email y push.</li>
-                                                <li>La plaza sigue abierta hasta que él confirme.</li>
-                                                <li>Cuando confirme, se abre el chat, se cierra la plaza y se avisa a los demás candidatos.</li>
-                                                <li>Si no confirma, puedes elegir a otro.</li>
-                                              </ul>
+                                              <p className="text-[11px] leading-snug mb-3" style={{ color: '#333' }}>
+                                                Le avisamos ahora mismo. Cuando confirme, se abre el chat y la plaza queda cubierta.
+                                              </p>
                                               <div className="flex gap-2">
                                                 <button type="button"
                                                   onClick={() => chooseProfessional(req, resp.id, resp.name)}
@@ -964,22 +964,36 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                             Aún no se ha apuntado nadie. Te avisaremos en tus notificaciones.
                           </p>
                         )
+                      ) : hiredByMe(req) ? (
+                        <div className="flex flex-col gap-2">
+                          <div className="px-3 py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5"
+                            style={{ background: 'rgba(34,197,94,0.1)', color: '#15803d', border: '1px solid rgba(34,197,94,0.3)' }}>
+                            <Check size={12} /> Bolo confirmado. Está en tu calendario y el chat con {req.client_name} está abierto.
+                          </div>
+                          {onMessage && req.client_user_id && (
+                            <button type="button" onClick={() => onMessage(req.client_user_id as string, req.client_name)}
+                              className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-black"
+                              style={{ background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.25)', color: '#1d4ed8' }}>
+                              <MessageSquare size={12} /> Abrir el chat
+                            </button>
+                          )}
+                        </div>
                       ) : applied[req.id]?.chosenAt ? (
                         <div className="flex flex-col gap-2">
                           <div className="px-3 py-2 rounded-xl text-xs font-bold text-center"
-                            style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.35)' }}>
-                            ¡Te han elegido para este {jobWord(profile.role)}! Confirma antes de que el organizador elija a otro.
+                            style={{ background: 'rgba(212,175,55,0.12)', color: '#6b5200', border: '1px solid rgba(212,175,55,0.35)' }}>
+                            {req.client_name} te ha elegido. Confirma tu plaza para cerrar el {jobWord(profile.role)}. Si no respondes, puede elegir a otro.
                           </div>
                           <div className="flex gap-2">
                             <button type="button"
-                              onClick={() => acceptChoice(applied[req.id].responseId, req.id)}
+                              onClick={() => acceptChoice(applied[req.id].responseId, req)}
                               disabled={hiring === applied[req.id].responseId}
                               className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-60"
                               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
                               <Check size={12} /> {hiring === applied[req.id].responseId ? '…' : 'Aceptar el bolo'}
                             </button>
                             <button type="button"
-                              onClick={() => rejectChoice(applied[req.id].responseId)}
+                              onClick={() => rejectChoice(applied[req.id].responseId, req.id)}
                               disabled={hiring === applied[req.id].responseId}
                               className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all hover:bg-black/5 disabled:opacity-60"
                               style={{ background: 'transparent', color: '#666', border: '1px solid rgba(0,0,0,0.15)' }}>
@@ -990,7 +1004,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                       ) : applied[req.id] ? (
                         <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold"
                           style={{ background: 'rgba(34,197,94,0.1)', color: '#16a34a', border: '1px solid rgba(34,197,94,0.25)' }}>
-                          <Check size={12} /> Te has apuntado: el organizador ya lo sabe
+                          <Check size={12} /> Te has apuntado. El organizador ya lo sabe. Si te elige, te avisamos y tendrás que confirmar.
                         </div>
                       ) : (
                         <div className="flex flex-col gap-2">
