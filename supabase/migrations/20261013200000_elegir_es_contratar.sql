@@ -195,6 +195,10 @@ $vista$;
 -- 5) Lo ya elegido y sin confirmar pasa a contratado. Dispara notify_contratacion:
 -- aviso "te han contratado" al profesional, calendario, chat, aviso de oferta
 -- cubierta a los demas candidatos y cierre de la oferta.
-UPDATE public.event_request_responses
-   SET hired_at = chosen_at
- WHERE chosen_at IS NOT NULL AND hired_at IS NULL;
+-- ANULADO el 13 oct 2026 (ya aplicado una vez en producción, NO volver a ejecutar):
+-- convirtió en contratado a Manuel en Burguerfest cuando el organizador solo lo había
+-- elegido y ellos se descartaron por chat (Seseña vs Málaga). Un solo UPDATE disparó el
+-- "te han contratado" a Manuel, el "oferta cubierta" a DJ VIZARD y el cierre de la oferta.
+-- UPDATE public.event_request_responses
+--    SET hired_at = chosen_at
+--  WHERE chosen_at IS NOT NULL AND hired_at IS NULL;
