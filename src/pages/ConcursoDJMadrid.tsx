@@ -323,6 +323,22 @@ export default function ConcursoDJMadrid() {
     '@type': 'FAQPage',
     mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
+  // Evento online: se vota del 13 oct al 2 nov y el jurado elige el 9 nov.
+  // Sin sede física, así que va como evento en línea (VirtualLocation).
+  const eventLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: 'Concurso DJ XPEAK Madrid 2026',
+    description: 'Concurso gratuito para DJs de la Comunidad de Madrid. Se sube una sesión de SoundCloud de 30 a 80 minutos, los me gusta eligen 3 finalistas y un jurado decide al ganador, que se lleva unos Pioneer DJ HDJ-X5.',
+    startDate: '2026-10-13T00:00:00+02:00',
+    endDate: '2026-11-09T23:59:00+01:00',
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+    location: { '@type': 'VirtualLocation', url: URL },
+    image: ['https://xpeak.es/concurso/cascos-hdj-x5.webp'],
+    organizer: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+    offers: { '@type': 'Offer', url: URL, price: '0', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', validFrom: '2026-10-13T00:00:00+02:00' },
+  };
   const breadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -347,6 +363,7 @@ export default function ConcursoDJMadrid() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(eventLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
