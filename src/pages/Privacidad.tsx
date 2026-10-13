@@ -47,17 +47,18 @@ const Privacidad = () => {
               <li>Gestionar la conexión entre profesionales del sector de eventos y empresarios/organizadores.</li>
               <li>Mostrar tu perfil profesional en el directorio público correspondiente a tu oficio.</li>
               <li>Enviar notificaciones sobre solicitudes de contratación de última hora ("Flash Booking") y mensajes recibidos.</li>
+              <li>Gestionar el Concurso DJ XPEAK Madrid, solo si te inscribes: tu sesión de SoundCloud, tu nombre de DJ y tu foto de perfil se muestran públicamente, se cuentan los me gusta de los usuarios y, al ganador, se le pide un documento que acredite su residencia en la Comunidad de Madrid (DNI o certificado de empadronamiento) y una dirección de envío para entregarle el premio.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>4. Base Legal</h2>
-            <p>La base legal para el tratamiento de tus datos es el consentimiento explícito al registrarte y la ejecución de un contrato (aceptación de los Términos y Condiciones) al utilizar los servicios de la plataforma.</p>
+            <p>La base legal para el tratamiento de tus datos es el consentimiento explícito al registrarte y la ejecución de un contrato (aceptación de los Términos y Condiciones) al utilizar los servicios de la plataforma. En el Concurso DJ XPEAK Madrid, la base legal es la ejecución de las bases del concurso que aceptas al inscribirte.</p>
           </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>5. Conservación de los Datos</h2>
-            <p>Los datos y archivos multimedia se conservarán mientras se mantenga la relación con la plataforma o hasta que el usuario solicite su supresión.</p>
+            <p>Los datos y archivos multimedia se conservarán mientras se mantenga la relación con la plataforma o hasta que el usuario solicite su supresión. Los datos del concurso se conservan mientras dure y, la documentación de residencia y la dirección de envío del ganador, solo el tiempo necesario para entregarle el premio.</p>
           </section>
 
           <section>
@@ -71,6 +72,7 @@ const Privacidad = () => {
               <li><strong style={{ color: '#222' }}>Cloudflare, Inc. (Turnstile):</strong> verificación antibots en el acceso y el registro; trata la dirección IP y datos técnicos del navegador con finalidad de seguridad (interés legítimo, art. 6.1.f RGPD). Transferencia a EE. UU. amparada por el Marco de Privacidad de Datos UE-EE. UU.</li>
               <li><strong style={{ color: '#222' }}>Vercel Inc. (alojamiento web):</strong> sirve la web y registra datos técnicos de conexión (IP, navegador) en sus registros de servidor. Transferencia a EE. UU. amparada por el Marco de Privacidad de Datos UE-EE. UU. y cláusulas contractuales tipo.</li>
               <li><strong style={{ color: '#222' }}>Hostinger International Ltd. (correo electrónico):</strong> envío de los emails transaccionales de la plataforma (avisos de reservas, mensajes, recordatorios) desde servidores en la Unión Europea.</li>
+              <li><strong style={{ color: '#222' }}>SoundCloud (Concurso DJ XPEAK Madrid):</strong> las sesiones del concurso se escuchan con el reproductor incrustado de SoundCloud, que solo se carga cuando pulsas «Escuchar». Al cargarse, SoundCloud puede tratar datos técnicos de tu conexión y usar cookies según su propia política de privacidad.</li>
               <li><strong style={{ color: '#222' }}>Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
             </ul>
             <p className="mt-2" style={{ color: '#222' }}>Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en info@xpeak.es (RGPD arts. 44-49).</p>
