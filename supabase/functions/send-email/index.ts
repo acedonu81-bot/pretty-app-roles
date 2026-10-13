@@ -1215,14 +1215,13 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </div>
       ${rows([
         ['Solicitante', d.requester_name],
-        ['Contacto', d.requester_contact],
         ['Fecha', d.event_date],
         ['Lugar', d.event_location],
         ['Descripción', d.event_description],
         ['Caché acordado', d.agreed_price ? `${d.agreed_price}€` : '—'],
       ])}
       ${btn('Ver solicitud en XPEAK →', 'https://xpeak.es/dashboard?view=flashbooking&tab=solicitudes')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Acepta o rechaza la solicitud desde tu panel de Flash Booking.</p>`),
+      <p style="color:#4b5563;font-size:13px;line-height:1.6;text-align:center">Acepta o rechaza la solicitud desde tu panel de Flash Booking. Su teléfono y email se verán cuando aceptes; antes, todo por el chat de XPEAK.</p>`),
   }),
 
   // 13b. Contrato generado — avisa al profesional de que existe un contrato con su nombre
@@ -1563,7 +1562,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${confirmSeal()}
       <h2 style="font-size:22px;font-weight:900;margin:0 0 8px;text-align:center;color:#0a0908">Solicitud aceptada</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center">
-        <strong style="color:#D4AF37">${esc(d.professional_name ?? 'El profesional')}</strong> ha aceptado tu solicitud de Flash Booking. Poneos en contacto directamente para cerrar los detalles.
+        <strong style="color:#D4AF37">${esc(d.professional_name ?? 'El profesional')}</strong> ha aceptado tu solicitud de Flash Booking. Escríbele por el chat de XPEAK para cerrar los detalles.
       </p>
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:18px;margin:0 0 20px;box-shadow:0 6px 16px rgba(212,175,55,0.14)">
         ${rows([
@@ -1572,6 +1571,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           ['Lugar', d.event_location ?? '—'],
         ])}
       </div>
+      ${btn('Abrir el chat →', 'https://xpeak.es/dashboard?view=messages')}
       <p style="color:#9CA3AF;font-size:12px;margin-top:20px;text-align:center">
         ¿Necesitas ayuda? <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
       </p>` : `

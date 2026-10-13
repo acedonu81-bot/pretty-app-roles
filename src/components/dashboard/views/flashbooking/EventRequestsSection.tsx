@@ -12,6 +12,7 @@ import ValorarContratado, { eventoYaOcurrio } from './ValorarContratado';
 import { ReviewModal, type Booking } from '@/components/dashboard/views/empresario/HistorialTab';
 import type { Profile } from '@/data/profiles';
 import { EVENTO_INTERESADOS } from '@/hooks/useInteresadosPendientes';
+import { pideDeTodo, noEncajaEnDeTodo, listarEstilos } from '@/lib/estilosOferta';
 
 interface EventRequest {
   id: string;
@@ -25,6 +26,7 @@ interface EventRequest {
   budget_min: number | null;
   budget_max: number | null;
   roles_needed: string[];
+  estilos?: string[] | null;
   description: string | null;
   contact_email: string | null;
   contact_phone: string | null;
@@ -116,6 +118,8 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
   const [slots, setSlots] = useState<Record<string, { id: string; role: string }[]>>({});
   const [hiring, setHiring] = useState<string | null>(null);
   const [applied, setApplied] = useState<Record<string, { responseId: string; chosenAt: string | null }>>({});
+  // Estilos que declara cada candidato, para que el organizador vea si encaja con lo que pidió.
+  const [generos, setGeneros] = useState<Record<string, string[]>>({});
   const [applyText, setApplyText] = useState<Record<string, string>>({});
   const [applying, setApplying] = useState<string | null>(null);
 
@@ -200,6 +204,15 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
         }
       }
       if (!cancelado) setResponses(agrupado);
+      const ids = [...new Set(Object.values(agrupado).flat().map(c => c.professionalUserId))];
+      if (ids.length > 0) {
+        const { data: perfiles } = await supabase.from('profiles').select('user_id, genres').in('user_id', ids);
+        const mapa: Record<string, string[]> = {};
+        for (const p of (perfiles ?? []) as { user_id: string; genres: string[] | null }[]) {
+          if (Array.isArray(p.genres) && p.genres.length > 0 && !mapa[p.user_id]) mapa[p.user_id] = p.genres;
+        }
+        if (!cancelado) setGeneros(mapa);
+      }
     })();
     return () => { cancelado = true; };
   }, [user?.id, isEmpresario, requests]);
@@ -754,6 +767,16 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                     </div>
                   )}
 
+                  {/* Qué música se pide, dicho claro antes de apuntarse. */}
+                  {(req.roles_needed ?? []).includes('DJ / Artista') && (
+                    <p className="text-xs mb-3" style={{ color: '#333' }}>
+                      <strong>Música:</strong>{' '}
+                      {pideDeTodo(req.roles_needed, req.estilos)
+                        ? 'de todo un poco (comercial, latino, hits)'
+                        : (req.estilos ?? []).join(', ')}
+                    </p>
+                  )}
+
                   {/* Candidatos sin elegir: se ven SIN abrir la tarjeta. */}
                   {(() => {
                     const sinElegir = isEmpresario && req.client_user_id === user?.id
@@ -866,6 +889,16 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
 
                                           {resp.message && (
                                             <p className="text-xs mt-1" style={{ color: '#333' }}>{resp.message}</p>
+                                          )}
+                                          {(req.roles_needed ?? []).includes('DJ / Artista') && generos[resp.professionalUserId] && (
+                                            <p className="text-[11px] mt-1" style={{ color: '#333' }}>
+                                              <strong>Estilos:</strong> {listarEstilos(generos[resp.professionalUserId])}
+                                            </p>
+                                          )}
+                                          {!resp.hired_at && pideDeTodo(req.roles_needed, req.estilos) && noEncajaEnDeTodo(generos[resp.professionalUserId]) && (
+                                            <p className="text-[11px] leading-snug mt-1 px-2 py-1.5 rounded-lg" style={{ background: 'rgba(245,158,11,0.12)', color: '#7c4a03' }}>
+                                              Pediste de todo un poco y solo declara {listarEstilos(generos[resp.professionalUserId])}. Pregúntale por el chat antes de elegir.
+                                            </p>
                                           )}
 
                                           {/* Qué pasa a continuación, según el estado: sin sobreentendidos. */}
@@ -1008,6 +1041,11 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                         </div>
                       ) : (
                         <div className="flex flex-col gap-2">
+                          {pideDeTodo(req.roles_needed, req.estilos) && noEncajaEnDeTodo((profile as { genres?: string[] | null }).genres) && (
+                            <p className="text-xs leading-snug px-3 py-2 rounded-xl" style={{ background: 'rgba(245,158,11,0.12)', color: '#7c4a03', border: '1px solid rgba(245,158,11,0.35)' }}>
+                              Esta oferta pide de todo un poco de música y en tu perfil solo tienes {listarEstilos((profile as { genres?: string[] | null }).genres)}. Si te apuntas, aclara con el organizador por el chat qué vas a pinchar.
+                            </p>
+                          )}
                           <textarea
                             value={applyText[req.id] ?? ''}
                             onChange={e => setApplyText(t => ({ ...t, [req.id]: e.target.value }))}

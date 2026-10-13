@@ -163,6 +163,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Contacto (tel/email) *</label>
                 <input value={form.contact} onChange={e => set('contact', e.target.value)}
                   placeholder="+34 600..." className="nightlife-input text-base !py-2 w-full" />
+                <p className="text-[11px] mt-1" style={{ color: '#444' }}>Solo lo verá el profesional cuando acepte tu solicitud.</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">

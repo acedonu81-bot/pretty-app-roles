@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Zap, Heart, Search, Lock, BarChart3, Euro, CheckCircle, Image, X, Building2, Clock } from 'lucide-react';
+import { Heart, Search, Lock, BarChart3, Euro, CheckCircle, Image, X, Building2, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -10,7 +10,6 @@ import { buildWorkbook, downloadWorkbook } from '@/lib/csvExport';
 import { instagramUrl } from '@/lib/social';
 import type { Pro } from '@/types';
 import DiscoverTab from './empresario/DiscoverTab';
-import FlashTab from './empresario/FlashTab';
 import HistorialTab from './empresario/HistorialTab';
 import GastosTab from './empresario/GastosTab';
 import BenchmarkTab from './empresario/BenchmarkTab';
@@ -121,7 +120,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
   // caer en la pestaña por defecto (discover). Mismo patrón que ?tab= en
   // FlashBookingWallView.
   const tabFromQuery = new URLSearchParams(location.search).get('tab');
-  const [tab, setTab] = useState<'discover' | 'flash' | 'favorites' | 'stats' | 'benchmark' | 'media' | 'historial' | 'gastos'>(
+  const [tab, setTab] = useState<'discover' | 'favorites' | 'stats' | 'benchmark' | 'media' | 'historial' | 'gastos'>(
     tabFromQuery === 'historial' ? 'historial' : 'discover'
   );
   // El valor inicial de tab solo se evalúa al MONTAR — si el usuario ya
@@ -241,7 +240,6 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
 
   const TABS = [
     { id: 'discover'  as const, label: 'Descubrir',    icon: Search       },
-    { id: 'flash'     as const, label: 'Flash Jobs',   icon: Zap          },
     { id: 'favorites' as const, label: 'Favoritos',    icon: Heart        },
     { id: 'historial' as const, label: 'Historial',    icon: CheckCircle  },
     { id: 'gastos'    as const, label: 'Gastos',       icon: Euro         },
@@ -348,7 +346,6 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
       {tab === 'stats'     && <Suspense fallback={<p className="text-sm text-muted-foreground animate-pulse">Cargando estadísticas…</p>}><StatsTab pros={pros} favorites={favorites} /></Suspense>}
       {tab === 'media'     && <MediaTab />}
       {tab === 'benchmark' && <BenchmarkTab />}
-      {tab === 'flash'     && <FlashTab />}
       {tab === 'historial' && <HistorialTab />}
       {tab === 'gastos'    && <GastosTab />}
       {tab === 'discover' && <SmartMatchWidget onMessage={onMessage} />}

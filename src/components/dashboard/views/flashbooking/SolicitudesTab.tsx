@@ -51,6 +51,10 @@ const ESTADOS_TRATO_CERRADO = ['confirmed', 'accepted', 'completed', 'closed'];
 export const puedeVerDireccionExacta = (status: string | null) =>
   ESTADOS_TRATO_CERRADO.includes(status ?? '');
 
+// Teléfono y email del solicitante, igual: hasta que el profesional acepta, el
+// contacto va por el chat de XPEAK (decisión del 13 oct 2026).
+export const puedeVerContacto = puedeVerDireccionExacta;
+
 const fmt = (iso: string | null) => {
   if (!iso) return '—';
   return new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -323,10 +327,12 @@ const SolicitudesTab = () => {
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-bold truncate">{s.requester_name || 'Empresario'}</p>
-                      {s.requester_contact && (
+                      {s.requester_contact && puedeVerContacto(s.status) ? (
                         <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
                           <Phone size={9} className="flex-shrink-0" /> <span className="truncate">{s.requester_contact}</span>
                         </p>
+                      ) : (
+                        <p className="text-xs text-muted-foreground">Su contacto se verá cuando aceptes.</p>
                       )}
                     </div>
                   </div>
