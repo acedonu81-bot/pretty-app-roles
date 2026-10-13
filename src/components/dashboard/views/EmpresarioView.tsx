@@ -16,6 +16,7 @@ import BenchmarkTab from './empresario/BenchmarkTab';
 import MediaTab from './empresario/MediaTab';
 const StatsTab = lazy(() => import('./empresario/StatsTab'));
 import SmartMatchWidget from '../SmartMatchWidget';
+import OfertasRelanzarBanner from '../OfertasRelanzarBanner';
 
 /* ── Feed público "Empresas que contratan" ── */
 const WhoIsHiringFeed = () => {
@@ -260,6 +261,8 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
         <h2 className="text-2xl font-bold mb-1">Panel <span className="text-gradient">Empresario</span></h2>
         <p className="text-sm text-muted-foreground">Encuentra, contrata y analiza el talento para tu sala.</p>
       </div>
+
+      <OfertasRelanzarBanner userId={user?.id} />
 
       {/* Guía rápida — antes había una cifra hardcodeada ("47+ profesionales
           activos") que no era real; sustituida por 3 pasos concretos que
