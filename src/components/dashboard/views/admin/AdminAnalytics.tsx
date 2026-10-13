@@ -500,8 +500,8 @@ export default function AdminAnalytics() {
           quien ya la tenía puesta antes de este despliegue. */}
       <Panel
         title="App instalada (PWA)"
-        hint="Personas que la instalaron ahora vs. las que ya la tenían puesta y abren la web en modo app."
-        ayuda="Cada persona cuenta una vez, la abra las veces que la abra. 'Instalaron ahora' son quienes dispararon el evento 'appinstalled' del navegador: solo Chrome/Edge lo hacen (escritorio y Android), nunca Safari en iOS, y solo desde que se desplegó esta medición. 'Ya la tenían puesta' son quienes abren la web en modo app sin ese evento en el rango: incluye iOS e instalaciones de antes. La fecha es la última vez que la usaron."
+        hint="Total de personas que tienen la app instalada y quién es."
+        ayuda="Cada persona cuenta una vez, la abra las veces que la abra. Incluye a quien la instaló (Chrome/Edge, escritorio y Android) y a quien abre la web en modo app (también iOS). La fecha es la última vez que la usaron."
       >
         {instalaciones.length === 0 ? (
           <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
@@ -510,23 +510,20 @@ export default function AdminAnalytics() {
         ) : (
           <>
             <div className="flex items-center gap-4 mb-3 flex-wrap">
-              {([true, false] as const).map(instalo => {
-                const grupo = personasPwa.filter(p => p.instalo === instalo);
-                if (grupo.length === 0) return null;
-                const porDevice = grupo.reduce<Record<string, number>>((acc, p) => {
+              {(() => {
+                const porDevice = personasPwa.reduce<Record<string, number>>((acc, p) => {
                   const d = p.device || 'desconocido';
                   acc[d] = (acc[d] || 0) + 1;
                   return acc;
                 }, {});
-                const label = instalo ? 'Instalaron ahora' : 'Ya la tenían puesta';
                 return (
-                  <span key={label} className="flex items-center gap-1.5 text-[0.75rem] font-bold px-2.5 py-1 rounded-full"
+                  <span className="flex items-center gap-1.5 text-[0.75rem] font-bold px-2.5 py-1 rounded-full"
                     style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
-                    <Download size={12} /> {label}: {grupo.length}
+                    <Download size={12} /> Total con la app instalada: {personasPwa.length}
                     {' '}({Object.entries(porDevice).map(([d, n]) => `${n} ${d}`).join(', ')})
                   </span>
                 );
-              })}
+              })()}
             </div>
             <div className="flex flex-col divide-y" style={{ borderColor: 'rgba(10,9,8,0.06)' }}>
               {personasPwa.slice(0, 15).map((p, idx) => (
@@ -542,13 +539,6 @@ export default function AdminAnalytics() {
                       {p.aperturas === 1 ? '1 apertura' : `${p.aperturas} aperturas`}
                     </span>
                   )}
-                  <span className="text-[0.62rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
-                    style={{
-                      background: p.instalo ? 'rgba(52,211,153,0.12)' : 'rgba(10,9,8,0.05)',
-                      color: p.instalo ? '#047857' : 'rgba(10,9,8,0.5)',
-                    }}>
-                    {p.instalo ? 'instaló ahora' : 'ya la tenía'}
-                  </span>
                   <span className="text-[0.68rem] font-bold" style={{ color: GOLD }}>{p.device}</span>
                   <span className="text-[0.68rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
                     {new Date(p.ultima).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
