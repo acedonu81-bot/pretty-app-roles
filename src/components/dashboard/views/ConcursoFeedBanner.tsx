@@ -74,8 +74,10 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         @keyframes concursoBrillo { 0%,100% { filter: drop-shadow(0 0 0 rgba(36,119,179,0)); } 50% { filter: drop-shadow(0 0 26px rgba(36,119,179,0.7)); } }
         @keyframes concursoPulso { 0%,100% { transform: scale(1); } 50% { transform: scale(1.09); } }
         .concurso-parpadeo { animation: concursoBrillo 1.6s ease-in-out infinite; }
+        @keyframes concursoCascos { 0%,100% { transform: translate3d(0,0,0) rotate(-8deg) scale(1); } 25% { transform: translate3d(0,-9px,0) rotate(-3deg) scale(1.03); } 50% { transform: translate3d(0,-14px,0) rotate(3deg) scale(1.05); } 75% { transform: translate3d(0,-6px,0) rotate(-2deg) scale(1.02); } }
+        .concurso-cascos { animation: concursoCascos 4.2s ease-in-out infinite; will-change: transform; backface-visibility: hidden; }
         .concurso-boton-pulso { animation: concursoPulso 1.6s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) { .concurso-parpadeo, .concurso-boton-pulso { animation: none; } }
+        @media (prefers-reduced-motion: reduce) { .concurso-parpadeo, .concurso-boton-pulso, .concurso-cascos { animation: none; transform: rotate(-6deg); } }
       `}</style>
     )}
     <div
@@ -133,8 +135,9 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         alt="Auriculares Pioneer DJ HDJ-X5"
         width={360}
         height={358}
-        loading="lazy"
-        className={`relative h-auto shrink-0 -rotate-6 ${sinTexto ? 'w-24 sm:w-72' : 'w-24 sm:w-36'}`}
+        loading={sinTexto ? 'eager' : 'lazy'}
+        decoding="async"
+        className={`relative h-auto shrink-0 ${sinTexto ? 'w-24 sm:w-72 concurso-cascos' : 'w-24 sm:w-36 -rotate-6'}`}
         style={{ filter: 'drop-shadow(0 10px 18px rgba(20,0,60,0.45))' }}
       />
     </div>
