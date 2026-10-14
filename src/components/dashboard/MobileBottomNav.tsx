@@ -79,7 +79,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
     { id: 'explorar', icon: Home, label: 'Inicio', isActive: activeView === 'explorar' || dirViews.has(activeView) },
     { id: 'flashbooking', icon: Zap, label: 'Flash', isActive: activeView === 'flashbooking' || activeView === 'flash', badge: flashTotal, alerta: flashTotal > 0 },
     { id: 'messages', icon: MessageSquare, label: 'Chat', isActive: activeView === 'messages', badge: Math.max(unreadCount, msgBadge) },
-    { id: 'profile', icon: User, label: 'Perfil', isActive: activeView === 'profile' || activeView === 'settings' },
+    { id: 'profile', icon: User, label: 'Perfil', isActive: activeView === 'profile' || activeView === 'ficha' || activeView === 'settings' },
   ];
 
   return (

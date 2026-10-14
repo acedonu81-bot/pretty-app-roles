@@ -62,6 +62,7 @@ const ExplorarView = lazy(() => import('@/components/dashboard/views/ExplorarVie
 const GrupoMusicalView = lazy(() => import('@/components/dashboard/views/GrupoMusicalView'));
 const EmergentesView = lazy(() => import('@/components/dashboard/views/EmergentesView'));
 const ContractView = lazy(() => import('@/components/dashboard/views/ContractView'));
+import PerfilTabs from '@/components/dashboard/PerfilTabs';
 const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
 const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
 const ResourcesView = lazy(() => import('@/components/dashboard/views/ResourcesView'));
@@ -651,8 +652,8 @@ const Dashboard = () => {
       case 'feed': return <FeedView onNavigate={handleViewChange} />;
       case 'calendar':   return <CalendarView />;
       case 'contracts':  return <ContractView />;
-      case 'profile': return <ProfileView onNavigate={nav} />;
-      case 'ficha':   return <FichaView onNavigate={handleViewChange} />;
+      case 'profile': return <><PerfilTabs active="profile" onNavigate={handleViewChange} /><ProfileView onNavigate={nav} /></>;
+      case 'ficha':   return <><PerfilTabs active="ficha" onNavigate={handleViewChange} /><FichaView onNavigate={handleViewChange} /></>;
       case 'mapa': return <MapaView />;
       case 'flashbooking':
       case 'flash': return <FlashBookingWallView onMessage={handleMessage} />;

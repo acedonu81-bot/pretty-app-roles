@@ -1,6 +1,6 @@
 import {
   LayoutGrid, Home, Search, MessageSquare, Megaphone, Settings,
-  BarChart3, FileText, FileEdit, CalendarDays, Sparkles, Rss,
+  BarChart3, FileText, CalendarDays, Sparkles, Rss,
   ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield, ThumbsUp,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
@@ -490,8 +490,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
         <div className="mb-1">
           <GroupLabel>Mi cuenta</GroupLabel>
           <SidebarMenu>
-            <NavItem icon={User} label="Mi Perfil" isActive={activeView === 'profile'} onClick={() => onViewChange('profile')} navId="profile" />
-            <NavItem icon={FileEdit} label="Mi Ficha" isActive={activeView === 'ficha'} onClick={() => onViewChange('ficha')} navId="ficha" />
+            <NavItem icon={User} label="Mi Perfil" isActive={activeView === 'profile' || activeView === 'ficha'} onClick={() => onViewChange('profile')} navId="profile" />
             {isAgency && (
               <NavItem icon={Building2} label="Panel Agencia" isActive={activeView === 'agency'} onClick={() => onViewChange('agency')} />
             )}

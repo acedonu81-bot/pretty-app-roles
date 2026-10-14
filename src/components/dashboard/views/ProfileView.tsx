@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Trash2, Camera, Star, Radio, ChevronDown, X, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Music, Shirt, Sparkles, FileEdit, Copy, Check, Share2 } from 'lucide-react';
+import { Trash2, Camera, Star, Radio, ChevronDown, X, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Music, Shirt, Sparkles, Copy, Check, Share2 } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -268,7 +268,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     toast.success('Foto de perfil actualizada.');
   };
 
-  const handleSave = async () => {
+  const handleSave = async (silent = false) => {
     if (!user || saving || profile.loading) return;
     const toCheck = [localName, bio, rider, instagram].filter(Boolean) as string[];
     for (const val of toCheck) {
@@ -314,8 +314,25 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
       setSaving(false);
       if (!ok) return;
     }
-    toast.success('Perfil guardado.');
+    if (silent) setAutoSavedAt(Date.now()); else toast.success('Perfil guardado.');
   };
+
+  // Guardado automático: quien edita y se va sin pulsar "Guardar" perdía los
+  // cambios. Se guarda solo 1,2 s después de dejar de escribir. El botón sigue
+  // ahí por si se prefiere pulsarlo.
+  const [autoSavedAt, setAutoSavedAt] = useState<number | null>(null);
+  const snapshot = JSON.stringify([localName, city, rider, bio, instagram, googleReviewUrl, hourlyRate, selectedLangs, selectedRoles, selectedGenres, offersClasses, classStyles, rentalEquipment, classPrice, seekingPartner, danceLevel, danceRole, venueCapacity, allowsOvernight, pricePerHour, pricePerEvent, distanceFromMadridKm]);
+  const lastSnapshot = useRef(snapshot);
+  const saveRef = useRef(handleSave);
+  saveRef.current = handleSave;
+  useEffect(() => {
+    if (profile.loading || snapshot === lastSnapshot.current) return;
+    const t = setTimeout(async () => {
+      lastSnapshot.current = snapshot;
+      await saveRef.current(true);
+    }, 1200);
+    return () => clearTimeout(t);
+  }, [snapshot, profile.loading]);
 
   const handleDeleteMedia = async () => {
     if (!user) return;
@@ -352,20 +369,12 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           </p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto flex-shrink-0">
-          {onNavigate && (
-            <button
-              type="button"
-              onClick={() => onNavigate('ficha')}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg font-bold text-xs transition-all hover:scale-105"
-              style={{ background: 'rgba(66,133,244,0.12)', border: '1px solid rgba(66,133,244,0.35)', color: '#4285F4' }}>
-              <FileEdit size={13} /> <span className="hidden sm:inline">Editar</span> Ficha
-            </button>
-          )}
-          <button onClick={handleSave} disabled={saving || profile.loading}
+          <button onClick={() => handleSave()} disabled={saving || profile.loading}
             className="px-4 py-2 rounded-lg font-bold text-sm flex-1 sm:flex-none disabled:opacity-60"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             {profile.loading ? 'Cargando...' : (saving ? 'Guardando...' : 'Guardar')}
           </button>
+          {autoSavedAt && !saving && <span className="self-center text-xs font-bold" style={{ color: '#059669' }} role="status">Guardado</span>}
         </div>
       </div>
 
