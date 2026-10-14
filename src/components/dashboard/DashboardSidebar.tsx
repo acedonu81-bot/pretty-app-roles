@@ -308,6 +308,13 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
     () => DIRECTORY_GROUPS.find(g => g.ids.includes(activeView))?.label ?? null
   );
   const [selectedRegion, setSelectedRegion] = useState(() => getPresetRegion());
+  // Calendario, Contratos, Recursos y Reseñas se usan poco: plegados bajo
+  // "Más" para que el menú enseñe primero lo que trae trabajo (Flash,
+  // Mensajes, Perfil). Se abre solo si la vista activa es una de ellas, y en
+  // el rail de iconos se ven siempre (no hay texto que plegar).
+  const TOOL_VIEWS = ['calendar', 'contracts', 'resources'];
+  const [toolsOpen, setToolsOpen] = useState(() => TOOL_VIEWS.includes(activeView));
+  useEffect(() => { if (TOOL_VIEWS.includes(activeView)) setToolsOpen(true); }, [activeView]);
 
   useEffect(() => {
     if (DIRECTORY_IDS.has(activeView)) {
@@ -502,8 +509,12 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
 
         {/* HERRAMIENTAS */}
         <div className="mb-1">
-          <GroupLabel>Herramientas</GroupLabel>
-          <SidebarMenu>
+          <button type="button" onClick={() => setToolsOpen(o => !o)} aria-expanded={toolsOpen || collapsed}
+            className="w-full flex items-center justify-between px-2.5 mb-1.5 group-data-[collapsible=icon]:hidden">
+            <span className="text-[0.62rem] font-extrabold uppercase tracking-[0.12em]" style={{ color: 'rgba(10,9,8,0.45)' }}>Más</span>
+            <ChevronDown size={12} style={{ color: 'rgba(10,9,8,0.4)', transform: toolsOpen ? 'rotate(180deg)' : undefined, transition: 'transform 0.2s' }} />
+          </button>
+          {(toolsOpen || collapsed) && <SidebarMenu>
             <NavItem icon={CalendarDays} label="Calendario" isActive={activeView === 'calendar'} onClick={() => onViewChange('calendar')} navId="calendar" />
             <NavItem icon={FileText} label="Contratos" isActive={activeView === 'contracts'} onClick={() => onViewChange('contracts')} navId="contracts" />
             <NavItem icon={Sparkles} label="Recursos" isActive={activeView === 'resources'} onClick={() => onViewChange('resources')} navId="resources" />
@@ -515,7 +526,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                 en vez de navegar a ningún sitio, para no romper si algún
                 caller aún no pasa la prop nueva. */}
             <NavItem icon={ThumbsUp} label="Reseñas" isActive={false} onClick={() => (onGoToReviews ?? (() => onViewChange('resources')))()} navId="resenas" />
-          </SidebarMenu>
+          </SidebarMenu>}
         </div>
 
         <hr className="my-2.5 mx-1" style={{ border: 'none', borderTop: '1px solid rgba(10,9,8,0.05)' }} />
