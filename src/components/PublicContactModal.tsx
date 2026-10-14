@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { trackLead, logContactClick } from '@/lib/track';
@@ -23,6 +23,19 @@ export default function PublicContactModal({ professionalName, professionalUserI
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
+
+  // Con sesion abierta, nombre y email ya se conocen: se rellenan para que
+  // quien esta registrado solo tenga que elegir tipo de evento y enviar.
+  useEffect(() => {
+    let vivo = true;
+    supabase.auth.getUser().then(({ data }) => {
+      const u = data?.user;
+      if (!u || !vivo) return;
+      const nombre = String(u.user_metadata?.full_name ?? u.user_metadata?.name ?? u.user_metadata?.display_name ?? '');
+      setForm(f => ({ ...f, name: f.name || nombre, email: f.email || (u.email ?? '') }));
+    }).catch(() => {});
+    return () => { vivo = false; };
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -150,6 +163,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
             )}
 
             <div className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Tu nombre *</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)} required
@@ -166,6 +180,8 @@ export default function PublicContactModal({ professionalName, professionalUserI
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
 
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Tipo de evento *</label>
                 <select value={form.eventType} onChange={e => set('eventType', e.target.value)} required
@@ -183,9 +199,10 @@ export default function PublicContactModal({ professionalName, professionalUserI
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
 
+              </div>
               <div>
                 <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Cuéntale algo más (opcional)</label>
-                <textarea id="xpeak-contact-message" value={form.message} onChange={e => set('message', e.target.value)} rows={3}
+                <textarea id="xpeak-contact-message" value={form.message} onChange={e => set('message', e.target.value)} rows={2}
                   placeholder="Número de invitados, lugar, lo que necesitas..."
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none resize-none"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />

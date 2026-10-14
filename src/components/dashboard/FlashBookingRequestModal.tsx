@@ -39,6 +39,19 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
       });
   }, [professionalUserId]);
 
+  // Nombre y contacto ya se conocen de la cuenta: se rellenan solos para que
+  // el organizador solo tenga que poner la fecha.
+  useEffect(() => {
+    if (!user) return;
+    let vivo = true;
+    supabase.from('profiles').select('display_name').eq('user_id', user.id).maybeSingle()
+      .then(({ data }) => {
+        if (!vivo) return;
+        setForm(f => ({ ...f, name: f.name || (data?.display_name as string | null) || '', contact: f.contact || user.email || '' }));
+      });
+    return () => { vivo = false; };
+  }, [user]);
+
   const estimatedPrice = hourlyRate && form.eventType ? hourlyRate * (EVENT_HOURS[form.eventType] ?? 4) : null;
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));

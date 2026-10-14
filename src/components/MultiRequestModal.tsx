@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Users, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -34,6 +34,18 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
   const [sentCount, setSentCount] = useState(0);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
+
+  // Con sesion abierta, nombre y contacto se rellenan solos.
+  useEffect(() => {
+    let vivo = true;
+    supabase.auth.getUser().then(({ data }) => {
+      const u = data?.user;
+      if (!u || !vivo) return;
+      const nombre = String(u.user_metadata?.full_name ?? u.user_metadata?.name ?? u.user_metadata?.display_name ?? '');
+      setForm(f => ({ ...f, name: f.name || nombre, contact: f.contact || (u.email ?? '') }));
+    }).catch(() => {});
+    return () => { vivo = false; };
+  }, []);
 
   // Grupo común para trazar que estas N solicitudes son un mismo lead — sin
   // necesitar columna nueva: va en event_description como marca [grupo:xxxx].
