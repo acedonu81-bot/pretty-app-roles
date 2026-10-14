@@ -1,3 +1,4 @@
+import BarraVolver from '@/components/BarraVolver';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
@@ -418,6 +419,7 @@ const App = () => (
     <TooltipProvider>
       <BrowserRouter basename={import.meta.env.BASE_URL} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <InstallAppBar />
+        <BarraVolver />
         <RastreadorDeRutas />
         {/* Un solo pixel visible durante la carga (no un color plano a pantalla
             completa) para que un "se queda pensando y luego en blanco" real se
