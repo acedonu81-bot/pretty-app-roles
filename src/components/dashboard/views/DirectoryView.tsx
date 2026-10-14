@@ -18,6 +18,9 @@ import { logSearch, logProfileView, logFiltroRol, logEvent } from '@/lib/track';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { isNative } from '@/lib/capacitor';
 import { RefreshCw } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
+import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 
 interface DirectoryViewProps {
   role: string;
@@ -208,6 +211,13 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
 
 const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile, experienceLevel }: DirectoryViewProps) => {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  // El botón de Flash Booking era estático: con una reserva u oferta nueva no
+  // cambiaba y solo avisaban el globo del sidebar y la campana. Mismo
+  // contador que ellos, para que el aviso salga también donde se está mirando.
+  const { user } = useAuth();
+  const perfilActual = useProfile();
+  const { flashBadge, demandaBadge } = useDashboardBadges(user?.id, perfilActual.role === 'empresario');
+  const flashNuevos = flashBadge + demandaBadge;
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
   // Preselecciona la comunidad elegida en el sidebar (persiste entre
   // sesiones, mismo patrón que xpeak_view) — el desplegable de abajo sigue
@@ -374,9 +384,18 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         {onNavigate && (
           <button
             onClick={() => onNavigate('flashbooking')}
-            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105 self-start sm:self-auto"
-            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
-            <Zap size={14} /> Flash Booking
+            className={`${flashNuevos > 0 ? 'flex' : 'hidden sm:flex'} relative items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105 self-start sm:self-auto`}
+            style={flashNuevos > 0
+              ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', border: '1px solid #B8941E', color: '#000', boxShadow: '0 4px 14px rgba(212,175,55,0.35)' }
+              : { background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
+            {flashNuevos > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#ef4444' }} />
+                <span className="relative inline-flex rounded-full h-3 w-3" style={{ background: '#ef4444' }} />
+              </span>
+            )}
+            <Zap size={14} className={flashNuevos > 0 ? 'animate-pulse' : undefined} />
+            {flashNuevos === 0 ? 'Flash Booking' : flashNuevos === 1 ? 'Nuevo Flash Booking' : `${flashNuevos} nuevos Flash Booking`}
           </button>
         )}
       </div>

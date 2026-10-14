@@ -53,7 +53,7 @@ const TabButton = ({ tab, onClick }: { tab: Tab; onClick: () => void }) => (
     </div>
     <span className="text-[0.65rem] font-semibold"
       style={{ color: tab.alerta ? '#166534' : tab.isActive ? '#D4AF37' : '#444', fontWeight: tab.alerta ? 800 : undefined }}>
-      {tab.label}
+      {tab.alerta && tab.id === 'flashbooking' ? 'Nuevo' : tab.label}
     </span>
   </button>
 );
