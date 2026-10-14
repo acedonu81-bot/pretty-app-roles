@@ -404,10 +404,19 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
           style={{ background: '#ffffff' }}>
 
           {/* Close */}
+          {/* top respeta la zona segura: con viewport-fit=cover, a 16px la X
+              quedaba bajo el notch/barra de estado del iPhone y iOS se
+              quedaba los toques (no cerraba ni se podía volver). */}
+          <button onClick={onClose}
+            aria-label="Volver"
+            className="fixed left-4 z-[110] h-11 pl-3 pr-4 rounded-full flex items-center gap-1.5 text-sm font-bold transition-all hover:scale-105"
+            style={{ top: 'calc(env(safe-area-inset-top, 0px) + 0.75rem)', background: 'rgba(0,0,0,0.55)', color: '#fff', backdropFilter: 'blur(8px)' }}>
+            <ChevronLeft size={18} /> Volver
+          </button>
           <button onClick={onClose}
             aria-label="Cerrar perfil"
-            className="fixed top-4 right-4 z-[110] w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110"
-            style={{ background: 'rgba(0,0,0,0.45)', color: '#fff', backdropFilter: 'blur(8px)' }}>
+            className="fixed right-4 z-[110] w-11 h-11 rounded-full flex items-center justify-center transition-all hover:scale-110"
+            style={{ top: 'calc(env(safe-area-inset-top, 0px) + 0.75rem)', background: 'rgba(0,0,0,0.55)', color: '#fff', backdropFilter: 'blur(8px)' }}>
             <X size={18} />
           </button>
 
