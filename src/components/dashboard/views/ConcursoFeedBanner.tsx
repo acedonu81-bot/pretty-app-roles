@@ -47,7 +47,7 @@ function CuentaAtras({ onFin, claro = false }: { onFin: () => void; claro?: bool
               : { fontFamily: HZ.display, fontWeight: 800, color: urgente ? '#ff9aa8' : i === 3 ? '#ffe08a' : '#fff', textShadow: '0 2px 8px rgba(20,0,80,0.4)' }}>
             {p(t.v)}
           </span>
-          <span className="block text-[0.58rem] uppercase tracking-[0.14em] mt-1" style={{ color: claro ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>{t.l}</span>
+          <span className="block text-[0.58rem] uppercase tracking-[0.08em] sm:tracking-[0.14em] mt-1" style={{ color: claro ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>{t.l}</span>
         </div>
       ))}
     </div>
@@ -79,7 +79,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
       `}</style>
     )}
     <div
-      className={`relative flex items-center gap-4 overflow-hidden rounded-3xl mb-4 ${sinTexto ? 'p-7 sm:p-12 concurso-parpadeo' : 'p-5 sm:p-6'}`}
+      className={`relative flex items-center gap-4 overflow-hidden rounded-3xl mb-4 ${sinTexto ? 'p-5 sm:p-12 concurso-parpadeo' : 'p-5 sm:p-6'}`}
       style={sinTexto
         ? { background: 'linear-gradient(135deg,#F4F9FF 0%,#D3E6FB 55%,#B9D4F7 100%)', boxShadow: clay('36,119,179', 'lg') }
         : {
@@ -95,7 +95,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         <p className="inline-flex items-center gap-1.5 text-[0.65rem] uppercase tracking-[0.2em] mb-1.5" style={{ color: sinTexto ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
           <Trophy size={12} strokeWidth={2.5} /> {ultimoDia ? 'Último día' : 'Hasta el 2 nov'} · Madrid
         </p>
-        <p className={`leading-tight ${sinTexto ? 'text-[#14407A]' : 'text-white'} ${sinTexto ? 'text-3xl sm:text-6xl' : 'text-xl sm:text-2xl'}`} style={{ fontFamily: HZ.display, fontWeight: 800 }}>
+        <p className={`leading-tight ${sinTexto ? 'text-[#14407A]' : 'text-white'} ${sinTexto ? 'text-[1.7rem] sm:text-6xl' : 'text-xl sm:text-2xl'}`} style={{ fontFamily: HZ.display, fontWeight: 800 }}>
           Concurso DJ XPEAK Madrid
         </p>
         {!sinTexto && (
@@ -134,7 +134,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         width={360}
         height={358}
         loading="lazy"
-        className={`relative h-auto shrink-0 -rotate-6 ${sinTexto ? 'w-28 sm:w-72' : 'w-24 sm:w-36'}`}
+        className={`relative h-auto shrink-0 -rotate-6 ${sinTexto ? 'w-24 sm:w-72' : 'w-24 sm:w-36'}`}
         style={{ filter: 'drop-shadow(0 10px 18px rgba(20,0,60,0.45))' }}
       />
     </div>

@@ -755,6 +755,11 @@ const Landing = () => {
             vía de profesional como enlace de texto discreto debajo — parte
             del tráfico de profesionales llegaba sin un camino claro y
             terminaba navegando a ciegas hasta /auth vía navbar/footer. */}
+        {/* Concurso DJ Madrid (13 oct - 2 nov 2026): primera cosa del hero para verse
+            sin scroll en móvil; se apaga solo al cerrar el plazo. */}
+        <div className="max-w-2xl mx-auto mb-5 text-left">
+          <Suspense fallback={null}><ConcursoFeedBanner sinTexto /></Suspense>
+        </div>
         <FadeIn delay={0.25}>
           <div className="max-w-2xl mx-auto mb-3">
             <p className="text-center text-sm font-black uppercase tracking-[0.15em] mb-4" style={{ color: '#D4AF37', textShadow: '0 0 10px rgba(212,175,55,0.4)' }}>
@@ -889,11 +894,6 @@ const Landing = () => {
       </header>
       </div>
 
-
-      {/* Concurso DJ Madrid (13 oct - 2 nov 2026): el banner se apaga solo al cerrar el plazo. */}
-      <section className="max-w-[1200px] mx-auto px-6 md:px-8 pt-8">
-        <Suspense fallback={null}><ConcursoFeedBanner sinTexto /></Suspense>
-      </section>
 
       {/* ─ TIPOS DE EVENTO ─ */}
       <FadeIn>
