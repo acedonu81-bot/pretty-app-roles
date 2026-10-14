@@ -89,6 +89,7 @@ La app de iOS es un build congelado (snapshot) del código en el momento de comp
 - Bugs de la propia app nativa (permisos, push notifications, splash screen, comportamiento específico de Capacitor) no se arreglan solo con la web — requieren tocar `capacitor.config.ts` o el proyecto `ios/`
 
 ## Verificación obligatoria antes de dar un fix por cerrado
+- Al abrir xpeak.es con Playwright/Chrome DevTools, la primera URL de cada contexto nuevo lleva `?interno=1`: marca el navegador y no cuenta en analítica ni en "Quién está online". El navegador de pruebas oculta `navigator.webdriver`, así que sin la marca sale como visitante real (14 oct 2026)
 - Invocar la skill `verify-flows` tras tocar código de registro, directorio, carrito "Mi evento", perfil público o Flash Booking
 - Un `tsc --noEmit` limpio NO es suficiente — reproducir la acción real (clic, rellenar, eliminar) en el navegador antes de decir "arreglado"
 
