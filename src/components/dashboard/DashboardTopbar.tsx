@@ -1,7 +1,8 @@
-import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift, Zap, CalendarCheck } from 'lucide-react';
+import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift, Zap, CalendarCheck, User, ExternalLink, Settings, LifeBuoy, Home, ChevronDown } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
+import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { isNative } from '@/lib/capacitor';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
@@ -58,6 +59,24 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
   // abajo y nunca se les aplica `markAllRead`.
   const { flashBadge, msgBadge } = useDashboardBadges(userId, isEmpresario);
   const profile = useProfile();
+  const { signOut } = useAuth();
+  // Menú de cuenta en el avatar, como en cualquier web profesional. Antes el
+  // avatar no hacía nada y el botón "Salir" solo llevaba a la portada sin
+  // cerrar la sesión: no había forma visible de cerrar sesión salvo Ajustes.
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!showUserMenu) return;
+    const onDown = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) setShowUserMenu(false);
+    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setShowUserMenu(false); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
+  }, [showUserMenu]);
+  const goView = (v: string) => { setShowUserMenu(false); onViewChange?.(v); };
+  const handleSignOut = async () => { setShowUserMenu(false); await signOut(); navigate('/'); };
 
   // Load real in-app notifications + subscribe to new ones (realtime)
   const loadNotifs = useCallback(async () => {
@@ -430,38 +449,73 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             un icono NotificationBell aparte ahora están fusionados dentro
             del propio orbe de arriba — un solo icono de notificaciones,
             no dos compitiendo por el mismo espacio. */}
-        <div className="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-2xl"
-          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
-          <div className="w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center text-xs font-black flex-shrink-0"
-            style={profile.photo_url
-              ? undefined
-              : { background: '#3a3632', color: '#fff' }}>
-            {profile.photo_url
-              ? <img src={profile.photo_url} alt="" className="w-full h-full object-cover" />
-              : (profile.display_name ?? 'X').charAt(0).toUpperCase()}
-          </div>
-          {!isMobile && profile.display_name && (
-            <span className="text-xs font-bold max-w-[90px] truncate" style={{ color: '#222' }}>
-              {profile.display_name}
-            </span>
+        <div ref={userMenuRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setShowUserMenu(v => !v)}
+            aria-haspopup="menu"
+            aria-expanded={showUserMenu}
+            aria-label="Menú de tu cuenta"
+            className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-2xl transition-colors hover:bg-black/[0.06]"
+            style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+            <div className="w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center text-xs font-black flex-shrink-0"
+              style={profile.photo_url
+                ? undefined
+                : { background: '#3a3632', color: '#fff' }}>
+              {profile.photo_url
+                ? <img src={profile.photo_url} alt="" className="w-full h-full object-cover" />
+                : (profile.display_name ?? 'X').charAt(0).toUpperCase()}
+            </div>
+            {!isMobile && profile.display_name && (
+              <span className="text-xs font-bold max-w-[90px] truncate" style={{ color: '#222' }}>
+                {profile.display_name}
+              </span>
+            )}
+            <ChevronDown size={13} className="transition-transform" style={{ color: '#666', transform: showUserMenu ? 'rotate(180deg)' : 'none' }} />
+          </button>
+
+          {showUserMenu && (
+            <div role="menu"
+              className="absolute right-0 mt-2 w-64 rounded-2xl overflow-hidden z-50"
+              style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 12px 32px rgba(0,0,0,0.14)' }}>
+              <div className="px-4 py-3 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center text-sm font-black flex-shrink-0"
+                  style={profile.photo_url ? undefined : { background: '#3a3632', color: '#fff' }}>
+                  {profile.photo_url
+                    ? <img src={profile.photo_url} alt="" className="w-full h-full object-cover" />
+                    : (profile.display_name ?? 'X').charAt(0).toUpperCase()}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-bold truncate" style={{ color: '#222' }}>{profile.display_name ?? 'Tu cuenta'}</p>
+                  <p className="text-xs truncate" style={{ color: '#666' }}>{isEmpresario ? 'Cuenta de empresa' : 'Cuenta profesional'}</p>
+                </div>
+              </div>
+              <div className="py-1.5">
+                {[
+                  { icon: User, label: 'Mi perfil', onClick: () => goView('profile') },
+                  // Empresarios sin exposición pública: no tienen ficha /p/.
+                  ...(!isEmpresario && userId ? [{ icon: ExternalLink, label: 'Ver mi ficha pública', onClick: () => { setShowUserMenu(false); window.open(`/p/${userId}`, '_blank', 'noopener'); } }] : []),
+                  { icon: Settings, label: 'Ajustes', onClick: () => goView('settings') },
+                  { icon: LifeBuoy, label: 'Ayuda y soporte', onClick: () => goView('legal-soporte') },
+                  { icon: Home, label: 'Ir a la portada', onClick: () => { setShowUserMenu(false); navigate('/'); } },
+                ].map(item => (
+                  <button key={item.label} type="button" role="menuitem" onClick={item.onClick}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-black/[0.04]"
+                    style={{ color: '#222' }}>
+                    <item.icon size={15} style={{ color: '#8A6D0F' }} /> {item.label}
+                  </button>
+                ))}
+              </div>
+              <div className="py-1.5" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                <button type="button" role="menuitem" onClick={handleSignOut}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-left transition-colors hover:bg-red-50"
+                  style={{ color: '#B42318' }}>
+                  <LogOut size={15} /> Cerrar sesión
+                </button>
+              </div>
+            </div>
           )}
         </div>
-
-        {/* Oculto en móvil: en 390-412px de ancho, el botón "Menú + XPEAK +
-            búsqueda" a la izquierda y "notificaciones + avatar + Salir" a
-            la derecha no caben sin comprimirse/solaparse — y "Salir" ya
-            existe en Ajustes (SettingsView.tsx), accesible desde el bottom
-            nav. Quitarlo de aquí en móvil libera el espacio real que
-            faltaba, en vez de otro parche de tamaños/gaps. */}
-        {!isMobile && (
-          <button
-            onClick={() => navigate('/')}
-            className="text-xs py-1.5 px-3 flex items-center gap-2 rounded-full transition-colors"
-            style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid var(--nightlife-border)', color: 'var(--nightlife-text-secondary)' }}
-          >
-            <LogOut size={13} /> Salir
-          </button>
-        )}
       </div>
     </header>
   );
