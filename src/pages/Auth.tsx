@@ -546,6 +546,22 @@ const Auth = () => {
           authFieldError('name', 'El nombre no es válido.'); setLoading(false); return;
         }
 
+        // Email desechable o dominio que no recibe correo: con autoconfirm
+        // activado es lo único que impide altas con emails inventados. En el
+        // alta desde Instagram lo comprueba signup-inapp en el servidor. Si
+        // la comprobación falla o tarda, se deja pasar (mejor un email raro
+        // que perder un alta real); el trigger de la BD frena los desechables.
+        if (!inAppSignup) {
+          const revision = await Promise.race([
+            supabase.functions.invoke('check-email', { body: { email } }).then(r => r.data as { ok?: boolean; error?: string } | null).catch(() => null),
+            new Promise<null>(res => setTimeout(() => res(null), 5000)),
+          ]);
+          if (revision && revision.ok === false) {
+            track('auth_validation_error', { mode: 'register', reason: 'email_no_recibe' });
+            authFieldError('email', revision.error || 'Revisa que el email esté bien escrito.'); setLoading(false); return;
+          }
+        }
+
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
         const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'event_manager', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'food-truck', 'disco-movil', 'tecnico', 'alquiler', 'local_eventos'];

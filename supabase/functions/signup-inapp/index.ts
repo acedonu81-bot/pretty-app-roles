@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { comprobarEmail } from '../_shared/comprobarEmail.ts';
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -67,6 +68,10 @@ serve(async (req) => {
       return json({ error: 'Demasiados intentos. Prueba de nuevo en un rato.' }, 429);
     }
     await admin.from('inapp_signup_attempts').insert({ ip });
+
+    // Email desechable o dominio que no recibe correo (ver _shared/comprobarEmail.ts).
+    const revision = await comprobarEmail(admin, email);
+    if (!revision.ok) return json({ error: revision.error }, 400);
 
     const { error: createError } = await admin.auth.admin.createUser({
       email,
