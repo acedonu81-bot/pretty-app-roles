@@ -623,6 +623,41 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
     return null;
   };
 
+  // Autorrelleno al publicar (14 oct 2026): el organizador escribía cada vez
+  // su nombre, ciudad y dirección aunque ya los tenemos. Se toman de su última
+  // oferta y, si es la primera, de su perfil. Fechas, presupuesto,
+  // profesionales y descripción cambian en cada evento: esos se dejan vacíos.
+  // Solo rellena lo que esté vacío, nunca pisa lo que ya haya escrito.
+  const [autorrellenado, setAutorrellenado] = useState(false);
+  const abrirNuevaOferta = async () => {
+    setEditingId(null);
+    setShowForm(true);
+    if (!user?.id) return;
+    const { data: ultima } = await (supabase
+      .from('event_requests' as any)
+      .select('client_name, city, exact_address, event_type')
+      .eq('client_user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle() as any);
+    const zona = profile.zone && !/^(españa|pending)$/i.test(profile.zone) ? profile.zone : '';
+    const previo = {
+      client_name: ultima?.client_name || profile.display_name || '',
+      city: ultima?.city || zona,
+      exact_address: ultima?.exact_address || '',
+      event_type: ultima?.event_type && EVENT_TYPES.includes(ultima.event_type) ? ultima.event_type : '',
+    };
+    let relleno = false;
+    setForm(f => {
+      const n = { ...f };
+      (Object.keys(previo) as (keyof typeof previo)[]).forEach(k => {
+        if (!f[k] && previo[k]) { n[k] = previo[k]; relleno = true; }
+      });
+      return n;
+    });
+    setAutorrellenado(relleno);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const roles_needed = rolesNeededFlat(form.roleCounts);
@@ -697,7 +732,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
             profesional (que viene a RESPONDERLAS) se le ofrecía el mismo CTA. */}
         {isEmpresario && (
           <button
-            onClick={() => setShowForm(true)}
+            onClick={abrirNuevaOferta}
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 flex-shrink-0"
             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
             <Plus size={12} /> Publicar evento
@@ -1169,6 +1204,11 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                 <p className="text-xs" style={{ color: '#333' }}>
                   {editingId ? 'Los profesionales ya apuntados verán los cambios' : 'Visible 7 días para todos los profesionales'}
                 </p>
+                {!editingId && autorrellenado && (
+                  <p className="text-xs mt-0.5" style={{ color: '#7a6216' }}>
+                    Hemos puesto tus datos de la última vez. Cámbialos si hace falta.
+                  </p>
+                )}
               </div>
               <button onClick={() => { setShowForm(false); setEditingId(null); }} className="p-1.5 rounded-lg hover:bg-black/5">
                 <X size={16} style={{ color: '#333' }} />
