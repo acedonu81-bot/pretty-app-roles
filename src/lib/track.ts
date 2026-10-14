@@ -85,8 +85,15 @@ export function trackAIReferral() {
  */
 const BOT_UA = /bot|crawl|spider|slurp|headless|phantom|puppeteer|playwright|lighthouse|pagespeed|gtmetrix|ahrefs|semrush|mj12bot|dotbot|petalbot|bytespider|yandex|baiduspider|facebookexternalhit|whatsapp|telegrambot|discordbot|slackbot|preview/i;
 
+// Además de los bots por UA (14 oct 2026): las pruebas de Claude con
+// Playwright/Chrome DevTools usan un Chrome normal, sin "headless" en el UA,
+// y salían en "Quién está online" como visitantes en /auth. Todo navegador
+// automatizado marca navigator.webdriver. Y el servidor local (localhost)
+// escribía en la misma base de datos que producción.
 function esBot(): boolean {
   try {
+    if (navigator.webdriver) return true;
+    if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return true;
     return BOT_UA.test(navigator.userAgent || '');
   } catch {
     return false;
