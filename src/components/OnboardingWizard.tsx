@@ -44,6 +44,19 @@ const ROLES = [
   { value: 'local_eventos', label: 'Local / Sala para Eventos', desc: 'Alquiler de espacio para eventos privados', icon: Briefcase,     color: '#a3a3a3' },
 ];
 
+// Primer nivel de la eleccion de perfil: 7 grupos en vez de 22 oficios de golpe
+// (quien duda entre dos oficios parecidos se quedaba parado en la primera
+// pantalla). Mismos grupos que el sidebar y /descubrir.
+const ROLE_GROUPS: { label: string; desc: string; ids: string[] }[] = [
+  { label: 'Música', desc: 'DJ, grupo musical, disco móvil', ids: ['dj', 'grupo-musical', 'disco-movil'] },
+  { label: 'Sala, barra y catering', desc: 'Camarero, cocina, food truck, local', ids: ['staff', 'catering', 'food-truck', 'local_eventos'] },
+  { label: 'Imagen y media', desc: 'Foto, vídeo y photo booth', ids: ['media', 'photo-booth'] },
+  { label: 'Azafatas y RRPP', desc: 'Azafata, eventos, promotor, speaker', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
+  { label: 'Belleza y estilo', desc: 'Maquillaje, peluquería, vestuario', ids: ['makeup', 'peluqueria', 'vestuario'] },
+  { label: 'Entretenimiento', desc: 'Mago, humor, animación, baile', ids: ['mago', 'humorista', 'animador', 'bailarin'] },
+  { label: 'Técnica y producción', desc: 'Sonido, montaje, alquiler de equipos', ids: ['tecnico', 'alquiler'] },
+];
+
 const EMPRESARIO_ROLE = { value: 'empresario', label: 'Busco talento: Empresario', desc: 'Sala, promotora, agencia o evento privado: busco y contrato profesionales', icon: Briefcase, color: '#D4AF37' };
 
 // Frases de "anuncio de clasificados" en vez de ficha profesional (13 sep
@@ -265,6 +278,9 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const prefilledRole = validRoles.includes(urlRole) ? urlRole : (validRoles.includes(profile.role ?? '') ? profile.role ?? '' : '');
   const [step, setStep] = useState(0);
   const [selectedRole, setSelectedRole] = useState<string>(prefilledRole);
+  const [roleGroup, setRoleGroup] = useState<string | null>(
+    () => ROLE_GROUPS.find(g => g.ids.includes(prefilledRole))?.label ?? null,
+  );
   const [saving, setSaving] = useState(false);
 
   // Campos del formulario rápido. Foto, ciudad y tarifa son obligatorios
@@ -540,8 +556,40 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 mb-3 max-h-[42vh] overflow-y-auto pr-1">
-                  {ROLES.map(({ value, label, desc, icon: Icon, color }) => {
+                {(() => {
+                  const grupoActivo = ROLE_GROUPS.find(g => g.label === roleGroup) ?? null;
+                  if (!grupoActivo) {
+                    return (
+                      <div className="grid grid-cols-1 gap-2 mb-3">
+                        {ROLE_GROUPS.map(g => {
+                          const first = ROLES.find(r => r.value === g.ids[0])!;
+                          const Icon = first.icon;
+                          return (
+                            <button key={g.label} onClick={() => setRoleGroup(g.label)}
+                              className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all"
+                              style={{ background: 'rgba(0,0,0,0.02)', border: '1.5px solid rgba(0,0,0,0.07)' }}>
+                              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${first.color}20` }}>
+                                <Icon size={15} style={{ color: first.color }} />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-xs font-black leading-tight" style={{ color: '#222' }}>{g.label}</p>
+                                <p className="text-[10px] leading-tight mt-0.5" style={{ color: '#777' }}>{g.desc}</p>
+                              </div>
+                              <ChevronRight size={14} style={{ color: '#999' }} />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  }
+                  return (
+                    <>
+                      <button type="button" onClick={() => setRoleGroup(null)}
+                        className="mb-2 text-xs font-bold underline" style={{ color: '#555' }}>
+                        Volver a las categorías
+                      </button>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  {ROLES.filter(r => grupoActivo?.ids.includes(r.value)).map(({ value, label, desc, icon: Icon, color }) => {
                     const active = selectedRole === value;
                     return (
                       <button key={value} onClick={() => setSelectedRole(value)}
@@ -564,6 +612,9 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                     );
                   })}
                 </div>
+                    </>
+                  );
+                })()}
 
                 {(() => {
                   const { value, label, desc, icon: Icon, color } = EMPRESARIO_ROLE;
