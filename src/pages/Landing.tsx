@@ -105,6 +105,7 @@ import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
 import GigWonPopup from '@/components/GigWonPopup';
 
+const ConcursoFeedBanner = lazy(() => import('@/components/dashboard/views/ConcursoFeedBanner'));
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
 const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
 
@@ -884,6 +885,11 @@ const Landing = () => {
       </header>
       </div>
 
+
+      {/* Concurso DJ Madrid (13 oct - 2 nov 2026): el banner se apaga solo al cerrar el plazo. */}
+      <section className="max-w-[1200px] mx-auto px-6 md:px-8 pt-8">
+        <Suspense fallback={null}><ConcursoFeedBanner sinTexto /></Suspense>
+      </section>
 
       {/* ─ TIPOS DE EVENTO ─ */}
       <FadeIn>

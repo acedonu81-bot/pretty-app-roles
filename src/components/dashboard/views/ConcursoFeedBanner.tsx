@@ -50,7 +50,9 @@ function CuentaAtras({ onFin }: { onFin: () => void }) {
   );
 }
 
-const ConcursoFeedBanner = () => {
+// sinTexto: variante de la landing, sin el párrafo ni el botón secundario;
+// un único botón lleva a la página del concurso (inscripción y votos).
+const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
   // Un organizador no puede participar, solo votar: a él solo le sale
   // "Ver aspirantes" (la página con las sesiones, separada de las bases).
   const { role } = useProfile();
@@ -81,11 +83,20 @@ const ConcursoFeedBanner = () => {
         <p className="text-xl sm:text-2xl leading-tight text-white" style={{ fontFamily: HZ.display, fontWeight: 800 }}>
           Concurso DJ XPEAK Madrid
         </p>
+        {!sinTexto && (
         <p className="text-sm mt-1.5 max-w-md" style={{ color: 'rgba(255,255,255,0.88)', fontFamily: HZ.body }}>
           Para DJs de la Comunidad de Madrid. Sube tu sesión: las 3 con más me gusta van a la final y el jurado elige quién se lleva los Pioneer DJ HDJ-X5.
         </p>
+        )}
         <CuentaAtras onFin={() => setCerrado(true)} />
         <div className="flex flex-wrap items-center gap-2 mt-3.5">
+          {sinTexto ? (
+            <Link to="/concurso-dj-madrid"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
+              style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
+              Entrar <ArrowRight size={15} strokeWidth={2.75} />
+            </Link>
+          ) : (<>
           {!organizador && (
             <Link to="/concurso-dj-madrid#inscripcion"
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
@@ -98,6 +109,7 @@ const ConcursoFeedBanner = () => {
             style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
             Ver aspirantes <ArrowRight size={15} strokeWidth={2.75} />
           </Link>
+          </>)}
         </div>
       </div>
 
