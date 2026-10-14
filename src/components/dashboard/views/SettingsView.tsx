@@ -113,6 +113,13 @@ const MultiProfileSection = () => {
 
   const handleCreate = async () => {
     if (!newName.trim()) { toast.error('Introduce un nombre'); return; }
+    // Un perfil nuevo con el mismo oficio no edita el existente: crea una
+    // copia vacía que sale repetida en el directorio (Dj eloy creó dos así
+    // el 14 oct 2026 intentando cambiar su ficha).
+    if (allProfiles.some(p => p.role === newRole)) {
+      toast.error(`Ya tienes un perfil de ${PROFILE_ROLE_LABEL[newRole] ?? newRole}. Para cambiar tu foto, nombre o datos, edítalo en Mi perfil.`);
+      return;
+    }
     setSaving(true);
     const ok = await createProfile({ display_name: newName.trim(), role: newRole, zone: newZone || 'España', hourly_rate: 40 });
     setSaving(false);
@@ -122,7 +129,7 @@ const MultiProfileSection = () => {
   return (
     <Section title="Mis perfiles" icon={<Users size={15} />}>
       <p className="text-xs text-muted-foreground mb-3">
-        Crea perfiles adicionales con roles distintos (ej. DJ y Fotógrafo) y cambia entre ellos cuando quieras.
+        Solo si ofreces <strong>otro oficio distinto</strong> (ej. DJ y Fotógrafo). Para cambiar tu foto, nombre o datos no crees otro perfil: edita el tuyo en Mi perfil.
       </p>
       <div className="space-y-2 mb-3">
         {allProfiles.map(p => (

@@ -459,7 +459,9 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   // score solo desempatan por debajo del máximo). Ver compararDirectorio en
   // dailyRotation.ts.
   enriched.sort((a: any, b: any) => compararDirectorio(a, b));
-  return enriched;
+  // Una tarjeta por cuenta (Dj eloy, 14 oct 2026: 4 perfiles en la misma
+  // cuenta salían repetidos). Se queda la primera tras ordenar.
+  return enriched.filter((p: any, i: number, arr: any[]) => !p.user_id || arr.findIndex((q: any) => q.user_id === p.user_id) === i);
 }
 
 // Trae TODOS los perfiles públicos en un solo viaje y los agrupa por rol
@@ -517,7 +519,12 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
       const c = canonicalRole(r);
       if (c) canon.add(c);
     }
-    for (const c of canon) (byRole[c] ??= []).push(p);
+    for (const c of canon) {
+      const lista = (byRole[c] ??= []);
+      // Una tarjeta por cuenta en cada oficio (perfiles duplicados, ver arriba).
+      if (p.user_id && lista.some((q: any) => q.user_id === p.user_id)) continue;
+      lista.push(p);
+    }
   }
   return byRole;
 }

@@ -146,6 +146,11 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
     // (verificado y score solo desempatan por debajo del máximo). Mismo orden
     // que /directorio y /descubrir: ver compararDirectorio en dailyRotation.ts.
     .sort((a, b) => compararDirectorio(a, b))
+    // Una tarjeta por cuenta: quien crea varios perfiles del mismo oficio
+    // salía repetido (caso real: Dj eloy, 14 oct 2026, 4 perfiles en la misma
+    // cuenta y 3+ tarjetas en el listado). Se queda la primera tras ordenar,
+    // que es la más completa.
+    .filter((row, i, arr) => !row.user_id || arr.findIndex(r => r.user_id === row.user_id) === i)
     .map((row) => {
       const stats = ratingMap.get(row.user_id);
       return {

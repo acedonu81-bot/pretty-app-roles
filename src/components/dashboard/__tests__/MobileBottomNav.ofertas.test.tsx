@@ -19,7 +19,7 @@ describe('MobileBottomNav con ofertas nuevas', () => {
 
   it('el icono de Flash va en verde y con parpadeo mientras haya algo nuevo', () => {
     const { container } = render(<MobileBottomNav activeView="explorar" onViewChange={() => {}} onMenuToggle={() => {}} />);
-    const flash = screen.getByText('Flash').closest('button')!;
+    const flash = screen.getByText('Nuevo').closest('button')!;
     expect(flash.innerHTML).toContain('ofertaParpadeo');
     expect(container.querySelectorAll('[class*="ofertaParpadeo"]').length).toBe(1);
   });
