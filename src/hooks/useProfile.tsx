@@ -308,7 +308,13 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
         subscription_tier: data.subscription_tier,
         category: 'professional',
       } as any);
-    if (error) { toast.error('Error al crear perfil: ' + error.message); return false; }
+    if (error) {
+      // 23505 = índice profiles_un_perfil_por_oficio: ya hay un perfil de ese oficio.
+      toast.error(error.code === '23505'
+        ? 'Ya tienes un perfil de ese oficio. Para cambiar tu foto, precio o datos, edítalo en Mi perfil.'
+        : 'Error al crear perfil: ' + error.message);
+      return false;
+    }
     await refresh();
     toast.success('Perfil creado');
     return true;
