@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -73,6 +73,36 @@ async function fetchFichasReales(): Promise<FichaReal[]> {
   return elegirFichas((data ?? []) as FichaReal[]);
 }
 
+// El hueco es casi cuadrado (130x150) y las fotos llegan de todas las formas:
+// grupos en 16:9, retratos, tiras verticales de 1:3 (14 oct 2026). Con un solo
+// object-position, a Marlene (16:9) se le cortaban los de los lados y de
+// lagartijascolora (1:3) solo se veía la pared. Se encuadra según la forma
+// real, comprobado simulando el recorte sobre las fotos:
+// - muy apaisada (>1,6): entera, con la misma foto difuminada de fondo;
+// - muy alta (<0,5): recorte centrado, la persona suele estar en medio;
+// - el resto (retratos y 3:2): cubre el hueco con la cara arriba, como antes.
+const FotoFicha = ({ src, alt }: { src: string; alt: string }) => {
+  const [forma, setForma] = useState<'ancha' | 'alta' | 'normal'>('normal');
+  const alCargar = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+    if (!w || !h) return;
+    const r = w / h;
+    setForma(r > 1.6 ? 'ancha' : r < 0.5 ? 'alta' : 'normal');
+  };
+  return (
+    <div className="relative w-full overflow-hidden" style={{ height: 150, background: '#FBF3DD' }}>
+      {forma === 'ancha' && (
+        <img src={src} alt="" aria-hidden decoding="async"
+          className="absolute inset-0 w-full h-full object-cover scale-110"
+          style={{ filter: 'blur(10px)', opacity: 0.85 }} />
+      )}
+      <img src={src} alt={alt} loading="lazy" decoding="async" onLoad={alCargar}
+        className={`relative w-full h-full ${forma === 'ancha' ? 'object-contain' : 'object-cover'}`}
+        style={{ objectPosition: forma === 'alta' ? '50% 50%' : forma === 'ancha' ? '50% 50%' : '50% 15%' }} />
+    </div>
+  );
+};
+
 const FichasRealesTira = () => {
   const { data: fichas, isLoading } = useQuery({
     queryKey: ['auth-fichas-reales'],
@@ -109,9 +139,7 @@ const FichasRealesTira = () => {
                 onClick={() => track('auth_ficha_click', { rol: canonicalRole(p.role) ?? '', pos: i + 1 })}
                 className="shrink-0 w-[130px] snap-start rounded-xl overflow-hidden transition-transform active:scale-[0.98]"
                 style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.3)' }}>
-                <img src={fotoOptimizada(p.photo_url, 260)} alt={p.display_name ?? ''}
-                  loading="lazy" decoding="async"
-                  className="w-full object-cover" style={{ height: 150, objectPosition: '50% 10%' }} />
+                <FotoFicha src={fotoOptimizada(p.photo_url, 260)} alt={p.display_name ?? ''} />
                 <div className="px-2.5 py-2">
                   <p className="text-xs font-black truncate" style={{ color: '#111' }}>{p.display_name}</p>
                   <p className="text-[0.65rem] truncate" style={{ color: 'rgba(0,0,0,0.55)' }}>
