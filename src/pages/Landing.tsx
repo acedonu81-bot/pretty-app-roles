@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
+import { concursoActivo } from '@/lib/concursoMadrid';
 import { resolverVistaDeBusqueda } from '@/pages/Dashboard';
 import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
 
@@ -485,6 +486,9 @@ const Landing = () => {
     return () => clearTimeout(t);
   }, []);
 
+  // Durante el concurso el hero pierde el titular y el subtítulo para dar paso al
+  // banner; al cerrar el plazo vuelven solos (se queda sr-only para SEO).
+  const concursoEnCurso = concursoActivo();
   const navigate = useNavigate();
   const [showParticular, setShowParticular] = useState(false);
   const { user, loading: authLoading } = useAuth();
@@ -733,7 +737,7 @@ const Landing = () => {
             hidrata, el navegador tarda de más en marcarlo como "pintado". */}
         <h1
             aria-label="Los mejores profesionales para tu evento en España: DJ, fotógrafo, camareros y staff verificados"
-            className="text-3xl sm:text-5xl md:text-8xl font-black mb-3 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display"
+            className={`${concursoEnCurso ? 'sr-only' : 'text-3xl sm:text-5xl md:text-8xl font-black mb-3 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display'}`}
             style={{ lineHeight: 1.1, paddingBottom: '0.15em', overflow: 'visible' }}
           >
             <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
@@ -742,7 +746,7 @@ const Landing = () => {
         {/* Subtítulo con las keywords del H1 en texto visible (no solo en el
             aria-label): auditorías SEO/GEO del 13 sep 2026. Oculto en móvil
             para no empujar el selector "¿Qué quieres hacer?" fuera de la vista. */}
-        <p className="hidden md:block text-lg font-medium mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
+        <p className={concursoEnCurso ? 'sr-only' : 'hidden md:block text-lg font-medium mb-8 max-w-2xl mx-auto'} style={{ color: 'rgba(255,255,255,0.75)' }}>
           DJs, fotógrafos, camareros y staff verificados en toda España
         </p>
         {/* Selector de las dos vías reales de tráfico: quien quiere
