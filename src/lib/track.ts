@@ -90,8 +90,28 @@ const BOT_UA = /bot|crawl|spider|slurp|headless|phantom|puppeteer|playwright|lig
 // y salían en "Quién está online" como visitantes en /auth. Todo navegador
 // automatizado marca navigator.webdriver. Y el servidor local (localhost)
 // escribía en la misma base de datos que producción.
+// Pero el navegador de pruebas de Claude viene configurado para ocultar
+// navigator.webdriver y se presenta como un Chrome normal: desde la página no
+// hay forma de distinguirlo. Por eso hay además una marca a mano: entrar una
+// vez con ?interno=1 deja ese navegador marcado (localStorage) y deja de
+// contar; ?interno=0 lo desmarca. Sirve también para los móviles y
+// ordenadores del equipo, cuyas visitas sin sesión iniciada no había forma
+// de separar (no se guarda IP).
+const INTERNO_KEY = 'xpeak_interno';
+function esInterno(): boolean {
+  try {
+    const marca = new URLSearchParams(location.search).get('interno');
+    if (marca === '1') localStorage.setItem(INTERNO_KEY, '1');
+    else if (marca === '0') localStorage.removeItem(INTERNO_KEY);
+    return marca === '1' || localStorage.getItem(INTERNO_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
 function esBot(): boolean {
   try {
+    if (esInterno()) return true;
     if (navigator.webdriver) return true;
     if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return true;
     return BOT_UA.test(navigator.userAgent || '');
