@@ -4,9 +4,9 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { logEvent } from '@/lib/track';
 import { estadoInscripcionMadrid, ABRE_CONCURSO as ABRE, CIERRA_CONCURSO as CIERRA } from '@/lib/concursoMadrid';
 import { leerEnlaceSoundcloud } from '@/lib/soundcloudEnlace';
+import { inscribirSesion } from '@/lib/concursoInscripcion';
 
 /**
  * Concurso DJ XPEAK Madrid, 1ª edición (ficha XDS 71,9, aprobada 11 oct 2026
@@ -26,7 +26,6 @@ const DESC = 'Primer concurso DJ de XPEAK en Madrid. Del 13 de octubre al 2 de n
 
 // Fechas en hora de Madrid (CEST hasta el 25 oct, CET después).
 
-const SOUNDCLOUD_RE = /^https:\/\/(www\.|m\.)?soundcloud\.com\/[^/?#]+\/[^/?#]+/i;
 const REGISTRO = `/auth?mode=register&role=dj&redirect=${encodeURIComponent(PATH)}`;
 
 const GOLD = '#D4AF37';
@@ -118,39 +117,16 @@ function Inscripcion() {
   const enviar = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-    const enlace = leerEnlaceSoundcloud(url);
-    if (!enlace) {
+    if (!acepta) { setError('Tienes que aceptar las bases para inscribirte.'); return; }
+    if (!leerEnlaceSoundcloud(url)) {
       setError('Pega el enlace de tu sesión de SoundCloud, del tipo soundcloud.com/tu-nombre/tu-sesion. El de tu perfil no vale: tiene que ser el de la sesión.');
       return;
     }
-    if (!acepta) { setError('Tienes que aceptar las bases para inscribirte.'); return; }
     setEnviando(true);
     setError(null);
-    // El enlace corto de la app (on.soundcloud.com) se convierte en el largo.
-    let limpia = enlace.url;
-    if (enlace.tipo === 'corto') {
-      const { data: res } = await supabase.functions.invoke('soundcloud-enlace', { body: { url: enlace.url } });
-      const larga = (res as { url?: string } | null)?.url;
-      if (!larga || !SOUNDCLOUD_RE.test(larga)) {
-        setEnviando(false);
-        void logEvent('cta_click', PATH, 'concurso_enlace_corto_fallido');
-        setError('No hemos podido abrir ese enlace. Abre tu sesión en soundcloud.com desde el navegador y copia la dirección de arriba.');
-        return;
-      }
-      limpia = larga;
-    }
-    const { error: err } = await sb.from('concurso_inscripciones').insert({
-      concurso: CONCURSO, user_id: user.id, soundcloud_url: limpia, acepta_bases: true,
-    });
+    const res = await inscribirSesion(user.id, url, PATH);
     setEnviando(false);
-    if (err) {
-      setError(err.code === '23505' ? 'Ya tienes una sesión inscrita en este concurso.' : 'No se ha podido guardar la inscripción. Inténtalo de nuevo en un momento.');
-      return;
-    }
-    void logEvent('cta_click', PATH, enlace.tipo === 'corto' ? 'concurso_inscripcion enlace=corto' : 'concurso_inscripcion');
-    // Aviso al admin para que la revise (antes nadie se enteraba). La función
-    // comprueba que la inscripción existe y saca los datos de la BD.
-    void supabase.functions.invoke('send-email', { body: { type: 'concurso_inscripcion', data: {} } });
+    if (!res.ok) { setError(res.mensaje); return; }
     setInscrito('pendiente');
     // Al enviar el enlace, a la página de aspirantes: ahí ve la suya en revisión.
     navigate(ASPIRANTES);

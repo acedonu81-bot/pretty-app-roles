@@ -1,0 +1,53 @@
+import { supabase } from '@/integrations/supabase/client';
+import { logEvent } from '@/lib/track';
+import { leerEnlaceSoundcloud } from '@/lib/soundcloudEnlace';
+
+/**
+ * Inscripción al Concurso DJ XPEAK Madrid, compartida por el formulario de la
+ * página del concurso y por el aviso "Presentarla al concurso" que sale en las
+ * sesiones del perfil (14 oct 2026). Quien llama debe haber recogido antes la
+ * aceptación de las bases: aquí se guarda como acepta_bases = true.
+ */
+export const CONCURSO = 'dj-madrid-2026';
+const SOUNDCLOUD_RE = /^https:\/\/(www\.|m\.)?soundcloud\.com\/[^/?#]+\/[^/?#]+/i;
+
+// Los tipos generados de Supabase no incluyen todavía la tabla del concurso.
+type SbLoose = {
+  from: (t: string) => {
+    insert: (row: Record<string, unknown>) => Promise<{ error: { message: string; code?: string } | null }>;
+  };
+};
+const sb = supabase as unknown as SbLoose;
+
+// Sin unión discriminada: el proyecto compila sin strictNullChecks y ahí no se estrecha.
+export type ResultadoInscripcion = { ok: boolean; mensaje?: string };
+
+export async function inscribirSesion(userId: string, texto: string, origen: string): Promise<ResultadoInscripcion> {
+  const enlace = leerEnlaceSoundcloud(texto);
+  if (!enlace) {
+    return { ok: false, mensaje: 'Pega el enlace de tu sesión de SoundCloud, del tipo soundcloud.com/tu-nombre/tu-sesion. El de tu perfil no vale: tiene que ser el de la sesión.' };
+  }
+  // El enlace corto de la app (on.soundcloud.com) se convierte en el largo.
+  let limpia = enlace.url;
+  if (enlace.tipo === 'corto') {
+    const { data: res } = await supabase.functions.invoke('soundcloud-enlace', { body: { url: enlace.url } });
+    const larga = (res as { url?: string } | null)?.url;
+    if (!larga || !SOUNDCLOUD_RE.test(larga)) {
+      void logEvent('cta_click', origen, 'concurso_enlace_corto_fallido');
+      return { ok: false, mensaje: 'No hemos podido abrir ese enlace. Abre tu sesión en soundcloud.com desde el navegador y copia la dirección de arriba.' };
+    }
+    limpia = larga;
+  }
+  const { error } = await sb.from('concurso_inscripciones').insert({
+    concurso: CONCURSO, user_id: userId, soundcloud_url: limpia, acepta_bases: true,
+  });
+  if (error) {
+    return { ok: false, mensaje: error.code === '23505' ? 'Ya tienes una sesión inscrita en este concurso.' : 'No se ha podido guardar la inscripción. Inténtalo de nuevo en un momento.' };
+  }
+  void logEvent('cta_click', origen, enlace.tipo === 'corto' ? 'concurso_inscripcion enlace=corto' : 'concurso_inscripcion');
+  // Aviso al admin para que la revise. La función comprueba que la
+  // inscripción existe y saca los datos de la BD.
+  void supabase.functions.invoke('send-email', { body: { type: 'concurso_inscripcion', data: {} } });
+  window.dispatchEvent(new Event('concurso:inscrito'));
+  return { ok: true };
+}

@@ -2,18 +2,61 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Trophy } from 'lucide-react';
 import { HZ } from '@/components/healthy-zone/clay';
-import { concursoActivo } from '@/lib/concursoMadrid';
+import { concursoActivo, CIERRA_CONCURSO } from '@/lib/concursoMadrid';
+import { useEffect, useState } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 
 // PROVISIONAL: banner del Concurso DJ XPEAK Madrid (13 oct - 2 nov 2026), en
 // el Feed y en Inicio (en el móvil el Feed no está en la barra de abajo y los
 // DJs entran a Inicio). Se oculta solo al cerrar el plazo; después se puede
 // borrar el archivo y sus usos en FeedView y ExplorarView.
+const MS_DIA = 86_400_000;
+
+// Cuenta atrás hasta el cierre (hora de Madrid, ver CIERRA_CONCURSO). Última
+// jornada: cifras en rosa y "Último día" en la etiqueta.
+function CuentaAtras({ onFin }: { onFin: () => void }) {
+  const [ahora, setAhora] = useState(() => Date.now());
+  const resta = Math.max(0, CIERRA_CONCURSO.getTime() - ahora);
+  useEffect(() => {
+    const t = window.setInterval(() => setAhora(Date.now()), 1000);
+    return () => window.clearInterval(t);
+  }, []);
+  useEffect(() => { if (resta === 0) onFin(); }, [resta, onFin]);
+  const p = (n: number) => String(n).padStart(2, '0');
+  const trozos = [
+    { v: Math.floor(resta / MS_DIA), l: 'días' },
+    { v: Math.floor(resta / 3_600_000) % 24, l: 'horas' },
+    { v: Math.floor(resta / 60_000) % 60, l: 'min' },
+    { v: Math.floor(resta / 1000) % 60, l: 'seg' },
+  ];
+  const urgente = resta < MS_DIA;
+  const texto = `Quedan ${trozos[0].v} días, ${trozos[1].v} horas y ${trozos[2].v} minutos`;
+  return (
+    <div className="flex gap-2 mt-3.5" role="timer" aria-label={texto}>
+      {trozos.map((t, i) => (
+        <div key={t.l} aria-hidden className="min-w-[3.6rem] max-sm:min-w-0 max-sm:flex-1 px-1.5 pt-2 pb-1.5 rounded-2xl text-center"
+          style={{
+            background: 'rgba(255,255,255,0.16)',
+            boxShadow: 'inset 3px 3px 8px rgba(255,255,255,0.28), inset -3px -3px 8px rgba(0,0,0,0.2), 0 6px 12px rgba(20,0,80,0.25)',
+          }}>
+          <span className="block text-[1.9rem] max-sm:text-2xl leading-none tabular-nums text-white"
+            style={{ fontFamily: HZ.display, fontWeight: 800, color: urgente ? '#ff9aa8' : i === 3 ? '#ffe08a' : '#fff', textShadow: '0 2px 8px rgba(20,0,80,0.4)' }}>
+            {p(t.v)}
+          </span>
+          <span className="block text-[0.58rem] uppercase tracking-[0.14em] mt-1" style={{ color: '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>{t.l}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const ConcursoFeedBanner = () => {
   // Un organizador no puede participar, solo votar: a él solo le sale
   // "Ver aspirantes" (la página con las sesiones, separada de las bases).
   const { role } = useProfile();
-  if (!concursoActivo()) return null;
+  const [cerrado, setCerrado] = useState(false);
+  if (cerrado || !concursoActivo()) return null;
+  const ultimoDia = CIERRA_CONCURSO.getTime() - Date.now() < MS_DIA;
   const organizador = role === 'empresario';
 
   return (
@@ -33,7 +76,7 @@ const ConcursoFeedBanner = () => {
 
       <div className="relative flex-1 min-w-0">
         <p className="inline-flex items-center gap-1.5 text-[0.65rem] uppercase tracking-[0.2em] mb-1.5" style={{ color: '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
-          <Trophy size={12} strokeWidth={2.5} /> Hasta el 2 nov · Madrid
+          <Trophy size={12} strokeWidth={2.5} /> {ultimoDia ? 'Último día' : 'Hasta el 2 nov'} · Madrid
         </p>
         <p className="text-xl sm:text-2xl leading-tight text-white" style={{ fontFamily: HZ.display, fontWeight: 800 }}>
           Concurso DJ XPEAK Madrid
@@ -41,7 +84,8 @@ const ConcursoFeedBanner = () => {
         <p className="text-sm mt-1.5 max-w-md" style={{ color: 'rgba(255,255,255,0.88)', fontFamily: HZ.body }}>
           Para DJs de la Comunidad de Madrid. Sube tu sesión: las 3 con más me gusta van a la final y el jurado elige quién se lleva los Pioneer DJ HDJ-X5.
         </p>
-        <div className="flex flex-wrap items-center gap-2 mt-3">
+        <CuentaAtras onFin={() => setCerrado(true)} />
+        <div className="flex flex-wrap items-center gap-2 mt-3.5">
           {!organizador && (
             <Link to="/concurso-dj-madrid#inscripcion"
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"

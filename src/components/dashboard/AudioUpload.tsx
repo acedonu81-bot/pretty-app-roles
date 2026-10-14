@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
+import PresentarAlConcurso from '@/components/concurso/PresentarAlConcurso';
 
 const GENRE_GROUPS: { label: string; genres: string[] }[] = [
   { label: 'House', genres: ['Tech House', 'Deep House', 'House', 'Afro House', 'Organic House', 'Funky House', 'Tribal House', 'Progressive House', 'Acid House', 'Chicago House', 'Latin House'] },
@@ -376,6 +377,8 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
           </div>
         </div>
       )}
+
+      {sessionsLoaded && <PresentarAlConcurso enlaces={sessions.filter(s => s.type === 'soundcloud').map(s => s.url)} />}
 
       {/* Sessions list */}
       {sessions.length > 0 && (
