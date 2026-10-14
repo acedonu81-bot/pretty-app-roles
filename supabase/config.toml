@@ -28,3 +28,9 @@ secret = "env(TURNSTILE_SECRET_KEY)"
 # el resto de la web), así que desactivar el JWT no abre nada que no
 # estuviera ya público.
 verify_jwt = false
+
+[functions.email-unsubscribe]
+# Gmail/Yahoo llaman aquí directamente con el botón "Cancelar suscripción"
+# (POST one-click, RFC 8058), sin apikey. La función exige la firma HMAC del
+# enlace, así que sin JWT no se abre nada.
+verify_jwt = false

@@ -61,6 +61,11 @@ function completeness(p: Record<string, unknown>): { percent: number; missing: s
 // este email 13 días seguidos sin parar (ivanperezblanco1992@gmail.com,
 // 12-23 sep 2026). Ahora se cuenta cuántos recordatorios lleva y se corta.
 const MAX_REMINDERS = 4;
+// Separación entre recordatorios (14 oct 2026): el tope de 4 se cumplía pero
+// sin espacio entre ellos, así que salían 4 días seguidos (10 personas en un
+// mes). Ahora: día 1, 3, 7 y 14. ESPERA_DIAS[n] = días mínimos desde el
+// recordatorio anterior para mandar el siguiente cuando ya se han mandado n.
+const ESPERA_DIAS = [0, 2, 4, 7];
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
@@ -95,12 +100,20 @@ serve(async (req) => {
       const { percent, missing } = completeness(profile as Record<string, unknown>);
       if (percent >= 100 || missing.length === 0) continue;
 
-      const { count: reminderCount } = await admin
+      const { data: anteriores } = await admin
         .from('email_logs' as any)
-        .select('id', { count: 'exact', head: true })
+        .select('sent_at')
         .eq('user_id', profile.user_id)
-        .eq('type', 'profile_incomplete_reminder');
-      if ((reminderCount ?? 0) >= MAX_REMINDERS) continue;
+        .eq('type', 'profile_incomplete_reminder')
+        .order('sent_at', { ascending: false });
+      const enviados = anteriores?.length ?? 0;
+      if (enviados >= MAX_REMINDERS) continue;
+      if (enviados > 0) {
+        const ultimo = new Date((anteriores![0] as { sent_at: string }).sent_at).getTime();
+        // Margen de 2 h: el cron sale a las 11:00 y no siempre a la misma hora exacta.
+        const dias = (Date.now() - ultimo + 2 * 3600_000) / 86_400_000;
+        if (dias < ESPERA_DIAS[enviados]) continue;
+      }
 
       // Reservar el envío de HOY antes de enviarlo: el UNIQUE(user_id, type,
       // sent_day) de email_logs (migración 20260926130000) hace que una

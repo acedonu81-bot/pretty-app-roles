@@ -144,11 +144,11 @@ const rows = (pairs: [string, string][]) =>
     const borde = 'border-bottom:1px solid rgba(10,9,8,0.06)';
     if (val.length > 60) {
       return `<tr><td colspan="2" style="padding:10px 0;${borde}">`
-        + `<div style="color:#9CA3AF;font-size:12px;margin-bottom:4px">${esc(k)}</div>`
+        + `<div style="color:#6B7280;font-size:12px;margin-bottom:4px">${esc(k)}</div>`
         + `<div style="color:#0a0908;font-size:13px;font-weight:600;line-height:1.6">${noAutolink(val)}</div>`
         + `</td></tr>`;
     }
-    return `<tr><td style="padding:10px 12px 10px 0;color:#9CA3AF;font-size:12px;white-space:nowrap;${borde}">${esc(k)}</td>`
+    return `<tr><td style="padding:10px 12px 10px 0;color:#6B7280;font-size:12px;white-space:nowrap;${borde}">${esc(k)}</td>`
       + `<td style="padding:10px 0;color:#0a0908;font-size:13px;font-weight:600;line-height:1.6;${borde}">${noAutolink(val)}</td></tr>`;
   }).join('')}</table>`;
 
@@ -216,7 +216,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Solo hay <strong style="color:#0a0908">20 plazas Early Adopter</strong> en toda España. La tuya está asegurada. Gracias por estar desde el principio.
       </p>
       ${btn('Ver mi perfil en XPEAK →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px">¿Tienes dudas o sugerencias? Responde directamente a este email.</p>
+      <p style="color:#6B7280;font-size:12px;text-align:center;margin-top:16px">¿Tienes dudas o sugerencias? Responde directamente a este email.</p>
     `),
   }),
 
@@ -255,7 +255,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Completa también tu descripción, tarifa y ejemplos de tu trabajo: cuanto más completo esté tu perfil, más fácil es que te contraten.
       </p>
       ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard')}`}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
+      <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
     };
   },
 
@@ -287,7 +287,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Solo te queda: ${esc(d.missingLabels)}.
       </p>
       ${btn(esEmpresa ? 'Completar mi perfil de empresa →' : 'Terminar mi perfil →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
       esEmpresa
         ? `Te faltan ${esc(String(d.missingCount))} datos: ${esc(d.missingLabels)}`
         : `Perfil al ${esc(String(d.percent))}%: te faltan ${esc(String(d.missingCount))} pasos`),
@@ -309,7 +309,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Para que tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> tenga más oportunidades, te falta añadir: ${esc(d.missingLabels)}. Son pocos minutos.
       </p>
       ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
       'Los perfiles completos reciben más contactos de organizadores'),
   }),
 
@@ -331,7 +331,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Para recibir más contactos, añade tu precio orientativo y algunas fotos de tu trabajo.
       </p>
       ${btn('Ver mi perfil →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
       'Los organizadores ya pueden encontrarte en XPEAK'),
   }),
 
@@ -351,7 +351,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Sube una foto tuya real desde tu panel para que tu perfil vuelva a estar completo.
       </p>
       ${btn('Cambiar mi foto →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
       'Tu foto de perfil no muestra tu cara'),
   }),
 
@@ -376,7 +376,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Sube tu foto y completa la información que se te pide en el panel: es lo único que falta para que tu perfil siga apareciendo en el directorio. Si no se actualiza, tu perfil se ocultará del panel hasta que subas contenido.
       </p>
       ${btn('Completar mi perfil ahora →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
       'Último aviso: sube tu foto para seguir apareciendo'),
   }),
 
@@ -396,7 +396,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ${esc(new Date(String(d.date) + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }))}${d.location ? ` · ${esc(d.location)}` : ''}
       </p>
       ${btn('Ver mi calendario →', 'https://xpeak.es/dashboard?view=calendar')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Puedes desactivar este aviso desde tu Calendario en XPEAK.</p>`),
+      <p style="color:#6B7280;font-size:12px;text-align:center">Puedes desactivar este aviso desde tu Calendario en XPEAK.</p>`),
   }),
 
   // 1a4. Confirmación de trabajo nuevo — se dispara al cerrar un acuerdo
@@ -415,7 +415,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ${esc(new Date(String(d.date) + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }))}${d.location ? ` · ${esc(String(d.location))}` : ''}
       </p>
       ${btn('Ver mi calendario →', 'https://xpeak.es/dashboard?view=calendar')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Puedes desactivar este aviso desde tu Calendario en XPEAK.</p>`),
+      <p style="color:#6B7280;font-size:12px;text-align:center">Puedes desactivar este aviso desde tu Calendario en XPEAK.</p>`),
   }),
 
   // 1b. Anuncio del programa de referidos — a profesionales ya registrados
@@ -433,7 +433,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         <p style="color:#6B7280;font-size:12px;line-height:1.6;margin:0">Compártelo con otros DJs, fotógrafos, camareros o cualquier profesional del sector que conozcas. Cuando complete su perfil (foto, bio y algún media), el premio se activa solo.</p>
       </div>
       ${btn('Ver mi enlace en mi perfil →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px">¿Tienes dudas? Responde directamente a este email.</p>
+      <p style="color:#6B7280;font-size:12px;text-align:center;margin-top:16px">¿Tienes dudas? Responde directamente a este email.</p>
     `),
   }),
 
@@ -742,7 +742,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           Y si nos quieres seguir la pista: <a href="https://www.instagram.com/xpeaksite" style="color:#B8941E;font-weight:700;text-decoration:none">@xpeaksite en Instagram</a>.
         </p>
       </div>
-      <p style="color:#9CA3AF;font-size:12px;margin-top:20px">
+      <p style="color:#6B7280;font-size:12px;margin-top:20px">
         Un minuto de tu tiempo. Si prefieres no valorar, ignora este correo.
       </p>
     `, `Cuéntanos qué tal fue ${esc(d.titulo)}`),
@@ -767,7 +767,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Solo te llevará un minuto completarla.
       </p>
       ${btn('Completar mi valoración →', `https://xpeak.es/dashboard?view=empresario&tab=historial`)}
-      <p style="color:#9CA3AF;font-size:12px;margin-top:20px">
+      <p style="color:#6B7280;font-size:12px;margin-top:20px">
         Si prefieres no completarla, ignora este correo.
       </p>
     `, 'Termina tu valoración en XPEAK'),
@@ -851,7 +851,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Lugar', d.event_location],
         ['Descripción', d.event_description],
       ])}
-      <p style="color:#9CA3AF;font-size:12px;margin-top:16px">Responder a este email contacta directamente al solicitante.</p>`),
+      <p style="color:#6B7280;font-size:12px;margin-top:16px">Responder a este email contacta directamente al solicitante.</p>`),
   }),
 
   // 3. Flash Booking — confirmación al solicitante
@@ -871,7 +871,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           ['Lugar', d.event_location],
         ])}
       </div>
-      <p style="color:#9CA3AF;font-size:12px;margin-top:20px;text-align:center">
+      <p style="color:#6B7280;font-size:12px;margin-top:20px;text-align:center">
         Si tienes dudas, escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
       </p>`),
   }),
@@ -953,7 +953,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Nuestro equipo revisará tu perfil en las próximas <strong style="color:#D4AF37">24-48 horas</strong> y te notificaremos cuando esté activo.
       </p>
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">
+      <p style="color:#6B7280;font-size:12px;text-align:center">
         ¿Tienes prisa? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
       </p>`),
   }),
@@ -1004,7 +1004,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Asunto', d.subject || '—'],
       ])}
       <div style="margin-top:16px;padding:14px;background:rgba(10,9,8,0.03);border-radius:8px">
-        <p style="color:#9CA3AF;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Mensaje</p>
+        <p style="color:#6B7280;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Mensaje</p>
         <p style="font-size:14px;line-height:1.6;margin:0">${esc(d.message)}</p>
       </div>`),
   }),
@@ -1036,7 +1036,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Hemos recibido tu propuesta: <strong style="color:#D4AF37">${esc(d.feature)}</strong>.<br>
         La analizaremos y si entra en el roadmap te avisaremos.
       </p>
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">
+      <p style="color:#6B7280;font-size:12px;text-align:center">
         XPEAK está en fase beta: tu feedback es fundamental.
       </p>`),
   }),
@@ -1054,7 +1054,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Completa tu bio, sube tu audio y activa tu disponibilidad para empezar a recibir contactos.
       </p>
       ${btn('Ir a mi perfil →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
+      <p style="color:#6B7280;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
   }),
 
   // 10. Validación rookie
@@ -1070,7 +1070,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Completa tu perfil y sube contenido de calidad. Cuando tengas suficiente historial podrás solicitar la validación como Profesional.
       </p>
       ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
+      <p style="color:#6B7280;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
   }),
 
   // 11. Validación rechazada
@@ -1087,7 +1087,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Puedes completar tu perfil con más información (audio, bio, zona) y volver a solicitar validación cuando esté listo.
       </p>
       ${btn('Mejorar mi perfil →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Tienes preguntas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
+      <p style="color:#6B7280;font-size:12px;text-align:center">¿Tienes preguntas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
   }),
 
   // 11b. Foto de portada retirada por política de contacto (16 sep 2026):
@@ -1122,7 +1122,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         </tr>
       </table>
       ${btn('Subir nueva foto →', 'https://xpeak.es/dashboard?view=settings')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
+      <p style="color:#6B7280;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
   }),
 
   // 11c. Datos de contacto difuminados en las fotos (12 oct 2026, Dj eloy):
@@ -1156,7 +1156,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         </ul>
       </div>
       ${btn('Completar mi bio →', 'https://xpeak.es/dashboard?view=settings')}`}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
+      <p style="color:#6B7280;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
   }),
 
   // 12. Flash Booking — aviso al profesional (nueva solicitud recibida)
@@ -1244,7 +1244,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         : `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">Para entrar, tu perfil necesita ${esc(d.falta ?? 'foto y bio')}. Así el público y el jurado saben quién hay detrás de cada sesión, y los organizadores también te encuentran mejor en el directorio.</p>
            <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">Complétalo en un par de minutos y vuelve al concurso para inscribirte.</p>
            ${btn('Completar mi perfil y entrar →', 'https://xpeak.es/concurso-dj-madrid#inscripcion')}`}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:18px"><a href="https://xpeak.es/concurso-dj-madrid#bases" style="color:#D4AF37">Leer las bases completas</a></p>`),
+      <p style="color:#6B7280;font-size:12px;text-align:center;margin-top:18px"><a href="https://xpeak.es/concurso-dj-madrid#bases" style="color:#D4AF37">Leer las bases completas</a></p>`),
   }),
 
   booking_received: (d) => ({
@@ -1284,7 +1284,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Tipo de evento', d.event_type],
         ['Importe', d.amount ? `${d.amount}€` : '—'],
       ])}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px">
+      <p style="color:#6B7280;font-size:12px;text-align:center;margin-top:16px">
         Revisa el documento con calma antes de firmar. XPEAK no gestiona el envío del PDF: pídeselo directamente al contratante si no lo has recibido.
       </p>`),
   }),
@@ -1306,7 +1306,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         <p style="font-size:14px;font-weight:600;margin:0;line-height:1.6">Actualiza tu foto y bio: los perfiles actualizados reciben hasta 3× más contactos.</p>
       </div>
       ${btn('Ver mi perfil y actualizarlo →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">
+      <p style="color:#6B7280;font-size:12px;text-align:center">
         ¿Quieres darte de baja de estos emails? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
       </p>`),
   }),
@@ -1340,7 +1340,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       : 'https://xpeak.es/auth?mode=register&role=empresario';
 
     const articleNote = d.article_path
-      ? `<p style="color:#9CA3AF;font-size:11px;text-align:center;margin-top:8px">Este email se generó desde el artículo <a href="https://xpeak.es${esc(d.article_path)}" style="color:rgba(212,175,55,0.5)">${esc(d.article_path)}</a></p>`
+      ? `<p style="color:#6B7280;font-size:11px;text-align:center;margin-top:8px">Este email se generó desde el artículo <a href="https://xpeak.es${esc(d.article_path)}" style="color:rgba(212,175,55,0.5)">${esc(d.article_path)}</a></p>`
       : '';
 
     return {
@@ -1362,7 +1362,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         </div>` : ''}
         ${btn(ctaText, ctaUrl)}
         <div style="background:rgba(10,9,8,0.03);border:1px solid rgba(10,9,8,0.05);border-radius:8px;padding:14px;margin-top:4px">
-          <p style="color:#9CA3AF;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Por qué XPEAK</p>
+          <p style="color:#6B7280;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Por qué XPEAK</p>
           <p style="font-size:12px;color:#6B7280;margin:0;line-height:1.6">✓ Directorio verificado · ✓ Contratos automáticos · ✓ Flash Booking en 1h</p>
         </div>
         ${articleNote}
@@ -1427,7 +1427,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         </p>
         ${btn('Ver profesional disponible →', 'https://xpeak.es/auth?mode=register&role=empresario')}
         <div style="background:rgba(10,9,8,0.03);border:1px solid rgba(10,9,8,0.05);border-radius:8px;padding:14px;margin-top:4px">
-          <p style="color:#9CA3AF;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Por qué XPEAK</p>
+          <p style="color:#6B7280;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Por qué XPEAK</p>
           <p style="font-size:12px;color:#6B7280;margin:0;line-height:1.6">✓ Directorio verificado · ✓ Contratos automáticos · ✓ Flash Booking en 1h</p>
         </div>
       `),
@@ -1492,7 +1492,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         y mandar solicitudes.
       </p>
       ${btn('Crear mi perfil de Organizador →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px">¿Alguna duda? Responde a este email.</p>
+      <p style="color:#6B7280;font-size:12px;text-align:center;margin-top:16px">¿Alguna duda? Responde a este email.</p>
     `),
     };
   },
@@ -1510,7 +1510,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         </p>
       </div>
       ${btn('Ver mensaje →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:11px;text-align:center;margin:0">
+      <p style="color:#6B7280;font-size:11px;text-align:center;margin:0">
         Puedes desactivar estas notificaciones en Ajustes → Privacidad.
       </p>`),
   }),
@@ -1528,7 +1528,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         </p>
       </div>
       ${btn('Responder ahora →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:11px;text-align:center;margin:0">
+      <p style="color:#6B7280;font-size:11px;text-align:center;margin:0">
         Puedes desactivar estas notificaciones en Ajustes → Privacidad.
       </p>`),
   }),
@@ -1550,7 +1550,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         <tr>
           <td style="padding:10px 0;border-bottom:1px solid rgba(10,9,8,0.06);font-size:13px;color:#0a0908;font-weight:600">${esc(p.name)}</td>
           <td style="padding:10px 0;border-bottom:1px solid rgba(10,9,8,0.06);font-size:13px;color:#6B7280">${esc(rolLegible(p.role))} · ${esc(p.zone)}</td>
-          <td style="padding:10px 0;border-bottom:1px solid rgba(10,9,8,0.06);font-size:12px;color:#9CA3AF;text-align:right;white-space:nowrap">${esc(String(p.days))}d</td>
+          <td style="padding:10px 0;border-bottom:1px solid rgba(10,9,8,0.06);font-size:12px;color:#6B7280;text-align:right;white-space:nowrap">${esc(String(p.days))}d</td>
         </tr>`).join('')}
       </table>
       <p style="color:#6B7280;font-size:12px;line-height:1.6;margin:16px 0 0">
@@ -1589,7 +1589,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ${d.fast_responder_count > 1 ? `<br>Llevas ya <strong style="color:#D4AF37">${d.fast_responder_count} respuestas rápidas</strong>.` : ''}
       </p>
       ${btn('Ver mi ficha →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px">
+      <p style="color:#6B7280;font-size:12px;text-align:center;margin-top:16px">
         El badge se renueva automáticamente cada vez que vuelvas a responder en menos de 1h.
       </p>`),
   }),
@@ -1614,7 +1614,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ])}
       </div>
       ${btn('Abrir el chat →', 'https://xpeak.es/dashboard?view=messages')}
-      <p style="color:#9CA3AF;font-size:12px;margin-top:20px;text-align:center">
+      <p style="color:#6B7280;font-size:12px;margin-top:20px;text-align:center">
         ¿Necesitas ayuda? <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
       </p>` : `
       <h2 style="font-size:20px;font-weight:900;margin:0 0 10px;color:#0a0908">Solicitud no disponible</h2>
@@ -1625,7 +1625,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Puedes buscar otros profesionales disponibles en el directorio de XPEAK.
       </p>
       ${btn('Buscar otros profesionales →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">
+      <p style="color:#6B7280;font-size:12px;text-align:center">
         ¿Ayuda? <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
       </p>`),
   }),
@@ -2134,7 +2134,11 @@ async function atender(req: Request): Promise<Response> {
     const unsubUrl = `https://xpeak.es/baja-emails?token=${token}&e=${encodeURIComponent(to)}`;
     const html = rawHtml.replaceAll(UNSUB_PLACEHOLDER, unsubUrl);
 
-    await sendMail(to, subject, html, replyTo, to !== ADMIN ? unsubUrl : undefined);
+    // La cabecera List-Unsubscribe va a la función, no a la página: Gmail hace
+    // un POST directo (one-click) y la web respondía 405, así que su botón
+    // "Cancelar suscripción" no daba de baja a nadie (14 oct 2026).
+    const unsubOneClick = `${Deno.env.get('SUPABASE_URL')}/functions/v1/email-unsubscribe?token=${token}&e=${encodeURIComponent(to)}`;
+    await sendMail(to, subject, html, replyTo, to !== ADMIN ? unsubOneClick : undefined);
 
     // Log para el panel admin ("control absoluto" — 12 sep 2026): qué email
     // se le mandó a quién, con el HTML tal cual salió. No debe tumbar el

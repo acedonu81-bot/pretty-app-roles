@@ -4,12 +4,17 @@ import { supabase } from '@/integrations/supabase/client';
 
 export default function BajaEmails() {
   const [email, setEmail] = useState('');
+  // Firma del enlace del correo (send-email): sin ella no se puede dar de
+  // baja a nadie, si no cualquiera daría de baja cualquier email (14 oct 2026).
+  const [token, setToken] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const e = params.get('email');
+    // El enlace del correo trae ?token=…&e=…; 'email' por enlaces antiguos.
+    const e = params.get('e') ?? params.get('email');
     if (e) setEmail(e);
+    setToken(params.get('token') ?? '');
   }, []);
 
   async function handleUnsubscribe(e: React.FormEvent) {
@@ -18,7 +23,7 @@ export default function BajaEmails() {
     setStatus('loading');
     try {
       const { error } = await supabase.functions.invoke('email-unsubscribe', {
-        body: { email },
+        body: { email, token },
       });
       if (error) throw error;
       setStatus('done');
@@ -49,7 +54,18 @@ export default function BajaEmails() {
               </p>
               <p className="text-xs" style={{ color: '#6b7280' }}>
                 ¿Fue un error? Escríbenos a{' '}
-                <a href="mailto:info@xpeak.es" style={{ color: '#8B6A00' }}>info@xpeak.es</a>
+                <a href="mailto:info@xpeak.site" style={{ color: '#8B6A00' }}>info@xpeak.site</a>
+              </p>
+            </div>
+          ) : !token ? (
+            <div>
+              <h1 className="text-xl font-black mb-2">Anular suscripción</h1>
+              <p className="text-sm mb-4" style={{ color: '#374151' }}>
+                Para darte de baja, pulsa <strong>Anular suscripción</strong> al final de cualquier correo de XPEAK.
+              </p>
+              <p className="text-xs" style={{ color: '#6b7280' }}>
+                ¿No lo encuentras? Escríbenos a{' '}
+                <a href="mailto:info@xpeak.site" style={{ color: '#8B6A00' }}>info@xpeak.site</a>
               </p>
             </div>
           ) : (
@@ -61,7 +77,7 @@ export default function BajaEmails() {
               <input
                 type="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                readOnly
                 placeholder="tu@email.com"
                 required
                 className="w-full px-4 py-3 rounded-xl text-sm mb-4 outline-none"
@@ -86,10 +102,10 @@ export default function BajaEmails() {
               {status === 'error' && (
                 <p className="text-xs mt-4" style={{ color: '#ff5f56' }}>
                   Algo ha ido mal. Escríbenos a{' '}
-                  <a href="mailto:info@xpeak.es" style={{ color: '#8B6A00' }}>info@xpeak.es</a>
+                  <a href="mailto:info@xpeak.site" style={{ color: '#8B6A00' }}>info@xpeak.site</a>
                 </p>
               )}
-              <p className="text-xs mt-6" style={{ color: '#9ca3af' }}>
+              <p className="text-xs mt-6" style={{ color: '#6b7280' }}>
                 Los emails de seguridad (verificación, contraseña) seguirán llegando.
               </p>
             </form>
