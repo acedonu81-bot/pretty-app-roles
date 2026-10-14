@@ -31,9 +31,9 @@ const montar = () => render(<MemoryRouter initialEntries={[`/dashboard${estado.s
 describe('Flash Booking del profesional con ofertas nuevas', () => {
   beforeEach(() => { estado.role = 'dj'; estado.demandaBadge = 0; estado.search = ''; marcarOfertasVistas.mockClear(); });
 
-  it('sin ofertas nuevas abre como siempre, en Oferta', async () => {
+  it('abre siempre en las ofertas de organizadores, con o sin ofertas nuevas', async () => {
     montar();
-    expect(await screen.findByText('CONTENIDO_OFERTA')).toBeTruthy();
+    expect(await screen.findByText('CONTENIDO_DEMANDA')).toBeTruthy();
     expect(screen.queryByText(/Tienes \d+ ofertas? nuevas? de organizadores/)).toBeNull();
   });
 
@@ -54,19 +54,20 @@ describe('Flash Booking del profesional con ofertas nuevas', () => {
     expect(await screen.findByText('CONTENIDO_DEMANDA')).toBeTruthy();
   });
 
-  it('la pestaña se llama "Nueva oferta" (dj, staff, lo que sea), ya no "Demanda"', async () => {
+  it('las pestañas del profesional tienen nombres llanos: Ofertas para ti, Mis solicitudes, Estoy disponible', async () => {
     montar();
-    expect(await screen.findByRole('button', { name: /Nueva oferta/ })).toBeTruthy();
+    expect(await screen.findByRole('button', { name: /Ofertas para ti/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Mis solicitudes/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Estoy disponible/ })).toBeTruthy();
     expect(screen.queryByRole('button', { name: /^Demanda/ })).toBeNull();
-    expect(screen.getByText('(dj, staff, lo que sea)')).toBeTruthy();
   });
 
   // 13 oct 2026: la pestaña verde activa se veía "fatal": texto #22c55e sobre su
   // propio fondo verde pálido, contraste 1,86:1. Ahora el texto es verde oscuro.
-  it('la pestaña Nueva oferta activa tiene texto oscuro y legible, no el verde claro de marca', async () => {
+  it('la pestaña Ofertas para ti activa tiene texto oscuro y legible, no el verde claro de marca', async () => {
     estado.search = '?tab=demanda';
     montar();
-    const boton = await screen.findByRole('button', { name: /Nueva oferta/ });
+    const boton = await screen.findByRole('button', { name: /Ofertas para ti/ });
     expect(boton.style.color).toBe('rgb(22, 101, 52)'); // #166534
     expect(boton.style.color).not.toBe('rgb(34, 197, 94)'); // #22c55e
   });

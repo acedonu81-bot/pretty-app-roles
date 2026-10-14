@@ -24,17 +24,19 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
   // para abrir directamente en la solicitud recibida, en vez de la pestaña
   // por defecto (oferta/demanda).
   const tabFromQuery = new URLSearchParams(location.search).get('tab');
+  // Siempre abre en las ofertas de organizadores (lo que trae trabajo), tambien
+  // para el profesional: antes abria en "Oferta" (otros profesionales
+  // disponibles) y quien venia a buscar trabajo no lo veia. Solo cambia si el
+  // enlace pide otra pestaña a proposito.
   const [tab, setTab] = useState<'oferta' | 'demanda' | 'solicitudes'>(
-    tabFromQuery === 'solicitudes' && !isEmpresario ? 'solicitudes'
-      : tabFromQuery === 'demanda' ? 'demanda'
-      : (isEmpresario ? 'demanda' : 'oferta')
+    tabFromQuery === 'solicitudes' && !isEmpresario ? 'solicitudes' : tabFromQuery === 'oferta' ? 'oferta' : 'demanda'
   );
   const [pendingCount, setPendingCount] = useState(0);
 
   // Ofertas nuevas de organizadores que el profesional aún no ha visto. Un
   // profesional buscó la de Burguerfest y "dio vueltas" sin encontrarla (13 oct
   // 2026): Flash Booking abría en "Oferta" (profesionales disponibles) y las
-  // ofertas de organizadores están en "Nueva oferta" (antes "Demanda"). Si hay nuevas, abre ahí
+  // ofertas de organizadores están en "Ofertas para ti". Si hay nuevas, abre ahí
   // (salvo que el enlace pida otra pestaña a propósito o el usuario ya haya
   // elegido una) y, si está en otra, un aviso verde lo lleva.
   const { demandaBadge } = useDashboardBadges(user?.id, isEmpresario);
@@ -46,7 +48,7 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
       setTab('demanda');
     }
   }, [demandaBadge, isEmpresario]);
-  // Verlas en "Nueva oferta" las da por vistas y apaga los globos.
+  // Verlas en "Ofertas para ti" las da por vistas y apaga los globos.
   useEffect(() => {
     if (tab === 'demanda' && !isEmpresario && user?.id && demandaBadge > 0) void marcarOfertasVistas(user.id);
   }, [tab, isEmpresario, user?.id, demandaBadge]);
@@ -127,17 +129,20 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
     return () => { supabase.removeChannel(channel); };
   }, [user, isEmpresario]);
 
+  // Nombres en lenguaje llano y sin subtitulos: la misma pestaña se llamaba
+  // "Demanda" en el codigo, "Nueva oferta" en pantalla y "ofertas de
+  // organizadores" en los avisos, y quien buscaba una oferta daba vueltas.
   const tabs = [
-    { id: 'oferta' as const, label: 'Oferta', sub: 'profesionales disponibles', color: '#8A6D0F', pulse: false },
-    { id: 'demanda' as const, label: 'Nueva oferta', sub: 'dj, staff, lo que sea', color: '#22c55e', texto: '#166534', pulse: true },
-    ...(!isEmpresario ? [{ id: 'solicitudes' as const, label: 'Solicitudes', sub: 'recibidas', color: '#8A6D0F', pulse: false }] : []),
+    { id: 'demanda' as const, label: isEmpresario ? 'Mis ofertas' : 'Ofertas para ti', color: '#22c55e', texto: '#166534', pulse: true },
+    ...(!isEmpresario ? [{ id: 'solicitudes' as const, label: 'Mis solicitudes', color: '#8A6D0F', pulse: false }] : []),
+    { id: 'oferta' as const, label: isEmpresario ? 'Profesionales disponibles' : 'Estoy disponible', color: '#8A6D0F', pulse: false },
   ];
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-5">
         <h2 className="text-2xl font-bold mb-1">Flash <span className="text-gradient">Booking</span></h2>
-        <p className="text-sm text-muted-foreground">Oferta y demanda en tiempo real. Contratos cerrados en minutos.</p>
+        <p className="text-sm text-muted-foreground">Ofertas de trabajo y profesionales disponibles, en tiempo real.</p>
       </div>
 
       {isEmpresario && pendientes.length > 0 && (
@@ -258,7 +263,6 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
                 {pendingCount}
               </span>
             )}
-            <span className="text-xs opacity-80 ml-0.5 hidden sm:inline">({t.sub})</span>
           </button>
         ))}
       </div>

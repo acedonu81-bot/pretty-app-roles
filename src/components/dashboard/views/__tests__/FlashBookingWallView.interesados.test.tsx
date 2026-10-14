@@ -74,7 +74,7 @@ describe('Flash Booking del organizador con profesionales apuntados', () => {
   it('"Ver y elegir" abre la oferta concreta en Nueva oferta, aunque esté en otra pestaña', async () => {
     estado.pendientes = [manuel];
     montar();
-    fireEvent.click(await screen.findByRole('button', { name: /^Oferta/ }));
+    fireEvent.click(await screen.findByRole('button', { name: /Estoy disponible|Profesionales disponibles/ }));
     expect(await screen.findByText('CONTENIDO_OFERTA')).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: 'Ver y elegir' }));
     expect(await screen.findByText('CONTENIDO_NUEVA_OFERTA foco:q-burguerfest')).toBeTruthy();

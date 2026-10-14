@@ -37,7 +37,7 @@ describe('Flash Booking del profesional al que ya han elegido', () => {
 
   it('sin elecciones pendientes no enseña ningún aviso de confirmar', async () => {
     montar();
-    expect(await screen.findByText('CONTENIDO_OFERTA')).toBeTruthy();
+    expect(await screen.findByText(/CONTENIDO_NUEVA_OFERTA/)).toBeTruthy();
     expect(screen.queryByText(/te ha elegido/)).toBeNull();
   });
 
