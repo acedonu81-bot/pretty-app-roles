@@ -20,7 +20,7 @@ import { logAsistente, resumenAsistente } from '@/lib/asistenteAlta';
 const WIZARD_CITIES = [...ALL_CITIES, 'Otra ciudad'];
 
 const ROLES = [
-  { value: 'dj',           label: 'DJ / Artista',        desc: 'DJ o artista en solitario',         icon: Music2,         color: '#D4AF37' },
+  { value: 'dj',           label: 'DJ / Artista',        desc: 'Persona que pincha o actúa en directo',       icon: Music2,         color: '#D4AF37' },
   { value: 'grupo-musical', label: 'Grupo Musical',      desc: 'Banda, orquesta o grupo de versiones', icon: Guitar,       color: '#c084fc' },
   { value: 'disco-movil',  label: 'Disco Móvil',         desc: 'Sonido, luces y DJ para fiestas',   icon: Disc3,          color: '#22d3ee' },
   { value: 'media',        label: 'Fotógrafo / Vídeo',   desc: 'Fotografía y video de eventos',     icon: Camera,         color: '#60a5fa' },
@@ -40,7 +40,7 @@ const ROLES = [
   { value: 'vestuario',    label: 'Estilista / Vestuario', desc: 'Moda, vestuario y styling',       icon: Shirt,          color: '#10b981' },
   { value: 'photo-booth',  label: 'Photo Booth',         desc: 'Cabinas de fotos y espejos 360',    icon: Camera,         color: '#f43f5e' },
   { value: 'tecnico',      label: 'Técnico de Sonido y Montaje', desc: 'Sonido, iluminación y montaje de escenario', icon: SlidersHorizontal, color: '#38bdf8' },
-  { value: 'alquiler',     label: 'Alquiler de Equipos', desc: 'Sonido, DJ, luces, fotomatón, escenarios, mobiliario', icon: Speaker, color: '#0ea5e9' },
+  { value: 'alquiler',     label: 'Alquiler de Equipos', desc: 'Empresas de sonido, luces, cabinas DJ, escenarios', icon: Speaker, color: '#0ea5e9' },
   { value: 'local_eventos', label: 'Local / Sala para Eventos', desc: 'Alquiler de espacio para eventos privados', icon: Briefcase,     color: '#a3a3a3' },
 ];
 

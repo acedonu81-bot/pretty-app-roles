@@ -150,7 +150,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   };
 
   const ROLE_OPTIONS: { value: string; label: string }[] = [
-    { value: 'dj',            label: 'DJ / Artista / Productor' },
+    { value: 'dj',            label: 'DJ / Artista (pinchas o actúas tú)' },
     { value: 'staff',         label: 'Sala & Barra' },
     { value: 'azafata',       label: 'Azafata' },
     { value: 'event_manager', label: 'Encargada de Eventos' },
@@ -698,9 +698,21 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 <div className="mt-2 p-3 rounded-lg" style={{ background: 'rgba(226,190,80,0.08)', border: '1px solid rgba(226,190,80,0.35)' }}>
                   <p className="text-xs font-bold mb-1" style={{ color: '#8A6D0F' }}>
                     {roleToConfirm === 'alquiler'
-                      ? '¿Alquilas tu propio equipo (sonido, luces, DJ, escenario...)?'
-                      : `¿Te contratan como ${ROLE_OPTIONS.find(o => o.value === roleToConfirm)?.label ?? roleToConfirm}?`}
+                      ? '¿Alquilas tu propio equipo (sonido, luces, cabina DJ, escenario...)?'
+                      : roleToConfirm === 'dj'
+                        ? '¿Pinchas o actúas tú en directo?'
+                        : `¿Te contratan como ${ROLE_OPTIONS.find(o => o.value === roleToConfirm)?.label ?? roleToConfirm}?`}
                   </p>
+                  {/* El directorio de Artistas es de personas que actúan. Una
+                      empresa de sonido marcaba DJ porque "da servicio de DJ" y
+                      salía entre los DJs (caso real: Eventos Pro-Sound, 13 oct
+                      2026, roles=['alquiler','dj']). */}
+                  {roleToConfirm === 'dj' && ['alquiler', 'tecnico'].some(r => activeRoles.includes(r)) && (
+                    <p className="text-xs font-bold mb-1.5" style={{ color: '#B42318' }}>
+                      Si eres una empresa de sonido, luces o alquiler, no lo marques: el directorio
+                      de DJs es solo para artistas. Tu empresa ya aparece en {activeRoles.includes('alquiler') ? 'Alquiler de Equipos' : 'Técnicos de Sonido'}.
+                    </p>
+                  )}
                   <p className="text-xs text-muted-foreground mb-2.5">
                     Aparecerás en ese directorio y los clientes te pedirán ese servicio.
                     Si solo es algo que haces para ti, no lo marques.
