@@ -731,7 +731,9 @@ const Landing = () => {
         <div className="absolute inset-0 pointer-events-none" style={{
           background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.3) 70%, #ffffff 100%)'
         }} />
-      <header className="relative max-w-[1200px] mx-auto px-5 md:px-8 pt-6 pb-8 md:pt-10 md:pb-16 text-center">
+      <header className="relative max-w-[1200px] mx-auto px-5 md:px-8 pt-6 pb-8 md:pt-16 md:pb-16 text-center">
+        {/* md:pt-16 deja sitio a la píldora "Nuevo bolo conseguido". */}
+        <GigWonPopup />
         {/* Sin FadeIn: es el LCP de la portada, no puede depender de JS/
             animación para pintarse — con opacity:0 hasta que Framer Motion
             hidrata, el navegador tarda de más en marcarlo como "pintado". */}
@@ -1148,7 +1150,6 @@ const Landing = () => {
       </main>
       <LegalFooter />
       <DemoVideoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
-      <GigWonPopup />
       {showParticular && (
         <Suspense fallback={null}><ParticularRequestModal onClose={() => setShowParticular(false)} /></Suspense>
       )}

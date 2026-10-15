@@ -55,8 +55,11 @@ const fmtDates = (g: Gig): string => {
 };
 
 interface GigWonPopupProps {
-  /** 'landing' queda fixed, pegado bajo el nav público (el hero tiene texto
-   * grande justo debajo, no hay hueco centrado libre para superponerlo).
+  /** 'landing' va en absolute arriba del hero de la portada (el padre es el
+   * <header> relative), en el hueco sobre el banner del concurso. Antes iba
+   * fixed en el centro del nav y, desde que el nav tiene menú central, tapaba
+   * "Profesionales / Para organizadores / Recursos" y en iPad vertical también
+   * "Acceder" (auditoría tablet 15 oct 2026). Solo desde md: debajo no hay hueco.
    * 'inline' no usa position:fixed — fluye en el flujo normal del padre,
    * pensado para el topbar del dashboard, a la derecha de la búsqueda. */
   variant?: 'landing' | 'inline';
@@ -100,8 +103,8 @@ const GigWonPopup = ({ variant = 'landing' }: GigWonPopupProps) => {
 
   return (
     <div
-      className={`rounded-full overflow-hidden hidden sm:block flex-shrink-0 ${
-        variant === 'landing' ? 'fixed z-[60] top-3 left-1/2 -translate-x-1/2' : ''
+      className={`rounded-full overflow-hidden hidden flex-shrink-0 ${
+        variant === 'landing' ? 'md:block absolute z-10 top-3 left-1/2 -translate-x-1/2 whitespace-nowrap' : 'sm:block'
       }`}
       style={{
         background: '#0f3d2e',

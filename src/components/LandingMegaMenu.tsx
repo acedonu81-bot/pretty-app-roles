@@ -165,7 +165,11 @@ const LandingMegaMenu = () => {
   const close = () => setOpen(null);
 
   return (
-    <div ref={rootRef} className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2"
+    // Mide ~530 px: centrado encima del nav solo cabe desde ~1060 px. De md a
+    // lg se montaba sobre el logo, "Acceder" y "Descubrir" (auditoría tablet
+    // 15 oct 2026). En tablet no sale (como en móvil); de lg a xl va en el
+    // flujo entre logo y botones; desde xl, centrado como antes.
+    <div ref={rootRef} className="hidden lg:flex items-center gap-1 relative xl:absolute xl:left-1/2 xl:-translate-x-1/2"
       onMouseLeave={scheduleClose} onMouseEnter={cancelClose}>
       {TABS.map(tab => {
         const isOpen = open === tab.id;
