@@ -80,8 +80,13 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         @media (prefers-reduced-motion: reduce) { .concurso-parpadeo, .concurso-boton-pulso, .concurso-cascos { animation: none; transform: rotate(-6deg); } }
       `}</style>
     )}
+    {/* Rejilla (15 oct 2026): en el móvil el contador iba en la columna del
+        texto, al lado de los cascos, y le quedaban ~150 px para 4 casillas
+        (cifras montadas, "HORAS" cortado). Ahora los cascos solo acompañan al
+        título y el contador y los botones van a todo el ancho; desde sm los
+        cascos ocupan toda la altura a la derecha, como antes. */}
     <div
-      className={`relative flex items-center gap-4 overflow-hidden rounded-3xl mb-4 ${sinTexto ? 'p-5 sm:p-12 concurso-parpadeo' : 'p-5 sm:p-6'}`}
+      className={`relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-3xl mb-4 ${sinTexto ? 'p-5 sm:p-12 concurso-parpadeo' : 'p-5 sm:p-6'}`}
       style={sinTexto
         ? { background: 'linear-gradient(135deg,#F4F9FF 0%,#D3E6FB 55%,#B9D4F7 100%)', boxShadow: clay('36,119,179', 'lg') }
         : {
@@ -93,41 +98,41 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
       {!sinTexto && <span aria-hidden className="absolute -left-10 top-[70%] h-[3px] w-[140%] -rotate-12 opacity-50" style={{ background: '#7fd3ff', filter: 'blur(2px)' }} />}
       {!sinTexto && <span aria-hidden className="absolute -left-10 top-[90%] h-[3px] w-[140%] -rotate-[20deg] opacity-40" style={{ background: '#f08cff', filter: 'blur(2px)' }} />}
 
-      <div className="relative flex-1 min-w-0">
+      <div className="relative min-w-0">
         <p className="inline-flex items-center gap-1.5 text-[0.65rem] uppercase tracking-[0.2em] mb-1.5" style={{ color: sinTexto ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
           <Trophy size={12} strokeWidth={2.5} /> {ultimoDia ? 'Último día' : 'Hasta el 2 nov'} · Madrid
         </p>
         <p className={`leading-tight ${sinTexto ? 'text-[#14407A]' : 'text-white'} ${sinTexto ? 'text-[1.7rem] sm:text-6xl' : 'text-xl sm:text-2xl'}`} style={{ fontFamily: HZ.display, fontWeight: 800 }}>
           Concurso DJ XPEAK Madrid
         </p>
-        {!sinTexto && (
-        <p className="text-sm mt-1.5 max-w-md" style={{ color: 'rgba(255,255,255,0.88)', fontFamily: HZ.body }}>
-          Para DJs de la Comunidad de Madrid. Sube tu sesión: las 3 con más me gusta van a la final y el jurado elige quién se lleva los Pioneer DJ HDJ-X5.
-        </p>
-        )}
-        <CuentaAtras onFin={() => setCerrado(true)} claro={sinTexto} />
-        <div className="flex flex-wrap items-center gap-2 mt-3.5">
-          {sinTexto ? (
-            <Link to="/concurso-dj-madrid"
-              className="concurso-boton-pulso inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-lg sm:text-xl"
-              style={{ background: '#2477B3', color: '#fff', boxShadow: clayButton('36,119,179'), fontFamily: HZ.display, fontWeight: 800 }}>
-              Entrar <ArrowRight size={20} strokeWidth={2.75} />
-            </Link>
-          ) : (<>
-          {!organizador && (
-            <Link to="/concurso-dj-madrid#inscripcion"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
-              style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
-              Participar <ArrowRight size={15} strokeWidth={2.75} />
-            </Link>
-          )}
-          <Link to="/concurso-dj-madrid/aspirantes"
+      </div>
+      {!sinTexto && (
+      <p className="relative col-span-2 sm:col-span-1 text-sm mt-1.5 max-w-md" style={{ color: 'rgba(255,255,255,0.88)', fontFamily: HZ.body }}>
+        Para DJs de la Comunidad de Madrid. Sube tu sesión: las 3 con más me gusta van a la final y el jurado elige quién se lleva los Pioneer DJ HDJ-X5.
+      </p>
+      )}
+      <div className="relative col-span-2 sm:col-span-1"><CuentaAtras onFin={() => setCerrado(true)} claro={sinTexto} /></div>
+      <div className="relative col-span-2 sm:col-span-1 flex flex-wrap items-center gap-2 mt-3.5">
+        {sinTexto ? (
+          <Link to="/concurso-dj-madrid"
+            className="concurso-boton-pulso inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-lg sm:text-xl"
+            style={{ background: '#2477B3', color: '#fff', boxShadow: clayButton('36,119,179'), fontFamily: HZ.display, fontWeight: 800 }}>
+            Entrar <ArrowRight size={20} strokeWidth={2.75} />
+          </Link>
+        ) : (<>
+        {!organizador && (
+          <Link to="/concurso-dj-madrid#inscripcion"
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
             style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
-            Ver aspirantes <ArrowRight size={15} strokeWidth={2.75} />
+            Participar <ArrowRight size={15} strokeWidth={2.75} />
           </Link>
-          </>)}
-        </div>
+        )}
+        <Link to="/concurso-dj-madrid/aspirantes"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
+          style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
+          Ver aspirantes <ArrowRight size={15} strokeWidth={2.75} />
+        </Link>
+        </>)}
       </div>
 
       <img
@@ -137,7 +142,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         height={358}
         loading={sinTexto ? 'eager' : 'lazy'}
         decoding="async"
-        className={`relative h-auto shrink-0 ${sinTexto ? 'w-24 sm:w-72 concurso-cascos' : 'w-24 sm:w-36 -rotate-6'}`}
+        className={`relative h-auto shrink-0 self-center col-start-2 row-start-1 sm:[grid-row:1/span_4] ${sinTexto ? 'w-24 sm:w-48 md:w-72 concurso-cascos' : 'w-24 sm:w-36 -rotate-6'}`}
         style={{ filter: 'drop-shadow(0 10px 18px rgba(20,0,60,0.45))' }}
       />
     </div>

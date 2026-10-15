@@ -130,16 +130,16 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
           style={{ background: propia.estado === 'pendiente' ? TONES.sky.card : '#FDE2E2', boxShadow: clay(propia.estado === 'pendiente' ? TONES.sky.rgb : '185,28,28') }}>
           <div className="flex items-center gap-3 mb-4">
             {propia.photo_url
-              ? <img src={propia.photo_url} alt="" className="w-14 h-14 rounded-full object-cover" style={{ boxShadow: clay(TONES.sky.rgb, 'sm') }} />
-              : <div className="w-14 h-14 rounded-full" style={{ background: HZ.surface }} />}
+              ? <img src={propia.photo_url} alt="" className="w-14 h-14 shrink-0 rounded-full object-cover" style={{ boxShadow: clay(TONES.sky.rgb, 'sm') }} />
+              : <div className="w-14 h-14 shrink-0 rounded-full" style={{ background: HZ.surface }} />}
             <div className="flex-1 min-w-0">
               <p className="text-lg leading-tight truncate" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>{propia.display_name ?? 'Tu sesión'}</p>
               {propia.zone && <p className="text-sm" style={{ color: HZ.inkSoft, fontFamily: HZ.body }}>{propia.zone}</p>}
+              <span className="inline-block mt-1.5 text-xs px-3 py-1.5 rounded-full text-white whitespace-nowrap"
+                style={{ background: propia.estado === 'pendiente' ? AZUL : '#b91c1c', fontFamily: HZ.body, fontWeight: 800, boxShadow: clayButton(propia.estado === 'pendiente' ? '37,99,235' : '185,28,28') }}>
+                {propia.estado === 'pendiente' ? 'En revisión' : 'No admitida'}
+              </span>
             </div>
-            <span className="text-xs px-3 py-1.5 rounded-full text-white"
-              style={{ background: propia.estado === 'pendiente' ? AZUL : '#b91c1c', fontFamily: HZ.body, fontWeight: 800, boxShadow: clayButton(propia.estado === 'pendiente' ? '37,99,235' : '185,28,28') }}>
-              {propia.estado === 'pendiente' ? 'En revisión' : 'No admitida'}
-            </span>
           </div>
           <div className="rounded-2xl p-2" style={{ background: HZ.surface, boxShadow: clayInset }}>
             <Reproductor url={propia.soundcloud_url} titulo="Tu sesión" />
@@ -168,6 +168,9 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
             return (
               <div key={p.user_id} className="rounded-[28px] p-5 transition-transform hover:-translate-y-0.5"
                 style={{ order: idx, background: tono.card, boxShadow: clay(tono.rgb, enFinal ? 'lg' : 'md') }}>
+                {/* Estado bajo el nombre (15 oct 2026): a su derecha, en un móvil
+                    de 320 px dejaba 74 px para foto y nombre; la foto salía en
+                    óvalo y la pastilla tapaba el nombre. */}
                 <div className="flex items-center gap-3 mb-4">
                   <span className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-base"
                     style={enFinal
@@ -177,22 +180,22 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                   </span>
                   <a href={`/p/${p.user_id}`} className="flex items-center gap-3 flex-1 min-w-0">
                     {p.photo_url
-                      ? <img src={p.photo_url} alt="" className="w-12 h-12 rounded-full object-cover" loading="lazy" style={{ boxShadow: clay(tono.rgb, 'sm') }} />
-                      : <div className="w-12 h-12 rounded-full" style={{ background: HZ.surface }} />}
+                      ? <img src={p.photo_url} alt="" className="w-12 h-12 shrink-0 rounded-full object-cover" loading="lazy" style={{ boxShadow: clay(tono.rgb, 'sm') }} />
+                      : <div className="w-12 h-12 shrink-0 rounded-full" style={{ background: HZ.surface }} />}
                     <div className="min-w-0">
                       <p className="text-lg leading-tight truncate" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>{p.display_name ?? 'DJ'}</p>
                       {p.zone && <p className="text-sm" style={{ color: tono.stroke, fontFamily: HZ.body, fontWeight: 700 }}>{p.zone}</p>}
+                      <span className="inline-block mt-1.5 text-[0.7rem] px-2.5 py-1 rounded-full whitespace-nowrap"
+                        style={enFinal ? pastilla('#FFF7DB', TONES.sun.stroke, TONES.sun.rgb) : pastilla(TONES.leaf.card, TONES.leaf.stroke, TONES.leaf.rgb)}>
+                        {enFinal ? 'Ahora en la final' : 'Publicada'}
+                      </span>
                     </div>
                   </a>
-                  <span className="text-[0.7rem] px-2.5 py-1.5 rounded-full shrink-0"
-                    style={enFinal ? pastilla('#FFF7DB', TONES.sun.stroke, TONES.sun.rgb) : pastilla(TONES.leaf.card, TONES.leaf.stroke, TONES.leaf.rgb)}>
-                    {enFinal ? 'Ahora en la final' : 'Publicada'}
-                  </span>
                 </div>
                 <div className="rounded-2xl p-2" style={{ background: HZ.surface, boxShadow: clayInset }}>
                   <Reproductor url={p.soundcloud_url} titulo={`Sesión de ${p.display_name ?? 'DJ'}`} />
                 </div>
-                <div className="flex items-center justify-between gap-2 mt-4 text-sm">
+                <div className="flex items-center justify-between flex-wrap gap-2 mt-4 text-sm [&>*]:whitespace-nowrap">
                   {/* Votar solo dentro de plazo y nunca a uno mismo: antes el DJ
                       podía darse me gusta y su contador lo sumaba aunque el ranking
                       no lo cuenta, y se podía seguir votando tras el cierre. */}
