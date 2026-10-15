@@ -9,17 +9,21 @@
  * para retratos normales, así que enseñaban justo la barra negra con la hora
  * y el nombre del archivo, y la cara cortada abajo.
  *
- * Para esas imágenes (alto/ancho >= 1,9, que ningún retrato real alcanza: una
- * foto vertical normal es 4:3 = 1,33 y un vídeo vertical 16:9 = 1,78) se
- * coloca la ventana del recorte en la franja central, donde está la foto, con
- * la cara en el tercio superior de esa franja. No hace falta detectar las
- * barras: en una captura ocupan siempre un 14-16 % arriba y un 12-14 % abajo.
- * Las fotos normales no se tocan (devuelve null).
+ * Para esas imágenes (alto/ancho >= 2,0: las pantallas de móvil actuales son
+ * 18:9 a 20:9, es decir 2,0-2,2, y un retrato real no pasa de 1,9: una foto
+ * vertical normal es 4:3 = 1,33, un vídeo vertical 16:9 = 1,78 y el recorte
+ * alto de Susana López, 1,91) se coloca la ventana del recorte en la franja
+ * central, donde está la foto, con la cara en el tercio superior de esa
+ * franja. No hace falta detectar las barras. Medido el 15 oct 2026 en las
+ * capturas reales: Laura (galería oscura) tiene barras del 15 % arriba y 15 %
+ * abajo; "Olé hop animaciones" (Google Fotos) 19 % arriba (cabecera + hueco
+ * negro) y 19 % abajo (Compartir/Editar + navegación). Se asume un 20 % arriba
+ * y un 16 % abajo. Las fotos normales no se tocan (devuelve null).
  */
-export const RATIO_CAPTURA = 1.9;
-const BARRA_SUP = 0.16;
-const BARRA_INF = 0.14;
-const CARA = 0.38;
+export const RATIO_CAPTURA = 2.0;
+const BARRA_SUP = 0.2;
+const BARRA_INF = 0.16;
+const CARA = 0.34;
 
 /**
  * object-position vertical para un recorte "cover" de una captura, o null si
