@@ -8,7 +8,8 @@ import { toast } from 'sonner';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 
-const MAX_VIDEO_SESSION_MB = 50;
+const MAX_VIDEO_SESSION_MB = 200;
+const MAX_BIO_VIDEO_MB = 200;
 const MAX_VIDEO_SESSION_S  = 60;
 
 interface VideoItem { name: string; url: string; path: string; }
@@ -255,13 +256,13 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
   };
 
   // Grabar/subir vídeo desde la cámara del móvil → sube a Storage y lo guarda
-  // en bio_video_url (el que reproduce el feed tipo Instagram). Máx 60s / 60MB.
+  // en bio_video_url (el que reproduce el feed tipo Instagram). Máx 60s / 200MB.
   const bioVideoInputRef = useRef<HTMLInputElement>(null);
   const handleBioVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
     if (!file.type.startsWith('video/')) { toast.error('Sube un vídeo (MP4, MOV).'); return; }
-    if (file.size > 60 * 1024 * 1024) { toast.error('El vídeo no puede superar 60MB.'); return; }
+    if (file.size > MAX_BIO_VIDEO_MB * 1024 * 1024) { toast.error(`El vídeo no puede superar ${MAX_BIO_VIDEO_MB}MB.`); return; }
     setSavingVideo(true);
     try {
       const path = `${user.id}/bio-video/${Date.now()}.mp4`;
@@ -631,7 +632,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
                 <Video size={14} style={{ color: BLUE }} /> Sesiones de Vídeo
               </h4>
               <p className="text-xs text-muted-foreground mb-3">
-                Sube clips de actuaciones (MP4/MOV, máx 50MB, 60s).
+                Sube clips de actuaciones (MP4/MOV, máx 200MB, 60s).
               </p>
               <VideoSessionUpload maxSessions={10} userId={user!.id} />
             </div>
