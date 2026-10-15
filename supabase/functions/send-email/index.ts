@@ -1159,6 +1159,25 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#6B7280;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
   }),
 
+  // Aviso al admin del filtro de contacto en imágenes (scan-image-contact, 15 oct
+  // 2026). Solo con x-internal-secret/clave de servicio.
+  admin_imagen_contacto: (d) => ({
+    subject: d.modo === 'oculta' ? 'XPEAK: imagen retirada por datos de contacto' : 'XPEAK: imagen con datos de contacto (modo sombra)',
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Imagen con datos de contacto</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        ${d.modo === 'oculta'
+          ? 'Se ha sustituido en público por un placeholder. El original está guardado en cuarentena y se puede restaurar.'
+          : 'Modo sombra: la imagen sigue visible, solo se ha registrado.'}
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px"><strong style="color:#0a0908">Detectado:</strong> ${esc(d.tipos)}</p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px"><strong style="color:#0a0908">Texto:</strong> ${esc(d.texto)}</p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px"><strong style="color:#0a0908">Usuario:</strong> ${esc(d.owner_id ?? 'desconocido')}</p>
+      ${btn('Ver la imagen →', String(d.url ?? 'https://xpeak.es'))}
+      <p style="color:#6B7280;font-size:12px">Registro: image_contact_flags ${esc(d.flag_id ?? '')}</p>`),
+  }),
+
   // 12. Flash Booking — aviso al profesional (nueva solicitud recibida)
   // Alta como organizador con pinta de DJ (13 oct 2026, Dj MONSTER): los
   // perfiles de empresario no salen en el directorio, así que si en realidad
