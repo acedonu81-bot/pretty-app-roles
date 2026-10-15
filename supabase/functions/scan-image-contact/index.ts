@@ -58,10 +58,10 @@ serve(async (req) => {
   const modo = cfg?.modo ?? 'sombra';
   if (modo === 'apagado') return json({ skipped: 'apagado' });
 
-  const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
-  if (!apiKey) {
-    console.error('[scan-image-contact] falta ANTHROPIC_API_KEY, no se revisa');
-    return json({ skipped: 'sin clave' });
+  const apiKey = (Deno.env.get('ANTHROPIC_API_KEY') ?? '').trim();
+  if (!/^sk-ant-[\x21-\x7e]+$/.test(apiKey)) {
+    console.error('[scan-image-contact] ANTHROPIC_API_KEY ausente o no válida (debe empezar por sk-ant-), no se revisa');
+    return json({ skipped: 'clave no válida' });
   }
 
   const ownerId = /^[0-9a-f-]{36}$/i.test(name.split('/')[0]) ? name.split('/')[0] : null;
