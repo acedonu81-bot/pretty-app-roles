@@ -131,7 +131,7 @@ const CookieBanner = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 120, opacity: 0 }}
           transition={{ type: 'spring', damping: 26, stiffness: 200 }}
-          className="fixed bottom-4 left-4 right-4 z-[9999] max-w-xl mx-auto"
+          className="fixed bottom-[max(1rem,var(--sab))] left-4 right-4 z-[9999] max-w-xl mx-auto"
         >
           <div style={{
             background: 'rgba(255,253,247,0.98)',

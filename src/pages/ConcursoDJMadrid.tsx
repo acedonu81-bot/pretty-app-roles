@@ -344,7 +344,9 @@ export default function ConcursoDJMadrid() {
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
-        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
+        {/* Zona segura: en la app instalada de iPhone la barra quedaba bajo la
+            hora y el notch (barra de estado translúcida). */}
+        <nav className="flex items-center justify-between px-4 sm:px-6 pb-4 pt-[max(1rem,var(--sat))] max-w-5xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-2 sm:gap-3">
             <a href={ASPIRANTES} className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold" style={{ border: `1px solid ${GOLD}`, color: GOLD_TEXT }}>
