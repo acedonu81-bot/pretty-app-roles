@@ -80,11 +80,13 @@ export default function CondicionesPublicas({ p, nombre }: { p: Condiciones; nom
   if (lineas.length === 0 && !excluidos && !nota) return null;
 
   return (
-    <section className="rounded-2xl p-5 sm:p-6" style={{ background: '#0a0908' }}>
-      <p className="text-[0.75rem] font-black uppercase tracking-widest mb-1" style={{ color: '#D4AF37' }}>
+    // Crema con borde dorado, como el resto de la ficha (antes iba en casi
+    // negro: la paleta no lleva fondos oscuros en páginas públicas).
+    <section className="rounded-2xl p-5 sm:p-6" style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.5)' }}>
+      <p className="text-[0.75rem] font-black uppercase tracking-widest mb-1" style={{ color: '#8B6A00' }}>
         Condiciones de {nombre}
       </p>
-      <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>
+      <p className="text-xs mb-4" style={{ color: '#4b5563' }}>
         Las fija el profesional. Léelas antes de escribirle.
       </p>
 
@@ -93,21 +95,21 @@ export default function CondicionesPublicas({ p, nombre }: { p: Condiciones; nom
           {lineas.map((l, i) => (
             <li key={i} className="flex items-start gap-2.5">
               <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0"
-                style={{ background: l.fuerte ? '#D4AF37' : 'rgba(255,255,255,0.35)' }} />
-              <span style={{ color: l.fuerte ? '#fff' : 'rgba(255,255,255,0.8)' }}>{l.texto}</span>
+                style={{ background: l.fuerte ? '#B8941E' : 'rgba(0,0,0,0.3)' }} />
+              <span style={{ color: l.fuerte ? '#111' : '#374151' }}>{l.texto}</span>
             </li>
           ))}
         </ul>
       )}
 
       {excluidos && (
-        <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.1)' }}>
           <p className="text-[0.75rem] font-black uppercase tracking-wider mb-2"
-            style={{ color: 'rgba(255,255,255,0.45)' }}>No incluye</p>
+            style={{ color: '#4b5563' }}>No incluye</p>
           <div className="flex flex-wrap gap-1.5">
             {excluidos.map(s => (
               <span key={s} className="px-2 py-1 rounded text-[0.75rem] font-bold"
-                style={{ background: 'rgba(239,68,68,0.15)', color: '#fca5a5' }}>{s}</span>
+                style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.25)', color: '#b91c1c' }}>{s}</span>
             ))}
           </div>
         </div>
@@ -115,7 +117,7 @@ export default function CondicionesPublicas({ p, nombre }: { p: Condiciones; nom
 
       {nota && (
         <p className="mt-4 pt-4 text-xs leading-relaxed"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}>
+          style={{ borderTop: '1px solid rgba(0,0,0,0.1)', color: '#374151' }}>
           {nota}
         </p>
       )}
