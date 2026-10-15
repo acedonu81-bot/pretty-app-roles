@@ -393,6 +393,19 @@ const Auth = () => {
   // al fondo del formulario, fuera de la vista en móvil).
   const [fieldError, setFieldError] = useState<string | null>(null);
   const nameRef = useRef<HTMLDivElement>(null);
+  // Foco en el nombre al cargar SOLO en ordenador (auditoría 15 oct 2026).
+  // Con autoFocus, en móvil el navegador bajaba la página ~550 px hasta el
+  // campo: quien llegaba del anuncio veía medio formulario, sin el título ni
+  // "¿Qué vienes a hacer?". preventScroll por si la ventana es baja.
+  const nombreInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (isLogin) return;
+    try {
+      if (window.matchMedia('(min-width: 768px) and (pointer: fine)').matches) {
+        nombreInputRef.current?.focus({ preventScroll: true });
+      }
+    } catch { /* sin matchMedia: sin foco automático */ }
+  }, [isLogin]);
   const emailRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLDivElement>(null);
   const fieldRefs: Record<string, React.RefObject<HTMLElement>> = {
@@ -752,8 +765,11 @@ const Auth = () => {
               </div>
             </div>
 
-            {/* RIGHT — Form */}
-            <div className="flex-1 p-6 sm:p-8 md:p-10">
+            {/* RIGHT — Form. min-w-0: sin él, la tira de fichas (≈1.200 px)
+                ensanchaba la columna y la tarjeta (overflow-hidden) cortaba el
+                formulario en tablet y ordenador: botón de Google sin texto y
+                campos cortados (auditoría 15 oct 2026). */}
+            <div className="flex-1 min-w-0 p-6 sm:p-8 md:p-10">
 
               {/* Mobile logo */}
               <div className="flex flex-col items-center mb-5 md:hidden">
@@ -813,9 +829,9 @@ const Auth = () => {
                 <button type="button"
                   onClick={() => { track('auth_toggle_mode', { to: 'register', from: 'big_cta' }); setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
                   className="xp-cta-glow w-full mb-6 py-5 px-4 rounded-2xl font-black text-xl sm:text-2xl leading-tight transition-transform hover:scale-[1.02]"
-                  style={{ background: '#111', color: '#fff' }}>
+                  style={{ background: '#FBF3DD', border: '2px solid #D4AF37', color: '#111' }}>
                   ¿Primera vez en XPEAK?
-                  <span className="block mt-1" style={{ color: '#D4AF37' }}>Crear cuenta →</span>
+                  <span className="block mt-1" style={{ color: '#8B6A00' }}>Crear cuenta →</span>
                 </button>
               )}
               {isLogin && (
@@ -959,9 +975,11 @@ const Auth = () => {
                     <input
                       value={displayName}
                       onChange={e => { setDisplayName(e.target.value); if (fieldError === 'name') setFieldError(null); }}
-                      // Tiene autoFocus: cualquier toque fuera lo desenfoca, así que
-                      // solo cuenta si escribió algo (antes un toque en el aviso de
-                      // cookies salía como "tocó el nombre").
+                      ref={nombreInputRef}
+                      // Puede llevar el foco al cargar (ver nombreInputRef):
+                      // cualquier toque fuera lo desenfoca, así que solo cuenta
+                      // si escribió algo (antes un toque en el aviso de cookies
+                      // salía como "tocó el nombre").
                       onBlur={() => { if (displayName.trim()) logAuthFieldTouched('name'); }}
                       placeholder={roleParam === 'dj' ? 'DJ NombreArtístico'
                         // Un empresario no tiene "nombre profesional": tiene el
@@ -972,7 +990,6 @@ const Auth = () => {
                       maxLength={60}
                       autoComplete="name"
                       className="nightlife-input !py-3 !pl-9 text-base"
-                      autoFocus
                     />
                   </div>
                 )}
@@ -1128,7 +1145,7 @@ const Auth = () => {
                     <button type="button"
                       onClick={() => { track('auth_toggle_mode', { to: 'register', from: 'login_failed' }); setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
                       className="w-full py-2.5 rounded-lg font-black text-sm"
-                      style={{ background: '#111', color: '#fff' }}>
+                      style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#111' }}>
                       Crear cuenta con este email
                     </button>
                     <button type="button"
@@ -1201,8 +1218,8 @@ const Auth = () => {
                 <button
                   type="button"
                   onClick={() => setShowForgot(true)}
-                  className="block w-full mt-3 text-xs text-center transition-opacity hover:opacity-80"
-                  style={{ color: 'rgba(0,0,0,0.55)' }}>
+                  className="block w-full mt-1 py-3 text-sm text-center transition-opacity hover:opacity-80"
+                  style={{ color: 'rgba(0,0,0,0.65)' }}>
                   ¿Olvidaste tu contraseña?
                 </button>
               )}
@@ -1249,7 +1266,7 @@ const Auth = () => {
                 </span>
                 <button
                   onClick={() => { track('auth_toggle_mode', { to: isLogin ? 'register' : 'login' }); setIsLogin(!isLogin); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
-                  className="text-xs font-bold transition-opacity hover:opacity-80"
+                  className="py-2.5 px-1 text-sm font-bold transition-opacity hover:opacity-80"
                   style={{ color: '#8B6A00' }}>
                   {isLogin ? 'Crear cuenta →' : 'Inicia sesión →'}
                 </button>
@@ -1258,16 +1275,16 @@ const Auth = () => {
               {/* Trust signals */}
               <div className="mt-4 flex items-center justify-center gap-4">
                 <div className="flex items-center gap-1.5">
-                  <ShieldCheck size={11} style={{ color: 'rgba(0,0,0,0.4)' }} />
-                  <span className="text-[0.6rem]" style={{ color: 'rgba(0,0,0,0.4)' }}>Datos seguros</span>
+                  <ShieldCheck size={13} style={{ color: 'rgba(0,0,0,0.5)' }} />
+                  <span className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>Datos seguros</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Zap size={11} style={{ color: 'rgba(0,0,0,0.4)' }} />
-                  <span className="text-[0.6rem]" style={{ color: 'rgba(0,0,0,0.4)' }}>Sin spam</span>
+                  <Zap size={13} style={{ color: 'rgba(0,0,0,0.5)' }} />
+                  <span className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>Sin spam</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Users size={11} style={{ color: 'rgba(0,0,0,0.4)' }} />
-                  <span className="text-[0.6rem]" style={{ color: 'rgba(0,0,0,0.4)' }}>Comunidad verificada</span>
+                  <Users size={13} style={{ color: 'rgba(0,0,0,0.5)' }} />
+                  <span className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>Comunidad verificada</span>
                 </div>
               </div>
 
