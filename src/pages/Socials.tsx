@@ -155,7 +155,7 @@ const Socials = () => {
             <div className="flex gap-1.5 flex-wrap">
               {STYLES.map(s => (
                 <button key={s} onClick={() => setStyleFilter(styleFilter === s ? '' : s)}
-                  className="px-3 py-1.5 rounded-full text-xs font-bold transition-all"
+                  className="px-3.5 min-h-[40px] inline-flex items-center justify-center rounded-full text-xs font-bold transition-all"
                   style={styleFilter === s
                     ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }
                     : { background: '#fff', color: '#222', border: '1px solid rgba(0,0,0,0.12)' }}>

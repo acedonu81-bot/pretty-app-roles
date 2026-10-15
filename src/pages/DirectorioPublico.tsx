@@ -741,7 +741,7 @@ function DirectorioPublicoContenido() {
             <div className="flex overflow-x-auto no-scrollbar gap-2 pb-1">
               {ALL_ROLES.map(r => (
                 <a key={r.slug} href={`/directorio/${r.slug}`}
-                  className="px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap flex-shrink-0"
+                  className="px-3.5 min-h-[40px] inline-flex items-center rounded-full text-xs font-bold transition-all whitespace-nowrap flex-shrink-0"
                   style={r.slug === (rol ?? 'dj')
                     ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }
                     : { background: '#ffffff', color: '#222', border: '1px solid rgba(0,0,0,0.12)' }
@@ -760,7 +760,7 @@ function DirectorioPublicoContenido() {
               <span className="text-xs font-bold self-center flex-shrink-0" style={{ color: '#333' }}>Ciudad:</span>
               {CITIES.map(c => (
                 <button key={c} onClick={() => setCity(c)}
-                  className="px-3 py-1 rounded-lg text-xs font-medium transition-all whitespace-nowrap flex-shrink-0"
+                  className="px-3.5 min-h-[40px] inline-flex items-center rounded-lg text-xs font-medium transition-all whitespace-nowrap flex-shrink-0"
                   style={c === city
                     ? { background: 'rgba(212,175,55,0.12)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.45)' }
                     : { background: '#ffffff', color: '#222', border: '1px solid rgba(0,0,0,0.1)' }
@@ -777,7 +777,7 @@ function DirectorioPublicoContenido() {
             <div className="-mt-4 mb-8 flex flex-wrap items-center gap-2">
               <span className="text-xs font-bold" style={{ color: '#333' }}>Estilo:</span>
               <button onClick={quitarGenero} aria-label={`Quitar el filtro ${genero}`}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all hover:opacity-80"
+                className="inline-flex items-center gap-1.5 px-3.5 min-h-[40px] rounded-lg text-xs font-bold transition-all hover:opacity-80"
                 style={{ background: 'rgba(212,175,55,0.12)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.45)' }}>
                 {genero} <X size={12} />
               </button>

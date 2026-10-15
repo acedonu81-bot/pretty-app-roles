@@ -172,7 +172,7 @@ export default function MisCondicionesSection({ profile, onSaved }: Props) {
               const on = f.excluded_services.includes(s);
               return (
                 <button key={s} type="button" onClick={() => toggleEnLista('excluded_services', s)}
-                  className="px-3 py-1.5 rounded-full text-xs font-bold transition-all"
+                  className="px-3.5 min-h-[40px] inline-flex items-center justify-center rounded-full text-xs font-bold transition-all"
                   style={on
                     ? { background: 'rgba(185,28,28,0.1)', border: '1.5px solid #b91c1c', color: '#b91c1c' }
                     : { background: '#fff', border: '1.5px solid rgba(0,0,0,0.12)', color: '#555' }}>

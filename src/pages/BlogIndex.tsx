@@ -115,7 +115,7 @@ export default function BlogIndex() {
               <button
                 key={tag}
                 onClick={() => setActiveTag(tag)}
-                className="px-3 py-1.5 rounded-full text-xs font-bold transition-all"
+                className="px-3.5 min-h-[40px] inline-flex items-center justify-center rounded-full text-xs font-bold transition-all"
                 style={activeTag === tag
                   ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }
                   : { background: '#fff', color: '#444', border: '1px solid rgba(0,0,0,0.12)' }
