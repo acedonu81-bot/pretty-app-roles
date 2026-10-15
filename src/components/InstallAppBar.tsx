@@ -6,6 +6,25 @@ import { isNative } from '@/lib/capacitor';
 import IosInstallSheet from '@/components/IosInstallSheet';
 
 const DISMISS_KEY = 'xpeak_install_appbar_dismissed';
+// Visitas (una por sesión del navegador): la barra sale desde la segunda.
+// En la primera visita en móvil se juntaba con el aviso de cookies y la
+// cabecera y tapaba casi un tercio de la pantalla (auditoría 15 oct 2026).
+const VISITAS_KEY = 'xpeak_visitas';
+const VISITA_SESION_KEY = 'xpeak_visita_contada';
+
+function esVisitaRepetida(): boolean {
+  try {
+    let n = parseInt(localStorage.getItem(VISITAS_KEY) ?? '0', 10) || 0;
+    if (!sessionStorage.getItem(VISITA_SESION_KEY)) {
+      n += 1;
+      localStorage.setItem(VISITAS_KEY, String(n));
+      sessionStorage.setItem(VISITA_SESION_KEY, '1');
+    }
+    return n >= 2;
+  } catch {
+    return true;
+  }
+}
 
 /**
  * Barra de instalación global, visible en cualquier página (a diferencia de
@@ -16,6 +35,7 @@ const DISMISS_KEY = 'xpeak_install_appbar_dismissed';
  */
 export default function InstallAppBar() {
   const [dismissed, setDismissed] = useState(() => localStorage.getItem(DISMISS_KEY) === '1');
+  const [visitaRepetida] = useState(esVisitaRepetida);
   const [showIosSteps, setShowIosSteps] = useState(false);
   const { platform, iosBrowser, isStandalone, canPromptInstall, promptInstall } = useInstallPrompt();
   const { pathname } = useLocation();
@@ -26,7 +46,7 @@ export default function InstallAppBar() {
   // en móvil, se apila con el banner de cookies y deja el formulario de
   // registro casi sin hueco visible (bajón de altas verificado 10 oct 2026).
   // Tampoco sale si no hay nada que ofrecer: ni prompt nativo ni iOS.
-  const oculta = isNative || isStandalone || dismissed || pathname.startsWith('/auth')
+  const oculta = isNative || isStandalone || dismissed || !visitaRepetida || pathname.startsWith('/auth')
     || (!canPromptInstall && platform !== 'ios');
   // En iPhone/iPad la barra se sabe desde el primer render (no espera a
   // 'beforeinstallprompt'), así que va en el flujo sin provocar salto. Fija
@@ -81,11 +101,11 @@ export default function InstallAppBar() {
           Instala XPEAK: {copy}
         </p>
         <button onClick={handleInstall}
-          className="flex-shrink-0 px-3 py-1 rounded-lg text-xs font-black bg-black/85 text-white animate-pulse hover:opacity-80 hover:animate-none">
+          className="flex-shrink-0 px-3.5 min-h-[36px] rounded-lg text-xs font-black bg-black/85 text-white animate-pulse hover:opacity-80 hover:animate-none">
           Instalar
         </button>
-        <button onClick={dismiss} aria-label="Cerrar" className="flex-shrink-0 p-1 transition-opacity hover:opacity-70">
-          <X size={14} />
+        <button onClick={dismiss} aria-label="Cerrar" className="flex-shrink-0 -mr-2 w-10 h-10 flex items-center justify-center rounded-lg transition-opacity hover:opacity-70">
+          <X size={16} />
         </button>
       </div>
       {showIosSteps && <IosInstallSheet browser={iosBrowser} onClose={() => setShowIosSteps(false)} />}

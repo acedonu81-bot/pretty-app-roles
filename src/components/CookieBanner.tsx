@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Cookie, ChevronDown, ChevronUp, X } from 'lucide-react';
+import { Cookie, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const COOKIE_KEY = 'xpeak-cookie-consent';
@@ -123,6 +123,14 @@ const CookieBanner = () => {
   const toggle = (key: keyof Omit<CookiePrefs, 'necessary'>) =>
     setPrefs(p => ({ ...p, [key]: !p[key] }));
 
+  // Dentro del panel en móvil va encima de la barra inferior (Inicio, Flash,
+  // Chat, Perfil) para que se pueda seguir navegando mientras se decide.
+  const enPanel = pathname.startsWith('/dashboard');
+
+  // Compacto (auditoría 15 oct 2026): en móvil tapaba el 18-20 % de la
+  // pantalla y, en la portada, justo las tres opciones de "¿Qué quieres
+  // hacer?". Ahora una frase y una fila de botones. Rechazar y Aceptar van
+  // del mismo tamaño y en la misma capa (guía de cookies de la AEPD).
   return (
     <AnimatePresence>
       {visible && !enRegistro && (
@@ -131,34 +139,25 @@ const CookieBanner = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 120, opacity: 0 }}
           transition={{ type: 'spring', damping: 26, stiffness: 200 }}
-          className="fixed bottom-[max(1rem,var(--sab))] left-4 right-4 z-[9999] max-w-xl mx-auto"
+          className={`fixed left-3 right-3 z-[9999] max-w-xl mx-auto ${enPanel
+            ? 'bottom-[calc(64px+max(var(--sab),12px)+0.5rem)] md:bottom-[max(1rem,var(--sab))]'
+            : 'bottom-[max(0.75rem,var(--sab))]'}`}
         >
           <div style={{
             background: 'rgba(255,253,247,0.98)',
             backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(212,175,55,0.2)',
+            border: '1px solid rgba(212,175,55,0.25)',
             borderRadius: 16,
             boxShadow: '0 -8px 40px rgba(122,98,22,0.18)'}}>
-            {/* Header — en móvil, sin el panel expandido, el texto largo se
-                oculta para no tapar el formulario que haya debajo (bajón de
-                altas verificado 10 oct 2026: el banner cubría los campos de
-                /auth en pantallas pequeñas). Sigue visible al pulsar
-                "Personalizar" o en pantallas sm+. */}
-            <div className="flex items-start gap-3 p-5 pb-3">
-              <Cookie size={18} style={{ color: '#8B6A00', flexShrink: 0, marginTop: 2 }} />
-              <div className="flex-1">
-                <p className="text-sm font-bold mb-1">Preferencias de cookies</p>
-                <p className={`text-xs leading-relaxed ${expanded ? '' : 'hidden sm:block'}`} style={{ color: '#374151' }}>
-                  Usamos cookies propias para mejorar tu experiencia. Las cookies técnicas son necesarias para el funcionamiento de la plataforma.{' '}
-                  <Link to="/cookies" className="underline font-medium" style={{ color: '#8B6A00' }}>Política de cookies</Link>
-                </p>
-              </div>
-              <button onClick={rejectAll} aria-label="Cerrar y solo cookies necesarias" className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-black/5 flex-shrink-0">
-                <X size={13} style={{ color: '#374151' }} />
-              </button>
+            <div className="flex items-start gap-2.5 px-4 pt-3 pb-2">
+              <Cookie size={16} style={{ color: '#8B6A00', flexShrink: 0, marginTop: 2 }} />
+              <p className="text-xs leading-snug" style={{ color: '#374151' }}>
+                Usamos cookies para que XPEAK funcione y, si aceptas, para medir y mejorar.{' '}
+                <Link to="/cookies" className="underline font-semibold" style={{ color: '#8B6A00' }}>Más información</Link>
+              </p>
             </div>
 
-            {/* Expandable categories */}
+            {/* Categorías al pulsar "Configurar" */}
             <AnimatePresence>
               {expanded && (
                 <motion.div
@@ -168,7 +167,7 @@ const CookieBanner = () => {
                   transition={{ duration: 0.25 }}
                   className="overflow-hidden"
                 >
-                  <div className="px-5 pb-3 space-y-2.5">
+                  <div className="px-4 pb-2 space-y-2 max-h-[45vh] overflow-y-auto">
                     {CATEGORIES.map(cat => (
                       <div key={cat.key} className="flex items-start gap-3 p-3 rounded-xl"
                         style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
@@ -178,19 +177,22 @@ const CookieBanner = () => {
                         </div>
                         {cat.locked ? (
                           <span className="text-xs font-bold px-2 py-0.5 rounded-md mt-0.5 flex-shrink-0"
-                            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                            style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.25)' }}>
                             Siempre activa
                           </span>
                         ) : (
                           <button
                             type="button"
+                            role="switch"
+                            aria-checked={!!prefs[cat.key as keyof CookiePrefs]}
+                            aria-label={cat.label}
                             onClick={() => toggle(cat.key as keyof Omit<CookiePrefs, 'necessary'>)}
-                            className="relative flex-shrink-0 mt-0.5 w-9 h-5 rounded-full transition-all duration-200"
+                            className="relative flex-shrink-0 mt-0.5 w-11 h-6 rounded-full transition-all duration-200"
                             style={{
-                              background: prefs[cat.key as keyof CookiePrefs] ? 'linear-gradient(90deg,#D4AF37,#B8941E)' : '#FBF3DD'}}
+                              background: prefs[cat.key as keyof CookiePrefs] ? 'linear-gradient(90deg,#D4AF37,#B8941E)' : '#E8DFC4'}}
                           >
-                            <span className="absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all duration-200"
-                              style={{ left: prefs[cat.key as keyof CookiePrefs] ? 'calc(100% - 18px)' : 2 }} />
+                            <span className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all duration-200"
+                              style={{ left: prefs[cat.key as keyof CookiePrefs] ? 'calc(100% - 22px)' : 2 }} />
                           </button>
                         )}
                       </div>
@@ -200,35 +202,34 @@ const CookieBanner = () => {
               )}
             </AnimatePresence>
 
-            {/* Actions */}
-            <div className="px-4 pb-4 pt-2 flex flex-col gap-2">
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setExpanded(e => !e)}
-                  className="flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all hover:bg-black/5"
-                  style={{ border: '1px solid rgba(122,98,22,0.16)', color: '#374151', minWidth: 0, flex: '0 0 auto' }}
-                >
-                  {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-                  {expanded ? 'Cerrar' : 'Personalizar'}
+            <div className="px-3 pb-3 pt-1 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setExpanded(e => !e)}
+                aria-expanded={expanded}
+                className="flex items-center justify-center gap-0.5 px-2 min-h-[40px] rounded-lg text-xs font-semibold transition-all hover:bg-black/5 flex-shrink-0"
+                style={{ color: '#4b5563' }}
+              >
+                {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+                {expanded ? 'Cerrar' : 'Configurar'}
+              </button>
+              {expanded ? (
+                <button type="button" onClick={saveCustom}
+                  className="flex-1 min-h-[40px] rounded-lg text-xs font-bold transition-all"
+                  style={{ background: '#FBF3DD', border: '1px solid rgba(139,106,0,0.35)', color: '#5c4600' }}>
+                  Guardar
                 </button>
-                {expanded && (
-                  <button type="button" onClick={saveCustom}
-                    className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
-                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
-                    Guardar
-                  </button>
-                )}
+              ) : (
                 <button type="button" onClick={rejectAll}
-                  className="flex-1 py-2 rounded-lg text-xs font-semibold transition-all hover:bg-black/5"
-                  style={{ border: '1px solid rgba(122,98,22,0.16)', color: '#4b5563' }}>
-                  Solo necesarias
+                  className="flex-1 min-h-[40px] rounded-lg text-xs font-bold transition-all hover:bg-black/5"
+                  style={{ background: '#ffffff', border: '1px solid rgba(139,106,0,0.35)', color: '#1f2937' }}>
+                  Rechazar
                 </button>
-              </div>
+              )}
               <button type="button" onClick={acceptAll}
-                className="w-full py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                Aceptar todas
+                className="flex-1 min-h-[40px] rounded-lg text-xs font-bold transition-all"
+                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#111' }}>
+                Aceptar
               </button>
             </div>
           </div>
