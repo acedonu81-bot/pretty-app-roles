@@ -57,14 +57,14 @@ function ProfileCard({ p, imgError, onImgError, cardRef }: {
 }) {
   return (
     <div ref={cardRef} data-user-id={p.user_id} className="rounded-2xl overflow-hidden mx-4 mb-4"
-      style={{ background: '#141210', border: '1px solid rgba(255,255,255,0.08)' }}>
+      style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.35)', boxShadow: '0 6px 20px rgba(122,98,22,0.10)' }}>
       <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
         {p.photo_url && !imgError ? (
           <img src={fotoOptimizada(p.photo_url, 500)} alt={p.display_name} loading="lazy" onError={onImgError}
             className="absolute inset-0 w-full h-full object-cover" />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-6xl font-black"
-            style={{ background: 'linear-gradient(135deg,#2a2410,#1a1608)', color: 'rgba(212,175,55,0.3)' }}>
+            style={{ background: 'linear-gradient(135deg,#FBF3DD,#F1E2B0)', color: 'rgba(139,106,0,0.45)' }}>
             {initialFor(p.display_name)}
           </div>
         )}
@@ -83,18 +83,18 @@ function ProfileCard({ p, imgError, onImgError, cardRef }: {
       </div>
 
       <div className="p-4">
-        <h2 className="text-lg font-black leading-tight mb-0.5" style={{ color: '#fff' }}>{p.display_name}</h2>
-        {p.specialty && <p className="text-sm font-semibold mb-1.5" style={{ color: 'rgba(212,175,55,0.9)' }}>{p.specialty}</p>}
+        <h2 className="text-lg font-black leading-tight mb-0.5" style={{ color: '#111' }}>{p.display_name}</h2>
+        {p.specialty && <p className="text-sm font-semibold mb-1.5" style={{ color: '#8B6A00' }}>{p.specialty}</p>}
 
-        <div className="flex items-center gap-3 mb-2 flex-wrap text-xs" style={{ color: 'rgba(255,255,255,0.68)' }}>
+        <div className="flex items-center gap-3 mb-2 flex-wrap text-xs" style={{ color: '#4b5563' }}>
           {p.zone && <span className="flex items-center gap-1"><MapPin size={11} />{p.zone.split(',')[0]}</span>}
           {p.reviewCount > 0 && <span className="flex items-center gap-1"><Star size={11} fill="#D4AF37" color="#D4AF37" />{p.avgRating} ({p.reviewCount})</span>}
-          {p.hourly_rate > 0 ? <span className="font-black" style={{ color: '#fff' }}>desde {p.hourly_rate}€/h</span>
-            : <span className="font-black" style={{ color: '#fff' }}>Precio a consultar</span>}
+          {p.hourly_rate > 0 ? <span className="font-black" style={{ color: '#111' }}>desde {p.hourly_rate}€/h</span>
+            : <span className="font-black" style={{ color: '#111' }}>Precio a consultar</span>}
         </div>
 
         {p.bio && (
-          <p className="text-xs leading-relaxed line-clamp-2" style={{ color: 'rgba(255,255,255,0.55)' }}>
+          <p className="text-xs leading-relaxed line-clamp-2" style={{ color: '#4b5563' }}>
             {p.bio.slice(0, 130)}{p.bio.length > 130 ? '…' : ''}
           </p>
         )}
@@ -135,7 +135,7 @@ export default function DiscoverList({ profiles, onOpenProfile, onBookNow, onAdd
   const inCart = isInCart(active.user_id);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-[55] overflow-y-auto" style={{ background: '#0a0908' }}>
+    <div ref={containerRef} className="fixed inset-0 z-[55] overflow-y-auto" style={{ background: '#FFFDF7' }}>
       <div className={hideActionBar ? 'pt-20 pb-24' : 'pt-20 pb-32'}>
         {profiles.map((p) => (
           <ProfileCard
@@ -158,11 +158,11 @@ export default function DiscoverList({ profiles, onOpenProfile, onBookNow, onAdd
       {!hideActionBar && (
       <div className="fixed bottom-0 left-0 right-0 z-[60] px-4 pt-3"
         style={{
-          background: 'linear-gradient(to top, rgba(10,9,8,0.98) 60%, rgba(10,9,8,0))',
+          background: 'linear-gradient(to top, rgba(255,253,247,0.98) 60%, rgba(255,253,247,0))',
           paddingBottom: 'calc(env(safe-area-inset-bottom) + 0.75rem)',
         }}>
         <div className="max-w-md mx-auto flex items-center gap-2 mb-2 px-1">
-          <p className="text-xs font-bold truncate" style={{ color: 'rgba(255,255,255,0.7)' }}>
+          <p className="text-xs font-bold truncate" style={{ color: '#374151' }}>
             {active.display_name}
           </p>
         </div>
@@ -172,26 +172,26 @@ export default function DiscoverList({ profiles, onOpenProfile, onBookNow, onAdd
               aria-label="Añadir a mi evento"
               className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all active:scale-95"
               style={inCart
-                ? { background: 'rgba(34,197,94,0.2)', border: '1.5px solid rgba(34,197,94,0.5)' }
-                : { background: 'rgba(255,255,255,0.1)', border: '1.5px solid rgba(255,255,255,0.22)' }}>
-              {inCart ? <Check size={18} color="#22c55e" /> : <Plus size={18} color="#fff" />}
+                ? { background: 'rgba(21,128,61,0.12)', border: '1.5px solid rgba(21,128,61,0.55)' }
+                : { background: '#ffffff', border: '1.5px solid rgba(139,106,0,0.4)' }}>
+              {inCart ? <Check size={18} color="#15803d" /> : <Plus size={18} color="#8B6A00" />}
             </button>
           )}
           <button onClick={() => onOpenProfile(active)}
             className="h-12 px-4 rounded-full flex items-center justify-center font-semibold text-sm flex-shrink-0"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.85)' }}>
+            style={{ background: '#ffffff', border: '1px solid rgba(139,106,0,0.4)', color: '#1f2937' }}>
             Ver perfil
           </button>
           <button onClick={() => onBookNow(active)}
             className="flex-1 h-12 px-5 rounded-full flex items-center justify-center gap-1.5 font-black text-sm min-w-0"
-            style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#111' }}>
             <MessageCircle size={16} /> Contactar
           </button>
         </div>
       </div>
       )}
 
-      <InstallPwaBanner />
+      <InstallPwaBanner bottomOffset={hideActionBar ? '5.25rem' : '7rem'} />
     </div>
   );
 }

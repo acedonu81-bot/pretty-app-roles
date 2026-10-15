@@ -17,7 +17,10 @@ import IosInstallSheet from '@/components/IosInstallSheet';
  */
 const DISMISS_KEY = 'xpeak_pwa_banner_dismissed';
 
-export default function InstallPwaBanner() {
+// `bottomOffset`: hueco que deja por debajo. En /descubrir hay una barra fija
+// abajo (acciones del perfil o "Crear cuenta y contactar") y la banda quedaba
+// tapada por ella (auditoría 15 oct 2026).
+export default function InstallPwaBanner({ bottomOffset = '1rem' }: { bottomOffset?: string } = {}) {
   const [dismissed, setDismissed] = useState(() => localStorage.getItem(DISMISS_KEY) === '1');
   const [showIosSteps, setShowIosSteps] = useState(false);
   const { platform, iosBrowser, isStandalone, canPromptInstall, promptInstall } = useInstallPrompt();
@@ -58,26 +61,26 @@ export default function InstallPwaBanner() {
   return (
     <div ref={bannerRef} className="fixed left-3 right-3 z-[60] rounded-2xl overflow-hidden"
       style={{
-        bottom: 'calc(1rem + env(safe-area-inset-bottom))',
-        background: 'rgba(10,9,8,0.92)',
+        bottom: `calc(${bottomOffset} + env(safe-area-inset-bottom))`,
+        background: 'rgba(255,253,247,0.97)',
         backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(212,175,55,0.25)',
-        boxShadow: '0 8px 30px rgba(0,0,0,0.4)',
+        border: '1px solid rgba(212,175,55,0.45)',
+        boxShadow: '0 8px 30px rgba(122,98,22,0.22)',
       }}>
       <div className="flex items-center gap-3 px-4 py-3.5">
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-black text-white">Instala XPEAK</p>
-          <p className="text-[0.75rem] leading-snug" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-xs font-black" style={{ color: '#111' }}>Instala XPEAK</p>
+          <p className="text-[0.75rem] leading-snug" style={{ color: '#4b5563' }}>
             Pantalla completa, sin barra del navegador, como Instagram.
           </p>
         </div>
         <button onClick={handleInstall}
           className="flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition-all hover:scale-105"
-          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#111' }}>
           Instalar
         </button>
-        <button onClick={dismiss} aria-label="Cerrar" className="flex-shrink-0 p-1 transition-opacity hover:opacity-70">
-          <X size={16} style={{ color: 'rgba(255,255,255,0.5)' }} />
+        <button onClick={dismiss} aria-label="Cerrar" className="flex-shrink-0 -mr-2 w-10 h-10 flex items-center justify-center transition-opacity hover:opacity-70">
+          <X size={16} style={{ color: '#4b5563' }} />
         </button>
       </div>
       {showIosSteps && <IosInstallSheet browser={iosBrowser} onClose={() => setShowIosSteps(false)} />}
