@@ -23,6 +23,7 @@ import { toSlug } from '@/data/profiles';
 import type { Profile } from '@/data/profiles';
 import FollowButton from '@/components/FollowButton';
 import ReviewsSection from '@/components/ReviewsSection';
+import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 
 const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel: string; url: string }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -436,8 +437,10 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                 <img src={p.photo} alt={p.name}
                   className={isSmallPhoto ? 'absolute inset-0 w-full h-full object-contain' : 'absolute inset-0 w-full h-full object-cover'}
                   style={isSmallPhoto ? undefined : { objectPosition: '50% 30%' }}
+                  ref={ajustarFotoCaptura}
                   onLoad={e => {
                     const img = e.currentTarget;
+                    ajustarFotoCaptura(img);
                     // Por debajo de 600px de ancho real, ampliar a todo el hero
                     // destroza la imagen: se muestra contenida sobre el fondo.
                     if (img.naturalWidth && img.naturalWidth < 600) setIsSmallPhoto(true);

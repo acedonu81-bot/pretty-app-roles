@@ -18,6 +18,7 @@ import { compararDirectorio } from '@/lib/dailyRotation';
 import { expandRole, canonicalRole, passesPhotoGate, DJ_GENRES } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
 import FollowButton from '@/components/FollowButton';
+import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -914,7 +915,8 @@ function DirectorioPublicoContenido() {
                           // Los retratos traen la cara en el tercio superior:
                           // centrar el recorte la dejaba a ras del borde.
                           className="w-full h-full object-cover"
-                          style={{ objectPosition: '50% 10%' }} />
+                          style={{ objectPosition: '50% 10%' }}
+                          ref={ajustarFotoCaptura} onLoad={e => ajustarFotoCaptura(e.currentTarget)} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-5xl font-black"
                           style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05))', color: '#D4AF37' }}>

@@ -13,6 +13,7 @@ import { timeAgo } from '@/lib/timeAgo';
 import { isNative } from '@/lib/capacitor';
 import { fotoOptimizada } from '@/lib/imagen';
 import FollowButton from '@/components/FollowButton';
+import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -143,6 +144,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               // Los retratos traen la cara en el tercio superior: centrar el
               // recorte la dejaba a ras del borde. 10% da aire sobre la cabeza.
               style={{ objectPosition: '50% 10%' }}
+              ref={ajustarFotoCaptura} onLoad={e => ajustarFotoCaptura(e.currentTarget)}
               onError={() => setImgError(true)} />
           ) : (
             /* Sin foto el hueco es grande (214px de alto en móvil): un avatar

@@ -26,6 +26,7 @@ import EmbedDiferido from '@/components/EmbedDiferido';
 import FollowButton from '@/components/FollowButton';
 import PostCard from '@/components/PostCard';
 import ReviewsSection from '@/components/ReviewsSection';
+import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 // Se reexporta para los tests que lo importan desde aquí.
 export { reviewQuestionStats } from '@/components/ReviewsSection';
 
@@ -656,7 +657,8 @@ const PublicProfile = () => {
                   el HTML del prerender (prerender-meta.mjs) — aquí faltaba en
                   el componente React real que monta después. */}
               <img src={fotoOptimizada(profile.photo, 1200)} alt={profile.name} className="w-full h-full object-cover"
-                style={{ objectPosition: '50% 15%' }} loading="eager" fetchPriority="high" />
+                style={{ objectPosition: '50% 15%' }} loading="eager" fetchPriority="high"
+                ref={ajustarFotoCaptura} onLoad={e => ajustarFotoCaptura(e.currentTarget)} />
             </div>
           ) : (
             <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(135deg, #C8820A 0%, #D4511A 35%, #C23460 65%, #8B1A6B 100%)' }}>
