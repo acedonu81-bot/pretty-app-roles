@@ -405,8 +405,8 @@ const FaqSection = () => {
 // de montar" antes de empezar a pedir los datos. El useEffect de abajo
 // simplemente consume esta misma promesa si ya está en marcha.
 const communityReviewsPromise = supabase.from('reviews')
-  .select('reviewer_name, reviewer_role, reviewer_avatar, comment, rating, event_type')
-  .eq('approved', true).order('created_at', { ascending: false }).limit(6);
+  .select('id, reviewer_name, reviewer_role, reviewer_avatar, comment, rating, event_type')
+  .eq('approved', true).order('created_at', { ascending: false }).limit(30);
 
 const freshRolesPromise = supabase.from('profiles' as any)
   .select('role, display_name')
@@ -497,7 +497,9 @@ const Landing = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterDone, setNewsletterDone] = useState(false);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
-  const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null }[]>([]);
+  const [communityReviews, setCommunityReviews] = useState<{ id: string; reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null }[]>([]);
+  // Testimonios: 3 al principio y "Ver más reseñas" suma 3 cada vez.
+  const [reviewsVisible, setReviewsVisible] = useState(3);
   const [freshRoles, setFreshRoles] = useState<Set<string>>(new Set());
   // Orden de las 6 categorías del bento, de más a menos profesionales inscritos.
   // Se recalcula en cada carga — nunca hardcodear un orden fijo aquí.
@@ -553,7 +555,7 @@ const Landing = () => {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    communityReviewsPromise.then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null }[]); });
+    communityReviewsPromise.then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { id: string; reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null }[]); });
   }, []);
 
   useEffect(() => {
@@ -1040,8 +1042,8 @@ const Landing = () => {
             </h2>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {communityReviews.slice(0, 3).map((r) => ({
-              name: r.reviewer_name, role: r.reviewer_role,
+            {communityReviews.slice(0, reviewsVisible).map((r) => ({
+              id: r.id, name: r.reviewer_name, role: r.reviewer_role,
               avatar: r.reviewer_avatar ?? r.reviewer_name.charAt(0).toUpperCase(),
               text: r.comment,
               rating: r.rating ?? 5,
@@ -1050,7 +1052,7 @@ const Landing = () => {
               // tarjeta nunca quede en el aire sin decir a qué se refiere.
               contexto: r.event_type?.trim() || 'trabajo contratado en XPEAK',
             })).map((t, i) => (
-              <FadeIn key={t.name} delay={i * 0.08}>
+              <FadeIn key={t.id} delay={(i % 3) * 0.08}>
                 <div className="relative rounded-2xl flex flex-col gap-3.5 p-6 transition-transform hover:-translate-y-1"
                   style={{
                     background: '#fff',
@@ -1084,6 +1086,15 @@ const Landing = () => {
               </FadeIn>
             ))}
           </div>
+          {reviewsVisible < communityReviews.length && (
+            <div className="flex justify-center mt-10">
+              <button type="button" onClick={() => setReviewsVisible(n => n + 3)}
+                className="min-h-[44px] px-6 rounded-xl text-sm font-black transition-transform hover:-translate-y-0.5"
+                style={{ background: '#fff', color: '#111', border: '2px solid #111', boxShadow: '4px 4px 0 0 #D4AF37' }}>
+                Ver más reseñas
+              </button>
+            </div>
+          )}
           </div>
         </section>
       )}
