@@ -855,7 +855,7 @@ const PublicProfile = () => {
           {/* Bio */}
           {profile.description && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
-              <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Sobre mí</h2>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Sobre mí</h2>
               <p className="text-base leading-relaxed" style={{ color: '#333' }}>{profile.description}</p>
             </motion.div>
           )}
@@ -882,7 +882,7 @@ const PublicProfile = () => {
           ) && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
               className="rounded-2xl p-5" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
-              <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Detalles del espacio</h2>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Detalles del espacio</h2>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {(profile as any).venueCapacity > 0 && (
                   <div className="flex items-start gap-2">
@@ -937,7 +937,7 @@ const PublicProfile = () => {
           {(profile as any).rentalEquipment && (profile as any).rentalEquipment.length > 0 && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
               className="rounded-2xl p-5" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
-              <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>Equipo en alquiler</h2>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#8B6A00' }}>Equipo en alquiler</h2>
               <p className="text-sm mb-3" style={{ color: '#333' }}>{profile.name} alquila este equipo para eventos.</p>
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {(profile as any).rentalEquipment.map((s: string) => (
@@ -959,7 +959,7 @@ const PublicProfile = () => {
           {profile.role === 'bailarin' && (profile as any).offersClasses && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
               className="rounded-2xl p-5" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
-              <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>💃 Clases particulares</h2>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#8B6A00' }}>💃 Clases particulares</h2>
               <p className="text-sm mb-3" style={{ color: '#333' }}>{profile.name} también da clases particulares de baile.</p>
               {(profile as any).classStyles && (profile as any).classStyles.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mb-3">
@@ -988,7 +988,7 @@ const PublicProfile = () => {
           {profile.role === 'bailarin' && (profile as any).seekingDancePartner && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
               className="rounded-2xl p-5" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
-              <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>🤝 Busca pareja de baile</h2>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#8B6A00' }}>🤝 Busca pareja de baile</h2>
               <p className="text-sm mb-3" style={{ color: '#333' }}>
                 {profile.name} está buscando pareja de baile fija
                 {(profile as any).danceRole === 'lead' ? ' · leader' : (profile as any).danceRole === 'follow' ? ' · follower' : (profile as any).danceRole === 'ambos' ? ' · baila ambos roles' : ''}
@@ -1006,7 +1006,7 @@ const PublicProfile = () => {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
                 <Headphones size={14} style={{ color: '#D4AF37' }} />
-                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Mix</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Mix</span>
               </div>
               <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
                 <EmbedDiferido src={audioEmbed.embedUrl} tipo={audioEmbed.type} titulo="Mix"
@@ -1019,7 +1019,7 @@ const PublicProfile = () => {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
                 <Headphones size={14} style={{ color: '#D4AF37' }} />
-                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Sesiones</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Sesiones</span>
               </div>
               <div className="flex flex-col gap-3">
                 {extraMedia.audio_session_urls.slice(0, 5).map((url, i) => (
@@ -1035,7 +1035,7 @@ const PublicProfile = () => {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
                 <Disc3 size={14} style={{ color: '#D4AF37' }} />
-                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Producciones</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Producciones</span>
               </div>
               <div className="flex flex-col gap-3">
                 {extraMedia.production_urls.slice(0, 5).map((url, i) => (
@@ -1052,7 +1052,7 @@ const PublicProfile = () => {
           {sbProfile?.portfolio_urls && sbProfile.portfolio_urls.length > 0 && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Portfolio</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Portfolio</span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {sbProfile.portfolio_urls.slice(0, 9).map((url, i) => (
@@ -1071,7 +1071,7 @@ const PublicProfile = () => {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
                 <Video size={14} style={{ color: '#D4AF37' }} />
-                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Clips</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Clips</span>
               </div>
               <div className="flex flex-col gap-4">
                 {extraMedia.video_session_urls.slice(0, 3).map((url, i) => (
@@ -1088,7 +1088,7 @@ const PublicProfile = () => {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
                 <BookOpen size={14} style={{ color: '#D4AF37' }} />
-                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Novedades</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Novedades</span>
               </div>
               <div className="flex flex-col gap-3">
                 {publicPosts.map(post => <PostCard key={post.id} post={post} />)}
@@ -1155,7 +1155,7 @@ const PublicProfile = () => {
 
           {/* Garantías XPEAK — siempre visible */}
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
-            <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Por qué contratar en XPEAK</h2>
+            <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Por qué contratar en XPEAK</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 { icon: <Shield size={20} />, title: 'Contacto directo', desc: 'El precio acordado va directo al profesional.' },
@@ -1176,7 +1176,7 @@ const PublicProfile = () => {
           {/* Profesionales similares */}
           {relatedProfiles.length > 0 && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
-              <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Profesionales similares</h2>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Profesionales similares</h2>
               <div className="flex flex-col gap-2">
                 {relatedProfiles.map(r => (
                   <a key={r.key} href={r.href}
@@ -1195,7 +1195,7 @@ const PublicProfile = () => {
                       <p className="text-sm font-bold truncate" style={{ color: '#222' }}>{r.name}</p>
                       <p className="text-xs truncate" style={{ color: '#444' }}>{r.specialty} {r.zone ? `· ${r.zone}` : ''}</p>
                     </div>
-                    <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Ver →</span>
+                    <span className="text-xs font-bold" style={{ color: '#8B6A00' }}>Ver →</span>
                   </a>
                 ))}
               </div>

@@ -469,7 +469,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
               <ShareProfileButton name={p.name} roleLabel={cfg.label}
                 url={`https://xpeak.es/p/${p.slug || toSlug(p.name)}`} />
               {p.isLive && (
-                <span className="flex items-center gap-1 text-[0.65rem] font-black px-2 py-0.5 rounded-full"
+                <span className="flex items-center gap-1 text-[0.75rem] font-black px-2 py-0.5 rounded-full"
                   style={{ background: '#E53935', color: '#fff', boxShadow: '0 0 10px rgba(229,57,53,0.6)' }}>
                   <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping inline-block" />LIVE
                 </span>
@@ -529,7 +529,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
                 className="rounded-xl p-4"
                 style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.22)' }}>
-                <h3 className="text-[0.7rem] font-bold uppercase tracking-wider mb-2" style={{ color: '#8A6D0F' }}>
+                <h3 className="text-[0.75rem] font-bold uppercase tracking-wider mb-2" style={{ color: '#8A6D0F' }}>
                   Formato y requisitos técnicos
                 </h3>
                 <p className="text-[0.9rem] leading-relaxed whitespace-pre-line" style={{ color: '#333' }}>{specialty}</p>
@@ -823,7 +823,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
             )}
 
             {/* Nota de confianza */}
-            <p className="text-center text-[11px]" style={{ color: '#999', paddingTop: 6 }}>
+            <p className="text-center text-[0.75rem]" style={{ color: '#999', paddingTop: 6 }}>
               Contrato directo · Pago acordado entre las partes
             </p>
           </div>

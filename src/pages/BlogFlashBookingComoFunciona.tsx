@@ -40,7 +40,7 @@ export default function BlogFlashBookingComoFunciona() {
         <div className="max-w-5xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#6D28D9', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
-            <span style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>XPEAK · Flash Booking</span>
+            <span style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>XPEAK · Flash Booking</span>
             <h1 className="text-3xl font-black mt-4 mb-4 leading-tight">Cómo funciona el Flash Booking de XPEAK: contrata un profesional verificado en menos de 1 hora</h1>
             <p style={{ color: '#444', fontSize: '0.85rem' }}>Por Daniel · XPEAK · 10 junio 2026</p>
 

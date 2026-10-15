@@ -78,7 +78,7 @@ const WhoIsHiringFeed = () => {
               <div className="flex items-center gap-1.5 flex-wrap">
                 <p className="text-sm font-black truncate" style={{ color: '#111' }}>{c.display_name}</p>
                 {c.is_verified && (
-                  <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
+                  <span className="text-[0.75rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
                     style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E' }}>✓ Verificado</span>
                 )}
               </div>
@@ -297,7 +297,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
           <div>
             <div className="flex items-center gap-2">
               <p className="text-xs font-bold">Contrataciones Privadas</p>
-              <span className="flex items-center gap-1 text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full"
+              <span className="flex items-center gap-1 text-[0.75rem] font-bold px-1.5 py-0.5 rounded-full"
                 style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                 <Clock size={9} /> Próximamente
               </span>

@@ -111,12 +111,12 @@ export default function Precios() {
               <div key={plan.nombre} className="relative p-6 rounded-2xl"
                 style={{ background: plan.color, border: `1px solid ${plan.border}` }}>
                 {plan.badge && (
-                  <span className="absolute -top-3 left-6 px-3 py-1 rounded-full text-[0.6rem] font-black uppercase tracking-wider"
+                  <span className="absolute -top-3 left-6 px-3 py-1 rounded-full text-[0.75rem] font-black uppercase tracking-wider"
                     style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                     {plan.badge}
                   </span>
                 )}
-                <p className="text-[0.6rem] font-bold uppercase tracking-wider mb-1" style={{ color: '#374151' }}>{plan.target}</p>
+                <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1" style={{ color: '#374151' }}>{plan.target}</p>
                 <p className="text-lg font-black mb-1">{plan.nombre}</p>
                 <div className="flex items-baseline gap-1 mb-5">
                   <span className="text-4xl font-black" style={{ color: plan.gold ? '#8B6A00' : '#111' }}>{plan.precio}</span>

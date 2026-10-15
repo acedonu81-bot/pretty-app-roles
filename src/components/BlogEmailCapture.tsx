@@ -106,7 +106,7 @@ export default function BlogEmailCapture({
             : 'Te hemos enviado el enlace de descarga a tu email.'}
         </p>
         <p className="text-xs mt-3">
-          <a href="/auth?mode=register" className="underline font-bold" style={{ color: '#D4AF37' }}>
+          <a href="/auth?mode=register" className="underline font-bold" style={{ color: '#8B6A00' }}>
             Crear perfil completo en XPEAK →
           </a>
         </p>
@@ -119,10 +119,10 @@ export default function BlogEmailCapture({
       style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(212,175,55,0.03) 100%)', border: '1px solid rgba(212,175,55,0.25)' }}>
       <div className="p-5 sm:p-6">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[0.6rem] font-black uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>
+          <span className="text-[0.75rem] font-black uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>
             XPEAK
           </span>
-          <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+          <span className="text-[0.75rem] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.2)' }}>
             {c.badge}
           </span>
         </div>
@@ -155,7 +155,7 @@ export default function BlogEmailCapture({
           <p className="text-xs mt-2" style={{ color: '#ff5f56' }}>{errorMsg}</p>
         )}
 
-        <p className="text-[0.6rem] mt-3" style={{ color: '#666' }}>
+        <p className="text-[0.75rem] mt-3" style={{ color: '#666' }}>
           Sin spam. Puedes darte de baja en cualquier momento. Al enviar aceptas nuestra{' '}
           <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: '#888' }}>
             Política de Privacidad

@@ -126,7 +126,7 @@ const FichasRealesTira = () => {
 
   return (
     <div ref={ref} className="mb-5">
-      <p className="text-[0.7rem] font-black uppercase tracking-wider mb-2" style={{ color: 'rgba(0,0,0,0.45)' }}>
+      <p className="text-[0.75rem] font-black uppercase tracking-wider mb-2" style={{ color: 'rgba(0,0,0,0.45)' }}>
         Ya están en XPEAK
       </p>
       <div className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
@@ -142,7 +142,7 @@ const FichasRealesTira = () => {
                 <FotoFicha src={fotoOptimizada(p.photo_url, 260)} alt={p.display_name ?? ''} />
                 <div className="px-2.5 py-2">
                   <p className="text-xs font-black truncate" style={{ color: '#111' }}>{p.display_name}</p>
-                  <p className="text-[0.65rem] truncate" style={{ color: 'rgba(0,0,0,0.55)' }}>
+                  <p className="text-[0.75rem] truncate" style={{ color: 'rgba(0,0,0,0.55)' }}>
                     {oficioCorto(p.role)}{p.zone ? ` · ${p.zone}` : ''}
                   </p>
                 </div>

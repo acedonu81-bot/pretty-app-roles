@@ -129,7 +129,7 @@ const GlobalPlayer = () => {
     >
       <div className="flex items-center gap-3 min-w-0 w-[180px]">
         <div
-          className="w-8 h-8 rounded flex-shrink-0 flex items-center justify-center text-[0.7rem] font-bold"
+          className="w-8 h-8 rounded flex-shrink-0 flex items-center justify-center text-[0.75rem] font-bold"
           style={{ background: playing ? 'rgba(212,175,55,0.15)' : 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}
         >
           {playing ? '▶' : '♪'}

@@ -271,7 +271,7 @@ export const ReviewsSection = ({ professionalUserId, professionalName, googleRev
                 </div>
                 <div className="flex flex-col items-end gap-1">
                   <StarRating value={r.rating} />
-                  <span className="text-[10px]" style={{ color: '#444' }}>
+                  <span className="text-[0.75rem]" style={{ color: '#444' }}>
                     {new Date(r.created_at).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' })}
                   </span>
                 </div>
@@ -281,7 +281,7 @@ export const ReviewsSection = ({ professionalUserId, professionalName, googleRev
                 <button
                   onClick={() => setReportingReviewId(r.id)}
                   disabled={reportedReviewIds.has(r.id)}
-                  className="mt-2 flex items-center gap-1 text-[11px] font-medium disabled:opacity-50"
+                  className="mt-2 flex items-center gap-1 text-[0.75rem] font-medium disabled:opacity-50"
                   style={{ color: '#888' }}>
                   <Flag size={10} /> {reportedReviewIds.has(r.id) ? 'Reportada' : 'Reportar'}
                 </button>
@@ -372,7 +372,7 @@ export const ReviewsSection = ({ professionalUserId, professionalName, googleRev
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', opacity: submitting ? 0.7 : 1 }}>
                   <Send size={14} /> {submitting ? 'Enviando...' : 'Enviar valoración'}
                 </button>
-                <p className="text-[10px] text-center" style={{ color: '#444' }}>
+                <p className="text-[0.75rem] text-center" style={{ color: '#444' }}>
                   Las valoraciones se publican tras revisión en 24h.
                 </p>
               </form>

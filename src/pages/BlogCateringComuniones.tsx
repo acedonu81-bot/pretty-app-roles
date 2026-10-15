@@ -77,9 +77,9 @@ export default function BlogCateringComuniones() {
                   { label: 'Todo incluido', precio: '65-120€', nota: 'por persona' },
                 ].map(c => (
                   <div key={c.label} className="p-3 rounded-xl text-center" style={{ background: 'rgba(180,83,9,0.06)', border: '1px solid rgba(180,83,9,0.15)' }}>
-                    <p className="text-[0.65rem] text-muted-foreground mb-1">{c.label}</p>
+                    <p className="text-[0.75rem] text-muted-foreground mb-1">{c.label}</p>
                     <p className="text-lg font-black" style={{ color: '#B45309' }}>{c.precio}</p>
-                    <p className="text-[0.6rem]" style={{ color: '#666' }}>{c.nota}</p>
+                    <p className="text-[0.75rem]" style={{ color: '#666' }}>{c.nota}</p>
                   </div>
                 ))}
               </div>

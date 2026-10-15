@@ -218,7 +218,7 @@ const LandingMegaMenu = () => {
                   <div className="grid grid-cols-3 gap-6">
                     {active.columns.map(col => (
                       <div key={col.heading}>
-                        <p className="text-[11px] font-black uppercase tracking-[0.12em] mb-3" style={{ color: '#8B6A00' }}>{col.heading}</p>
+                        <p className="text-[0.75rem] font-black uppercase tracking-[0.12em] mb-3" style={{ color: '#8B6A00' }}>{col.heading}</p>
                         <ul className="flex flex-col gap-2">
                           {col.links.map(l => (
                             <li key={l.href}>
@@ -235,7 +235,7 @@ const LandingMegaMenu = () => {
                   </div>
                 ) : (
                   <>
-                    <p className="text-[11px] font-black uppercase tracking-[0.12em] mb-3" style={{ color: '#8B6A00' }}>{active.heading}</p>
+                    <p className="text-[0.75rem] font-black uppercase tracking-[0.12em] mb-3" style={{ color: '#8B6A00' }}>{active.heading}</p>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                       {active.features.map(f => {
                         const Icon = f.icon;

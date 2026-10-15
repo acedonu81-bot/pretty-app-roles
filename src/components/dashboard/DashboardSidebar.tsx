@@ -126,7 +126,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
         </div>
         <div className="flex-1 min-w-0 text-left">
           <p className="text-[0.8rem] font-extrabold truncate leading-tight">{display_name || 'Mi perfil'}</p>
-          <p className="text-[0.6rem] font-extrabold uppercase tracking-wider mt-0.5" style={{ color: '#B8941E' }}>
+          <p className="text-[0.75rem] font-extrabold uppercase tracking-wider mt-0.5" style={{ color: '#B8941E' }}>
             {ROLE_LABEL[role] ?? role}
           </p>
         </div>
@@ -149,9 +149,9 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold truncate">{p.display_name}</p>
-                <p className="text-[0.6rem]" style={{ color: 'rgba(10,9,8,0.45)' }}>{ROLE_LABEL[p.role] ?? p.role}</p>
+                <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.45)' }}>{ROLE_LABEL[p.role] ?? p.role}</p>
               </div>
-              {p.id === profileId && <span className="text-[0.6rem] font-black" style={{ color: '#8A6D0F' }}>●</span>}
+              {p.id === profileId && <span className="text-[0.75rem] font-black" style={{ color: '#8A6D0F' }}>●</span>}
             </button>
           ))}
           {allProfiles.length < maxProfiles && (
@@ -218,7 +218,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
       <span className="flex-1" style={iconAlert ? { color: '#166534', fontWeight: 800 } : undefined}>{label}</span>
       {etiqueta && (
         <>
-          <span className="flex-shrink-0 text-[0.58rem] font-black uppercase tracking-wide px-1.5 py-1 rounded-full leading-none group-data-[collapsible=icon]:hidden"
+          <span className="flex-shrink-0 text-[0.75rem] font-black uppercase tracking-wide px-1.5 py-1 rounded-full leading-none group-data-[collapsible=icon]:hidden"
             style={{ background: '#2563EB', color: '#fff' }}>
             {etiqueta}
           </span>
@@ -231,7 +231,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
     </SidebarMenuButton>
     {typeof badge === 'number' && badge > 0 && (
       <SidebarMenuBadge
-        className="text-[0.62rem] px-1.5 py-0.5 rounded-full font-black leading-none static ml-auto mr-1 group-data-[collapsible=icon]:hidden"
+        className="text-[0.75rem] px-1.5 py-0.5 rounded-full font-black leading-none static ml-auto mr-1 group-data-[collapsible=icon]:hidden"
         style={badgeColor === 'blue'
           ? { background: 'rgba(37,99,235,0.14)', color: '#2563EB' }
           : badgeColor === 'green'
@@ -245,7 +245,7 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
 );
 
 const GroupLabel = ({ children }: { children: React.ReactNode }) => (
-  <div className="text-[0.62rem] font-extrabold uppercase tracking-[0.12em] mb-1.5 px-2.5 group-data-[collapsible=icon]:hidden" style={{ color: 'rgba(10,9,8,0.35)' }}>
+  <div className="text-[0.75rem] font-extrabold uppercase tracking-[0.12em] mb-1.5 px-2.5 group-data-[collapsible=icon]:hidden" style={{ color: 'rgba(10,9,8,0.35)' }}>
     {children}
   </div>
 );
@@ -352,7 +352,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
             <h2 className="text-[1.3rem] font-black tracking-[0.02em] font-display group-data-[collapsible=icon]:text-[1.1rem]">
               X<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
             </h2>
-            <p className="text-[0.62rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: 'rgba(10,9,8,0.35)' }}>España · Directorio Profesional</p>
+            <p className="text-[0.75rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: 'rgba(10,9,8,0.35)' }}>España · Directorio Profesional</p>
           </a>
           {!forceExpanded && <SidebarCollapseToggle />}
         </div>
@@ -432,7 +432,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                       : `Filtrando por ${region}: se aplica al entrar a un rol`
                   );
                 }}
-                className="mb-1.5 w-full text-[0.72rem] font-bold rounded-lg px-2 py-1.5 outline-none"
+                className="mb-1.5 w-full text-[0.75rem] font-bold rounded-lg px-2 py-1.5 outline-none"
                 style={{ background: 'rgba(10,9,8,0.035)', color: 'rgba(10,9,8,0.75)', border: '1px solid rgba(10,9,8,0.08)' }}
               >
                 <option value={ALL_REGIONS_LABEL}>Todas las comunidades</option>
@@ -511,7 +511,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
         <div className="mb-1">
           <button type="button" onClick={() => setToolsOpen(o => !o)} aria-expanded={toolsOpen || collapsed}
             className="w-full flex items-center justify-between px-2.5 mb-1.5 group-data-[collapsible=icon]:hidden">
-            <span className="text-[0.62rem] font-extrabold uppercase tracking-[0.12em]" style={{ color: 'rgba(10,9,8,0.45)' }}>Más</span>
+            <span className="text-[0.75rem] font-extrabold uppercase tracking-[0.12em]" style={{ color: 'rgba(10,9,8,0.45)' }}>Más</span>
             <ChevronDown size={12} style={{ color: 'rgba(10,9,8,0.4)', transform: toolsOpen ? 'rotate(180deg)' : undefined, transition: 'transform 0.2s' }} />
           </button>
           {(toolsOpen || collapsed) && <SidebarMenu>

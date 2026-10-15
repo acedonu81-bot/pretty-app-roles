@@ -97,7 +97,7 @@ const XToast = ({ item, onRemove }: { item: ToastItem; onRemove: () => void }) =
           </p>
           {item.description && (
             <p style={{
-              margin: '1px 0 0', fontSize: '11px', lineHeight: 1.4,
+              margin: '1px 0 0', fontSize: '12px', lineHeight: 1.4,
               color: 'rgba(255,255,255,0.5)', fontFamily: 'Inter, sans-serif',
             }}>
               {item.description}

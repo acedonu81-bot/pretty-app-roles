@@ -154,11 +154,11 @@ export default function BlogEventoEmpresaIdeas() {
                 <p className="text-base leading-relaxed mb-4" style={{ color: '#222' }}>{idea.desc}</p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <div className="flex-1 p-3 rounded-xl" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.12)' }}>
-                    <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-1" style={{ color: 'rgba(109,40,217,0.6)' }}>Precio orientativo</p>
+                    <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-1" style={{ color: 'rgba(109,40,217,0.6)' }}>Precio orientativo</p>
                     <p className="text-sm font-black" style={{ color: '#6D28D9' }}>{idea.precio}</p>
                   </div>
                   <div className="flex-1 p-3 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
-                    <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-1" style={{ color: '#555' }}>Ideal para</p>
+                    <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-1" style={{ color: '#555' }}>Ideal para</p>
                     <p className="text-xs leading-snug" style={{ color: '#222' }}>{idea.ideal}</p>
                   </div>
                 </div>

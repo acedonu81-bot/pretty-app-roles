@@ -202,7 +202,7 @@ const PortfolioUpload = () => {
                 <img src={item.url} alt={item.name} loading="lazy" className="w-full h-full object-cover" />
               )}
               {item.isVideo && (
-                <div className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[0.7rem] font-bold flex items-center gap-0.5"
+                <div className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[0.75rem] font-bold flex items-center gap-0.5"
                   style={{ background: 'rgba(0,0,0,0.7)', color: '#8A6D0F' }}>
                   <Video size={8} /> VÍD
                 </div>

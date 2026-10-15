@@ -41,7 +41,7 @@ export default function BlogPersonalExtraHosteleria() {
         <div className="max-w-5xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#2563EB', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
-            <span style={{ background: 'rgba(37,99,235,0.1)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Hostelería · B2B</span>
+            <span style={{ background: 'rgba(37,99,235,0.1)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Hostelería · B2B</span>
             <h1 className="text-3xl font-black mt-4 mb-4 leading-tight">Personal extra para hostelería: cómo cubrir picos de temporada sin contratar fijo</h1>
             <p style={{ color: '#444', fontSize: '0.85rem' }}>Por Daniel · XPEAK · 10 junio 2026</p>
 

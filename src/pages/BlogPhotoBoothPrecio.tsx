@@ -169,7 +169,7 @@ export default function BlogPhotoBoothPrecio() {
                       <p className="text-xs font-black leading-tight">{item.nombre}</p>
                       <div className="text-right shrink-0">
                         <p className="text-xs font-black" style={{ color: '#4F46E5' }}>{item.precio}</p>
-                        <p className="text-[0.6rem] mt-0.5" style={{ color: '#555' }}>{item.horas}</p>
+                        <p className="text-[0.75rem] mt-0.5" style={{ color: '#555' }}>{item.horas}</p>
                       </div>
                     </div>
                     <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{item.desc}</p>
@@ -269,7 +269,7 @@ export default function BlogPhotoBoothPrecio() {
                     style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}
                   >
                     <span
-                      className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
+                      className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
                       style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}
                     >
                       {link.cat}

@@ -39,9 +39,9 @@ export default function BlogFiestaVillaIbiza() {
       </Helmet>
       <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
         <div className="max-w-5xl mx-auto px-4 py-12">
-          <a href="/blog" style={{ color: '#D4AF37', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
+          <a href="/blog" style={{ color: '#8B6A00', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
-            <span style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Ibiza · Fiestas Privadas</span>
+            <span style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Ibiza · Fiestas Privadas</span>
             <h1 className="text-3xl font-black mt-4 mb-4 leading-tight">Cómo organizar una fiesta privada en una villa de Ibiza: permisos, ruido y proveedores</h1>
             <p style={{ color: '#444', fontSize: '0.85rem' }}>Por Daniel · XPEAK · 10 junio 2026</p>
 
@@ -70,7 +70,7 @@ export default function BlogFiestaVillaIbiza() {
               <div key={p.title} className="flex gap-3 mb-4 p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>{p.emoji}</span>
                 <div>
-                  <p className="font-black"><a href={p.link} style={{ color: '#D4AF37' }}>{p.title}</a></p>
+                  <p className="font-black"><a href={p.link} style={{ color: '#8B6A00' }}>{p.title}</a></p>
                   <p style={{ color: '#333', fontSize: '0.88rem', lineHeight: 1.7, marginTop: 4 }}>{p.desc}</p>
                 </div>
               </div>
@@ -80,9 +80,9 @@ export default function BlogFiestaVillaIbiza() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid #777' }}>
-                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>Proveedor</th>
-                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>20 pax</th>
-                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>50 pax</th>
+                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#8B6A00' }}>Proveedor</th>
+                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#8B6A00' }}>20 pax</th>
+                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#8B6A00' }}>50 pax</th>
                 </tr>
               </thead>
               <tbody>

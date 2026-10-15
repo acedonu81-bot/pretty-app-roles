@@ -107,7 +107,7 @@ export default function BlogFiestaEmpresa() {
                   <div key={f.formato} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-sm font-bold">{f.formato}</p>
-                      <span className="text-[0.6rem]" style={{ color: '#6D28D9' }}>{f.popularidad}</span>
+                      <span className="text-[0.75rem]" style={{ color: '#6D28D9' }}>{f.popularidad}</span>
                     </div>
                     <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{f.desc}</p>
                   </div>

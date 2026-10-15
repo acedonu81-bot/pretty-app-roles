@@ -37,7 +37,7 @@ const ValorarContratado = ({ nombre, yaOcurrio, valorado, onValorar }: Props) =>
   }
   if (!yaOcurrio) {
     return (
-      <p className="mt-2 px-3 py-2 rounded-xl text-[11px]"
+      <p className="mt-2 px-3 py-2 rounded-xl text-[0.75rem]"
         style={{ background: 'rgba(0,0,0,0.03)', border: '1px dashed rgba(0,0,0,0.15)', color: '#555' }}>
         Podrás valorar a {nombre} cuando termine el evento.
       </p>
@@ -49,7 +49,7 @@ const ValorarContratado = ({ nombre, yaOcurrio, valorado, onValorar }: Props) =>
         {[1, 2, 3, 4, 5].map(n => <Star key={n} size={16} color="#D4AF37" />)}
       </div>
       <p className="text-sm font-black" style={{ color: '#111' }}>¿Cómo fue con {nombre}?</p>
-      <p className="text-[11px] mt-0.5 mb-2.5" style={{ color: '#555' }}>
+      <p className="text-[0.75rem] mt-0.5 mb-2.5" style={{ color: '#555' }}>
         Tu valoración ayuda a otros organizadores a elegir bien. Son 3 preguntas rápidas y un comentario.
       </p>
       <button type="button" onClick={onValorar}

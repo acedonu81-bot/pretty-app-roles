@@ -66,7 +66,7 @@ export default function DJResourcesAffiliate({ role = 'dj' }: { role?: string })
           })}
         </div>
 
-        <p className="text-[0.65rem] mt-4 leading-relaxed" style={{ color: '#999' }}>
+        <p className="text-[0.75rem] mt-4 leading-relaxed" style={{ color: '#999' }}>
           XPEAK puede recibir una comisión por las compras realizadas a través de estos enlaces de Amazon, sin coste
           adicional para ti. Solo recomendamos equipo que consideramos útil para profesionales del sector.
         </p>

@@ -252,13 +252,13 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
               }} />
             {t.label}
             {t.id === 'demanda' && !isEmpresario && demandaBadge > 0 && (
-              <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
+              <span className="text-[0.75rem] font-black px-1.5 py-0.5 rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
                 style={{ background: '#15803d', color: '#fff' }}>
                 {demandaBadge} {demandaBadge === 1 ? 'nueva' : 'nuevas'}
               </span>
             )}
             {t.id === 'solicitudes' && pendingCount > 0 && (
-              <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
+              <span className="text-[0.75rem] font-black px-1.5 py-0.5 rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
                 style={{ background: 'rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
                 {pendingCount}
               </span>

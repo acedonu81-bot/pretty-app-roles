@@ -195,11 +195,11 @@ const GastosTab = () => {
         ].map(({ label, value, icon: Icon, note }) => (
           <div key={label} className="glass-panel p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[0.6rem] text-muted-foreground font-bold uppercase tracking-wider">{label}</span>
+              <span className="text-[0.75rem] text-muted-foreground font-bold uppercase tracking-wider">{label}</span>
               <Icon size={13} style={{ color: '#8A6D0F' }} />
             </div>
             <div className="text-xl font-black" style={{ color: '#8A6D0F' }}>{value}</div>
-            <span className="text-[0.6rem] text-muted-foreground">{note}</span>
+            <span className="text-[0.75rem] text-muted-foreground">{note}</span>
           </div>
         ))}
       </div>
@@ -224,7 +224,7 @@ const GastosTab = () => {
               <div className="flex items-end gap-2 h-28">
                 {monthlyData.map(d => (
                   <div key={d.month} className="flex-1 flex flex-col items-center gap-1">
-                    <span className="text-[0.6rem] font-bold" style={{ color: '#8A6D0F' }}>
+                    <span className="text-[0.75rem] font-bold" style={{ color: '#8A6D0F' }}>
                       {d.total > 0 ? `€${Math.round(d.total / 1000) > 0 ? `${(d.total/1000).toFixed(1)}k` : d.total}` : ''}
                     </span>
                     <div
@@ -235,7 +235,7 @@ const GastosTab = () => {
                         minHeight: d.total > 0 ? '6px' : '0',
                       }}
                     />
-                    <span className="text-[0.6rem] text-muted-foreground">{d.month}</span>
+                    <span className="text-[0.75rem] text-muted-foreground">{d.month}</span>
                   </div>
                 ))}
               </div>
@@ -254,7 +254,7 @@ const GastosTab = () => {
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-semibold capitalize">{role}</span>
                         <div className="flex items-center gap-2">
-                          <span className="text-[0.65rem] text-muted-foreground">{d.count} contratos</span>
+                          <span className="text-[0.75rem] text-muted-foreground">{d.count} contratos</span>
                           <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>{fmtEur(d.total)}</span>
                         </div>
                       </div>

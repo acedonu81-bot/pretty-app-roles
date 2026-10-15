@@ -151,7 +151,7 @@ export default function BlogCuartetoCuerdaPrecio() {
                   <div key={r.mes} className="p-4 rounded-xl text-center" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-xs font-bold mb-1">{r.mes}</p>
                     <p className="text-base font-black mb-1" style={{ color: '#DB2777' }}>{r.tiempo}</p>
-                    <p className="text-[0.65rem]" style={{ color: '#3d3d4e' }}>{r.nota}</p>
+                    <p className="text-[0.75rem]" style={{ color: '#3d3d4e' }}>{r.nota}</p>
                   </div>
                 ))}
               </div>

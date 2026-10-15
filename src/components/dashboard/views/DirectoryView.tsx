@@ -419,7 +419,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           </span>
           {onNavigate && (
             <button onClick={() => onNavigate('flash')}
-              className="ml-auto flex-shrink-0 text-[0.7rem] font-bold px-2.5 py-1 rounded-full transition-all hover:opacity-80"
+              className="ml-auto flex-shrink-0 text-[0.75rem] font-bold px-2.5 py-1 rounded-full transition-all hover:opacity-80"
               style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
               Ver ofertas →
             </button>
@@ -634,7 +634,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
                     {leadStatus === 'error' && (
                       <p className="text-xs mt-2" style={{ color: '#dc2626' }}>Error al guardar. Inténtalo de nuevo.</p>
                     )}
-                    <p className="text-[0.65rem] mt-2" style={{ color: '#999' }}>
+                    <p className="text-[0.75rem] mt-2" style={{ color: '#999' }}>
                       Al enviar aceptas nuestra{' '}
                       <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="underline">
                         Política de Privacidad

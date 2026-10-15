@@ -129,10 +129,10 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default', a
       <div className="my-8 rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.3)', background: 'linear-gradient(135deg, rgba(212,175,55,0.06) 0%, rgba(212,175,55,0.02) 100%)' }}>
         <div className="p-5 sm:p-6">
           <div className="flex items-start justify-between gap-4 mb-3">
-            <p className="text-[0.6rem] font-black uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>
+            <p className="text-[0.75rem] font-black uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>
               {u.eyebrow}
             </p>
-            <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded-full shrink-0" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+            <span className="text-[0.75rem] font-bold px-2 py-0.5 rounded-full shrink-0" style={{ background: 'rgba(212,175,55,0.15)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.25)' }}>
               {u.badge}
             </span>
           </div>
@@ -155,7 +155,7 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default', a
     <div className="my-8 rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.04)' }}>
       <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1" style={{ color: 'rgba(212,175,55,0.6)' }}>
+          <p className="text-[0.75rem] font-black uppercase tracking-widest mb-1" style={{ color: 'rgba(212,175,55,0.6)' }}>
             XPEAK · Directorio verificado
           </p>
           <p className="text-sm font-bold" style={{ color: '#111' }}>{c.pro.label}</p>
@@ -176,7 +176,7 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default', a
           </a>
           <a href={c.org.href}
             onClick={() => track('org', c.org.href)}
-            className="inline-flex items-center justify-center px-5 py-1.5 rounded-xl text-[0.7rem] font-bold transition-all hover:scale-105"
+            className="inline-flex items-center justify-center px-5 py-1.5 rounded-xl text-[0.75rem] font-bold transition-all hover:scale-105"
             style={{ background: 'transparent', color: '#666', whiteSpace: 'nowrap' }}>
             {c.org.cta}
           </a>

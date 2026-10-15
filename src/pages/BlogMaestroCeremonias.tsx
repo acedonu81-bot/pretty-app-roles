@@ -282,7 +282,7 @@ export default function BlogMaestroCeremonias() {
                 <a key={p.href} href={p.href}
                   className="block p-5 rounded-2xl transition-all hover:scale-[1.02]"
                   style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
-                  <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
+                  <span className="inline-block text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
                     style={{ background: 'rgba(219,39,119,0.1)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
                   <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.desc}</p>

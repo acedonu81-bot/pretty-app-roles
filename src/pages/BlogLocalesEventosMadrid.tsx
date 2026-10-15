@@ -45,7 +45,7 @@ function VenueCard({ local }: { local: LocalInvestigado }) {
       <div className="relative" style={{ aspectRatio: '4/3' }}>
         <img src={local.foto} alt={local.nombre} className="w-full h-full object-cover" loading="lazy" />
         <span
-          className="absolute top-2.5 left-2.5 text-[10px] font-black uppercase tracking-wide text-white px-2 py-1 rounded-md"
+          className="absolute top-2.5 left-2.5 text-[0.75rem] font-black uppercase tracking-wide text-white px-2 py-1 rounded-md"
           style={{ background: 'rgba(10,9,8,0.55)', backdropFilter: 'blur(3px)' }}
         >
           {local.zona}
@@ -71,7 +71,7 @@ function Featured({ local }: { local: LocalInvestigado }) {
         <img src={local.foto} alt={local.nombre} className="w-full h-full object-cover" loading="lazy" />
       </div>
       <div className="p-7 flex flex-col justify-center">
-        <span className="inline-block w-fit text-[10px] font-black uppercase mb-2.5 px-2.5 py-1 rounded-md" style={{ color: '#8a6d1a', background: 'rgba(212,175,55,0.14)' }}>
+        <span className="inline-block w-fit text-[0.75rem] font-black uppercase mb-2.5 px-2.5 py-1 rounded-md" style={{ color: '#8a6d1a', background: 'rgba(212,175,55,0.14)' }}>
           {local.zona}
         </span>
         <p className="text-xl font-black mb-2" style={{ fontFamily: "'Syne', sans-serif" }}>{local.nombre}</p>
@@ -143,8 +143,8 @@ export default function BlogLocalesEventosMadrid() {
             <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,9,8,0) 0%, rgba(10,9,8,0.2) 40%, rgba(10,9,8,0.92) 100%)' }} />
             <div className="relative z-10 h-full flex flex-col justify-end p-6 sm:p-10">
               <span
-                className="inline-flex items-center gap-1.5 w-fit text-[11px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-4"
-                style={{ background: 'rgba(212,175,55,0.16)', border: '1px solid rgba(212,175,55,0.4)', color: '#D4AF37', backdropFilter: 'blur(4px)' }}
+                className="inline-flex items-center gap-1.5 w-fit text-[0.75rem] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-4"
+                style={{ background: 'rgba(212,175,55,0.16)', border: '1px solid rgba(212,175,55,0.4)', color: '#8B6A00', backdropFilter: 'blur(4px)' }}
               >
                 Organizadores · XPEAK Blog
               </span>

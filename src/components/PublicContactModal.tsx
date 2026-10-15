@@ -220,7 +220,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
               {status === 'sending' ? 'Enviando…' : 'Enviar solicitud'}
             </button>
 
-            <p className="text-[0.65rem] text-center mt-3" style={{ color: '#333' }}>
+            <p className="text-[0.75rem] text-center mt-3" style={{ color: '#333' }}>
               Respuesta directa del profesional
             </p>
           </form>

@@ -430,10 +430,10 @@ const SolicitudesTab = () => {
                                   <Star key={n} size={11} fill={n <= r.rating ? '#22c55e' : 'none'} color="#22c55e" />
                                 ))}
                               </span>
-                              <span className="text-[0.7rem] font-bold" style={{ color: '#22c55e' }}>Valorado</span>
+                              <span className="text-[0.75rem] font-bold" style={{ color: '#22c55e' }}>Valorado</span>
                             </div>
                             {r.comment && (
-                              <p className="text-[0.7rem] text-right italic" style={{ color: '#3d5a46' }}>"{r.comment}"</p>
+                              <p className="text-[0.75rem] text-right italic" style={{ color: '#3d5a46' }}>"{r.comment}"</p>
                             )}
                           </div>
                         );

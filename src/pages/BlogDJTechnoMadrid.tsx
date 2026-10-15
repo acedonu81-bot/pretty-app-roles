@@ -91,7 +91,7 @@ export default function BlogDJTechnoMadrid() {
                 <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
                   <td className="p-3 border border-black/[0.08] font-medium">{t.nivel}</td>
                   <td className="p-3 border border-black/[0.08] text-[#555]">{t.escenario}</td>
-                  <td className="p-3 border border-black/[0.08] font-bold" style={{ color: '#D4AF37' }}>{t.tarifa}</td>
+                  <td className="p-3 border border-black/[0.08] font-bold" style={{ color: '#8B6A00' }}>{t.tarifa}</td>
                   <td className="p-3 border border-black/[0.08] text-[#555]">{t.nota}</td>
                 </tr>
               ))}</tbody>

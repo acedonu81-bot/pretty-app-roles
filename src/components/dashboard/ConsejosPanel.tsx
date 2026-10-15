@@ -203,7 +203,7 @@ export default function ConsejosPanel({ isMobile, onNavigate, onGoToReviews }: P
                 <paso.p.icon size={18} strokeWidth={2.5} style={{ color: paso.p.color ?? '#8B6A00' }} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[0.62rem] font-extrabold uppercase tracking-[0.12em] mb-0.5" style={{ color: '#8B6A00' }}>
+                <p className="text-[0.75rem] font-extrabold uppercase tracking-[0.12em] mb-0.5" style={{ color: '#8B6A00' }}>
                   Conoce XPEAK · {paso.n} de {paso.total}
                 </p>
                 <p className="text-[0.95rem] font-black font-display" style={{ color: '#111' }}>{paso.p.titulo}</p>

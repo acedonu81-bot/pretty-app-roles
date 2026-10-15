@@ -45,7 +45,7 @@ const MatchCard = ({ m, onContact }: { m: MatchedProfessional; onContact: (userI
       {m.specialty && <p className="text-xs truncate" style={{ color: '#8A6D0F' }}>{m.specialty}</p>}
       <div className="flex flex-wrap gap-1.5 mt-1.5">
         {m.matchReasons.slice(0, 3).map((r, i) => (
-          <span key={i} className="text-[0.6rem] px-1.5 py-0.5 rounded-full font-bold"
+          <span key={i} className="text-[0.75rem] px-1.5 py-0.5 rounded-full font-bold"
             style={{ background: 'rgba(212,175,55,0.08)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.15)' }}>
             {r}
           </span>
@@ -57,7 +57,7 @@ const MatchCard = ({ m, onContact }: { m: MatchedProfessional; onContact: (userI
         <span className="text-xs font-bold" style={{ color: '#222' }}>~{m.estimatedPrice}€</span>
       )}
       <button onClick={() => onContact(m.user_id)}
-        className="px-2.5 py-1 rounded-lg text-[0.65rem] font-bold transition-all hover:scale-105"
+        className="px-2.5 py-1 rounded-lg text-[0.75rem] font-bold transition-all hover:scale-105"
         style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
         Contactar
       </button>

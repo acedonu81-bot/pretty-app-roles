@@ -281,7 +281,7 @@ export default function BlogWeddingPlanner() {
                   { href: '/blog/contratar-fotografo-de-bodas', title: 'Cómo contratar fotógrafo de bodas', tag: 'Fotografía' },
                 ].map(a => (
                   <a key={a.href} href={a.href} className="p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)', display: 'block', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-wider mb-1 block" style={{ color: '#6D28D9' }}>{a.tag}</span>
+                    <span className="text-[0.75rem] font-bold uppercase tracking-wider mb-1 block" style={{ color: '#6D28D9' }}>{a.tag}</span>
                     <span className="text-xs font-bold" style={{ color: '#111' }}>{a.title}</span>
                   </a>
                 ))}

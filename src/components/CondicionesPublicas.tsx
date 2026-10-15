@@ -81,7 +81,7 @@ export default function CondicionesPublicas({ p, nombre }: { p: Condiciones; nom
 
   return (
     <section className="rounded-2xl p-5 sm:p-6" style={{ background: '#0a0908' }}>
-      <p className="text-[0.65rem] font-black uppercase tracking-widest mb-1" style={{ color: '#D4AF37' }}>
+      <p className="text-[0.75rem] font-black uppercase tracking-widest mb-1" style={{ color: '#D4AF37' }}>
         Condiciones de {nombre}
       </p>
       <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>
@@ -102,11 +102,11 @@ export default function CondicionesPublicas({ p, nombre }: { p: Condiciones; nom
 
       {excluidos && (
         <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-          <p className="text-[0.65rem] font-black uppercase tracking-wider mb-2"
+          <p className="text-[0.75rem] font-black uppercase tracking-wider mb-2"
             style={{ color: 'rgba(255,255,255,0.45)' }}>No incluye</p>
           <div className="flex flex-wrap gap-1.5">
             {excluidos.map(s => (
-              <span key={s} className="px-2 py-1 rounded text-[0.7rem] font-bold"
+              <span key={s} className="px-2 py-1 rounded text-[0.75rem] font-bold"
                 style={{ background: 'rgba(239,68,68,0.15)', color: '#fca5a5' }}>{s}</span>
             ))}
           </div>

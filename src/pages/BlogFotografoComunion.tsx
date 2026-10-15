@@ -125,7 +125,7 @@ export default function BlogFotografoComunion() {
                   '¿El álbum impreso está incluido o es un extra?',
                 ].map((q, i) => (
                   <div key={i} className="flex items-start gap-3 p-3 rounded-xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
-                    <span style={{ color: '#4F46E5', fontWeight: 700, fontSize: '0.7rem', marginTop: 1 }}>✓</span>
+                    <span style={{ color: '#4F46E5', fontWeight: 700, fontSize: '0.75rem', marginTop: 1 }}>✓</span>
                     <p className="text-xs" style={{ color: '#222' }}>{q}</p>
                   </div>
                 ))}
@@ -157,7 +157,7 @@ export default function BlogFotografoComunion() {
                   { href: '/blog/catering-comuniones-precio-persona', cat: 'Catering', title: 'Catering comuniones: precio por persona 2026' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}>{link.cat}</span>
+                    <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}>{link.cat}</span>
                     <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}

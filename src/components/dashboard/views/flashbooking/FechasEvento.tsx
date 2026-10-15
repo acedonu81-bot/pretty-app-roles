@@ -64,7 +64,7 @@ const FechasEvento = ({ fechas, onChange }: Props) => {
 
       {fechas.length > 0 ? (
         <div className="mt-2">
-          <p className="text-[11px] font-black mb-1" style={{ color: '#8A6D0F' }}>
+          <p className="text-[0.75rem] font-black mb-1" style={{ color: '#8A6D0F' }}>
             {fechas.length === 1 ? '1 día elegido' : `${fechas.length} días elegidos`}
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -82,7 +82,7 @@ const FechasEvento = ({ fechas, onChange }: Props) => {
           </div>
         </div>
       ) : (
-        <p className="text-[11px] mt-1.5" style={{ color: '#888' }}>
+        <p className="text-[0.75rem] mt-1.5" style={{ color: '#888' }}>
           Toca los días del evento en el calendario. Si dura varias jornadas, toca todos.
         </p>
       )}

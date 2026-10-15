@@ -95,7 +95,7 @@ export default function BlogCalculadoraTarifaDJ() {
       </Helmet>
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
@@ -104,14 +104,14 @@ export default function BlogCalculadoraTarifaDJ() {
         <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Herramienta · XPEAK</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · Herramienta · XPEAK</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Calculadora de tarifa DJ 2026: ¿cuánto cuesta tu evento?</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Introduce los datos de tu evento y obtén un precio estimado real. Basado en tarifas reales de DJs en España en 2026.</p>
           </div>
 
           {/* CALCULADORA */}
           <div className="rounded-2xl p-6 mb-8" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
-            <h2 className="text-base font-black mb-5" style={{ color: '#D4AF37' }}>Calculadora de precio DJ</h2>
+            <h2 className="text-base font-black mb-5" style={{ color: '#8B6A00' }}>Calculadora de precio DJ</h2>
 
             <div className="space-y-4">
               <div>
@@ -145,11 +145,11 @@ export default function BlogCalculadoraTarifaDJ() {
 
               <div>
                 <label className="text-xs font-bold block mb-1.5" style={{ color: '#222' }}>
-                  Horas de servicio: <span style={{ color: '#D4AF37' }}>{horas}h</span>
+                  Horas de servicio: <span style={{ color: '#8B6A00' }}>{horas}h</span>
                 </label>
                 <input type="range" min={2} max={12} value={horas} onChange={e => setHoras(Number(e.target.value))}
                   className="w-full accent-[#D4AF37]" />
-                <div className="flex justify-between text-[0.6rem] mt-1" style={{ color: '#555' }}>
+                <div className="flex justify-between text-[0.75rem] mt-1" style={{ color: '#555' }}>
                   <span>2h</span><span>6h</span><span>12h</span>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export default function BlogCalculadoraTarifaDJ() {
                         border: `1px solid ${experiencia === opt.v ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.08)'}`,
                       }}>
                       <p className="text-xs font-bold" style={{ color: experiencia === opt.v ? '#D4AF37' : '#fff' }}>{opt.l}</p>
-                      <p className="text-[0.6rem]" style={{ color: '#333' }}>{opt.s}</p>
+                      <p className="text-[0.75rem]" style={{ color: '#333' }}>{opt.s}</p>
                     </button>
                   ))}
                 </div>
@@ -180,7 +180,7 @@ export default function BlogCalculadoraTarifaDJ() {
             {/* Resultado */}
             <div className="mt-6 p-5 rounded-xl text-center" style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.25)' }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: 'rgba(212,175,55,0.7)' }}>Precio estimado</p>
-              <p className="text-4xl font-black mb-1" style={{ color: '#D4AF37' }}>{rango}</p>
+              <p className="text-4xl font-black mb-1" style={{ color: '#8B6A00' }}>{rango}</p>
               <p className="text-xs" style={{ color: '#333' }}>Sin IVA · Orientativo · Basado en tarifas reales 2026</p>
             </div>
           </div>
@@ -216,7 +216,7 @@ export default function BlogCalculadoraTarifaDJ() {
                   { href: '/plantilla-contrato-dj', cat: 'Recurso', title: 'Plantilla contrato DJ: Word y PDF' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
                     <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}

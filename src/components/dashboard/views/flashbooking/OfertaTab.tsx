@@ -223,7 +223,7 @@ const OfertaTab = () => {
                   <p style={{ fontWeight: 600, fontSize: 15, color: 'rgba(255,255,255,0.95)', marginBottom: 6 }}>
                     {p.name}
                   </p>
-                  <div style={{ display: 'flex', gap: 12, fontSize: 11, color: 'rgba(255,255,255,0.50)', marginBottom: 12 }}>
+                  <div style={{ display: 'flex', gap: 12, fontSize: 12, color: 'rgba(255,255,255,0.50)', marginBottom: 12 }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                       <MapPin size={10} /> {p.zone}
                     </span>
@@ -236,7 +236,7 @@ const OfertaTab = () => {
                     <span style={{ fontWeight: 700, fontSize: 14, color: '#8A6D0F' }}>
                       {isEmpresario
                         ? (p.price > 0 ? `€${p.price}${p.priceUnit}` : 'A consultar')
-                        : <span style={{ fontSize: 11, color: '#333', fontWeight: 400 }}>Tarifa privada</span>}
+                        : <span style={{ fontSize: 12, color: '#333', fontWeight: 400 }}>Tarifa privada</span>}
                     </span>
                     {isEmpresario ? (
                       <button
@@ -253,7 +253,7 @@ const OfertaTab = () => {
                       </button>
                     ) : (
                       <span style={{
-                        fontSize: 11, color: '#333', fontWeight: 500,
+                        fontSize: 12, color: '#333', fontWeight: 500,
                         padding: '4px 10px', borderRadius: 6,
                         background: 'rgba(0,0,0,0.04)',
                         border: '1px solid rgba(0,0,0,0.08)',

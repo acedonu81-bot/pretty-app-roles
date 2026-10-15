@@ -127,7 +127,7 @@ export default function PlantillaContratoDJ() {
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80"
                     style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
+                    <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
                       style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
                     <span className="text-xs font-medium" style={{ color: '#374151' }}>{link.title}</span>
                   </a>

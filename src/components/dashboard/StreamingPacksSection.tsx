@@ -120,14 +120,14 @@ const StreamingPacksSection = () => {
               <span className="text-base font-black" style={{ color: pack.highlight ? '#D4AF37' : 'white' }}>
                 €{pack.price}
               </span>
-              <span className="text-[0.7rem] text-muted-foreground">
+              <span className="text-[0.75rem] text-muted-foreground">
                 €{pack.pricePerHour.toFixed(2)}/h
               </span>
             </button>
           ))}
         </div>
 
-        <p className="text-[0.7rem] text-muted-foreground text-center">
+        <p className="text-[0.75rem] text-muted-foreground text-center">
           Horas válidas 6 meses · Streaming vía Amazon IVS · Alta calidad garantizada
         </p>
 

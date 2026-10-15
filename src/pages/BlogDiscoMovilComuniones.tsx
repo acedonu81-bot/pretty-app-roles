@@ -50,7 +50,7 @@ const faqStructured = {
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
-  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#D4AF37', borderBottom: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' };
+  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#8B6A00', borderBottom: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' };
   const td = { padding: '10px 14px', borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#111', fontSize: '0.87rem', verticalAlign: 'top' as const };
 
   return (
@@ -77,7 +77,7 @@ const faqStructured = {
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             Unirse
@@ -87,7 +87,7 @@ const faqStructured = {
 
         <article className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
           <header className="mb-10">
-            <time className="text-[0.65rem] font-bold uppercase tracking-wider" style={{ color: '#3d3d4e' }}>3 may 2026</time>
+            <time className="text-[0.75rem] font-bold uppercase tracking-wider" style={{ color: '#3d3d4e' }}>3 may 2026</time>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight mt-2 mb-4 leading-tight">
               Disco móvil para comuniones: precios y qué incluye en 2026
             </h1>
@@ -105,7 +105,7 @@ const faqStructured = {
                   {PAQUETES.map(r => (
                     <tr key={r.paquete}>
                       <td style={{ ...td, fontWeight: 600 }}>{r.paquete}</td>
-                      <td style={{ ...td, color: '#D4AF37', fontWeight: 700 }}>{r.precio}</td>
+                      <td style={{ ...td, color: '#8B6A00', fontWeight: 700 }}>{r.precio}</td>
                       <td style={td}>{r.incluye}</td>
                     </tr>
                   ))}
@@ -126,7 +126,7 @@ const faqStructured = {
                 { item: 'Seguro de responsabilidad', desc: 'El equipo propio del DJ va asegurado' },
               ].map(item => (
                 <div key={item.item} className="p-3 rounded-lg" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-                  <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{item.item}</p>
+                  <p className="text-xs font-bold" style={{ color: '#8B6A00' }}>{item.item}</p>
                   <p className="text-xs mt-0.5" style={{ color: '#222' }}>{item.desc}</p>
                 </div>
               ))}
@@ -154,7 +154,7 @@ const faqStructured = {
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
                     <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}

@@ -72,7 +72,7 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
           <span className="text-xl font-black" style={{ color: '#222', lineHeight: 1 }}>
             {isEmpty ? '—' : total > 999 ? `${(total / 1000).toFixed(1)}k` : total}
           </span>
-          <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: '#333' }}>
+          <span className="text-[0.75rem] font-bold uppercase tracking-widest" style={{ color: '#333' }}>
             total
           </span>
         </div>
@@ -349,7 +349,7 @@ const StatsView = () => {
                         border: '1px solid rgba(66,133,244,0.3)',
                         borderRadius: 6,
                         padding: '4px 8px',
-                        fontSize: '0.6rem',
+                        fontSize: '0.75rem',
                         fontWeight: 700,
                         color: '#222',
                       }}>

@@ -712,21 +712,23 @@ function DirectorioPublicoContenido() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>Directorio · XPEAK</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-3" style={{ color: '#111' }}>{config.title}</h1>
-            <p className={`text-sm leading-relaxed max-w-xl ${priceRange ? 'mb-2' : 'mb-5'}`} style={{ color: '#333' }}>{config.subtitle}</p>
+            <p className="text-sm leading-relaxed max-w-xl mb-2" style={{ color: '#333' }}>{config.subtitle}</p>
 
-            {priceRange && (
-              <p className="text-xs font-bold mb-5" style={{ color: '#7a6216' }}>
-                Precios en esta categoría: {priceRange.min}€ - {priceRange.max}€/h
-              </p>
-            )}
+            {/* La línea de precios y el botón de presupuesto múltiple dependen de
+                los datos, que llegan ~0,8 s después: al insertarse empujaban las
+                tarjetas de carga hacia abajo (CLS 0,31 en escritorio, auditoría
+                15 oct 2026). Su hueco se reserva desde el primer pintado. */}
+            <p className="text-xs font-bold mb-5 min-h-[1rem]" style={{ color: '#7a6216' }}>
+              {priceRange ? `Precios en esta categoría: ${priceRange.min}€ - ${priceRange.max}€/h` : ''}
+            </p>
 
-            <div className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-2.5 min-h-[46px]">
               {realPros.length >= 2 && (
                 <button onClick={() => requireAuthThen(() => setShowMultiRequest(true))}
                   className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.02] active:scale-95"
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 6px 20px rgba(212,175,55,0.3)' }}>
                   <Users size={16} /> Pide presupuesto a varios de golpe
-                  <span className="text-[0.7rem] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.15)' }}>
+                  <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.15)' }}>
                     1 formulario · {realPros.length} respuestas
                   </span>
                 </button>
@@ -865,7 +867,7 @@ function DirectorioPublicoContenido() {
                 const related = (RELATED_ROLES[rol ?? ''] ?? DEFAULT_RELATED).filter(s => s !== rol);
                 return (
                   <div className="pt-5" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
-                    <p className="text-[0.7rem] font-bold uppercase tracking-wider mb-3" style={{ color: '#888' }}>
+                    <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-3" style={{ color: '#888' }}>
                       Mientras tanto, busca otros profesionales
                     </p>
                     <div className="flex flex-wrap justify-center gap-2">
@@ -924,7 +926,7 @@ function DirectorioPublicoContenido() {
                     {/* Badges */}
                     <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
                       {(p as any).is_seed && (
-                        <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                        <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black"
                           style={{ background: 'rgba(0,0,0,0.65)', color: '#fff' }}>
                           Perfil de ejemplo
                         </span>
@@ -932,12 +934,12 @@ function DirectorioPublicoContenido() {
                       {/* Mobile: ONE badge, priority Disponible > Verificado > Pro > Early > Rápida */}
                       <span className="sm:hidden">
                         {p.is_flash_active ? (
-                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black"
                             style={{ background: '#15803d', color: '#fff' }}>
                             <Zap size={10} fill="#fff" /> Disponible
                           </span>
                         ) : p.is_verified ? (
-                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black"
                             style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
                             <BadgeCheck size={10} /> Verificado
                           </span>
@@ -945,7 +947,7 @@ function DirectorioPublicoContenido() {
                       </span>
                       {/* Desktop: full set */}
                       {p.is_verified && (
-                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black"
                           style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
                           <BadgeCheck size={10} /> Verificado por XPEAK
                         </span>
@@ -954,19 +956,19 @@ function DirectorioPublicoContenido() {
                           No es "Nuevo" por fecha de alta: solo se muestra si el
                           propio grupo lo activó en Ajustes. */}
                       {isNewOnPlatform(p as any) && (
-                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black"
                           style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
                           <Users size={10} /> Nuevo en XPEAK
                         </span>
                       )}
                       {p.is_flash_active && (
-                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black"
                           style={{ background: '#15803d', color: '#fff' }}>
                           <Zap size={10} fill="#fff" /> Disponible ahora
                         </span>
                       )}
                       {(p as any).fast_responder_count >= 1 && (
-                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black"
                           style={{ background: 'rgba(251,146,60,0.9)', color: '#000' }}>
                           Respuesta rápida
                         </span>
@@ -1011,12 +1013,12 @@ function DirectorioPublicoContenido() {
                     {p.reviewCount > 0 && (
                       <div className="flex items-center gap-1.5 mt-1 mb-1">
                         <span className="text-xs font-bold" style={{ color: '#333' }}>★ {p.avgRating}</span>
-                        <span className="text-[0.65rem]" style={{ color: '#333' }}>({p.reviewCount})</span>
+                        <span className="text-[0.75rem]" style={{ color: '#333' }}>({p.reviewCount})</span>
                       </div>
                     )}
                     {/* "Sin valoraciones" — desktop only */}
                     {p.reviewCount === 0 && (
-                      <span className="hidden sm:block text-[0.65rem] mt-1 mb-1" style={{ color: '#444' }}>Sin valoraciones aún</span>
+                      <span className="hidden sm:block text-[0.75rem] mt-1 mb-1" style={{ color: '#444' }}>Sin valoraciones aún</span>
                     )}
 
                     {/* Zone — separate line on desktop */}
@@ -1028,7 +1030,7 @@ function DirectorioPublicoContenido() {
 
                     {/* Actividad reciente real — solo si hubo cambios en el perfil en los últimos 30 días */}
                     {recentUpdateLabel(p.updated_at) && (
-                      <p className="text-[0.65rem] mb-2" style={{ color: '#7a6216' }}>
+                      <p className="text-[0.75rem] mb-2" style={{ color: '#7a6216' }}>
                         {recentUpdateLabel(p.updated_at)}
                       </p>
                     )}

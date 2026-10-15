@@ -216,7 +216,7 @@ export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Send size={15} /> {status === 'sending' ? 'Enviando...' : 'Enviar solicitud'}
             </button>
-            <p className="text-[0.7rem] mt-3 text-center" style={{ color: '#555' }}>
+            <p className="text-[0.75rem] mt-3 text-center" style={{ color: '#555' }}>
               Usamos tu email solo para responderte sobre este evento.{' '}
               <a href="/privacidad" className="underline">Privacidad</a>
             </p>

@@ -552,12 +552,12 @@ const CalendarView = () => {
                       </div>
                       <div className="flex gap-1.5 mt-2">
                         <a href={getGoogleCalURL(ev)} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center gap-1 px-2 py-1 rounded text-[0.65rem] font-bold transition-all hover:scale-105"
+                          className="flex items-center gap-1 px-2 py-1 rounded text-[0.75rem] font-bold transition-all hover:scale-105"
                           style={{ background: 'rgba(66,133,244,0.1)', border: '1px solid rgba(66,133,244,0.2)', color: '#4285F4' }}>
                           <ExternalLink size={9} /> Google Cal
                         </a>
                         <button onClick={() => downloadICS(ev)}
-                          className="flex items-center gap-1 px-2 py-1 rounded text-[0.65rem] font-bold transition-all hover:scale-105"
+                          className="flex items-center gap-1 px-2 py-1 rounded text-[0.75rem] font-bold transition-all hover:scale-105"
                           style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
                           <Download size={9} /> Apple / .ics
                         </button>

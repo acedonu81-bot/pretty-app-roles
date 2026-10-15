@@ -106,13 +106,13 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
             <t.icon size={13} />
             {t.label}
             {t.id === 'concurso' && concursoBadge > 0 && (
-              <span className="flex items-center justify-center rounded-full text-[0.65rem] font-black"
+              <span className="flex items-center justify-center rounded-full text-[0.75rem] font-black"
                 style={{ minWidth: 16, height: 16, padding: '0 4px', background: '#dc2626', color: '#fff' }}>
                 {concursoBadge}
               </span>
             )}
             {t.id === 'content' && reviewsBadge > 0 && (
-              <span className="flex items-center justify-center rounded-full text-[0.65rem] font-black"
+              <span className="flex items-center justify-center rounded-full text-[0.75rem] font-black"
                 style={{ minWidth: 16, height: 16, padding: '0 4px', background: '#dc2626', color: '#fff' }}>
                 {reviewsBadge}
               </span>

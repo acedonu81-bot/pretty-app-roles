@@ -160,7 +160,7 @@ export default function BlogAnimadoresComunionPrecio() {
                   <div key={c.caso} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-xs font-bold mb-1">{c.caso}</p>
                     <p className="text-sm font-black mb-1" style={{ color: '#6D28D9' }}>{c.antel}</p>
-                    <p className="text-[0.65rem]" style={{ color: '#3d3d4e' }}>{c.nota}</p>
+                    <p className="text-[0.75rem]" style={{ color: '#3d3d4e' }}>{c.nota}</p>
                   </div>
                 ))}
               </div>

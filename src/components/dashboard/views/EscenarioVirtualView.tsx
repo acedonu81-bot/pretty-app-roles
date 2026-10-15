@@ -294,7 +294,7 @@ const EscenarioVirtualView = () => {
                         {p.stream_title || p.zone || label}
                       </p>
                     </div>
-                    <span className="text-[0.65rem] font-black px-2 py-0.5 rounded-full flex-shrink-0"
+                    <span className="text-[0.75rem] font-black px-2 py-0.5 rounded-full flex-shrink-0"
                       style={{ background: `${color}15`, color, border: `1px solid ${color}30` }}>
                       {label.toUpperCase()}
                     </span>
@@ -517,7 +517,7 @@ const EscenarioVirtualView = () => {
                 title="Reportar este contenido"
               >
                 <Flag size={10} />
-                <span className="text-[0.7rem] font-bold uppercase tracking-wider">Reportar</span>
+                <span className="text-[0.75rem] font-bold uppercase tracking-wider">Reportar</span>
               </button>
             </div>
 

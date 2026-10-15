@@ -181,7 +181,7 @@ const OnboardingTour = ({ onNavigate, oculto }: Props) => {
                   {current.icon}
                 </div>
                 <div>
-                  <p className="text-[0.65rem] font-black tracking-widest uppercase" style={{ color: `${BLUE}99` }}>
+                  <p className="text-[0.75rem] font-black tracking-widest uppercase" style={{ color: `${BLUE}99` }}>
                     {step + 1} / {steps.length}
                   </p>
                   <p className="text-[0.88rem] font-bold leading-tight mt-0.5" style={{ color: '#111' }}>

@@ -414,7 +414,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs text-muted-foreground">{draft.length}/1000</span>
-                  <span className="text-[0.65rem] px-1.5 py-0.5 rounded font-bold"
+                  <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold"
                     style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e' }}>
                     Público
                   </span>
@@ -562,7 +562,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
                   onChange={handleBioVideoUpload}
                   className="hidden"
                 />
-                <p className="text-[0.65rem] text-muted-foreground mb-3 text-center">o pega un enlace ↓</p>
+                <p className="text-[0.75rem] text-muted-foreground mb-3 text-center">o pega un enlace ↓</p>
               </>
             )}
             {isOwn ? (

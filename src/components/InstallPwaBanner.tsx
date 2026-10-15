@@ -67,7 +67,7 @@ export default function InstallPwaBanner() {
       <div className="flex items-center gap-3 px-4 py-3.5">
         <div className="flex-1 min-w-0">
           <p className="text-xs font-black text-white">Instala XPEAK</p>
-          <p className="text-[0.7rem] leading-snug" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-[0.75rem] leading-snug" style={{ color: 'rgba(255,255,255,0.6)' }}>
             Pantalla completa, sin barra del navegador, como Instagram.
           </p>
         </div>

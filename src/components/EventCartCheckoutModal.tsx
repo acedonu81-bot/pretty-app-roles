@@ -215,7 +215,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold truncate" style={{ color: '#111' }}>{item.displayName}</p>
-                    <p className="text-[0.7rem]" style={{ color: '#333' }}>
+                    <p className="text-[0.75rem]" style={{ color: '#333' }}>
                       {item.zone || 'España'}{item.hourlyRate ? ` · desde ${item.hourlyRate}€${unidadTarifa(item.role, true)}` : ''}
                     </p>
                   </div>
@@ -303,7 +303,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                 style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
                 <div className="px-3 pt-2.5 space-y-1">
                   {items.filter(i => i.hourlyRate).map(i => (
-                    <div key={i.userId} className="flex items-center justify-between text-[0.7rem]" style={{ color: '#555' }}>
+                    <div key={i.userId} className="flex items-center justify-between text-[0.75rem]" style={{ color: '#555' }}>
                       <span className="truncate mr-2">{i.displayName}</span>
                       <span className="flex-shrink-0">{precioCerrado(i) ? `${i.hourlyRate}€${unidadTarifa(i.role, true)}` : `${i.hourlyRate}€/h × ${estimatedHours}h`} = <span className="font-bold" style={{ color: '#222' }}>{importeEstimado(i, estimatedHours)}€</span></span>
                     </div>
@@ -313,7 +313,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                   <p className="text-xs" style={{ color: '#222' }}>
                     Presupuesto estimado ({estimatedHours}h)
                     {itemsWithoutRate > 0 && (
-                      <span className="block text-[0.65rem] mt-0.5" style={{ color: '#333' }}>
+                      <span className="block text-[0.75rem] mt-0.5" style={{ color: '#333' }}>
                         +{itemsWithoutRate} profesional{itemsWithoutRate !== 1 ? 'es' : ''} sin tarifa pública: a consultar
                       </span>
                     )}
@@ -323,7 +323,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
               </div>
             )}
             {estimatedHours === 0 && form.eventType && (
-              <p className="text-[0.7rem] mt-3" style={{ color: '#333' }}>
+              <p className="text-[0.75rem] mt-3" style={{ color: '#333' }}>
                 Indica las horas contratadas para ver el presupuesto estimado.
               </p>
             )}
@@ -342,7 +342,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                 onChange={e => { setLegalAccepted(e.target.checked); if (e.target.checked) setLegalError(false); }}
                 className="w-5 h-5 flex-shrink-0 mt-0.5 rounded-md accent-[#D4AF37]"
               />
-              <span className="text-[0.7rem] leading-relaxed" style={{ color: legalError ? '#b91c1c' : 'rgba(0,0,0,0.65)' }}>
+              <span className="text-[0.75rem] leading-relaxed" style={{ color: legalError ? '#b91c1c' : 'rgba(0,0,0,0.65)' }}>
                 {legalError && <span className="font-bold">☝️ Marca esta casilla para continuar</span>}
                 Acepto que mi nombre y contacto se compartan con cada profesional seleccionado, según la{' '}
                 <a href="/privacidad" target="_blank" rel="noopener" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Política de Privacidad</a>.
@@ -360,7 +360,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
               {status === 'sending' ? 'Enviando…' : user ? `Contactar a los ${items.length} profesional${items.length !== 1 ? 'es' : ''}` : 'Crear cuenta y enviar →'}
             </button>
 
-            <p className="text-[0.65rem] text-center mt-3" style={{ color: '#333' }}>
+            <p className="text-[0.75rem] text-center mt-3" style={{ color: '#333' }}>
               {user
                 ? 'Cada profesional te contactará directamente'
                 : 'Cuenta en 30 segundos · No perderás lo que has escrito'}

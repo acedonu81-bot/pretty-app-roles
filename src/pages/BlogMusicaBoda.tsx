@@ -97,7 +97,7 @@ export default function BlogMusicaBoda() {
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
@@ -113,7 +113,7 @@ export default function BlogMusicaBoda() {
           </a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Bodas · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Música para bodas: DJ, banda en directo o lista de reproducción, guía 2026
             </h1>
@@ -150,23 +150,23 @@ export default function BlogMusicaBoda() {
                   <div key={op.opcion} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <div className="flex items-start justify-between mb-3">
                       <h3 className="text-sm font-black">{op.opcion}</h3>
-                      <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{op.precio}</span>
+                      <span className="text-xs font-bold" style={{ color: '#8B6A00' }}>{op.precio}</span>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
                       <div>
-                        <p className="text-[0.6rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#22c55e' }}>Ventajas</p>
+                        <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#22c55e' }}>Ventajas</p>
                         <ul className="space-y-1">
                           {op.ventajas.map(v => <li key={v} className="text-xs flex items-start gap-1.5" style={{ color: '#222' }}><span style={{ color: '#22c55e' }}>+</span>{v}</li>)}
                         </ul>
                       </div>
                       <div>
-                        <p className="text-[0.6rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#ff5f56' }}>Desventajas</p>
+                        <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#ff5f56' }}>Desventajas</p>
                         <ul className="space-y-1">
                           {op.desventajas.map(d => <li key={d} className="text-xs flex items-start gap-1.5" style={{ color: '#222' }}><span style={{ color: '#ff5f56' }}>−</span>{d}</li>)}
                         </ul>
                       </div>
                     </div>
-                    <p className="text-[0.65rem] px-3 py-2 rounded-lg" style={{ background: 'rgba(212,175,55,0.06)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.1)' }}>
+                    <p className="text-[0.75rem] px-3 py-2 rounded-lg" style={{ background: 'rgba(212,175,55,0.06)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.1)' }}>
                       <strong>Ideal para:</strong> {op.ideal}
                     </p>
                   </div>
@@ -179,12 +179,12 @@ export default function BlogMusicaBoda() {
               <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 La opción más popular en bodas con presupuesto medio-alto es combinar un cuarteto de cuerda para la ceremonia y el cóctel (música clásica o versiones instrumentales de pop) con un DJ para la cena y pista de baile.
                 Para saber cuánto presupuestar, consulta{' '}
-                <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#D4AF37' }}>cuánto cobra un DJ en España</a>{' '}
-                o usa la <a href="/blog/calculadora-tarifa-dj" style={{ color: '#D4AF37' }}>calculadora de tarifa DJ</a>.
+                <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#8B6A00' }}>cuánto cobra un DJ en España</a>{' '}
+                o usa la <a href="/blog/calculadora-tarifa-dj" style={{ color: '#8B6A00' }}>calculadora de tarifa DJ</a>.
                 Antes de contratar, infórmate sobre{' '}
-                <a href="/blog/contrato-dj-que-debe-incluir" style={{ color: '#D4AF37' }}>qué debe incluir un contrato de DJ</a>{' '}
+                <a href="/blog/contrato-dj-que-debe-incluir" style={{ color: '#8B6A00' }}>qué debe incluir un contrato de DJ</a>{' '}
                 y descarga la{' '}
-                <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla</a>.
+                <a href="/plantilla-contrato-dj" style={{ color: '#8B6A00' }}>plantilla</a>.
               </p>
               <div className="grid grid-cols-3 gap-3">
                 {[
@@ -194,8 +194,8 @@ export default function BlogMusicaBoda() {
                 ].map(m => (
                   <div key={m.momento} className="p-3 rounded-xl text-center" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-xs font-bold mb-1">{m.momento}</p>
-                    <p className="text-[0.65rem] font-bold mb-1" style={{ color: '#D4AF37' }}>{m.musica}</p>
-                    <p className="text-[0.6rem]" style={{ color: '#3d3d4e' }}>{m.nota}</p>
+                    <p className="text-[0.75rem] font-bold mb-1" style={{ color: '#8B6A00' }}>{m.musica}</p>
+                    <p className="text-[0.75rem]" style={{ color: '#3d3d4e' }}>{m.nota}</p>
                   </div>
                 ))}
               </div>
@@ -227,7 +227,7 @@ export default function BlogMusicaBoda() {
                 ].map(c => (
                   <a key={c.href} href={c.href}
                     className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                    style={{ background: 'rgba(212,175,55,0.08)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.2)' }}>
                     {c.label}
                   </a>
                 ))}
@@ -247,7 +247,7 @@ export default function BlogMusicaBoda() {
                   { href: '/blog/musica-en-vivo-para-bodas', cat: 'Música', title: 'Música en vivo para bodas: precios 2026' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
                     <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}

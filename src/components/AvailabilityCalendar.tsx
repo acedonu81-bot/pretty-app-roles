@@ -96,7 +96,7 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
                       : '0 4px 10px -3px rgba(21,140,74,0.4)',
                     textDecoration: isBlocked ? 'line-through' : undefined,
                   }}>
-                  <span className="text-[0.55rem] font-bold uppercase opacity-80">{DAY_LABELS[(date.getDay() + 6) % 7]}</span>
+                  <span className="text-[0.75rem] font-bold uppercase opacity-80">{DAY_LABELS[(date.getDay() + 6) % 7]}</span>
                   <span className="text-xs font-black">{date.getDate()}</span>
                 </button>
               );
@@ -106,11 +106,11 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#2fa561' }} />
-                <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>Disponible</span>
+                <span className="text-[0.75rem] font-semibold" style={{ color: '#3a3626' }}>Disponible</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#d94848' }} />
-                <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>No disponible</span>
+                <span className="text-[0.75rem] font-semibold" style={{ color: '#3a3626' }}>No disponible</span>
               </div>
             </div>
             <button onClick={() => setShowFullMonth(true)} className="text-xs font-semibold underline" style={{ color: '#8A6D0F' }}>
@@ -154,7 +154,7 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
               {MONTH_NAMES.map((m, i) => (
                 <button key={m}
                   onClick={() => { setMonth(i); setShowJump(false); }}
-                  className="text-[0.7rem] font-bold py-1.5 rounded-lg hover:bg-black/5"
+                  className="text-[0.75rem] font-bold py-1.5 rounded-lg hover:bg-black/5"
                   style={{ color: i === month ? '#8A6D0F' : '#333', background: i === month ? 'rgba(212,175,55,0.12)' : undefined }}>
                   {m}
                 </button>
@@ -170,7 +170,7 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
 
         <div className="grid grid-cols-7 gap-0.5 text-center mb-1">
           {DAY_LABELS.map(d => (
-            <div key={d} className="text-[0.6rem] font-bold py-0.5" style={{ color: '#333' }}>{d}</div>
+            <div key={d} className="text-[0.75rem] font-bold py-0.5" style={{ color: '#333' }}>{d}</div>
           ))}
         </div>
         <div className="grid grid-cols-7 gap-0.5 text-center">
@@ -184,7 +184,7 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
             return (
               <div key={i}
                 onClick={isClickable ? () => onRequestDate?.(dateStr) : undefined}
-                className="w-full aspect-square flex items-center justify-center rounded text-[0.65rem] font-bold"
+                className="w-full aspect-square flex items-center justify-center rounded text-[0.75rem] font-bold"
                 style={{
                   cursor: isClickable ? 'pointer' : 'default',
                   color: !cell.current
@@ -216,11 +216,11 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#2fa561', boxShadow: '0 2px 5px rgba(21,140,74,0.4)' }} />
-              <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>Disponible</span>
+              <span className="text-[0.75rem] font-semibold" style={{ color: '#3a3626' }}>Disponible</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#d94848', boxShadow: '0 2px 5px rgba(196,45,45,0.35)' }} />
-              <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>No disponible</span>
+              <span className="text-[0.75rem] font-semibold" style={{ color: '#3a3626' }}>No disponible</span>
             </div>
           </div>
           {mode === 'view-request' && (

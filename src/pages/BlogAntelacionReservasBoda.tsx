@@ -39,9 +39,9 @@ export default function BlogAntelacionReservasBoda() {
       </Helmet>
       <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
         <div className="max-w-5xl mx-auto px-4 py-12">
-          <a href="/blog" style={{ color: '#D4AF37', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
+          <a href="/blog" style={{ color: '#8B6A00', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
-            <span style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Bodas · Planificación</span>
+            <span style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Bodas · Planificación</span>
             <h1 className="text-3xl font-black mt-4 mb-4 leading-tight">¿Con cuánta antelación reservar DJ, fotógrafo y catering para tu boda?</h1>
             <p style={{ color: '#444', fontSize: '0.85rem' }}>Por Daniel · XPEAK · 10 junio 2026</p>
 
@@ -79,13 +79,13 @@ export default function BlogAntelacionReservasBoda() {
             ].map(section => (
               <div key={section.plazo} className="mb-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <h3 className="text-base font-black" style={{ color: '#D4AF37' }}>{section.plazo}</h3>
+                  <h3 className="text-base font-black" style={{ color: '#8B6A00' }}>{section.plazo}</h3>
                 </div>
                 <div className="space-y-2 ml-7">
                   {section.proveedores.map(p => (
                     <div key={p.nombre} className="p-3 rounded-lg" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                       <p className="font-bold text-sm">
-                        {p.link ? <a href={p.link} style={{ color: '#D4AF37' }}>{p.nombre}</a> : p.nombre}
+                        {p.link ? <a href={p.link} style={{ color: '#8B6A00' }}>{p.nombre}</a> : p.nombre}
                       </p>
                       <p style={{ color: '#444', fontSize: '0.82rem', marginTop: 2 }}>{p.nota}</p>
                     </div>
@@ -99,7 +99,7 @@ export default function BlogAntelacionReservasBoda() {
               Si tu boda es en temporada alta (mayo-septiembre) y empiezas a buscar DJ o fotógrafo con menos de 3 meses, lo más probable es que los mejores profesionales ya estén ocupados. Tendrás que elegir entre profesionales menos experimentados o pagar una prima por disponibilidad urgente.
             </p>
             <p style={{ color: '#222', lineHeight: 1.8 }}>
-              Para emergencias reales, un DJ que cancela a última hora, personal de sala que no aparece, existe <a href="/contratar-dj" style={{ color: '#D4AF37', fontWeight: 700 }}>Flash Booking de XPEAK</a>: publicas la necesidad y recibes respuestas de profesionales disponibles en tu zona en menos de 60 minutos.
+              Para emergencias reales, un DJ que cancela a última hora, personal de sala que no aparece, existe <a href="/contratar-dj" style={{ color: '#8B6A00', fontWeight: 700 }}>Flash Booking de XPEAK</a>: publicas la necesidad y recibes respuestas de profesionales disponibles en tu zona en menos de 60 minutos.
             </p>
 
             <section className="mt-8">

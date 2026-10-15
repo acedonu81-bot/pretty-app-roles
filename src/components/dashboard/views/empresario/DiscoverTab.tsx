@@ -273,13 +273,13 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                 {p.hourly_rate > 0 ? <>€{p.hourly_rate}<span className="text-xs font-bold opacity-60">/hora</span></> : <span className="text-xs opacity-50">A consultar</span>}
               </span>
               {p.genres?.slice(0, 2).map(g => (
-                <span key={g} className="text-[0.7rem] px-1 py-0.5 rounded font-bold"
+                <span key={g} className="text-[0.75rem] px-1 py-0.5 rounded font-bold"
                   style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
                   {g}
                 </span>
               ))}
               {proNotes[p.id] && (
-                <span className="text-[0.7rem] px-1 py-0.5 rounded font-bold flex items-center gap-0.5"
+                <span className="text-[0.75rem] px-1 py-0.5 rounded font-bold flex items-center gap-0.5"
                   style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6', border: '1px solid rgba(139,92,246,0.2)' }}>
                   📝 Nota
                 </span>

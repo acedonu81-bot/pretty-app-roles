@@ -75,7 +75,7 @@ const ResourcesBanner = ({ onNavigate, vistaActual }: {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-1">
             <Sparkles size={12} style={{ color: '#E0BC4B' }} className="flex-shrink-0" />
-            <span className="text-[0.6rem] font-extrabold uppercase tracking-[0.14em]" style={{ color: '#E0BC4B' }}>
+            <span className="text-[0.75rem] font-extrabold uppercase tracking-[0.14em]" style={{ color: '#E0BC4B' }}>
               Recursos para {cat.singular}
             </span>
           </div>

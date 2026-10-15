@@ -177,7 +177,7 @@ export default function BlogPlataformasFoodTruck() {
                 {PLATFORMS.map((p, i) => (
                   <tr key={p.name} style={{ background: p.destacado ? 'rgba(212,175,55,0.06)' : i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)' }}>
                     <td className="px-2 sm:px-4 py-3 font-black whitespace-nowrap" style={{ color: p.destacado ? '#D4AF37' : '#111', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
-                      {p.name}{p.destacado && <span className="ml-1.5 text-[0.6rem] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>propia</span>}
+                      {p.name}{p.destacado && <span className="ml-1.5 text-[0.75rem] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>propia</span>}
                     </td>
                     <td className="px-2 sm:px-4 py-3" style={{ color: '#222', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.coste}</td>
                     <td className="px-2 sm:px-4 py-3" style={{ color: '#444', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.contacto}</td>
@@ -187,7 +187,7 @@ export default function BlogPlataformasFoodTruck() {
               </tbody>
             </table>
           </div>
-          <p className="text-[0.65rem] mb-10" style={{ color: '#666' }}>
+          <p className="text-[0.75rem] mb-10" style={{ color: '#666' }}>
             Datos de coste y cobertura recogidos de la información pública de cada plataforma en septiembre de 2026. Las condiciones pueden cambiar: consulta siempre la fuente oficial antes de decidir.
           </p>
 
@@ -226,7 +226,7 @@ export default function BlogPlataformasFoodTruck() {
           <div className="rounded-2xl overflow-hidden mb-2" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
             <div className="p-8" style={{ background: 'linear-gradient(135deg,#0e0e14 0%,#181410 100%)', color: '#fff', borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-[0.65rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
+                <span className="text-[0.75rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
                   style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
                   ¿Tienes un food truck?
                 </span>
@@ -279,7 +279,7 @@ export default function BlogPlataformasFoodTruck() {
                 <a key={p.href} href={p.href}
                   className="block p-5 rounded-2xl transition-all hover:scale-[1.02]"
                   style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
-                  <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
+                  <span className="inline-block text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
                     style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
                   <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.desc}</p>

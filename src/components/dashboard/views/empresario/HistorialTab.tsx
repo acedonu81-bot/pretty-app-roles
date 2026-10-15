@@ -663,10 +663,10 @@ const HistorialTab = () => {
                                 <Star key={n} size={11} fill={n <= r.rating ? '#22c55e' : 'none'} color="#22c55e" />
                               ))}
                             </span>
-                            <span className="text-[0.7rem] font-bold" style={{ color: '#22c55e' }}>Valorado</span>
+                            <span className="text-[0.75rem] font-bold" style={{ color: '#22c55e' }}>Valorado</span>
                           </div>
                           {r.comment && (
-                            <p className="text-[0.7rem] text-right italic" style={{ color: '#3d5a46' }}>"{r.comment}"</p>
+                            <p className="text-[0.75rem] text-right italic" style={{ color: '#3d5a46' }}>"{r.comment}"</p>
                           )}
                         </div>
                       );
@@ -731,7 +731,7 @@ const HistorialTab = () => {
               <div key={r.id} className="flex items-center justify-between p-2.5 rounded-lg" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
                 <span className="text-muted-foreground">Reseña pendiente de completar</span>
                 <button onClick={() => setCompletingReview(r)}
-                  className="px-2.5 py-1 rounded-lg text-[0.7rem] font-bold"
+                  className="px-2.5 py-1 rounded-lg text-[0.75rem] font-bold"
                   style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
                   Completa tu valoración
                 </button>

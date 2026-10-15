@@ -46,15 +46,15 @@ const LegalFooter = () => {
                 style={{ color: '#8B6A00' }}>
                 info@xpeak.es
               </a>
-              <div className="flex items-center gap-3 mt-4">
+              <div className="flex items-center -mx-3 mt-2">
                 {SOCIAL_LINKS.map(({ label, href, Icon }) =>
                   href ? (
                     <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-                      className="transition-opacity hover:opacity-70" style={{ color: '#4b5563' }}>
+                      className="p-3 transition-opacity hover:opacity-70" style={{ color: '#4b5563' }}>
                       <Icon className="w-4 h-4" />
                     </a>
                   ) : (
-                    <span key={label} aria-label={label} style={{ color: 'rgba(75,85,99,0.35)' }}>
+                    <span key={label} aria-label={label} className="p-3" style={{ color: 'rgba(75,85,99,0.35)' }}>
                       <Icon className="w-4 h-4" />
                     </span>
                   )
@@ -64,7 +64,7 @@ const LegalFooter = () => {
 
             {/* Plataforma */}
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: '#4b5563' }}>Plataforma</p>
+              <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-4" style={{ color: '#4b5563' }}>Plataforma</p>
               <ul className="space-y-2.5 text-xs" style={{ color: '#374151' }}>
                 <li><Link to="/directorio/dj" className="inline-block py-1 hover:text-[#8B6A00] transition-colors">Ver profesionales</Link></li>
                 <li><Link to="/auth?mode=register&role=profesional" className="inline-block py-1 hover:text-[#8B6A00] transition-colors">Publicar mi perfil</Link></li>
@@ -74,7 +74,7 @@ const LegalFooter = () => {
 
             {/* Empresa */}
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: '#4b5563' }}>Empresa</p>
+              <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-4" style={{ color: '#4b5563' }}>Empresa</p>
               <ul className="space-y-2.5 text-xs" style={{ color: '#374151' }}>
                 <li><Link to="/sobre-nosotros" className="inline-block py-1 hover:text-[#8B6A00] transition-colors">Sobre nosotros</Link></li>
                 <li>
@@ -92,7 +92,7 @@ const LegalFooter = () => {
 
             {/* Legal */}
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: '#4b5563' }}>Legal</p>
+              <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-4" style={{ color: '#4b5563' }}>Legal</p>
               <ul className="space-y-2.5 text-xs" style={{ color: '#374151' }}>
                 <li><Link to="/privacidad" className="inline-block py-1 hover:text-[#8B6A00] transition-colors">Política de privacidad</Link></li>
                 <li><Link to="/terminos" className="inline-block py-1 hover:text-[#8B6A00] transition-colors">Términos y condiciones</Link></li>
@@ -106,23 +106,23 @@ const LegalFooter = () => {
               región de hosting real de Vercel/Supabase), nada que suene a
               certificación de un tercero que no la ha emitido. */}
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-6 pb-2">
-            <span className="flex items-center gap-1.5 text-[0.65rem]" style={{ color: '#4b5563' }}>
+            <span className="flex items-center gap-1.5 text-[0.75rem]" style={{ color: '#4b5563' }}>
               <Lock size={11} /> Conexión segura SSL
             </span>
-            <span className="flex items-center gap-1.5 text-[0.65rem]" style={{ color: '#4b5563' }}>
+            <span className="flex items-center gap-1.5 text-[0.75rem]" style={{ color: '#4b5563' }}>
               <MapPin size={11} /> Datos alojados en la UE
             </span>
-            <span className="flex items-center gap-1.5 text-[0.65rem]" style={{ color: '#4b5563' }}>
+            <span className="flex items-center gap-1.5 text-[0.75rem]" style={{ color: '#4b5563' }}>
               <ShieldCheck size={11} /> Cumplimiento RGPD
             </span>
           </div>
 
           {/* Bottom */}
           <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-3" style={{ borderTop: '1px solid rgba(122,98,22,0.16)' }}>
-            <p className="text-[0.7rem]" style={{ color: '#374151' }}>
+            <p className="text-[0.75rem]" style={{ color: '#374151' }}>
               © {new Date().getFullYear()} XPEAK: España. Todos los derechos reservados.
             </p>
-            <p className="text-[0.65rem] text-center max-w-md" style={{ color: '#374151' }}>
+            <p className="text-[0.75rem] text-center max-w-md" style={{ color: '#374151' }}>
               Plataforma de intermediación técnica. Cada usuario actúa bajo su propia responsabilidad legal.
             </p>
           </div>

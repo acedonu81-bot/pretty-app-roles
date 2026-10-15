@@ -180,11 +180,11 @@ const AgencyView = () => {
           <div key={kpi.label} className="glass-panel p-4"
             style={{ border: `1px solid ${kpi.color}18` }}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[0.65rem] font-bold uppercase tracking-widest text-muted-foreground">{kpi.label}</span>
+              <span className="text-[0.75rem] font-bold uppercase tracking-widest text-muted-foreground">{kpi.label}</span>
               <span style={{ color: kpi.color }}>{kpi.icon}</span>
             </div>
             <p className="text-2xl font-black mb-0.5" style={{ color: kpi.color }}>{kpi.value}</p>
-            <p className="text-[0.65rem] text-muted-foreground">{kpi.sub}</p>
+            <p className="text-[0.75rem] text-muted-foreground">{kpi.sub}</p>
           </div>
         ))}
       </div>
@@ -247,14 +247,14 @@ const AgencyView = () => {
                       <div className="flex items-center gap-1.5 mb-0.5">
                         <p className="text-sm font-bold truncate">{p.display_name}</p>
                         {isActive && (
-                          <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
+                          <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
                             style={{ background: `${color}20`, color, border: `1px solid ${color}40` }}>
                             ACTIVO
                           </span>
                         )}
                       </div>
                       <p className="text-xs truncate" style={{ color }}>{ROLE_ES[p.role] ?? p.role}</p>
-                      {p.zone && <p className="text-[0.65rem] text-muted-foreground truncate">{p.zone}</p>}
+                      {p.zone && <p className="text-[0.75rem] text-muted-foreground truncate">{p.zone}</p>}
                     </div>
                   </div>
 
@@ -267,7 +267,7 @@ const AgencyView = () => {
                       <div key={s.label} className="rounded-lg p-2 text-center"
                         style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}>
                         <p className="text-sm font-black" style={{ color: s.color }}>{s.value}</p>
-                        <p className="text-[0.6rem] text-muted-foreground">{s.label}</p>
+                        <p className="text-[0.75rem] text-muted-foreground">{s.label}</p>
                       </div>
                     ))}
                   </div>
@@ -309,7 +309,7 @@ const AgencyView = () => {
                   <Users size={14} style={{ color: 'rgba(0,0,0,0.1)' }} />
                 </div>
                 <p className="text-xs text-muted-foreground">Slot disponible</p>
-                <p className="text-[0.65rem] text-muted-foreground">Crea un nuevo perfil en Ajustes</p>
+                <p className="text-[0.75rem] text-muted-foreground">Crea un nuevo perfil en Ajustes</p>
               </div>
             ))}
           </div>

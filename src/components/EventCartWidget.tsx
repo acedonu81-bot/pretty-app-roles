@@ -56,7 +56,7 @@ export default function EventCartWidget() {
             <X size={13} color="#fff" />
           </button>
           <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>Perfil guardado en "Mi evento"</p>
-          <p className="text-[0.7rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+          <p className="text-[0.75rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
             Añade varios profesionales aquí y pide presupuesto conjunto para el mismo evento con un solo formulario.
           </p>
         </div>

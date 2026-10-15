@@ -176,7 +176,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Contacto (tel/email) *</label>
                 <input value={form.contact} onChange={e => set('contact', e.target.value)}
                   placeholder="+34 600..." className="nightlife-input text-base !py-2 w-full" />
-                <p className="text-[11px] mt-1" style={{ color: '#444' }}>Solo lo verá el profesional cuando acepte tu solicitud.</p>
+                <p className="text-[0.75rem] mt-1" style={{ color: '#444' }}>Solo lo verá el profesional cuando acepte tu solicitud.</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -239,7 +239,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                 </label>
                 <input type="number" min="0" step="0.01" value={form.price} onChange={e => set('price', e.target.value)}
                   placeholder={estimatedPrice ? `~${estimatedPrice}` : 'ej. 300'} className="nightlife-input text-base !py-2 w-full" />
-                <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.1)' }}>Opcional: para tu registro de gastos</p>
+                <p className="text-[0.75rem] mt-1" style={{ color: 'rgba(0,0,0,0.1)' }}>Opcional: para tu registro de gastos</p>
               </div>
             </div>
           </div>

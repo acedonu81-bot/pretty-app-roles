@@ -551,7 +551,7 @@ export default function PresupuestoBoda() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <p className="text-sm font-black">{s.title}</p>
-                            {s.essential && <span className="text-xs px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', fontSize: '0.6rem' }}>Esencial</span>}
+                            {s.essential && <span className="text-xs px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', fontSize: '0.75rem' }}>Esencial</span>}
                           </div>
                           <p className="text-xs" style={{ color: '#374151' }}>{s.note}</p>
                           <div className="flex items-center justify-between mt-0.5">

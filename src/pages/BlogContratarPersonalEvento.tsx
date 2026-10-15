@@ -96,7 +96,7 @@ export default function BlogContratarPersonalEvento() {
                     <p className="text-xs font-bold mb-2" style={{ color: '#059669' }}>{e.tipo}</p>
                     <p className="text-xs mb-3" style={{ color: '#3d3d4e' }}>{e.personal}</p>
                     <p className="text-sm font-black" style={{ color: '#059669' }}>{e.precio}</p>
-                    <p className="text-[0.65rem]" style={{ color: '#666' }}>solo personal</p>
+                    <p className="text-[0.75rem]" style={{ color: '#666' }}>solo personal</p>
                   </div>
                 ))}
               </div>
@@ -144,9 +144,9 @@ export default function BlogContratarPersonalEvento() {
                 ].map(op => (
                   <div key={op.tipo} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.07)' }}>
                     <p className="text-sm font-black mb-3" style={{ color: '#059669' }}>{op.tipo}</p>
-                    <p className="text-[0.65rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#22c55e' }}>Ventajas</p>
+                    <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#22c55e' }}>Ventajas</p>
                     <ul className="space-y-1 mb-3">{op.pros.map(p => <li key={p} className="text-xs flex items-start gap-1.5"><span style={{ color: '#22c55e' }}>✓</span> <span style={{ color: '#3d3d4e' }}>{p}</span></li>)}</ul>
-                    <p className="text-[0.65rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#ff5f56' }}>Inconvenientes</p>
+                    <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#ff5f56' }}>Inconvenientes</p>
                     <ul className="space-y-1 mb-3">{op.contras.map(c => <li key={c} className="text-xs flex items-start gap-1.5"><span style={{ color: '#ff5f56' }}>·</span> <span style={{ color: '#3d3d4e' }}>{c}</span></li>)}</ul>
                     <p className="text-xs font-bold px-2 py-1 rounded-lg inline-block" style={{ background: 'rgba(5,150,105,0.08)', color: '#059669', border: '1px solid rgba(5,150,105,0.2)' }}>{op.precio}</p>
                   </div>

@@ -245,7 +245,7 @@ export default function BlogMagoPrecioEventos() {
                     style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}
                   >
                     <span
-                      className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
+                      className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
                       style={{ background: 'rgba(124,58,237,0.1)', color: '#7C3AED', border: '1px solid rgba(124,58,237,0.15)' }}
                     >
                       {link.cat}

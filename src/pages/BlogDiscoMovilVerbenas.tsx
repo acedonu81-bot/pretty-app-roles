@@ -39,9 +39,9 @@ export default function BlogDiscoMovilVerbenas() {
       </Helmet>
       <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
         <div className="max-w-5xl mx-auto px-4 py-12">
-          <a href="/blog" style={{ color: '#D4AF37', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
+          <a href="/blog" style={{ color: '#8B6A00', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
-            <span style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Disco Móvil · Verbenas</span>
+            <span style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Disco Móvil · Verbenas</span>
             <h1 className="text-3xl font-black mt-4 mb-4 leading-tight">Fiestas de pueblo y verbenas: cómo contratar disco móvil y orquesta en 2026</h1>
             <p style={{ color: '#444', fontSize: '0.85rem' }}>Por Daniel · XPEAK · 10 junio 2026</p>
 
@@ -53,9 +53,9 @@ export default function BlogDiscoMovilVerbenas() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid #777' }}>
-                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}></th>
-                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>Disco Móvil</th>
-                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>Orquesta</th>
+                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#8B6A00' }}></th>
+                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#8B6A00' }}>Disco Móvil</th>
+                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#8B6A00' }}>Orquesta</th>
                 </tr>
               </thead>
               <tbody>
@@ -69,7 +69,7 @@ export default function BlogDiscoMovilVerbenas() {
                 ].map(([concepto, disco, orq]) => (
                   <tr key={concepto} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                     <td style={{ padding: '10px 0', color: '#444', fontWeight: 600 }}>{concepto}</td>
-                    <td style={{ padding: '10px 0', fontWeight: 700, color: '#D4AF37' }}>{disco}</td>
+                    <td style={{ padding: '10px 0', fontWeight: 700, color: '#8B6A00' }}>{disco}</td>
                     <td style={{ padding: '10px 0', color: '#333' }}>{orq}</td>
                   </tr>
                 ))}
@@ -91,9 +91,9 @@ export default function BlogDiscoMovilVerbenas() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid #777' }}>
-                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>Duración</th>
-                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>Precio orient.</th>
-                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>Incluye</th>
+                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#8B6A00' }}>Duración</th>
+                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#8B6A00' }}>Precio orient.</th>
+                  <th style={{ textAlign: 'left', padding: '8px 0', color: '#8B6A00' }}>Incluye</th>
                 </tr>
               </thead>
               <tbody>
@@ -105,7 +105,7 @@ export default function BlogDiscoMovilVerbenas() {
                 ].map(([dur, precio, incl]) => (
                   <tr key={dur} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                     <td style={{ padding: '10px 0', fontWeight: 700 }}>{dur}</td>
-                    <td style={{ padding: '10px 0', color: '#D4AF37', fontWeight: 700 }}>{precio}</td>
+                    <td style={{ padding: '10px 0', color: '#8B6A00', fontWeight: 700 }}>{precio}</td>
                     <td style={{ padding: '10px 0', color: '#333' }}>{incl}</td>
                   </tr>
                 ))}
@@ -123,7 +123,7 @@ export default function BlogDiscoMovilVerbenas() {
                 { c: 'Disco móvil Sevilla', h: '/contratar-disco-movil/sevilla' },
                 { c: 'Disco móvil Málaga', h: '/contratar-disco-movil/malaga' },
               ].map(({ c, h }) => (
-                <a key={c} href={h} className="px-3 py-2 rounded-lg text-sm font-bold" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>{c}</a>
+                <a key={c} href={h} className="px-3 py-2 rounded-lg text-sm font-bold" style={{ background: 'rgba(212,175,55,0.08)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.18)' }}>{c}</a>
               ))}
             </div>
 

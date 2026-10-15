@@ -97,7 +97,7 @@ const CustomAudioPlayer = ({ url, alto = 70 }: { url: string; alto?: number }) =
         aria-label={playing ? 'Pausar' : 'Reproducir'}>
         {playing ? <Pause size={14} fill="#000" /> : <Play size={14} fill="#000" style={{ marginLeft: 1 }} />}
       </button>
-      <span className="text-[0.65rem] font-bold tabular-nums shrink-0" style={{ color: '#7a6216', minWidth: 32 }}>
+      <span className="text-[0.75rem] font-bold tabular-nums shrink-0" style={{ color: '#7a6216', minWidth: 32 }}>
         {formatTime(current)}
       </span>
       <input
@@ -112,7 +112,7 @@ const CustomAudioPlayer = ({ url, alto = 70 }: { url: string; alto?: number }) =
           accentColor: '#D4AF37',
         }}
       />
-      <span className="text-[0.65rem] font-semibold tabular-nums shrink-0" style={{ color: '#888', minWidth: 32 }}>
+      <span className="text-[0.75rem] font-semibold tabular-nums shrink-0" style={{ color: '#888', minWidth: 32 }}>
         {formatTime(duration)}
       </span>
       <button type="button"

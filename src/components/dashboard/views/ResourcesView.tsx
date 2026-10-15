@@ -176,7 +176,7 @@ export default function ResourcesView() {
         <div className="relative">
           <div className="flex items-center gap-1.5 mb-2.5">
             <Sparkles size={13} style={{ color: '#E0BC4B' }} />
-            <span className="text-[0.62rem] font-extrabold uppercase tracking-[0.16em]" style={{ color: '#E0BC4B' }}>
+            <span className="text-[0.75rem] font-extrabold uppercase tracking-[0.16em]" style={{ color: '#E0BC4B' }}>
               Recursos XPEAK
             </span>
           </div>
@@ -303,8 +303,8 @@ export default function ResourcesView() {
 
                   <div className="flex flex-col flex-1 p-3.5">
                     <p className="text-[0.82rem] font-bold leading-snug mb-1.5" style={{ color: '#0a0908' }}>{r.title}</p>
-                    <p className="text-[0.72rem] leading-relaxed mb-3 flex-1" style={{ color: 'rgba(10,9,8,0.55)' }}>{r.desc}</p>
-                    <span className="inline-flex items-center justify-center gap-1 text-[0.7rem] font-extrabold rounded-full py-2 transition-all"
+                    <p className="text-[0.75rem] leading-relaxed mb-3 flex-1" style={{ color: 'rgba(10,9,8,0.55)' }}>{r.desc}</p>
+                    <span className="inline-flex items-center justify-center gap-1 text-[0.75rem] font-extrabold rounded-full py-2 transition-all"
                       style={{ background: hexToRgba(accent, 0.1), color: accent, border: `1px solid ${hexToRgba(accent, 0.2)}` }}>
                       Ver en Amazon <ExternalLink size={10} />
                     </span>
@@ -355,7 +355,7 @@ export default function ResourcesView() {
                     <p className="text-xs leading-relaxed mt-1" style={{ color: 'rgba(10,9,8,0.6)' }}>{p.desc}</p>
                   </div>
                 </div>
-                <span className="relative inline-flex items-center gap-1 text-[0.72rem] font-black mt-3 self-start px-2.5 py-1.5 rounded-full transition-all"
+                <span className="relative inline-flex items-center gap-1 text-[0.75rem] font-black mt-3 self-start px-2.5 py-1.5 rounded-full transition-all"
                   style={{ background: 'rgba(37,99,235,0.1)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.2)' }}>
                   Ver el curso <ExternalLink size={10} />
                 </span>
@@ -398,7 +398,7 @@ export default function ResourcesView() {
         </p>
       )}
 
-      <p className="text-[0.68rem] leading-relaxed mt-6" style={{ color: 'rgba(10,9,8,0.4)' }}>
+      <p className="text-[0.75rem] leading-relaxed mt-6" style={{ color: 'rgba(10,9,8,0.4)' }}>
         XPEAK puede recibir una comisión por las compras realizadas a través de los enlaces de esta página, sin coste
         adicional para ti{display_name ? '' : ''}. Solo recomendamos material que consideramos útil para profesionales del sector.
       </p>

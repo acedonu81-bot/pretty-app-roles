@@ -151,7 +151,7 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.45) 75%, transparent 100%)' }}
       >
         <h3 className="text-sm sm:text-base font-semibold leading-tight text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.9)]">{item.nombre}</h3>
-        <p className="mt-0.5 text-[11px] sm:text-xs leading-snug text-white/85 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.95)]">{item.gancho}</p>
+        <p className="mt-0.5 text-[0.75rem] sm:text-xs leading-snug text-white/85 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.95)]">{item.gancho}</p>
       </div>
       {/* Filo dorado: sutil en reposo, marcado y de 2px al pasar por encima. */}
       <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-[#D4AF37]/25 transition-all duration-300 group-hover:ring-2 group-hover:ring-[#D4AF37]" />

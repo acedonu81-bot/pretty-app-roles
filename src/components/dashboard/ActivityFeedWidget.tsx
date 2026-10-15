@@ -31,12 +31,12 @@ const Chip = ({ item }: { item: ActivityItem }) => {
       ) : (
         <>
           <span className="text-xs font-bold whitespace-nowrap" style={{ color: '#222' }}>{item.name}</span>
-          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap"
+          <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap"
             style={{ background: `${item.roleColor}18`, color: item.roleColor }}>
             {item.roleLabel}
           </span>
           {item.zone && (
-            <span className="text-[11px] flex items-center gap-0.5 whitespace-nowrap" style={{ color: '#333' }}>
+            <span className="text-[0.75rem] flex items-center gap-0.5 whitespace-nowrap" style={{ color: '#333' }}>
               <MapPin size={9} /> {item.zone}
             </span>
           )}

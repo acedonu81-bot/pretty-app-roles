@@ -76,7 +76,7 @@ export default function BlogDJBodaVsDiscoteca() {
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <a href="/auth?mode=register"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
@@ -93,7 +93,7 @@ export default function BlogDJBodaVsDiscoteca() {
 
           <div className="mb-4">
             <span className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded"
-              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+              style={{ background: 'rgba(212,175,55,0.08)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.2)' }}>
               Guía para organizadores · 2026
             </span>
           </div>
@@ -133,7 +133,7 @@ export default function BlogDJBodaVsDiscoteca() {
                   'Adapta el volumen según las fases del evento',
                   'Suele incluir iluminación y sonido básico en el precio',
                 ],
-                color: '#D4AF37',
+                color: '#8B6A00',
               },
             ].map(({ tipo, puntos, color }) => (
               <div key={tipo} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: `1px solid ${color}22` }}>
@@ -164,7 +164,7 @@ export default function BlogDJBodaVsDiscoteca() {
                   <div key={tipo} className="flex items-center justify-between p-3 rounded-lg text-sm"
                     style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <span style={{ color: '#222' }}>{tipo}</span>
-                    <span className="font-black text-xs ml-4 flex-shrink-0" style={{ color: '#D4AF37' }}>{precio}</span>
+                    <span className="font-black text-xs ml-4 flex-shrink-0" style={{ color: '#8B6A00' }}>{precio}</span>
                   </div>
                 ))}
               </div>
@@ -204,7 +204,7 @@ export default function BlogDJBodaVsDiscoteca() {
                   '¿Qué pasa si cancelas o tienes una emergencia?',
                 ].map((p, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm" style={{ color: '#333' }}>
-                    <span className="font-black" style={{ color: '#D4AF37' }}>{i + 1}.</span> {p}
+                    <span className="font-black" style={{ color: '#8B6A00' }}>{i + 1}.</span> {p}
                   </li>
                 ))}
               </ul>
@@ -218,7 +218,7 @@ export default function BlogDJBodaVsDiscoteca() {
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
                     <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}

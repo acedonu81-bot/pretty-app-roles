@@ -770,11 +770,11 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black"
+                        <span className="px-2 py-0.5 rounded-full text-[0.75rem] font-black"
                           style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E' }}>
                           {req.event_type}
                         </span>
-                        <span className="text-[10px]" style={{ color: days <= 2 ? '#ef4444' : '#333' }}>
+                        <span className="text-[0.75rem]" style={{ color: days <= 2 ? '#ef4444' : '#333' }}>
                           {days}d restantes
                         </span>
                       </div>
@@ -788,14 +788,14 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                     {req.client_user_id === user?.id && (
                       <div className="flex-shrink-0 flex items-center gap-1.5">
                         <button type="button" onClick={() => startEdit(req)}
-                          className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-all hover:scale-105"
+                          className="flex items-center gap-1 px-2 py-1 rounded-lg text-[0.75rem] font-bold transition-all hover:scale-105"
                           style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#555' }}>
                           <Pencil size={10} /> Editar
                         </button>
                         <button type="button" onClick={() => cancelRequest(req)}
                           disabled={cancelling === req.id}
                           title="Cancelar toda la oferta"
-                          className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-all hover:scale-105 disabled:opacity-60"
+                          className="flex items-center gap-1 px-2 py-1 rounded-lg text-[0.75rem] font-bold transition-all hover:scale-105 disabled:opacity-60"
                           style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)', color: '#dc2626' }}>
                           <X size={10} /> {cancelling === req.id ? '…' : 'Cancelar'}
                         </button>
@@ -841,7 +841,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                           r2 => r2.hired_at && slotIds.includes(r2.slot_id ?? '')
                         ).length;
                         return (
-                          <span key={role} className="px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                          <span key={role} className="px-2 py-0.5 rounded-full text-[0.75rem] font-semibold"
                             style={{
                               background: cubiertos === slotIds.length ? 'rgba(34,197,94,0.1)' : 'rgba(0,0,0,0.04)',
                               color: cubiertos === slotIds.length ? '#16a34a' : '#333',
@@ -898,7 +898,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                             ? `${sinElegir[0].name} se ha apuntado`
                             : `${sinElegir.length} profesionales apuntados`}
                         </span>
-                        <span className="px-2.5 py-1.5 rounded-lg text-[10px] font-black flex-shrink-0" style={{ background: '#16a34a', color: '#fff' }}>
+                        <span className="px-2.5 py-1.5 rounded-lg text-[0.75rem] font-black flex-shrink-0" style={{ background: '#16a34a', color: '#fff' }}>
                           Ver y elegir
                         </span>
                       </button>
@@ -932,7 +932,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                               return (
                                 <div key={slot.id}>
                                   <div className="flex items-center justify-between mb-1.5">
-                                    <p className="text-[10px] font-black uppercase tracking-wider" style={{ color: '#8A6D0F' }}>
+                                    <p className="text-[0.75rem] font-black uppercase tracking-wider" style={{ color: '#8A6D0F' }}>
                                       {slot.role} · {candidatos.length} interesado{candidatos.length === 1 ? '' : 's'}
                                     </p>
                                     {candidatos.length === 0 && (
@@ -963,7 +963,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                                 className="w-8 h-8 rounded-full object-cover flex-shrink-0"
                                                 style={{ border: '1px solid rgba(0,0,0,0.08)' }} />
                                             ) : (
-                                              <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black flex-shrink-0"
+                                              <div className="w-8 h-8 rounded-full flex items-center justify-center text-[0.75rem] font-black flex-shrink-0"
                                                 style={{ background: 'rgba(0,0,0,0.06)', color: '#666' }}>
                                                 {resp.name.charAt(0).toUpperCase()}
                                               </div>
@@ -972,19 +972,19 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                               <p className="text-xs font-bold leading-tight break-words" style={{ color: '#111' }}>{resp.name}</p>
                                               {/* Un estado, escrito con todas las letras. */}
                                               {resp.hired_at ? (
-                                                <span className="flex items-center gap-1 text-[10px] font-black mt-0.5" style={{ color: '#15803d' }}>
+                                                <span className="flex items-center gap-1 text-[0.75rem] font-black mt-0.5" style={{ color: '#15803d' }}>
                                                   <Check size={11} /> CONTRATADO
                                                 </span>
                                               ) : resp.chosen_at ? (
-                                                <span className="block text-[10px] font-black mt-0.5" style={{ color: '#8A6D0F' }}>
+                                                <span className="block text-[0.75rem] font-black mt-0.5" style={{ color: '#8A6D0F' }}>
                                                   ELEGIDO, ESPERANDO QUE CONFIRME
                                                 </span>
                                               ) : cubierta ? (
-                                                <span className="block text-[10px] font-black mt-0.5" style={{ color: '#666' }}>
+                                                <span className="block text-[0.75rem] font-black mt-0.5" style={{ color: '#666' }}>
                                                   PLAZA YA CUBIERTA
                                                 </span>
                                               ) : (
-                                                <span className="block text-[10px] font-black mt-0.5" style={{ color: '#15803d' }}>
+                                                <span className="block text-[0.75rem] font-black mt-0.5" style={{ color: '#15803d' }}>
                                                   APUNTADO, SIN ELEGIR
                                                 </span>
                                               )}
@@ -995,12 +995,12 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                             <p className="text-xs mt-1" style={{ color: '#333' }}>{resp.message}</p>
                                           )}
                                           {(req.roles_needed ?? []).includes('DJ / Artista') && generos[resp.professionalUserId] && (
-                                            <p className="text-[11px] mt-1" style={{ color: '#333' }}>
+                                            <p className="text-[0.75rem] mt-1" style={{ color: '#333' }}>
                                               <strong>Estilos:</strong> {listarEstilos(generos[resp.professionalUserId])}
                                             </p>
                                           )}
                                           {!resp.hired_at && pideDeTodo(req.roles_needed, req.estilos) && noEncajaEnDeTodo(generos[resp.professionalUserId]) && (
-                                            <p className="text-[11px] leading-snug mt-1 px-2 py-1.5 rounded-lg" style={{ background: 'rgba(245,158,11,0.12)', color: '#7c4a03' }}>
+                                            <p className="text-[0.75rem] leading-snug mt-1 px-2 py-1.5 rounded-lg" style={{ background: 'rgba(245,158,11,0.12)', color: '#7c4a03' }}>
                                               Pediste de todo un poco y solo declara {listarEstilos(generos[resp.professionalUserId])}. Pregúntale por el chat antes de elegir.
                                             </p>
                                           )}
@@ -1008,7 +1008,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                           {/* Qué pasa a continuación, según el estado: sin sobreentendidos. */}
                                           {resp.hired_at && (
                                             <div className="mt-2">
-                                              <p className="text-[11px] leading-snug mb-2" style={{ color: '#166534' }}>
+                                              <p className="text-[0.75rem] leading-snug mb-2" style={{ color: '#166534' }}>
                                                 Contratado. La plaza está cubierta. Escríbele para cerrar los detalles.
                                               </p>
                                               <button type="button"
@@ -1021,7 +1021,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                             </div>
                                           )}
                                           {!resp.hired_at && resp.chosen_at && (
-                                            <p className="text-[11px] leading-snug mt-2" style={{ color: '#6b5200' }}>
+                                            <p className="text-[0.75rem] leading-snug mt-2" style={{ color: '#6b5200' }}>
                                               Le hemos avisado. Puedes escribirle ya. Si no responde, puedes elegir a otro.
                                             </p>
                                           )}
@@ -1039,7 +1039,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                               <p className="text-xs font-black mb-1.5" style={{ color: '#111' }}>
                                                 ¿Elegir a {resp.name} para {req.client_name}?
                                               </p>
-                                              <p className="text-[11px] leading-snug mb-3" style={{ color: '#333' }}>
+                                              <p className="text-[0.75rem] leading-snug mb-3" style={{ color: '#333' }}>
                                                 Queda contratado: le avisamos ahora mismo y se avisa a los demás candidatos.
                                               </p>
                                               <div className="flex gap-2">
@@ -1064,13 +1064,13 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                           {/* Mirarle antes de elegir, o preguntarle algo: sin salir de XPEAK. */}
                                           <div className="flex flex-wrap gap-2 mt-2">
                                             <a href={`/p/${resp.professionalUserId}`} target="_blank" rel="noopener noreferrer"
-                                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold"
+                                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[0.75rem] font-bold"
                                               style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.1)', color: '#333' }}>
                                               <ExternalLink size={11} /> Ver perfil
                                             </a>
                                             {onMessage && (
                                               <button type="button" onClick={() => onMessage(resp.professionalUserId, resp.name)}
-                                                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold"
+                                                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[0.75rem] font-bold"
                                                 style={{ background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.25)', color: '#1d4ed8' }}>
                                                 <MessageSquare size={11} /> Escribir
                                               </button>
@@ -1282,7 +1282,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
 
               <div>
                 <label className="text-xs font-black mb-1 block" style={{ color: '#333' }}>¿QUÉ PROFESIONALES NECESITAS?</label>
-                <p className="text-[10px] mb-2" style={{ color: '#888' }}>
+                <p className="text-[0.75rem] mb-2" style={{ color: '#888' }}>
                   Ej. 1 DJ y 2 camareros: cada uno se elige y confirma por separado.
                 </p>
                 <div className="flex flex-col gap-1.5">
@@ -1371,7 +1371,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
               </div>
 
               {!editingId && (
-                <p className="text-[10px]" style={{ color: '#333' }}>
+                <p className="text-[0.75rem]" style={{ color: '#333' }}>
                   Al publicar aceptas que los profesionales de XPEAK puedan ver y responder a tu solicitud. Visible 7 días. El contacto con el profesional elegido se hace dentro de XPEAK (chat), no hace falta dar tu email ni tu teléfono.
                 </p>
               )}

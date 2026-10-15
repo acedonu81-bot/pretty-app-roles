@@ -66,7 +66,7 @@ export default function HubFotografia() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {ARTICLES.map(a => (
                   <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(79,70,229,0.1)', color: TAG_COLOR[a.tag] || '#4F46E5', border: `1px solid ${TAG_COLOR[a.tag] || '#4F46E5'}22` }}>{a.tag}</span>
+                    <span className="inline-block text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(79,70,229,0.1)', color: TAG_COLOR[a.tag] || '#4F46E5', border: `1px solid ${TAG_COLOR[a.tag] || '#4F46E5'}22` }}>{a.tag}</span>
                     <p className="text-sm font-black leading-snug mb-1">{a.title}</p>
                     <p className="text-xs leading-relaxed" style={{ color: '#333' }}>{a.desc}</p>
                   </a>

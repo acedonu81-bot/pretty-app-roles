@@ -102,7 +102,7 @@ export default function BlogIndex() {
                   style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)', textDecoration: 'none' }}>
                   <div>
                     <p className="text-xs font-black" style={{ color: '#8A6D0F' }}>{hub.label}</p>
-                    <p className="text-[0.6rem]" style={{ color: '#777' }}>{hub.desc}</p>
+                    <p className="text-[0.75rem]" style={{ color: '#777' }}>{hub.desc}</p>
                   </div>
                 </a>
               ))}
@@ -133,7 +133,7 @@ export default function BlogIndex() {
                 className="group block p-5 rounded-xl transition-all hover:scale-[1.005]"
                 style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                  <span className="text-[0.75rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
                     style={{ background: TAG_COLORS[post.tag] || 'rgba(0,0,0,0.06)', color: TAG_TEXT[post.tag] || '#555' }}>
                     {post.tag}
                   </span>

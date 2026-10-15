@@ -61,7 +61,7 @@ export default function BlogContratoDJ() {
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
@@ -72,7 +72,7 @@ export default function BlogContratoDJ() {
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Contrato para DJ: qué debe incluir y cómo redactarlo (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Un contrato mal redactado es la causa número uno de conflictos entre DJs y organizadores. Esta guía cubre todas las cláusulas que deben estar y los errores que cuestan dinero.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>27 mayo 2026</time>
@@ -101,7 +101,7 @@ export default function BlogContratoDJ() {
                 {CLAUSULAS.map((c, i) => (
                   <div key={c.clausula} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <div className="flex items-start gap-2 mb-1">
-                      <span style={{ color: '#D4AF37', fontWeight: 900, fontSize: '0.75rem', marginTop: 1 }}>{i + 1}.</span>
+                      <span style={{ color: '#8B6A00', fontWeight: 900, fontSize: '0.75rem', marginTop: 1 }}>{i + 1}.</span>
                       <p className="text-xs font-bold">{c.clausula}</p>
                     </div>
                     <p className="text-xs pl-4" style={{ color: '#3d3d4e' }}>{c.detalle}</p>
@@ -135,9 +135,9 @@ export default function BlogContratoDJ() {
               <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Cuando contratas un DJ a través de XPEAK, el contrato se genera automáticamente con todos los datos fiscales correctos: nombre, NIF, fecha, duración, caché, señal, IVA e IRPF. Ambas partes lo firman digitalmente desde el móvil. Sin PDFs, sin imprimir, sin ir al notario.
                 Si quieres una plantilla editable en Word para usar fuera de la plataforma, descarga nuestra{' '}
-                <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla de contrato DJ</a>.
+                <a href="/plantilla-contrato-dj" style={{ color: '#8B6A00' }}>plantilla de contrato DJ</a>.
                 Antes de firmar cualquier contrato, asegúrate de conocer{' '}
-                <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#D4AF37' }}>cuánto cobra un DJ en España</a>{' '}
+                <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#8B6A00' }}>cuánto cobra un DJ en España</a>{' '}
                 para no pagar de más.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -147,7 +147,7 @@ export default function BlogContratoDJ() {
                   { paso: '3. Pago protegido', desc: 'La señal queda retenida hasta el evento. Si algo falla, está cubierto.' },
                 ].map(p => (
                   <div key={p.paso} className="p-4 rounded-xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-                    <p className="text-xs font-black mb-1" style={{ color: '#D4AF37' }}>{p.paso}</p>
+                    <p className="text-xs font-black mb-1" style={{ color: '#8B6A00' }}>{p.paso}</p>
                     <p className="text-xs" style={{ color: '#333' }}>{p.desc}</p>
                   </div>
                 ))}
@@ -179,7 +179,7 @@ export default function BlogContratoDJ() {
                 ].map(c => (
                   <a key={c.href} href={c.href}
                     className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                    style={{ background: 'rgba(212,175,55,0.08)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.2)' }}>
                     {c.label}
                   </a>
                 ))}
@@ -198,7 +198,7 @@ export default function BlogContratoDJ() {
                   { href: '/blog/dj-boda-civil-precio-canciones', cat: 'Bodas', title: 'DJ boda civil: precio y canciones 2026' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
                     <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}

@@ -102,13 +102,13 @@ const FeedPostCard = ({ group, viewerId }: { group: FeedGroup; viewerId: string 
           <img src={fotoOptimizada(first.authorPhoto, 48)} alt={first.authorName}
             className="w-7 h-7 rounded-full object-cover flex-shrink-0" style={{ objectPosition: '50% 15%' }} />
         ) : (
-          <div className="w-7 h-7 rounded-full flex items-center justify-center text-[0.65rem] flex-shrink-0"
+          <div className="w-7 h-7 rounded-full flex items-center justify-center text-[0.75rem] flex-shrink-0"
             style={{ background: tone.card, color: tone.stroke, fontFamily: HZ.display, fontWeight: 800 }}>
             {first.authorName.charAt(0)}
           </div>
         )}
         <span className="text-xs truncate" style={{ color: HZ.ink, fontWeight: 800 }}>{first.authorName}</span>
-        {tiempo && <span className="text-[0.68rem] flex-shrink-0" style={{ color: HZ.inkSoft }}>· {tiempo}</span>}
+        {tiempo && <span className="text-[0.75rem] flex-shrink-0" style={{ color: HZ.inkSoft }}>· {tiempo}</span>}
       </Link>
 
       {photos.length > 0 && (
@@ -124,7 +124,7 @@ const FeedPostCard = ({ group, viewerId }: { group: FeedGroup; viewerId: string 
                 style={photos.length === 1 ? undefined : { objectPosition: '50% 20%' }}
                 onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
               {i === 0 && (
-                <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 text-[0.65rem] px-2.5 py-1 rounded-full"
+                <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 text-[0.75rem] px-2.5 py-1 rounded-full"
                   style={{ background: 'rgba(255,255,255,0.92)', color: tone.stroke, fontFamily: HZ.display, fontWeight: 800, backdropFilter: 'blur(6px)' }}>
                   <ImageIcon size={11} /> {photos.length > 1 ? `${photos.length} fotos` : 'Foto'}
                 </span>

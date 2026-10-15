@@ -62,7 +62,7 @@ const faqStructured = {
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
-  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#4F46E5', borderBottom: '1px solid rgba(79,70,229,0.25)', background: 'rgba(79,70,229,0.04)' };
+  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#4F46E5', borderBottom: '1px solid rgba(79,70,229,0.25)', background: 'rgba(79,70,229,0.04)' };
   const td = { padding: '10px 14px', borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#111', fontSize: '0.87rem', verticalAlign: 'top' as const };
 
   return (
@@ -99,7 +99,7 @@ const faqStructured = {
 
         <article className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
           <header className="mb-10">
-            <time className="text-[0.65rem] font-bold uppercase tracking-wider" style={{ color: '#3d3d4e' }}>3 may 2026</time>
+            <time className="text-[0.75rem] font-bold uppercase tracking-wider" style={{ color: '#3d3d4e' }}>3 may 2026</time>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight mt-2 mb-4 leading-tight">
               Cómo contratar un fotógrafo de bodas en España: guía de precios 2026
             </h1>
@@ -188,7 +188,7 @@ const faqStructured = {
                   { href: '/blog/fotografia-eventos-nocturnos', cat: 'Fotografía', title: 'Fotografía eventos nocturnos: precios 2026' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}>{link.cat}</span>
+                    <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}>{link.cat}</span>
                     <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}

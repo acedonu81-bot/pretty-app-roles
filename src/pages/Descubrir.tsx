@@ -286,7 +286,7 @@ function DiscoverMenu({ activeRole, onPick, onClose, onClassic, isLogged }: {
               <Grid3x3 size={20} strokeWidth={2} style={{ color: '#D4AF37' }} />
             </div>
             <p className="text-sm font-black leading-tight mb-auto" style={{ color: '#fff' }}>Para ti</p>
-            {activeRole === ALL_SLUG && <p className="text-[0.6rem] font-bold uppercase tracking-wider mt-1" style={{ color: '#D4AF37' }}>Viendo</p>}
+            {activeRole === ALL_SLUG && <p className="text-[0.75rem] font-bold uppercase tracking-wider mt-1" style={{ color: '#D4AF37' }}>Viendo</p>}
           </button>
 
           {/* Roles agrupados por categoría — mismo naming que landing/dashboard */}
@@ -295,7 +295,7 @@ function DiscoverMenu({ activeRole, onPick, onClose, onClassic, isLogged }: {
             if (roles.length === 0) return null;
             return (
               <div key={group.label} className="mb-4">
-                <p className="text-[0.65rem] font-black uppercase tracking-widest mb-2 px-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <p className="text-[0.75rem] font-black uppercase tracking-widest mb-2 px-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
                   {group.label}
                 </p>
                 <div className="grid grid-cols-2 gap-3">
@@ -312,7 +312,7 @@ function DiscoverMenu({ activeRole, onPick, onClose, onClassic, isLogged }: {
                           <Icon size={20} strokeWidth={2} style={{ color: '#D4AF37' }} />
                         </div>
                         <p className="text-sm font-black leading-tight mb-auto" style={{ color: '#fff' }}>{r.label}</p>
-                        {active && <p className="text-[0.6rem] font-bold uppercase tracking-wider mt-1" style={{ color: '#D4AF37' }}>Viendo</p>}
+                        {active && <p className="text-[0.75rem] font-bold uppercase tracking-wider mt-1" style={{ color: '#D4AF37' }}>Viendo</p>}
                       </button>
                     );
                   })}

@@ -342,7 +342,7 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
             style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid var(--nightlife-border)' }}>
             {GENRE_GROUPS.map(group => (
               <div key={group.label}>
-                <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.5)' }}>{group.label}</p>
+                <p className="text-[0.75rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.5)' }}>{group.label}</p>
                 <div className="flex flex-wrap gap-1">
                   {group.genres.map(g => (
                     <button key={g} onClick={() => toggleGenre(g)}

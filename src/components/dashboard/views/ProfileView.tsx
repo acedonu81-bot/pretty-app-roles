@@ -401,7 +401,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           {completenessSteps.percent < 100 && (
             <div className="glass-panel p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Perfil completo</span>
+                <span className="text-[0.75rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Perfil completo</span>
                 <span className="text-sm font-black" style={{ color: completenessSteps.percent >= 80 ? '#22c55e' : completenessSteps.percent >= 50 ? '#D4AF37' : '#ff5f56' }}>
                   {completenessSteps.percent}%
                 </span>
@@ -410,13 +410,13 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 const faltaBloqueante = completenessSteps.steps.some(s => s.bloqueante && !s.done);
                 if (faltaBloqueante && profile.role !== 'empresario') {
                   return (
-                    <p className="text-[0.7rem] font-bold mb-3" style={{ color: '#dc2626' }}>
+                    <p className="text-[0.75rem] font-bold mb-3" style={{ color: '#dc2626' }}>
                       Con esto sin rellenar, tu perfil no aparece en el directorio. No es una mejora, es lo mínimo para que te encuentren.
                     </p>
                   );
                 }
                 return (
-                  <p className="text-[0.65rem] text-muted-foreground mb-3">
+                  <p className="text-[0.75rem] text-muted-foreground mb-3">
                     {profile.role === 'empresario'
                       ? 'Un perfil completo da confianza a los profesionales que reciben tus solicitudes: foto, bio y ciudad ayudan a que te respondan.'
                       : 'Los perfiles más completos aparecen antes en el directorio: bio y portfolio suman posición real.'}
@@ -440,13 +440,13 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                       <div className="w-1 h-1 rounded-full" style={{ background: s.bloqueante ? '#dc2626' : 'rgba(0,0,0,0.1)' }} />
                     </div>
                     <div>
-                      <p className="text-[0.7rem] font-bold leading-tight" style={s.bloqueante ? { color: '#dc2626' } : undefined}>{s.label}</p>
-                      <p className="text-[0.65rem] text-muted-foreground leading-tight">{s.hint}</p>
+                      <p className="text-[0.75rem] font-bold leading-tight" style={s.bloqueante ? { color: '#dc2626' } : undefined}>{s.label}</p>
+                      <p className="text-[0.75rem] text-muted-foreground leading-tight">{s.hint}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <p className="text-[0.65rem] font-bold mt-3 pt-2.5" style={{ color: '#8A6D0F', borderTop: '1px solid rgba(212,175,55,0.15)' }}>
+              <p className="text-[0.75rem] font-bold mt-3 pt-2.5" style={{ color: '#8A6D0F', borderTop: '1px solid rgba(212,175,55,0.15)' }}>
                 {profile.role === 'empresario'
                   ? 'Un perfil completo consigue más respuestas de profesionales'
                   : 'Los perfiles completos salen primero en el directorio'}
@@ -474,10 +474,10 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             <div className="glass-panel p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Share2 size={13} style={{ color: '#8A6D0F' }} />
-                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Comparte tu perfil</span>
+                <span className="text-[0.75rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Comparte tu perfil</span>
               </div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="flex-1 px-3 py-2 rounded-lg text-[0.7rem] font-mono truncate"
+                <div className="flex-1 px-3 py-2 rounded-lg text-[0.75rem] font-mono truncate"
                   style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', color: '#3d3d4e' }}>
                   xpeak.es/p/{user.id.slice(0, 8)}…
                 </div>
@@ -489,7 +489,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     setCopied(true);
                     setTimeout(() => setCopied(false), 2000);
                   }}
-                  className="px-3 py-2 rounded-lg flex items-center gap-1.5 text-[0.7rem] font-bold flex-shrink-0 transition-all"
+                  className="px-3 py-2 rounded-lg flex items-center gap-1.5 text-[0.75rem] font-bold flex-shrink-0 transition-all"
                   style={{
                     background: copied ? 'rgba(34,197,94,0.12)' : 'rgba(212,175,55,0.08)',
                     border: `1px solid ${copied ? 'rgba(34,197,94,0.3)' : 'rgba(212,175,55,0.2)'}`,
@@ -504,7 +504,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   href={`https://wa.me/?text=${encodeURIComponent(`Mi perfil en XPEAK: https://xpeak.es/p/${user.id}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[0.7rem] font-bold transition-all hover:scale-[1.02]"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[0.75rem] font-bold transition-all hover:scale-[1.02]"
                   style={{ background: 'rgba(37,211,102,0.08)', border: '1px solid rgba(37,211,102,0.2)', color: '#25D366' }}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                   WhatsApp
@@ -523,7 +523,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                       });
                     }
                   }}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[0.7rem] font-bold transition-all hover:scale-[1.02]"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[0.75rem] font-bold transition-all hover:scale-[1.02]"
                   style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
                   <Copy size={13} />
                   Copiar enlace
@@ -537,25 +537,25 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             <div className="glass-panel p-4" style={referralIsNew ? { border: '1px solid rgba(37,99,235,0.35)', boxShadow: '0 0 0 1px rgba(37,99,235,0.08)' } : undefined}>
               <div className="flex items-center gap-2 mb-1">
                 <Star size={13} style={{ color: '#2563eb' }} />
-                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: '#2563eb' }}>Invita y gana prioridad</span>
+                <span className="text-[0.75rem] font-bold uppercase tracking-widest" style={{ color: '#2563eb' }}>Invita y gana prioridad</span>
                 {referralIsNew && (
-                  <span className="px-1.5 py-0.5 rounded-full text-[0.55rem] font-black uppercase" style={{ background: '#2563eb', color: '#fff' }}>
+                  <span className="px-1.5 py-0.5 rounded-full text-[0.75rem] font-black uppercase" style={{ background: '#2563eb', color: '#fff' }}>
                     Nuevo
                   </span>
                 )}
                 {/* Solo se muestra con datos reales (>0) — con 0 invitados
                     completados, mostrar "0" desanimaría en vez de animar. */}
                 {!!rewardedReferrals && rewardedReferrals > 0 && (
-                  <span className="ml-auto px-1.5 py-0.5 rounded-full text-[0.6rem] font-black" style={{ background: 'rgba(34,197,94,0.12)', color: '#22c55e' }}>
+                  <span className="ml-auto px-1.5 py-0.5 rounded-full text-[0.75rem] font-black" style={{ background: 'rgba(34,197,94,0.12)', color: '#22c55e' }}>
                     {rewardedReferrals} {rewardedReferrals === 1 ? 'invitado' : 'invitados'}
                   </span>
                 )}
               </div>
-              <p className="text-[0.72rem] mb-3" style={{ color: '#3d3d4e' }}>
+              <p className="text-[0.75rem] mb-3" style={{ color: '#3d3d4e' }}>
                 Cada profesional que invites y complete su perfil te da <strong style={{ color: 'inherit' }}>+6 meses</strong> de badge azul de prioridad: apareces antes en el directorio.
               </p>
               <div className="flex items-center gap-2">
-                <div className="flex-1 px-3 py-2 rounded-lg text-[0.7rem] font-mono truncate"
+                <div className="flex-1 px-3 py-2 rounded-lg text-[0.75rem] font-mono truncate"
                   style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', color: '#3d3d4e' }}>
                   xpeak.es/auth?ref={(profile as any).referral_code || '···'}
                 </div>
@@ -569,7 +569,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     setTimeout(() => setReferralCopied(false), 2000);
                   }}
                   disabled={!(profile as any).referral_code}
-                  className="px-3 py-2 rounded-lg flex items-center gap-1.5 text-[0.7rem] font-bold flex-shrink-0 transition-all disabled:opacity-40"
+                  className="px-3 py-2 rounded-lg flex items-center gap-1.5 text-[0.75rem] font-bold flex-shrink-0 transition-all disabled:opacity-40"
                   style={{
                     background: referralCopied ? 'rgba(34,197,94,0.12)' : 'rgba(37,99,235,0.08)',
                     border: `1px solid ${referralCopied ? 'rgba(34,197,94,0.3)' : 'rgba(37,99,235,0.2)'}`,
@@ -649,7 +649,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>Elige tu especialidad</span>
                 )}
               </label>
-              <p className="text-[0.7rem] text-muted-foreground mb-1.5">Puedes elegir varias: aparecerás en el directorio de cada una.</p>
+              <p className="text-[0.75rem] text-muted-foreground mb-1.5">Puedes elegir varias: aparecerás en el directorio de cada una.</p>
 
               {activeRoles.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mb-2">
@@ -872,7 +872,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                         style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(212,175,55,0.3) transparent' }}>
                         {groups ? groups.map(group => (
                           <div key={group.label}>
-                            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.45)' }}>{group.label}</p>
+                            <p className="text-[0.75rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.45)' }}>{group.label}</p>
                             <div className="flex flex-wrap gap-1.5">
                               {group.items.map(g => (
                                 <button key={g} type="button" onClick={() => toggleGenre(g)}
@@ -964,13 +964,13 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   <div className="space-y-3">
                     {ALQUILER_TAG_GROUPS.map(g => (
                       <div key={g.label}>
-                        <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: '#8B6A00' }}>{g.label}</p>
+                        <p className="text-[0.75rem] font-black uppercase tracking-widest mb-1.5" style={{ color: '#8B6A00' }}>{g.label}</p>
                         <div className="flex flex-wrap gap-1.5">{g.items.map(chip)}</div>
                       </div>
                     ))}
                     {propios.length > 0 && (
                       <div>
-                        <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: '#8B6A00' }}>Añadido por ti</p>
+                        <p className="text-[0.75rem] font-black uppercase tracking-widest mb-1.5" style={{ color: '#8B6A00' }}>Añadido por ti</p>
                         <div className="flex flex-wrap gap-1.5">{propios.map(chip)}</div>
                       </div>
                     )}
@@ -1062,7 +1062,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   {(seekingPartner ?? profile.seeking_dance_partner) && (
                     <div className="mb-3">
                       <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Tu rol al bailar</label>
-                      <p className="text-[0.7rem] mt-1" style={{ color: 'rgba(10,9,8,0.5)' }}>
+                      <p className="text-[0.75rem] mt-1" style={{ color: 'rgba(10,9,8,0.5)' }}>
                         Elige lo que TÚ bailas. En tu tarjeta se mostrará a quién buscas:
                         si eres leader, buscas follower (y al revés).
                       </p>

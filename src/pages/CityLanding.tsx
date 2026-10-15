@@ -657,7 +657,7 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
         </div>
         <div style={{ padding: '12px 14px' }}>
           <p style={{ fontWeight: 900, fontSize: 14, color: '#111', margin: '0 0 4px' }}>{p.display_name}</p>
-          {p.city && <p style={{ fontSize: 11, color: '#6b7280', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 4 }}>{p.city}</p>}
+          {p.city && <p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 4 }}>{p.city}</p>}
           {p.bio && <p style={{ fontSize: 12, color: '#4b5563', margin: 0, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.bio}</p>}
         </div>
       </a>

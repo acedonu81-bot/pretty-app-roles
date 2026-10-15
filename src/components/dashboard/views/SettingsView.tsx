@@ -142,7 +142,7 @@ const MultiProfileSection = () => {
               <p className="text-xs text-muted-foreground truncate">{PROFILE_ROLE_LABEL[p.role] ?? p.role}</p>
             </div>
             {p.id === profileId
-              ? <span className="text-[0.6rem] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F' }}>ACTIVO</span>
+              ? <span className="text-[0.75rem] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F' }}>ACTIVO</span>
               : <button onClick={() => switchProfile(p.id)} className="text-xs font-bold px-3 py-1 rounded-lg transition-all hover:scale-105"
                   style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
                   Cambiar
@@ -855,7 +855,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                     onChange={e => setLocalEmergenteAnios(e.target.value)}
                     placeholder="ej. 1.5" className="nightlife-input text-base sm:text-sm w-full sm:w-40" />
                 </div>
-                <p className="text-[0.7rem] text-muted-foreground mt-2 leading-snug">
+                <p className="text-[0.75rem] text-muted-foreground mt-2 leading-snug">
                   Aparecerás en el directorio <strong>DJs Emergentes</strong>, separado del de profesionales. Sube tus sesiones y añade tu Instagram: un admin las revisa y así vas subiendo de nivel dentro de DJs Emergentes, hasta graduarte a profesional. El ascenso siempre lo confirma una persona, nunca es automático por los años que declares.
                 </p>
               </>
@@ -895,7 +895,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
             options={euLanguages.map(l => ({ value: l, label: l }))}
             active
           />
-          <p className="text-[0.7rem] text-muted-foreground mt-1.5">
+          <p className="text-[0.75rem] text-muted-foreground mt-1.5">
             La interfaz está disponible en español. Guardamos tu preferencia para avisarte cuando añadamos tu idioma.
           </p>
         </div>
@@ -1025,7 +1025,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         {/* Notificaciones push (campana + push nativo/web) — solo tiene sentido
             si el maestro de arriba está activo, pero se dejan visibles igual
             para no perder la preferencia guardada si luego se reactiva. */}
-        <p className="text-[10px] font-black uppercase tracking-wider mt-4 mb-1.5" style={{ color: '#999' }}>
+        <p className="text-[0.75rem] font-black uppercase tracking-wider mt-4 mb-1.5" style={{ color: '#999' }}>
           Notificaciones (push y campana)
         </p>
         <ToggleRow label="Mensajes nuevos" desc="Alerta cuando recibes un mensaje directo" checked={notifMessages}
@@ -1042,7 +1042,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         <ToggleRow label="Recordatorio de bolo (24h antes)" desc="Aviso el día antes de un evento en tu calendario" checked={notifBolo24h}
           onChange={() => { const v = !notifBolo24h; setNotifBolo24h(v); persistNotifPref('bolo_24h', 'xpeak_notif_bolo24h', v); }} />
 
-        <p className="text-[10px] font-black uppercase tracking-wider mt-5 mb-1.5" style={{ color: '#999' }}>
+        <p className="text-[0.75rem] font-black uppercase tracking-wider mt-5 mb-1.5" style={{ color: '#999' }}>
           Emails
         </p>
         <ToggleRow label="Emails de mensajes" desc="Recibir email cuando alguien te escribe por chat"

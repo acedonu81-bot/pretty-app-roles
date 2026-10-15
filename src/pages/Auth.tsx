@@ -104,7 +104,7 @@ const DEFAULT_CONTENT = {
 // botón; la privacidad es información, no algo que se acepte, y las cookies
 // tienen su propio aviso. La fecha queda en terms_accepted_at.
 const AceptacionLegal = ({ accion }: { accion: string }) => (
-  <p className="text-[0.7rem] text-center mt-2.5 leading-relaxed" style={{ color: 'rgba(0,0,0,0.55)' }}>
+  <p className="text-[0.75rem] text-center mt-2.5 leading-relaxed" style={{ color: 'rgba(0,0,0,0.55)' }}>
     {accion} aceptas los{' '}
     <Link to="/terminos" target="_blank" className="underline" style={{ color: '#8B6A00' }}>Términos</Link>
     {' '}y la{' '}
@@ -752,7 +752,7 @@ const Auth = () => {
                 <div className="flex items-center gap-3">
                   <div className="flex -space-x-2">
                     {['L','S','M','C'].map((l,i) => (
-                      <div key={i} className="w-7 h-7 rounded-full flex items-center justify-center text-[0.6rem] font-black border-2"
+                      <div key={i} className="w-7 h-7 rounded-full flex items-center justify-center text-[0.75rem] font-black border-2"
                         style={{ background: `hsl(${i*40+20},60%,35%)`, borderColor: '#fff', color: '#fff' }}>
                         {l}
                       </div>
@@ -786,7 +786,7 @@ const Auth = () => {
                     </p>
                     <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 mt-3">
                       {content.bullets.map(b => (
-                        <span key={b.text} className="flex items-center gap-1.5 text-[0.68rem] font-medium"
+                        <span key={b.text} className="flex items-center gap-1.5 text-[0.75rem] font-medium"
                           style={{ color: '#333' }}>
                           <b.icon size={11} style={{ color: '#8B6A00' }} strokeWidth={2.4} />
                           {b.text}
@@ -851,7 +851,7 @@ const Auth = () => {
                   los dos lados del mercado, y el que pide es el que no espera. */}
               {!isLogin && (
                 <div className="mb-5">
-                  <p className="text-[0.7rem] font-black uppercase tracking-wider mb-2" style={{ color: 'rgba(0,0,0,0.45)' }}>
+                  <p className="text-[0.75rem] font-black uppercase tracking-wider mb-2" style={{ color: 'rgba(0,0,0,0.45)' }}>
                     ¿Qué vienes a hacer?
                   </p>
                   <div className="grid grid-cols-2 gap-2.5">
@@ -891,7 +891,7 @@ const Auth = () => {
                           <p className="text-[0.8rem] font-black mt-1.5 leading-tight" style={{ color: activo ? '#6b5310' : '#111' }}>
                             {op.titulo}
                           </p>
-                          <p className="text-[0.65rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.5)' }}>{op.sub}</p>
+                          <p className="text-[0.75rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.5)' }}>{op.sub}</p>
                         </button>
                       );
                     })}
@@ -908,7 +908,7 @@ const Auth = () => {
                     <PartyPopper size={17} className="shrink-0" style={{ color: 'rgba(0,0,0,0.4)' }} />
                     <span className="flex-1 min-w-0">
                       <span className="block text-[0.8rem] font-black leading-tight" style={{ color: '#111' }}>Soy particular</span>
-                      <span className="block text-[0.65rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.5)' }}>Boda, cumpleaños, fiesta… Pide presupuesto sin registrarte</span>
+                      <span className="block text-[0.75rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.5)' }}>Boda, cumpleaños, fiesta… Pide presupuesto sin registrarte</span>
                     </span>
                     <span className="shrink-0 text-xs font-black" style={{ color: '#8B6A00' }}>→</span>
                   </button>
@@ -1064,8 +1064,8 @@ const Auth = () => {
                   <div className="flex gap-3 px-1">
                     {passwordStrength.map(({ ok, label }) => (
                       <div key={label} className="flex items-center gap-1">
-                        <span className="text-[0.7rem] font-bold" style={{ color: ok ? '#16a34a' : '#999' }}>{ok ? '✓' : '·'}</span>
-                        <span className="text-[0.7rem]" style={{ color: ok ? '#16a34a' : '#888' }}>{label}</span>
+                        <span className="text-[0.75rem] font-bold" style={{ color: ok ? '#16a34a' : '#999' }}>{ok ? '✓' : '·'}</span>
+                        <span className="text-[0.75rem]" style={{ color: ok ? '#16a34a' : '#888' }}>{label}</span>
                       </div>
                     ))}
                   </div>
@@ -1174,7 +1174,7 @@ const Auth = () => {
                       style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
                       Abrir en el navegador
                     </button>
-                    <p className="mt-3 text-[0.7rem]" style={{ color: 'rgba(92,74,18,0.8)' }}>
+                    <p className="mt-3 text-[0.75rem]" style={{ color: 'rgba(92,74,18,0.8)' }}>
                       ¿No se abre? Toca <strong>⋮ o ···</strong> arriba y elige <strong>"Abrir en el navegador"</strong>, o{' '}
                       <button type="button" onClick={handleCopyAuthLink} className="underline font-bold" style={{ color: '#8B6A00' }}>
                         copia el enlace
@@ -1291,7 +1291,7 @@ const Auth = () => {
             </div>
           </div>
 
-          <p className="text-center mt-6 text-[0.6rem]" style={{ color: 'rgba(0,0,0,0.35)' }}>
+          <p className="text-center mt-6 text-[0.75rem]" style={{ color: 'rgba(0,0,0,0.35)' }}>
             © {new Date().getFullYear()} XPEAK · Todos los derechos reservados
           </p>
         </div>

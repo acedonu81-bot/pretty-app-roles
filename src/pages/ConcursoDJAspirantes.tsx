@@ -68,7 +68,7 @@ export default function ConcursoDJAspirantes() {
             <span aria-hidden className="absolute -left-10 top-[72%] h-[3px] w-[140%] -rotate-12 opacity-50" style={{ background: '#7fd3ff', filter: 'blur(2px)' }} />
             <span aria-hidden className="absolute -left-10 top-[92%] h-[3px] w-[140%] -rotate-[20deg] opacity-40" style={{ background: '#f08cff', filter: 'blur(2px)' }} />
             <div className="relative flex-1 min-w-0">
-              <p className="text-[0.7rem] uppercase tracking-[0.2em] mb-2" style={{ color: '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
+              <p className="text-[0.75rem] uppercase tracking-[0.2em] mb-2" style={{ color: '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
                 Concurso DJ XPEAK Madrid · hasta el 2 nov
               </p>
               <h1 className="text-4xl sm:text-6xl leading-none text-white mb-3" style={{ fontFamily: HZ.display, fontWeight: 800 }}>Aspirantes</h1>

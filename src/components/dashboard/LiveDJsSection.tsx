@@ -93,7 +93,7 @@ const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
                   {p.stream_title || p.zone || label}
                 </p>
               </div>
-              <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
+              <span className="text-[0.75rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
                 style={{ background: `${color}18`, color, border: `1px solid ${color}33` }}>
                 {label.toUpperCase()}
               </span>

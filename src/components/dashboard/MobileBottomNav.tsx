@@ -45,13 +45,13 @@ const TabButton = ({ tab, onClick }: { tab: Tab; onClick: () => void }) => (
         />
       )}
       {tab.badge != null && tab.badge > 0 && (
-        <span className="absolute -top-2 -right-3 min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center text-[0.6rem] font-black"
+        <span className="absolute -top-2 -right-3 min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center text-[0.75rem] font-black"
           style={{ background: tab.alerta ? '#15803d' : '#ef4444', color: '#fff', boxShadow: '0 0 0 2px #fff' }}>
           {tab.badge > 9 ? '9+' : tab.badge}
         </span>
       )}
     </div>
-    <span className="text-[0.65rem] font-semibold"
+    <span className="text-[0.75rem] font-semibold"
       style={{ color: tab.alerta ? '#166534' : tab.isActive ? '#D4AF37' : '#444', fontWeight: tab.alerta ? 800 : undefined }}>
       {tab.alerta && tab.id === 'flashbooking' ? 'Nuevo' : tab.label}
     </span>

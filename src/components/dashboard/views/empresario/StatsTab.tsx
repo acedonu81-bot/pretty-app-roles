@@ -124,8 +124,8 @@ const StatsTab = ({ pros, favorites }: Props) => {
           <ResponsiveContainer width="100%" height={160}>
             <BarChart data={rateBarData} barSize={32} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
-              <XAxis dataKey="name" tick={{ fill: '#333', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: '#333', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `€${v}`} />
+              <XAxis dataKey="name" tick={{ fill: '#333', fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: '#333', fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={v => `€${v}`} />
               <Tooltip content={<DarkTooltip />} cursor={{ fill: 'rgba(0,0,0,0.03)' }} />
               <Bar dataKey="€/hora avg" radius={[6, 6, 0, 0]}>
                 {rateBarData.map(entry => <Cell key={entry.name} fill={entry.color} fillOpacity={0.85} />)}

@@ -246,13 +246,13 @@ export default function MisCondicionesSection({ profile, onSaved }: Props) {
       <div className="lg:sticky lg:top-4">
         <div className="flex items-center gap-1.5 mb-2">
           <Eye size={13} style={{ color: '#777' }} />
-          <p className="text-[0.7rem] font-black uppercase tracking-wider" style={{ color: '#777' }}>
+          <p className="text-[0.75rem] font-black uppercase tracking-wider" style={{ color: '#777' }}>
             Así lo ve quien te contrata
           </p>
         </div>
 
         <div className="rounded-2xl p-5" style={{ background: '#0a0908', color: '#fff' }}>
-          <p className="text-[0.65rem] font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>
+          <p className="text-[0.75rem] font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>
             Mis condiciones
           </p>
 
@@ -290,11 +290,11 @@ export default function MisCondicionesSection({ profile, onSaved }: Props) {
               )}
               {f.excluded_services.length > 0 && (
                 <li className="pt-1">
-                  <p className="text-[0.7rem] font-black uppercase tracking-wider mb-1.5"
+                  <p className="text-[0.75rem] font-black uppercase tracking-wider mb-1.5"
                     style={{ color: 'rgba(255,255,255,0.45)' }}>No incluye</p>
                   <div className="flex flex-wrap gap-1.5">
                     {f.excluded_services.map(s => (
-                      <span key={s} className="px-2 py-0.5 rounded text-[0.7rem] font-bold"
+                      <span key={s} className="px-2 py-0.5 rounded text-[0.75rem] font-bold"
                         style={{ background: 'rgba(239,68,68,0.15)', color: '#fca5a5' }}>{s}</span>
                     ))}
                   </div>
@@ -309,7 +309,7 @@ export default function MisCondicionesSection({ profile, onSaved }: Props) {
           )}
         </div>
 
-        <p className="text-[0.7rem] mt-2.5 leading-relaxed" style={{ color: '#777' }}>
+        <p className="text-[0.75rem] mt-2.5 leading-relaxed" style={{ color: '#777' }}>
           Quien te escriba habrá leído esto antes. Si no le encaja, no te hace perder el tiempo.
         </p>
       </div>
@@ -343,7 +343,7 @@ const Campo = ({ label, nota, sufijo, children }: {
       {label} {sufijo && <span style={{ color: '#999' }}>({sufijo})</span>}
     </span>
     {children}
-    {nota && <span className="text-[0.68rem] block mt-1" style={{ color: '#888' }}>{nota}</span>}
+    {nota && <span className="text-[0.75rem] block mt-1" style={{ color: '#888' }}>{nota}</span>}
   </label>
 );
 

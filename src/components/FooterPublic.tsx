@@ -57,7 +57,7 @@ export default function FooterPublic() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12">
           {/* Contratar */}
           <div>
-            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>Contratar</p>
+            <p className="text-[0.75rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>Contratar</p>
             <ul className="space-y-2.5">
               {FOOTER_LINKS.contratar.map(l => (
                 <li key={l.href}>
@@ -71,7 +71,7 @@ export default function FooterPublic() {
 
           {/* Blog */}
           <div>
-            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>Blog</p>
+            <p className="text-[0.75rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>Blog</p>
             <ul className="space-y-2.5">
               {FOOTER_LINKS.blog.map(l => (
                 <li key={l.href}>
@@ -85,7 +85,7 @@ export default function FooterPublic() {
 
           {/* XPEAK */}
           <div>
-            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>XPEAK</p>
+            <p className="text-[0.75rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>XPEAK</p>
             <ul className="space-y-2.5">
               {FOOTER_LINKS.xpeak.map(l => (
                 <li key={l.href}>
@@ -99,7 +99,7 @@ export default function FooterPublic() {
 
           {/* Legal */}
           <div>
-            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>Legal</p>
+            <p className="text-[0.75rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>Legal</p>
             <ul className="space-y-2.5">
               {FOOTER_LINKS.legal.map(l => (
                 <li key={l.href}>
@@ -116,25 +116,25 @@ export default function FooterPublic() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,0.04)' }}>
           <div className="flex items-center gap-3">
             <a href="/" className="text-base font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
-            <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.1)' }}>·</span>
-            <span className="text-[0.65rem]" style={{ color: '#333' }}>El directorio profesional de eventos en España</span>
+            <span className="text-[0.75rem]" style={{ color: 'rgba(0,0,0,0.1)' }}>·</span>
+            <span className="text-[0.75rem]" style={{ color: '#333' }}>El directorio profesional de eventos en España</span>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center -mx-3">
               {SOCIAL_LINKS.map(({ label, href, Icon }) =>
                 href ? (
                   <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-                    className="transition-opacity hover:opacity-70" style={{ color: '#333' }}>
+                    className="p-3 transition-opacity hover:opacity-70" style={{ color: '#333' }}>
                     <Icon className="w-4 h-4" />
                   </a>
                 ) : (
-                  <span key={label} role="img" aria-label={`${label} (próximamente)`} style={{ color: 'rgba(0,0,0,0.3)' }}>
+                  <span key={label} role="img" aria-label={`${label} (próximamente)`} className="p-3" style={{ color: 'rgba(0,0,0,0.3)' }}>
                     <Icon className="w-4 h-4" />
                   </span>
                 )
               )}
             </div>
-            <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.55)' }}>© 2026 XPEAK</span>
+            <span className="text-[0.75rem]" style={{ color: 'rgba(0,0,0,0.55)' }}>© 2026 XPEAK</span>
           </div>
         </div>
       </div>

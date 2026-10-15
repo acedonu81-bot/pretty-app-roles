@@ -184,14 +184,14 @@ const Socials = () => {
                   style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', textDecoration: 'none' }}>
                   <div className="flex flex-col items-center justify-center rounded-lg px-3 py-2 flex-shrink-0"
                     style={{ background: 'rgba(212,175,55,0.08)', minWidth: 72 }}>
-                    <span className="text-[0.65rem] font-black uppercase tracking-wider" style={{ color: '#8A6D0F' }}>
+                    <span className="text-[0.75rem] font-black uppercase tracking-wider" style={{ color: '#8A6D0F' }}>
                       {formatDate(e.event_date)}
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <h2 className="text-sm font-bold" style={{ color: '#111' }}>{e.event_name}</h2>
-                      <span className="text-[0.65rem] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F' }}>{e.style}</span>
+                      <span className="text-[0.75rem] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F' }}>{e.style}</span>
                     </div>
                     <p className="text-xs flex items-center gap-1" style={{ color: '#555' }}>
                       <MapPin size={11} /> {e.venue ? `${e.venue}, ` : ''}{e.city}

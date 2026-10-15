@@ -220,7 +220,7 @@ export default function BlogBodaLowCost() {
                   style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-semibold truncate">{r.partida}</p>
-                    <p className="text-[0.65rem] mt-0.5" style={{ color: '#333' }}>{r.peso} del total</p>
+                    <p className="text-[0.75rem] mt-0.5" style={{ color: '#333' }}>{r.peso} del total</p>
                   </div>
                   <span className="text-xs font-black shrink-0" style={{ color: '#DB2777' }}>{r.rango}</span>
                 </div>
@@ -260,7 +260,7 @@ export default function BlogBodaLowCost() {
                       style={{ borderTop: '1px solid rgba(0,0,0,0.04)', background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.01)' }}>
                       <div>
                         <p className="text-xs font-bold">{item.servicio}</p>
-                        <p className="text-[0.65rem] mt-0.5 leading-relaxed" style={{ color: '#333' }}>{item.ahorro}</p>
+                        <p className="text-[0.75rem] mt-0.5 leading-relaxed" style={{ color: '#333' }}>{item.ahorro}</p>
                       </div>
                       <span className="text-xs font-black self-start mt-0.5 sm:text-right whitespace-nowrap" style={{ color: '#DB2777' }}>{item.precio}</span>
                     </div>
@@ -327,7 +327,7 @@ export default function BlogBodaLowCost() {
                 <a key={link.href} href={link.href}
                   className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80"
                   style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                  <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
+                  <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
                     style={{ background: 'rgba(219,39,119,0.1)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.15)' }}>{link.cat}</span>
                   <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                 </a>

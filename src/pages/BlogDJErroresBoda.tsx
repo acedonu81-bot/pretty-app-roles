@@ -126,7 +126,7 @@ export default function BlogDJErroresBoda() {
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <a href="/auth?mode=register"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
@@ -143,7 +143,7 @@ export default function BlogDJErroresBoda() {
 
           <div className="mb-4">
             <span className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded"
-              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+              style={{ background: 'rgba(212,175,55,0.08)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.2)' }}>
               Guía para novios · 2026
             </span>
           </div>
@@ -176,7 +176,7 @@ export default function BlogDJErroresBoda() {
           {/* Resumen */}
           <div className="rounded-xl p-5 sm:p-6 mb-12"
             style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <h2 className="text-base font-black mb-3" style={{ color: '#D4AF37' }}>En resumen: checklist antes de contratar</h2>
+            <h2 className="text-base font-black mb-3" style={{ color: '#8B6A00' }}>En resumen: checklist antes de contratar</h2>
             <ul className="space-y-1.5">
               {[
                 'El DJ tiene experiencia demostrable en bodas (no solo clubs)',
@@ -189,7 +189,7 @@ export default function BlogDJErroresBoda() {
                 'El DJ visitará o recibirá el plano del espacio antes del día',
               ].map(item => (
                 <li key={item} className="flex items-start gap-2 text-sm" style={{ color: '#333' }}>
-                  <span style={{ color: '#D4AF37' }}>✓</span> {item}
+                  <span style={{ color: '#8B6A00' }}>✓</span> {item}
                 </li>
               ))}
             </ul>

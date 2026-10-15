@@ -68,7 +68,7 @@ export default function HubComuniones() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {ARTICLES.map(a => (
                   <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(109,40,217,0.1)', color: TAG_COLOR[a.tag] || '#6D28D9', border: `1px solid ${TAG_COLOR[a.tag] || '#6D28D9'}22` }}>{a.tag}</span>
+                    <span className="inline-block text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(109,40,217,0.1)', color: TAG_COLOR[a.tag] || '#6D28D9', border: `1px solid ${TAG_COLOR[a.tag] || '#6D28D9'}22` }}>{a.tag}</span>
                     <p className="text-sm font-black leading-snug mb-1">{a.title}</p>
                     <p className="text-xs leading-relaxed" style={{ color: '#333' }}>{a.desc}</p>
                   </a>
@@ -89,7 +89,7 @@ export default function HubComuniones() {
                   <div key={row.partida} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <div>
                       <p className="text-xs font-medium">{row.partida}</p>
-                      <p className="text-[0.6rem] mt-0.5" style={{ color: '#3d3d4e' }}>~{row.pct} del total</p>
+                      <p className="text-[0.75rem] mt-0.5" style={{ color: '#3d3d4e' }}>~{row.pct} del total</p>
                     </div>
                     <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#6D28D9' }}>{row.precio}</span>
                   </div>

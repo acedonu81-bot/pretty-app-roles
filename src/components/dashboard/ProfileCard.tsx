@@ -172,22 +172,22 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           {/* Mobile: only ONE badge, priority Disponible > Pro > Nuevo */}
           <span className="sm:hidden">
             {p.isFlashActive ? (
-              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
+              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.75rem] font-black"
                 style={{ background: 'rgba(34,197,94,0.95)', color: '#fff' }}>
                 <Zap size={9} fill="#fff" /> Disponible
               </span>
             ) : (p as any).hasPriorityBadge ? (
-              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
+              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.75rem] font-black"
                 style={{ background: 'rgba(37,99,235,0.95)', color: '#fff' }}>
                 <BadgeCheck size={9} /> Prioridad
               </span>
             ) : showNewBadge ? (
-              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
+              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.75rem] font-black"
                 style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
                 <Users size={9} /> Nuevo en XPEAK
               </span>
             ) : isNew ? (
-              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
+              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.75rem] font-black"
                 style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
                 Nuevo
               </span>
@@ -197,29 +197,29 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           {/* Grupos musicales, opt-in: se muestra en vez de "Nuevo" genérico
               cuando el propio grupo lo activa en Ajustes — ver newOnPlatform.ts */}
           {showNewBadge && (
-            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.75rem] font-black"
               style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
               <Users size={9} /> Nuevo en XPEAK
             </span>
           )}
           {!showNewBadge && isNew && (
-            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.75rem] font-black"
               style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
               Nuevo
             </span>
           )}
           {p.topWeekend && (
-            <span className="hidden sm:inline px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+            <span className="hidden sm:inline px-2 py-0.5 rounded-full text-[0.75rem] font-black"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>TOP WEEKEND</span>
           )}
           {(p as any).hasPriorityBadge && (
-            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.75rem] font-black"
               style={{ background: 'rgba(37,99,235,0.9)', color: '#fff' }}>
               <BadgeCheck size={9} /> Prioridad
             </span>
           )}
           {p.isFlashActive && (
-            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black animate-pulse"
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.75rem] font-black animate-pulse"
               style={{ background: 'rgba(34,197,94,0.9)', color: '#000' }}>
               <Zap size={9} fill="#000" /> Disponible
             </span>
@@ -233,7 +233,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             const rol = (p as any).danceRole;
             const busca = rol === 'lead' ? 'follower' : rol === 'follow' ? 'leader' : null;
             return (
-              <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+              <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.75rem] font-black"
                 style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
                 <Users size={9} /> {busca ? `Busca ${busca}` : 'Busca pareja'}
               </span>
@@ -315,19 +315,19 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         {isLocalEventos && (venueCapacity || venuePriceLabel || allowsOvernight) && (
           <div className="flex flex-wrap gap-1.5">
             {venueCapacity && (
-              <span className="flex items-center gap-1 text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
+              <span className="flex items-center gap-1 text-[0.75rem] font-semibold px-1.5 py-0.5 rounded"
                 style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
                 <Building2 size={10} /> Aforo {venueCapacity}
               </span>
             )}
             {venuePriceLabel && (
-              <span className="text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
+              <span className="text-[0.75rem] font-semibold px-1.5 py-0.5 rounded"
                 style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
                 {venuePriceLabel}
               </span>
             )}
             {allowsOvernight && (
-              <span className="flex items-center gap-1 text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
+              <span className="flex items-center gap-1 text-[0.75rem] font-semibold px-1.5 py-0.5 rounded"
                 style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
                 <Moon size={10} /> Permite pernoctar
               </span>
@@ -339,7 +339,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         {p.badges.length > 0 && (
           <div className="hidden sm:flex flex-wrap gap-1">
             {p.badges.slice(0, 3).map(b => (
-              <span key={b} className="text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
+              <span key={b} className="text-[0.75rem] font-semibold px-1.5 py-0.5 rounded"
                 style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
                 {b}
               </span>

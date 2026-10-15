@@ -78,7 +78,7 @@ export default function BlogAnimadoresInfantiles() {
                   <div key={r.rango} className="p-4 rounded-xl text-center" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-xs font-bold mb-1">{r.rango}</p>
                     <p className="text-base font-black mb-1" style={{ color: '#EA580C' }}>{r.monitores}</p>
-                    <p className="text-[0.65rem]" style={{ color: '#3d3d4e' }}>{r.nota}</p>
+                    <p className="text-[0.75rem]" style={{ color: '#3d3d4e' }}>{r.nota}</p>
                   </div>
                 ))}
               </div>

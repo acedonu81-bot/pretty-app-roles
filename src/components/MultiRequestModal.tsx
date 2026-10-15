@@ -233,7 +233,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
                 ? 'Enviando...'
                 : <><Zap size={15} /> Pedir presupuesto a {pros.length}</>}
             </button>
-            <p className="text-center text-[0.7rem] mt-2" style={{ color: '#666' }}>
+            <p className="text-center text-[0.75rem] mt-2" style={{ color: '#666' }}>
               Sin registro · Te responden directamente
             </p>
           </form>

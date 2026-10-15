@@ -86,7 +86,7 @@ export default function BlogCodigoBuenasPracticasDJ() {
 
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#8B6A00' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth?mode=register" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
@@ -97,15 +97,15 @@ export default function BlogCodigoBuenasPracticasDJ() {
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Código de buenas prácticas del DJ profesional</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               No existe un colegio profesional obligatorio para DJs en España, pero sí hay un estándar de referencia:
               el Decálogo de Buenas Prácticas de la{' '}
-              <a href="https://aedyp.es/decalogo/" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>
+              <a href="https://aedyp.es/decalogo/" target="_blank" rel="noopener noreferrer" style={{ color: '#8B6A00' }}>
                 Asociación Española de DJs y Productores (AEDYP)
               </a>, complementado con los estándares de asociaciones internacionales como la{' '}
-              <a href="https://www.usdja.org/standards" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>
+              <a href="https://www.usdja.org/standards" target="_blank" rel="noopener noreferrer" style={{ color: '#8B6A00' }}>
                 United States Disc Jockey Association (USDJA)
               </a>. Esta guía reúne las 9 normas en las que coinciden.
             </p>
@@ -123,11 +123,11 @@ export default function BlogCodigoBuenasPracticasDJ() {
                 {REGLAS.map((r, i) => (
                   <div key={r.titulo} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <div className="flex items-start gap-2 mb-1">
-                      <span style={{ color: '#D4AF37', fontWeight: 900, fontSize: '0.75rem', marginTop: 1 }}>{i + 1}.</span>
+                      <span style={{ color: '#8B6A00', fontWeight: 900, fontSize: '0.75rem', marginTop: 1 }}>{i + 1}.</span>
                       <p className="text-xs font-bold">{r.titulo}</p>
                     </div>
                     <p className="text-xs pl-4 mb-1.5" style={{ color: '#3d3d4e' }}>{r.detalle}</p>
-                    <p className="text-[0.65rem] pl-4 font-bold uppercase tracking-wide" style={{ color: '#9a9a9a' }}>Fuente: {r.fuente}</p>
+                    <p className="text-[0.75rem] pl-4 font-bold uppercase tracking-wide" style={{ color: '#9a9a9a' }}>Fuente: {r.fuente}</p>
                   </div>
                 ))}
               </div>
@@ -145,9 +145,9 @@ export default function BlogCodigoBuenasPracticasDJ() {
                 improvisa. Un DJ que factura en regla, llega con margen y pone todo por escrito antes del evento es,
                 en la práctica, el mismo que cumple el resto del decálogo. Si quieres saber qué debe llevar ese
                 acuerdo por escrito, revisa{' '}
-                <a href="/blog/contrato-dj-que-debe-incluir" style={{ color: '#D4AF37' }}>qué debe incluir un contrato de DJ</a>{' '}
+                <a href="/blog/contrato-dj-que-debe-incluir" style={{ color: '#8B6A00' }}>qué debe incluir un contrato de DJ</a>{' '}
                 y, si vas a cerrar el precio, conviene saber antes{' '}
-                <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#D4AF37' }}>cuánto cobra un DJ en España</a>.
+                <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#8B6A00' }}>cuánto cobra un DJ en España</a>.
               </p>
             </section>
 
@@ -176,7 +176,7 @@ export default function BlogCodigoBuenasPracticasDJ() {
                 ].map(c => (
                   <a key={c.href} href={c.href}
                     className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                    style={{ background: 'rgba(212,175,55,0.08)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.2)' }}>
                     {c.label}
                   </a>
                 ))}
@@ -195,7 +195,7 @@ export default function BlogCodigoBuenasPracticasDJ() {
                   { href: '/blog/calculadora-tarifa-dj', cat: 'DJ', title: 'Calculadora de tarifa DJ' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#8B6A00', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
                     <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}

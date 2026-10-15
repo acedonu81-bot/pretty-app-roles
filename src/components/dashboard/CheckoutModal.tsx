@@ -54,7 +54,7 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
             <p className="text-sm text-muted-foreground mb-2">
               La pasarela de pago está en integración final.
             </p>
-            <p className="text-[0.7rem] text-muted-foreground mb-1">
+            <p className="text-[0.75rem] text-muted-foreground mb-1">
               Resumen de tu pedido:
             </p>
             <p className="text-xl font-black mb-1" style={{ color: '#8A6D0F' }}>€{total}</p>

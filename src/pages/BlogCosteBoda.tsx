@@ -93,7 +93,7 @@ const faqStructured = {
   };
 
   const tdStyle = { padding: '10px 14px', borderBottom: '1px solid rgba(0,0,0,0.06)', color: '#111', fontSize: '0.88rem', verticalAlign: 'top' as const };
-  const thStyle = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#DB2777', borderBottom: '1px solid rgba(219,39,119,0.3)', background: 'rgba(219,39,119,0.05)' };
+  const thStyle = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#DB2777', borderBottom: '1px solid rgba(219,39,119,0.3)', background: 'rgba(219,39,119,0.05)' };
 
   return (
     <>

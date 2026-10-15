@@ -233,7 +233,7 @@ const BentoCard = ({
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{ boxShadow: 'inset 0 0 60px rgba(212,175,55,0.1)' }} />
       {isFresh && (
-        <span className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 rounded-full text-[0.6rem] font-black uppercase tracking-wide"
+        <span className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black uppercase tracking-wide"
           style={{ background: '#15803d', color: '#fff' }}>
           <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> Nuevo esta semana
         </span>
@@ -369,7 +369,7 @@ const FaqSection = () => {
   return (
     <section className="max-w-[800px] mx-auto px-6 md:px-8 pb-16 md:pb-24">
       <FadeIn className="text-center mb-10">
-        <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#7A5800' }}>Preguntas frecuentes</p>
+        <p className="text-[0.75rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#7A5800' }}>Preguntas frecuentes</p>
         <h2 className="text-3xl md:text-4xl font-black tracking-tight font-display">
           Todo lo que necesitas <span className="text-gradient">saber</span>
         </h2>
@@ -831,16 +831,18 @@ const Landing = () => {
                 }}
                 className="relative flex flex-col items-start justify-center gap-1 px-5 py-6 rounded-2xl text-left transition-all overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg,#0f1e35,#0c1626 55%,#08101c)',
-                  border: '1px solid rgba(96,165,250,0.55)',
-                  color: '#fff',
-                  boxShadow: '0 0 0 1px rgba(96,165,250,0.15), 0 0 18px rgba(96,165,250,0.4), 0 0 36px rgba(96,165,250,0.2), 0 12px 28px rgba(0,0,0,0.5)',
+                  // Azul de marca claro en vez de azul casi negro (auditoría 15 oct
+                  // 2026: la paleta no lleva fondos oscuros en páginas públicas).
+                  background: 'linear-gradient(135deg,#EFF6FF,#DBEAFE 60%,#BFDBFE)',
+                  border: '1.5px solid #2563EB',
+                  color: '#1E3A8A',
+                  boxShadow: '0 0 0 1px rgba(37,99,235,0.12), 0 0 18px rgba(37,99,235,0.28), 0 12px 28px rgba(30,58,138,0.25)',
                 }}
               >
-                <span className="flex items-center gap-2 text-lg font-black tracking-tight" style={{ color: '#93c5fd', textShadow: '0 0 8px rgba(96,165,250,0.6)' }}>
+                <span className="flex items-center gap-2 text-lg font-black tracking-tight" style={{ color: '#1E40AF' }}>
                   <Headphones size={20} /> Quiero anunciarme
                 </span>
-                <span className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.85)' }}>Soy DJ, fotógrafo, staff…</span>
+                <span className="text-xs font-bold" style={{ color: '#1E3A8A' }}>Soy DJ, fotógrafo, staff…</span>
               </motion.button>
             </div>
           </div>
@@ -1032,7 +1034,7 @@ const Landing = () => {
         <section className="relative overflow-hidden pb-16 pt-16" style={{ background: '#f8f7f4' }}>
           <div className="relative max-w-[1200px] mx-auto px-6 md:px-8">
           <FadeIn className="text-center mb-10">
-            <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#8b5cf6' }}>Lo que dicen los profesionales</p>
+            <p className="text-[0.75rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#8b5cf6' }}>Lo que dicen los profesionales</p>
             <h2 className="text-3xl md:text-4xl font-black tracking-tight font-display" style={{ color: '#111' }}>
               La comunidad <span className="text-gradient">habla</span>
             </h2>
@@ -1065,7 +1067,7 @@ const Landing = () => {
                   <p className="text-sm leading-relaxed font-medium" style={{ color: '#111' }}>
                     "{t.text}"
                   </p>
-                  <p className="text-[0.68rem] font-bold uppercase tracking-wide" style={{ color: '#B8941E' }}>
+                  <p className="text-[0.75rem] font-bold uppercase tracking-wide" style={{ color: '#B8941E' }}>
                     Sobre: {t.contexto}
                   </p>
                   <div className="flex items-center gap-2 mt-auto pt-3" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
@@ -1075,7 +1077,7 @@ const Landing = () => {
                     </div>
                     <div>
                       <p className="text-xs font-black" style={{ color: '#111' }}>{t.name}</p>
-                      <p className="text-[0.68rem]" style={{ color: 'rgba(0,0,0,0.5)' }}>{t.role}</p>
+                      <p className="text-[0.75rem]" style={{ color: 'rgba(0,0,0,0.5)' }}>{t.role}</p>
                     </div>
                   </div>
                 </div>
@@ -1107,7 +1109,7 @@ const Landing = () => {
             <a key={g.href} href={g.href}
               className="group block p-5 rounded-2xl transition-all hover:scale-[1.02]"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-              <span className="inline-block text-[0.65rem] font-black uppercase tracking-widest px-2 py-1 rounded-md mb-3"
+              <span className="inline-block text-[0.75rem] font-black uppercase tracking-widest px-2 py-1 rounded-md mb-3"
                 style={{ background: g.bg, color: g.color }}>
                 {g.label}
               </span>
@@ -1119,7 +1121,7 @@ const Landing = () => {
           ))}
         </div>
         <p className="text-center mt-6">
-          <a href="/blog" className="text-xs font-bold underline decoration-dotted underline-offset-4" style={{ color: '#333' }}>
+          <a href="/blog" className="inline-block py-3 px-2 text-sm font-bold underline decoration-dotted underline-offset-4" style={{ color: '#333' }}>
             Ver todas las guías del blog →
           </a>
         </p>
@@ -1131,7 +1133,7 @@ const Landing = () => {
       {/* ─ CTA final limpio ─ */}
       <FadeIn>
         <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-16 md:py-20 text-center">
-          <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#D4AF37' }}>
+          <p className="text-[0.75rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#D4AF37' }}>
             Sé de los primeros en publicarte
           </p>
           <h2 className="text-2xl md:text-4xl font-black mb-4 tracking-tight font-display" style={{ color: '#111', lineHeight: 1.3, overflow: 'visible', clipPath: 'none', WebkitClipPath: 'none' }}>

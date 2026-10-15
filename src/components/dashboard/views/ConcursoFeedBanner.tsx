@@ -47,7 +47,7 @@ function CuentaAtras({ onFin, claro = false }: { onFin: () => void; claro?: bool
               : { fontFamily: HZ.display, fontWeight: 800, color: urgente ? '#ff9aa8' : i === 3 ? '#ffe08a' : '#fff', textShadow: '0 2px 8px rgba(20,0,80,0.4)' }}>
             {p(t.v)}
           </span>
-          <span className="block text-[0.58rem] uppercase tracking-[0.08em] sm:tracking-[0.14em] mt-1" style={{ color: claro ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>{t.l}</span>
+          <span className="block text-[0.75rem] uppercase tracking-[0.08em] sm:tracking-[0.14em] mt-1" style={{ color: claro ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>{t.l}</span>
         </div>
       ))}
     </div>
@@ -99,7 +99,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
       {!sinTexto && <span aria-hidden className="absolute -left-10 top-[90%] h-[3px] w-[140%] -rotate-[20deg] opacity-40" style={{ background: '#f08cff', filter: 'blur(2px)' }} />}
 
       <div className="relative min-w-0">
-        <p className="inline-flex items-center gap-1.5 text-[0.65rem] uppercase tracking-[0.2em] mb-1.5" style={{ color: sinTexto ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
+        <p className="inline-flex items-center gap-1.5 text-[0.75rem] uppercase tracking-[0.2em] mb-1.5" style={{ color: sinTexto ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
           <Trophy size={12} strokeWidth={2.5} /> {ultimoDia ? 'Último día' : 'Hasta el 2 nov'} · Madrid
         </p>
         <p className={`leading-tight ${sinTexto ? 'text-[#14407A]' : 'text-white'} ${sinTexto ? 'text-[1.7rem] sm:text-6xl' : 'text-xl sm:text-2xl'}`} style={{ fontFamily: HZ.display, fontWeight: 800 }}>
