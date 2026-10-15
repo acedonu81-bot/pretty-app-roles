@@ -267,6 +267,24 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const [selectedRole, setSelectedRole] = useState<string>(prefilledRole);
   const [saving, setSaving] = useState(false);
 
+  // Quien ya tiene oficio guardado (lo eligió al registrarse) no lo vuelve a
+  // elegir: empieza en foto y ciudad (auditoría 15 oct 2026). Se espera a que
+  // el perfil termine de cargar porque al montar el rol aún es el de por
+  // defecto. Solo el oficio GUARDADO cuenta: el de la URL todavía hay que
+  // confirmarlo en el paso 0 para que se guarde. "Cambiar de oficio" vuelve
+  // al paso 0 y desactiva el salto.
+  const cambioManual = useRef(false);
+  // El selector de fotos solo se abre solo si viene de pulsar "Continuar":
+  // sin un toque del usuario el navegador lo bloquea y avisa por consola.
+  const abrirSelectorRef = useRef(false);
+  useEffect(() => {
+    if (step !== 0 || profile.loading || cambioManual.current) return;
+    if (!validRoles.includes(profile.role ?? '')) return;
+    setSelectedRole(profile.role as string);
+    setStep(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile.loading, profile.role]);
+
   // Campos del formulario rápido. Foto, ciudad y tarifa son obligatorios
   // para continuar: dejarlos opcionales (incluso con inputs reales) seguía
   // produciendo perfiles vacíos en el directorio, así que "Guardar y
@@ -411,6 +429,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     // como hecho dejando el rol en 'pending' para siempre, sin volver a
     // ofrecer el wizard para corregirlo.
     if (!ok) { logAsistente(`rol_error rol=${selectedRole}`); return; }
+    abrirSelectorRef.current = true;
     setStep(1);
   };
 
@@ -421,7 +440,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   // El timeout deja que termine la animación de entrada del step antes de
   // que el selector nativo del sistema tape el modal.
   useEffect(() => {
-    if (step !== 1 || selectedRole === 'empresario' || photoUrl) return;
+    if (step !== 1 || selectedRole === 'empresario' || photoUrl || !abrirSelectorRef.current) return;
     const timer = setTimeout(() => fileInputRef.current?.click(), 500);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -557,7 +576,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                         </div>
                         <div>
                           <p className="text-xs font-black leading-tight" style={{ color: active ? '#111' : '#222' }}>{label}</p>
-                          <p className="text-[10px] leading-tight mt-0.5" style={{ color: '#777' }}>{desc}</p>
+                          <p className="text-xs leading-tight mt-0.5" style={{ color: '#777' }}>{desc}</p>
                         </div>
                         {active && <CheckCircle size={12} style={{ color, alignSelf: 'flex-end', marginTop: -4 }} />}
                       </button>
@@ -582,7 +601,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       </div>
                       <div className="flex-1">
                         <p className="text-xs font-black leading-tight" style={{ color: active ? '#111' : '#222' }}>{label}</p>
-                        <p className="text-[10px] leading-tight mt-0.5" style={{ color: '#777' }}>{desc}</p>
+                        <p className="text-xs leading-tight mt-0.5" style={{ color: '#777' }}>{desc}</p>
                       </div>
                       {active && <CheckCircle size={12} style={{ color }} />}
                     </button>
@@ -605,6 +624,10 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                     {roleData.title}
                   </h2>
                   <p className="text-xs" style={{ color: '#333' }}>Foto y ciudad para aparecer ya en el directorio. El resto puedes completarlo después.</p>
+                  <button type="button" onClick={() => { cambioManual.current = true; setStep(0); }}
+                    className="mt-1 min-h-[40px] px-2 text-xs font-semibold underline" style={{ color: '#8B6A00' }}>
+                    ¿No es tu oficio? Cambiar
+                  </button>
                 </div>
 
                 <div className="flex flex-col gap-3 mb-5">
@@ -645,12 +668,12 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       <p className="text-xs font-bold" style={{ color: '#222' }}>
                         {uploadingPhoto ? 'Subiendo...' : photoUrl ? 'Foto subida ✓' : 'Toca aquí para añadir tu foto (obligatoria)'}
                       </p>
-                      <p className="text-[0.65rem]" style={{ color: '#333' }}>Los perfiles con foto reciben 3× más contactos</p>
+                      <p className="text-xs" style={{ color: '#333' }}>Los perfiles con foto reciben 3× más contactos</p>
                     </div>
                   </motion.button>
 
                   <div className="px-1">
-                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu ciudad</p>
+                    <p className="text-xs font-bold mb-1.5" style={{ color: '#222' }}>Tu ciudad</p>
                     <NightlifeSelect
                       value={city}
                       onChange={setCity}
@@ -671,7 +694,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </div>
 
                   <div className="px-1">
-                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>{selectedRole === 'alquiler' ? 'Tu precio por día' : selectedRole === 'food-truck' ? 'Tu precio por evento (desde)' : 'Tu tarifa por hora'} <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
+                    <p className="text-xs font-bold mb-1.5" style={{ color: '#222' }}>{selectedRole === 'alquiler' ? 'Tu precio por día' : selectedRole === 'food-truck' ? 'Tu precio por evento (desde)' : 'Tu tarifa por hora'} <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
                     <div className="relative">
                       <Euro size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
                       <input
@@ -689,14 +712,14 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       <input type="checkbox" checked={priceOnRequest}
                         onChange={(e) => setPriceOnRequest(e.target.checked)}
                         className="w-3.5 h-3.5 accent-current" style={{ accentColor: '#D4AF37' }} />
-                      <span className="text-[0.65rem] font-semibold" style={{ color: '#333' }}>
+                      <span className="text-xs font-semibold" style={{ color: '#333' }}>
                         Mi precio varía según el evento: mostrar "A consultar"
                       </span>
                     </label>
                   </div>
 
                   <div className="px-1">
-                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu Instagram <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
+                    <p className="text-xs font-bold mb-1.5" style={{ color: '#222' }}>Tu Instagram <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
                     <div className="relative">
                       <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
                       <input
@@ -709,11 +732,11 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                         style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
                       />
                     </div>
-                    <p className="text-[0.65rem] mt-1" style={{ color: '#333' }}>Da confianza a quien te contrate</p>
+                    <p className="text-xs mt-1" style={{ color: '#333' }}>Da confianza a quien te contrate</p>
                   </div>
 
                   <div className="px-1">
-                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Cuéntanos sobre ti <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
+                    <p className="text-xs font-bold mb-1.5" style={{ color: '#222' }}>Cuéntanos sobre ti <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
                     <textarea
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
@@ -724,7 +747,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
                     />
                     {tieneFraseGenerica(bio) && (
-                      <p className="text-[0.6rem] mt-1 font-semibold" style={{ color: '#dc2626' }}>
+                      <p className="text-[0.75rem] mt-1 font-semibold" style={{ color: '#dc2626' }}>
                         Evita frases tipo "info al DM" o "busco eventos": cuenta tu experiencia real
                       </p>
                     )}
@@ -751,11 +774,11 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   {roleData.tips.map(([title, desc], i) => (
                     <div key={title} className="flex items-center gap-3 px-4 py-3 rounded-xl"
                       style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.12)' }}>
-                      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[0.65rem] font-black"
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-black"
                         style={{ background: '#D4AF37', color: '#000' }}>{i + 1}</div>
                       <div>
                         <p className="text-xs font-bold" style={{ color: '#222' }}>{title}</p>
-                        <p className="text-[0.65rem]" style={{ color: '#333' }}>{desc}</p>
+                        <p className="text-xs" style={{ color: '#333' }}>{desc}</p>
                       </div>
                     </div>
                   ))}
@@ -763,7 +786,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
 
                 <div className="rounded-xl px-4 py-3.5 mb-4" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                   <p className="text-xs font-black mb-1" style={{ color: '#111' }}>¿También ofreces servicios para eventos?</p>
-                  <p className="text-[0.7rem] mb-2.5" style={{ color: '#444' }}>
+                  <p className="text-xs mb-2.5" style={{ color: '#444' }}>
                     Food truck, catering, sala, música… Como organizador no apareces en el directorio. Si ofreces algo, crea también tu perfil profesional para que te encuentren.
                   </p>
                   <select
@@ -776,10 +799,6 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </select>
                 </div>
 
-                <button onClick={markDone} className="w-full py-2 text-xs font-semibold"
-                  style={{ color: '#333' }}>
-                  Lo haré después
-                </button>
               </motion.div>
             )}
           </AnimatePresence>
@@ -836,6 +855,15 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                 : 'Completar mi perfil'} <ChevronRight size={15} />
             </button>
           )}
+          {/* Salida en todos los pasos (auditoría 15 oct 2026): el asistente
+              tapa todo el panel y solo el paso final del organizador tenía
+              "Lo haré después"; quien no quería subir foto ahora no podía ni
+              mirar el panel. El aviso de perfil incompleto sigue ahí. */}
+          <button type="button" onClick={markDone}
+            className="w-full mt-1 min-h-[44px] text-sm font-semibold"
+            style={{ color: '#4b5563' }}>
+            Lo haré después
+          </button>
         </div>
       </motion.div>
     </div>
