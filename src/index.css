@@ -31,8 +31,8 @@ html, body, #root, #ssr-snapshot {
    100dvh sigue el viewport visible. El 100vh de la primera línea es el
    respaldo para navegadores sin soporte de dvh. */
 .dvh-screen {
-  height: 100vh;
-  height: 100dvh;
+  height: calc(100vh - var(--install-bar-h, 0px));
+  height: calc(100dvh - var(--install-bar-h, 0px));
 }
 
 /* Push sticky topbar below the status bar on native */
@@ -250,7 +250,8 @@ body.is-native-app .clay-btn-primary {
   /* Espacio reservado por la barra de navegación inferior móvil (64px + safe-area).
      0 en desktop. Lo usan vistas de alto completo (Mensajes) para no quedar tapadas. */
   :root { --mobile-nav-space: 0px; }
-  @media (max-width: 768px) {
+  /* 767: a 768 px ya no hay barra inferior (md:hidden) y se reservaba igual. */
+  @media (max-width: 767px) {
     :root { --mobile-nav-space: calc(64px + max(env(safe-area-inset-bottom), 12px)); }
     /* iOS hace zoom automático al enfocar un input con texto <16px. Forzar 16px lo evita. */
     input:not([type='checkbox']):not([type='radio']),

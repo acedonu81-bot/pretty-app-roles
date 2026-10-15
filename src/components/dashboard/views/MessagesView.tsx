@@ -419,7 +419,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       style={{
         // 100dvh = viewport dinámico (no salta con la barra de URL móvil).
         // En móvil descuenta header (~120px) + bottom nav (64px + safe-area); en desktop solo el header.
-        height: 'calc(100dvh - 120px - var(--mobile-nav-space, 0px))',
+        height: 'calc(100dvh - 120px - var(--mobile-nav-space, 0px) - var(--install-bar-h, 0px))',
         minHeight: 380,
       }}>
       <div className="mb-4 flex items-center justify-between">

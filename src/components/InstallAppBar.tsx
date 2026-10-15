@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { useInstallPrompt } from '@/hooks/useInstallPrompt';
@@ -19,14 +19,36 @@ export default function InstallAppBar() {
   const [showIosSteps, setShowIosSteps] = useState(false);
   const { platform, iosBrowser, isStandalone, canPromptInstall, promptInstall } = useInstallPrompt();
   const { pathname } = useLocation();
+  const barRef = useRef<HTMLDivElement>(null);
 
   // Dentro de la app Capacitor ya estás "instalado" — no tiene sentido
   // ofrecer instalar lo que ya es la app nativa. En /auth se oculta porque,
   // en móvil, se apila con el banner de cookies y deja el formulario de
   // registro casi sin hueco visible (bajón de altas verificado 10 oct 2026).
-  if (isNative || isStandalone || dismissed || pathname.startsWith('/auth')) return null;
-  // Nada que ofrecer: ni prompt nativo disponible ni instrucciones de iOS.
-  if (!canPromptInstall && platform !== 'ios') return null;
+  // Tampoco sale si no hay nada que ofrecer: ni prompt nativo ni iOS.
+  const oculta = isNative || isStandalone || dismissed || pathname.startsWith('/auth')
+    || (!canPromptInstall && platform !== 'ios');
+  // En iPhone/iPad la barra se sabe desde el primer render (no espera a
+  // 'beforeinstallprompt'), así que va en el flujo sin provocar salto. Fija
+  // encima tapaba la cabecera de la portada (logo, Acceder, Descubrir), el
+  // "Volver" del resto de páginas y la topbar del panel (auditoría 15 oct
+  // 2026). En Android y escritorio el aviso llega 1-2 s tarde y sigue fija.
+  const enFlujo = !oculta && platform === 'ios';
+
+  // El panel ocupa justo el alto de la pantalla (.dvh-screen): con la barra
+  // en el flujo se le resta su altura para que no aparezca scroll de más.
+  useLayoutEffect(() => {
+    const el = barRef.current;
+    if (!enFlujo || !el) return;
+    const raiz = document.documentElement;
+    const medir = () => raiz.style.setProperty('--install-bar-h', `${el.offsetHeight}px`);
+    medir();
+    const ro = new ResizeObserver(medir);
+    ro.observe(el);
+    return () => { ro.disconnect(); raiz.style.removeProperty('--install-bar-h'); };
+  }, [enFlujo]);
+
+  if (oculta) return null;
 
   const dismiss = () => { setDismissed(true); localStorage.setItem(DISMISS_KEY, '1'); };
 
@@ -42,11 +64,12 @@ export default function InstallAppBar() {
     : 'pantalla completa, sin barra del navegador, como una app.';
 
   return (
-    // Encima del contenido (fixed), no en el flujo: el aviso de instalación
-    // del navegador llega 1-2 s después de cargar y, al aparecer, empujaba
-    // toda la página 60 px hacia abajo (CLS 0,19 en la del Concurso DJ,
-    // auditoría 13 oct 2026). La entrada deslizando no cuenta como salto.
-    <div className="fixed top-0 inset-x-0 z-[70] w-full motion-safe:animate-[installBarIn_0.35s_ease-out]"
+    // Fuera de iOS va encima del contenido (fixed), no en el flujo: el aviso
+    // de instalación del navegador llega 1-2 s después de cargar y, al
+    // aparecer, empujaba toda la página 60 px hacia abajo (CLS 0,19 en la del
+    // Concurso DJ, auditoría 13 oct 2026). La entrada deslizando no cuenta
+    // como salto.
+    <div ref={barRef} className={`${enFlujo ? 'relative' : 'fixed top-0 inset-x-0 motion-safe:animate-[installBarIn_0.35s_ease-out]'} z-[70] w-full`}
       style={{
         background: 'linear-gradient(90deg,#D4AF37,#B8941E)',
         color: '#000',
