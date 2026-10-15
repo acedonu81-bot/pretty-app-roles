@@ -82,6 +82,9 @@ const PROFILE_VIEWS = new Set(['profile', 'ficha', 'stats']);
 // "Home" del stack nativo (ver NativeStackTransition): entrar en cualquier
 // otra vista es un nivel hacia adelante; volver aquí es un "back".
 const HOME_VIEWS = new Set(['explorar', 'profile']);
+// Pantallas de la barra inferior del móvil (Inicio, Flash, Chat, Perfil). El
+// resto son secundarias y llevan flecha de volver en la cabecera móvil.
+const ROOT_VIEWS = new Set(['explorar', 'flashbooking', 'messages', 'profile']);
 
 const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: string) => void; activeView: string }) => {
   const ctx = useProfile();
@@ -495,11 +498,25 @@ const Dashboard = () => {
   // registrando historial en la próxima navegación hacia adelante).
   const viewForPopRef = useRef(activeView);
   viewForPopRef.current = activeView;
+  // Última pantalla principal (de la barra inferior) antes de la actual: volver
+  // desde Ajustes lleva a Perfil, no siempre a Inicio (15 oct 2026).
+  const vistaPreviaRef = useRef(activeView);
+  const raizAnteriorRef = useRef('explorar');
+  useEffect(() => {
+    const previa = vistaPreviaRef.current;
+    if (previa !== activeView && ROOT_VIEWS.has(previa)) raizAnteriorRef.current = previa;
+    vistaPreviaRef.current = activeView;
+  }, [activeView]);
   useEffect(() => {
     if (HOME_VIEWS.has(activeView)) return;
     window.history.pushState({ dashboardView: activeView }, '');
     const onPop = () => {
-      if (!HOME_VIEWS.has(viewForPopRef.current)) setActiveView('explorar');
+      const actual = viewForPopRef.current;
+      if (HOME_VIEWS.has(actual)) return;
+      // Desde Flash o Chat se vuelve a Inicio; desde una secundaria, a la
+      // pantalla principal de la que se vino.
+      const destino = ROOT_VIEWS.has(actual) ? 'explorar' : raizAnteriorRef.current;
+      setActiveView(destino === actual ? 'explorar' : destino);
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
@@ -729,7 +746,11 @@ const Dashboard = () => {
           className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0 no-scrollbar"
           style={{ transition: 'width 300ms cubic-bezier(0.32,0.72,0,1)' }}
         >
-          <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} userId={user?.id} isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange} />
+          <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} userId={user?.id} isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange}
+            // Las secundarias guardan una entrada en el historial (ver el
+            // pushState de arriba): volver es deshacerla, igual que el gesto
+            // o el botón atrás de Android.
+            onBack={!ROOT_VIEWS.has(activeView) ? () => window.history.back() : undefined} />
           <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
           <PendingReviewsBanner onGoToReviews={goToPendingReviews} />
           <MarketingConsentBanner />

@@ -503,6 +503,22 @@ const Landing = () => {
   // Se recalcula en cada carga — nunca hardcodear un orden fijo aquí.
   const [categoryOrder, setCategoryOrder] = useState<string[]>(['musica', 'staff', 'imagen', 'belleza', 'gastro', 'animacion']);
 
+  // App instalada (PWA o nativa) con sesión: la portada pública no pinta nada.
+  // El logo de XPEAK y los "Volver" de las páginas públicas llevan a "/", y
+  // en la app eso parecía sacarte de la sesión (aviso del 15 oct 2026). Se va
+  // siempre al panel; "/?stay=1" (opción "Ir a la portada" del menú) la deja ver.
+  useEffect(() => {
+    if (authLoading || !user) return;
+    try {
+      if (new URLSearchParams(window.location.search).get('stay') === '1') return;
+      const instalada = window.matchMedia('(display-mode: standalone)').matches
+        || (navigator as Navigator & { standalone?: boolean }).standalone === true
+        // App nativa (Capacitor) sin importar su librería en la portada.
+        || !!(window as Window & { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor?.isNativePlatform?.();
+      if (instalada) navigate('/dashboard', { replace: true });
+    } catch { /* sin matchMedia: se queda en la portada */ }
+  }, [user, authLoading, navigate]);
+
   // Login inteligente: si ya estás logueado como ORGANIZADOR, entras directo al
   // feed (es tu experiencia principal). Al profesional NO se le fuerza a ningún
   // sitio: se queda en la landing ligera y decide (botón "Descubrir" al feed, o

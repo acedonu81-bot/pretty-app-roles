@@ -388,7 +388,7 @@ const PublicProfile = () => {
         </Helmet>
         <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ background: '#FFFDF7' }}>
           <p style={{ color: '#4b5563' }}>Perfil no encontrado</p>
-          <button onClick={() => navigate('/')} className="text-sm font-bold" style={{ color: '#8B6A00' }}>
+          <button onClick={() => navigate(authUser ? '/dashboard' : '/')} className="text-sm font-bold py-3" style={{ color: '#8B6A00' }}>
             ← Volver a XPEAK
           </button>
         </div>

@@ -1,4 +1,4 @@
-import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift, Zap, CalendarCheck, User, ExternalLink, Settings, LifeBuoy, Home, ChevronDown } from 'lucide-react';
+import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift, Zap, CalendarCheck, User, ExternalLink, Settings, LifeBuoy, Home, ChevronDown, ArrowLeft } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
@@ -30,9 +30,13 @@ interface TopbarProps {
   userId?: string;
   isEmpresario?: boolean;
   onViewChange?: (view: string) => void;
+  /** En móvil, pantallas secundarias (Ajustes, Estadísticas, un listado...):
+   *  la flecha de volver sustituye al menú. En la app instalada del iPhone no
+   *  hay botón atrás del navegador y no había forma de volver (15 oct 2026). */
+  onBack?: () => void;
 }
 
-const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', onHome, userId, isEmpresario = false, onViewChange }: TopbarProps) => {
+const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', onHome, userId, isEmpresario = false, onViewChange, onBack }: TopbarProps) => {
   const navigate = useNavigate();
   // En móvil el campo de texto competía por ancho con logo, menú, campana y
   // avatar y el placeholder se cortaba a mitad de palabra ("Q" + letra suelta
@@ -200,7 +204,17 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       }}
     >
       <div className="flex items-center gap-3 flex-1 min-w-0">
-        {isMobile && !mobileSearchOpen && (
+        {isMobile && !mobileSearchOpen && onBack && (
+          <button
+            onClick={onBack}
+            aria-label="Volver"
+            className="p-3 rounded-2xl flex-shrink-0 transition-colors"
+            style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}
+          >
+            <ArrowLeft size={20} />
+          </button>
+        )}
+        {isMobile && !mobileSearchOpen && !onBack && (
           <button
             onClick={onMenuToggle}
             aria-label="Abrir menú"
@@ -497,7 +511,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
                   ...(!isEmpresario && userId ? [{ icon: ExternalLink, label: 'Ver mi ficha pública', onClick: () => { setShowUserMenu(false); window.open(`/p/${userId}`, '_blank', 'noopener'); } }] : []),
                   { icon: Settings, label: 'Ajustes', onClick: () => goView('settings') },
                   { icon: LifeBuoy, label: 'Ayuda y soporte', onClick: () => goView('legal-soporte') },
-                  { icon: Home, label: 'Ir a la portada', onClick: () => { setShowUserMenu(false); navigate('/'); } },
+                  { icon: Home, label: 'Ir a la portada', onClick: () => { setShowUserMenu(false); navigate('/?stay=1'); } },
                 ].map(item => (
                   <button key={item.label} type="button" role="menuitem" onClick={item.onClick}
                     className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-black/[0.04]"
