@@ -640,7 +640,10 @@ const PublicProfile = () => {
         </nav>
 
         {/* ═══════════ HERO full-width ═══════════ */}
-        <div className="relative overflow-hidden" style={{ minHeight: '80vw', maxHeight: '92vh' }}>
+        {/* min(80vw, 75vh), aquí y en el contenido: con minHeight 80vw y maxHeight 92vh, en horizontal
+            (iPad 1024x768, escritorio) el mínimo superaba al máximo, ganaba el
+            mínimo y nombre y "Escríbele ahora" quedaban bajo el pliegue. */}
+        <div className="relative overflow-hidden" style={{ minHeight: 'min(80vw, 75vh)' }}>
           {/* Fondo: foto a pantalla completa o gradiente */}
           {profile.photo && profile.photo.trim().length > 5 ? (
             <div className="absolute inset-0 z-0">
@@ -668,7 +671,7 @@ const PublicProfile = () => {
 
           {/* Contenido sobre la foto — anclado abajo */}
           <motion.div className="relative z-10 flex flex-col justify-end px-5 md:px-8 pb-8 md:pb-12"
-            style={{ minHeight: '80vw', maxHeight: '92vh' }}
+            style={{ minHeight: 'min(80vw, 75vh)' }}
             initial="hidden" animate="show" variants={stagger}>
 
             <motion.div variants={fadeUp}>
