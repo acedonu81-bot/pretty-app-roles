@@ -76,71 +76,71 @@ const PortfolioUpload = () => {
   }, [user]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !user) return;
+    const files = Array.from(e.target.files ?? []);
+    if (inputRef.current) inputRef.current.value = '';
+    if (files.length === 0 || !user) return;
 
     if (items.length >= maxItems) {
       toast.error(`Máximo ${maxItems} elementos en tu plan.`);
       return;
     }
 
-    const isVideo = file.type.startsWith('video/');
-    const isImage = file.type.startsWith('image/');
-
-    if (isVideo) {
-      // Este portfolio solo sincroniza portfolio_urls (imágenes). Los vídeos
-      // tienen su propia sección ("Vídeo" en Mi Ficha, VideoSessionUpload en
-      // FichaView.tsx) que sí los guarda en el perfil público — aceptarlos
-      // aquí también los subía a Storage sin persistirlos en ningún sitio
-      // visible, dando la sensación de que "no se guardaba".
-      toast.error('Los vídeos se suben en la sección "Vídeo" de Mi Ficha, no aquí en Fotos.');
-      if (inputRef.current) inputRef.current.value = '';
-      return;
+    // Se pueden elegir varias fotos de golpe: se suben una tras otra hasta
+    // llenar el hueco que queda y se avisa de lo que se ha dejado fuera.
+    const huecos = maxItems - items.length;
+    const aSubir: File[] = [];
+    let videos = 0, noImagen = 0, grandes = 0;
+    for (const file of files) {
+      if (file.type.startsWith('video/')) { videos++; continue; }
+      if (!file.type.startsWith('image/')) { noImagen++; continue; }
+      if (file.size > MAX_IMAGE_MB * 1024 * 1024) { grandes++; continue; }
+      aSubir.push(file);
     }
-
-    if (!isImage) {
-      toast.error('Solo imágenes (JPG, PNG, WEBP)');
-      return;
-    }
-
-    if (file.size > MAX_IMAGE_MB * 1024 * 1024) {
-      toast.error(`Máximo ${MAX_IMAGE_MB}MB por imagen`);
-      return;
-    }
+    // Este portfolio solo sincroniza portfolio_urls (imágenes). Los vídeos
+    // tienen su propia sección ("Vídeo" en Mi Ficha, VideoSessionUpload en
+    // FichaView.tsx) que sí los guarda en el perfil público: aceptarlos aquí
+    // los subía a Storage sin persistirlos en ningún sitio visible.
+    if (videos) toast.error('Los vídeos se suben en la sección "Vídeo" de Mi Ficha, no aquí en Fotos.');
+    if (noImagen) toast.error('Solo imágenes (JPG, PNG, WEBP)');
+    if (grandes) toast.error(`Máximo ${MAX_IMAGE_MB}MB por imagen (${grandes} no se ${grandes === 1 ? 'subió' : 'subieron'})`);
+    if (aSubir.length > huecos) toast.error(`Solo caben ${huecos} más: se suben las ${huecos} primeras.`);
+    const lote = aSubir.slice(0, huecos);
+    if (lote.length === 0) return;
 
     setUploading(true);
-    // Imágenes: compresión a 2560px calidad alta — mantiene calidad de portfolio sin pesar 15MB
-    const toUpload = isImage ? await compressImage(file, 2560, 0.9) : file;
-    const safeName = sanitize(toUpload.name) || 'portfolio-item';
-    const path = `${user.id}/portfolio/${Date.now()}-${safeName}`;
-    const { error } = await supabase.storage.from('audio-sessions').upload(path, toUpload);
-    if (error) {
-      toast.error('Error al subir: ' + error.message);
+    const subidas: PortfolioItem[] = [];
+    let fallos = 0;
+    for (const file of lote) {
+      // Compresión a 2560px calidad alta: mantiene calidad de portfolio sin pesar 15MB
+      const toUpload = await compressImage(file, 2560, 0.9);
+      const safeName = sanitize(toUpload.name) || 'portfolio-item';
+      const path = `${user.id}/portfolio/${Date.now()}-${subidas.length}-${safeName}`;
+      const { error } = await supabase.storage.from('audio-sessions').upload(path, toUpload);
+      if (error) { fallos++; continue; }
+      const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
+      subidas.push({ name: file.name, url: urlData.publicUrl, storagePath: path, isVideo: false });
+    }
+    if (subidas.length === 0) {
       setUploading(false);
+      toast.error('Error al subir las fotos. Inténtalo de nuevo.');
       return;
     }
 
-    const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-    const newItem = { name: file.name, url: urlData.publicUrl, storagePath: path, isVideo };
-    const next = [...items, newItem];
+    const next = [...items, ...subidas];
     // Sync public URLs to portfolio_urls column (images only). Los vídeos de
-    // este portfolio NO se sincronizan a ninguna columna: video_session_urls
-    // ya la gestiona VideoSessionUpload (FichaView.tsx, pestaña "Vídeo",
-    // path Storage distinto video-sessions/) — escribir aquí también
-    // pisaría esas URLs, porque ambos componentes sobrescriben la columna
-    // entera en vez de hacer merge. El vídeo queda en Storage y visible en
-    // este grid del dashboard, pero no aparece en el perfil público hasta
-    // que se resuelva ese conflicto de raíz (unificar en una sola fuente).
+    // este portfolio NO se sincronizan: video_session_urls la gestiona
+    // VideoSessionUpload (FichaView.tsx) y ambos componentes sobrescriben la
+    // columna entera en vez de hacer merge.
     const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
     const { error: syncError } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
     setUploading(false);
     if (syncError) {
-      toast.error('El archivo se subió pero no se pudo añadir a tu perfil. Inténtalo de nuevo.');
+      toast.error('Las fotos se subieron pero no se pudieron añadir a tu perfil. Inténtalo de nuevo.');
       return;
     }
     setItems(next);
-    toast.success('Portfolio actualizado.');
-    if (inputRef.current) inputRef.current.value = '';
+    if (fallos) toast.error(`${fallos} ${fallos === 1 ? 'foto no se pudo subir' : 'fotos no se pudieron subir'}.`);
+    toast.success(subidas.length === 1 ? 'Portfolio actualizado.' : `${subidas.length} fotos añadidas al portfolio.`);
   };
 
   const remove = async (item: PortfolioItem) => {
@@ -241,7 +241,7 @@ const PortfolioUpload = () => {
           style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#8A6D0F', background: 'rgba(212,175,55,0.03)' }}>
           {items.length > 0 ? <Plus size={18} /> : <Upload size={18} />}
           <span className="text-sm font-bold">
-            {uploading ? 'Subiendo...' : items.length > 0 ? 'Añadir foto' : 'Subir portfolio'}
+            {uploading ? 'Subiendo...' : items.length > 0 ? 'Añadir fotos' : 'Subir portfolio'}
           </span>
         </button>
       )}
@@ -250,6 +250,7 @@ const PortfolioUpload = () => {
         ref={inputRef}
         type="file"
         accept="image/jpeg,image/png,image/webp"
+        multiple
         onChange={handleUpload}
         className="hidden"
       />
