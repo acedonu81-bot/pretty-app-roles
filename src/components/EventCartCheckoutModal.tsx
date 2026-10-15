@@ -350,7 +350,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
             </label>
 
             {status === 'error' && (
-              <p className="text-xs mt-3" style={{ color: '#dc2626' }}>{rateLimited ? 'Has enviado varias solicitudes seguidas. Espera unos minutos y vuelve a intentarlo.' : 'Algo ha fallado enviando las solicitudes. Intenta de nuevo o escríbenos a info@xpeak.es'}</p>
+              <p className="text-xs mt-3" style={{ color: '#dc2626' }}>{rateLimited ? 'Has enviado varias solicitudes seguidas. Espera unos minutos y vuelve a intentarlo.' : 'Algo ha fallado enviando las solicitudes. Intenta de nuevo o escríbenos a info@xpeak.site'}</p>
             )}
 
             <button type="submit" disabled={status === 'sending' || items.length === 0}

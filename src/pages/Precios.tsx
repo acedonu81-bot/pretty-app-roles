@@ -163,7 +163,7 @@ export default function Precios() {
 
           <div className="p-8 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
             <p className="text-lg font-black mb-2">¿Aún tienes dudas?</p>
-            <p className="text-xs mb-5" style={{ color: '#374151' }}>Escríbenos a hola@xpeak.es o usa el chat de soporte en el dashboard.</p>
+            <p className="text-xs mb-5" style={{ color: '#374151' }}>Escríbenos a info@xpeak.site o usa el chat de soporte en el dashboard.</p>
             <a href="/auth?mode=register" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Empezar →

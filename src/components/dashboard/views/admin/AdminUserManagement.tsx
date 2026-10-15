@@ -20,7 +20,7 @@ interface DBProfile {
 
 const ACTIONS = [
   { icon: MessageSquare, label: 'Mensajes', hint: 'Recuerda contactar por el chat interno' },
-  { icon: Mail, label: 'Email', hint: 'Abre un correo a info@xpeak.es sobre este usuario' },
+  { icon: Mail, label: 'Email', hint: 'Abre un correo a info@xpeak.site sobre este usuario' },
   { icon: FileEdit, label: 'Ficha', hint: 'Ver su perfil público en una pestaña nueva' },
   { icon: CheckCircle, label: 'Sello Dorado', hint: 'Marca el perfil como verificado' },
   { icon: TrendingUp, label: 'Score +200', hint: 'Empuja el ranking del perfil' },
@@ -93,7 +93,7 @@ const AdminUserManagement = () => {
   };
 
   const contactEmail = (name: string) => {
-    window.open(`mailto:info@xpeak.es?subject=Contacto usuario: ${encodeURIComponent(name)}`);
+    window.open(`mailto:info@xpeak.site?subject=Contacto usuario: ${encodeURIComponent(name)}`);
   };
 
   const boostScore = async (user: DBProfile) => {

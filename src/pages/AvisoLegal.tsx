@@ -26,10 +26,10 @@ const AvisoLegal = () => (
 
       <Section title="1. Datos identificativos del titular">
         <p><span className="font-bold text-[#111]">Denominación:</span> XPEAK</p>
-        <p><span className="font-bold text-[#111]">NIF/CIF:</span> <span style={{ color: '#8B6A00' }}>Pendiente de actualización: contactar: info@xpeak.es</span></p>
+        <p><span className="font-bold text-[#111]">NIF/CIF:</span> <span style={{ color: '#8B6A00' }}>Pendiente de actualización: contactar: info@xpeak.site</span></p>
         <p><span className="font-bold text-[#111]">Domicilio:</span> España</p>
-        <p><span className="font-bold text-[#111]">Email:</span> info@xpeak.es</p>
-        <p><span className="font-bold text-[#111]">Contacto legal:</span> legal@xpeak.es</p>
+        <p><span className="font-bold text-[#111]">Email:</span> info@xpeak.site</p>
+        <p><span className="font-bold text-[#111]">Contacto legal:</span> info@xpeak.site</p>
         <p><span className="font-bold text-[#111]">Web:</span> https://xpeak.es</p>
       </Section>
 
@@ -42,7 +42,7 @@ const AvisoLegal = () => (
       <Section title="3. Propiedad intelectual e industrial">
         <p>El diseño, código fuente, logotipos, marcas y contenidos propios de XPEAK están protegidos por la legislación española e internacional sobre propiedad intelectual e industrial (Real Decreto Legislativo 1/1996, Ley de Marcas 17/2001).</p>
         <p>Los contenidos generados por los usuarios (mezclas, fotografías, vídeos, textos) son responsabilidad exclusiva de quien los publica. XPEAK no asume responsabilidad sobre posibles infracciones de derechos de terceros realizadas por los usuarios.</p>
-        <p>Para notificaciones de infracción de derechos de autor: <span className="font-bold text-[#111]">legal@xpeak.es</span> (procedimiento notice &amp; takedown conforme al art. 14 Dir. 2000/31/CE y Ley 21/2022 de servicios de comunicación audiovisual).</p>
+        <p>Para notificaciones de infracción de derechos de autor: <span className="font-bold text-[#111]">info@xpeak.site</span> (procedimiento notice &amp; takedown conforme al art. 14 Dir. 2000/31/CE y Ley 21/2022 de servicios de comunicación audiovisual).</p>
       </Section>
 
       <Section title="4. Protección de datos personales">
@@ -51,7 +51,7 @@ const AvisoLegal = () => (
         <p>Para más información consulta nuestra{' '}
           <Link to="/privacidad" className="underline font-bold" style={{ color: '#8B6A00' }}>Política de Privacidad</Link>.
         </p>
-        <p><span className="font-bold text-[#111]">Contacto para ejercicio de derechos RGPD:</span> info@xpeak.es</p>
+        <p><span className="font-bold text-[#111]">Contacto para ejercicio de derechos RGPD:</span> info@xpeak.site</p>
       </Section>
 
       <Section title="5. Cookies">

@@ -21,7 +21,7 @@ XPEAK ofrece:
 Reglas:
 - Responde SIEMPRE en español
 - Sé conciso y práctico (máximo 3-4 líneas por respuesta)
-- Si no sabes algo específico, di "Para más detalles escríbenos a info@xpeak.es"
+- Si no sabes algo específico, di "Para más detalles escríbenos a info@xpeak.site"
 - No inventes precios ni funcionalidades que no existen
 - Tono: profesional pero cercano, como de una startup de eventos y tecnología`;
 
@@ -119,7 +119,7 @@ serve(async (req) => {
     }
 
     const data = await res.json();
-    const reply = data.content?.[0]?.text ?? 'Lo siento, no pude generar una respuesta. Escríbenos a info@xpeak.es';
+    const reply = data.content?.[0]?.text ?? 'Lo siento, no pude generar una respuesta. Escríbenos a info@xpeak.site';
 
     return new Response(
       JSON.stringify({ reply }),

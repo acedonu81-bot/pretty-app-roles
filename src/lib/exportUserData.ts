@@ -210,7 +210,7 @@ NOTA LEGAL
 ----------
 Este archivo fue generado automáticamente conforme al Art. 20 del RGPD.
 Para el derecho al olvido (Art. 17): Ajustes > Zona de peligro > Eliminar cuenta.
-Soporte: soporte@xpeak.es
+Soporte: info@xpeak.site
 `;
 
     const zip = new JSZip();

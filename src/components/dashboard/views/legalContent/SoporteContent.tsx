@@ -22,7 +22,7 @@ export function SoporteContent() {
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Email:</span>
-            <a href="mailto:info@xpeak.es" className="font-bold transition-all hover:opacity-80" style={{ color: '#8B6A00' }}>info@xpeak.es</a>
+            <a href="mailto:info@xpeak.site" className="font-bold transition-all hover:opacity-80" style={{ color: '#8B6A00' }}>info@xpeak.site</a>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Web:</span>

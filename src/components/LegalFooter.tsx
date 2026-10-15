@@ -42,9 +42,9 @@ const LegalFooter = () => {
               <p className="text-xs leading-relaxed max-w-[200px]" style={{ color: '#4b5563' }}>
                 Conectamos profesionales de eventos con quienes los necesitan. España.
               </p>
-              <a href="mailto:info@xpeak.es" className="inline-block mt-3 text-xs font-bold transition-colors hover:opacity-80"
+              <a href="mailto:info@xpeak.site" className="inline-block mt-3 text-xs font-bold transition-colors hover:opacity-80"
                 style={{ color: '#8B6A00' }}>
-                info@xpeak.es
+                info@xpeak.site
               </a>
               <div className="flex items-center -mx-3 mt-2">
                 {SOCIAL_LINKS.map(({ label, href, Icon }) =>

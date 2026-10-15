@@ -87,7 +87,7 @@ export function CookiesContent() {
 
       <section>
         <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>6. Contacto</h2>
-        <p>Si tienes dudas sobre nuestra política de cookies, contacta con nosotros en: <span style={{ color: '#8B6A00' }}>info@xpeak.es</span></p>
+        <p>Si tienes dudas sobre nuestra política de cookies, contacta con nosotros en: <span style={{ color: '#8B6A00' }}>info@xpeak.site</span></p>
       </section>
     </div>
   );

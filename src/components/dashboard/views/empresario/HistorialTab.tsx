@@ -446,7 +446,7 @@ const HistorialTab = () => {
 </div>
 
 <div class="footer">
-  XPEAK · Plataforma Profesional de Eventos · xpeak.es · legal@xpeak.es<br>
+  XPEAK · Plataforma Profesional de Eventos · xpeak.es · info@xpeak.site<br>
   Este documento es un modelo orientativo. Se recomienda consultar con un asesor legal para contratos de alto valor.
 </div>
 </body>

@@ -52,7 +52,7 @@ const KB: KBEntry[] = [
   {
     id: 'register',
     patterns: [/registr|crear cuenta|cuenta nueva|sign up|cómo me uno|como me uno|acceder|login|iniciar sesión|contraseña olvidada|password|recuperar.*cuenta/i],
-    answer: 'Para crear tu cuenta en XPEAK:\n\n1. Ve a la pantalla de inicio → **"Entrar"**\n2. Regístrate con **email + contraseña** o con **Google** (un clic)\n3. Elige tu **rol profesional** (DJ, Staff, Makeup, Media…)\n4. Confirma tu email si es por correo\n\n**Si no puedes entrar:**\n• Contraseña incorrecta → usa **"¿Olvidaste tu contraseña?"** en el login\n• No recibes el email → revisa la carpeta de spam\n• Cuenta bloqueada → escribe a soporte@xpeak.es\n\nNo hay verificación manual al registrarse: accedes al instante.',
+    answer: 'Para crear tu cuenta en XPEAK:\n\n1. Ve a la pantalla de inicio → **"Entrar"**\n2. Regístrate con **email + contraseña** o con **Google** (un clic)\n3. Elige tu **rol profesional** (DJ, Staff, Makeup, Media…)\n4. Confirma tu email si es por correo\n\n**Si no puedes entrar:**\n• Contraseña incorrecta → usa **"¿Olvidaste tu contraseña?"** en el login\n• No recibes el email → revisa la carpeta de spam\n• Cuenta bloqueada → escribe a info@xpeak.site\n\nNo hay verificación manual al registrarse: accedes al instante.',
     followUps: ['¿Cómo completo mi perfil?', '¿Puedo cambiar mi rol después?'],
   },
 
@@ -180,7 +180,7 @@ const KB: KBEntry[] = [
   {
     id: 'billing',
     patterns: [/cancelar.*plan|cancelar.*suscripci|reembolso|devoluci|cobro.*incorrecto|método de pago|tarjeta.*pago|cambiar.*tarjeta|factura.*suscripci|stripe/i],
-    answer: 'No se requiere tarjeta de crédito. No hay suscripciones ni cargos periódicos.\n\nSi tienes alguna duda sobre pagos o cobros, escríbenos a **soporte@xpeak.es**: lo aclaramos enseguida.',
+    answer: 'No se requiere tarjeta de crédito. No hay suscripciones ni cargos periódicos.\n\nSi tienes alguna duda sobre pagos o cobros, escríbenos a **info@xpeak.site**: lo aclaramos enseguida.',
     followUps: ['¿Qué incluye la plataforma?', '¿Cómo contacto con soporte?'],
   },
 
@@ -236,7 +236,7 @@ const KB: KBEntry[] = [
   {
     id: 'block',
     patterns: [/bloquear|reportar.*usuario|usuario.*falso|perfil.*falso|spam|acoso|comportamiento.*inapropiado|denunciar/i],
-    answer: 'XPEAK tiene mecanismos para mantener la comunidad profesional.\n\n**Bloquear un usuario:**\n• Entra en su perfil → menú de opciones (tres puntos) → "Bloquear"\n• El usuario bloqueado no puede enviarte mensajes ni ver tu perfil\n\n**Reportar un perfil falso o comportamiento inadecuado:**\n• Desde el perfil del usuario → "Reportar"\n• Selecciona el motivo: perfil falso, spam, contenido inapropiado, acoso\n• El equipo revisa los reportes en 24-48h\n• Tras 3 reportes verificados, la cuenta se suspende automáticamente\n\n**Si recibes un mensaje de acoso:**\nReenvíalo a soporte@xpeak.es con el ID del mensaje: se tramita como caso prioritario.',
+    answer: 'XPEAK tiene mecanismos para mantener la comunidad profesional.\n\n**Bloquear un usuario:**\n• Entra en su perfil → menú de opciones (tres puntos) → "Bloquear"\n• El usuario bloqueado no puede enviarte mensajes ni ver tu perfil\n\n**Reportar un perfil falso o comportamiento inadecuado:**\n• Desde el perfil del usuario → "Reportar"\n• Selecciona el motivo: perfil falso, spam, contenido inapropiado, acoso\n• El equipo revisa los reportes en 24-48h\n• Tras 3 reportes verificados, la cuenta se suspende automáticamente\n\n**Si recibes un mensaje de acoso:**\nReenvíalo a info@xpeak.site con el ID del mensaje: se tramita como caso prioritario.',
     followUps: ['¿Cómo configuro quién puede escribirme?', '¿Cómo contacto con soporte?'],
   },
 
@@ -244,7 +244,7 @@ const KB: KBEntry[] = [
   {
     id: 'gdpr',
     patterns: [/rgpd|gdpr|privacidad.*datos|mis datos|exportar datos|portabilidad|derecho.*olvido|eliminar.*datos|política.*privacidad/i],
-    answer: 'XPEAK cumple con el **RGPD** europeo y la **LOPDGDD** española.\n\n**Tus derechos en XPEAK:**\n• **Acceso**, puedes solicitar qué datos tenemos sobre ti en cualquier momento\n• **Rectificación**, edita tus datos directamente desde Mi Perfil o Ajustes\n• **Supresión ("derecho al olvido")**, elimina tu cuenta desde Ajustes → se borran todos tus datos en 30 días\n• **Portabilidad**, descarga un ZIP con todos tus datos (mensajes, perfil, estadísticas) desde Ajustes → Exportar datos\n• **Oposición al tratamiento**, escribe a privacidad@xpeak.es\n\n**Datos que no almacenamos:**\n• Contraseñas en texto plano (encriptadas con bcrypt)\n\nLa política de privacidad completa está en **xpeak.es/privacidad**.',
+    answer: 'XPEAK cumple con el **RGPD** europeo y la **LOPDGDD** española.\n\n**Tus derechos en XPEAK:**\n• **Acceso**, puedes solicitar qué datos tenemos sobre ti en cualquier momento\n• **Rectificación**, edita tus datos directamente desde Mi Perfil o Ajustes\n• **Supresión ("derecho al olvido")**, elimina tu cuenta desde Ajustes → se borran todos tus datos en 30 días\n• **Portabilidad**, descarga un ZIP con todos tus datos (mensajes, perfil, estadísticas) desde Ajustes → Exportar datos\n• **Oposición al tratamiento**, escribe a info@xpeak.site\n\n**Datos que no almacenamos:**\n• Contraseñas en texto plano (encriptadas con bcrypt)\n\nLa política de privacidad completa está en **xpeak.es/privacidad**.',
     followUps: ['¿Cómo elimino mi cuenta?', '¿Cómo exporto mis datos?'],
   },
 
@@ -260,7 +260,7 @@ const KB: KBEntry[] = [
   {
     id: 'bug',
     patterns: [/no funciona|error.*técnico|error tecnico|bug|pantalla.*blanca|se cuelga|no carga|fallo.*app|problema.*técnico|problema tecnico|lento.*carga/i],
-    answer: 'Pasos para resolver problemas técnicos en XPEAK:\n\n**Paso 1, Soluciones rápidas:**\n• Recarga la página: **Ctrl+R** (Windows) / **Cmd+R** (Mac)\n• Cierra el navegador completamente y vuelve a abrir\n• Prueba en **modo incógnito** (descarta problemas de caché o extensiones)\n\n**Paso 2, Limpieza de caché:**\n• Chrome: Menú → Más herramientas → Borrar datos de navegación → Imágenes y archivos en caché\n• Safari: Preferencias → Avanzado → Mostrar menú Desarrollo → Vaciar cachés\n\n**Paso 3, Si persiste:**\nEscribe a **soporte@xpeak.es** con:\n• Qué acción estabas haciendo\n• Qué mensaje de error aparece (captura de pantalla si es posible)\n• Navegador y versión (Chrome 124, Safari 17…)\n• Dispositivo (Mac, Windows, iPhone, Android)\n\nTiempo de respuesta: 24-48h laborables.',
+    answer: 'Pasos para resolver problemas técnicos en XPEAK:\n\n**Paso 1, Soluciones rápidas:**\n• Recarga la página: **Ctrl+R** (Windows) / **Cmd+R** (Mac)\n• Cierra el navegador completamente y vuelve a abrir\n• Prueba en **modo incógnito** (descarta problemas de caché o extensiones)\n\n**Paso 2, Limpieza de caché:**\n• Chrome: Menú → Más herramientas → Borrar datos de navegación → Imágenes y archivos en caché\n• Safari: Preferencias → Avanzado → Mostrar menú Desarrollo → Vaciar cachés\n\n**Paso 3, Si persiste:**\nEscribe a **info@xpeak.site** con:\n• Qué acción estabas haciendo\n• Qué mensaje de error aparece (captura de pantalla si es posible)\n• Navegador y versión (Chrome 124, Safari 17…)\n• Dispositivo (Mac, Windows, iPhone, Android)\n\nTiempo de respuesta: 24-48h laborables.',
     followUps: ['¿Hay app móvil de XPEAK?', '¿Cómo contacto con soporte?'],
   },
 
@@ -276,7 +276,7 @@ const KB: KBEntry[] = [
   {
     id: 'support',
     patterns: [/soporte|hablar con alguien|hablar con persona|equipo.*xpeak|contactar.*equipo|email soporte|soporte@/i],
-    answer: 'El equipo de XPEAK está disponible por:\n\n**Email:** soporte@xpeak.es\n• Tiempo de respuesta habitual: **24-48h** en días laborables (L-V)\n• Para urgencias relacionadas con eventos en menos de 48h, escribe con asunto **"URGENTE, [descripción breve]"**, se priorizan\n\n**Qué incluir en tu email para resolución más rápida:**\n• Tu nombre de usuario o email de cuenta\n• Descripción clara del problema o pregunta\n• Capturas de pantalla si hay un error visual\n• Plataforma (web / iPhone / Android)\n\n**Para reportes de usuarios:** usa la función de reporte dentro de la plataforma o envía el perfil del usuario al email.',
+    answer: 'El equipo de XPEAK está disponible por:\n\n**Email:** info@xpeak.site\n• Tiempo de respuesta habitual: **24-48h** en días laborables (L-V)\n• Para urgencias relacionadas con eventos en menos de 48h, escribe con asunto **"URGENTE, [descripción breve]"**, se priorizan\n\n**Qué incluir en tu email para resolución más rápida:**\n• Tu nombre de usuario o email de cuenta\n• Descripción clara del problema o pregunta\n• Capturas de pantalla si hay un error visual\n• Plataforma (web / iPhone / Android)\n\n**Para reportes de usuarios:** usa la función de reporte dentro de la plataforma o envía el perfil del usuario al email.',
     followUps: ['¿Hay soporte en fin de semana?', '¿Qué tipo de problemas resolvéis?'],
   },
 
@@ -529,7 +529,7 @@ const SupportChat = () => {
         throw new Error('AI unavailable');
       }
 
-      pushBot(data.reply ?? 'Lo siento, no pude procesar tu consulta. Escríbenos a info@xpeak.es');
+      pushBot(data.reply ?? 'Lo siento, no pude procesar tu consulta. Escríbenos a info@xpeak.site');
       setNoMatchCount(0);
     } catch {
       setTyping(false);
@@ -537,7 +537,7 @@ const SupportChat = () => {
       setNoMatchCount(newCount);
       if (newCount >= 2) {
         setShowTopics(true);
-        pushBot('No he encontrado una respuesta para eso. Aquí tienes los temas disponibles o escríbenos a **info@xpeak.es**:', ['Ver todos los temas']);
+        pushBot('No he encontrado una respuesta para eso. Aquí tienes los temas disponibles o escríbenos a **info@xpeak.site**:', ['Ver todos los temas']);
       } else {
         pushBot('Mmm, no estoy seguro de entender eso. ¿Puedes reformularlo?', ['Ver todos los temas', '¿Qué es XPEAK?', '¿Cómo puedo contactar con soporte?']);
       }

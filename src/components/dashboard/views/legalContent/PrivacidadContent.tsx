@@ -8,7 +8,7 @@ export function PrivacidadContent() {
     <div className="glass-panel p-6 md:p-8 space-y-6 text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.78)' }}>
       <section>
         <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>1. Responsable del Tratamiento</h2>
-        <p>El responsable del tratamiento de tus datos personales es XPEAK, con domicilio social en España, y correo electrónico de contacto: info@xpeak.es. Los datos se almacenan en servidores seguros gestionados mediante infraestructura cloud (Supabase).</p>
+        <p>El responsable del tratamiento de tus datos personales es XPEAK, con domicilio social en España, y correo electrónico de contacto: info@xpeak.site. Los datos se almacenan en servidores seguros gestionados mediante infraestructura cloud (Supabase).</p>
       </section>
 
       <section>
@@ -55,7 +55,7 @@ export function PrivacidadContent() {
           <li><strong style={{ color: '#222' }}>Hostinger International Ltd. (correo electrónico):</strong> envío de los emails transaccionales de la plataforma (avisos de reservas, mensajes, recordatorios) desde servidores en la Unión Europea.</li>
           <li><strong style={{ color: '#222' }}>Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
         </ul>
-        <p className="mt-2" style={{ color: '#222' }}>Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en info@xpeak.es (RGPD arts. 44-49).</p>
+        <p className="mt-2" style={{ color: '#222' }}>Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en info@xpeak.site (RGPD arts. 44-49).</p>
       </section>
 
       <section>
@@ -69,7 +69,7 @@ export function PrivacidadContent() {
           <li><strong style={{ color: '#222' }}>Limitación del tratamiento (Art. 18)</strong>: solicitar que suspendamos el tratamiento mientras se resuelve una impugnación.</li>
           <li><strong style={{ color: '#222' }}>Oposición (Art. 21)</strong>: oponerte al tratamiento basado en interés legítimo, incluyendo elaboración de perfiles con fines de marketing directo.</li>
         </ul>
-        <p className="text-sm mt-3" style={{ color: '#222' }}>Para ejercer cualquiera de estos derechos envía un correo a <span style={{ color: '#8B6A00' }}>info@xpeak.es</span> con una copia de tu DNI o documento equivalente. Responderemos en el plazo máximo de <strong>30 días naturales</strong> (RGPD Art. 12.3).</p>
+        <p className="text-sm mt-3" style={{ color: '#222' }}>Para ejercer cualquiera de estos derechos envía un correo a <span style={{ color: '#8B6A00' }}>info@xpeak.site</span> con una copia de tu DNI o documento equivalente. Responderemos en el plazo máximo de <strong>30 días naturales</strong> (RGPD Art. 12.3).</p>
       </section>
 
       <section>

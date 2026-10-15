@@ -40,7 +40,7 @@ export function TerminosContent() {
           <li>XPEAK actúa exclusivamente como prestador de servicios de alojamiento (<em>hosting</em>) conforme al art. 14 de la Directiva 2000/31/CE y al art. 17 de la Directiva (UE) 2019/790, y <strong style={{ color: '#111' }}>no adquiere responsabilidad alguna</strong> sobre las infracciones cometidas por los usuarios, siempre que actúe con diligencia en la retirada de contenidos infractores una vez notificada.</li>
         </ul>
         <p className="mt-3 mb-2"><strong style={{ color: '#111' }}>Indemnización.</strong> El usuario se compromete a <strong style={{ color: '#111' }}>mantener indemne a XPEAK</strong>, sus administradores, empleados y colaboradores frente a cualquier reclamación, demanda, sanción, coste o gasto (incluidos honorarios de abogado) derivados de: (i) el incumplimiento por el usuario de las declaraciones contenidas en esta cláusula; (ii) cualquier infracción de derechos de propiedad intelectual cometida mediante el contenido subido por el usuario; o (iii) cualquier reclamación de un tercero titular de derechos sobre dicho contenido.</p>
-        <p className="mt-2">XPEAK dispone de un procedimiento de notificación y retirada de contenidos infractores (<em>notice and takedown</em>). Las solicitudes deben enviarse a <span style={{ color: '#8B6A00' }}>legal@xpeak.es</span> indicando el contenido infractor, la titularidad acreditada y los datos de contacto del solicitante. XPEAK procederá a la retirada cautelar en un plazo razonable desde la recepción de la notificación.</p>
+        <p className="mt-2">XPEAK dispone de un procedimiento de notificación y retirada de contenidos infractores (<em>notice and takedown</em>). Las solicitudes deben enviarse a <span style={{ color: '#8B6A00' }}>info@xpeak.site</span> indicando el contenido infractor, la titularidad acreditada y los datos de contacto del solicitante. XPEAK procederá a la retirada cautelar en un plazo razonable desde la recepción de la notificación.</p>
       </section>
 
       <section>
@@ -74,7 +74,7 @@ export function TerminosContent() {
           <li><strong style={{ color: '#111' }}>Rectificación</strong> de datos inexactos o incompletos.</li>
           <li><strong style={{ color: '#111' }}>Supresión</strong> ("derecho al olvido") mediante la función "Eliminar cuenta" disponible en Ajustes.</li>
           <li><strong style={{ color: '#111' }}>Portabilidad</strong> mediante la función "Exportar mis datos" disponible en Ajustes (formato JSON).</li>
-          <li><strong style={{ color: '#111' }}>Oposición</strong> y <strong style={{ color: '#111' }}>limitación del tratamiento</strong>, dirigiéndose a <span style={{ color: '#8B6A00' }}>legal@xpeak.es</span>.</li>
+          <li><strong style={{ color: '#111' }}>Oposición</strong> y <strong style={{ color: '#111' }}>limitación del tratamiento</strong>, dirigiéndose a <span style={{ color: '#8B6A00' }}>info@xpeak.site</span>.</li>
         </ul>
         <p className="mt-2">Puede presentar reclamación ante la Agencia Española de Protección de Datos (AEPD) en <em>www.aepd.es</em>.</p>
       </section>
@@ -151,8 +151,8 @@ export function TerminosContent() {
 
       <section>
         <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>Contacto</h2>
-        <p>Consultas generales: <span style={{ color: '#8B6A00' }}>info@xpeak.es</span></p>
-        <p className="mt-1">Asuntos legales y protección de datos: <span style={{ color: '#8B6A00' }}>legal@xpeak.es</span></p>
+        <p>Consultas generales: <span style={{ color: '#8B6A00' }}>info@xpeak.site</span></p>
+        <p className="mt-1">Asuntos legales y protección de datos: <span style={{ color: '#8B6A00' }}>info@xpeak.site</span></p>
       </section>
     </div>
   );

@@ -210,7 +210,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
             </div>
 
             {status === 'error' && (
-              <p className="text-xs mt-3" style={{ color: '#dc2626' }}>Algo ha fallado. Intenta de nuevo o escríbenos a info@xpeak.es</p>
+              <p className="text-xs mt-3" style={{ color: '#dc2626' }}>Algo ha fallado. Intenta de nuevo o escríbenos a info@xpeak.site</p>
             )}
 
             <button type="submit" disabled={status === 'sending'}

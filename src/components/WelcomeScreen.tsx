@@ -65,7 +65,7 @@ const welcomeMessages: Record<string, { icon: any; title: string; subject: strin
     icon: Building2,
     title: 'Empresario',
     subject: 'El talento que necesitas está aquí.',
-    body: 'Ya puedes explorar el directorio nacional. Filtra por categoría y provincia para encontrar al profesional ideal. El trato es directo entre tú y el talento. Reporta cualquier duda a info@xpeak.es.',
+    body: 'Ya puedes explorar el directorio nacional. Filtra por categoría y provincia para encontrar al profesional ideal. El trato es directo entre tú y el talento. Reporta cualquier duda a info@xpeak.site.',
   },
 };
 
@@ -99,7 +99,7 @@ const WelcomeScreen = ({ role, displayName, onClose }: WelcomeScreenProps) => {
 
         <p className="text-[0.75rem] text-muted-foreground mb-4">
           📧 Se ha enviado una copia de este mensaje a tu correo electrónico.<br />
-          Firmado por <strong>Equipo XPEAK</strong> · info@xpeak.es
+          Firmado por <strong>Equipo XPEAK</strong> · info@xpeak.site
         </p>
 
         <button onClick={onClose}
