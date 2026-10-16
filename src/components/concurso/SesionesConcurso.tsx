@@ -5,6 +5,7 @@ import { concursoActivo } from '@/lib/concursoMadrid';
 import LikeButton from '@/components/LikeButton';
 import { Play } from 'lucide-react';
 import { useReproductorConcurso } from '@/components/concurso/ReproductorConcurso';
+import { pistaSoundcloudExiste } from '@/lib/soundcloudEnlace';
 import { HZ, TONES, clay, clayButton, clayInset } from '@/components/healthy-zone/clay';
 
 /**
@@ -41,8 +42,26 @@ const sb = supabase as unknown as {
 function Reproductor({ url, titulo }: { url: string; titulo: string }) {
   const { sesion, sonando, reproducir } = useReproductorConcurso();
   const esta = sesion?.url === url;
+  const [noDisponible, setNoDisponible] = useState(false);
+  const escuchar = async () => {
+    // Si SoundCloud ya no encuentra la pista (borrada o privada) se avisa aquí,
+    // en vez de abrir la barra con un error en inglés.
+    if (!(await pistaSoundcloudExiste(url))) { setNoDisponible(true); return; }
+    setNoDisponible(false);
+    reproducir({ url, titulo });
+  };
+  if (noDisponible) {
+    return (
+      <div className="w-full min-h-[120px] rounded-xl flex flex-col justify-center px-4 py-3" style={{ background: '#ffffff' }}>
+        <span className="block text-base" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>Esta sesión no está disponible</span>
+        <span className="block text-xs mt-0.5" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>
+          SoundCloud no la encuentra: puede estar borrada o en privado. Avisa al DJ para que la vuelva a poner pública.
+        </span>
+      </div>
+    );
+  }
   return (
-    <button type="button" onClick={() => reproducir({ url, titulo })} aria-label={`Escuchar: ${titulo}`}
+    <button type="button" onClick={escuchar} aria-label={`Escuchar: ${titulo}`}
       className="w-full h-[120px] rounded-xl flex items-center gap-4 px-4 text-left transition-transform active:scale-[0.99]"
       style={{ background: '#ffffff' }}>
       <span className="w-14 h-14 shrink-0 rounded-full flex items-center justify-center"

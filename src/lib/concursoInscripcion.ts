@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logEvent } from '@/lib/track';
-import { leerEnlaceSoundcloud } from '@/lib/soundcloudEnlace';
+import { leerEnlaceSoundcloud, pistaSoundcloudExiste } from '@/lib/soundcloudEnlace';
 
 /**
  * Inscripción al Concurso DJ XPEAK Madrid, compartida por el formulario de la
@@ -37,6 +37,11 @@ export async function inscribirSesion(userId: string, texto: string, origen: str
       return { ok: false, mensaje: 'No hemos podido abrir ese enlace. Abre tu sesión en soundcloud.com desde el navegador y copia la dirección de arriba.' };
     }
     limpia = larga;
+  }
+  // La pista tiene que existir y ser pública: una privada o borrada se inscribía y
+  // luego sonaba "enlace no válido" a todo el que la abría (17 oct 2026).
+  if (!(await pistaSoundcloudExiste(limpia))) {
+    return { ok: false, mensaje: 'SoundCloud no encuentra esa sesión. Comprueba que está en público (no privada) y que has copiado bien el enlace.' };
   }
   const { error } = await sb.from('concurso_inscripciones').insert({
     concurso: CONCURSO, user_id: userId, soundcloud_url: limpia, acepta_bases: true,

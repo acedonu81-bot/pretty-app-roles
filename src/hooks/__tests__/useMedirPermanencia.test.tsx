@@ -23,10 +23,12 @@ describe('useMedirPermanencia', () => {
 
   it('manda "sigue" en cada hito mientras la página está visible', () => {
     render(<Pagina />);
+    // Hitos a 1, 2, 3, 5, 10... s (los de 1-3 s se añadieron el 16 oct 2026).
     vi.advanceTimersByTime(5000);
     expect(track).toHaveBeenCalledWith('auth_sigue', expect.objectContaining({ seg: 5, cookies: 'pendiente', toques: 0 }));
+    expect(track.mock.calls.filter(c => c[0] === 'auth_sigue')).toHaveLength(4);
     vi.advanceTimersByTime(5000);
-    expect(track.mock.calls.filter(c => c[0] === 'auth_sigue')).toHaveLength(2);
+    expect(track.mock.calls.filter(c => c[0] === 'auth_sigue')).toHaveLength(5);
   });
 
   it('registra qué se toca sin guardar lo escrito', () => {

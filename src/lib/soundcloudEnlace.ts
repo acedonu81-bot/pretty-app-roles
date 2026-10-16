@@ -23,3 +23,19 @@ export function leerEnlaceSoundcloud(texto: string): EnlaceSoundcloud | null {
   if (partes.length < 2) return null;
   return { tipo: 'largo', url: `https://soundcloud.com/${partes.join('/')}` };
 }
+
+/**
+ * ¿SoundCloud encuentra esta pista? (oEmbed responde 404/403 si está borrada,
+ * es privada o la dirección está mal). Devuelve false solo en esos casos; ante
+ * un fallo de red devuelve true para no bloquear a nadie por eso. El widget de
+ * SoundCloud, en cambio, enseña "You have not provided a valid SoundCloud URL"
+ * (17 oct 2026, sesión de un aspirante del concurso).
+ */
+export async function pistaSoundcloudExiste(url: string): Promise<boolean> {
+  try {
+    const res = await fetch(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(url)}`);
+    return !(res.status === 404 || res.status === 403);
+  } catch {
+    return true;
+  }
+}
