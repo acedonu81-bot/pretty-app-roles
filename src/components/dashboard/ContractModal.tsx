@@ -24,7 +24,11 @@ export interface ContractPrefill {
 /** Lo que se guardó, para quien abre el modal (el chat lo usa para proponer el acuerdo). */
 export interface ContratoGuardado { ref: string; nombreEvento: string; fechaEvento: string; precioNeto: string }
 
-interface Props { professional: Profile; onClose: () => void; onSaved?: (c: ContratoGuardado) => void; prefill?: ContractPrefill; }
+interface Props {
+  professional: Profile; onClose: () => void; onSaved?: (c: ContratoGuardado) => void; prefill?: ContractPrefill;
+  /** Contrato opcional de un acuerdo ya cerrado en el chat: el calendario y los avisos ya los hizo la reserva (no se duplican). */
+  acuerdoCerrado?: boolean;
+}
 
 const ROLE_SERVICE: Record<string, string> = {
   dj:        'sesión de DJ y actuación musical en directo',
@@ -56,7 +60,7 @@ const EVENT_TYPES = [
 const todayStr = () => new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const contractRef = () => `XPEAK-${Date.now().toString(36).toUpperCase().slice(-6)}`;
 
-const ContractModal = ({ professional, onClose, onSaved, prefill }: Props) => {
+const ContractModal = ({ professional, onClose, onSaved, prefill, acuerdoCerrado = false }: Props) => {
   const { user } = useAuth();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [tipoEvento, setTipoEvento] = useState('club');
@@ -672,7 +676,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
     // mismo criterio que al aceptar un Flash Booking (SolicitudesTab.tsx):
     // se añade solo al calendario del profesional y dispara "Nuevo trabajo"
     // si lo tiene activado. Aplica a cualquier rol, no solo bolos de música.
-    if (professional.userId && form.fechaEvento) {
+    if (professional.userId && form.fechaEvento && !acuerdoCerrado) {
       supabase.from('calendar_events').insert({
         user_id: professional.userId,
         title: form.contratanteNombre ? `Trabajo: ${form.contratanteNombre}` : 'Trabajo confirmado',
@@ -707,7 +711,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
     // Avisa al profesional de que existe un contrato con su nombre — el
     // generador no le pide firma dentro de la plataforma, así que sin este
     // email podría no enterarse nunca de que se generó.
-    if (professional.userId) {
+    if (professional.userId && !acuerdoCerrado) {
       supabase.functions.invoke('send-email', {
         body: {
           type: 'contract_generated',

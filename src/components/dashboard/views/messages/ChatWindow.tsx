@@ -60,7 +60,7 @@ interface Props {
   profesionalAcuerdo?: { userId: string; name: string; role: string } | null;
   /** Reserva creada por cada mensaje que cerró un acuerdo (id del mensaje → reserva). */
   reservasAcuerdo?: Record<string, ReservaAcuerdo>;
-  onCancelarAcuerdo?: (reservaId: string) => void;
+  onCancelarAcuerdo?: (reservaId: string, motivo: string) => void;
   onValorarAcuerdo?: () => void;
   /** El profesional acepta el contrato propuesto en el chat. */
   onAceptarAcuerdo?: (ref: string) => void;
@@ -414,6 +414,7 @@ const ChatWindow = ({
                 direccionLocal: contrato?.ciudad ?? '',
                 precioNeto: contrato?.precio ?? '',
               }}
+              acuerdoCerrado
               onClose={() => setContrato(false)} onSaved={() => setContrato(false)} />
           </Suspense>
         )}

@@ -363,12 +363,27 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   };
 
   const navigate = useNavigate();
-  const cancelarAcuerdo = async (reservaId: string) => {
+  const cancelarAcuerdo = async (reservaId: string, motivo = '') => {
     const { error } = await (supabase.rpc as unknown as (f: string, a: Record<string, unknown>) => Promise<{ error: { message: string } | null }>)(
       'cancelar_acuerdo_chat', { p_booking_id: reservaId },
     );
     if (error) { toast.error('No se pudo cancelar el acuerdo. Inténtalo de nuevo.'); return; }
     toast.success(`Acuerdo cancelado. Se ha avisado a ${activeOtherName || 'la otra parte'}.`);
+    const reserva = Object.values(reservasAcuerdo).find(r => r.id === reservaId);
+    // El motivo (opcional) va como mensaje normal tras el aviso de cancelación.
+    if (motivo) void sendMessage(`Motivo de la cancelación: ${motivo}`);
+    // Email a la otra parte con el motivo (la función comprueba que el acuerdo
+    // esté cancelado y que quien lo pide sea una de las dos partes).
+    if (activeOtherUserId) {
+      supabase.functions.invoke('send-email', {
+        body: { type: 'acuerdo_cancelado', data: {
+          user_id: activeOtherUserId, booking_id: reservaId,
+          sender_name: myDisplayName?.trim() || 'Tu contacto',
+          event_date: reserva?.fecha ? reserva.fecha.split('-').reverse().join('/') : undefined,
+          motivo: motivo || undefined,
+        } },
+      }).catch((err: unknown) => console.warn('[MessagesView] email de cancelación:', err));
+    }
     void cargarReservas();
     if (activeConvId) void loadMessages(activeConvId);
   };

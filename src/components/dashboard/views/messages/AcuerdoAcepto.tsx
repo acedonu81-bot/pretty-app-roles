@@ -53,6 +53,13 @@ export const FormCondiciones = ({ inicial, otroNombre, onEnviar, onCancelar, env
   );
 };
 
+export const MOTIVOS_CANCELACION = [
+  'No puedo en esa fecha',
+  'Ha cambiado el plan del evento',
+  'Hemos acordado otra cosa',
+  'Otro motivo',
+];
+
 export interface ReservaAcuerdo { id: string; status: string; fecha: string | null }
 
 const diasHasta = (fechaIso: string) => {
@@ -67,9 +74,10 @@ export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, pendienteAct
   resumen: string; isMe: boolean; otroNombre: string; cerrado: boolean; pendienteActual: boolean;
   reserva?: ReservaAcuerdo | null;
   onProponerOtras?: (c: Condiciones | null) => void; onContrato?: (c: Condiciones | null) => void;
-  onNuevoAcuerdo?: () => void; onCancelar?: (reservaId: string) => void; onValorar?: () => void;
+  onNuevoAcuerdo?: () => void; onCancelar?: (reservaId: string, motivo: string) => void; onValorar?: () => void;
 }) => {
   const [confirmando, setConfirmando] = useState(false);
+  const [motivo, setMotivo] = useState('');
   const cond = leerCondiciones(resumen);
   const texto = textoCondiciones(cond);
   const quien = otroNombre || 'La otra parte';
@@ -112,8 +120,13 @@ export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, pendienteAct
           {onCancelar && reserva && !pasado && (confirmando ? (
             <div className="mt-2 p-2 rounded-xl" style={{ background: '#fff', border: '1px solid rgba(220,38,38,0.3)' }}>
               <p className="text-xs font-bold" style={{ color: '#991b1b' }}>¿Cancelar el acuerdo? Se avisará a {quien}.</p>
+              <select value={motivo} onChange={e => setMotivo(e.target.value)} aria-label="Motivo de la cancelación"
+                className="mt-1.5 w-full px-2 py-1.5 rounded-lg text-base sm:text-xs outline-none" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.15)', color: '#111' }}>
+                <option value="">Motivo (opcional)</option>
+                {MOTIVOS_CANCELACION.map(m => <option key={m} value={m}>{m}</option>)}
+              </select>
               <div className="flex gap-2 mt-1.5">
-                <button type="button" onClick={() => { setConfirmando(false); onCancelar(reserva.id); }}
+                <button type="button" onClick={() => { setConfirmando(false); onCancelar(reserva.id, motivo); }}
                   className="px-3 py-1.5 rounded-full text-xs font-black" style={{ background: '#dc2626', color: '#fff' }}>Sí, cancelar</button>
                 <button type="button" onClick={() => setConfirmando(false)}
                   className="px-3 py-1.5 rounded-full text-xs font-bold" style={{ color: '#444' }}>No</button>

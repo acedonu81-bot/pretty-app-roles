@@ -1534,6 +1534,27 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>`),
   }),
 
+  // 13b-bis. Acuerdo del chat cancelado por la otra parte
+  acuerdo_cancelado: (d) => ({
+    subject: `${esc(d.sender_name ?? 'Tu contacto')} ha cancelado el acuerdo en XPEAK`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 8px;text-align:center;color:#0a0908">Acuerdo cancelado</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px;text-align:center">
+        <strong style="color:#D4AF37">${esc(d.sender_name ?? 'Tu contacto')}</strong> ha cancelado vuestro acuerdo. El evento se ha quitado de tu calendario.
+      </p>
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:18px;margin:0 0 20px">
+        ${rows([
+          ['Fecha del evento', d.event_date ?? '—'],
+          ['Motivo', d.motivo ?? 'Sin indicar'],
+        ])}
+      </div>
+      ${btn('Abrir el chat →', 'https://xpeak.es/dashboard?view=messages')}
+      <p style="color:#6B7280;font-size:12px;margin-top:20px;text-align:center">
+        Puedes escribirle por el chat de XPEAK o buscar otro profesional en el directorio.
+      </p>`),
+  }),
+
   // 13c. Mensaje sin responder pasadas ~24h — segundo aviso, más directo
   unread_message_reminder: (d) => ({
     subject: `Aún no has respondido a ${esc(d.sender_name)} en XPEAK`,
@@ -1897,7 +1918,7 @@ async function atender(req: Request): Promise<Response> {
       // navegador. Solo los envíos internos pueden seguir usándola.
       const PUBLIC_TYPES = ['contact_form', 'flash_booking', 'flash_booking_confirm', 'booking_received', 'lead_welcome', 'new_review_pending'];
       // Avisos lanzados desde el dashboard con sesion iniciada.
-      const LOGGED_TYPES = ['concurso_inscripcion', 'booking_status_update', 'contract_generated', 'bolo_new_confirmation', 'fast_responder_badge', 'flash_job_nuevo', 'new_message', 'subscription_cancelled', 'verification_request'];
+      const LOGGED_TYPES = ['concurso_inscripcion', 'booking_status_update', 'contract_generated', 'bolo_new_confirmation', 'fast_responder_badge', 'flash_job_nuevo', 'new_message', 'acuerdo_cancelado', 'subscription_cancelled', 'verification_request'];
       const ADMIN_TYPES = ['admin_approved', 'admin_rejected', 'concurso_aceptada'];
       const allowed = PUBLIC_TYPES.includes(type)
         || (callerRole === 'authenticated' && LOGGED_TYPES.includes(type))
@@ -1968,6 +1989,18 @@ async function atender(req: Request): Promise<Response> {
         const { count } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
           .eq('professional_user_id', data.professional_user_id).gte('created_at', hace15min);
         if (!count) return prohibido('sin reserva reciente');
+        delete data.email;
+      } else if (type === 'acuerdo_cancelado') {
+        // Solo a la otra parte de un acuerdo del chat que está cancelado, y solo
+        // lo puede pedir una de las dos partes (16 oct 2026). El destino sale del
+        // user_id, nunca de un email escrito por el navegador.
+        const otro = String(data.user_id ?? '');
+        // Solo un UUID: se interpola en el filtro de abajo.
+        if (!callerId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(otro)) return prohibido('sin destinatario');
+        const { count } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
+          .eq('source', 'chat').eq('status', 'cancelled').not('chat_message_id', 'is', null)
+          .or(`and(created_by.eq.${callerId},professional_user_id.eq.${otro}),and(created_by.eq.${otro},professional_user_id.eq.${callerId})`);
+        if (!count) return prohibido('sin acuerdo cancelado que lo respalde');
         delete data.email;
       } else if (data.professional_user_id || data.user_id) {
         // Avisos a un usuario concreto: el destino sale SIEMPRE de su user_id.
@@ -2049,6 +2082,19 @@ async function atender(req: Request): Promise<Response> {
         sent_at: new Date().toISOString(),
       });
       if (reservaResp) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+    }
+
+    // Acuerdo cancelado: un email por acuerdo (un doble clic no lo repite).
+    if (type === 'acuerdo_cancelado' && data?.booking_id && data?.user_id) {
+      const dedupeCanc = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+      const { error: reservaCanc } = await dedupeCanc.from('email_logs' as any).insert({
+        user_id: data.user_id,
+        type: `acuerdo_cancelado_${data.booking_id}`,
+        sent_at: new Date().toISOString(),
+      });
+      if (reservaCanc) {
         return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
     }
