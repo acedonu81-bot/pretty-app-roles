@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogTopCTA from '@/components/BlogTopCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -73,6 +74,7 @@ export default function BlogDJEmpresa() {
         </nav>
         <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
+          <BlogTopCTA href="/contratar-dj" label="Ver DJs →" text="¿Organizas un evento de empresa? Mira DJs verificados con tarifa pública" highlight role="dj_empresa" articlePath="/blog/dj-empresa-precio" />
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · Empresas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para eventos de empresa: precio y cómo contratar en 2026</h1>

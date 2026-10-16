@@ -10,6 +10,8 @@ import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAuthor from '@/components/BlogAuthor';
 import BlogTopCTA from '@/components/BlogTopCTA';
+import ConcursoAuthBanner from '@/components/ConcursoAuthBanner';
+import { trackBlogCtaClick } from '@/lib/blogAnalytics';
 
 const TABLE = [
   { perfil: 'DJ emergente / rookie', experiencia: '< 1 año', rango: '30€-60€/h', nota: 'Bodas pequeñas, cumpleaños' },
@@ -109,7 +111,22 @@ const faqStructured = {
 
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-5xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
         <article className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
-            <BlogTopCTA href="/auth?mode=register&intent=contratar-dj" label="Ver DJs →" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
+            {/* 16 oct 2026: el botón de arriba era solo para quien contrata y no
+                destacaba; el del camarero (pro, dorado) convierte mejor. Aquí
+                van los dos públicos y, hasta el 2 nov, el concurso de Madrid. */}
+            <BlogTopCTA href="/auth?mode=register&role=dj" label="Crear mi perfil DJ →" text="¿Eres DJ? Publica tu tarifa y que te encuentren directamente" highlight role="dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
+            <ConcursoAuthBanner variante="compacto" onParticipar={() => {
+              trackBlogCtaClick({ component: 'top', role: 'concurso', href: '/auth?mode=register&role=dj', article_path: '/blog/cuanto-cobra-un-dj-en-espana' });
+              try { sessionStorage.setItem('xpeak_volver_a', '/concurso-dj-madrid#inscripcion'); } catch { /* sin almacenamiento */ }
+              window.location.assign('/auth?mode=register&role=dj');
+            }} />
+            <p className="text-xs mb-2" style={{ color: '#3d3d4e' }}>
+              ¿Buscas DJ para tu evento?{' '}
+              <a href="/contratar-dj" className="font-bold underline" style={{ color: '#8B6A00' }}
+                onClick={() => trackBlogCtaClick({ component: 'top', role: 'dj_org', href: '/contratar-dj', article_path: '/blog/cuanto-cobra-un-dj-en-espana' })}>
+                Ver DJs disponibles →
+              </a>
+            </p>
 
           {/* Breadcrumb */}
           <p className="text-xs mb-6 font-bold" style={{ color: '#666' }}>
