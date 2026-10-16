@@ -362,7 +362,10 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     const { error: uploadError } = await supabase.storage.from('message-attachments')
       .upload(ruta, file, { upsert: false, contentType: file.type });
     if (uploadError) { toast.error(esVideo ? 'Error al subir el vídeo' : 'Error al subir la foto'); setUploadingPhoto(false); return; }
-    const ok = await sendMessage('', { tipo: esVideo ? 'video' : 'foto', ruta });
+    // La BD exige texto en todo mensaje (messages_content_length: 1-2000
+    // caracteres): sin él la foto se subía y el mensaje se rechazaba. En el chat
+    // se ve la foto o el vídeo, y "Foto"/"Vídeo" es lo que sale en avisos y lista.
+    const ok = await sendMessage(esVideo ? 'Vídeo' : 'Foto', { tipo: esVideo ? 'video' : 'foto', ruta });
     // Si el mensaje no se guardó, el archivo no lo vería nadie: se borra.
     if (!ok) await supabase.storage.from('message-attachments').remove([ruta]);
     setUploadingPhoto(false);
