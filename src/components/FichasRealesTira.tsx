@@ -41,10 +41,13 @@ const MAX_MUSICA = 6;
 // Solo perfiles completos con foto y oficio conocido (canonicalRole devuelve
 // tal cual un rol desconocido como 'pending'), en el orden y la rotación
 // diaria del directorio.
-export function elegirFichas(filas: FichaReal[], date = new Date()): FichaReal[] {
+// minCompleteness: en /auth solo perfiles al máximo (foto, bio y media). En el
+// blog (16 oct 2026) basta foto + bio (3): en camareros y azafatas casi nadie
+// tiene sesiones o portfolio y con el máximo la tira no salía nunca.
+export function elegirFichas(filas: FichaReal[], date = new Date(), minCompleteness = COMPLETENESS_MAX): FichaReal[] {
   const completos = filas
     .filter(p => p.photo_url && p.display_name?.trim() && !SIN_OFICIO.has(p.role ?? '')
-      && ROLE_ES[canonicalRole(p.role) ?? ''] && completeness(p) === COMPLETENESS_MAX)
+      && ROLE_ES[canonicalRole(p.role) ?? ''] && completeness(p) >= minCompleteness)
     .sort((a, b) => compararDirectorio(a, b, date));
   const esMusica = (p: FichaReal) => MUSICA.has(canonicalRole(p.role) ?? '');
   const musica = completos.filter(esMusica);
@@ -72,7 +75,9 @@ async function fetchFichasReales(roles?: string[]): Promise<FichaReal[]> {
   if (error) throw error;
   const filas = (data ?? []) as FichaReal[];
   // En el blog solo los oficios del artículo (16 oct 2026).
-  return elegirFichas(roles?.length ? filas.filter(p => roles.includes(canonicalRole(p.role) ?? '')) : filas);
+  return roles?.length
+    ? elegirFichas(filas.filter(p => roles.includes(canonicalRole(p.role) ?? '')), new Date(), 3)
+    : elegirFichas(filas);
 }
 
 // El hueco es casi cuadrado (130x150) y las fotos llegan de todas las formas:
