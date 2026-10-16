@@ -62,7 +62,6 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showEmoji, setShowEmoji] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   // Solo controla la navegación en MÓVIL (lista <-> chat). En desktop ambos se ven siempre.
   const [mobileShowChat, setMobileShowChat] = useState(false);
@@ -249,6 +248,9 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         const msg = payload.new as Message;
         setMessages(prev => {
           if (prev.some(m => m.id === msg.id)) return prev;
+          // Mío y aún provisional: lo sustituye en vez de duplicarlo.
+          const tmp = msg.sender_id === user.id && prev.find(m => m.id.startsWith('tmp-') && m.content === msg.content);
+          if (tmp) return prev.map(m => m === tmp ? msg : m);
           return [...prev, msg];
         });
         // El otro aceptó el contrato que le propusiste: fuegos para ti también.
@@ -291,7 +293,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   // al abrir un chat con acuerdos antiguos no se repiten.
   useEffect(() => {
     const ultimo = messages[messages.length - 1];
-    if (!ultimo || Date.now() - new Date(ultimo.created_at).getTime() > 120_000) return;
+    // El provisional ("tmp-") no: si no, al cambiarse por el guardado salían dos veces.
+    if (!ultimo || ultimo.id.startsWith('tmp-') || Date.now() - new Date(ultimo.created_at).getTime() > 120_000) return;
     if (estadoAcepto(messages).cierres.has(ultimo.id)) {
       celebrar('¡Enhorabuena!', `Acuerdo cerrado con ${activeOtherName || 'tu contacto'}. Queda por escrito en este chat.`, ultimo.id);
     }
@@ -308,6 +311,12 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       if (!clean) { toast.error(reason); return false; }
     }
 
+    // Envío optimista (16 oct 2026): antes se esperaban seis viajes al
+    // servidor en fila (guardar, fecha de la conversación, recargar mensajes,
+    // marcar leídos, recargar la lista) antes de ver el mensaje y vaciar la
+    // caja; en el móvil se notaba lento. Ahora sale al momento, atenuado
+    // ("tmp-"), y se cambia por el guardado en cuanto vuelve; lo demás va en
+    // segundo plano.
     setSending(true);
     const payload: Record<string, unknown> = {
       conversation_id: activeConvId, sender_id: user.id, content: text || '',
@@ -315,13 +324,28 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     if (adjunto?.tipo === 'foto') payload.photo_url = adjunto.ruta;
     if (adjunto?.tipo === 'video') payload.video_url = adjunto.ruta;
 
-    const { error } = await supabase.from('messages').insert(payload as any);
-    if (error) { toast.error('Error al enviar el mensaje'); setSending(false); return false; }
-    await supabase.from('conversations').update({ last_message_at: new Date().toISOString() }).eq('id', activeConvId);
-    setInput('');
-    await loadMessages(activeConvId);
-    await loadConversations();
+    const convId = activeConvId;
+    const tmpId = `tmp-${Date.now()}`;
+    setMessages(prev => [...prev, {
+      id: tmpId, sender_id: user.id, content: text || '', read: false, created_at: new Date().toISOString(),
+      photo_url: (payload.photo_url as string) ?? null, video_url: (payload.video_url as string) ?? null,
+    }]);
+    if (typeof overrideContent !== 'string') setInput('');
+
+    const { data: guardado, error } = await supabase.from('messages').insert(payload as any)
+      .select('id, sender_id, content, photo_url, video_url, read, created_at, deleted_at').single();
+    if (error || !guardado) {
+      setMessages(prev => prev.filter(m => m.id !== tmpId));
+      if (typeof overrideContent !== 'string') setInput(prev => prev || text);
+      toast.error('Error al enviar el mensaje'); setSending(false); return false;
+    }
+    // El aviso en vivo (realtime) puede haber traído ya el guardado.
+    setMessages(prev => prev.some(m => m.id === guardado.id)
+      ? prev.filter(m => m.id !== tmpId)
+      : prev.map(m => m.id === tmpId ? guardado as Message : m));
     setSending(false);
+    void supabase.from('conversations').update({ last_message_at: new Date().toISOString() }).eq('id', convId)
+      .then(() => loadConversations());
     askForPush('mensaje');
     // Notify recipient by 2 channels: in-app notification + email (fire and forget)
     if (activeOtherUserId) {
@@ -331,22 +355,21 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       // Un solo email por ráfaga (16 oct 2026): si ya hay un mensaje mío sin leer
       // en esta conversación, la otra persona ya fue avisada y este no manda
       // otro. El del servidor solo frena 2 minutos entre avisos.
-      let yaAvisado = false;
-      {
+      // En segundo plano: el envío no espera a esta comprobación.
+      const destinatario = activeOtherUserId;
+      void (async () => {
         const { count: sinLeerMios } = await supabase.from('messages')
           .select('id', { count: 'exact', head: true })
-          .eq('conversation_id', activeConvId).eq('sender_id', user.id)
+          .eq('conversation_id', convId).eq('sender_id', user.id)
           .eq('read', false).is('deleted_at', null);
-        yaAvisado = (sinLeerMios ?? 0) > 1; // el recién enviado cuenta como 1
-      }
-      if (!yaAvisado) {
+        if ((sinLeerMios ?? 0) > 1) return; // el recién enviado cuenta como 1
         supabase.functions.invoke('send-email', {
           body: {
             type: 'new_message',
-            data: { user_id: activeOtherUserId, sender_name: senderName },
+            data: { user_id: destinatario, sender_name: senderName },
           },
         });
-      }
+      })();
     }
     return true;
   };
@@ -401,6 +424,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     setActiveOtherName(conv.other_name);
     setActiveOtherUserId(conv.other_user_id);
     setMobileShowChat(true);
+    // Fuera los de la conversación anterior mientras llegan estos.
+    if (conv.id !== activeConvId) setMessages([]);
     await loadMessages(conv.id);
     loadConversations();
   };
@@ -561,8 +586,6 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 activeOtherName={activeOtherName}
                 input={input}
                 setInput={setInput}
-                showEmoji={showEmoji}
-                setShowEmoji={setShowEmoji}
                 sending={sending}
                 uploadingPhoto={uploadingPhoto}
                 bottomRef={bottomRef}

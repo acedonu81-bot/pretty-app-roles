@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { leerAcuerdo, estadoAcepto, REF_ACUERDO } from '@/lib/acuerdoChat';
 import AdjuntoChat from './AdjuntoChat';
-import { Send, Shield, MessageSquare, CheckCheck, Check, Image, Smile, X, ArrowLeft, Trash2, MoreVertical, Flag } from 'lucide-react';
+import { Send, Shield, MessageSquare, CheckCheck, Check, Clock, Image, X, ArrowLeft, Trash2, MoreVertical, Flag } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -13,13 +13,6 @@ interface Message {
   created_at: string;
   deleted_at?: string | null;
 }
-
-const EMOJIS = [
-  '😀','😂','😍','🔥','👍','🙌','💯','🎵','🎶','🎸',
-  '🎤','🎧','🎷','🎺','🎻','🥁','🎹','🎼','🎙','🎚',
-  '🍾','🥂','🎉','🎊','✨','⭐','💫','🌟','🏆','👑',
-  '💎','💰','🤝','✅','❤️','🖤','👀','😎','🔑','🚀',
-];
 
 const avatarGradients = [
   'linear-gradient(135deg,#D4AF37,#B8941E)',
@@ -45,8 +38,6 @@ interface Props {
   activeOtherName: string;
   input: string;
   setInput: (v: string) => void;
-  showEmoji: boolean;
-  setShowEmoji: (v: boolean) => void;
   sending: boolean;
   uploadingPhoto: boolean;
   bottomRef: React.RefObject<HTMLDivElement>;
@@ -74,7 +65,7 @@ const REPORT_REASONS = [
 
 const ChatWindow = ({
   messages, userId, activeOtherName,
-  input, setInput, showEmoji, setShowEmoji,
+  input, setInput,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
   onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, onAcepto, onAceptarAcuerdo,
@@ -89,11 +80,7 @@ const ChatWindow = ({
   const [confirmAction, setConfirmAction] = useState<'delete-chat' | 'block' | null>(null);
   const [reportReason, setReportReason] = useState<string | null>(null);
 
-  const insertEmoji = (emoji: string) => {
-    setInput(input + emoji);
-    setShowEmoji(false);
-    inputRef.current?.focus();
-  };
+
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
@@ -265,7 +252,7 @@ const ChatWindow = ({
                     {activeOtherName.charAt(0).toUpperCase()}
                   </div>
                 )}
-                {isMe && onDeleteMessage && !msg.deleted_at && (
+                {isMe && onDeleteMessage && !msg.deleted_at && !msg.id.startsWith('tmp-') && (
                   <button onClick={() => setConfirmDeleteMsgId(msg.id)}
                     aria-label="Eliminar mensaje"
                     title="Eliminar mensaje"
@@ -338,7 +325,10 @@ const ChatWindow = ({
                     <span className="text-[0.75rem]" style={{ color: '#333' }}>
                       {formatTime(msg.created_at)}
                     </span>
-                    {isMe && (msg.read
+                    {/* tmp-: enviándose (envío optimista de MessagesView). */}
+                    {isMe && (msg.id.startsWith('tmp-')
+                      ? <Clock size={10} style={{ color: '#888' }} aria-label="Enviando" />
+                      : msg.read
                       ? <CheckCheck size={10} style={{ color: '#8A6D0F' }} />
                       : <Check size={10} style={{ color: '#333' }} />)}
                   </div>
@@ -372,40 +362,11 @@ const ChatWindow = ({
 
       {/* Input area. Fina (py-2, botones de 40px) y con los iconos sueltos,
           sin cajita gris: con py-3 y tres cajas de 44px se veía una franja
-          blanca enorme encima de la barra inferior (16 oct 2026). */}
+          blanca enorme encima de la barra inferior (16 oct 2026). Sin botón
+          de emoticonos: el teclado del móvil ya los trae. */}
       <div className="px-2 py-2 flex-shrink-0 relative"
         style={{ borderTop: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
-        {showEmoji && (
-          <div className="absolute bottom-full mb-2 left-3 right-3 rounded-xl p-3 z-20"
-            style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 -4px 24px rgba(0,0,0,0.08)' }}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-black tracking-widest" style={{ color: '#333' }}>EMOTICONOS</span>
-              <button onClick={() => setShowEmoji(false)} className="p-0.5 rounded hover:bg-white/5">
-                <X size={12} className="text-muted-foreground" />
-              </button>
-            </div>
-            <div className="grid grid-cols-8 sm:grid-cols-10 gap-1">
-              {EMOJIS.map(e => (
-                <button key={e} onClick={() => insertEmoji(e)}
-                  className="text-lg rounded-lg p-1.5 transition-all hover:scale-125 hover:bg-white/5 text-center leading-none">
-                  {e}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
         <div className="flex items-center gap-1">
-          <button type="button" onClick={() => setShowEmoji(!showEmoji)}
-            aria-label="Emoticonos" title="Emoticonos"
-            className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90"
-            style={{
-              background: showEmoji ? 'rgba(212,175,55,0.15)' : 'transparent',
-              color: showEmoji ? '#8B6A00' : '#555',
-            }}>
-            <Smile size={22} />
-          </button>
-
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
             aria-label="Enviar foto o vídeo" title="Enviar foto o vídeo"
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90 disabled:opacity-40"
@@ -432,7 +393,6 @@ const ChatWindow = ({
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => {
                 if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSend(); }
-                if (e.key === 'Escape') setShowEmoji(false);
               }}
               placeholder="Escribe un mensaje..."
               maxLength={1000}
