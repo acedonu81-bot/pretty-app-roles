@@ -136,3 +136,30 @@ describe('sanitizeInput', () => {
     expect(containsBlockedContent('what the fucks')).toBe(true);
   });
 });
+
+describe('endurecimiento del 16 oct 2026', () => {
+  const bloquea = (t: string) => expect(sanitizeInput(t).clean).toBe(false);
+  const pasa = (t: string) => expect(sanitizeInput(t).clean).toBe(true);
+
+  it('bloquea insultos con acentos, leet, letras sueltas y repetidas', () => {
+    ['eres un cabrón', 'c4br0n', 'c a b r o n', 'cabroooon', 'hijo de puta', 'hdp', 'vaya mierda', 'joder tío', 'qué coño'].forEach(bloquea);
+  });
+  it('no bloquea palabras parecidas', () => {
+    ['un cono de luz', 'cono sur', 'computadora', 'disputa', 'gracias, un saludo'].forEach(pasa);
+  });
+  it('bloquea cualquier @ y la palabra arroba', () => {
+    ['@juan_dj', 'mi insta es @ juan', 'juan arroba gmail punto com'].forEach(bloquea);
+  });
+  it('no bloquea fechas, horas ni importes', () => {
+    ['El bolo es el 12/12/2026', 'a las 21:30, 350 euros', 'de 22:00 a 04:00, 400 euros', 'somos 150 invitados el 20.12.2026'].forEach(pasa);
+  });
+  it('sigue bloqueando teléfonos que imitan fechas u horas', () => {
+    ['6:12:34:56:78', '6-12-12-2026-55', '612 345 678'].forEach(bloquea);
+  });
+  it('bloquea números en letra con leet, decenas y centenas', () => {
+    ['s3is cer0 un0 d0s tr3s cuatr0 cinc0 s3is s1et3', 'seiscientos doce, treinta y cuatro, cincuenta y seis'].forEach(bloquea);
+  });
+  it('no bloquea cifras en letra normales', () => {
+    ['tengo dos horas y tres amigos, cinco personas, ocho euros', 'doscientos cincuenta euros y quinientos de fianza'].forEach(pasa);
+  });
+});

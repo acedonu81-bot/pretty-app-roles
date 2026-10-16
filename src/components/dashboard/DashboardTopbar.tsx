@@ -5,7 +5,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { isNative } from '@/lib/capacitor';
-import { useDashboardBadges } from '@/hooks/useDashboardBadges';
+import { useDashboardBadges, EVENTO_AVISOS_MENSAJES } from '@/hooks/useDashboardBadges';
 import GigWonPopup from '@/components/GigWonPopup';
 
 interface RealNotif { id: string; type: string; title: string; body: string | null; link: string | null; is_read: boolean; created_at: string; }
@@ -116,7 +116,12 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           () => loadNotifs())
         .subscribe();
     });
-    return () => { if (channel) supabase.removeChannel(channel); };
+    // Al leer una conversación se apagan sus avisos: refrescar la lista.
+    window.addEventListener(EVENTO_AVISOS_MENSAJES, loadNotifs);
+    return () => {
+      window.removeEventListener(EVENTO_AVISOS_MENSAJES, loadNotifs);
+      if (channel) supabase.removeChannel(channel);
+    };
   }, [loadNotifs]);
 
   // Solo mostrar novedades si el perfil tiene menos de 7 días (usuarios nuevos)

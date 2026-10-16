@@ -3,6 +3,7 @@ import type { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
+import { marcarAvisosMensajesLeidos } from '@/hooks/useDashboardBadges';
 import { sanitizeInput } from '@/lib/contentFilter';
 import { conversationPair } from '@/lib/conversationPair';
 import { toast } from 'sonner';
@@ -145,6 +146,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     if (user) {
       await supabase.from('messages').update({ read: true })
         .eq('conversation_id', convId).neq('sender_id', user.id);
+      void marcarAvisosMensajesLeidos(user.id, convId);
     }
   }, [user]);
 
@@ -247,7 +249,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         });
         // Auto-mark incoming messages as read
         if (msg.sender_id !== user.id) {
-          supabase.from('messages').update({ read: true }).eq('id', msg.id);
+          supabase.from('messages').update({ read: true }).eq('id', msg.id)
+            .then(() => { void marcarAvisosMensajesLeidos(user.id, activeConvId); });
           loadConversations();
         }
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -292,7 +295,18 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       const senderName = myDisplayName?.trim() || user.user_metadata?.display_name || 'Un usuario';
       // La notificación in-app se crea en la base de datos al insertar el
       // mensaje; el cliente solo envía el email complementario.
+      // Un solo email por ráfaga (16 oct 2026): si ya hay un mensaje mío sin leer
+      // en esta conversación, la otra persona ya fue avisada y este no manda
+      // otro. El del servidor solo frena 2 minutos entre avisos.
+      let yaAvisado = false;
       if (text) {
+        const { count: sinLeerMios } = await supabase.from('messages')
+          .select('id', { count: 'exact', head: true })
+          .eq('conversation_id', activeConvId).eq('sender_id', user.id)
+          .eq('read', false).is('deleted_at', null);
+        yaAvisado = (sinLeerMios ?? 0) > 1; // el recién enviado cuenta como 1
+      }
+      if (text && !yaAvisado) {
         supabase.functions.invoke('send-email', {
           body: {
             type: 'new_message',

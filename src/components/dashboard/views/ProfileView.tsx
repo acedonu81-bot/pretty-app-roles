@@ -270,7 +270,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
   const handleSave = async (silent = false) => {
     if (!user || saving || profile.loading) return;
-    const toCheck = [localName, bio, rider, instagram].filter(Boolean) as string[];
+    // El campo Instagram admite "@usuario": se quita la @ inicial antes de filtrar
+    // (la @ está bloqueada en cualquier otro texto).
+    const toCheck = [localName, bio, rider, instagram?.replace(/^\s*@/, '')].filter(Boolean) as string[];
     for (const val of toCheck) {
       const { clean, reason } = sanitizeInput(val);
       if (!clean) { toast.error(reason); return; }

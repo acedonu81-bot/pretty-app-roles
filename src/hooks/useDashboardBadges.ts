@@ -49,6 +49,41 @@ export async function marcarOfertasVistas(uid: string): Promise<void> {
   window.dispatchEvent(new Event(EVENTO_OFERTAS_VISTAS));
 }
 
+// Avisos de mensajes en la campana (16 oct 2026): cada mensaje nuevo crea una
+// notificación 'message' sin leer para quien lo recibe, y leerlo en el chat no
+// la tocaba, así que la campana seguía avisando de lo que ya estabas viendo.
+// Al leer una conversación se marcan sus avisos (el título es "<nombre> te ha
+// escrito"); si ya no queda ningún mensaje sin leer, se apagan todos.
+export const EVENTO_AVISOS_MENSAJES = 'xpeak:avisos-mensajes-leidos';
+
+export async function marcarAvisosMensajesLeidos(uid: string, convId: string): Promise<void> {
+  try {
+    const { data: conv } = await supabase.from('conversations')
+      .select('participant_a, participant_b').eq('id', convId).maybeSingle();
+    const otro = conv ? (conv.participant_a === uid ? conv.participant_b : conv.participant_a) : null;
+    if (otro) {
+      const { data: perfil } = await supabase.from('profiles')
+        .select('display_name').eq('user_id', otro).order('is_primary', { ascending: false }).limit(1).maybeSingle();
+      const nombre = perfil?.display_name?.trim() || 'Un usuario';
+      await supabase.from('notifications' as any).update({ is_read: true })
+        .eq('user_id', uid).eq('type', 'message').eq('is_read', false)
+        .eq('title', `${nombre} te ha escrito`);
+    }
+    const { data: convs } = await supabase.from('conversations')
+      .select('id').or(`participant_a.eq.${uid},participant_b.eq.${uid}`).limit(30);
+    const ids = (convs ?? []).map((c: { id: string }) => c.id);
+    const { count } = ids.length
+      ? await supabase.from('messages').select('id', { count: 'exact', head: true })
+        .in('conversation_id', ids).neq('sender_id', uid).eq('read', false)
+      : { count: 0 };
+    if (!count) {
+      await supabase.from('notifications' as any).update({ is_read: true })
+        .eq('user_id', uid).eq('type', 'message').eq('is_read', false);
+    }
+  } catch { /* el aviso se apagará en la siguiente lectura */ }
+  window.dispatchEvent(new Event(EVENTO_AVISOS_MENSAJES));
+}
+
 export function useDashboardBadges(userId: string | undefined, isEmpresario: boolean) {
   const [flashBadge, setFlashBadge] = useState(0);
   const [msgBadge, setMsgBadge] = useState(0);

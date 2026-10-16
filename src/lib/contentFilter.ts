@@ -15,16 +15,22 @@
 
 // ── Spanish digit word map (with common leet variations) ────────────────────
 const WORD_DIGIT_MAP: [RegExp, string][] = [
-  [/\bc[e3]ro\b/gi,          '0'],
-  [/\bun[ao]\b/gi,           '1'],
-  [/\bdos\b/gi,              '2'],
+  [/\bc[e3]r[o0]\b/gi,       '0'],
+  [/\bun[ao0]\b/gi,          '1'],
+  [/\bd[o0]s\b/gi,           '2'],
   [/\btr[e3]s\b/gi,          '3'],
-  [/\bcuatro\b/gi,           '4'],
-  [/\bcinco\b/gi,            '5'],
+  [/\bcuatr[o0]\b/gi,        '4'],
+  [/\bc[i1]nc[o0]\b/gi,      '5'],
   [/\bs[e3][i1]s\b/gi,       '6'],
   [/\bs[i1][e3]t[e3]\b/gi,   '7'],
   [/\b[o0]ch[o0]\b/gi,       '8'],
-  [/\bnueve\b/gi,            '9'],
+  [/\bnu[e3]v[e3]\b/gi,      '9'],
+  // Decenas y centenas (16 oct 2026): "treinta y cuatro" o "seiscientos doce"
+  // pasaban el filtro. No hace falta el valor exacto, solo cuántos dígitos
+  // aportan (2 y 3) para llegar a la longitud de un teléfono.
+  [/\b(?:diez|once|doce|trece|catorce|quince)\b/gi, '00'],
+  [/\b(?:veinte|treinta|cuarenta|cincuenta|sesenta|setenta|ochenta|noventa)(?:\s+y)?\b/gi, '00'],
+  [/\b(?:cien|ciento|doscientos|trescientos|cuatrocientos|quinientos|seiscientos|setecientos|ochocientos|novecientos)\b/gi, '000'],
   // English fallback
   [/\bzero\b/gi,             '0'],
   [/\bone\b/gi,              '1'],
@@ -55,7 +61,13 @@ function wordToDigits(text: string): string {
  * 7+ consecutive digits = suspicious (Spanish phone = 9, with country code = 11–13)
  */
 export function containsPhoneNumber(text: string): boolean {
-  const normalized = wordToDigits(text.toLowerCase());
+  // Fechas y horas no son teléfonos (16 oct 2026): "el 12/12/2026" o "a las
+  // 21:30, 350 euros" se bloqueaban en el chat de cualquier reserva. Solo se
+  // tapan si no tocan otros grupos de dígitos (con ese margen "6:12:34:56:78" o
+  // "6-12-12-2026" siguen contando como número).
+  const normalized = wordToDigits(text.toLowerCase())
+    .replace(/(?<![\d/.\-])(?:0?[1-9]|[12]\d|3[01])[/.\-](?:0?[1-9]|1[0-2])[/.\-]20\d{2}(?![\d/.\-]\d)/g, ' F ')
+    .replace(/(?<![\d:])(?:[01]?\d|2[0-3]):[0-5]\d(?![\d:])/g, ' H ');
 
   // Collapse any separator chars sitting between digits
   // Allowed separators: space, dot, dash, slash, plus, parens, asterisk, underscore, comma, colon
@@ -95,9 +107,39 @@ const PROFANITY_PATTERNS = [
   /\bfucks?\b/i, /\bshits?\b/i, /\bassholes?\b/i, /\bcunts?\b/i,
 ];
 
+// Insultos y palabrotas (16 oct 2026: "cabrón" se podía enviar). Se comprueban
+// sobre el texto normalizado (ver normalizarInsulto): sin acentos salvo la ñ,
+// con las cifras de uso habitual como letras (c4br0n), letras sueltas pegadas
+// ("c a b r o n") y repetidas ("cabroooon"). La ñ se conserva para no tocar
+// "cono" (de luz, helado): "coño" sí.
+const INSULTOS = [
+  /\bcabr[oa]+n(es|a|as)?\b/, /\bhij[oa]s?\s*(de|d)\s*(la\s*)?(gran\s*)?put[ao]s?\b/, /\bhdp\b/, /\bhijueput/,
+  /\bsoplapoll/, /\bchupapoll/, /\bgilipoll/, /\bcapull[oa]s?\b/, /\bmamon(es|a|as)?\b/, /\bzorr[oa]s?\b/,
+  /\bput[ao]s?\b/, /\bjoder\b/, /\bjodete\b/, /\bjoputa/, /\bcoñ[oa]s?\b/, /\bcojones\b/,
+  /\bmierdas?\b/, /\bpollas?\b/, /\bcagon(es|a|as)?\b/, /\bme\s*cago\s*en\b/,
+  /\bimbecil(es)?\b/, /\bidiotas?\b/, /\bsubnormal(es)?\b/, /\bmongol[oa]s?\b/, /\bpendej[oa]s?\b/,
+  /\bhostias?\b/, /\bostias?\b/, /\bfoll(ar|ame|ad[oa]s?)\b/, /\bctm\b/, /\bptm\b/,
+  /\bbitch(es)?\b/, /\bbastards?\b/, /\bdickheads?\b/, /\bmotherfuck/, /\bpussy\b/,
+];
+
+export function normalizarInsulto(text: string): string {
+  let s = text.toLowerCase().replace(/ñ/g, '§').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/§/g, 'ñ');
+  s = s.replace(/[@4]/g, 'a').replace(/3/g, 'e').replace(/[1!|]/g, 'i').replace(/0/g, 'o').replace(/[$5]/g, 's').replace(/7/g, 't');
+  s = s.replace(/\b(?:[a-zñ][\s.\-_*]+){2,}[a-zñ]\b/g, m => m.replace(/[\s.\-_*]+/g, ''));
+  return s.replace(/(.)\1{2,}/g, '$1$1');
+}
+
+export function contieneInsulto(text: string): boolean {
+  const n = normalizarInsulto(text);
+  // "cabroooon" → "cabroon": una sola repetición de la última letra basta
+  const alt = n.replace(/(.)\1+/g, '$1');
+  return INSULTOS.some(p => p.test(n) || p.test(alt));
+}
+
 // ── Contact bypass (platform circumvention) ──────────────────────────────────
 // Note: phone detection is handled separately via containsPhoneNumber()
 const CONTACT_BYPASS_PATTERNS = [
+  /[@＠]/, /\barroba\b/i,                           // cualquier @ (usuarios de Instagram, correos) y "arroba"
   /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i,      // email addresses
   /\bwa\.me\b/i, /\bwhatsapp\.com\b/i,              // WhatsApp links
   /\bt\.me\/\w/i, /\btelegram\.me\b/i,              // Telegram links
@@ -122,6 +164,7 @@ export function containsBlockedContent(text: string): boolean {
   return (
     [...HATE_PATTERNS, ...ADULT_PATTERNS, ...PROFANITY_PATTERNS, ...XSS_PATTERNS]
       .some(p => p.test(text))
+    || contieneInsulto(text)
   );
 }
 
@@ -147,6 +190,7 @@ export function sanitizeInput(text: string, field: 'bio' | 'name' | 'default' = 
   for (const p of PROFANITY_PATTERNS) {
     if (p.test(text)) return { clean: false, reason: 'El texto contiene lenguaje no permitido.' };
   }
+  if (contieneInsulto(text)) return { clean: false, reason: 'El texto contiene lenguaje no permitido.' };
   for (const p of CONTACT_BYPASS_PATTERNS) {
     if (p.test(text)) return { clean: false, reason: 'No compartas datos de contacto aquí. Usa el sistema de mensajes de XPEAK.' };
   }
