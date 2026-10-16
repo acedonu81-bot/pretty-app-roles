@@ -55,6 +55,8 @@ interface Props {
   onDeleteConversation?: () => void;
   onBlockUser?: () => void;
   onReportUser?: (reason: string) => void;
+  /** Barra "Cerrar acuerdo" entre la cabecera y los mensajes. */
+  acuerdoBar?: React.ReactNode;
 }
 
 const REPORT_REASONS = [
@@ -70,7 +72,7 @@ const ChatWindow = ({
   input, setInput, showEmoji, setShowEmoji,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
-  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser,
+  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, acuerdoBar,
 }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hoveredMsgId, setHoveredMsgId] = useState<string | null>(null);
@@ -216,6 +218,7 @@ const ChatWindow = ({
       )}
 
       {/* Messages */}
+      {acuerdoBar}
       <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-2"
         style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.02) 0%, transparent 70%)' }}>
         {messages.length === 0 && (

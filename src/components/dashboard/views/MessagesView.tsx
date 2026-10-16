@@ -9,6 +9,7 @@ import { conversationPair } from '@/lib/conversationPair';
 import { toast } from 'sonner';
 import ConversationList from './messages/ConversationList';
 import ChatWindow, { EmptyChatPlaceholder } from './messages/ChatWindow';
+import AcuerdoChatBar from './messages/AcuerdoChatBar';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { isNative } from '@/lib/capacitor';
 import { RefreshCw } from 'lucide-react';
@@ -49,7 +50,7 @@ interface Message {
 
 const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; initialName?: string }) => {
   const { user } = useAuth();
-  const { display_name: myDisplayName } = useProfile();
+  const { display_name: myDisplayName, role: miRol } = useProfile();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConvId, setActiveConvId] = useState<string | null>(null);
   const [activeOtherName, setActiveOtherName] = useState('');
@@ -504,6 +505,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 }}
                 onBlockUser={() => { if (activeOtherUserId) blockUser(activeOtherUserId); }}
                 onReportUser={reportUser}
+                acuerdoBar={<AcuerdoChatBar otherUserId={activeOtherUserId} otherName={activeOtherName} miRol={miRol} />}
               />
             </div>
           )}
