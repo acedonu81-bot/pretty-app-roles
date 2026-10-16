@@ -9,7 +9,9 @@ import { conversationPair } from '@/lib/conversationPair';
 import { toast } from 'sonner';
 import ConversationList from './messages/ConversationList';
 import ChatWindow, { EmptyChatPlaceholder } from './messages/ChatWindow';
-import { leerAcuerdo, mensajeAceptado, mensajeAcepto, estadoAcepto, vistaPrevia } from '@/lib/acuerdoChat';
+import { leerAcuerdo, leerCondiciones, fechaIso, mensajeAceptado, mensajeAcepto, estadoAcepto, vistaPrevia } from '@/lib/acuerdoChat';
+import type { ReservaAcuerdo } from './messages/AcuerdoAcepto';
+import { useNavigate } from 'react-router-dom';
 import { celebrar } from '@/components/FuegosArtificiales';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { isNative } from '@/lib/capacitor';
@@ -311,11 +313,66 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         void (supabase.rpc as unknown as (f: string, a: Record<string, unknown>) => Promise<{ error: { message: string } | null }>)(
           'cerrar_acuerdo_chat', { p_message_id: ultimo.id },
         ).then(({ error }) => {
-          if (error) console.warn('[MessagesView] cerrar_acuerdo_chat:', error.message);
+          if (error) { console.warn('[MessagesView] cerrar_acuerdo_chat:', error.message); return; }
+          void cargarReservasRef.current();
+          void enviarConfirmacion(ultimo.content);
         });
       }
     }
   }, [messages, activeOtherName]);
+
+  // Estado de la reserva de cada acuerdo cerrado (para la tarjeta verde: fecha,
+  // cancelar, valorar). La puede crear el otro cliente un instante después.
+  const cierresKey = [...estadoAcepto(messages).cierres].filter(i => !i.startsWith('tmp-')).join(',');
+  const [reservasAcuerdo, setReservasAcuerdo] = useState<Record<string, ReservaAcuerdo>>({});
+  const cargarReservas = useCallback(async () => {
+    const ids = cierresKey ? cierresKey.split(',') : [];
+    if (!ids.length) { setReservasAcuerdo({}); return 0; }
+    const { data } = await supabase.from('flash_bookings' as any)
+      .select('id, status, event_date, chat_message_id').in('chat_message_id', ids);
+    const mapa: Record<string, ReservaAcuerdo> = {};
+    for (const r of (data ?? []) as unknown as { id: string; status: string; event_date: string | null; chat_message_id: string }[]) {
+      mapa[r.chat_message_id] = { id: r.id, status: r.status, fecha: /^\d{4}-\d{2}-\d{2}$/.test(r.event_date ?? '') ? r.event_date : null };
+    }
+    setReservasAcuerdo(mapa);
+    return ids.length - Object.keys(mapa).length;
+  }, [cierresKey]);
+  const cargarReservasRef = useRef(cargarReservas);
+  cargarReservasRef.current = cargarReservas;
+  useEffect(() => {
+    let vivo = true; let intentos = 0;
+    const cargar = async () => {
+      const faltan = await cargarReservas();
+      if (vivo && faltan > 0 && intentos++ < 3) window.setTimeout(cargar, 2500);
+    };
+    void cargar();
+    return () => { vivo = false; };
+  }, [cargarReservas]);
+
+  // Email de confirmación a cada parte (el servidor lo manda siempre al correo de
+  // quien llama), solo si tiene activado el aviso de nuevos bolos.
+  const enviarConfirmacion = async (contenido: string) => {
+    if (!user?.email) return;
+    const c = leerCondiciones(leerAcuerdo(contenido)?.resumen ?? '');
+    if (!c) return;
+    const { data: pref } = await supabase.from('alert_preferences' as any).select('nuevos_bolos').eq('user_id', user.id).maybeSingle();
+    if (!(pref as { nuevos_bolos?: boolean } | null)?.nuevos_bolos) return;
+    supabase.functions.invoke('send-email', {
+      body: { type: 'bolo_new_confirmation', data: { email: user.email, title: `Acuerdo con ${activeOtherName || 'tu contacto'}`, date: fechaIso(c.fecha), location: c.ciudad } },
+    }).catch((err: unknown) => console.warn('[MessagesView] confirmación por email:', err));
+  };
+
+  const navigate = useNavigate();
+  const cancelarAcuerdo = async (reservaId: string) => {
+    const { error } = await (supabase.rpc as unknown as (f: string, a: Record<string, unknown>) => Promise<{ error: { message: string } | null }>)(
+      'cancelar_acuerdo_chat', { p_booking_id: reservaId },
+    );
+    if (error) { toast.error('No se pudo cancelar el acuerdo. Inténtalo de nuevo.'); return; }
+    toast.success(`Acuerdo cancelado. Se ha avisado a ${activeOtherName || 'la otra parte'}.`);
+    void cargarReservas();
+    if (activeConvId) void loadMessages(activeConvId);
+  };
+  const valorarAcuerdo = () => navigate(miRol === 'empresario' ? '/dashboard?view=empresario&tab=historial' : '/dashboard?view=flashbooking&tab=solicitudes');
   useEffect(() => () => { if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current); }, []);
 
   const sendMessage = async (overrideContent?: string, adjunto?: { tipo: 'foto' | 'video'; ruta: string }): Promise<boolean> => {
@@ -631,6 +688,9 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                   } finally { aceptandoRef.current = false; }
                 } : undefined}
                 profesionalAcuerdo={profesionalAcuerdo}
+                reservasAcuerdo={reservasAcuerdo}
+                onCancelarAcuerdo={cancelarAcuerdo}
+                onValorarAcuerdo={valorarAcuerdo}
                 onAceptarAcuerdo={async ref => {
                   if (await sendMessage(mensajeAceptado(ref))) {
                     celebrar('¡Enhorabuena!', `Acuerdo cerrado con ${activeOtherName || 'tu contacto'}. Ya está por escrito en este chat.`, ref);

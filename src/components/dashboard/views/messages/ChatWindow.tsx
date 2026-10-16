@@ -1,7 +1,7 @@
 import { lazy, Suspense, useRef, useState } from 'react';
 import { leerAcuerdo, estadoAcepto, REF_ACUERDO } from '@/lib/acuerdoChat';
 import AdjuntoChat from './AdjuntoChat';
-import { FormCondiciones, TarjetaAcepto } from './AcuerdoAcepto';
+import { FormCondiciones, TarjetaAcepto, type ReservaAcuerdo } from './AcuerdoAcepto';
 import { fechaIso, type Condiciones } from '@/lib/acuerdoChat';
 import type { Profile } from '@/data/profiles';
 
@@ -58,6 +58,10 @@ interface Props {
   onAcepto?: (condicionesCodificadas: string) => void;
   /** Profesional del acuerdo, para el contrato opcional en PDF. */
   profesionalAcuerdo?: { userId: string; name: string; role: string } | null;
+  /** Reserva creada por cada mensaje que cerró un acuerdo (id del mensaje → reserva). */
+  reservasAcuerdo?: Record<string, ReservaAcuerdo>;
+  onCancelarAcuerdo?: (reservaId: string) => void;
+  onValorarAcuerdo?: () => void;
   /** El profesional acepta el contrato propuesto en el chat. */
   onAceptarAcuerdo?: (ref: string) => void;
 }
@@ -75,7 +79,7 @@ const ChatWindow = ({
   input, setInput,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
-  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, onAcepto, onAceptarAcuerdo, profesionalAcuerdo,
+  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, onAcepto, onAceptarAcuerdo, profesionalAcuerdo, reservasAcuerdo, onCancelarAcuerdo, onValorarAcuerdo,
 }: Props) => {
   const { pendientes: aceptanAhora, condiciones: condicionesAbiertas, cierres: acuerdosCerrados } = estadoAcepto(messages);
   const yaAcepte = aceptanAhora.has(userId);
@@ -87,7 +91,8 @@ const ChatWindow = ({
   // Tras cerrar un acuerdo el botón queda en "Cerrado" (no se reabre con un
   // toque); para otro acuerdo, "Nuevo acuerdo" en la tarjeta verde.
   const ultimoAcuerdo = [...messages].reverse().find(m => !m.deleted_at && leerAcuerdo(m.content)?.ref === REF_ACUERDO);
-  const recienCerrado = !!ultimoAcuerdo && acuerdosCerrados.has(ultimoAcuerdo.id);
+  // Si la reserva se canceló, se puede acordar otra vez.
+  const recienCerrado = !!ultimoAcuerdo && acuerdosCerrados.has(ultimoAcuerdo.id) && reservasAcuerdo?.[ultimoAcuerdo.id]?.status !== 'cancelled';
   const [formAcepto, setFormAcepto] = useState<{ inicial: Condiciones | null } | null>(null);
   const [contrato, setContrato] = useState<Condiciones | null | false>(false);
   const pulsarAcepto = () => {
@@ -290,11 +295,17 @@ const ChatWindow = ({
                       style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)', color: '#666' }}>
                       Mensaje eliminado
                     </div>
+                  ) : acuerdo?.estado === 'cancelado' ? (
+                    <div className="px-4 py-2.5 rounded-2xl text-sm" style={{ background: '#F3F4F6', border: '1px solid rgba(0,0,0,0.12)', color: '#4B5563' }}>
+                      <p className="font-bold">{isMe ? 'Has cancelado el acuerdo' : `${activeOtherName || 'La otra parte'} ha cancelado el acuerdo`}</p>
+                    </div>
                   ) : acuerdo?.estado === 'aceptado' && acuerdo.ref === REF_ACUERDO ? (
                     <TarjetaAcepto resumen={acuerdo.resumen} isMe={isMe} otroNombre={activeOtherName}
                       cerrado={acuerdosCerrados.has(msg.id)}
                       pendienteActual={msg.id === ultimoPendienteId}
                       onProponerOtras={onAcepto ? c => setFormAcepto({ inicial: c }) : undefined}
+                      reserva={reservasAcuerdo?.[msg.id] ?? null}
+                      onCancelar={onCancelarAcuerdo} onValorar={onValorarAcuerdo}
                       onContrato={profesionalAcuerdo ? c => setContrato(c) : undefined}
                       onNuevoAcuerdo={onAcepto && msg.id === ultimoAcuerdo?.id ? () => setFormAcepto({ inicial: null }) : undefined} />
                   ) : acuerdo ? (

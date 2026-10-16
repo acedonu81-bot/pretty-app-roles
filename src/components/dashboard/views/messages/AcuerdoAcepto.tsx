@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CalendarCheck, FileText } from 'lucide-react';
+import { CalendarCheck, FileText, Star, XCircle } from 'lucide-react';
 import { codificarCondiciones, fechaIso, leerCondiciones, textoCondiciones, type Condiciones } from '@/lib/acuerdoChat';
 
 // Piezas del ACEPTO del chat (16 oct 2026, ver lib/acuerdoChat.ts):
@@ -53,33 +53,77 @@ export const FormCondiciones = ({ inicial, otroNombre, onEnviar, onCancelar, env
   );
 };
 
-/** Tarjeta de un "Acepto" en el chat. */
-export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, pendienteActual, onProponerOtras, onContrato, onNuevoAcuerdo }: {
+export interface ReservaAcuerdo { id: string; status: string; fecha: string | null }
+
+const diasHasta = (fechaIso: string) => {
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  return Math.round((new Date(fechaIso + 'T00:00:00').getTime() - hoy.getTime()) / 86_400_000);
+};
+
+/** Tarjeta de un "Acepto" en el chat. Cerrado = estado de la reserva (estilo
+ *  Wallapop): fecha y cuenta atrás, cancelar con confirmación, y "Valorar" cuando
+ *  pasa el evento. */
+export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, pendienteActual, reserva, onProponerOtras, onContrato, onNuevoAcuerdo, onCancelar, onValorar }: {
   resumen: string; isMe: boolean; otroNombre: string; cerrado: boolean; pendienteActual: boolean;
+  reserva?: ReservaAcuerdo | null;
   onProponerOtras?: (c: Condiciones | null) => void; onContrato?: (c: Condiciones | null) => void;
-  onNuevoAcuerdo?: () => void;
+  onNuevoAcuerdo?: () => void; onCancelar?: (reservaId: string) => void; onValorar?: () => void;
 }) => {
+  const [confirmando, setConfirmando] = useState(false);
   const cond = leerCondiciones(resumen);
   const texto = textoCondiciones(cond);
   const quien = otroNombre || 'La otra parte';
+  const cancelado = cerrado && reserva?.status === 'cancelled';
+  const dias = cerrado && reserva?.fecha ? diasHasta(reserva.fecha) : null;
+  const pasado = dias !== null && dias < 0;
   return (
     <div className="px-4 py-3 rounded-2xl text-sm max-w-[290px]"
-      style={{ background: cerrado ? '#ECFDF5' : '#FBF3DD', border: `1px solid ${cerrado ? 'rgba(5,150,105,0.4)' : 'rgba(212,175,55,0.5)'}`, color: '#3d300a' }}>
+      style={{ background: cancelado ? '#F3F4F6' : cerrado ? '#ECFDF5' : '#FBF3DD', border: `1px solid ${cancelado ? 'rgba(0,0,0,0.12)' : cerrado ? 'rgba(5,150,105,0.4)' : 'rgba(212,175,55,0.5)'}`, color: '#3d300a' }}>
       <p className="font-black">{isMe ? 'Acepto' : `${quien} acepta`}</p>
       {texto && <p className="text-xs mt-0.5 font-semibold">{texto}</p>}
-      {cerrado ? (
+      {cancelado ? (
+        <p className="flex items-center gap-1 text-xs mt-1.5 font-bold" style={{ color: '#6B7280' }}>
+          <XCircle size={13} /> Acuerdo cancelado
+        </p>
+      ) : cerrado ? (
         <>
           <p className="text-xs mt-1.5 font-bold" style={{ color: '#059669' }}>Acuerdo cerrado por los dos</p>
           <p className="flex items-center gap-1 text-[0.75rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.6)' }}>
-            <CalendarCheck size={12} /> Guardado en reservas y en el calendario
+            <CalendarCheck size={12} />
+            {dias === null ? 'Guardado en reservas y en el calendario'
+              : dias > 1 ? `Faltan ${dias} días · en tu calendario`
+              : dias === 1 ? 'Es mañana · en tu calendario'
+              : dias === 0 ? 'Es hoy' : 'El evento ya pasó'}
           </p>
-          {onContrato && (
+          {pasado && onValorar && (
+            <button type="button" onClick={onValorar}
+              className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black"
+              style={{ background: '#059669', color: '#fff' }}>
+              <Star size={13} /> ¿Cómo fue? Valorar
+            </button>
+          )}
+          {onContrato && !pasado && (
             <button type="button" onClick={() => onContrato(cond)}
               className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
               style={{ background: '#fff', border: '1px solid rgba(5,150,105,0.4)', color: '#047857' }}>
               <FileText size={13} /> Descargar contrato (opcional)
             </button>
           )}
+          {onCancelar && reserva && !pasado && (confirmando ? (
+            <div className="mt-2 p-2 rounded-xl" style={{ background: '#fff', border: '1px solid rgba(220,38,38,0.3)' }}>
+              <p className="text-xs font-bold" style={{ color: '#991b1b' }}>¿Cancelar el acuerdo? Se avisará a {quien}.</p>
+              <div className="flex gap-2 mt-1.5">
+                <button type="button" onClick={() => { setConfirmando(false); onCancelar(reserva.id); }}
+                  className="px-3 py-1.5 rounded-full text-xs font-black" style={{ background: '#dc2626', color: '#fff' }}>Sí, cancelar</button>
+                <button type="button" onClick={() => setConfirmando(false)}
+                  className="px-3 py-1.5 rounded-full text-xs font-bold" style={{ color: '#444' }}>No</button>
+              </div>
+            </div>
+          ) : (
+            <button type="button" onClick={() => setConfirmando(true)} className="block mt-2 text-xs font-bold underline" style={{ color: '#991b1b' }}>
+              Cancelar acuerdo
+            </button>
+          ))}
           {onNuevoAcuerdo && (
             <button type="button" onClick={onNuevoAcuerdo} className="block mt-2 text-xs font-bold underline" style={{ color: '#047857' }}>
               Nuevo acuerdo

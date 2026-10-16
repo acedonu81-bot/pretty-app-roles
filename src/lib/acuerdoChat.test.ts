@@ -75,3 +75,14 @@ describe('condiciones mal formadas (revisión de seguridad)', () => {
     expect(leerCondiciones('f=12/12/2026;c=Madrid;p=500')).not.toBeNull();
   });
 });
+
+describe('acuerdo cancelado', () => {
+  it('se lee, se resume y no cuenta como un Acepto', () => {
+    const m = '[[acuerdo:cancelado|ACUERDO|3f2a1b9c-1111-4222-8333-444455556666]]';
+    expect(leerAcuerdo(m)?.estado).toBe('cancelado');
+    expect(vistaPrevia(m)).toBe('Acuerdo cancelado');
+    // (lo escribe la BD, no el navegador: el filtro de teléfonos no se aplica)
+    const r = estadoAcepto([{ id: '1', sender_id: 'a', content: mensajeAcepto({ fecha: '2026-12-12', ciudad: 'Madrid', precio: '500', evento: '' }) }, { id: '2', sender_id: 'b', content: m }]);
+    expect([...r.pendientes]).toEqual(['a']);
+  });
+});

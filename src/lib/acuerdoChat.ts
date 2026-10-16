@@ -4,9 +4,10 @@
 // conversación de los dos. Formato del contenido del mensaje:
 //   [[acuerdo:propuesto|XPEAK-AB12CD|Boda Ana · 12/12/2026 · 500 €]]
 //   [[acuerdo:aceptado|XPEAK-AB12CD]]
-export type Acuerdo = { estado: 'propuesto' | 'aceptado'; ref: string; resumen: string };
+//   [[acuerdo:cancelado|ACUERDO|<id de la reserva>]]  (lo escribe la RPC cancelar_acuerdo_chat)
+export type Acuerdo = { estado: 'propuesto' | 'aceptado' | 'cancelado'; ref: string; resumen: string };
 
-const RE = /^\[\[acuerdo:(propuesto|aceptado)\|([A-Z0-9-]{4,30})(?:\|([^\]]{0,200}))?\]\]$/;
+const RE = /^\[\[acuerdo:(propuesto|aceptado|cancelado)\|([A-Za-z0-9-]{4,40})(?:\|([^\]]{0,200}))?\]\]$/;
 
 export function leerAcuerdo(contenido: string | null | undefined): Acuerdo | null {
   const m = RE.exec((contenido ?? '').trim());
@@ -24,6 +25,7 @@ export const mensajeAceptado = (ref: string) => `[[acuerdo:aceptado|${ref}]]`;
 export function vistaPrevia(contenido: string): string {
   const a = leerAcuerdo(contenido);
   if (!a) return contenido;
+  if (a.estado === 'cancelado') return 'Acuerdo cancelado';
   if (a.estado === 'aceptado' && a.ref === 'ACUERDO') return 'Acepto el acuerdo';
   return a.estado === 'propuesto' ? `Propuesta de contrato ${a.ref}` : `Contrato ${a.ref} aceptado`;
 }
