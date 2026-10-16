@@ -1,3 +1,4 @@
+import { ReproductorConcursoProvider } from '@/components/concurso/ReproductorConcurso';
 import BarraVolver from '@/components/BarraVolver';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
@@ -427,6 +428,7 @@ const App = () => (
             el chunk lazy. Si un import() falla del todo (chunk viejo tras un
             deploy, red cortada), AppErrorBoundary de arriba lo atrapa y muestra
             algo en vez de dejar esto colgado para siempre. */}
+        <ReproductorConcursoProvider>
         <Suspense fallback={<div style={{ minHeight: '100vh', background: '#FFFDF7' }} />}>
           <Routes>
             <Route path="/" element={isNative ? <NativeRootRedirect /> : <Landing />} />
@@ -928,6 +930,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        </ReproductorConcursoProvider>
         <CookieBanner />
         <EventCartWidget />
       </BrowserRouter>

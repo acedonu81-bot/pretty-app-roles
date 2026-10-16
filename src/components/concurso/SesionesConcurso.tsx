@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import LikeButton from '@/components/LikeButton';
 import { Play } from 'lucide-react';
+import { useReproductorConcurso } from '@/components/concurso/ReproductorConcurso';
 import { HZ, TONES, clay, clayButton, clayInset } from '@/components/healthy-zone/clay';
 
 /**
@@ -33,21 +34,15 @@ const sb = supabase as unknown as {
   };
 };
 
-function playerUrl(url: string) {
-  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23d4af37&auto_play=true&hide_related=true&show_comments=false&show_reposts=false&visual=false`;
-}
-
-// Reproductor bajo demanda (auditoría 13 oct 2026): el iframe de SoundCloud
-// mete cookies de terceros (rastreo y su propio aviso de consentimiento) nada
-// más abrir la página, sin que nadie haya aceptado nada. Se carga solo al
-// pulsar "Escuchar" y entonces arranca solo (hay gesto del usuario).
+// Reproductor global (ver ReproductorConcurso.tsx, 17 oct 2026): al pulsar
+// "Escuchar" la sesión suena en una barra fija que NO se corta al cambiar de
+// página. Sigue siendo bajo demanda (auditoría 13 oct 2026): no se carga nada
+// de SoundCloud ni sus cookies hasta que alguien lo pulsa.
 function Reproductor({ url, titulo }: { url: string; titulo: string }) {
-  const [abierto, setAbierto] = useState(false);
-  if (abierto) {
-    return <iframe title={titulo} src={playerUrl(url)} className="w-full rounded-xl block" height={120} allow="autoplay" />;
-  }
+  const { sesion, sonando, reproducir } = useReproductorConcurso();
+  const esta = sesion?.url === url;
   return (
-    <button type="button" onClick={() => setAbierto(true)} aria-label={`Escuchar: ${titulo}`}
+    <button type="button" onClick={() => reproducir({ url, titulo })} aria-label={`Escuchar: ${titulo}`}
       className="w-full h-[120px] rounded-xl flex items-center gap-4 px-4 text-left transition-transform active:scale-[0.99]"
       style={{ background: '#ffffff' }}>
       <span className="w-14 h-14 shrink-0 rounded-full flex items-center justify-center"
@@ -55,8 +50,12 @@ function Reproductor({ url, titulo }: { url: string; titulo: string }) {
         <Play size={24} fill="#2a1d00" color="#2a1d00" />
       </span>
       <span className="min-w-0">
-        <span className="block text-base" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>Escuchar la sesión</span>
-        <span className="block text-xs mt-0.5" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>Se abre el reproductor de SoundCloud</span>
+        <span className="block text-base" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>
+          {esta ? (sonando ? 'Sonando ahora' : 'En el reproductor') : 'Escuchar la sesión'}
+        </span>
+        <span className="block text-xs mt-0.5" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>
+          {esta ? 'Sigue sonando mientras navegas por la web' : 'Suena en una barra que te sigue por la web. Se conecta con SoundCloud al pulsar.'}
+        </span>
       </span>
     </button>
   );

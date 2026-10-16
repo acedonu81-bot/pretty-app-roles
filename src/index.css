@@ -604,3 +604,12 @@ body.has-event-cart-widget { padding-bottom: 76px; }
 }
 .xp-cta-glow { animation: xp-cta-glow 2s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .xp-cta-glow { animation: none; } }
+
+/* Reproductor del concurso fijo abajo (17 oct 2026): el final de las páginas
+   públicas no queda tapado. En el panel (altura fija, sin scroll de página) la
+   barra se superpone: lo que hay bajo ella es el menú inferior en móvil, que la
+   propia barra respeta con --mobile-nav-space. */
+html[data-reproductor] { --reproductor-h: 56px; --reproductor-bottom: 0px; }
+/* Solo el panel tiene menú inferior móvil: ahí la barra se sienta encima de él. */
+html[data-reproductor]:has(.mobile-bottom-nav) { --reproductor-bottom: var(--mobile-nav-space); }
+html[data-reproductor] body { padding-bottom: var(--reproductor-h); }
