@@ -1200,6 +1200,30 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}`),
   }),
 
+  // Concurso DJ XPEAK Madrid (17 oct 2026): al DJ cuya sesión de SoundCloud ya
+  // no existe (borrada o privada). Solo se envía con la clave de servicio (no
+  // está en PUBLIC/LOGGED/ADMIN_TYPES).
+  concurso_sesion_no_disponible: (d) => ({
+    subject: `${esc(d.name)}, tu sesión del Concurso DJ XPEAK Madrid`,
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Tu sesión del concurso</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, tu sesión está inscrita en el <strong>Concurso DJ XPEAK Madrid</strong> y ya salía en el listado de aspirantes.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+        SoundCloud ya no encuentra el enlace que inscribiste: puede que la sesión esté en privado o que se haya movido de dirección, y por eso ahora no se puede escuchar.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Para seguir en el concurso, pon tu sesión en público o <strong style="color:#0a0908">cámbiala por otra</strong> desde el botón <em>"Cambiar mi sesión por otra"</em> de tu tarjeta. <strong style="color:#0a0908">Tus me gusta se mantienen.</strong> La revisamos y vuelve al listado.
+      </p>
+      ${btn('Cambiar mi sesión →', 'https://xpeak.es/concurso-dj-madrid/aspirantes')}
+      <p style="color:#6B7280;font-size:13px;line-height:1.6;margin:20px 0 0;text-align:center">
+        El concurso está abierto hasta el 2 de noviembre.
+      </p>`),
+  }),
+
   // Concurso DJ XPEAK Madrid (13 oct 2026). Aviso al admin de cada
   // inscripción nueva: antes nadie se enteraba y quedaban "pendiente" para
   // siempre. Los datos los rellena la verificación de abajo desde la BD.
