@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { leerAcuerdo } from '@/lib/acuerdoChat';
+import AdjuntoChat from './AdjuntoChat';
 import { Send, Shield, MessageSquare, CheckCheck, Check, Image, Smile, X, ArrowLeft, Trash2, MoreVertical, Flag } from 'lucide-react';
 
 interface Message {
@@ -7,6 +8,7 @@ interface Message {
   sender_id: string;
   content: string;
   photo_url?: string | null;
+  video_url?: string | null;
   read: boolean;
   created_at: string;
   deleted_at?: string | null;
@@ -237,7 +239,9 @@ const ChatWindow = ({
           const prevMsg = messages[idx - 1];
           const showDateSep = !prevMsg || new Date(msg.created_at).toDateString() !== new Date(prevMsg.created_at).toDateString();
           const acuerdo = msg.deleted_at ? null : leerAcuerdo(msg.content);
-          const isPhoto = msg.photo_url || (msg.content.startsWith('http') && /\.(jpg|jpeg|png|webp|gif)/i.test(msg.content));
+          const fotoAntigua = msg.content.startsWith('http') && /\.(jpg|jpeg|png|webp|gif)/i.test(msg.content) ? msg.content : null;
+          const adjunto = msg.video_url ? { ruta: msg.video_url, tipo: 'video' as const }
+            : (msg.photo_url || fotoAntigua) ? { ruta: (msg.photo_url || fotoAntigua)!, tipo: 'foto' as const } : null;
 
           return (
             <div key={msg.id}>
@@ -295,19 +299,14 @@ const ChatWindow = ({
                         </button>
                       ) : null)}
                     </div>
-                  ) : isPhoto ? (
+                  ) : adjunto ? (
                     <div className="rounded-2xl overflow-hidden"
                       style={{
                         border: `1px solid ${isMe ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)'}`,
                         borderBottomRightRadius: isMe ? 4 : undefined,
                         borderBottomLeftRadius: !isMe ? 4 : undefined,
                       }}>
-                      <img
-                        src={msg.photo_url || msg.content}
-                        alt="Imagen enviada"
-                        className="max-w-[200px] max-h-[200px] object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                        onClick={() => window.open(msg.photo_url || msg.content, '_blank')}
-                      />
+                      <AdjuntoChat ruta={adjunto.ruta} tipo={adjunto.tipo} />
                     </div>
                   ) : (
                     <div className="px-4 py-2.5 rounded-2xl text-sm"
@@ -397,13 +396,14 @@ const ChatWindow = ({
           </button>
 
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
+            aria-label="Enviar foto o vídeo" title="Enviar foto o vídeo"
             className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 disabled:opacity-40"
             style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#444' }}>
             {uploadingPhoto
               ? <div className="w-4 h-4 rounded-full border border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} />
               : <Image size={16} />}
           </button>
-          <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={onPhotoUpload} />
+          <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm" className="hidden" onChange={onPhotoUpload} />
 
           <div className="flex-1 relative">
             <input ref={inputRef} type="text" value={input}

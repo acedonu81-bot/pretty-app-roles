@@ -1027,6 +1027,8 @@ export type Database = {
           conversation_id: string | null
           created_at: string | null
           deleted_at: string | null
+          photo_url: string | null
+          video_url: string | null
           id: string
           read: boolean | null
           sender_id: string | null
@@ -1036,6 +1038,8 @@ export type Database = {
           conversation_id?: string | null
           created_at?: string | null
           deleted_at?: string | null
+          photo_url?: string | null
+          video_url?: string | null
           id?: string
           read?: boolean | null
           sender_id?: string | null
@@ -1045,6 +1049,8 @@ export type Database = {
           conversation_id?: string | null
           created_at?: string | null
           deleted_at?: string | null
+          photo_url?: string | null
+          video_url?: string | null
           id?: string
           read?: boolean | null
           sender_id?: string | null

@@ -45,6 +45,7 @@ interface Message {
   sender_id: string;
   content: string;
   photo_url?: string | null;
+  video_url?: string | null;
   read: boolean;
   created_at: string;
   deleted_at?: string | null;
@@ -96,7 +97,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     // perfiles + mensajes + bloqueos, en paralelo.
     const [{ data: profilesData }, { data: msgsData }, { data: blockedData }] = await Promise.all([
       supabase.from('profiles').select('user_id, display_name, photo_url').in('user_id', otherIds),
-      supabase.from('messages').select('conversation_id, content, read, sender_id, created_at, deleted_at')
+      supabase.from('messages').select('conversation_id, content, photo_url, video_url, read, sender_id, created_at, deleted_at')
         .in('conversation_id', convIds).order('created_at', { ascending: false }),
       supabase.from('blocked_users').select('blocked_id').eq('blocker_id', user.id),
     ]);
@@ -116,7 +117,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     for (const m of msgsData ?? []) {
       if (m.deleted_at) continue;
       // Mensajes ya ordenados desc → el primero por conv es el último cronológico.
-      if (!lastMsgMap.has(m.conversation_id)) lastMsgMap.set(m.conversation_id, { content: vistaPrevia(m.content) });
+      if (!lastMsgMap.has(m.conversation_id)) lastMsgMap.set(m.conversation_id, { content: vistaPrevia(m.content) || (m.video_url ? 'Vídeo' : m.photo_url ? 'Foto' : '') });
       if (!m.read && m.sender_id !== user.id) {
         unreadMap.set(m.conversation_id, (unreadMap.get(m.conversation_id) || 0) + 1);
       }
@@ -141,7 +142,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
 
   const loadMessages = useCallback(async (convId: string) => {
     const { data, error } = await supabase
-      .from('messages').select('id, sender_id, content, read, created_at, deleted_at')
+      .from('messages').select('id, sender_id, content, photo_url, video_url, read, created_at, deleted_at')
       .eq('conversation_id', convId).order('created_at', { ascending: true });
     if (error) { toast.error('Error al cargar mensajes'); return; }
     setMessages((data ?? []) as Message[]);
@@ -272,9 +273,9 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
   useEffect(() => () => { if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current); }, []);
 
-  const sendMessage = async (overrideContent?: string, photoUrl?: string): Promise<boolean> => {
+  const sendMessage = async (overrideContent?: string, adjunto?: { tipo: 'foto' | 'video'; ruta: string }): Promise<boolean> => {
     const text = typeof overrideContent === 'string' ? overrideContent : input.trim();
-    if (!text && !photoUrl) return false;
+    if (!text && !adjunto) return false;
     if (!activeConvId || !user || sending) return false;
 
     if (text) {
@@ -286,7 +287,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     const payload: Record<string, unknown> = {
       conversation_id: activeConvId, sender_id: user.id, content: text || '',
     };
-    if (photoUrl) payload.photo_url = photoUrl;
+    if (adjunto?.tipo === 'foto') payload.photo_url = adjunto.ruta;
+    if (adjunto?.tipo === 'video') payload.video_url = adjunto.ruta;
 
     const { error } = await supabase.from('messages').insert(payload as any);
     if (error) { toast.error('Error al enviar el mensaje'); setSending(false); return false; }
@@ -305,14 +307,14 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       // en esta conversación, la otra persona ya fue avisada y este no manda
       // otro. El del servidor solo frena 2 minutos entre avisos.
       let yaAvisado = false;
-      if (text) {
+      {
         const { count: sinLeerMios } = await supabase.from('messages')
           .select('id', { count: 'exact', head: true })
           .eq('conversation_id', activeConvId).eq('sender_id', user.id)
           .eq('read', false).is('deleted_at', null);
         yaAvisado = (sinLeerMios ?? 0) > 1; // el recién enviado cuenta como 1
       }
-      if (text && !yaAvisado) {
+      if (!yaAvisado) {
         supabase.functions.invoke('send-email', {
           body: {
             type: 'new_message',
@@ -324,23 +326,46 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     return true;
   };
 
+  // Fotos y vídeos (16 oct 2026). Bucket privado: se guarda la ruta y el chat
+  // pide una URL firmada al mostrarlo (ver messages/AdjuntoChat.tsx). Vídeo
+  // hasta 25 MB y 60 s; foto hasta 5 MB.
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = '';
     if (!file || !user) return;
-    if (file.size > 5 * 1024 * 1024) { toast.error('Máximo 5MB por imagen'); return; }
-    if (!file.type.startsWith('image/')) { toast.error('Solo se permiten imágenes'); return; }
-    const allowedExts = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-    const ext = file.name.split('.').pop()?.toLowerCase();
-    if (!ext || !allowedExts.includes(ext)) { toast.error('Formato no permitido'); return; }
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
+    const esVideo = file.type.startsWith('video/');
+    const fotoOk = ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext) && file.type.startsWith('image/');
+    const videoOk = ['mp4', 'mov', 'webm'].includes(ext) && esVideo;
+    if (!fotoOk && !videoOk) { toast.error('Solo fotos (JPG, PNG, WebP, GIF) o vídeos (MP4, MOV, WebM)'); return; }
+    if (!esVideo && file.size > 5 * 1024 * 1024) { toast.error('Máximo 5 MB por foto'); return; }
+    if (esVideo && file.size > 25 * 1024 * 1024) { toast.error('Máximo 25 MB por vídeo'); return; }
+    if (esVideo) {
+      const dur = await new Promise<number>(res => {
+        const v = document.createElement('video');
+        v.preload = 'metadata';
+        v.onloadedmetadata = () => { URL.revokeObjectURL(v.src); res(v.duration); };
+        v.onerror = () => res(0);
+        v.src = URL.createObjectURL(file);
+      });
+      if (dur > 61) { toast.error('Máximo 60 segundos por vídeo'); return; }
+    }
+    try {
+      if (!sessionStorage.getItem('xpeak_aviso_adjuntos')) {
+        sessionStorage.setItem('xpeak_aviso_adjuntos', '1');
+        toast.info('No envíes teléfonos ni redes en fotos o vídeos: se retiran y la cuenta puede bloquearse.');
+      }
+    } catch { /* sin almacenamiento */ }
 
     setUploadingPhoto(true);
-    const path = `${user.id}/${Date.now()}.${ext}`;
-    const { error: uploadError } = await supabase.storage.from('message-attachments').upload(path, file, { upsert: false });
-    if (uploadError) { toast.error('Error al subir imagen'); setUploadingPhoto(false); return; }
-    const { data: urlData } = supabase.storage.from('message-attachments').getPublicUrl(path);
-    await sendMessage('', urlData.publicUrl);
+    const ruta = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { error: uploadError } = await supabase.storage.from('message-attachments')
+      .upload(ruta, file, { upsert: false, contentType: file.type });
+    if (uploadError) { toast.error(esVideo ? 'Error al subir el vídeo' : 'Error al subir la foto'); setUploadingPhoto(false); return; }
+    const ok = await sendMessage('', { tipo: esVideo ? 'video' : 'foto', ruta });
+    // Si el mensaje no se guardó, el archivo no lo vería nadie: se borra.
+    if (!ok) await supabase.storage.from('message-attachments').remove([ruta]);
     setUploadingPhoto(false);
-    e.target.value = '';
   };
 
   const handleSelectConversation = async (conv: Conversation) => {
