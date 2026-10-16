@@ -68,18 +68,28 @@ export async function inscribirSesion(userId: string, texto: string, origen: str
 }
 
 /**
- * Cambia la sesión ya inscrita por otra (la anterior dejó de existir o el DJ
- * quiere poner otra). La nueva vuelve a "pendiente" y la revisa el admin.
+ * Cambia la sesión ya inscrita por otra, SOLO si la actual está rota (SoundCloud
+ * ya no la encuentra). Lo decide el servidor (función concurso-cambiar-sesion),
+ * no el navegador. La nueva vuelve a "pendiente" y la revisa el admin.
  */
 export async function cambiarSesion(texto: string, origen: string): Promise<ResultadoInscripcion> {
   const prep = await prepararEnlace(texto, origen);
   if ('mensaje' in prep) return { ok: false, mensaje: prep.mensaje };
-  const { error } = await (supabase.rpc as unknown as (f: string, a: Record<string, unknown>) => Promise<{ error: { message: string } | null }>)(
-    'cambiar_sesion_concurso', { p_url: prep.url },
-  );
-  if (error) {
-    const m = error.message;
-    return { ok: false, mensaje: /cerrado/.test(m) ? 'El concurso ya ha cerrado.' : /no tienes/.test(m) ? 'No tienes ninguna sesión inscrita.' : 'No se ha podido cambiar la sesión. Inténtalo de nuevo.' };
+  const { data, error } = await supabase.functions.invoke('concurso-cambiar-sesion', { body: { url: prep.url } });
+  // invoke() mete el cuerpo de un error HTTP en error.context (Response).
+  let codigo = (data as { error?: string } | null)?.error;
+  if (!codigo && error) {
+    try { codigo = ((await (error as unknown as { context?: Response }).context?.clone().json()) as { error?: string } | undefined)?.error; } catch { /* sin cuerpo */ }
+  }
+  if (error || codigo) {
+    const mensajes: Record<string, string> = {
+      sesion_actual_funciona: 'Tu sesión actual se oye bien en SoundCloud, así que no hace falta cambiarla. Solo se puede cambiar si SoundCloud no la encuentra.',
+      cerrado: 'El concurso ya ha cerrado.',
+      sin_inscripcion: 'No tienes ninguna sesión inscrita.',
+      no_se_pudo_comprobar: 'No hemos podido comprobar tu sesión actual con SoundCloud. Inténtalo en unos minutos.',
+      nueva_no_existe: 'SoundCloud no encuentra esa sesión nueva. Comprueba que está en público y que has copiado bien el enlace.',
+    };
+    return { ok: false, mensaje: mensajes[codigo ?? ''] ?? 'No se ha podido cambiar la sesión. Inténtalo de nuevo.' };
   }
   void logEvent('cta_click', origen, 'concurso_sesion_cambiada');
   void supabase.functions.invoke('send-email', { body: { type: 'concurso_inscripcion', data: {} } });

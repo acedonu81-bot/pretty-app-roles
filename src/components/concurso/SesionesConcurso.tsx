@@ -84,20 +84,27 @@ function Reproductor({ url, titulo }: { url: string; titulo: string }) {
 
 const AZUL = '#2563EB';
 
-// Cambiar la sesión inscrita (17 oct 2026): si la anterior dejó de existir en
-// SoundCloud o el DJ prefiere otra. La nueva vuelve a revisión y los me gusta se
+// Cambiar la sesión inscrita (17 oct 2026), SOLO si la actual está rota: SoundCloud
+// ya no la encuentra (borrada o privada). Con la sesión funcionando no se ofrece
+// (y el servidor tampoco lo permite). La nueva vuelve a revisión y los me gusta se
 // conservan. Solo mientras dura el concurso.
-function CambiarSesion({ onCambiada }: { onCambiada: () => void }) {
+function CambiarSesion({ url, onCambiada }: { url: string; onCambiada: () => void }) {
+  const [rota, setRota] = useState(false);
+  useEffect(() => {
+    let vivo = true;
+    pistaSoundcloudExiste(url).then(ok => { if (vivo) setRota(!ok); });
+    return () => { vivo = false; };
+  }, [url]);
   const [abierto, setAbierto] = useState(false);
   const [texto, setTexto] = useState('');
   const [error, setError] = useState('');
   const [enviando, setEnviando] = useState(false);
-  if (!concursoActivo()) return null;
+  if (!concursoActivo() || !rota) return null;
   if (!abierto) {
     return (
       <button type="button" onClick={() => setAbierto(true)} className="mt-3 text-sm underline"
         style={{ color: AZUL, fontFamily: HZ.body, fontWeight: 800 }}>
-        Cambiar mi sesión por otra
+        Tu sesión no se puede oír: cambiarla por otra
       </button>
     );
   }
@@ -119,7 +126,7 @@ function CambiarSesion({ onCambiada }: { onCambiada: () => void }) {
         className="w-full px-3 py-2.5 rounded-xl text-base outline-none" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.12)', color: '#111' }} />
       {error && <p className="text-xs mt-1.5" style={{ color: '#b91c1c', fontFamily: HZ.body, fontWeight: 700 }}>{error}</p>}
       <p className="text-xs mt-1.5" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>
-        Tiene que estar en público. Pasa otra vez por revisión antes de salir en el listado.
+        SoundCloud no encuentra tu sesión actual. Pon el enlace de la nueva (en público). Pasa otra vez por revisión antes de salir en el listado.
       </p>
       <div className="flex items-center gap-2 mt-2.5">
         <button type="button" disabled={!texto.trim() || enviando} onClick={guardar}
@@ -220,7 +227,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
               ? 'Solo la ves tú. En cuanto la revisemos sale aquí para todos y te avisamos por email para que la compartas.'
               : 'No cumple las bases. Escríbenos a info@xpeak.site y te contamos qué falta.'}
           </p>
-          <CambiarSesion onCambiada={cargar} />
+          <CambiarSesion url={propia.soundcloud_url} onCambiada={cargar} />
         </div>
       )}
 
@@ -295,7 +302,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                     </>
                   )}
                 </div>
-                {user && p.user_id === user.id && <CambiarSesion onCambiada={cargar} />}
+                {user && p.user_id === user.id && <CambiarSesion url={p.soundcloud_url} onCambiada={cargar} />}
               </div>
             );
           })}
