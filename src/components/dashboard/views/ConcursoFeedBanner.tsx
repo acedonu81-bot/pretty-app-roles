@@ -14,7 +14,7 @@ const MS_DIA = 86_400_000;
 
 // Cuenta atrás hasta el cierre (hora de Madrid, ver CIERRA_CONCURSO). Última
 // jornada: cifras en rosa y "Último día" en la etiqueta.
-function CuentaAtras({ onFin, claro = false }: { onFin: () => void; claro?: boolean }) {
+export function CuentaAtras({ onFin, claro = false }: { onFin: () => void; claro?: boolean }) {
   const [ahora, setAhora] = useState(() => Date.now());
   const resta = Math.max(0, CIERRA_CONCURSO.getTime() - ahora);
   useEffect(() => {

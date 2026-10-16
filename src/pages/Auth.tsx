@@ -14,6 +14,7 @@ import { isInAppBrowser as detectInAppBrowser, openInExternalBrowser } from '@/l
 import { useMedirPermanencia } from '@/hooks/useMedirPermanencia';
 import FichasRealesTira from '@/components/FichasRealesTira';
 import CiudadBuscador from '@/components/CiudadBuscador';
+import ConcursoAuthBanner from '@/components/ConcursoAuthBanner';
 
 const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
 import { REGISTRO_PENDIENTE_META } from '@/components/CookieBanner';
@@ -303,6 +304,14 @@ const Auth = () => {
   const inAppSignup = INAPP_SIGNUP_ENABLED && isInAppBrowser && !isLogin;
   const [honeypot, setHoneypot] = useState('');
 
+
+  // Botón del banner del concurso: pasa a registro (si estaba en login) y sube al
+  // formulario sin salir de /auth.
+  const participarConcurso = () => {
+    track('auth_concurso_click', { mode: isLogin ? 'login' : 'register' });
+    setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false);
+    window.setTimeout(() => document.getElementById('auth-formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  };
 
   const handleOpenInBrowser = () => {
     track('inapp_escape_click');
@@ -745,6 +754,7 @@ const Auth = () => {
                     <span className="text-sm font-medium" style={{ color: '#222' }}>Contratos digitales incluidos</span>
                   </div>
                 </div>
+                <ConcursoAuthBanner variante="panel" onParticipar={participarConcurso} />
               </div>
 
               {/* Social proof bottom */}
@@ -769,7 +779,7 @@ const Auth = () => {
                 ensanchaba la columna y la tarjeta (overflow-hidden) cortaba el
                 formulario en tablet y ordenador: botón de Google sin texto y
                 campos cortados (auditoría 15 oct 2026). */}
-            <div className="flex-1 min-w-0 p-6 sm:p-8 md:p-10">
+            <div id="auth-formulario" className="flex-1 min-w-0 p-6 sm:p-8 md:p-10">
 
               {/* Mobile logo */}
               <div className="flex flex-col items-center mb-5 md:hidden">
@@ -796,6 +806,8 @@ const Auth = () => {
                   </>
                 )}
               </div>
+
+              <div className="md:hidden"><ConcursoAuthBanner variante="compacto" onParticipar={participarConcurso} /></div>
 
               {/* Heading */}
               <div className="mb-6">
