@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { ROLE_TAGS, ALQUILER_TAGS, ROL_UI_A_SLUG, jobWord, canonicalRole } from '@/lib/constants';
 import ContractModal, { type ContractPrefill } from '@/components/dashboard/ContractModal';
 import FechasEvento, { hoyLocalISO } from './FechasEvento';
+import { celebrar } from '@/components/FuegosArtificiales';
 import ValorarContratado, { eventoYaOcurrio } from './ValorarContratado';
 import { ReviewModal, type Booking } from '@/components/dashboard/views/empresario/HistorialTab';
 import type { Profile } from '@/data/profiles';
@@ -320,6 +321,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
       ),
     }));
     const elegido = (responses[req.id] ?? []).find(r => r.id === responseId);
+    celebrar('¡Enhorabuena!', `Has contratado a ${nombre}.`, `contratado-${responseId}`);
     toast.success(`Contratado: ${nombre}. Le hemos avisado y ya puedes escribirle.`, {
       duration: 12000,
       action: onMessage && elegido

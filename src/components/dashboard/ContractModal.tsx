@@ -21,7 +21,10 @@ export interface ContractPrefill {
   precioNeto?: string;
 }
 
-interface Props { professional: Profile; onClose: () => void; onSaved?: () => void; prefill?: ContractPrefill; }
+/** Lo que se guardó, para quien abre el modal (el chat lo usa para proponer el acuerdo). */
+export interface ContratoGuardado { ref: string; nombreEvento: string; fechaEvento: string; precioNeto: string }
+
+interface Props { professional: Profile; onClose: () => void; onSaved?: (c: ContratoGuardado) => void; prefill?: ContractPrefill; }
 
 const ROLE_SERVICE: Record<string, string> = {
   dj:        'sesión de DJ y actuación musical en directo',
@@ -661,7 +664,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
       if (saveError) {
         toast.error('No se pudo guardar el contrato en tu historial. El PDF se genera igualmente, pero no quedará guardado.');
       } else {
-        onSaved?.();
+        onSaved?.({ ref, nombreEvento: form.nombreEvento, fechaEvento: form.fechaEvento, precioNeto: form.precioNeto });
       }
     }
 

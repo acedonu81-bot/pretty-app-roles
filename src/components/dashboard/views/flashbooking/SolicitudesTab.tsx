@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
+import { celebrar } from '@/components/FuegosArtificiales';
 import ContractModal, { type ContractPrefill } from '@/components/dashboard/ContractModal';
 import type { Profile } from '@/data/profiles';
 
@@ -176,6 +177,7 @@ const SolicitudesTab = () => {
     }
     setItems(prev => prev.map(i => i.id === id ? { ...i, status } : i));
     toast.success(status === 'confirmed' ? '¡Solicitud aceptada!' : 'Solicitud rechazada');
+    if (status === 'confirmed') celebrar('¡Enhorabuena!', 'Bolo aceptado. Ya está en tu calendario.', `aceptada-${id}`);
 
     // Al cerrar el acuerdo (aceptar), el trabajo entra solo al calendario del
     // profesional y dispara el aviso "Nuevo trabajo" si lo tiene activado —

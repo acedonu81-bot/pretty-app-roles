@@ -4,6 +4,9 @@ import { FileSignature, ArrowRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { logEvent } from '@/lib/track';
 import type { Profile } from '@/data/profiles';
+import type { ContratoGuardado } from '@/components/dashboard/ContractModal';
+import { mensajePropuesta } from '@/lib/acuerdoChat';
+import { toast } from 'sonner';
 
 const ContractModal = lazy(() => import('@/components/dashboard/ContractModal'));
 
@@ -15,9 +18,13 @@ const ContractModal = lazy(() => import('@/components/dashboard/ContractModal'))
 //  - profesional → organizador: enlace a sus reservas y ofertas, que es donde
 //    confirma;
 //  - dos profesionales o dos organizadores: no hay nada que cerrar, no sale.
-interface Props { otherUserId: string; otherName: string; miRol: string | null | undefined }
+interface Props {
+  otherUserId: string; otherName: string; miRol: string | null | undefined;
+  /** Envía un mensaje al chat; devuelve si se guardó. */
+  onEnviar?: (contenido: string) => Promise<boolean>;
+}
 
-const AcuerdoChatBar = ({ otherUserId, otherName, miRol }: Props) => {
+const AcuerdoChatBar = ({ otherUserId, otherName, miRol, onEnviar }: Props) => {
   const navigate = useNavigate();
   const [otroRol, setOtroRol] = useState<string | null>(null);
   const [contrato, setContrato] = useState(false);
@@ -40,6 +47,18 @@ const AcuerdoChatBar = ({ otherUserId, otherName, miRol }: Props) => {
   const irAReservas = (origen: string) => {
     void logEvent('cta_click', '/dashboard', `chat_acuerdo ${origen}`);
     navigate('/dashboard?view=flashbooking');
+  };
+
+  // Guardado el contrato, se propone en el chat para que el profesional lo
+  // acepte ahí mismo (ver acuerdoChat.ts). Fecha ISO a dd/mm/aaaa: "2026-12-12"
+  // la tomaría el filtro por un teléfono.
+  const proponer = async (c: ContratoGuardado) => {
+    setContrato(false);
+    if (!onEnviar) return;
+    const fecha = /^\d{4}-\d{2}-\d{2}$/.test(c.fechaEvento) ? c.fechaEvento.split('-').reverse().join('/') : c.fechaEvento;
+    const ok = await onEnviar(mensajePropuesta(c.ref, [c.nombreEvento, fecha, c.precioNeto ? `${c.precioNeto} €` : '']))
+      || await onEnviar(mensajePropuesta(c.ref, []));
+    if (ok) toast.success(`Contrato enviado. ${otherName || 'El profesional'} lo acepta desde este chat.`);
   };
 
   const profesional = {
@@ -80,7 +99,7 @@ const AcuerdoChatBar = ({ otherUserId, otherName, miRol }: Props) => {
       </div>
       {contrato && (
         <Suspense fallback={null}>
-          <ContractModal professional={profesional} onClose={() => setContrato(false)} onSaved={() => setContrato(false)} />
+          <ContractModal professional={profesional} onClose={() => setContrato(false)} onSaved={proponer} />
         </Suspense>
       )}
     </>

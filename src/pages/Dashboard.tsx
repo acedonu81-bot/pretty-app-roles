@@ -76,6 +76,7 @@ const OnboardingWizard = lazy(() => import('@/components/OnboardingWizard'));
 const AmbientBackground = lazy(() => import('@/components/AmbientBackground'));
 import { logProfileView } from '@/lib/track';
 import { computeProfileCompleteness } from '@/hooks/useProfileCompleteness';
+import FuegosArtificiales from '@/components/FuegosArtificiales';
 
 const PROFILE_VIEWS = new Set(['profile', 'ficha', 'stats']);
 
@@ -716,6 +717,7 @@ const Dashboard = () => {
         antes como respaldo para navegadores sin soporte de dvh. */}
     <div data-app="dashboard" className="flex w-screen overflow-hidden grain-overlay dvh-screen" style={{ background: '#f5f4f0' }}>
       <Suspense fallback={null}><AmbientBackground /></Suspense>
+      <FuegosArtificiales />
 
       {isMobile && (
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>

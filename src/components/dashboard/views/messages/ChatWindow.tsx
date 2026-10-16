@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { leerAcuerdo } from '@/lib/acuerdoChat';
 import { Send, Shield, MessageSquare, CheckCheck, Check, Image, Smile, X, ArrowLeft, Trash2, MoreVertical, Flag } from 'lucide-react';
 
 interface Message {
@@ -57,6 +58,8 @@ interface Props {
   onReportUser?: (reason: string) => void;
   /** Barra "Cerrar acuerdo" entre la cabecera y los mensajes. */
   acuerdoBar?: React.ReactNode;
+  /** El profesional acepta el contrato propuesto en el chat. */
+  onAceptarAcuerdo?: (ref: string) => void;
 }
 
 const REPORT_REASONS = [
@@ -72,8 +75,9 @@ const ChatWindow = ({
   input, setInput, showEmoji, setShowEmoji,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
-  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, acuerdoBar,
+  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, acuerdoBar, onAceptarAcuerdo,
 }: Props) => {
+  const acuerdosAceptados = new Set(messages.map(m => leerAcuerdo(m.content)).filter(a => a?.estado === 'aceptado').map(a => a!.ref));
   const inputRef = useRef<HTMLInputElement>(null);
   const [hoveredMsgId, setHoveredMsgId] = useState<string | null>(null);
   const [confirmDeleteMsgId, setConfirmDeleteMsgId] = useState<string | null>(null);
@@ -232,6 +236,7 @@ const ChatWindow = ({
           const isMe = msg.sender_id === userId;
           const prevMsg = messages[idx - 1];
           const showDateSep = !prevMsg || new Date(msg.created_at).toDateString() !== new Date(prevMsg.created_at).toDateString();
+          const acuerdo = msg.deleted_at ? null : leerAcuerdo(msg.content);
           const isPhoto = msg.photo_url || (msg.content.startsWith('http') && /\.(jpg|jpeg|png|webp|gif)/i.test(msg.content));
 
           return (
@@ -269,6 +274,26 @@ const ChatWindow = ({
                     <div className="px-4 py-2.5 rounded-2xl text-sm italic"
                       style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)', color: '#666' }}>
                       Mensaje eliminado
+                    </div>
+                  ) : acuerdo ? (
+                    <div className="px-4 py-3 rounded-2xl text-sm max-w-[280px]"
+                      style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.5)', color: '#3d300a' }}>
+                      <p className="text-[0.75rem] font-black uppercase tracking-wider" style={{ color: '#8B6A00' }}>
+                        {acuerdo.estado === 'propuesto' ? 'Propuesta de contrato' : 'Contrato aceptado'}
+                      </p>
+                      <p className="font-bold mt-0.5">{acuerdo.ref}</p>
+                      {acuerdo.resumen && <p className="text-xs mt-0.5">{acuerdo.resumen}</p>}
+                      {acuerdo.estado === 'propuesto' && (acuerdosAceptados.has(acuerdo.ref) ? (
+                        <p className="text-xs font-bold mt-2" style={{ color: '#059669' }}>Aceptado por los dos</p>
+                      ) : isMe ? (
+                        <p className="text-xs mt-2" style={{ color: 'rgba(0,0,0,0.55)' }}>Esperando a que {activeOtherName || 'la otra parte'} lo acepte</p>
+                      ) : onAceptarAcuerdo ? (
+                        <button type="button" onClick={() => onAceptarAcuerdo(acuerdo.ref)} disabled={sending}
+                          className="mt-2 w-full px-4 py-2 rounded-full text-xs font-black disabled:opacity-50"
+                          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                          Aceptar contrato
+                        </button>
+                      ) : null)}
                     </div>
                   ) : isPhoto ? (
                     <div className="rounded-2xl overflow-hidden"

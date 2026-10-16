@@ -10,6 +10,8 @@ import { toast } from 'sonner';
 import ConversationList from './messages/ConversationList';
 import ChatWindow, { EmptyChatPlaceholder } from './messages/ChatWindow';
 import AcuerdoChatBar from './messages/AcuerdoChatBar';
+import { leerAcuerdo, mensajeAceptado, vistaPrevia } from '@/lib/acuerdoChat';
+import { celebrar } from '@/components/FuegosArtificiales';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { isNative } from '@/lib/capacitor';
 import { RefreshCw } from 'lucide-react';
@@ -114,7 +116,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     for (const m of msgsData ?? []) {
       if (m.deleted_at) continue;
       // Mensajes ya ordenados desc → el primero por conv es el último cronológico.
-      if (!lastMsgMap.has(m.conversation_id)) lastMsgMap.set(m.conversation_id, { content: m.content });
+      if (!lastMsgMap.has(m.conversation_id)) lastMsgMap.set(m.conversation_id, { content: vistaPrevia(m.content) });
       if (!m.read && m.sender_id !== user.id) {
         unreadMap.set(m.conversation_id, (unreadMap.get(m.conversation_id) || 0) + 1);
       }
@@ -248,6 +250,9 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
           if (prev.some(m => m.id === msg.id)) return prev;
           return [...prev, msg];
         });
+        // El otro aceptó el contrato que le propusiste: fuegos para ti también.
+        const acuerdo = leerAcuerdo(msg.content);
+        if (acuerdo?.estado === 'aceptado') celebrar('¡Enhorabuena!', 'Acuerdo cerrado. Ya está por escrito en este chat.', acuerdo.ref);
         // Auto-mark incoming messages as read
         if (msg.sender_id !== user.id) {
           supabase.from('messages').update({ read: true }).eq('id', msg.id)
@@ -267,14 +272,14 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
   useEffect(() => () => { if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current); }, []);
 
-  const sendMessage = async (overrideContent?: string, photoUrl?: string) => {
+  const sendMessage = async (overrideContent?: string, photoUrl?: string): Promise<boolean> => {
     const text = typeof overrideContent === 'string' ? overrideContent : input.trim();
-    if (!text && !photoUrl) return;
-    if (!activeConvId || !user || sending) return;
+    if (!text && !photoUrl) return false;
+    if (!activeConvId || !user || sending) return false;
 
     if (text) {
       const { clean, reason } = sanitizeInput(text, 'default');
-      if (!clean) { toast.error(reason); return; }
+      if (!clean) { toast.error(reason); return false; }
     }
 
     setSending(true);
@@ -284,7 +289,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     if (photoUrl) payload.photo_url = photoUrl;
 
     const { error } = await supabase.from('messages').insert(payload as any);
-    if (error) { toast.error('Error al enviar el mensaje'); setSending(false); return; }
+    if (error) { toast.error('Error al enviar el mensaje'); setSending(false); return false; }
     await supabase.from('conversations').update({ last_message_at: new Date().toISOString() }).eq('id', activeConvId);
     setInput('');
     await loadMessages(activeConvId);
@@ -316,6 +321,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         });
       }
     }
+    return true;
   };
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -505,7 +511,13 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 }}
                 onBlockUser={() => { if (activeOtherUserId) blockUser(activeOtherUserId); }}
                 onReportUser={reportUser}
-                acuerdoBar={<AcuerdoChatBar otherUserId={activeOtherUserId} otherName={activeOtherName} miRol={miRol} />}
+                acuerdoBar={<AcuerdoChatBar otherUserId={activeOtherUserId} otherName={activeOtherName} miRol={miRol}
+                  onEnviar={contenido => sendMessage(contenido)} />}
+                onAceptarAcuerdo={async ref => {
+                  if (await sendMessage(mensajeAceptado(ref))) {
+                    celebrar('¡Enhorabuena!', `Acuerdo cerrado con ${activeOtherName || 'tu contacto'}. Ya está por escrito en este chat.`, ref);
+                  }
+                }}
               />
             </div>
           )}
