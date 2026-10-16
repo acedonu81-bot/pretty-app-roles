@@ -690,7 +690,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                 <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>SESIONES</p>
                 <div className="flex flex-col gap-3">
                   {full.audioSessionUrls.slice(0, 5).map((url, i) => (
-                    <SessionAudioPlayer key={i} url={url} />
+                    <SessionAudioPlayer key={i} url={url} autor={p.name} />
                   ))}
                 </div>
               </motion.div>

@@ -1011,7 +1011,7 @@ const PublicProfile = () => {
                 <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Mix</span>
               </div>
               <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-                <EmbedDiferido src={audioEmbed.embedUrl} tipo={audioEmbed.type} titulo="Mix"
+                <EmbedDiferido src={audioEmbed.embedUrl} tipo={audioEmbed.type} titulo="Mix" autor={profile.name}
                   alto={audioEmbed.type === 'SoundCloud' ? 166 : audioEmbed.type === 'HearThis' ? 150 : 120} />
               </div>
             </motion.div>
@@ -1026,7 +1026,7 @@ const PublicProfile = () => {
               <div className="flex flex-col gap-3">
                 {extraMedia.audio_session_urls.slice(0, 5).map((url, i) => (
                   <div key={i} className="w-full">
-                    <SessionAudioPlayer url={url} />
+                    <SessionAudioPlayer url={url} autor={profile.name} />
                   </div>
                 ))}
               </div>

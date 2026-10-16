@@ -41,3 +41,25 @@ describe('ReproductorConcurso', () => {
     expect(document.querySelector('iframe')).toBeNull();
   });
 });
+
+import EmbedDiferido from '@/components/EmbedDiferido';
+
+describe('Anclar una sesión de perfil', () => {
+  it('pasa la sesión a la barra y deja la tarjeta como "Sonando en la barra"', () => {
+    render(
+      <MemoryRouter>
+        <ReproductorConcursoProvider>
+          <EmbedDiferido src="https://www.mixcloud.com/widget/iframe/?feed=%2Fdj%2Fmix%2F" alto={120} tipo="Mixcloud" titulo="Mix" autor="DJ Prueba" />
+        </ReproductorConcursoProvider>
+      </MemoryRouter>,
+    );
+    fireEvent.click(screen.getByLabelText('Escuchar Mix'));
+    fireEvent.click(screen.getByLabelText('Anclar: seguir escuchando al navegar'));
+    expect(screen.getByText(/Mix de DJ Prueba/)).toBeTruthy();
+    expect(screen.getByText('Sonando en la barra de abajo')).toBeTruthy();
+    const ifr = [...document.querySelectorAll('iframe')].find(f => f.src.includes('mixcloud'));
+    expect(ifr?.src).toContain('autoplay=1');
+    fireEvent.click(screen.getByLabelText('Cerrar el reproductor'));
+    expect(screen.queryByText('Sonando en la barra de abajo')).toBeNull();
+  });
+});

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Pin } from 'lucide-react';
+import { claveSesion, useReproductorConcurso } from '@/components/concurso/ReproductorConcurso';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack, resolveSoundcloudShort } from '@/lib/streaming';
 import EmbedDiferido from '@/components/EmbedDiferido';
 
@@ -19,7 +20,9 @@ const formatTime = (seconds: number) => {
 // (reportado por el usuario 2 oct 2026: "porque solo uno tiene un play").
 // Los controles reales (play/pausa, progreso, volumen) solo aparecen tras
 // pulsar, igual que el iframe diferido de las otras plataformas.
-const CustomAudioPlayer = ({ url, alto = 70 }: { url: string; alto?: number }) => {
+const CustomAudioPlayer = ({ url, alto = 70, autor }: { url: string; alto?: number; autor?: string }) => {
+  const { sesion, reproducir } = useReproductorConcurso();
+  const enBarra = !!sesion && claveSesion(sesion) === url;
   const audioRef = useRef<HTMLAudioElement>(null);
   const [cargado, setCargado] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -41,6 +44,25 @@ const CustomAudioPlayer = ({ url, alto = 70 }: { url: string; alto?: number }) =
     audio.currentTime = time;
     setCurrent(time);
   };
+
+  // Anclar (17 oct 2026): la sesión pasa a la barra fija y sigue sonando al navegar.
+  const anclar = () => {
+    audioRef.current?.pause();
+    reproducir({ url, audioSrc: url, titulo: autor ? `Sesión de ${autor}` : 'Sesión de audio', subtitulo: 'Audio · sigue sonando mientras navegas' });
+    setCargado(false);
+  };
+
+  if (enBarra) {
+    return (
+      <div className="w-full flex items-center gap-3 rounded-xl px-4" style={{ height: alto, background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+        <Pin size={18} style={{ color: '#B8941E' }} />
+        <span className="min-w-0">
+          <span className="block text-sm font-bold" style={{ color: '#111' }}>Sonando en la barra de abajo</span>
+          <span className="block text-xs" style={{ color: '#6b7280' }}>Sigue sonando mientras navegas</span>
+        </span>
+      </div>
+    );
+  }
 
   if (errored) {
     return (
@@ -115,6 +137,10 @@ const CustomAudioPlayer = ({ url, alto = 70 }: { url: string; alto?: number }) =
       <span className="text-[0.75rem] font-semibold tabular-nums shrink-0" style={{ color: '#888', minWidth: 32 }}>
         {formatTime(duration)}
       </span>
+      <button type="button" onClick={anclar} aria-label="Anclar: seguir escuchando al navegar" title="Seguir escuchando mientras navegas"
+        className="shrink-0 w-6 h-6 flex items-center justify-center" style={{ color: '#7a6216' }}>
+        <Pin size={14} />
+      </button>
       <button type="button"
         onClick={() => { const a = audioRef.current; if (!a) return; a.muted = !a.muted; setMuted(a.muted); }}
         className="shrink-0 w-6 h-6 flex items-center justify-center"
@@ -130,7 +156,7 @@ const CustomAudioPlayer = ({ url, alto = 70 }: { url: string; alto?: number }) =
 // `SessionAudio`). Reproduce las sesiones desde audio_session_urls /
 // audio_embed_url, que son casi siempre links externos de Mixcloud,
 // SoundCloud o HearThis, no archivos servidos directamente.
-const SessionAudioPlayer = ({ url }: { url: string }) => {
+const SessionAudioPlayer = ({ url, autor }: { url: string; autor?: string }) => {
   const [embedSrc, setEmbedSrc] = useState<string | null>(null);
   const parsed = useMemo(() => parseStreamUrl(url), [url]);
 
@@ -149,10 +175,10 @@ const SessionAudioPlayer = ({ url }: { url: string }) => {
     if (!embedSrc) return null;
     return (
       <EmbedDiferido src={embedSrc} alto={parsed.type === 'SoundCloud' ? 166 : 120} tipo={parsed.type}
-        titulo="Sesión de audio" className="rounded-xl" />
+        titulo="Sesión de audio" autor={autor} className="rounded-xl" />
     );
   }
-  return <CustomAudioPlayer url={url} />;
+  return <CustomAudioPlayer url={url} autor={autor} />;
 };
 
 export default SessionAudioPlayer;

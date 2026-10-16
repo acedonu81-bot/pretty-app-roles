@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Play } from 'lucide-react';
+import { Pin, Play } from 'lucide-react';
+import { claveSesion, useReproductorConcurso } from '@/components/concurso/ReproductorConcurso';
 
 /**
  * Reproductor externo (SoundCloud, HearThis, Mixcloud) que solo se carga al
@@ -14,6 +15,8 @@ interface Props {
   alto: number;
   tipo?: string;
   titulo: string;
+  /** Nombre del perfil, para el título de la barra al anclarla. */
+  autor?: string;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -23,13 +26,41 @@ const conAutoplay = (src: string) =>
     ? `${src}${src.includes('?') ? '&' : '?'}auto_play=true`
     : src;
 
-export default function EmbedDiferido({ src, alto, tipo, titulo, className, style }: Props) {
+export default function EmbedDiferido({ src, alto, tipo, titulo, autor, className, style }: Props) {
   const [cargado, setCargado] = useState(false);
+  const { sesion, reproducir } = useReproductorConcurso();
+  const enBarra = !!sesion && claveSesion(sesion) === src;
 
-  if (cargado) {
+  if (cargado && !enBarra) {
+    // "Anclar" (17 oct 2026): pasa la sesión a la barra fija, que sigue sonando
+    // al cambiar de página. Vuelve a empezar desde el principio.
+    const anclar = () => {
+      reproducir({ url: src, embedSrc: src, alto, titulo: autor ? `${titulo} de ${autor}` : titulo, subtitulo: `${tipo ?? 'Audio'} · sigue sonando mientras navegas` });
+      setCargado(false);
+    };
     return (
-      <iframe src={conAutoplay(src)} width="100%" height={alto} allow="autoplay; encrypted-media"
-        title={titulo} className={className} style={{ border: 'none', ...style }} />
+      <div className="relative">
+        <iframe src={conAutoplay(src)} width="100%" height={alto} allow="autoplay; encrypted-media"
+          title={titulo} className={className} style={{ border: 'none', ...style }} />
+        <button type="button" onClick={anclar} aria-label="Anclar: seguir escuchando al navegar"
+          title="Seguir escuchando mientras navegas"
+          className="absolute top-2 right-2 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[0.75rem] font-black shadow"
+          style={{ background: 'rgba(255,253,247,0.96)', border: '1px solid rgba(212,175,55,0.6)', color: '#7a6216' }}>
+          <Pin size={12} /> Anclar
+        </button>
+      </div>
+    );
+  }
+  if (enBarra) {
+    return (
+      <div className={`w-full flex items-center gap-3 px-4 ${className ?? ''}`}
+        style={{ height: Math.min(alto, 76), background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', ...style }}>
+        <Pin size={18} style={{ color: '#B8941E' }} />
+        <span className="min-w-0">
+          <span className="block text-sm font-bold" style={{ color: '#111' }}>Sonando en la barra de abajo</span>
+          <span className="block text-xs" style={{ color: '#6b7280' }}>Sigue sonando mientras navegas</span>
+        </span>
+      </div>
     );
   }
   // Barras de ecualizador en CSS puro (sin librería ni canvas): cada una
