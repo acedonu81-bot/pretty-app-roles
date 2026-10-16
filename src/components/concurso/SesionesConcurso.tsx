@@ -6,6 +6,8 @@ import LikeButton from '@/components/LikeButton';
 import { Play } from 'lucide-react';
 import { useReproductorConcurso } from '@/components/concurso/ReproductorConcurso';
 import { pistaSoundcloudExiste } from '@/lib/soundcloudEnlace';
+import { cambiarSesion } from '@/lib/concursoInscripcion';
+import { toast } from 'sonner';
 import { HZ, TONES, clay, clayButton, clayInset } from '@/components/healthy-zone/clay';
 
 /**
@@ -81,6 +83,57 @@ function Reproductor({ url, titulo }: { url: string; titulo: string }) {
 }
 
 const AZUL = '#2563EB';
+
+// Cambiar la sesión inscrita (17 oct 2026): si la anterior dejó de existir en
+// SoundCloud o el DJ prefiere otra. La nueva vuelve a revisión y los me gusta se
+// conservan. Solo mientras dura el concurso.
+function CambiarSesion({ onCambiada }: { onCambiada: () => void }) {
+  const [abierto, setAbierto] = useState(false);
+  const [texto, setTexto] = useState('');
+  const [error, setError] = useState('');
+  const [enviando, setEnviando] = useState(false);
+  if (!concursoActivo()) return null;
+  if (!abierto) {
+    return (
+      <button type="button" onClick={() => setAbierto(true)} className="mt-3 text-sm underline"
+        style={{ color: AZUL, fontFamily: HZ.body, fontWeight: 800 }}>
+        Cambiar mi sesión por otra
+      </button>
+    );
+  }
+  const guardar = async () => {
+    setEnviando(true); setError('');
+    const r = await cambiarSesion(texto, 'concurso_aspirantes');
+    setEnviando(false);
+    if (!r.ok) { setError(r.mensaje ?? 'No se ha podido cambiar la sesión.'); return; }
+    toast.success('Sesión cambiada. La revisamos y vuelve a salir en el listado; tus me gusta se mantienen.');
+    setAbierto(false); setTexto('');
+    onCambiada();
+  };
+  return (
+    <div className="mt-3 rounded-2xl p-3" style={{ background: HZ.surface, boxShadow: clayInset }}>
+      <label className="block text-sm mb-1.5" htmlFor="nueva-sesion" style={{ color: HZ.ink, fontFamily: HZ.body, fontWeight: 800 }}>
+        Enlace de tu nueva sesión de SoundCloud
+      </label>
+      <input id="nueva-sesion" type="url" value={texto} onChange={e => setTexto(e.target.value)} placeholder="soundcloud.com/tu-nombre/tu-sesion"
+        className="w-full px-3 py-2.5 rounded-xl text-base outline-none" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.12)', color: '#111' }} />
+      {error && <p className="text-xs mt-1.5" style={{ color: '#b91c1c', fontFamily: HZ.body, fontWeight: 700 }}>{error}</p>}
+      <p className="text-xs mt-1.5" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>
+        Tiene que estar en público. Pasa otra vez por revisión antes de salir en el listado.
+      </p>
+      <div className="flex items-center gap-2 mt-2.5">
+        <button type="button" disabled={!texto.trim() || enviando} onClick={guardar}
+          className="px-5 py-2.5 rounded-full text-sm text-white disabled:opacity-50"
+          style={{ background: AZUL, boxShadow: clayButton('36,119,179'), fontFamily: HZ.display, fontWeight: 800 }}>
+          {enviando ? 'Comprobando…' : 'Guardar sesión'}
+        </button>
+        <button type="button" onClick={() => { setAbierto(false); setError(''); }} className="px-3 py-2 text-sm" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 800 }}>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  );
+}
 
 type Propia = { estado: 'pendiente' | 'rechazada'; soundcloud_url: string; display_name: string | null; photo_url: string | null; zone: string | null };
 
@@ -167,6 +220,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
               ? 'Solo la ves tú. En cuanto la revisemos sale aquí para todos y te avisamos por email para que la compartas.'
               : 'No cumple las bases. Escríbenos a info@xpeak.site y te contamos qué falta.'}
           </p>
+          <CambiarSesion onCambiada={cargar} />
         </div>
       )}
 
@@ -241,6 +295,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                     </>
                   )}
                 </div>
+                {user && p.user_id === user.id && <CambiarSesion onCambiada={cargar} />}
               </div>
             );
           })}
