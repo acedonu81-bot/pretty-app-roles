@@ -247,18 +247,31 @@ body.is-native-app .clay-btn-primary {
     -webkit-text-fill-color: transparent;
   }
 
-  /* Espacio reservado por la barra de navegación inferior móvil (64px + safe-area).
-     0 en desktop. Lo usan vistas de alto completo (Mensajes) para no quedar tapadas. */
-  :root { --mobile-nav-space: 0px; }
+  /* Espacio reservado por la barra de navegación inferior móvil (54px + margen
+     inferior). 0 en desktop. Lo usan la propia barra, el hueco bajo el contenido
+     del panel y lo que flota encima (consejos, cookies).
+     --mobile-nav-sab: en iPhone el safe-area inferior son 34px, pero la raya de
+     inicio solo necesita ~20; reservarlo entero dejaba una franja blanca vacía
+     bajo los iconos (16 oct 2026). El mínimo de 10px es por Android, donde la
+     barra de gestos a veces llega como 0px y pisaba los iconos. */
+  :root { --mobile-nav-space: 0px; --mobile-nav-sab: max(calc(env(safe-area-inset-bottom) - 14px), 10px); }
   /* 767: a 768 px ya no hay barra inferior (md:hidden) y se reservaba igual. */
   @media (max-width: 767px) {
-    :root { --mobile-nav-space: calc(64px + max(env(safe-area-inset-bottom), 12px)); }
+    :root { --mobile-nav-space: calc(54px + var(--mobile-nav-sab)); }
     /* iOS hace zoom automático al enfocar un input con texto <16px. Forzar 16px lo evita. */
     input:not([type='checkbox']):not([type='radio']),
     textarea,
     select {
       font-size: 16px !important;
     }
+  }
+  /* Con una conversación abierta en móvil (lo marca MessagesView), fuera la
+     barra inferior, como en WhatsApp o Instagram: entre ella y la caja de
+     escribir se comían ~170px de blanco (16 oct 2026). Se vuelve con la flecha
+     del chat. 639: a partir de 640 px la lista y el chat van lado a lado. */
+  @media (max-width: 639px) {
+    html[data-chat-abierto] { --mobile-nav-space: 0px; }
+    html[data-chat-abierto] .mobile-bottom-nav { display: none; }
   }
 
   .glass-panel {

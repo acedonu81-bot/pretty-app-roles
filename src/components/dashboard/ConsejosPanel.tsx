@@ -174,7 +174,7 @@ export default function ConsejosPanel({ isMobile, onNavigate, onGoToReviews }: P
   };
 
   const posicion: React.CSSProperties = isMobile
-    ? { left: 12, right: 12, bottom: 'calc(64px + max(env(safe-area-inset-bottom), 12px) + 10px)' }
+    ? { left: 12, right: 12, bottom: 'calc(var(--mobile-nav-space) + 10px)' }
     : ancla
       ? { left: ancla.left, top: ancla.top, width: 320 }
       : { left: 72, bottom: 24, width: 320 };

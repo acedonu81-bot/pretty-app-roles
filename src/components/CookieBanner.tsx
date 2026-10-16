@@ -140,7 +140,7 @@ const CookieBanner = () => {
           exit={{ y: 120, opacity: 0 }}
           transition={{ type: 'spring', damping: 26, stiffness: 200 }}
           className={`fixed left-3 right-3 z-[9999] max-w-xl mx-auto ${enPanel
-            ? 'bottom-[calc(64px+max(var(--sab),12px)+0.5rem)] md:bottom-[max(1rem,var(--sab))]'
+            ? 'bottom-[calc(var(--mobile-nav-space)+0.5rem)] md:bottom-[max(1rem,var(--sab))]'
             : 'bottom-[max(0.75rem,var(--sab))]'}`}
         >
           <div style={{

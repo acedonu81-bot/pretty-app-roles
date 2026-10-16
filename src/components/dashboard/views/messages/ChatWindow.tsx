@@ -370,8 +370,10 @@ const ChatWindow = ({
         </div>
       )}
 
-      {/* Input area */}
-      <div className="px-3 py-3 flex-shrink-0 relative"
+      {/* Input area. Fina (py-2, botones de 40px) y con los iconos sueltos,
+          sin cajita gris: con py-3 y tres cajas de 44px se veía una franja
+          blanca enorme encima de la barra inferior (16 oct 2026). */}
+      <div className="px-2 py-2 flex-shrink-0 relative"
         style={{ borderTop: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
         {showEmoji && (
           <div className="absolute bottom-full mb-2 left-3 right-3 rounded-xl p-3 z-20"
@@ -393,31 +395,31 @@ const ChatWindow = ({
           </div>
         )}
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <button type="button" onClick={() => setShowEmoji(!showEmoji)}
-            className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+            aria-label="Emoticonos" title="Emoticonos"
+            className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90"
             style={{
-              background: showEmoji ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
-              border: `1px solid ${showEmoji ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)'}`,
-              color: showEmoji ? '#D4AF37' : '#333',
+              background: showEmoji ? 'rgba(212,175,55,0.15)' : 'transparent',
+              color: showEmoji ? '#8B6A00' : '#555',
             }}>
-            <Smile size={16} />
+            <Smile size={22} />
           </button>
 
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
             aria-label="Enviar foto o vídeo" title="Enviar foto o vídeo"
-            className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 disabled:opacity-40"
-            style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#444' }}>
+            className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90 disabled:opacity-40"
+            style={{ background: 'transparent', color: '#555' }}>
             {uploadingPhoto
               ? <div className="w-4 h-4 rounded-full border border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} />
-              : <Image size={16} />}
+              : <Image size={22} />}
           </button>
           <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm" className="hidden" onChange={onPhotoUpload} />
 
           {onAcepto && (
             <button type="button" onClick={onAcepto} disabled={sending || yaAcepte}
               title={yaAcepte ? `Has aceptado. Falta ${activeOtherName || 'la otra parte'}` : 'Aceptar el acuerdo'}
-              className="flex-shrink-0 h-11 rounded-xl px-3 text-xs font-black transition-all active:scale-95"
+              className="flex-shrink-0 h-10 rounded-full px-3 text-xs font-black transition-all active:scale-95"
               style={yaAcepte
                 ? { background: '#ECFDF5', border: '1px solid rgba(5,150,105,0.4)', color: '#059669' }
                 : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
@@ -434,7 +436,7 @@ const ChatWindow = ({
               }}
               placeholder="Escribe un mensaje..."
               maxLength={1000}
-              className="w-full px-4 py-2.5 rounded-xl text-base sm:text-sm outline-none transition-all"
+              className="w-full px-4 py-2 rounded-full text-base sm:text-sm outline-none transition-all"
               style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
               onFocus={e => (e.target.style.borderColor = 'rgba(212,175,55,0.3)')}
               onBlur={e => (e.target.style.borderColor = 'rgba(0,0,0,0.08)')}
@@ -442,9 +444,10 @@ const ChatWindow = ({
           </div>
 
           <button type="button" onClick={() => onSend()} disabled={sending || !input.trim()}
-            className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:hover:scale-100"
-            style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.05)', color: input.trim() ? '#000' : '#333' }}>
-            <Send size={16} />
+            aria-label="Enviar"
+            className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90 disabled:opacity-40"
+            style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.05)', color: input.trim() ? '#000' : '#555' }}>
+            <Send size={18} />
           </button>
         </div>
       </div>

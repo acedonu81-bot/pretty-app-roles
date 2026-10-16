@@ -24,6 +24,9 @@ interface Tab {
 // "Inicio" sigue marcado, porque se llega a ellas desde el mapa de gremios.
 const dirViews = new Set(['dj','staff','azafata','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador','photo-booth','food-truck','grupo-musical','disco-movil','tecnico','alquiler','local_eventos']);
 
+// El tab activo lleva una pastilla dorada detrás del icono (como las barras de
+// iOS 26 y Android): solo con el color cambiado, los cuatro iconos finos se
+// veían iguales y "simplones" (16 oct 2026).
 const TabButton = ({ tab, onClick }: { tab: Tab; onClick: () => void }) => (
   <button
     type="button"
@@ -34,25 +37,29 @@ const TabButton = ({ tab, onClick }: { tab: Tab; onClick: () => void }) => (
     <div className="relative">
       {tab.alerta ? (
         <span className="flex items-center justify-center rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
-          style={{ width: 30, height: 30, margin: -4, background: '#16a34a' }}>
-          <tab.icon size={18} strokeWidth={2.5} style={{ color: '#fff' }} />
+          style={{ width: 52, height: 28, background: '#16a34a' }}>
+          <tab.icon size={20} strokeWidth={2.5} style={{ color: '#fff' }} />
         </span>
       ) : (
-        <tab.icon
-          size={22}
-          strokeWidth={tab.isActive ? 2.5 : 1.8}
-          style={{ color: tab.isActive ? '#D4AF37' : '#444' }}
-        />
+        <span className="flex items-center justify-center rounded-full transition-colors"
+          style={{ width: 52, height: 28, background: tab.isActive ? 'rgba(212,175,55,0.18)' : 'transparent' }}>
+          <tab.icon
+            size={22}
+            strokeWidth={tab.isActive ? 2.4 : 2}
+            fill={tab.isActive ? 'rgba(212,175,55,0.25)' : 'none'}
+            style={{ color: tab.isActive ? '#8B6A00' : '#555' }}
+          />
+        </span>
       )}
       {tab.badge != null && tab.badge > 0 && (
-        <span className="absolute -top-2 -right-3 min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center text-[0.75rem] font-black"
+        <span className="absolute -top-1 right-1 min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center text-[0.75rem] font-black"
           style={{ background: tab.alerta ? '#15803d' : '#ef4444', color: '#fff', boxShadow: '0 0 0 2px #fff' }}>
           {tab.badge > 9 ? '9+' : tab.badge}
         </span>
       )}
     </div>
-    <span className="text-[0.75rem] font-semibold"
-      style={{ color: tab.alerta ? '#166534' : tab.isActive ? '#D4AF37' : '#444', fontWeight: tab.alerta ? 800 : undefined }}>
+    <span className="text-[0.75rem] leading-none"
+      style={{ color: tab.alerta ? '#166534' : tab.isActive ? '#8B6A00' : '#555', fontWeight: tab.alerta || tab.isActive ? 800 : 600 }}>
       {tab.alerta && tab.id === 'flashbooking' ? 'Nuevo' : tab.label}
     </span>
   </button>
@@ -84,18 +91,17 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 flex items-stretch md:hidden"
+      className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 flex items-stretch md:hidden"
       style={{
         background: 'rgba(255,255,255,0.97)',
         borderTop: '1px solid rgba(0,0,0,0.08)',
         backdropFilter: 'blur(20px)',
-        // En Chrome/Samsung Internet sobre Android, la barra de gestos no
-        // siempre se reporta en env(safe-area-inset-bottom) (llega como 0px
-        // aunque ocupe espacio real), y la fila de iconos quedaba pisada por
-        // ella. El max() reserva un mínimo cuando el navegador no informa del
-        // inset, y respeta el valor real cuando sí lo hace.
-        paddingBottom: 'max(env(safe-area-inset-bottom), 12px)',
-        height: 'calc(64px + max(env(safe-area-inset-bottom), 12px))',
+        // Alto y margen inferior salen de --mobile-nav-sab / --mobile-nav-space
+        // (index.css), los mismos que usa el panel para dejarle hueco.
+        // Antes eran 64px + el safe-area entero: 98px en iPhone, casi la mitad
+        // en blanco (16 oct 2026).
+        paddingBottom: 'var(--mobile-nav-sab)',
+        height: 'var(--mobile-nav-space)',
         position: 'fixed',
       }}
     >

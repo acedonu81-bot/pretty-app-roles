@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -13,6 +13,7 @@ import { leerAcuerdo, mensajeAceptado, mensajeAcepto, estadoAcepto, vistaPrevia 
 import { celebrar } from '@/components/FuegosArtificiales';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { isNative } from '@/lib/capacitor';
+import { useAltoLibreEnPanel } from '@/hooks/useAltoLibreEnPanel';
 import { RefreshCw } from 'lucide-react';
 import { askForPush } from '@/lib/pushAsk';
 
@@ -486,16 +487,29 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   };
 
   const totalUnread = conversations.reduce((s, c) => s + c.unread, 0);
+  const chatAbiertoMovil = mobileShowChat && !!activeConvId;
+
+  // Marca para index.css: en móvil, con una conversación abierta, se esconde
+  // la barra inferior y su hueco. Layout effect, y antes de la medida de
+  // abajo, para que esta ya vea el hueco nuevo.
+  useLayoutEffect(() => {
+    const raiz = document.documentElement;
+    raiz.toggleAttribute('data-chat-abierto', chatAbiertoMovil);
+    return () => raiz.removeAttribute('data-chat-abierto');
+  }, [chatAbiertoMovil]);
+
+  const [raizRef, alto] = useAltoLibreEnPanel<HTMLDivElement>(chatAbiertoMovil);
 
   return (
-    <div className="animate-[fadeIn_0.4s_ease] flex flex-col"
+    <div ref={raizRef} className="animate-[fadeIn_0.4s_ease] flex flex-col"
       style={{
-        // 100dvh = viewport dinámico (no salta con la barra de URL móvil).
-        // En móvil descuenta header (~120px) + bottom nav (64px + safe-area); en desktop solo el header.
-        height: 'calc(100dvh - 120px - var(--mobile-nav-space, 0px) - var(--install-bar-h, 0px))',
+        // Respaldo hasta la primera medida.
+        height: alto ?? 'calc(100dvh - 120px - var(--mobile-nav-space, 0px) - var(--install-bar-h, 0px))',
         minHeight: 380,
       }}>
-      <div className="mb-4 flex items-center justify-between">
+      {/* En móvil, dentro de una conversación, sobra: el chat ya lleva su
+          cabecera con el nombre y la flecha de volver. */}
+      <div className={`mb-4 items-center justify-between ${chatAbiertoMovil ? 'hidden sm:flex' : 'flex'}`}>
         <div>
           <h2 className="text-2xl font-bold mb-0.5 flex items-center gap-2">
             <span className="text-gradient">Mensajes</span>
