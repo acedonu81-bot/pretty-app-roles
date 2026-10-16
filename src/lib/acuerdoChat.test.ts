@@ -35,3 +35,33 @@ describe('Acepto en el chat', () => {
   });
   it('vista previa', () => { expect(vistaPrevia(mensajeAcepto())).toBe('Acepto el acuerdo'); });
 });
+
+import { codificarCondiciones, leerCondiciones, textoCondiciones, fechaIso } from './acuerdoChat';
+describe('condiciones del acuerdo', () => {
+  const c = { fecha: '2026-12-12', ciudad: 'Madrid', precio: '500', evento: 'Boda Ana' };
+  it('ida y vuelta, con fecha en barras y sin bloquear el filtro', () => {
+    const m = mensajeAcepto(c);
+    expect(m).toBe('[[acuerdo:aceptado|ACUERDO|f=12/12/2026;c=Madrid;p=500;e=Boda Ana]]');
+    expect(leerCondiciones(leerAcuerdo(m)!.resumen)).toEqual({ ...c, fecha: '12/12/2026' });
+    expect(textoCondiciones(leerCondiciones(leerAcuerdo(m)!.resumen))).toBe('Boda Ana · 12/12/2026 · Madrid · 500 €');
+    expect(sanitizeInput(m).clean).toBe(true);
+    expect(fechaIso('3/1/2027')).toBe('2027-01-03');
+  });
+  it('una contrapropuesta con otras condiciones no cierra', () => {
+    const otra = { ...c, precio: '600' };
+    const r = estadoAcepto([
+      { id: '1', sender_id: 'a', content: mensajeAcepto(c) },
+      { id: '2', sender_id: 'b', content: mensajeAcepto(otra) },
+    ]);
+    expect(r.cierres.size).toBe(0);
+    expect([...r.pendientes]).toEqual(['b']);
+    expect(r.condiciones).toBe(codificarCondiciones(otra));
+  });
+  it('aceptar las mismas condiciones cierra', () => {
+    const r = estadoAcepto([
+      { id: '1', sender_id: 'a', content: mensajeAcepto(c) },
+      { id: '2', sender_id: 'b', content: mensajeAcepto(c) },
+    ]);
+    expect([...r.cierres]).toEqual(['2']);
+  });
+});

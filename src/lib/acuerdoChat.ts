@@ -29,25 +29,71 @@ export function vistaPrevia(contenido: string): string {
 }
 
 // "Acepto" en el propio chat (16 oct 2026, el usuario: la barra de arriba con el
-// contrato "da fricción"). Cada parte pulsa Acepto junto al cuadro de escribir;
-// cuando han aceptado los dos, el acuerdo queda cerrado. Se guarda como
-// [[acuerdo:aceptado|ACUERDO]] para que la campana y el push (trigger de la
-// BD) ya lo muestren como "Ha aceptado el contrato" sin tocar la base de datos.
+// contrato "da fricción"). Quien acepta primero pone las condiciones mínimas
+// (fecha, ciudad, precio y, si quiere, qué evento); la otra parte las ve y
+// pulsa ACEPTO. Cuando los dos han aceptado las MISMAS condiciones, el acuerdo
+// queda cerrado y se registra como reserva (RPC cerrar_acuerdo_chat). Se guarda
+// como [[acuerdo:aceptado|ACUERDO|f=12/12/2026;c=Madrid;p=500;e=Boda]]: la
+// campana y el push (trigger de la BD) ya lo muestran como "Ha aceptado el
+// contrato". Fecha con barras: "2026-12-12" lo tomaría el filtro por teléfono.
 export const REF_ACUERDO = 'ACUERDO';
-export const mensajeAcepto = () => mensajeAceptado(REF_ACUERDO);
+
+export interface Condiciones { fecha: string; ciudad: string; precio: string; evento: string }
+
+const limpiar = (v: string) => v.replace(/[[\]|;=]/g, ' ').replace(/\s+/g, ' ').trim();
+
+/** "2026-12-12" (input date) → "12/12/2026"; deja igual si ya viene con barras. */
+export const fechaConBarras = (f: string) => /^\d{4}-\d{2}-\d{2}$/.test(f) ? f.split('-').reverse().join('/') : f;
+/** "12/12/2026" → "2026-12-12" para inputs de fecha y el contrato. */
+export const fechaIso = (f: string) => {
+  const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(f);
+  return m ? `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}` : f;
+};
+
+export function codificarCondiciones(c: Condiciones): string {
+  const partes = [`f=${limpiar(fechaConBarras(c.fecha))}`, `c=${limpiar(c.ciudad)}`, `p=${limpiar(c.precio).replace(/[^0-9.,]/g, '')}`];
+  if (limpiar(c.evento)) partes.push(`e=${limpiar(c.evento)}`);
+  return partes.join(';').slice(0, 200);
+}
+
+export function leerCondiciones(resumen: string): Condiciones | null {
+  if (!resumen) return null;
+  const v: Record<string, string> = {};
+  for (const par of resumen.split(';')) {
+    const i = par.indexOf('=');
+    if (i > 0) v[par.slice(0, i).trim()] = par.slice(i + 1).trim();
+  }
+  if (!v.f && !v.c && !v.p) return null;
+  return { fecha: v.f ?? '', ciudad: v.c ?? '', precio: v.p ?? '', evento: v.e ?? '' };
+}
+
+export function textoCondiciones(c: Condiciones | null): string {
+  if (!c) return '';
+  return [c.evento, c.fecha, c.ciudad, c.precio ? `${c.precio} €` : ''].filter(Boolean).join(' · ');
+}
+
+export const mensajeAcepto = (c?: Condiciones | string) => {
+  const cod = typeof c === 'string' ? c : c ? codificarCondiciones(c) : '';
+  return `[[acuerdo:aceptado|${REF_ACUERDO}${cod ? `|${cod}` : ''}]]`;
+};
 
 type MsgMin = { id: string; sender_id: string; content: string; deleted_at?: string | null };
 
-/** Quién ha aceptado en el acuerdo abierto y qué mensajes cerraron uno. */
-export function estadoAcepto(msgs: MsgMin[]): { pendientes: Set<string>; cierres: Set<string> } {
+/** Acuerdo abierto (quién ha aceptado y con qué condiciones) y mensajes que
+ *  cerraron uno. Si alguien acepta con condiciones distintas, empieza de nuevo
+ *  con él solo: es una contrapropuesta. */
+export function estadoAcepto(msgs: MsgMin[]): { pendientes: Set<string>; condiciones: string; cierres: Set<string> } {
   let pendientes = new Set<string>();
+  let condiciones = '';
   const cierres = new Set<string>();
   for (const m of msgs) {
     if (m.deleted_at) continue;
     const a = leerAcuerdo(m.content);
     if (a?.estado !== 'aceptado' || a.ref !== REF_ACUERDO) continue;
+    if (pendientes.size > 0 && a.resumen !== condiciones) pendientes = new Set();
+    if (pendientes.size === 0) condiciones = a.resumen;
     pendientes.add(m.sender_id);
-    if (pendientes.size >= 2) { cierres.add(m.id); pendientes = new Set(); }
+    if (pendientes.size >= 2) { cierres.add(m.id); pendientes = new Set(); condiciones = ''; }
   }
-  return { pendientes, cierres };
+  return { pendientes, condiciones, cierres };
 }
