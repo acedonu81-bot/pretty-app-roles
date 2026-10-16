@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { leerAcuerdo } from '@/lib/acuerdoChat';
+import { leerAcuerdo, estadoAcepto, REF_ACUERDO } from '@/lib/acuerdoChat';
 import AdjuntoChat from './AdjuntoChat';
 import { Send, Shield, MessageSquare, CheckCheck, Check, Image, Smile, X, ArrowLeft, Trash2, MoreVertical, Flag } from 'lucide-react';
 
@@ -58,8 +58,8 @@ interface Props {
   onDeleteConversation?: () => void;
   onBlockUser?: () => void;
   onReportUser?: (reason: string) => void;
-  /** Barra "Cerrar acuerdo" entre la cabecera y los mensajes. */
-  acuerdoBar?: React.ReactNode;
+  /** Botón "Acepto" junto al cuadro de escribir (solo organizador ↔ profesional). */
+  onAcepto?: () => void;
   /** El profesional acepta el contrato propuesto en el chat. */
   onAceptarAcuerdo?: (ref: string) => void;
 }
@@ -77,8 +77,10 @@ const ChatWindow = ({
   input, setInput, showEmoji, setShowEmoji,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
-  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, acuerdoBar, onAceptarAcuerdo,
+  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, onAcepto, onAceptarAcuerdo,
 }: Props) => {
+  const { pendientes: aceptanAhora, cierres: acuerdosCerrados } = estadoAcepto(messages);
+  const yaAcepte = aceptanAhora.has(userId);
   const acuerdosAceptados = new Set(messages.map(m => leerAcuerdo(m.content)).filter(a => a?.estado === 'aceptado').map(a => a!.ref));
   const inputRef = useRef<HTMLInputElement>(null);
   const [hoveredMsgId, setHoveredMsgId] = useState<string | null>(null);
@@ -224,7 +226,6 @@ const ChatWindow = ({
       )}
 
       {/* Messages */}
-      {acuerdoBar}
       <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-2"
         style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.02) 0%, transparent 70%)' }}>
         {messages.length === 0 && (
@@ -278,6 +279,14 @@ const ChatWindow = ({
                     <div className="px-4 py-2.5 rounded-2xl text-sm italic"
                       style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)', color: '#666' }}>
                       Mensaje eliminado
+                    </div>
+                  ) : acuerdo?.estado === 'aceptado' && acuerdo.ref === REF_ACUERDO ? (
+                    <div className="px-4 py-3 rounded-2xl text-sm max-w-[280px]"
+                      style={{ background: acuerdosCerrados.has(msg.id) ? '#ECFDF5' : '#FBF3DD', border: `1px solid ${acuerdosCerrados.has(msg.id) ? 'rgba(5,150,105,0.4)' : 'rgba(212,175,55,0.5)'}`, color: '#3d300a' }}>
+                      <p className="font-black">{isMe ? 'Acepto' : `${activeOtherName || 'La otra parte'} acepta`}</p>
+                      <p className="text-xs mt-0.5" style={{ color: acuerdosCerrados.has(msg.id) ? '#059669' : 'rgba(0,0,0,0.55)', fontWeight: acuerdosCerrados.has(msg.id) ? 700 : 400 }}>
+                        {acuerdosCerrados.has(msg.id) ? 'Acuerdo cerrado por los dos' : isMe ? `Falta que ${activeOtherName || 'la otra parte'} acepte` : 'Pulsa Acepto para cerrar el acuerdo'}
+                      </p>
                     </div>
                   ) : acuerdo ? (
                     <div className="px-4 py-3 rounded-2xl text-sm max-w-[280px]"
@@ -404,6 +413,17 @@ const ChatWindow = ({
               : <Image size={16} />}
           </button>
           <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm" className="hidden" onChange={onPhotoUpload} />
+
+          {onAcepto && (
+            <button type="button" onClick={onAcepto} disabled={sending || yaAcepte}
+              title={yaAcepte ? `Has aceptado. Falta ${activeOtherName || 'la otra parte'}` : 'Aceptar el acuerdo'}
+              className="flex-shrink-0 h-11 rounded-xl px-3 text-xs font-black transition-all active:scale-95"
+              style={yaAcepte
+                ? { background: '#ECFDF5', border: '1px solid rgba(5,150,105,0.4)', color: '#059669' }
+                : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+              {yaAcepte ? 'Aceptado' : 'ACEPTO'}
+            </button>
+          )}
 
           <div className="flex-1 relative">
             <input ref={inputRef} type="text" value={input}

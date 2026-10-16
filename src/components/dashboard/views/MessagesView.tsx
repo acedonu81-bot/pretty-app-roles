@@ -9,8 +9,7 @@ import { conversationPair } from '@/lib/conversationPair';
 import { toast } from 'sonner';
 import ConversationList from './messages/ConversationList';
 import ChatWindow, { EmptyChatPlaceholder } from './messages/ChatWindow';
-import AcuerdoChatBar from './messages/AcuerdoChatBar';
-import { leerAcuerdo, mensajeAceptado, vistaPrevia } from '@/lib/acuerdoChat';
+import { leerAcuerdo, mensajeAceptado, mensajeAcepto, estadoAcepto, vistaPrevia } from '@/lib/acuerdoChat';
 import { celebrar } from '@/components/FuegosArtificiales';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { isNative } from '@/lib/capacitor';
@@ -253,7 +252,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         });
         // El otro aceptó el contrato que le propusiste: fuegos para ti también.
         const acuerdo = leerAcuerdo(msg.content);
-        if (acuerdo?.estado === 'aceptado') celebrar('¡Enhorabuena!', 'Acuerdo cerrado. Ya está por escrito en este chat.', acuerdo.ref);
+        if (acuerdo?.estado === 'aceptado' && acuerdo.ref !== 'ACUERDO') celebrar('¡Enhorabuena!', 'Acuerdo cerrado. Ya está por escrito en este chat.', acuerdo.ref);
         // Auto-mark incoming messages as read
         if (msg.sender_id !== user.id) {
           supabase.from('messages').update({ read: true }).eq('id', msg.id)
@@ -271,6 +270,31 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     };
   }, [activeConvId, user, loadConversations]);
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+
+  // Botón Acepto solo entre organizador y profesional (entre dos profesionales
+  // o dos organizadores no hay acuerdo que cerrar).
+  const [otroRol, setOtroRol] = useState<string | null>(null);
+  useEffect(() => {
+    setOtroRol(null);
+    if (!activeOtherUserId) return;
+    let vivo = true;
+    supabase.from('profiles').select('role').eq('user_id', activeOtherUserId)
+      .order('is_primary', { ascending: false }).limit(1).maybeSingle()
+      .then(({ data }) => { if (vivo) setOtroRol(data?.role ?? null); });
+    return () => { vivo = false; };
+  }, [activeOtherUserId]);
+  const hayAcuerdoPosible = !!miRol && !!otroRol && (miRol === 'empresario') !== (otroRol === 'empresario');
+
+  // Fuegos para los dos cuando el segundo "Acepto" cierra el acuerdo (llegue
+  // por el envío propio o en vivo). Solo si es el último mensaje y reciente:
+  // al abrir un chat con acuerdos antiguos no se repiten.
+  useEffect(() => {
+    const ultimo = messages[messages.length - 1];
+    if (!ultimo || Date.now() - new Date(ultimo.created_at).getTime() > 120_000) return;
+    if (estadoAcepto(messages).cierres.has(ultimo.id)) {
+      celebrar('¡Enhorabuena!', `Acuerdo cerrado con ${activeOtherName || 'tu contacto'}. Queda por escrito en este chat.`, ultimo.id);
+    }
+  }, [messages, activeOtherName]);
   useEffect(() => () => { if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current); }, []);
 
   const sendMessage = async (overrideContent?: string, adjunto?: { tipo: 'foto' | 'video'; ruta: string }): Promise<boolean> => {
@@ -539,8 +563,11 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 }}
                 onBlockUser={() => { if (activeOtherUserId) blockUser(activeOtherUserId); }}
                 onReportUser={reportUser}
-                acuerdoBar={<AcuerdoChatBar otherUserId={activeOtherUserId} otherName={activeOtherName} miRol={miRol}
-                  onEnviar={contenido => sendMessage(contenido)} />}
+                onAcepto={hayAcuerdoPosible ? async () => {
+                  if (await sendMessage(mensajeAcepto()) && !estadoAcepto(messages).pendientes.has(activeOtherUserId)) {
+                    toast.success(`Has aceptado. Falta que ${activeOtherName || 'la otra parte'} acepte.`);
+                  }
+                } : undefined}
                 onAceptarAcuerdo={async ref => {
                   if (await sendMessage(mensajeAceptado(ref))) {
                     celebrar('¡Enhorabuena!', `Acuerdo cerrado con ${activeOtherName || 'tu contacto'}. Ya está por escrito en este chat.`, ref);

@@ -20,3 +20,18 @@ describe('acuerdoChat', () => {
     expect(leerAcuerdo(mensajePropuesta('XPEAK-X1', ['Fiesta [VIP] | sala']))?.resumen).toBe('Fiesta  VIP    sala');
   });
 });
+
+import { estadoAcepto, mensajeAcepto } from './acuerdoChat';
+describe('Acepto en el chat', () => {
+  const m = (id: string, sender_id: string, content: string) => ({ id, sender_id, content });
+  it('cierra cuando aceptan los dos y abre otro después', () => {
+    const r = estadoAcepto([m('1', 'a', mensajeAcepto()), m('2', 'b', 'vale'), m('3', 'b', mensajeAcepto()), m('4', 'a', mensajeAcepto())]);
+    expect([...r.cierres]).toEqual(['3']);
+    expect([...r.pendientes]).toEqual(['a']);
+  });
+  it('aceptar dos veces la misma persona no cierra', () => {
+    const r = estadoAcepto([m('1', 'a', mensajeAcepto()), m('2', 'a', mensajeAcepto())]);
+    expect(r.cierres.size).toBe(0);
+  });
+  it('vista previa', () => { expect(vistaPrevia(mensajeAcepto())).toBe('Acepto el acuerdo'); });
+});
