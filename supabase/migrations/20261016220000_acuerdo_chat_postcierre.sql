@@ -176,10 +176,23 @@ DECLARE
 BEGIN
   IF v_uid IS NULL THEN RAISE EXCEPTION 'sin sesión'; END IF;
 
-  SELECT * INTO b FROM public.flash_bookings WHERE id = p_booking_id AND source = 'chat';
+  -- Solo reservas creadas por el cierre de un acuerdo del chat. chat_message_id
+  -- no es escribible por los clientes (solo tienen SELECT en esa columna), así
+  -- que una reserva normal no puede hacerse pasar por una del chat (revisión de
+  -- seguridad, 16 oct 2026).
+  SELECT * INTO b FROM public.flash_bookings WHERE id = p_booking_id AND source = 'chat' AND chat_message_id IS NOT NULL;
   IF NOT FOUND THEN RAISE EXCEPTION 'acuerdo no encontrado'; END IF;
   IF v_uid NOT IN (b.created_by, b.professional_user_id) THEN RAISE EXCEPTION 'no autorizado'; END IF;
   IF b.status IS DISTINCT FROM 'confirmed' THEN RAISE EXCEPTION 'el acuerdo ya no está activo'; END IF;
+
+  -- La conversación sale del mensaje que cerró el acuerdo, no de un campo de
+  -- texto de la reserva, y quien cancela tiene que ser parte de ella.
+  SELECT conversation_id INTO v_conv FROM public.messages WHERE id = b.chat_message_id;
+  IF v_conv IS NULL OR NOT EXISTS (
+    SELECT 1 FROM public.conversations WHERE id = v_conv AND v_uid IN (participant_a, participant_b)
+  ) THEN
+    RAISE EXCEPTION 'no autorizado';
+  END IF;
 
   UPDATE public.flash_bookings SET status = 'cancelled' WHERE id = b.id;
 
@@ -189,12 +202,9 @@ BEGIN
     AND ( (user_id = b.professional_user_id AND title = 'Trabajo: ' || b.requester_name)
        OR (user_id = b.created_by AND title = 'Evento: ' || b.professional_name) );
 
-  v_conv := substring(b.requester_contact from '^chat:([0-9a-f-]{36})$')::uuid;
-  IF v_conv IS NOT NULL THEN
-    INSERT INTO public.messages (conversation_id, sender_id, content)
-    VALUES (v_conv, v_uid, '[[acuerdo:cancelado|ACUERDO|' || b.id::text || ']]');
-    UPDATE public.conversations SET last_message_at = now() WHERE id = v_conv;
-  END IF;
+  INSERT INTO public.messages (conversation_id, sender_id, content)
+  VALUES (v_conv, v_uid, '[[acuerdo:cancelado|ACUERDO|' || b.id::text || ']]');
+  UPDATE public.conversations SET last_message_at = now() WHERE id = v_conv;
 
   RETURN true;
 END;
