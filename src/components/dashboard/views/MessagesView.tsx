@@ -287,6 +287,12 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     return () => { vivo = false; };
   }, [activeOtherUserId]);
   const hayAcuerdoPosible = !!miRol && !!otroRol && (miRol === 'empresario') !== (otroRol === 'empresario');
+  const registradosRef = useRef<Set<string>>(new Set());
+  const aceptandoRef = useRef(false);
+  const profesionalAcuerdo = !hayAcuerdoPosible || !user ? null
+    : miRol === 'empresario'
+      ? { userId: activeOtherUserId, name: activeOtherName, role: otroRol ?? 'dj' }
+      : { userId: user.id, name: myDisplayName?.trim() || 'Profesional', role: miRol ?? 'dj' };
 
   // Fuegos para los dos cuando el segundo "Acepto" cierra el acuerdo (llegue
   // por el envío propio o en vivo). Solo si es el último mensaje y reciente:
@@ -297,6 +303,17 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     if (!ultimo || ultimo.id.startsWith('tmp-') || Date.now() - new Date(ultimo.created_at).getTime() > 120_000) return;
     if (estadoAcepto(messages).cierres.has(ultimo.id)) {
       celebrar('¡Enhorabuena!', `Acuerdo cerrado con ${activeOtherName || 'tu contacto'}. Queda por escrito en este chat.`, ultimo.id);
+      // Se registra como reserva confirmada (historial del organizador,
+      // calendario del profesional, métricas y reseña tras el evento). Lo
+      // piden los dos lados; la RPC es idempotente y valida las condiciones.
+      if (!registradosRef.current.has(ultimo.id)) {
+        registradosRef.current.add(ultimo.id);
+        void (supabase.rpc as unknown as (f: string, a: Record<string, unknown>) => Promise<{ error: { message: string } | null }>)(
+          'cerrar_acuerdo_chat', { p_message_id: ultimo.id },
+        ).then(({ error }) => {
+          if (error) console.warn('[MessagesView] cerrar_acuerdo_chat:', error.message);
+        });
+      }
     }
   }, [messages, activeOtherName]);
   useEffect(() => () => { if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current); }, []);
@@ -600,11 +617,20 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 }}
                 onBlockUser={() => { if (activeOtherUserId) blockUser(activeOtherUserId); }}
                 onReportUser={reportUser}
-                onAcepto={hayAcuerdoPosible ? async () => {
-                  if (await sendMessage(mensajeAcepto()) && !estadoAcepto(messages).pendientes.has(activeOtherUserId)) {
-                    toast.success(`Has aceptado. Falta que ${activeOtherName || 'la otra parte'} acepte.`);
-                  }
+                onAcepto={hayAcuerdoPosible ? async cod => {
+                  // Candado: con toques rápidos salían varios "Acepto" seguidos.
+                  if (aceptandoRef.current || !user) return;
+                  const abierto = estadoAcepto(messages);
+                  if (abierto.pendientes.has(user.id) && abierto.condiciones === cod) return;
+                  aceptandoRef.current = true;
+                  try {
+                    const cierra = abierto.pendientes.has(activeOtherUserId) && abierto.condiciones === cod;
+                    if (await sendMessage(mensajeAcepto(cod)) && !cierra) {
+                      toast.success(`Has aceptado. Falta que ${activeOtherName || 'la otra parte'} acepte.`);
+                    }
+                  } finally { aceptandoRef.current = false; }
                 } : undefined}
+                profesionalAcuerdo={profesionalAcuerdo}
                 onAceptarAcuerdo={async ref => {
                   if (await sendMessage(mensajeAceptado(ref))) {
                     celebrar('¡Enhorabuena!', `Acuerdo cerrado con ${activeOtherName || 'tu contacto'}. Ya está por escrito en este chat.`, ref);

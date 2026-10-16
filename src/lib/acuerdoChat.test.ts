@@ -65,3 +65,13 @@ describe('condiciones del acuerdo', () => {
     expect([...r.cierres]).toEqual(['2']);
   });
 });
+
+describe('condiciones mal formadas (revisión de seguridad)', () => {
+  it('rechaza claves repetidas, desconocidas o metidas dentro de otro campo', () => {
+    expect(leerCondiciones('f=12/12/2026;c=Madrid;p=500;c=Barcelona')).toBeNull();
+    expect(leerCondiciones('f=12/12/2026;c=Madrid;p=500;x=1')).toBeNull();
+    expect(leerCondiciones('f=12/12/2026;c=Madrid;p=500;e=xc=Barcelona')).toBeNull();
+    expect(leerCondiciones('f=2026-12-12;c=Madrid;p=500')).toBeNull();
+    expect(leerCondiciones('f=12/12/2026;c=Madrid;p=500')).not.toBeNull();
+  });
+});

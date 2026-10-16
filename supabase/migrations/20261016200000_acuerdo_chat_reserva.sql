@@ -38,6 +38,7 @@ DECLARE
   v_rol_a text; v_rol_b text; v_pro_rol text;
   v_org_nombre text; v_pro_nombre text;
   v_fecha date; v_ciudad text; v_precio numeric; v_evento text;
+  v_resumen text; v_par text; v_k text; v_v text; v_vistas text[] := '{}';
   v_id uuid;
 BEGIN
   IF v_uid IS NULL THEN RAISE EXCEPTION 'sin sesión'; END IF;
@@ -78,16 +79,36 @@ BEGIN
     FROM public.profiles WHERE user_id = v_pro ORDER BY is_primary DESC LIMIT 1;
 
   -- Condiciones: [[acuerdo:aceptado|ACUERDO|f=12/12/2026;c=Madrid;p=500;e=Boda]]
-  BEGIN
-    v_fecha := to_date(substring(m.content from 'f=([0-9]{1,2}/[0-9]{1,2}/[0-9]{4})'), 'DD/MM/YYYY');
-  EXCEPTION WHEN OTHERS THEN v_fecha := NULL;
-  END;
-  v_ciudad := NULLIF(trim(substring(m.content from 'c=([^;\]]*)')), '');
-  v_evento := NULLIF(trim(substring(m.content from 'e=([^;\]]*)')), '');
-  BEGIN
-    v_precio := replace(substring(m.content from 'p=([0-9]+(?:[.,][0-9]+)?)'), ',', '.')::numeric;
-  EXCEPTION WHEN OTHERS THEN v_precio := NULL;
-  END;
+  -- Lectura estricta campo a campo (revisión de seguridad, 16 oct 2026): con
+  -- búsquedas sueltas, un evento "xc=Barcelona" escrito a mano podía hacer que la
+  -- reserva guardara otra ciudad de la que se ve en el chat. Solo se admiten
+  -- f, c, p y e, sin repetir, con formato fijo; si no, se rechaza.
+  v_resumen := substring(m.content from '^\[\[acuerdo:aceptado\|ACUERDO\|(.*)\]\]$');
+  IF v_resumen IS NULL THEN RAISE EXCEPTION 'condiciones no válidas'; END IF;
+  FOREACH v_par IN ARRAY string_to_array(v_resumen, ';') LOOP
+    v_k := split_part(v_par, '=', 1);
+    v_v := trim(substring(v_par from length(v_k) + 2));
+    IF position('=' in v_par) = 0 OR v_k = ANY (v_vistas) THEN RAISE EXCEPTION 'condiciones no válidas'; END IF;
+    v_vistas := v_vistas || v_k;
+    CASE v_k
+      WHEN 'f' THEN
+        IF v_v !~ '^[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}$' THEN RAISE EXCEPTION 'fecha no válida'; END IF;
+        v_fecha := to_date(v_v, 'DD/MM/YYYY');
+      WHEN 'c' THEN
+        IF v_v ~ '[=\]|]' OR length(v_v) NOT BETWEEN 2 AND 60 THEN RAISE EXCEPTION 'ciudad no válida'; END IF;
+        v_ciudad := v_v;
+      WHEN 'p' THEN
+        IF v_v !~ '^[0-9]{1,7}([.,][0-9]{1,2})?$' THEN RAISE EXCEPTION 'precio no válido'; END IF;
+        v_precio := replace(v_v, ',', '.')::numeric;
+      WHEN 'e' THEN
+        IF v_v ~ '[=\]|]' OR length(v_v) > 60 THEN RAISE EXCEPTION 'evento no válido'; END IF;
+        v_evento := NULLIF(v_v, '');
+      ELSE RAISE EXCEPTION 'condiciones no válidas';
+    END CASE;
+  END LOOP;
+  IF v_fecha IS NULL OR v_ciudad IS NULL OR v_precio IS NULL OR v_precio <= 0 THEN
+    RAISE EXCEPTION 'faltan condiciones';
+  END IF;
 
   INSERT INTO public.flash_bookings (
     professional_name, professional_role, requester_name, requester_contact,

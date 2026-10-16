@@ -1,6 +1,11 @@
-import { useRef, useState } from 'react';
+import { lazy, Suspense, useRef, useState } from 'react';
 import { leerAcuerdo, estadoAcepto, REF_ACUERDO } from '@/lib/acuerdoChat';
 import AdjuntoChat from './AdjuntoChat';
+import { FormCondiciones, TarjetaAcepto } from './AcuerdoAcepto';
+import { fechaIso, type Condiciones } from '@/lib/acuerdoChat';
+import type { Profile } from '@/data/profiles';
+
+const ContractModal = lazy(() => import('@/components/dashboard/ContractModal'));
 import { Send, Shield, MessageSquare, CheckCheck, Check, Clock, Image, X, ArrowLeft, Trash2, MoreVertical, Flag } from 'lucide-react';
 
 interface Message {
@@ -50,7 +55,9 @@ interface Props {
   onBlockUser?: () => void;
   onReportUser?: (reason: string) => void;
   /** Botón "Acepto" junto al cuadro de escribir (solo organizador ↔ profesional). */
-  onAcepto?: () => void;
+  onAcepto?: (condicionesCodificadas: string) => void;
+  /** Profesional del acuerdo, para el contrato opcional en PDF. */
+  profesionalAcuerdo?: { userId: string; name: string; role: string } | null;
   /** El profesional acepta el contrato propuesto en el chat. */
   onAceptarAcuerdo?: (ref: string) => void;
 }
@@ -68,10 +75,26 @@ const ChatWindow = ({
   input, setInput,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
-  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, onAcepto, onAceptarAcuerdo,
+  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, onAcepto, onAceptarAcuerdo, profesionalAcuerdo,
 }: Props) => {
-  const { pendientes: aceptanAhora, cierres: acuerdosCerrados } = estadoAcepto(messages);
+  const { pendientes: aceptanAhora, condiciones: condicionesAbiertas, cierres: acuerdosCerrados } = estadoAcepto(messages);
   const yaAcepte = aceptanAhora.has(userId);
+  // Pendiente del otro: ACEPTO acepta sus condiciones sin formulario.
+  const otroEsperando = aceptanAhora.size > 0 && !yaAcepte && !!condicionesAbiertas;
+  // Id del último "Acepto" del acuerdo abierto (para marcar cuál sigue vigente).
+  const ultimoPendienteId = aceptanAhora.size > 0
+    ? [...messages].reverse().find(m => !m.deleted_at && leerAcuerdo(m.content)?.ref === REF_ACUERDO)?.id : undefined;
+  // Tras cerrar un acuerdo el botón queda en "Cerrado" (no se reabre con un
+  // toque); para otro acuerdo, "Nuevo acuerdo" en la tarjeta verde.
+  const ultimoAcuerdo = [...messages].reverse().find(m => !m.deleted_at && leerAcuerdo(m.content)?.ref === REF_ACUERDO);
+  const recienCerrado = !!ultimoAcuerdo && acuerdosCerrados.has(ultimoAcuerdo.id);
+  const [formAcepto, setFormAcepto] = useState<{ inicial: Condiciones | null } | null>(null);
+  const [contrato, setContrato] = useState<Condiciones | null | false>(false);
+  const pulsarAcepto = () => {
+    if (!onAcepto) return;
+    if (otroEsperando) onAcepto(condicionesAbiertas);
+    else setFormAcepto({ inicial: null });
+  };
   const acuerdosAceptados = new Set(messages.map(m => leerAcuerdo(m.content)).filter(a => a?.estado === 'aceptado').map(a => a!.ref));
   const inputRef = useRef<HTMLInputElement>(null);
   const [hoveredMsgId, setHoveredMsgId] = useState<string | null>(null);
@@ -268,13 +291,12 @@ const ChatWindow = ({
                       Mensaje eliminado
                     </div>
                   ) : acuerdo?.estado === 'aceptado' && acuerdo.ref === REF_ACUERDO ? (
-                    <div className="px-4 py-3 rounded-2xl text-sm max-w-[280px]"
-                      style={{ background: acuerdosCerrados.has(msg.id) ? '#ECFDF5' : '#FBF3DD', border: `1px solid ${acuerdosCerrados.has(msg.id) ? 'rgba(5,150,105,0.4)' : 'rgba(212,175,55,0.5)'}`, color: '#3d300a' }}>
-                      <p className="font-black">{isMe ? 'Acepto' : `${activeOtherName || 'La otra parte'} acepta`}</p>
-                      <p className="text-xs mt-0.5" style={{ color: acuerdosCerrados.has(msg.id) ? '#059669' : 'rgba(0,0,0,0.55)', fontWeight: acuerdosCerrados.has(msg.id) ? 700 : 400 }}>
-                        {acuerdosCerrados.has(msg.id) ? 'Acuerdo cerrado por los dos' : isMe ? `Falta que ${activeOtherName || 'la otra parte'} acepte` : 'Pulsa Acepto para cerrar el acuerdo'}
-                      </p>
-                    </div>
+                    <TarjetaAcepto resumen={acuerdo.resumen} isMe={isMe} otroNombre={activeOtherName}
+                      cerrado={acuerdosCerrados.has(msg.id)}
+                      pendienteActual={msg.id === ultimoPendienteId}
+                      onProponerOtras={onAcepto ? c => setFormAcepto({ inicial: c }) : undefined}
+                      onContrato={profesionalAcuerdo ? c => setContrato(c) : undefined}
+                      onNuevoAcuerdo={onAcepto && msg.id === ultimoAcuerdo?.id ? () => setFormAcepto({ inicial: null }) : undefined} />
                   ) : acuerdo ? (
                     <div className="px-4 py-3 rounded-2xl text-sm max-w-[280px]"
                       style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.5)', color: '#3d300a' }}>
@@ -366,6 +388,24 @@ const ChatWindow = ({
           de emoticonos: el teclado del móvil ya los trae. */}
       <div className="px-2 py-2 flex-shrink-0 relative"
         style={{ borderTop: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
+        {formAcepto && onAcepto && (
+          <FormCondiciones inicial={formAcepto.inicial} otroNombre={activeOtherName} enviando={sending}
+            onCancelar={() => setFormAcepto(null)}
+            onEnviar={cod => { setFormAcepto(null); onAcepto(cod); }} />
+        )}
+        {contrato !== false && profesionalAcuerdo && (
+          <Suspense fallback={null}>
+            <ContractModal
+              professional={{ id: 0, userId: profesionalAcuerdo.userId, name: profesionalAcuerdo.name, role: profesionalAcuerdo.role } as unknown as Profile}
+              prefill={{
+                nombreEvento: contrato?.evento ?? '',
+                fechaEvento: contrato?.fecha ? fechaIso(contrato.fecha) : '',
+                direccionLocal: contrato?.ciudad ?? '',
+                precioNeto: contrato?.precio ?? '',
+              }}
+              onClose={() => setContrato(false)} onSaved={() => setContrato(false)} />
+          </Suspense>
+        )}
         <div className="flex items-center gap-1">
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
             aria-label="Enviar foto o vídeo" title="Enviar foto o vídeo"
@@ -378,13 +418,13 @@ const ChatWindow = ({
           <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm" className="hidden" onChange={onPhotoUpload} />
 
           {onAcepto && (
-            <button type="button" onClick={onAcepto} disabled={sending || yaAcepte}
+            <button type="button" onClick={pulsarAcepto} disabled={sending || yaAcepte || recienCerrado}
               title={yaAcepte ? `Has aceptado. Falta ${activeOtherName || 'la otra parte'}` : 'Aceptar el acuerdo'}
               className="flex-shrink-0 h-10 rounded-full px-3 text-xs font-black transition-all active:scale-95"
-              style={yaAcepte
+              style={yaAcepte || recienCerrado
                 ? { background: '#ECFDF5', border: '1px solid rgba(5,150,105,0.4)', color: '#059669' }
                 : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-              {yaAcepte ? 'Aceptado' : 'ACEPTO'}
+              {recienCerrado ? 'Cerrado' : yaAcepte ? 'Aceptado' : 'ACEPTO'}
             </button>
           )}
 

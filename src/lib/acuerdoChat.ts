@@ -58,12 +58,17 @@ export function codificarCondiciones(c: Condiciones): string {
 
 export function leerCondiciones(resumen: string): Condiciones | null {
   if (!resumen) return null;
+  // Mismo criterio estricto que la RPC cerrar_acuerdo_chat: solo f, c, p, e,
+  // sin repetir y con formato fijo. Lo que no cumpla no es un acuerdo válido.
   const v: Record<string, string> = {};
   for (const par of resumen.split(';')) {
     const i = par.indexOf('=');
-    if (i > 0) v[par.slice(0, i).trim()] = par.slice(i + 1).trim();
+    const k = i > 0 ? par.slice(0, i) : '';
+    if (!['f', 'c', 'p', 'e'].includes(k) || k in v) return null;
+    v[k] = par.slice(i + 1).trim();
   }
-  if (!v.f && !v.c && !v.p) return null;
+  if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(v.f ?? '') || !/^\d{1,7}([.,]\d{1,2})?$/.test(v.p ?? '')) return null;
+  if (!v.c || v.c.length < 2 || v.c.length > 60 || /[=\]|]/.test(v.c) || /[=\]|]/.test(v.e ?? '')) return null;
   return { fecha: v.f ?? '', ciudad: v.c ?? '', precio: v.p ?? '', evento: v.e ?? '' };
 }
 
