@@ -45,7 +45,7 @@ export const FormCondiciones = ({ inicial, otroNombre, onEnviar, onCancelar, env
         <button type="button" disabled={!valido || enviando}
           onClick={() => onEnviar(codificarCondiciones({ fecha, ciudad, precio: String(precioNum), evento }))}
           className="px-5 py-2 rounded-full text-xs font-black disabled:opacity-40"
-          style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+          style={{ background: '#059669', color: '#fff' }}>
           ACEPTO
         </button>
       </div>
