@@ -738,6 +738,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   <div className="px-1">
                     <p className="text-xs font-bold mb-1.5" style={{ color: '#222' }}>Cuéntanos sobre ti <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
                     <textarea
+                      id="asistente-bio"
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
                       placeholder="Tu experiencia, estilo y qué te hace diferente. Evita solo 'contáctame por DM': cuenta algo real de tu trabajo."
@@ -746,6 +747,30 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       className="w-full px-3 py-2.5 rounded-xl text-xs outline-none resize-none"
                       style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
                     />
+                    {/* Arranques de frase (16 oct 2026): de 13 altas del anuncio, 12
+                        con foto y solo 5 con bio. Sigue siendo opcional; esto solo
+                        quita el miedo al campo en blanco. Cada toque añade el inicio
+                        y la persona lo termina. */}
+                    {bio.trim().length < 40 && (
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {[
+                          effectiveCity ? `Trabajo en bodas, fiestas y eventos de ${effectiveCity}. ` : 'Trabajo en bodas, fiestas y eventos. ',
+                          'Mi estilo: ',
+                          'He trabajado en ',
+                        ].map((inicio, i) => (
+                          <button key={inicio} type="button"
+                            onClick={() => {
+                              logAsistente(`bio_arranque n=${i + 1}`);
+                              setBio(prev => (prev.trim() ? prev.trimEnd() + ' ' : '') + inicio);
+                              document.getElementById('asistente-bio')?.focus();
+                            }}
+                            className="px-2.5 py-1.5 rounded-full text-[0.75rem] font-semibold"
+                            style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.35)', color: '#5c4a12' }}>
+                            + {inicio.trim().replace(/[.:]$/, '').slice(0, 34)}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                     {tieneFraseGenerica(bio) && (
                       <p className="text-[0.75rem] mt-1 font-semibold" style={{ color: '#dc2626' }}>
                         Evita frases tipo "info al DM" o "busco eventos": cuenta tu experiencia real

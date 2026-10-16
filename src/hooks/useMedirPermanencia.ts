@@ -6,7 +6,10 @@ import { track } from '@/lib/track';
 // solo se veía el page_view. Esto deja en analytics_events (vía auth_paso,
 // ver track.ts) cuánto aguantan, hasta dónde bajan, qué tocan y qué hacen con
 // el aviso de cookies. De un campo solo se guarda su nombre, nunca lo escrito.
-const HITOS_SEG = [5, 10, 20, 40, 60];
+// 1, 2 y 3 s (16 oct 2026): 103 de 365 sesiones no dejaron ni hito de 5 s ni
+// salida (cierran el navegador de Instagram antes de que salga la petición),
+// así que no se sabía si se iban a 1 s o a 4 s.
+const HITOS_SEG = [1, 2, 3, 5, 10, 20, 40, 60];
 const MAX_TOQUES = 8;
 
 export function estadoCookies(): string {

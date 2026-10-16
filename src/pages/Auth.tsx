@@ -309,6 +309,9 @@ const Auth = () => {
   // formulario sin salir de /auth.
   const participarConcurso = () => {
     track('auth_concurso_click', { mode: isLogin ? 'login' : 'register' });
+    // Tras el asistente de bienvenida vuelve a la inscripción del concurso (el
+    // asistente ya lee esta clave) en vez de dejarle en su ficha.
+    try { sessionStorage.setItem('xpeak_volver_a', '/concurso-dj-madrid#inscripcion'); } catch { /* sin almacenamiento */ }
     setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false);
     window.setTimeout(() => document.getElementById('auth-formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   };

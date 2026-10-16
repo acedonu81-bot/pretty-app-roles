@@ -48,6 +48,18 @@ describe('OnboardingWizard', () => {
     expect(onClose).toHaveBeenCalled();
   });
 
+  it('los arranques de bio rellenan el campo y siguen siendo opcionales', async () => {
+    estado.role = 'dj';
+    montar();
+    await screen.findByText(/Foto y ciudad para aparecer/, {}, { timeout: 3000 });
+    const campo = document.getElementById('asistente-bio') as HTMLTextAreaElement;
+    expect(campo.value).toBe('');
+    fireEvent.click(screen.getByRole('button', { name: /\+ Mi estilo/ }));
+    expect(campo.value).toBe('Mi estilo: ');
+    fireEvent.click(screen.getByRole('button', { name: /\+ He trabajado en/ }));
+    expect(campo.value).toBe('Mi estilo: He trabajado en ');
+  });
+
   it('mientras el perfil carga no salta', () => {
     estado.role = 'dj'; estado.loading = true;
     montar();
