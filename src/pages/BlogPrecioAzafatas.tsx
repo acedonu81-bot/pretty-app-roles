@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
+import FichasRealesTira from '@/components/FichasRealesTira';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
@@ -75,6 +76,7 @@ export default function BlogPrecioAzafatas() {
               />
             </picture>
           </div>
+          <FichasRealesTira roles={['azafata', 'staff', 'camarero']} titulo="Azafatas y staff que ya están en XPEAK" articlePath="/blog/precio-azafatas-eventos-espana" />
           <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-eventos-espana" />
           <div className="space-y-10">
             <section>

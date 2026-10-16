@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogTopCTA from '@/components/BlogTopCTA';
+import FichasRealesTira from '@/components/FichasRealesTira';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 
 const article = {
@@ -123,6 +124,7 @@ export default function BlogSaxofonistaEventosPrecio() {
             ← Todos los artículos
           </a>
           <BlogTopCTA href="/directorio/grupo-musical" label="Ver músicos →" text="¿Buscas música en directo para tu evento? Mira perfiles reales con foto y tarifa" highlight role="saxofonista" articlePath="/blog/saxofonista-precio-espana" />
+          <FichasRealesTira roles={['dj', 'grupo-musical', 'disco-movil']} titulo="Músicos que ya están en XPEAK" articlePath="/blog/saxofonista-precio-espana" />
 
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6D28D9' }}>Música · Bodas · XPEAK Blog</p>

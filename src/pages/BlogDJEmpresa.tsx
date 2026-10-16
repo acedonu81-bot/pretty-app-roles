@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogTopCTA from '@/components/BlogTopCTA';
+import FichasRealesTira from '@/components/FichasRealesTira';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -109,6 +110,7 @@ export default function BlogDJEmpresa() {
               </div>
             </section>
 
+            <FichasRealesTira roles={['dj', 'disco-movil']} titulo="DJs que ya están en XPEAK" articlePath="/blog/dj-empresa-precio" />
             <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/dj-empresa-precio" />
 
             <section className="mt-8">

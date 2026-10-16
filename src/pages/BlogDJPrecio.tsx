@@ -3,6 +3,7 @@ import { Zap, TrendingUp, MapPin, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
+import FichasRealesTira from '@/components/FichasRealesTira';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
@@ -200,6 +201,7 @@ const faqStructured = {
           </div>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
+          <FichasRealesTira roles={['dj', 'disco-movil']} titulo="DJs que ya están en XPEAK" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
           <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
 
           {/* Por ciudad */}

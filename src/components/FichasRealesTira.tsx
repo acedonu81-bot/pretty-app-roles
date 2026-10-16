@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ROLE_ES, canonicalRole } from '@/lib/constants';
 import { compararDirectorio, completeness, COMPLETENESS_MAX } from '@/lib/dailyRotation';
 import { fotoOptimizada } from '@/lib/imagen';
-import { track } from '@/lib/track';
+import { track, logEvent } from '@/lib/track';
 
 // Fichas reales en /auth (Ficha XDS 70,6, aprobada 13 oct 2026). Quien llega
 // del anuncio de Instagram veía solo un formulario: la mitad se iba en menos
@@ -60,7 +60,7 @@ export function oficioCorto(role: string | null): string {
   return CORTA[c] ?? (ROLE_ES[c] ?? c).split(/\s+[/&]\s+/)[0];
 }
 
-async function fetchFichasReales(): Promise<FichaReal[]> {
+async function fetchFichasReales(roles?: string[]): Promise<FichaReal[]> {
   const { data, error } = await supabase
     .from('profiles')
     .select('user_id, display_name, role, zone, photo_url, bio, audio_embed_url, audio_session_urls, portfolio_urls, is_verified, score')
@@ -70,7 +70,9 @@ async function fetchFichasReales(): Promise<FichaReal[]> {
     .or('is_public.is.null,is_public.eq.true')
     .limit(300);
   if (error) throw error;
-  return elegirFichas((data ?? []) as FichaReal[]);
+  const filas = (data ?? []) as FichaReal[];
+  // En el blog solo los oficios del artículo (16 oct 2026).
+  return elegirFichas(roles?.length ? filas.filter(p => roles.includes(canonicalRole(p.role) ?? '')) : filas);
 }
 
 // El hueco es casi cuadrado (130x150) y las fotos llegan de todas las formas:
@@ -103,10 +105,16 @@ const FotoFicha = ({ src, alt }: { src: string; alt: string }) => {
   );
 };
 
-const FichasRealesTira = () => {
+// origen 'blog' (16 oct 2026): la misma tira dentro de los artículos de precio,
+// filtrada a los oficios del artículo. Los eventos van a analytics_events como
+// cta_click con detalle 'blog_ficha' (los track('auth_*') solo valen en /auth).
+interface TiraProps { roles?: string[]; titulo?: string; articlePath?: string }
+
+const FichasRealesTira = ({ roles, titulo = 'Ya están en XPEAK', articlePath }: TiraProps = {}) => {
+  const enBlog = !!articlePath;
   const { data: fichas, isLoading } = useQuery({
-    queryKey: ['auth-fichas-reales'],
-    queryFn: fetchFichasReales,
+    queryKey: ['auth-fichas-reales', roles?.join(',') ?? 'todos'],
+    queryFn: () => fetchFichasReales(roles),
     staleTime: 10 * 60_000,
   });
   const ref = useRef<HTMLDivElement>(null);
@@ -116,18 +124,22 @@ const FichasRealesTira = () => {
     const el = ref.current;
     if (!el || !fichas?.length || typeof IntersectionObserver === 'undefined') return;
     const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { track('auth_fichas_vistas', { n: fichas.length }); obs.disconnect(); }
+      if (e.isIntersecting) {
+        if (enBlog) void logEvent('cta_click', articlePath, `blog_fichas_vistas n=${fichas.length}`);
+        else track('auth_fichas_vistas', { n: fichas.length });
+        obs.disconnect();
+      }
     }, { threshold: 0.5 });
     obs.observe(el);
     return () => obs.disconnect();
-  }, [fichas]);
+  }, [fichas, enBlog, articlePath]);
 
   if (!isLoading && (!fichas || fichas.length < 3)) return null;
 
   return (
     <div ref={ref} className="mb-5">
       <p className="text-[0.75rem] font-black uppercase tracking-wider mb-2" style={{ color: 'rgba(0,0,0,0.45)' }}>
-        Ya están en XPEAK
+        {titulo}
       </p>
       <div className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
         {isLoading
@@ -136,7 +148,9 @@ const FichasRealesTira = () => {
             ))
           : fichas!.map((p, i) => (
               <Link key={p.user_id} to={`/p/${p.user_id}`}
-                onClick={() => track('auth_ficha_click', { rol: canonicalRole(p.role) ?? '', pos: i + 1 })}
+                onClick={() => (enBlog
+                  ? void logEvent('cta_click', articlePath, `blog_ficha pos=${i + 1} rol=${canonicalRole(p.role) ?? ''}`)
+                  : track('auth_ficha_click', { rol: canonicalRole(p.role) ?? '', pos: i + 1 }))}
                 className="shrink-0 w-[130px] snap-start rounded-xl overflow-hidden transition-transform active:scale-[0.98]"
                 style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.3)' }}>
                 <FotoFicha src={fotoOptimizada(p.photo_url, 260)} alt={p.display_name ?? ''} />
@@ -149,7 +163,7 @@ const FichasRealesTira = () => {
               </Link>
             ))}
         {!isLoading && (
-          <Link to="/descubrir" onClick={() => track('auth_fichas_ver_todos')}
+          <Link to="/descubrir" onClick={() => (enBlog ? void logEvent('cta_click', articlePath, 'blog_fichas_ver_todos') : track('auth_fichas_ver_todos'))}
             className="shrink-0 w-[110px] snap-start rounded-xl flex items-center justify-center text-xs font-black"
             style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.35)', color: '#8B6A00' }}>
             Ver todos →

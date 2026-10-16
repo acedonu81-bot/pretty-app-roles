@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import FichasRealesTira from '@/components/FichasRealesTira';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -147,6 +148,7 @@ const faqStructured = {
               </p>
             </section>
 
+            <FichasRealesTira roles={['staff', 'camarero']} titulo="Camareros y staff que ya están en XPEAK" articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
             <BlogInlineCTA role="staff" articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
 
             <section>
