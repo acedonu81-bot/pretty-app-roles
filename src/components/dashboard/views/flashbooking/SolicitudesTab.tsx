@@ -329,7 +329,8 @@ const SolicitudesTab = () => {
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-bold truncate">{s.requester_name || 'Empresario'}</p>
-                      {s.requester_contact && puedeVerContacto(s.status) ? (
+                      {/* Reservas cerradas en el chat: el contacto es la conversación ("chat:<id>"), no un teléfono. */}
+                      {s.requester_contact && !s.requester_contact.startsWith('chat:') && puedeVerContacto(s.status) ? (
                         <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
                           <Phone size={9} className="flex-shrink-0" /> <span className="truncate">{s.requester_contact}</span>
                         </p>
