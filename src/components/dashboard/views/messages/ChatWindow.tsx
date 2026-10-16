@@ -423,7 +423,7 @@ const ChatWindow = ({
               className="flex-shrink-0 h-10 rounded-full px-3 text-xs font-black transition-all active:scale-95"
               style={yaAcepte || recienCerrado
                 ? { background: '#ECFDF5', border: '1px solid rgba(5,150,105,0.4)', color: '#059669' }
-                : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                : { background: '#059669', color: '#fff' }}>
               {recienCerrado ? 'Cerrado' : yaAcepte ? 'Aceptado' : 'ACEPTO'}
             </button>
           )}
