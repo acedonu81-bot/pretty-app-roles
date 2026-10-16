@@ -1991,16 +1991,26 @@ async function atender(req: Request): Promise<Response> {
         if (!count) return prohibido('sin reserva reciente');
         delete data.email;
       } else if (type === 'acuerdo_cancelado') {
-        // Solo a la otra parte de un acuerdo del chat que está cancelado, y solo
-        // lo puede pedir una de las dos partes (16 oct 2026). El destino sale del
-        // user_id, nunca de un email escrito por el navegador.
+        // Solo a la otra parte de UN acuerdo del chat concreto que está cancelado,
+        // y solo lo puede pedir una de las dos partes (16 oct 2026). Todo lo que
+        // sale en el correo se toma de la reserva y del perfil, no del navegador:
+        // fecha, nombre de quien cancela y motivo (solo los permitidos).
+        const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
         const otro = String(data.user_id ?? '');
-        // Solo un UUID: se interpola en el filtro de abajo.
-        if (!callerId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(otro)) return prohibido('sin destinatario');
-        const { count } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
-          .eq('source', 'chat').eq('status', 'cancelled').not('chat_message_id', 'is', null)
-          .or(`and(created_by.eq.${callerId},professional_user_id.eq.${otro}),and(created_by.eq.${otro},professional_user_id.eq.${callerId})`);
-        if (!count) return prohibido('sin acuerdo cancelado que lo respalde');
+        const bookingId = String(data.booking_id ?? '');
+        if (!callerId || !UUID.test(otro) || !UUID.test(bookingId)) return prohibido('sin destinatario');
+        const { data: reserva } = await sb.from('flash_bookings').select('id, event_date')
+          .eq('id', bookingId).eq('source', 'chat').eq('status', 'cancelled').not('chat_message_id', 'is', null)
+          .or(`and(created_by.eq.${callerId},professional_user_id.eq.${otro}),and(created_by.eq.${otro},professional_user_id.eq.${callerId})`)
+          .maybeSingle();
+        if (!reserva) return prohibido('sin acuerdo cancelado que lo respalde');
+        const iso = String(reserva.event_date ?? '');
+        data.event_date = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso.split('-').reverse().join('/') : undefined;
+        const MOTIVOS = ['No puedo en esa fecha', 'Ha cambiado el plan del evento', 'Hemos acordado otra cosa', 'Otro motivo'];
+        data.motivo = MOTIVOS.includes(String(data.motivo ?? '')) ? data.motivo : undefined;
+        const { data: quien } = await sb.from('profiles').select('display_name').eq('user_id', callerId)
+          .order('is_primary', { ascending: false }).limit(1).maybeSingle();
+        data.sender_name = quien?.display_name?.trim() || 'Tu contacto';
         delete data.email;
       } else if (data.professional_user_id || data.user_id) {
         // Avisos a un usuario concreto: el destino sale SIEMPRE de su user_id.
