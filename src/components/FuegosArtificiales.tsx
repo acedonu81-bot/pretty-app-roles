@@ -122,12 +122,12 @@ const FuegosArtificiales = () => {
   if (!msg) return null;
   return (
     <div role="status" aria-live="polite" onClick={() => setMsg(null)}
-      className="fixed inset-0 z-[9999] flex items-center justify-center cursor-pointer"
+      className="fixed inset-0 z-[2147483000] flex items-center justify-center cursor-pointer"
       style={{ background: 'rgba(10,9,8,0.55)' }}>
       <canvas ref={canvasRef} aria-hidden className="absolute inset-0 w-full h-full pointer-events-none" />
-      <div className="relative mx-4 px-8 py-6 rounded-3xl text-center max-w-md"
+      <div className="relative mx-4 px-6 sm:px-10 py-6 rounded-3xl text-center max-w-md"
         style={{ background: 'rgba(255,253,247,0.96)', border: '1px solid rgba(212,175,55,0.5)', boxShadow: '0 20px 60px rgba(0,0,0,0.35)' }}>
-        <p className="text-3xl sm:text-4xl font-black font-display" style={{ color: '#8B6A00' }}>{msg.titulo}</p>
+        <p className="text-2xl sm:text-3xl font-black font-display" style={{ color: '#8B6A00' }}>{msg.titulo}</p>
         {msg.texto && <p className="text-sm mt-2 font-semibold" style={{ color: '#333' }}>{msg.texto}</p>}
         <p className="text-[0.75rem] mt-3" style={{ color: 'rgba(0,0,0,0.45)' }}>Toca para cerrar</p>
       </div>
