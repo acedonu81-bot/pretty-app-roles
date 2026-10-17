@@ -1317,6 +1317,30 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#4b5563;font-size:13px;line-height:1.6;text-align:center">Acepta o rechaza la solicitud desde tu panel de Flash Booking. Su teléfono y email se verán cuando aceptes; antes, todo por el chat de XPEAK.</p>`),
   }),
 
+  // Recordatorio al profesional de una solicitud Flash Booking sin responder
+  // (17 oct 2026): stage 1 a los 15 minutos, stage 2 a la hora. Solo lo lanza el
+  // servidor (remind_pending_flash_bookings); el email destino se resuelve desde
+  // professional_user_id, como booking_received.
+  booking_reminder: (d) => ({
+    subject: d.stage === 2
+      ? 'Sigue sin respuesta: contesta aunque sea para decir que no'
+      : 'Tienes una solicitud esperando respuesta',
+    to: d.email,
+    html: base(`
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px;box-shadow:0 6px 16px rgba(212,175,55,0.16)">
+        <p style="margin:0 0 4px">${badge(d.stage === 2 ? 'Lleva 1 hora esperando' : 'Solicitud sin responder')}</p>
+        <p style="font-size:20px;font-weight:900;margin:6px 0 0">De: ${esc(d.requester_name ?? 'Un cliente')}</p>
+      </div>
+      ${rows([
+        ['Solicitante', d.requester_name],
+        ['Fecha', d.event_date],
+        ['Lugar', d.event_location],
+        ['Qué pide', d.event_description],
+      ])}
+      ${btn('Contestar ahora →', 'https://xpeak.es/dashboard?view=flashbooking&tab=solicitudes')}
+      <p style="color:#4b5563;font-size:13px;line-height:1.6;text-align:center">Pulsa Sí, puedo o No puedo. Quien responde rápido recibe más encargos, y el cliente no espera.</p>`),
+  }),
+
   // 13b. Contrato generado — avisa al profesional de que existe un contrato con su nombre
   contract_generated: (d) => ({
     subject: `Se ha generado un contrato contigo: ${esc(d.event_type ?? 'evento')}`,
