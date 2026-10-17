@@ -319,7 +319,7 @@
       "continue": true
     },
 
-    { "src": "^/assets/.+", "status": 404 },
+    { "src": "^/assets/.+", "status": 404, "headers": { "Cache-Control": "no-store" } },
 
     { "src": "^/p/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", "dest": "/app-shell.html" },
 

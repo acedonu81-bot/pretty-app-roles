@@ -20,7 +20,12 @@
           if (!/\/assets\//.test(t.src || t.href || '')) return;
           // Sin sessionStorage no hay forma de limitar el intento: mejor no recargar que arriesgar un bucle.
           try { if (sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY, '1'); } catch (_) { return; }
-          location.reload();
+          // Antes de recargar se pide el archivo saltándose la caché: si el
+          // navegador tenía guardado un 404 viejo, una recarga normal lo
+          // reutilizaría y la página seguiría rota (17 oct 2026).
+          var url = t.src || t.href;
+          var recargar = function () { location.reload(); };
+          try { fetch(url, { cache: 'reload', credentials: 'same-origin' }).then(recargar, recargar); } catch (_) { recargar(); }
         }, true);
       })();
     </script>

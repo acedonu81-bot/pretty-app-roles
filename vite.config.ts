@@ -22,6 +22,15 @@ export default defineConfig(({ mode }) => ({
     modulePreload: false,
     rollupOptions: {
       output: {
+        // Sufijo de versión en TODOS los nombres (17 oct 2026): durante un
+        // deploy, navegadores que pidieron los /assets nuevos antes de que
+        // estuvieran servidos recibieron 404 con caché de un año (immutable) y
+        // se quedaron con la web sin estilos ni JS. Cambiar el patrón da URLs
+        // nuevas a todo y deja atrás esos 404 guardados. Si vuelve a pasar,
+        // subir el sufijo (r3, r4...).
+        entryFileNames: 'assets/[name]-[hash]-r2.js',
+        chunkFileNames: 'assets/[name]-[hash]-r2.js',
+        assetFileNames: 'assets/[name]-[hash]-r2[extname]',
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return;
           // pdf-vendor (html2pdf/jspdf/html2canvas) and motion-vendor
