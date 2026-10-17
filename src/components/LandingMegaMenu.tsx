@@ -97,7 +97,7 @@ const TABS: Tab[] = [
     cta: {
       title: '¿Eres DJ, fotógrafo o staff?',
       text: 'Date de alta y deja que los organizadores te encuentren.',
-      button: 'Quiero anunciarme',
+      button: 'Soy profesional',
       href: '/auth?mode=register&role=profesional',
     },
   },

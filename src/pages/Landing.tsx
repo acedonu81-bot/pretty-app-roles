@@ -842,7 +842,7 @@ const Landing = () => {
                 }}
               >
                 <span className="flex items-center gap-2 text-lg font-black tracking-tight" style={{ color: '#1E40AF' }}>
-                  <Headphones size={20} /> Quiero anunciarme
+                  <Headphones size={20} /> Soy profesional
                 </span>
                 <span className="text-xs font-bold" style={{ color: '#1E3A8A' }}>Soy DJ, fotógrafo, staff…</span>
               </motion.button>
