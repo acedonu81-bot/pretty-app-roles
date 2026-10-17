@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { CheckCircle, XCircle, Clock, Calendar, MapPin, User, RefreshCw, Phone, FileText, Star } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Calendar, MapPin, User, RefreshCw, Phone, FileText, Star, MessageCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -61,7 +61,7 @@ const fmt = (iso: string | null) => {
   return new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
-const SolicitudesTab = () => {
+const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: string) => void } = {}) => {
   const { user } = useAuth();
   const profile = useProfile();
   const [items, setItems] = useState<Solicitud[]>([]);
@@ -379,24 +379,40 @@ const SolicitudesTab = () => {
                   <span className="text-[0.75rem] text-muted-foreground">{fmt(s.created_at)}</span>
                   {isPending && (
                     <div className="flex gap-2">
+                      {/* Dos botones y nada más (17 oct 2026): "No puedo" discreto en
+                          rojo y "Sí, puedo" en verde y parpadeando, que es lo que
+                          tiene que pulsar. El parpadeo se apaga con "reducir
+                          movimiento" del sistema (motion-reduce). */}
                       <button
                         onClick={() => updateStatus(s.id, 'rejected')}
                         disabled={updating === s.id}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
                         style={{ background: 'rgba(255,95,86,0.08)', border: '1px solid rgba(255,95,86,0.2)', color: '#ff5f56' }}>
-                        <XCircle size={12} /> Rechazar
+                        <XCircle size={12} /> No puedo
                       </button>
                       <button
                         onClick={() => updateStatus(s.id, 'confirmed')}
                         disabled={updating === s.id}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
-                        style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                        <CheckCircle size={12} /> {updating === s.id ? '…' : 'Aceptar'}
+                        className="flex items-center gap-1.5 px-5 py-2 rounded-lg text-sm font-black transition-all hover:scale-105 disabled:opacity-50 animate-pulse motion-reduce:animate-none"
+                        style={{ background: '#16a34a', color: '#fff', boxShadow: '0 4px 14px rgba(22,163,74,0.45)' }}>
+                        <CheckCircle size={14} /> {updating === s.id ? '…' : 'Sí, puedo'}
                       </button>
                     </div>
                   )}
                   {(s.status === 'confirmed' || s.status === 'accepted' || s.status === 'completed') && (
                     <div className="flex flex-col items-end gap-1.5">
+                      {/* Tras aceptar, el siguiente paso es hablar con quien pidió: un
+                          botón dorado grande y parpadeante abre el chat de XPEAK. No
+                          sale en los autorregistros (created_by === yo) ni si falta
+                          el organizador. */}
+                      {onMessage && s.status === 'confirmed' && s.created_by && s.created_by !== user?.id && (
+                        <button
+                          onClick={() => onMessage(s.created_by!, s.requester_name || 'Cliente')}
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black transition-all hover:scale-105 animate-pulse motion-reduce:animate-none"
+                          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 4px 16px rgba(212,175,55,0.55)' }}>
+                          <MessageCircle size={16} /> Abrir chat con {s.requester_name || 'el cliente'}
+                        </button>
+                      )}
                       <div className="flex gap-2">
                         <button
                           onClick={() => setContractFor(s)}

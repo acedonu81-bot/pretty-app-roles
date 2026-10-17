@@ -390,6 +390,14 @@ const Dashboard = () => {
   }));
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [messagesTarget, setMessagesTarget] = useState<{ userId: string; name: string } | null>(null);
+  // El aviso "X ha dicho que sí" (reserva aceptada) lleva a
+  // /dashboard?view=messages&con=<id>&nombre=<nombre>: abre directamente el chat
+  // con ese profesional (17 oct 2026).
+  useEffect(() => {
+    const p = new URLSearchParams(location.search);
+    const con = p.get('con');
+    if (con && /^[0-9a-f-]{36}$/i.test(con)) setMessagesTarget({ userId: con, name: p.get('nombre') || 'Profesional' });
+  }, [location.key, location.search]);
   const [selectedProfile, setSelectedProfileRaw] = useState<Profile | null>(null);
 
   // Envoltorio para registrar la apertura de ficha en un solo punto: se pasa

@@ -269,7 +269,7 @@ const FlashBookingWallView = ({ onMessage }: FlashBookingWallViewProps = {}) => 
 
       {tab === 'oferta'      && <OfertaTab />}
       {tab === 'demanda'     && <DemandaTab foco={foco} onMessage={onMessage} />}
-      {tab === 'solicitudes' && <SolicitudesTab />}
+      {tab === 'solicitudes' && <SolicitudesTab onMessage={onMessage} />}
     </div>
   );
 };
