@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import QuitarSolicitudBoton from './QuitarSolicitudBoton';
 
 // Semáforo de solicitudes directas (17 oct 2026): una fila por solicitud de los
 // últimos 14 días, con un color y una frase de qué hay que hacer. Lo que pide
@@ -88,6 +89,13 @@ const AdminSolicitudesSemaforo = () => {
     return () => { cancelled = true; };
   }, []);
 
+  // Al quitar una solicitud aquí o en el otro bloque, desaparece de los dos.
+  useEffect(() => {
+    const quitar = (e: Event) => setFilas(prev => prev.filter(x => x.id !== (e as CustomEvent<string>).detail));
+    window.addEventListener('xpeak:solicitud-quitada', quitar);
+    return () => window.removeEventListener('xpeak:solicitud-quitada', quitar);
+  }, []);
+
   if (filas.length === 0) return null;
 
   const ordenadas = [...filas]
@@ -120,6 +128,7 @@ const AdminSolicitudesSemaforo = () => {
               </p>
               <p style={{ color: s.color }}><b>{s.etiqueta}.</b> {f.estado === 'cerrado' && detalleCerrado(f) ? `${s.accion}: ${detalleCerrado(f)}` : s.accion}</p>
             </div>
+            <QuitarSolicitudBoton id={f.id} onQuitada={id => setFilas(prev => prev.filter(x => x.id !== id))} />
           </li>
         ))}
       </ul>

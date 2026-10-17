@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CalendarClock, Phone, AlertTriangle } from 'lucide-react';
+import QuitarSolicitudBoton from './QuitarSolicitudBoton';
 
 // Aviso de solicitudes de cliente que nadie ha respondido. Hermano del banner
 // verde de altas nuevas (AdminNewProfileAlert) y del rojo de bajas.
@@ -69,6 +70,13 @@ const AdminPendingBookingsAlert = ({ onOpenBookings }: { onOpenBookings?: () => 
     return () => { cancelled = true; };
   }, []);
 
+  // Al quitar una solicitud aquí o en el otro bloque, desaparece de los dos.
+  useEffect(() => {
+    const quitar = (e: Event) => setPending(prev => prev.filter(x => x.id !== (e as CustomEvent<string>).detail));
+    window.addEventListener('xpeak:solicitud-quitada', quitar);
+    return () => window.removeEventListener('xpeak:solicitud-quitada', quitar);
+  }, []);
+
   if (pending.length === 0) return null;
 
   const masAntigua = Math.max(...pending.map(p => p.horas_esperando));
@@ -109,7 +117,8 @@ const AdminPendingBookingsAlert = ({ onOpenBookings }: { onOpenBookings?: () => 
                   sinDato(p.event_location) ? 'sin lugar' : p.event_location,
                 ].join(' · ');
                 return (
-                  <li key={p.id} className="text-xs rounded-lg px-3 py-2 space-y-0.5" style={{ color: '#92400e', background: 'rgba(217,119,6,0.08)' }}>
+                  <li key={p.id} className="text-xs rounded-lg px-3 py-2 flex items-start gap-2" style={{ color: '#92400e', background: 'rgba(217,119,6,0.08)' }}>
+                    <div className="flex-1 min-w-0 space-y-0.5">
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
                       <span className="font-bold text-sm" style={{ color: '#78350f' }}>{p.requester_name || 'Sin nombre'}</span>
                       <span
@@ -140,6 +149,8 @@ const AdminPendingBookingsAlert = ({ onOpenBookings }: { onOpenBookings?: () => 
                         ? `enviada a ${p.professional_name || 'un profesional'}, sin respuesta${p.reminder_sent_at ? ' (ya se le recordó)' : ''}`
                         : 'solicitud general, no está asignada a ningún profesional y no consta respuesta en la plataforma'}
                     </p>
+                    </div>
+                    <QuitarSolicitudBoton id={p.id} onQuitada={id => setPending(prev => prev.filter(x => x.id !== id))} />
                   </li>
                 );
               })}
