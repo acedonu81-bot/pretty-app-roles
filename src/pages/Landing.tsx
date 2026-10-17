@@ -664,7 +664,7 @@ const Landing = () => {
             style={{ color: '#1a1208' }}>
             X<span className="text-gradient">PEAK</span>
           </button>
-          <LandingMegaMenu />
+          <LandingMegaMenu onParticular={() => setShowParticular(true)} />
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Logueado (profesional que se queda en la landing, ver efecto
                 arriba): antes era un botón de texto gris casi invisible, el

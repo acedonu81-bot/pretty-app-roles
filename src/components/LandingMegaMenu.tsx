@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   ChevronDown, Zap, Search, MessageCircle, FileText, UserPlus, BadgeEuro,
   CalendarDays, BookOpen, Calculator, ClipboardList, HelpCircle, Info, Sparkles,
-  type LucideIcon,
+  PartyPopper, Building2, Headphones, type LucideIcon,
 } from 'lucide-react';
 
 // Mega-menú de la landing (23 sep 2026), inspirado en el de eventuy.com pero
@@ -14,16 +14,21 @@ import {
 
 type LinkItem = { label: string; href: string };
 type Feature = { title: string; desc: string; href: string; icon: LucideIcon };
-type Cta = { title: string; text: string; button: string; href: string };
+// action 'particular': el botón abre el mismo formulario sin registro que la
+// tarjeta "Soy particular" de la portada, en vez de navegar.
+type Cta = { title: string; text: string; button: string; href: string; action?: 'particular' };
 
 type Tab =
-  | { id: string; label: string; kind: 'list'; columns: { heading: string; links: LinkItem[] }[]; cta: Cta }
-  | { id: string; label: string; kind: 'features'; heading: string; features: Feature[]; cta: Cta };
+  | { id: string; label: string; icon?: LucideIcon; kind: 'list'; columns: { heading: string; links: LinkItem[] }[]; cta: Cta }
+  | { id: string; label: string; icon?: LucideIcon; kind: 'features'; heading: string; features: Feature[]; cta: Cta };
 
+// Las tres primeras pestañas son las mismas tres tarjetas de "¿Qué quieres
+// hacer?" de la portada, con el mismo nombre, orden e icono (17 oct 2026).
 const TABS: Tab[] = [
   {
-    id: 'profesionales',
-    label: 'Profesionales',
+    id: 'particular',
+    label: 'Soy particular',
+    icon: PartyPopper,
     kind: 'list',
     columns: [
       {
@@ -58,15 +63,17 @@ const TABS: Tab[] = [
       },
     ],
     cta: {
-      title: '¿Buscas algo concreto?',
-      text: 'Filtra por servicio y zona y compara perfiles antes de escribir.',
-      button: 'Ver profesionales',
+      title: '¿Boda, cumple o fiesta?',
+      text: 'Cuéntanos qué necesitas y te pasamos profesionales. Sin registro.',
+      button: 'Pedir presupuesto',
       href: '/descubrir',
+      action: 'particular',
     },
   },
   {
-    id: 'organizadores',
-    label: 'Para organizadores',
+    id: 'empresario',
+    label: 'Soy empresario',
+    icon: Building2,
     kind: 'features',
     heading: 'Cómo contratas en XPEAK',
     features: [
@@ -79,13 +86,14 @@ const TABS: Tab[] = [
     cta: {
       title: '¿Organizas un evento?',
       text: 'Crea tu cuenta de organizador y empieza a contactar profesionales.',
-      button: 'Quiero contratar',
+      button: 'Soy empresario',
       href: '/auth?mode=register&role=empresario',
     },
   },
   {
-    id: 'profesionales-alta',
-    label: 'Para profesionales',
+    id: 'profesional',
+    label: 'Soy profesional',
+    icon: Headphones,
     kind: 'features',
     heading: 'Consigue más bolos',
     features: [
@@ -132,7 +140,7 @@ const MenuLink = ({ href, className, style, children, onClick }: {
   ? <a href={href} className={className} style={style} onClick={onClick}>{children}</a>
   : <Link to={href} className={className} style={style} onClick={onClick}>{children}</Link>;
 
-const LandingMegaMenu = () => {
+const LandingMegaMenu = ({ onParticular }: { onParticular?: () => void }) => {
   const [open, setOpen] = useState<string | null>(null);
   const closeTimer = useRef<number | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -184,6 +192,7 @@ const LandingMegaMenu = () => {
             onClick={() => setOpen(tab.id)}
             className="flex items-center gap-1 text-xs font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
             style={{ color: isOpen ? '#1a1208' : '#444', background: isOpen ? 'rgba(212,175,55,0.12)' : 'transparent' }}>
+            {tab.icon && <tab.icon size={13} />}
             {tab.label}
             <ChevronDown size={13} className="transition-transform" style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }} />
           </button>
@@ -265,11 +274,24 @@ const LandingMegaMenu = () => {
                   <p className="text-sm font-black mt-2 mb-1.5">{active.cta.title}</p>
                   <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{active.cta.text}</p>
                 </div>
-                <MenuLink href={active.cta.href} onClick={close}
-                  className="mt-4 text-xs font-black text-center px-4 py-2.5 rounded-xl transition-transform hover:scale-[1.03]"
-                  style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                  {active.cta.button}
-                </MenuLink>
+                {active.cta.action === 'particular' && onParticular ? (
+                  <button type="button"
+                    onClick={() => {
+                      close();
+                      (window as any).gtag?.('event', 'select_content', { content_type: 'landing_perfil', item_id: 'particular' });
+                      onParticular();
+                    }}
+                    className="mt-4 text-xs font-black text-center px-4 py-2.5 rounded-xl transition-transform hover:scale-[1.03]"
+                    style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                    {active.cta.button}
+                  </button>
+                ) : (
+                  <MenuLink href={active.cta.href} onClick={close}
+                    className="mt-4 text-xs font-black text-center px-4 py-2.5 rounded-xl transition-transform hover:scale-[1.03]"
+                    style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                    {active.cta.button}
+                  </MenuLink>
+                )}
               </div>
             </motion.div>
             </div>

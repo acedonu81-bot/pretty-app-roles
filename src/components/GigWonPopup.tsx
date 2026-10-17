@@ -58,7 +58,7 @@ interface GigWonPopupProps {
   /** 'landing' va en absolute arriba del hero de la portada (el padre es el
    * <header> relative), en el hueco sobre el banner del concurso. Antes iba
    * fixed en el centro del nav y, desde que el nav tiene menú central, tapaba
-   * "Profesionales / Para organizadores / Recursos" y en iPad vertical también
+   * las pestañas del menú y en iPad vertical también
    * "Acceder" (auditoría tablet 15 oct 2026). Solo desde md: debajo no hay hueco.
    * 'inline' no usa position:fixed — fluye en el flujo normal del padre,
    * pensado para el topbar del dashboard, a la derecha de la búsqueda. */
