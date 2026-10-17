@@ -22,9 +22,24 @@ interface PendingBooking {
   professional_name: string | null;
   event_date: string | null;
   event_location: string | null;
+  event_description: string | null;
+  professional_user_id: string | null;
+  reminder_sent_at: string | null;
   created_at: string;
   horas_esperando: number;
 }
+
+// event_description de las solicitudes de particular (ParticularRequestModal):
+// "[Particular] [tipo de evento] [servicio] texto libre". Las demás llevan
+// solo texto libre.
+const leerDescripcion = (d: string | null) => {
+  const m = (d ?? '').match(/^\[Particular\]\s*\[([^\]]*)\]\s*\[([^\]]*)\]\s*(.*)$/s);
+  return m
+    ? { particular: true, tipo: m[1].trim(), servicio: m[2].trim(), extras: m[3].trim() }
+    : { particular: false, tipo: '', servicio: '', extras: (d ?? '').trim() };
+};
+
+const sinDato = (v: string | null) => !v || !v.trim() || /^por confirmar$/i.test(v.trim());
 
 const urgencia = (h: number) => (h >= 24 ? '#b91c1c' : h >= 4 ? '#b45309' : '#92400e');
 
@@ -78,34 +93,56 @@ const AdminPendingBookingsAlert = ({ onOpenBookings }: { onOpenBookings?: () => 
               y no recibe respuesta contrata en otro sitio y no vuelve.
             </p>
 
-            <ul className="mt-3 space-y-1.5">
-              {pending.slice(0, 8).map(p => (
-                <li key={p.id} className="text-xs flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ color: '#92400e' }}>
-                  <span className="font-bold">{p.requester_name || 'Sin nombre'}</span>
-                  {p.professional_name && <span>· pidió a {p.professional_name}</span>}
-                  {p.event_location && <span>· {p.event_location}</span>}
-                  {p.event_date && <span>· evento {p.event_date}</span>}
-                  <span
-                    className="px-1.5 py-0.5 rounded font-bold inline-flex items-center gap-1"
-                    style={{ background: 'rgba(217,119,6,0.14)', color: urgencia(p.horas_esperando) }}
-                  >
-                    {p.horas_esperando >= 24 && <AlertTriangle size={10} strokeWidth={3} />}
-                    {esperando(p.horas_esperando)}
-                  </span>
-                  {/* El contacto se muestra entero: es lo que permite rescatar
-                      la solicitud a mano llamando al cliente, que es justo lo
-                      que no se pudo hacer con la de agosto. */}
-                  {p.requester_contact && (
-                    <a
-                      href={p.requester_contact.includes('@') ? `mailto:${p.requester_contact}` : `tel:${p.requester_contact}`}
-                      className="inline-flex items-center gap-1 font-bold underline"
-                      style={{ color: '#78350f' }}
-                    >
-                      <Phone size={10} strokeWidth={3} />{p.requester_contact}
-                    </a>
-                  )}
-                </li>
-              ))}
+            {/* Una tarjeta por solicitud con cuatro líneas fijas: quién, qué
+                pide, para cuándo y en qué estado está (17 oct 2026: antes era
+                una línea suelta "Kesia · pidió a Solicitud particular: Food
+                truck · evento Por confirmar" y no se entendía qué pedía, para
+                cuándo ni si alguien la había atendido). */}
+            <ul className="mt-3 space-y-2">
+              {pending.slice(0, 8).map(p => {
+                const d = leerDescripcion(p.event_description);
+                const pide = d.particular
+                  ? `${d.servicio || 'Sin servicio indicado'} (cliente particular, tipo de evento: ${d.tipo || 'sin indicar'})`
+                  : (p.professional_name || 'Sin detalle');
+                const cuando = [
+                  sinDato(p.event_date) ? 'sin fecha todavía' : p.event_date,
+                  sinDato(p.event_location) ? 'sin lugar' : p.event_location,
+                ].join(' · ');
+                return (
+                  <li key={p.id} className="text-xs rounded-lg px-3 py-2 space-y-0.5" style={{ color: '#92400e', background: 'rgba(217,119,6,0.08)' }}>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                      <span className="font-bold text-sm" style={{ color: '#78350f' }}>{p.requester_name || 'Sin nombre'}</span>
+                      <span
+                        className="px-1.5 py-0.5 rounded font-bold inline-flex items-center gap-1"
+                        style={{ background: 'rgba(217,119,6,0.14)', color: urgencia(p.horas_esperando) }}
+                      >
+                        {p.horas_esperando >= 24 && <AlertTriangle size={10} strokeWidth={3} />}
+                        recibida {esperando(p.horas_esperando)}
+                      </span>
+                      {/* El contacto se muestra entero: es lo que permite rescatar
+                          la solicitud a mano llamando al cliente, que es justo lo
+                          que no se pudo hacer con la de agosto. */}
+                      {p.requester_contact && (
+                        <a
+                          href={p.requester_contact.includes('@') ? `mailto:${p.requester_contact}` : `tel:${p.requester_contact}`}
+                          className="inline-flex items-center gap-1 font-bold underline"
+                          style={{ color: '#78350f' }}
+                        >
+                          <Phone size={10} strokeWidth={3} />{p.requester_contact}
+                        </a>
+                      )}
+                    </div>
+                    <p><span className="font-bold">Pide:</span> {pide}{d.extras && <> · «{d.extras}»</>}</p>
+                    <p><span className="font-bold">Evento:</span> {cuando}</p>
+                    <p>
+                      <span className="font-bold">Estado:</span>{' '}
+                      {p.professional_user_id
+                        ? `enviada a ${p.professional_name || 'un profesional'}, sin respuesta${p.reminder_sent_at ? ' (ya se le recordó)' : ''}`
+                        : 'solicitud general, no está asignada a ningún profesional y no consta respuesta en la plataforma'}
+                    </p>
+                  </li>
+                );
+              })}
               {pending.length > 8 && (
                 <li className="text-xs" style={{ color: '#92400e', opacity: 0.8 }}>y {pending.length - 8} más…</li>
               )}
