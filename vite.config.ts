@@ -4,7 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode, isSsrBuild }) => ({
   base: "/",
   server: {
     host: "::",
@@ -28,9 +28,13 @@ export default defineConfig(({ mode }) => ({
         // se quedaron con la web sin estilos ni JS. Cambiar el patrón da URLs
         // nuevas a todo y deja atrás esos 404 guardados. Si vuelve a pasar,
         // subir el sufijo (r3, r4...).
-        entryFileNames: 'assets/[name]-[hash]-r2.js',
-        chunkFileNames: 'assets/[name]-[hash]-r2.js',
-        assetFileNames: 'assets/[name]-[hash]-r2[extname]',
+        // Solo en la build del navegador: la de prerender (--ssr) tiene que
+        // seguir generando dist-ssr/entry-prerender.js con ese nombre exacto.
+        ...(isSsrBuild ? {} : {
+          entryFileNames: 'assets/[name]-[hash]-r2.js',
+          chunkFileNames: 'assets/[name]-[hash]-r2.js',
+          assetFileNames: 'assets/[name]-[hash]-r2[extname]',
+        }),
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return;
           // pdf-vendor (html2pdf/jspdf/html2canvas) and motion-vendor
