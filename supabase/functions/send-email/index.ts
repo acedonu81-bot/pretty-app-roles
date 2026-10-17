@@ -46,6 +46,14 @@ const rolLegible = (r: unknown): string => {
 const FROM = 'XPEAK <info@xpeak.site>';
 
 // Escape user-supplied strings before inserting into HTML to prevent injection
+// Enlace de acción de un email (17 oct 2026): solo se acepta el enlace de entrada
+// de Supabase Auth de este proyecto o una URL de xpeak.es. Cualquier otra cosa se
+// ignora y se usa el enlace por defecto de la plantilla.
+const enlaceSeguro = (u: unknown, porDefecto: string): string => {
+  const s = typeof u === 'string' ? u : '';
+  return /^https:\/\/ddrqhwravupjzysriblq\.supabase\.co\/auth\/v1\/verify\?/.test(s) || /^https:\/\/xpeak\.es\//.test(s) ? s : porDefecto;
+};
+
 const esc = (s: unknown): string =>
   String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
@@ -1573,7 +1581,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           ['Motivo', d.motivo ?? 'Sin indicar'],
         ])}
       </div>
-      ${btn('Abrir el chat →', 'https://xpeak.es/dashboard?view=messages')}
+      ${btn('Abrir el chat →', enlaceSeguro(d.action_url, 'https://xpeak.es/dashboard?view=messages'))}
       <p style="color:#6B7280;font-size:12px;margin-top:20px;text-align:center">
         Puedes escribirle por el chat de XPEAK o buscar otro profesional en el directorio.
       </p>`),

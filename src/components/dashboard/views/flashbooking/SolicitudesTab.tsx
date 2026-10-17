@@ -258,7 +258,7 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
     // Email al solicitante si dejó email como contacto
     const booking = items.find(i => i.id === id);
     if (booking?.requester_contact?.includes('@')) {
-      supabase.functions.invoke('send-email', {
+      const emailSencillo = () => supabase.functions.invoke('send-email', {
         body: {
           type: 'booking_status_update',
           data: {
@@ -271,6 +271,17 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
           },
         },
       }).catch((err: unknown) => console.warn('[SolicitudesTab] status email failed:', err));
+
+      if (status === 'confirmed') {
+        // Al aceptar, el servidor manda el email con un botón que entra directo
+        // al chat sin contraseña (el particular no tiene sesión). Si falla, sale
+        // el email de siempre.
+        supabase.functions.invoke('reserva-enlace-chat', { body: { booking_id: id } })
+          .then(({ data, error }) => { if (error || !data?.ok) void emailSencillo(); })
+          .catch(() => { void emailSencillo(); });
+      } else {
+        void emailSencillo();
+      }
     }
   };
 
