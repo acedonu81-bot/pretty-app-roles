@@ -50,13 +50,24 @@ export const resumir = (votos: Voto[], ahora = Date.now()) => {
 const hora = (iso: string) => new Date(iso).toLocaleString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
 const hace = (m: number) => (m < 1 ? 'segundos' : m < 90 ? `${Math.round(m)} min` : m < 2880 ? `${Math.round(m / 60)} h` : `${Math.round(m / 1440)} días`);
 
+interface Referido { ref: string; sesiones: number | string; altas: number | string }
+interface Captacion { votantes: number | string; con_consentimiento: number | string; quieren_proxima_edicion: number | string }
+
 export default function AdminConcursoVotantes() {
   const [votos, setVotos] = useState<Voto[] | null>(null);
+  const [referidos, setReferidos] = useState<Referido[]>([]);
+  const [captacion, setCaptacion] = useState<Captacion | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     (supabase.rpc as any)('panel_admin_concurso_votantes').then(({ data }: { data: Voto[] | null }) => {
       if (!cancelled) setVotos(data ?? []);
+    });
+    (supabase.rpc as any)('panel_admin_concurso_referidos').then(({ data }: { data: Referido[] | null }) => {
+      if (!cancelled) setReferidos(data ?? []);
+    });
+    (supabase.rpc as any)('panel_admin_concurso_captacion').then(({ data }: { data: Captacion[] | null }) => {
+      if (!cancelled) setCaptacion(data?.[0] ?? null);
     });
     return () => { cancelled = true; };
   }, []);
@@ -96,6 +107,33 @@ export default function AdminConcursoVotantes() {
           </tbody>
         </table>
       </div>
+
+      {captacion && (
+        <p className="text-xs mb-4 flex flex-wrap gap-x-5 gap-y-1" style={{ color: '#374151' }}>
+          <span><b>{Number(captacion.con_consentimiento)}</b> de {Number(captacion.votantes)} votantes aceptan avisos del concurso</span>
+          <span><b>{Number(captacion.quieren_proxima_edicion)}</b> DJs piden la próxima edición</span>
+        </p>
+      )}
+
+      <p className="text-xs font-bold mb-1" style={{ color: '#374151' }}>Altas por enlace de aspirante</p>
+      {referidos.length === 0 ? (
+        <p className="text-xs mb-5" style={{ color: '#6b7280' }}>
+          Todavía ninguna. Cada aspirante tiene un botón "Pide el voto a tus amigos" que comparte su enlace con ?ref=su-nombre.
+        </p>
+      ) : (
+        <table className="w-full text-xs mb-5">
+          <thead><tr className="text-left" style={{ color: '#6b7280' }}><th className="py-1 pr-3">Enlace</th><th className="pr-3">Visitas</th><th>Altas</th></tr></thead>
+          <tbody>
+            {referidos.map(r => (
+              <tr key={r.ref} className="border-t" style={{ borderColor: 'rgba(0,0,0,0.06)' }}>
+                <td className="py-1.5 pr-3 font-bold">{r.ref}</td>
+                <td className="pr-3 tabular-nums">{Number(r.sesiones)}</td>
+                <td className="tabular-nums">{Number(r.altas)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
 
       <p className="text-xs font-bold mb-2" style={{ color: '#374151' }}>Últimos votos</p>
       <ul className="space-y-1">

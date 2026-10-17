@@ -8,6 +8,7 @@ import { useReproductorConcurso } from '@/components/concurso/ReproductorConcurs
 import { pistaSoundcloudExiste } from '@/lib/soundcloudEnlace';
 import { cambiarSesion } from '@/lib/concursoInscripcion';
 import { toast } from 'sonner';
+import { AvisoResultado, PedirVoto } from '@/components/concurso/CaptacionConcurso';
 import { HZ, TONES, clay, clayButton, clayInset } from '@/components/healthy-zone/clay';
 
 /**
@@ -152,6 +153,8 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
   const { user } = useAuth();
   const [lista, setLista] = useState<Participante[] | null>(null);
   const [propia, setPropia] = useState<Propia | null>(null);
+  // Sube con cada voto para que el aviso de "avísame del resultado" se entere.
+  const [votoVersion, setVotoVersion] = useState(0);
 
   const cargar = useCallback(() => {
     sb.rpc('concurso_participantes', { p_concurso: CONCURSO })
@@ -290,7 +293,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                     </>
                   ) : user ? (
                     <span className="px-3.5 py-2 rounded-full" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>
-                      <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={cargar} />
+                      <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={() => { cargar(); setVotoVersion(v => v + 1); }} />
                     </span>
                   ) : (
                     <>
@@ -302,12 +305,14 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                     </>
                   )}
                 </div>
+                {user && p.user_id === user.id && <PedirVoto nombre={p.display_name} />}
                 {user && p.user_id === user.id && <CambiarSesion url={p.soundcloud_url} onCambiada={cargar} />}
               </div>
             );
           })}
         </div>
       )}
+      <AvisoResultado version={votoVersion} />
     </div>
   );
 }
