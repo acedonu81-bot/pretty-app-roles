@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Clock, Download, FileText, Euro, Calendar, User, RefreshCw, ScrollText, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -53,6 +54,19 @@ const HistorialTab = () => {
   const [ownWrittenReviews, setOwnWrittenReviews] = useState<{ id: string; llego_puntual: boolean | null; cumplio_acordado: boolean | null; volveria_contratar: boolean | null; reviewed_user_id: string }[]>([]);
   // Reseña propia antigua a completar (las 3 preguntas nuevas en null).
   const [completingReview, setCompletingReview] = useState<typeof ownWrittenReviews[number] | null>(null);
+
+  // El banner "Valorar" del panel llega con ?valorar=1: abre el formulario de la
+  // primera contratación sin valorar.
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [reseniasListas, setReseniasListas] = useState(false);
+  useEffect(() => {
+    if (loading || !reseniasListas || !new URLSearchParams(location.search).get('valorar')) return;
+    const objetivo = bookings.find(b => (b.status === 'confirmed' || b.status === 'completed')
+      && b.professional_user_id && b.professional_user_id !== user?.id && !reviewedById.has(b.professional_user_id));
+    if (objetivo) setReviewing(objetivo);
+    navigate('/dashboard?view=empresario&tab=historial', { replace: true });
+  }, [loading, reseniasListas, bookings, reviewedById, location.search, user?.id, navigate]);
 
   const fetchBookings = useCallback(async () => {
     if (!user) return;
@@ -128,6 +142,7 @@ const HistorialTab = () => {
       if (w.reviewed_user_id) map.set(w.reviewed_user_id, { rating: w.rating, comment: w.comment });
     }
     setReviewedById(map);
+    setReseniasListas(true);
   }, [user]);
 
   useEffect(() => { fetchBookings(); }, [fetchBookings]);

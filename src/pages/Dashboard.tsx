@@ -584,9 +584,10 @@ const Dashboard = () => {
   const goToPendingReviews = () => {
     if (profileRole === 'empresario') {
       handleViewChange('empresario');
-      navigate('/dashboard?view=empresario&tab=historial', { replace: true });
+      navigate('/dashboard?view=empresario&tab=historial&valorar=1', { replace: true });
     } else {
-      goToSolicitudesFlashBooking();
+      handleViewChange('flashbooking');
+      navigate('/dashboard?view=flashbooking&tab=solicitudes&valorar=1', { replace: true });
     }
   };
 

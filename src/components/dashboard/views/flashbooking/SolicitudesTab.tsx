@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Clock, Calendar, MapPin, User, RefreshCw, Phone, FileText, Star, MessageCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -76,6 +77,20 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
   const [reviewedById, setReviewedById] = useState<Map<string, { rating: number; comment: string | null }>>(new Map());
   const [reviewing, setReviewing] = useState<Solicitud | null>(null);
 
+  // El banner "Valorar" del panel llega con ?valorar=1: abre el formulario de la
+  // primera colaboración sin valorar en vez de dejar al usuario buscando el botón
+  // (en iPhone parecía que no hacía nada).
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [reseniasListas, setReseniasListas] = useState(false);
+  useEffect(() => {
+    if (loading || !reseniasListas || !new URLSearchParams(location.search).get('valorar')) return;
+    const objetivo = items.find(s => ['confirmed', 'accepted', 'completed'].includes(s.status ?? '')
+      && s.created_by && s.created_by !== user?.id && !reviewedById.has(s.created_by));
+    if (objetivo) setReviewing(objetivo);
+    navigate('/dashboard?view=flashbooking&tab=solicitudes', { replace: true });
+  }, [loading, reseniasListas, items, reviewedById, location.search, user?.id, navigate]);
+
   const fetch = useCallback(async () => {
     if (!user) return;
     setLoading(true);
@@ -139,6 +154,7 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
       }
       setReviewedById(map);
     }
+    setReseniasListas(true);
   }, [user]);
 
   useEffect(() => { fetch(); }, [fetch]);
