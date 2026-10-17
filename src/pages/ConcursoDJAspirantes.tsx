@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import SesionesConcurso from '@/components/concurso/SesionesConcurso';
+import SiguenosRedes from '@/components/concurso/SiguenosRedes';
 import { HZ, TONES, clay, clayButton } from '@/components/healthy-zone/clay';
 
 /**
@@ -81,6 +82,7 @@ export default function ConcursoDJAspirantes() {
           </section>
 
           <SesionesConcurso volverA={PATH} />
+          <SiguenosRedes />
         </main>
 
         <FooterPublic />

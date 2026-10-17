@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import SiguenosRedes from '@/components/concurso/SiguenosRedes';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { estadoInscripcionMadrid, ABRE_CONCURSO as ABRE, CIERRA_CONCURSO as CIERRA } from '@/lib/concursoMadrid';
@@ -497,6 +498,7 @@ export default function ConcursoDJMadrid() {
             </ol>
             <p className="text-xs mt-4" style={{ color: '#666' }}>Bases actualizadas el 13 de octubre de 2026: se detalla qué pasa si una sesión deja de estar disponible en SoundCloud, la autorización de difusión y que SoundCloud no patrocina el concurso.</p>
           </section>
+          <SiguenosRedes />
         </main>
 
         <FooterPublic />
