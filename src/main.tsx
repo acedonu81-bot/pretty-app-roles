@@ -50,6 +50,8 @@ if ('serviceWorker' in navigator) {
 // crash futuro de "chunk viejo" es un caso nuevo y merece su propio intento de
 // auto-recarga, no quedar bloqueado por el intento de una sesión anterior.
 try { sessionStorage.removeItem('xpeak_chunk_reload_attempted'); } catch { /* noop */ }
+// Igual para la recarga de index.html (auto-recuperación tras un deploy).
+try { sessionStorage.removeItem('xpeak_asset_reload'); } catch { /* noop */ }
 
 // Mantener visible el HTML prerenderizado hasta que React tenga contenido.
 // createRoot vacía #root en su primer render, y como las rutas son lazy ese

@@ -2,6 +2,28 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <!-- Auto-recuperación tras un deploy (17 oct 2026). Cada deploy cambia los
+         nombres de /assets/*.js y *.css y borra los anteriores. Una pestaña o la
+         app instalada que se abre con el HTML viejo (restaurada, atrás/adelante,
+         app que estaba en segundo plano) pide archivos que ya devuelven 404: la
+         página se queda como el HTML prerenderizado SIN estilos y sin arrancar
+         (los botones en bruto, la imagen enorme). Si falla la carga de un
+         script o hoja de /assets/, se recarga UNA vez (recargar revalida el HTML
+         y trae el nuevo). El flag evita bucles; main.tsx lo borra cuando la app
+         arranca. Debe ir antes que cualquier otro script. -->
+    <script>
+      (function () {
+        var KEY = 'xpeak_asset_reload';
+        window.addEventListener('error', function (e) {
+          var t = e && e.target;
+          if (!t || (t.tagName !== 'SCRIPT' && t.tagName !== 'LINK')) return;
+          if (!/\/assets\//.test(t.src || t.href || '')) return;
+          // Sin sessionStorage no hay forma de limitar el intento: mejor no recargar que arriesgar un bucle.
+          try { if (sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY, '1'); } catch (_) { return; }
+          location.reload();
+        }, true);
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <!-- CSP: NO duplicar aquí. La cabecera HTTP real la manda vercel.json
          (gana siempre sobre este meta si ambas existen a la vez, y el
