@@ -1924,6 +1924,11 @@ async function atender(req: Request): Promise<Response> {
 
   try {
     const { type, data } = await req.json();
+    // action_url (enlace de entrada al chat) solo lo puede poner un envío de
+    // confianza (clave de servicio o secreto interno, p. ej. reserva-enlace-chat).
+    // Desde el navegador se descarta: si no, un usuario con sesión podría mandar
+    // desde XPEAK un enlace de entrada a SU cuenta y dejar a otro dentro de ella.
+    if (data && typeof data === 'object' && !isInternal && !isService) delete data.action_url;
 
     // Quien llama. El gateway ya verifica la firma del JWT (verify_jwt por
     // defecto), asi que el claim role es fiable: anon = visitante sin sesion
