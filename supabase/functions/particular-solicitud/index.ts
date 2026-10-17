@@ -75,29 +75,33 @@ serve(async (req) => {
 
     // Cuenta del particular: se crea ya confirmada y sin contraseña. Si el
     // email ya tiene cuenta, se reutiliza (generateLink la devuelve).
+    // Solo se asocia a la cuenta que crea esta misma petición. Si el email ya
+    // tiene cuenta, NO se ata la solicitud a ella: cualquiera podría mandarla
+    // con el email de otro y hacerle aparecer solicitudes y avisos que no pidió.
+    // Esa solicitud queda como lead general sin cuenta, para repartir a mano.
     let userId: string | null = null;
     const creado = await admin.auth.admin.createUser({
       email, email_confirm: true,
       user_metadata: { display_name: name, particular: 'true', role: 'pending' },
     });
     if (creado.data?.user) userId = creado.data.user.id;
-    else {
-      const enlace = await admin.auth.admin.generateLink({ type: 'magiclink', email });
-      userId = enlace.data?.user?.id ?? null;
+    else if (!/already|registered|exists/i.test(creado.error?.message ?? '')) {
+      console.error('[particular-solicitud] createUser:', creado.error);
+      return json({ error: 'No se pudo registrar la solicitud' }, 500);
     }
-    if (!userId) return json({ error: 'No se pudo registrar la solicitud' }, 500);
 
     // Profesionales del oficio.
     const roles = ROLES_POR_SERVICIO[service] ?? [];
     let destinatarios: { user_id: string; display_name: string; role: string }[] = [];
-    if (roles.length) {
+    // Sin cuenta propia (el email ya existía) no hay a quién devolver el chat: no se reparte.
+    if (roles.length && userId) {
       const { data: perfiles } = await admin.from('profiles')
         .select('user_id, display_name, role, roles, zone, region, city_ref, is_seed, is_seed_profile')
         .eq('validation_status', 'approved')
         .or(roles.map(r => `role.eq.${r}`).join(','));
       const vistos = new Set<string>();
       const candidatos = (perfiles ?? []).filter(p => {
-        if (p.is_seed || p.is_seed_profile || vistos.has(p.user_id) || p.user_id === userId) return false;
+        if (p.is_seed || p.is_seed_profile || vistos.has(p.user_id)) return false;
         vistos.add(p.user_id);
         return true;
       });
