@@ -14,6 +14,7 @@ import AdminDeletionAlert from './admin/AdminDeletionAlert';
 import AdminNewProfileAlert from './admin/AdminNewProfileAlert';
 import AdminInvisibleProfilesAlert from './admin/AdminInvisibleProfilesAlert';
 import AdminPendingBookingsAlert from './admin/AdminPendingBookingsAlert';
+import AdminSolicitudesSemaforo from './admin/AdminSolicitudesSemaforo';
 import AdminActivity from './admin/AdminActivity';
 import AdminSaludSistema from './admin/AdminSaludSistema';
 import AdminDeletions from './admin/AdminDeletions';
@@ -80,6 +81,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
           El alta va primero porque es la accionable: revisar rol y zona a
           tiempo evita que el perfil quede invisible en el directorio. */}
       <AdminPendingBookingsAlert />
+      <AdminSolicitudesSemaforo />
       <AdminNewProfileAlert onOpenUsers={() => setTab('users')} />
       <AdminInvisibleProfilesAlert onOpenUsers={() => setTab('users')} />
       <AdminDeletionAlert onOpenDeletions={() => setTab('deletions')} />

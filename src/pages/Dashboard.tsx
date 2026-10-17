@@ -443,7 +443,11 @@ const Dashboard = () => {
   }, [activeView]);
 
   useEffect(() => {
-    if (user && !localStorage.getItem(`xpeak_onboarded_${user.id}`)) {
+    // Quien llega desde un aviso de chat ("X ha dicho que sí", ?con=) viene a
+    // hablar: el asistente de alta le tapaba la conversación (17 oct 2026). No
+    // se marca como hecho, así que sale en la siguiente visita normal.
+    const vieneDeChat = new URLSearchParams(location.search).has('con');
+    if (user && !vieneDeChat && !localStorage.getItem(`xpeak_onboarded_${user.id}`)) {
       setShowWizard(true);
     }
   }, [user]);
