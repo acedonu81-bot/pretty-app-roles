@@ -22,6 +22,7 @@ import AdminAnalytics from './admin/AdminAnalytics';
 import AdminConversations from './admin/AdminConversations';
 import AdminEmergentes from './admin/AdminEmergentes';
 import AdminConcurso from './admin/AdminConcurso';
+import AdminConcursoVotantes from './admin/AdminConcursoVotantes';
 
 const TABS = [
   { id: 'activity', label: 'Actividad', icon: Activity },
@@ -137,7 +138,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       {tab === 'deletions' && <AdminDeletions />}
       {tab === 'empresarios' && <AdminBusinesses />}
       {tab === 'emergentes' && <AdminEmergentes />}
-      {tab === 'concurso' && <AdminConcurso />}
+      {tab === 'concurso' && <><AdminConcurso /><AdminConcursoVotantes /></>}
       {tab === 'content' && <AdminReviews />}
       {tab === 'business' && (
         <>
