@@ -24,7 +24,7 @@ export default function SiguenosRedes() {
     <section className="mt-12 rounded-[28px] p-6 sm:p-8 text-center"
       style={{ background: HZ.surface, boxShadow: clay(TONES.sun.rgb, 'sm') }}>
       <h2 className="text-2xl sm:text-3xl mb-2" style={{ fontFamily: HZ.display, fontWeight: 800, color: HZ.ink }}>
-        Síguenos en redes
+        ¿Solo vienes a votar? Síguenos en redes
       </h2>
       <p className="max-w-md mx-auto mb-5 text-sm sm:text-base" style={{ fontFamily: HZ.body, fontWeight: 600, color: HZ.ink, opacity: 0.8 }}>
         Para estar al tanto de todos los concursos, de los finalistas y de lo que viene.
