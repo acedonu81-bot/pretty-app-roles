@@ -1208,6 +1208,29 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}`),
   }),
 
+  // Particular con solicitud sin datos (17 oct 2026, Kesia, food truck): le
+  // pedimos fecha, zona, personas y tipo de comida para que los profesionales
+  // puedan contestar. Solo con clave de servicio.
+  particular_aclarar_solicitud: (d) => ({
+    subject: `${esc(d.name)}, cuéntanos un poco más de tu ${esc(d.oficio ?? 'evento')}`,
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Un par de datos y listo</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hemos pasado tu solicitud a ${esc(d.n_profesionales ?? 'varios')} profesionales, pero les falta información para poder contestarte con un precio. Con estos datos pueden hacerlo hoy mismo:
+      </p>
+      <ul style="color:#4b5563;font-size:14px;line-height:1.9;margin:0 0 10px;padding-left:20px">
+        <li>Fecha del evento</li>
+        <li>Ciudad o zona</li>
+        <li>Número aproximado de personas</li>
+        <li>${esc(d.ultimo_dato ?? 'Qué necesitas exactamente')}</li>
+      </ul>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Responde a este correo con eso, aunque sea en una línea, y se lo pasamos a los profesionales.
+      </p>`),
+  }),
+
   // Concurso DJ XPEAK Madrid (17 oct 2026): al DJ cuya sesión de SoundCloud ya
   // no existe (borrada o privada). Solo se envía con la clave de servicio (no
   // está en PUBLIC/LOGGED/ADMIN_TYPES).
