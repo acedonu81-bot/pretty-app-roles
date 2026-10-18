@@ -253,9 +253,9 @@ const ROUTES = [
   },
   {
     path: '/blog/cuanto-cobra-un-dj-en-espana',
-    title: 'Precio de un DJ en 2026: tabla por hora, boda y ciudad | XPEAK',
+    title: '¿Cuánto cobra un DJ en 2026? Tabla por hora, boda y ciudad | XPEAK',
     desc: '¿Cuánto cobra un DJ? Depende de las horas, la ciudad y la experiencia. Mira la tabla con precios reales y qué incluye cada tarifa antes de contratar.',
-    ogTitle: 'Precio de un DJ en 2026: tabla por hora, boda y ciudad',
+    ogTitle: '¿Cuánto cobra un DJ en 2026? Tabla por hora, boda y ciudad',
     ogDesc: '¿Cuánto cobra un DJ? Depende de las horas, la ciudad y la experiencia. Mira la tabla con precios reales y qué incluye cada tarifa antes de contratar.',
     ogType: 'article',
   },

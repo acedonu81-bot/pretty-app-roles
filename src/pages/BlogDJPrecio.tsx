@@ -79,18 +79,18 @@ const faqStructured = {
   return (
     <>
       <Helmet>
-        <title>Precio de un DJ en 2026: tabla por hora, boda y ciudad | XPEAK</title>
+        <title>¿Cuánto cobra un DJ en 2026? Tabla por hora, boda y ciudad | XPEAK</title>
         <meta name="description" content="¿Cuánto cobra un DJ? Depende de las horas, la ciudad y la experiencia. Mira la tabla con precios reales y qué incluye cada tarifa antes de contratar." />
         <meta name="keywords" content="cuánto cobra un DJ, precio DJ España, tarifa DJ boda, DJ precio hora España, cuánto cuesta DJ 2026" />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana" />
-        <meta property="og:title" content="Precio de un DJ en 2026: tabla por hora, boda y ciudad" />
+        <meta property="og:title" content="¿Cuánto cobra un DJ en 2026? Tabla por hora, boda y ciudad" />
         <meta property="og:description" content="¿Cuánto cobra un DJ? Depende de las horas, la ciudad y la experiencia. Mira la tabla con precios reales y qué incluye cada tarifa antes de contratar." />
         <meta property="og:url" content="https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana" />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Precio de un DJ en 2026: tabla por hora, boda y ciudad" />
+        <meta name="twitter:title" content="¿Cuánto cobra un DJ en 2026? Tabla por hora, boda y ciudad" />
         <meta name="twitter:description" content="¿Cuánto cobra un DJ? Depende de las horas, la ciudad y la experiencia. Mira la tabla con precios reales y qué incluye cada tarifa antes de contratar." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>

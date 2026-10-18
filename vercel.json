@@ -132,6 +132,8 @@
     { "src": "/blog/precio-azafatas-vigo", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
     { "src": "/blog/precio-azafatas-vitoria", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
     { "src": "/blog/precio-azafatas-zaragoza", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
+    { "src": "/blog/cuanto-cobra-vuelve-espana", "status": 301, "headers": { "Location": "/blog/cuanto-cobra-un-dj-en-espana" } },
+    { "src": "/blog/cuanto-cobra-un-espana", "status": 301, "headers": { "Location": "/blog/cuanto-cobra-un-dj-en-espana" } },
     { "src": "/blog/camareros-eventos-albacete", "status": 301, "headers": { "Location": "/blog/cuanto-cobra-un-camarero-de-eventos" } },
     { "src": "/blog/camareros-eventos-alcorcon", "status": 301, "headers": { "Location": "/blog/cuanto-cobra-un-camarero-de-eventos" } },
     { "src": "/blog/camareros-eventos-alicante", "status": 301, "headers": { "Location": "/blog/cuanto-cobra-un-camarero-de-eventos" } },
