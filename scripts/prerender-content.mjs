@@ -143,7 +143,7 @@ function resolveProfilesForDirectorio(allProfiles, dbRole) {
 }
 
 // Routes que nunca deben prerenderizarse con contenido (app privada / auth)
-const SKIP = new Set(['/auth', '/dashboard', '/admin-beta', '/baja-emails', '/eliminar-cuenta']);
+const SKIP = new Set(['/auth', '/dashboard', '/admin-beta', '/baja-emails', '/solicitud-confirmada', '/eliminar-cuenta']);
 
 // name → archivo de página, desde los lazy imports de App.tsx
 const componentFiles = new Map();

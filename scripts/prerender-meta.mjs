@@ -390,6 +390,7 @@ const ROUTES = [
   // prerender caía en el catch-all 404 de vercel.json, restando puntos de
   // SpamAssassin en cada email enviado (detectado el 21 sep vía mail-tester).
   { path: '/baja-emails', title: 'Baja de emails | XPEAK', desc: 'Cancela la suscripción a los correos de XPEAK.', ogTitle: 'Baja de emails | XPEAK', ogDesc: 'Cancela la suscripción a los correos de XPEAK.', ogType: 'website' },
+  { path: '/solicitud-confirmada', title: 'Solicitud confirmada | XPEAK', desc: 'Confirma tu solicitud a los profesionales de XPEAK.', ogTitle: 'Solicitud confirmada | XPEAK', ogDesc: 'Confirma tu solicitud a los profesionales de XPEAK.', ogType: 'website' },
 
   // Precios
   { path: '/precios', title: 'Precios XPEAK: Para profesionales y empresarios de eventos', desc: 'Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos.', ogTitle: 'Precios XPEAK: Para profesionales y empresarios de eventos', ogDesc: 'Precios de XPEAK para profesionales y empresarios de eventos. Contratos digitales automáticos.', ogType: 'website' },
