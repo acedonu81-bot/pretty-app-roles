@@ -59,7 +59,6 @@
   <url><loc>https://xpeak.es/directorio/diseno-grafico</loc><lastmod>2026-10-15</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/directorio/alquiler-equipos</loc><lastmod>2026-10-15</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/directorio/djs-emergentes</loc><lastmod>2026-10-15</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://xpeak.es/directorio/locales-eventos</loc><lastmod>2026-10-15</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/socials</loc><lastmod>2026-10-15</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
 
   <!-- dj por ciudad -->
@@ -69,7 +68,6 @@
   <url><loc>https://xpeak.es/contratar-dj/malaga</loc><lastmod>2026-09-09</lastmod><changefreq>weekly</changefreq><priority>0.83</priority></url>
   <url><loc>https://xpeak.es/contratar-dj/murcia</loc><lastmod>2026-09-27</lastmod><changefreq>weekly</changefreq><priority>0.77</priority></url>
   <url><loc>https://xpeak.es/contratar-dj/granada</loc><lastmod>2026-09-10</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://xpeak.es/contratar-dj/cordoba</loc><lastmod>2026-10-07</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
   <url><loc>https://xpeak.es/contratar-dj/coruna</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
   <url><loc>https://xpeak.es/contratar-dj/salamanca</loc><lastmod>2026-08-28</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
   <url><loc>https://xpeak.es/contratar-dj/toledo</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
@@ -114,7 +112,6 @@
   <url><loc>https://xpeak.es/contratar-disco-movil/malaga</loc><lastmod>2026-09-09</lastmod><changefreq>weekly</changefreq><priority>0.83</priority></url>
   <url><loc>https://xpeak.es/contratar-disco-movil/murcia</loc><lastmod>2026-09-27</lastmod><changefreq>weekly</changefreq><priority>0.77</priority></url>
   <url><loc>https://xpeak.es/contratar-disco-movil/granada</loc><lastmod>2026-09-10</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://xpeak.es/contratar-disco-movil/cordoba</loc><lastmod>2026-10-07</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
   <url><loc>https://xpeak.es/contratar-disco-movil/coruna</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
   <url><loc>https://xpeak.es/contratar-disco-movil/salamanca</loc><lastmod>2026-08-28</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
   <url><loc>https://xpeak.es/contratar-disco-movil/toledo</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
@@ -188,7 +185,6 @@
   <url><loc>https://xpeak.es/boda/contratar-disco-movil</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/boda/contratar-animador</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/boda/contratar-tecnico-sonido</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://xpeak.es/boda/contratar-locales-eventos</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/cumpleanos/contratar-dj</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/cumpleanos/contratar-fotografo</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/cumpleanos/contratar-catering</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
@@ -203,7 +199,6 @@
   <url><loc>https://xpeak.es/evento-empresa/contratar-camareros</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/evento-empresa/contratar-speaker</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/evento-empresa/contratar-tecnico-sonido</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://xpeak.es/evento-empresa/contratar-locales-eventos</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/comunion/contratar-fotografo</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/comunion/contratar-catering</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/comunion/contratar-food-truck</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
@@ -217,7 +212,6 @@
   <url><loc>https://xpeak.es/fiesta-privada/contratar-food-truck</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/fiesta-privada/contratar-camareros</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/fiesta-privada/contratar-animador</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://xpeak.es/fiesta-privada/contratar-locales-eventos</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/fiesta-privada/contratar-disco-movil</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
 
   <!-- Special landings -->
@@ -251,7 +245,7 @@
   <url><loc>https://xpeak.es/blog/estilista-de-boda-que-incluye</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   <url><loc>https://xpeak.es/blog/cuanto-cobra-un-humorista-eventos</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   <url><loc>https://xpeak.es/blog/humorista-cena-empresa-como-elegir</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana</loc><lastmod>2026-10-16</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana</loc><lastmod>2026-10-18</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   <url><loc>https://xpeak.es/blog/mejores-plataformas-contratar-dj-espana</loc><lastmod>2026-10-15</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   <url><loc>https://xpeak.es/blog/cuanto-cobra-un-camarero-de-eventos</loc><lastmod>2026-10-16</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
   <url><loc>https://xpeak.es/blog/cuantos-camareros-necesito-para-mi-boda</loc><lastmod>2026-10-15</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
@@ -581,7 +575,6 @@
   <url><loc>https://xpeak.es/p/discomovil-profesional-eloy</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/dj-vsnt</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/dj-eloy</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
-  <url><loc>https://xpeak.es/p/jovenesflamencos</loc><lastmod>2026-10-07</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/babucha-photography</loc><lastmod>2026-10-06</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/lagartijascolora</loc><lastmod>2026-10-06</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/susana-lopez-ciotkowski</loc><lastmod>2026-10-05</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
@@ -598,7 +591,6 @@
   <url><loc>https://xpeak.es/p/guillemagic</loc><lastmod>2026-09-24</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/gula-sabor-argentino</loc><lastmod>2026-09-24</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/vulcano-grill</loc><lastmod>2026-09-23</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
-  <url><loc>https://xpeak.es/p/sala-en-madrid</loc><lastmod>2026-09-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/djmariobpm</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/unfrontier</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/dj-garvil</loc><lastmod>2026-09-20</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>

@@ -8,6 +8,8 @@ import { useReproductorConcurso } from '@/components/concurso/ReproductorConcurs
 import { pistaSoundcloudExiste } from '@/lib/soundcloudEnlace';
 import { cambiarSesion } from '@/lib/concursoInscripcion';
 import { toast } from 'sonner';
+import { track } from '@/lib/track';
+import { isNative } from '@/lib/capacitor';
 import { AvisoResultado, PedirVoto } from '@/components/concurso/CaptacionConcurso';
 import { HZ, TONES, clay, clayButton, clayInset } from '@/components/healthy-zone/clay';
 
@@ -150,6 +152,16 @@ type Propia = { estado: 'pendiente' | 'rechazada'; soundcloud_url: string; displ
 // parecía que no se había subido nada). Estilo clay del feed (healthy-zone/
 // clay): finalistas en dorado, el resto alterna cielo, verde y lila.
 export default function SesionesConcurso({ volverA }: { volverA: string }) {
+  const votarConGoogle = async () => {
+    track('concurso_votar_google_click');
+    // En la app iOS Google va por un navegador in-app que solo sabe manejar /auth.
+    if (isNative) { window.location.href = `/auth?mode=register&redirect=${encodeURIComponent(volverA)}`; return; }
+    // Misma clave que lee Auth.tsx al volver de Google: sin ella acabaría en el panel.
+    try { sessionStorage.setItem('xpeak_redirect_google', volverA); } catch { /* sin almacenamiento */ }
+    const site = import.meta.env.VITE_SITE_URL || window.location.origin;
+    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: `${site}/auth` } });
+    if (error) window.location.href = `/auth?mode=register&redirect=${encodeURIComponent(volverA)}`;
+  };
   const { user } = useAuth();
   const [lista, setLista] = useState<Participante[] | null>(null);
   const [propia, setPropia] = useState<Propia | null>(null);
@@ -298,10 +310,20 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                   ) : (
                     <>
                       <span className="px-3.5 py-2 rounded-full tabular-nums" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>{Number(p.me_gusta)} me gusta</span>
-                      <a href={`/auth?mode=login&redirect=${encodeURIComponent(volverA)}`} className="px-4 py-2 rounded-full text-white transition-transform hover:-translate-y-0.5"
-                        style={{ background: AZUL, fontFamily: HZ.body, fontWeight: 800, boxShadow: clayButton('37,99,235') }}>
-                        Entra para votar
-                      </a>
+                      {/* Quien vota casi nunca tiene cuenta. "Entra para votar" llevaba
+                          a iniciar sesión y una votante nueva probó 5 veces email y
+                          contraseña de una cuenta que no existía (18 oct 2026). Google
+                          entra o crea la cuenta en un toque; el email va a crear cuenta. */}
+                      <span className="flex flex-col items-start gap-1">
+                        <button type="button" onClick={votarConGoogle} className="xp-cta-glow px-4 py-2 rounded-full text-white transition-transform hover:-translate-y-0.5"
+                          style={{ background: AZUL, fontFamily: HZ.body, fontWeight: 800, boxShadow: clayButton('37,99,235') }}>
+                          Vota con Google
+                        </button>
+                        <a href={`/auth?mode=register&redirect=${encodeURIComponent(volverA)}`} onClick={() => track('concurso_votar_email_click')}
+                          className="text-xs underline px-1" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 700 }}>
+                          o con tu email
+                        </a>
+                      </span>
                     </>
                   )}
                 </div>
