@@ -253,10 +253,10 @@ const ROUTES = [
   },
   {
     path: '/blog/cuanto-cobra-un-dj-en-espana',
-    title: '¿Cuánto Cobra un DJ? Precio Real 400€-1.200€ (2026) | XPEAK',
-    desc: 'Un DJ para boda cuesta entre 400€ y 1.200€ por actuación (30€-500€/hora según experiencia y ciudad). Tabla de precios reales 2026, por perfil y por ciudad.',
-    ogTitle: '¿Cuánto Cobra un DJ? Precio Real 400€-1.200€ (2026)',
-    ogDesc: 'Un DJ para boda cuesta entre 400€ y 1.200€ por actuación. Tabla de precios reales 2026, por perfil y por ciudad.',
+    title: 'Precio de un DJ en 2026: tabla por hora, boda y ciudad | XPEAK',
+    desc: '¿Cuánto cobra un DJ? Depende de las horas, la ciudad y la experiencia. Mira la tabla con precios reales y qué incluye cada tarifa antes de contratar.',
+    ogTitle: 'Precio de un DJ en 2026: tabla por hora, boda y ciudad',
+    ogDesc: '¿Cuánto cobra un DJ? Depende de las horas, la ciudad y la experiencia. Mira la tabla con precios reales y qué incluye cada tarifa antes de contratar.',
     ogType: 'article',
   },
   {
