@@ -864,7 +864,11 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 3. Flash Booking — confirmación al solicitante
   flash_booking_confirm: (d) => ({
-    subject: `Solicitud enviada a ${esc(d.professional_name)} ✓`,
+    // Las del particular llegan como "Solicitud particular: DJ" (18 oct 2026):
+    // el asunto salía "Solicitud enviada a Solicitud particular: DJ".
+    subject: String(d.professional_name ?? '').startsWith('Solicitud particular: ')
+      ? `Tu solicitud de ${esc(String(d.professional_name).slice(22))} está en marcha ✓`
+      : `Solicitud enviada a ${esc(d.professional_name)} ✓`,
     to: d.requester_contact,
     html: base(`
       ${confirmSeal()}
@@ -2075,6 +2079,17 @@ async function atender(req: Request): Promise<Response> {
         const { count } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
           .eq('professional_user_id', callerId ?? '').eq('requester_contact', String(data.email ?? ''));
         if (!count) return prohibido('sin reserva que lo respalde');
+        // Solicitud de particular repartida a varios (18 oct 2026): si uno dice
+        // que no y otros siguen pendientes o ya aceptaron, al particular no se le
+        // dice nada. Antes recibía "no disponible" mientras otro ya le hablaba.
+        if (data.status !== 'confirmed') {
+          const { count: otros } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
+            .eq('requester_contact', String(data.email ?? '')).eq('source', 'particular')
+            .in('status', ['pending', 'confirmed']).neq('professional_user_id', callerId ?? '')
+            .gte('created_at', new Date(Date.now() - 7 * 86_400_000).toISOString());
+          if (otros) return new Response(JSON.stringify({ ok: true, omitido: 'quedan otros profesionales' }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+        }
       } else if (type === 'flash_booking_confirm') {
         const { count } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
           .eq('requester_contact', String(data.requester_contact ?? '')).gte('created_at', hace15min);

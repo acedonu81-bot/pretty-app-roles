@@ -93,6 +93,12 @@ async function leerToken(t: string): Promise<Datos | null> {
   } catch { return null; }
 }
 
+const barajar = <T,>(xs: T[]): T[] => {
+  const a = [...xs];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+};
+
 const fechaValida = (f: string) => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(f)) return false;
   const dia = new Date(`${f}T23:59:59Z`).getTime();
@@ -218,7 +224,9 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
     const coinciden = q
       ? candidatos.filter(p => [p.city_ref, p.zone, p.region].some(c => (c ?? '').toLowerCase().includes(q) || (q.length > 3 && q.includes((c ?? '').toLowerCase()) && (c ?? '').length > 2)))
       : [];
-    const elegidos = coinciden.length ? coinciden : (candidatos.length <= OFERTA_PEQUENA ? candidatos : []);
+    // Al azar entre los que encajan: antes salían siempre los 10 primeros que
+    // devolvía la base de datos (los mismos DJs de Madrid en cada solicitud).
+    const elegidos = barajar(coinciden.length ? coinciden : (candidatos.length <= OFERTA_PEQUENA ? candidatos : []));
     destinatarios = elegidos.slice(0, MAX_PROFESIONALES).map(p => ({ user_id: p.user_id, display_name: p.display_name, role: p.role }));
   }
 
