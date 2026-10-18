@@ -105,7 +105,9 @@ serve(async (req) => {
         vistos.add(p.user_id);
         return true;
       });
-      const q = location.toLowerCase();
+      // Un lugar de 1-2 letras ("r") coincidía por subcadena con casi cualquier zona
+    // y el aviso salía a 10 profesionales: por debajo de 3 letras no cuenta como lugar.
+    const q = location.length >= 3 ? location.toLowerCase() : '';
       const coinciden = q
         ? candidatos.filter(p => [p.city_ref, p.zone, p.region].some(c => (c ?? '').toLowerCase().includes(q) || (q.length > 3 && q.includes((c ?? '').toLowerCase()) && (c ?? '').length > 2)))
         : [];
