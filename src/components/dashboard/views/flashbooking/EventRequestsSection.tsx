@@ -140,6 +140,13 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
   });
 
   useEffect(() => {
+    // Sin cancelar, dos cargas seguidas (auth y perfil llegan tarde) podían
+    // contestar en orden inverso y la antigua pisaba a la filtrada. Y la lista
+    // no se refrescaba nunca: una ventana abierta días seguía enseñando como
+    // abierta una oferta ya cerrada (Burguerfest, 18 oct 2026). Se recarga al
+    // volver a la pestaña.
+    let cancelado = false;
+    const cargar = () => {
     // El empresario necesita seguir viendo SU oferta ya cerrada (contratación
     // hecha) para poder generar el contrato después — antes desaparecía del
     // listado en cuanto pasaba a 'closed' y no había forma de volver a abrirla.
@@ -164,6 +171,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
       .order('created_at', { ascending: false })
       .limit(20)
       .then(({ data, error }) => {
+        if (cancelado) return;
         // Sin manejar `error` ni rechazo, un fallo (RLS, tabla ausente) dejaba
         // los skeletons pulsando indefinidamente o fingía "sin solicitudes".
         if (error) console.error('[EventRequestsSection] load failed:', error.message);
@@ -181,8 +189,13 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
         setLoading(false);
       }, (err: unknown) => {
         console.error('[EventRequestsSection] load rejected:', err);
-        setLoading(false);
+        if (!cancelado) setLoading(false);
       });
+    };
+    cargar();
+    const alVolver = () => { if (document.visibilityState === 'visible') cargar(); };
+    document.addEventListener('visibilitychange', alVolver);
+    return () => { cancelado = true; document.removeEventListener('visibilitychange', alVolver); };
   }, [isEmpresario, user?.id]);
 
   // Quién se ha apuntado a MIS ofertas, ya ordenado por completitud de perfil:
@@ -510,6 +523,11 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
       if ((error as { code?: string }).code === '23505') {
         setApplied(a => ({ ...a, [req.id]: { responseId: '', chosenAt: null } }));
         toast.info('Ya te habías apuntado a esta oferta.');
+        return;
+      }
+      if (String((error as { message?: string }).message ?? '').includes('oferta_cerrada')) {
+        setRequests(prev => prev.filter(r => r.id !== req.id));
+        toast.info('Esta oferta ya está cerrada. La quitamos de tu lista.');
         return;
       }
       toast.error('No se pudo enviar. Inténtalo de nuevo.');
