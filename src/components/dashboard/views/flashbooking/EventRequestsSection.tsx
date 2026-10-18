@@ -179,10 +179,13 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
         // Para el profesional, una oferta 'closed' solo debe quedarse si él
         // mismo fue el contratado (hired_at relleno en su respuesta) — nunca
         // las cerradas de otros profesionales.
-        if (!isEmpresario && user?.id) {
+        // Se aplica SIEMPRE al profesional, también si aún no se conoce su
+        // usuario y también si es admin: a un admin la RLS le entrega todas las
+        // filas, y solo este filtro hacía que viera lo mismo que cualquier DJ.
+        if (!isEmpresario) {
           rows = rows.filter(r =>
             r.status === 'open' ||
-            (r.event_request_responses ?? []).some(resp => resp.professional_user_id === user.id && resp.hired_at)
+            (!!user?.id && (r.event_request_responses ?? []).some(resp => resp.professional_user_id === user.id && resp.hired_at))
           );
         }
         setRequests(rows as EventRequest[]);

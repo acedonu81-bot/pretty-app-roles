@@ -7,6 +7,7 @@ const estado = {
   updates: [] as unknown[],
   inserts: [] as unknown[],
   yo_contratado: false,
+  status: 'open',
 };
 const onMessage = vi.fn();
 const toastOk = vi.fn();
@@ -24,7 +25,7 @@ const oferta = () => ({
   id: 'q1', client_name: 'Burguerfest', client_user_id: 'organizador', event_type: 'Festival', city: 'Seseña',
   event_date: '2026-10-16', event_dates: ['2026-10-16', '2026-10-17'], budget_min: 100, budget_max: 100,
   roles_needed: ['DJ / Artista'], description: 'Se precisa DJ', contact_email: null, contact_phone: null,
-  status: 'open', created_at: '2026-10-13T18:34:11Z', expires_at: new Date(Date.now() + 5 * 86400000).toISOString(),
+  status: estado.status, created_at: '2026-10-13T18:34:11Z', expires_at: new Date(Date.now() + 5 * 86400000).toISOString(),
   estilos: null, exact_address: null,
   event_request_responses: estado.yo_contratado ? [{ hired_at: '2026-10-13T20:05:00Z', professional_user_id: 'pro-1' }] : [],
 });
@@ -62,7 +63,7 @@ const abrir = async () => fireEvent.click(await screen.findByRole('button', { na
 
 describe('Oferta vista por el profesional: cada paso dice qué hacer', () => {
   beforeEach(() => {
-    estado.misRespuestas = []; estado.filasActualizadas = [{ id: 'r1' }]; estado.updates = []; estado.inserts = []; estado.yo_contratado = false;
+    estado.misRespuestas = []; estado.filasActualizadas = [{ id: 'r1' }]; estado.updates = []; estado.inserts = []; estado.yo_contratado = false; estado.status = 'open';
     onMessage.mockClear(); toastOk.mockClear(); toastError.mockClear(); toastNeutro.mockClear(); invoke.mockClear();
     Element.prototype.scrollIntoView = vi.fn();
   });
@@ -122,5 +123,12 @@ describe('Oferta vista por el profesional: cada paso dice qué hacer', () => {
     expect(await screen.findByText(/Te han contratado\. Está en tu calendario/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: /Me interesa este bolo/ })).toBeNull();
     expect(screen.getByRole('button', { name: /Abrir el chat/ })).toBeTruthy();
+  });
+
+  it('oferta cerrada en la que no estoy contratado NO aparece, aunque la base de datos la entregue (caso admin/DJ, Burguerfest)', async () => {
+    estado.status = 'closed';
+    render(<EventRequestsSection onMessage={onMessage} />);
+    expect(await screen.findByText(/Sin solicitudes abiertas/)).toBeTruthy();
+    expect(screen.queryByText('Burguerfest')).toBeNull();
   });
 });
