@@ -1218,7 +1218,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Un par de datos y listo</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
-        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hemos pasado tu solicitud a ${esc(d.n_profesionales ?? 'varios')} profesionales, pero les falta información para poder contestarte con un precio. Con estos datos pueden hacerlo hoy mismo:
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, ${d.n_profesionales ? `hemos pasado tu solicitud a ${esc(d.n_profesionales)} profesionales, pero les falta` : 'hemos recibido tu solicitud, pero nos falta'} información para poder contestarte con un precio. Con estos datos pueden hacerlo hoy mismo:
       </p>
       <ul style="color:#4b5563;font-size:14px;line-height:1.9;margin:0 0 10px;padding-left:20px">
         <li>Fecha del evento</li>

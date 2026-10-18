@@ -29,6 +29,18 @@ const ROLES_POR_SERVICIO: Record<string, string[]> = {
   'Alquiler de equipo': ['alquiler'],
 };
 
+// Último dato que se pide en el email de "faltan datos", según el oficio.
+const ULTIMO_DATO: Record<string, string> = {
+  'DJ': 'Estilo de música que te gusta',
+  'Disco móvil': 'Estilo de música que te gusta',
+  'Música en directo': 'Estilo de música que buscas',
+  'Fotógrafo / vídeo': 'Si quieres foto, vídeo o las dos',
+  'Camareros / catering': 'Si es comida, bebida o las dos, y cuántos servicios',
+  'Food truck': 'Qué tipo de comida te gustaría',
+  'Animación': 'Edad de los asistentes',
+  'Alquiler de equipo': 'Qué equipo necesitas',
+};
+
 const MAX_PROFESIONALES = 10;
 // Con poca oferta se manda a todos aunque no coincida la ciudad: el profesional
 // decide si puede. Con mucha, sin ciudad que coincida, lo reparte el admin.
@@ -116,7 +128,7 @@ serve(async (req) => {
     }
 
     const extras = [budget && `Presupuesto: ${budget}`, message].filter(Boolean).join(' · ');
-    const faltan = !date || !location;
+    const faltan = !date || location.length < 3;
     const descripcion = `Cliente particular que busca ${service.toLowerCase()} para un evento de tipo ${eventType}.`
       + (extras ? ` ${extras}.` : '')
       + (faltan ? ' Falta ' + [!date && 'la fecha', !location && 'el lugar'].filter(Boolean).join(' y ') + ': escríbele para concretarlo.' : '');
@@ -151,6 +163,15 @@ serve(async (req) => {
         body: JSON.stringify({ type, data }),
       }).catch(err => console.warn('[particular-solicitud] email', type, err));
     const envios: Promise<unknown>[] = [enviar('flash_booking', payload), enviar('flash_booking_confirm', payload)];
+    // Faltan fecha o lugar (o el lugar es basura): le pedimos los datos por email
+    // para que los profesionales puedan contestar con precio.
+    if (faltan || location.length < 3) {
+      envios.push(enviar('particular_aclarar_solicitud', {
+        user_id: userId, name, email, oficio: service.toLowerCase(),
+        n_profesionales: destinatarios.length || undefined,
+        ultimo_dato: ULTIMO_DATO[service],
+      }));
+    }
     // Email a cada profesional del oficio, solo con nombre del cliente, fecha,
     // lugar y qué pide: el contacto del cliente no sale de XPEAK.
     for (const d of destinatarios) {
