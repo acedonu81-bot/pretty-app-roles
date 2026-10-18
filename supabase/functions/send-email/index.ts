@@ -1208,6 +1208,27 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}`),
   }),
 
+  // Particular (18 oct 2026): antes de repartir su solicitud tiene que pulsar
+  // este botón, así no llegan pruebas ni emails falsos a los profesionales.
+  // Solo con clave de servicio y solo con enlaces a xpeak.es.
+  particular_confirmar: (d) => ({
+    subject: `${esc(d.name)}, confirma tu solicitud de ${esc(d.oficio ?? 'profesional')}`,
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Confirma y se la mandamos</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, has pedido <strong style="color:#0a0908">${esc(d.oficio ?? '')}</strong> para el <strong style="color:#0a0908">${esc(d.fecha ?? '')}</strong> en <strong style="color:#0a0908">${esc(d.ciudad ?? '')}</strong>.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Pulsa el botón y se la enviamos a los profesionales. Cuando uno diga que sí, te escribimos para que habléis por el chat de XPEAK.
+      </p>
+      ${String(d.url ?? '').startsWith('https://xpeak.es/') ? btn('Confirmar y enviar →', String(d.url)) : ''}
+      <p style="color:#6B7280;font-size:13px;line-height:1.6;margin:20px 0 0;text-align:center">
+        El botón vale 48 horas. Si no has sido tú, ignora este correo.
+      </p>`, 'Pulsa el botón para enviar tu solicitud'),
+  }),
+
   // Particular con solicitud sin datos (17 oct 2026, Kesia, food truck): le
   // pedimos fecha, zona, personas y tipo de comida para que los profesionales
   // puedan contestar. Solo con clave de servicio.

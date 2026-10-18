@@ -241,6 +241,7 @@ const BlogBarmanEventos = lazy(() => import("./pages/BlogBarmanEventos"));
 const BlogDJBodaCivil = lazy(() => import("./pages/BlogDJBodaCivil"));
 const Precios = lazy(() => import("./pages/Precios"));
 const BajaEmails = lazy(() => import("./pages/BajaEmails"));
+const SolicitudConfirmada = lazy(() => import("./pages/SolicitudConfirmada"));
 const BlogCateringBoda = lazy(() => import("./pages/BlogCateringBoda"));
 const BlogVideografoBodas = lazy(() => import("./pages/BlogVideografoBodas"));
 const BlogTendenciasBodas = lazy(() => import("./pages/BlogTendenciasBodas"));
@@ -765,6 +766,7 @@ const App = () => (
             )}
             <Route path="/precios" element={<Precios />} />
             <Route path="/baja-emails" element={<BajaEmails />} />
+            <Route path="/solicitud-confirmada" element={<SolicitudConfirmada />} />
             {!isNative && (
               <>
             <Route path="/blog/catering-boda-precio-por-persona" element={<BlogCateringBoda />} />

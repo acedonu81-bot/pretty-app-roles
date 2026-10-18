@@ -14,6 +14,9 @@ import { supabase } from '@/integrations/supabase/client';
  * profesional asignado, que se reparte a mano): es el único INSERT anónimo que
  * permite la RLS desde el 9 sep ("Anon can insert generic leads only").
  *
+ * 18 oct 2026: fecha y ciudad obligatorias y nada se reparte hasta que el
+ * particular pulsa "Confirmar y enviar" en su email (página /solicitud-confirmada).
+ *
  * La marca [Particular] al inicio de event_description es lo que mide la
  * death line de la ficha (menos de 10 en 30 días = no se construye el cobro).
  */
@@ -36,6 +39,19 @@ const EVENT_TYPES = [
   'Despedida', 'Aniversario', 'Otro',
 ];
 
+// Sugerencias de ciudad: se puede escribir otra, pero así casi nadie pone basura.
+const CIUDADES = [
+  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma',
+  'Las Palmas de Gran Canaria', 'Bilbao', 'Alicante', 'Córdoba', 'Valladolid', 'Vigo', 'Gijón',
+  'A Coruña', 'Granada', 'Vitoria', 'Elche', 'Santa Cruz de Tenerife', 'Oviedo', 'Pamplona',
+  'Almería', 'San Sebastián', 'Santander', 'Burgos', 'Castellón', 'Albacete', 'Logroño',
+  'Badajoz', 'Salamanca', 'Huelva', 'Marbella', 'Tarragona', 'León', 'Cádiz', 'Jaén',
+  'Ourense', 'Girona', 'Lleida', 'Cáceres', 'Toledo', 'Guadalajara', 'Torrejón de Ardoz',
+  'Alcalá de Henares', 'Móstoles', 'Fuenlabrada', 'Leganés', 'Getafe', 'Alcorcón',
+];
+
+const hoy = () => new Date().toISOString().slice(0, 10);
+
 const BUDGETS = ['Menos de 300 €', '300 a 600 €', '600 a 1.000 €', 'Más de 1.000 €', 'No lo sé'];
 
 interface Props {
@@ -51,11 +67,14 @@ export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
   const [enviadas, setEnviadas] = useState<number | null>(null);
+  // La función pide confirmar el email antes de repartir (18 oct 2026).
+  const [verificar, setVerificar] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
-  const listo = !!form.service && !!form.location.trim() && !!form.name.trim() && emailOk;
+  const ciudadOk = /\p{L}{3}/u.test(form.location.trim());
+  const listo = !!form.service && ciudadOk && !!form.date && form.name.trim().length >= 2 && emailOk;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -77,6 +96,7 @@ export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
       const ok = await enviarComoLeadGenerico(tipo);
       if (!ok) { setStatus('error'); return; }
     } else {
+      setVerificar(!!res.verificar);
       setEnviadas(typeof res.enviadas === 'number' ? res.enviadas : null);
     }
 
@@ -144,15 +164,29 @@ export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
         {status === 'done' ? (
           <div className="text-center py-6">
             <CheckCircle size={44} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
-            <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>Enviado, {form.name.trim().split(' ')[0]}</h3>
-            <p className="text-sm mb-2" style={{ color: '#333' }}>
-              {enviadas
-                ? `Se lo hemos mandado a ${enviadas} ${enviadas === 1 ? 'profesional' : 'profesionales'}${destino ? ` (${destino})` : ''}.`
-                : 'Estamos buscando a quién mandárselo.'}
-            </p>
-            <p className="text-sm mb-6" style={{ color: '#333' }}>
-              Cuando uno diga que sí, te escribimos a <strong>{form.email.trim()}</strong> con un botón para hablar con él. No tienes que hacer nada más.
-            </p>
+            {verificar ? (
+              <>
+                <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>Último paso, {form.name.trim().split(' ')[0]}</h3>
+                <p className="text-sm mb-2" style={{ color: '#333' }}>
+                  Te hemos mandado un email a <strong>{form.email.trim()}</strong>.
+                </p>
+                <p className="text-sm mb-6" style={{ color: '#333' }}>
+                  Pulsa <strong>Confirmar y enviar</strong> en ese correo y se lo mandamos a los profesionales. Si no lo ves, mira en spam.
+                </p>
+              </>
+            ) : (
+              <>
+                <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>Enviado, {form.name.trim().split(' ')[0]}</h3>
+                <p className="text-sm mb-2" style={{ color: '#333' }}>
+                  {enviadas
+                    ? `Se lo hemos mandado a ${enviadas} ${enviadas === 1 ? 'profesional' : 'profesionales'}${destino ? ` (${destino})` : ''}.`
+                    : 'Estamos buscando a quién mandárselo.'}
+                </p>
+                <p className="text-sm mb-6" style={{ color: '#333' }}>
+                  Cuando uno diga que sí, te escribimos a <strong>{form.email.trim()}</strong> con un botón para hablar con él. No tienes que hacer nada más.
+                </p>
+              </>
+            )}
             <button onClick={onClose} className="px-6 py-2.5 rounded-xl text-sm font-bold"
               style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}>
               Cerrar
@@ -172,7 +206,7 @@ export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
               <h3 className="text-lg font-black" style={{ color: '#111' }}>¿Qué necesitas?</h3>
             </div>
             <p className="text-xs mb-4" style={{ color: '#333' }}>
-              4 datos y listo. Sin registro ni contraseña.
+              5 datos y listo. Sin registro ni contraseña.
             </p>
 
             {/* 1. Qué necesita: botones grandes, un toque. */}
@@ -194,10 +228,20 @@ export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
             </div>
 
             <div className="space-y-3">
-              <div>
-                <label className={labelCls} style={{ color: '#222' }}>Ciudad del evento *</label>
-                <input value={form.location} onChange={e => set('location', e.target.value)}
-                  placeholder="Madrid, Valencia..." autoComplete="address-level2" className={inputCls} required />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className={labelCls} style={{ color: '#222' }}>Ciudad del evento *</label>
+                  <input value={form.location} onChange={e => set('location', e.target.value)} list="ciudades-particular"
+                    placeholder="Madrid, Valencia..." autoComplete="address-level2" className={inputCls} required minLength={3} />
+                  <datalist id="ciudades-particular">
+                    {CIUDADES.map(c => <option key={c} value={c} />)}
+                  </datalist>
+                </div>
+                <div>
+                  <label className={labelCls} style={{ color: '#222' }}>Fecha *</label>
+                  <input type="date" value={form.date} min={hoy()} onChange={e => set('date', e.target.value)}
+                    className={inputCls} required />
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -212,27 +256,20 @@ export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
                 </div>
               </div>
 
-              {/* Fecha, tipo de evento, presupuesto y notas son opcionales: plegados
-                  para que el formulario sea de 4 datos y no de 9 (quien lo ve largo
-                  se va). */}
+              {/* Tipo de evento, presupuesto y notas son opcionales: plegados para
+                  que el formulario no se vea largo (quien lo ve largo se va). */}
               <details className="rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.1)' }}>
                 <summary className="px-3 py-2.5 text-xs font-bold cursor-pointer select-none" style={{ color: '#222' }}>
-                  Añadir fecha u otros detalles (opcional)
+                  Añadir más detalles (opcional)
                 </summary>
                 <div className="px-3 pb-3 space-y-3">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className={labelCls} style={{ color: '#222' }}>Fecha</label>
-                      <input type="date" value={form.date} onChange={e => set('date', e.target.value)} className={inputCls} />
-                    </div>
-                    <div>
-                      <label className={labelCls} style={{ color: '#222' }}>Tipo de evento</label>
-                      <select value={form.eventType} onChange={e => set('eventType', e.target.value)}
-                        className={`${inputCls} appearance-none`}>
-                        <option value="">Sin indicar</option>
-                        {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                      </select>
-                    </div>
+                  <div>
+                    <label className={labelCls} style={{ color: '#222' }}>Tipo de evento</label>
+                    <select value={form.eventType} onChange={e => set('eventType', e.target.value)}
+                      className={`${inputCls} appearance-none`}>
+                      <option value="">Sin indicar</option>
+                      {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
                   </div>
                   <div>
                     <label className={labelCls} style={{ color: '#222' }}>Presupuesto aproximado</label>
@@ -255,7 +292,7 @@ export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
             {/* A dónde va lo que se manda: cambia según lo que elige. */}
             <p className="text-xs mt-4 rounded-lg px-3 py-2" style={{ background: 'rgba(22,163,74,0.08)', color: '#14532d' }}>
               {destino
-                ? <>Se lo enviamos directamente a los <strong>{destino}</strong>{ciudad ? <> de <strong>{ciudad}</strong></> : ''}. Cuando uno diga que sí, te avisamos por email y habláis por el chat de XPEAK.</>
+                ? <>Se lo enviamos directamente a los <strong>{destino}</strong>{ciudad ? <> de <strong>{ciudad}</strong></> : ''}. Confirmas tu email y, cuando uno diga que sí, habláis por el chat de XPEAK.</>
                 : 'Elige qué necesitas y se lo enviamos directamente a los profesionales de ese oficio. Te avisamos por email cuando uno diga que sí.'}
             </p>
 

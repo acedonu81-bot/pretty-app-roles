@@ -12,6 +12,7 @@ Disallow: /dashboard
 Disallow: /admin-beta
 Disallow: /auth
 Disallow: /baja-emails
+Disallow: /solicitud-confirmada
 
 
 # Parámetros de URL que generan duplicados
