@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle2, ChevronDown, Star, MessageCircle, Info } from 'lucide-react';
 
-// Banner de contratos completados (13 sep 2026): quién contrató a quién y
+// Banner de acuerdos (13 sep 2026; renombrado el 19 oct 2026: antes decía "Contratos Completados" y solo son acuerdos, quien lo mira cree que el trabajo ya se hizo): quién contrató a quién y
 // qué día, juntando las dos vías reales de contratación —
 // flash_bookings (confirmed/completed) y event_request_responses
 // (hired_at no nulo) — porque son caras del mismo hecho de negocio y antes
@@ -189,7 +189,9 @@ const AdminHiredContracts = () => {
     <div className="glass-panel p-5 mb-6">
       <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
         <CheckCircle2 size={14} style={{ color: '#22c55e' }} />
-        Contratos Completados
+        <span title="Han llegado a un acuerdo dentro de XPEAK (aceptado, confirmado o elegido). No confirma que el trabajo se haya hecho ni cobrado.">
+          Acuerdos en la app
+        </span>
         <span className="text-[0.75rem] px-2 py-0.5 rounded-full font-bold"
           style={{ background: 'rgba(34,197,94,0.12)', color: '#16a34a' }}>
           {realCount}
