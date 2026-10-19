@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { profileHasRole } from './city-inventory.mjs';
 
 // Copia de PHOTO_GATE_EXCEPTIONS (src/lib/constants.ts): perfiles sin foto que se publican igual.
-const PHOTO_GATE_EXCEPTIONS = ['62eee3ec-6b73-4332-b062-567e1d207a00'];
+const PHOTO_GATE_EXCEPTIONS = [];
 const passesPhotoGate = p => !!p.photo_url || PHOTO_GATE_EXCEPTIONS.includes(p.user_id);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

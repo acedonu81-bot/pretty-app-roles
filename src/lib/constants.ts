@@ -218,10 +218,13 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
 
 // Excepciones a "sin foto no se publica" (16 sep 2026), decididas a mano.
 // Se listan por user_id. Copia en scripts/*.mjs (no importan TS de src/).
-export const PHOTO_GATE_EXCEPTIONS: string[] = [
-  '62eee3ec-6b73-4332-b062-567e1d207a00', // Jovenesflamencos, local Córdoba (7 oct 2026)
-];
+// Jovenesflamencos (local Córdoba) estuvo aquí del 7 al 19 oct 2026; se quitó
+// a petición del usuario porque seguía saliendo en DJs sin foto.
+export const PHOTO_GATE_EXCEPTIONS: string[] = [];
 export const passesPhotoGate = (p: { photo_url?: string | null; user_id?: string | null }): boolean =>
   !!p.photo_url || (!!p.user_id && PHOTO_GATE_EXCEPTIONS.includes(p.user_id));
 // Mismo filtro para queries de Supabase en lugar de .not('photo_url', 'is', null).
-export const PHOTO_GATE_OR = `photo_url.not.is.null,user_id.in.(${PHOTO_GATE_EXCEPTIONS.join(',')})`;
+// Con la lista vacía no se añade user_id.in.(): PostgREST rechaza un in() vacío.
+export const PHOTO_GATE_OR = PHOTO_GATE_EXCEPTIONS.length
+  ? `photo_url.not.is.null,user_id.in.(${PHOTO_GATE_EXCEPTIONS.join(',')})`
+  : 'photo_url.not.is.null';
