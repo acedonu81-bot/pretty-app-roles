@@ -1740,11 +1740,30 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 13. Flash Booking — respuesta del profesional al solicitante
   booking_status_update: (d) => ({
-    subject: d.status === 'confirmed'
+    // 'disponible' (19 oct 2026): el profesional dice que puede. No es un bolo
+    // cerrado: sin sello de confirmado, y se le pide al cliente que hable.
+    subject: d.status === 'disponible'
+      ? `${esc(d.professional_name ?? 'El profesional')} está disponible para tu evento`
+      : d.status === 'confirmed'
       ? `${esc(d.professional_name ?? 'El profesional')} ha aceptado tu solicitud`
       : `Tu solicitud Flash Booking: actualización`,
     to: d.email,
-    html: base(d.status === 'confirmed' ? `
+    html: base(d.status === 'disponible' ? `
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 8px;text-align:center;color:#0a0908">Puede ir a tu evento</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center">
+        <strong style="color:#8B6A00">${esc(d.professional_name ?? 'El profesional')}</strong> te ha dicho que puede. Todavía no hay nada cerrado: escríbele por el chat de XPEAK y acordad fecha, sitio y precio.
+      </p>
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:18px;margin:0 0 20px">
+        ${rows([
+          ['Profesional', d.professional_name],
+          ['Fecha del evento', d.event_date],
+          ['Lugar', d.event_location ?? '—'],
+        ])}
+      </div>
+      ${btn('Escribir por el chat →', enlaceSeguro(d.action_url, 'https://xpeak.es/dashboard?view=messages'))}
+      <p style="color:#6B7280;font-size:12px;margin-top:20px;text-align:center">
+        ¿Necesitas ayuda? <a href="mailto:info@xpeak.site" style="color:#8B6A00">info@xpeak.site</a>
+      </p>` : d.status === 'confirmed' ? `
       ${confirmSeal()}
       <h2 style="font-size:22px;font-weight:900;margin:0 0 8px;text-align:center;color:#0a0908">Solicitud aceptada</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center">
@@ -2082,10 +2101,10 @@ async function atender(req: Request): Promise<Response> {
         // Solicitud de particular repartida a varios (18 oct 2026): si uno dice
         // que no y otros siguen pendientes o ya aceptaron, al particular no se le
         // dice nada. Antes recibía "no disponible" mientras otro ya le hablaba.
-        if (data.status !== 'confirmed') {
+        if (data.status !== 'confirmed' && data.status !== 'disponible') {
           const { count: otros } = await sb.from('flash_bookings').select('id', { count: 'exact', head: true })
             .eq('requester_contact', String(data.email ?? '')).eq('source', 'particular')
-            .in('status', ['pending', 'confirmed']).neq('professional_user_id', callerId ?? '')
+            .in('status', ['pending', 'disponible', 'confirmed']).neq('professional_user_id', callerId ?? '')
             .gte('created_at', new Date(Date.now() - 7 * 86_400_000).toISOString());
           if (otros) return new Response(JSON.stringify({ ok: true, omitido: 'quedan otros profesionales' }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
@@ -2265,7 +2284,10 @@ async function atender(req: Request): Promise<Response> {
         Deno.env.get('SUPABASE_URL') ?? '',
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       );
-      const twoMinAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
+      // 6 horas, no 2 minutos (19 oct 2026): en una conversación en directo
+      // salía un email cada 2 minutos (12 en un día a la misma persona el 16
+      // oct). Para lo inmediato ya están el push y el aviso dentro de la app.
+      const twoMinAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
       const { data: recent } = await throttleClient
         .from('email_send_log' as any)
         .select('id')

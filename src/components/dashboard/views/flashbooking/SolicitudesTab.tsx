@@ -5,7 +5,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
-import { celebrar } from '@/components/FuegosArtificiales';
 import ContractModal, { type ContractPrefill } from '@/components/dashboard/ContractModal';
 import type { Profile } from '@/data/profiles';
 
@@ -36,6 +35,9 @@ interface Solicitud {
 // etiquetas de 'accepted'/'rejected' para los registros históricos ya guardados.
 const STATUS: Record<string, { label: string; color: string; bg: string }> = {
   pending:   { label: 'Pendiente',  color: '#8A6D0F', bg: 'rgba(212,175,55,0.08)' },
+  // "Sí, puedo" (19 oct 2026): ha dicho que puede, falta cerrar en el chat.
+  // No es un bolo: sin calendario, contrato ni reseña hasta el acuerdo.
+  disponible: { label: 'Puedes, falta cerrar', color: '#2563EB', bg: 'rgba(37,99,235,0.08)' },
   confirmed: { label: 'Aceptada',   color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
   accepted:  { label: 'Aceptada',   color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
   completed: { label: 'Completada', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
@@ -53,9 +55,10 @@ const ESTADOS_TRATO_CERRADO = ['confirmed', 'accepted', 'completed', 'closed'];
 export const puedeVerDireccionExacta = (status: string | null) =>
   ESTADOS_TRATO_CERRADO.includes(status ?? '');
 
-// Teléfono y email del solicitante, igual: hasta que el profesional acepta, el
+// Teléfono y email del solicitante: hasta que el profesional dice que puede, el
 // contacto va por el chat de XPEAK (decisión del 13 oct 2026).
-export const puedeVerContacto = puedeVerDireccionExacta;
+export const puedeVerContacto = (status: string | null) =>
+  status === 'disponible' || puedeVerDireccionExacta(status);
 
 const fmt = (iso: string | null) => {
   if (!iso) return '—';
@@ -175,7 +178,12 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
     return () => { supabase.removeChannel(channel); };
   }, [user, fetch]);
 
-  const updateStatus = async (id: string, status: 'confirmed' | 'rejected') => {
+  // "Sí, puedo" escribe 'disponible', no 'confirmed' (19 oct 2026): decir que
+  // puedes no es un bolo. El acuerdo de verdad (fecha, sitio y precio) se cierra
+  // en el chat con ACEPTO y crea su propia reserva confirmada
+  // (cerrar_acuerdo_chat). Antes esto disparaba "Bolo aceptado", calendario,
+  // email "Trabajo confirmado" y derecho a reseña verificada sin haber nada.
+  const updateStatus = async (id: string, status: 'disponible' | 'rejected') => {
     if (updatingRef.current === id) return;
     updatingRef.current = id;
     setUpdating(id);
@@ -192,49 +200,12 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
       return;
     }
     setItems(prev => prev.map(i => i.id === id ? { ...i, status } : i));
-    toast.success(status === 'confirmed' ? '¡Solicitud aceptada!' : 'Solicitud rechazada');
-    if (status === 'confirmed') celebrar('¡Enhorabuena!', 'Bolo aceptado. Ya está en tu calendario.', `aceptada-${id}`);
+    toast.success(status === 'disponible'
+      ? 'Le avisamos de que puedes. Ahora escríbele por el chat para cerrar fecha, sitio y precio.'
+      : 'Solicitud rechazada');
 
-    // Al cerrar el acuerdo (aceptar), el trabajo entra solo al calendario del
-    // profesional y dispara el aviso "Nuevo trabajo" si lo tiene activado —
-    // aplica a cualquier rol (DJ, peluquería, camarero...), no solo bolos de
-    // música. Sustituye el disparo antiguo que vivía en el alta manual de
-    // CalendarView.tsx: ahora el aviso solo suena cuando hay un acuerdo real.
-    if (status === 'confirmed') {
-      const accepted = items.find(i => i.id === id);
-      if (accepted?.event_date) {
-        const { error: calError } = await supabase.from('calendar_events').insert({
-          user_id: user!.id,
-          title: accepted.requester_name ? `Trabajo: ${accepted.requester_name}` : 'Trabajo confirmado',
-          event_date: accepted.event_date,
-          location: accepted.event_location || null,
-          notes: accepted.event_description || null,
-        });
-        if (calError) console.warn('[SolicitudesTab] calendar_events insert failed:', calError);
-
-        const { data: pref } = await supabase
-          .from('alert_preferences' as any)
-          .select('nuevos_bolos')
-          .eq('user_id', user!.id)
-          .maybeSingle();
-        if ((pref as any)?.nuevos_bolos && user?.email) {
-          supabase.functions.invoke('send-email', {
-            body: {
-              type: 'bolo_new_confirmation',
-              data: {
-                email: user.email,
-                title: accepted.requester_name ? `Trabajo: ${accepted.requester_name}` : 'Trabajo confirmado',
-                date: accepted.event_date,
-                location: accepted.event_location,
-              },
-            },
-          }).catch((err: unknown) => console.warn('[SolicitudesTab] new-work email failed:', err));
-        }
-      }
-    }
-
-    // Badge Respuesta Rápida: si acepta en <1h desde que llegó la solicitud
-    if (status === 'confirmed') {
+    // Badge Respuesta Rápida: si contesta que puede en <1h desde que llegó
+    if (status === 'disponible') {
       const booking = items.find(i => i.id === id);
       const createdAt = booking?.created_at ? new Date(booking.created_at).getTime() : 0;
       const elapsed = Date.now() - createdAt;
@@ -288,8 +259,8 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
         },
       }).catch((err: unknown) => console.warn('[SolicitudesTab] status email failed:', err));
 
-      if (status === 'confirmed') {
-        // Al aceptar, el servidor manda el email con un botón que entra directo
+      if (status === 'disponible') {
+        // Al decir que puede, el servidor manda el email con un botón que entra directo
         // al chat sin contraseña (el particular no tiene sesión). Si falla, sale
         // el email de siempre.
         supabase.functions.invoke('reserva-enlace-chat', { body: { booking_id: id } })
@@ -418,7 +389,7 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
                         <XCircle size={12} /> No puedo
                       </button>
                       <button
-                        onClick={() => updateStatus(s.id, 'confirmed')}
+                        onClick={() => updateStatus(s.id, 'disponible')}
                         disabled={updating === s.id}
                         className="flex items-center gap-1.5 px-5 py-2 rounded-lg text-sm font-black transition-all hover:scale-105 disabled:opacity-50 animate-pulse motion-reduce:animate-none"
                         style={{ background: '#16a34a', color: '#fff', boxShadow: '0 4px 14px rgba(22,163,74,0.45)' }}>
@@ -426,13 +397,13 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
                       </button>
                     </div>
                   )}
-                  {(s.status === 'confirmed' || s.status === 'accepted' || s.status === 'completed') && (
+                  {(s.status === 'disponible' || s.status === 'confirmed' || s.status === 'accepted' || s.status === 'completed') && (
                     <div className="flex flex-col items-end gap-1.5">
                       {/* Tras aceptar, el siguiente paso es hablar con quien pidió: un
                           botón dorado grande y parpadeante abre el chat de XPEAK. No
                           sale en los autorregistros (created_by === yo) ni si falta
                           el organizador. */}
-                      {onMessage && s.status === 'confirmed' && s.created_by && s.created_by !== user?.id && (
+                      {onMessage && (s.status === 'disponible' || s.status === 'confirmed') && s.created_by && s.created_by !== user?.id && (
                         <button
                           onClick={() => onMessage(s.created_by!, s.requester_name || 'Cliente')}
                           className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black transition-all hover:scale-105 animate-pulse motion-reduce:animate-none"
@@ -440,6 +411,13 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
                           <MessageCircle size={16} /> Abrir chat con {s.requester_name || 'el cliente'}
                         </button>
                       )}
+                      {/* Con 'disponible' aún no hay trato: sin contrato ni valoración
+                          hasta que cerréis fecha, sitio y precio en el chat. */}
+                      {s.status === 'disponible' ? (
+                        <p className="text-[0.75rem] text-muted-foreground text-right max-w-xs">
+                          Cerrad fecha, sitio y precio en el chat. Cuando los dos pulséis ACEPTO, pasa a tu calendario.
+                        </p>
+                      ) : (
                       <div className="flex gap-2">
                         <button
                           onClick={() => setContractFor(s)}
@@ -462,10 +440,11 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
                           </button>
                         )}
                       </div>
+                      )}
                       {/* Qué puso el propio profesional al valorar a este organizador
                           — antes solo se veía el sello "Valorado", sin recordar la
                           nota ni el comentario (pedido por el usuario, 5 oct 2026). */}
-                      {s.created_by && reviewedById.has(s.created_by) && (() => {
+                      {s.status !== 'disponible' && s.created_by && reviewedById.has(s.created_by) && (() => {
                         const r = reviewedById.get(s.created_by)!;
                         return (
                           <div className="flex flex-col items-end gap-0.5 px-2 py-1.5 rounded-lg max-w-xs"

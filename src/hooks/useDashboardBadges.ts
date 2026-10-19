@@ -9,7 +9,7 @@ import { cargarInteresadosPendientes, cargarPorConfirmar, leerInteresadosVistos,
 // Booking contaba TODAS las reservas respondidas, para siempre, y ninguna
 // acción lo apagaba ("las notificaciones se quedan clavadas"). Se guardan los
 // ids ya vistos en este dispositivo y el globo solo cuenta los que faltan.
-const ESTADOS_RESPONDIDOS = ['confirmed', 'accepted', 'rejected', 'declined'];
+const ESTADOS_RESPONDIDOS = ['disponible', 'confirmed', 'accepted', 'rejected', 'declined'];
 const EVENTO_FLASH_VISTO = 'xpeak:flash-visto';
 const claveVistos = (uid: string) => `xpeak_flash_visto_${uid}`;
 

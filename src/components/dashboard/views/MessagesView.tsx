@@ -288,11 +288,16 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       .then(({ data }) => { if (vivo) setOtroRol(data?.role ?? null); });
     return () => { vivo = false; };
   }, [activeOtherUserId]);
-  const hayAcuerdoPosible = !!miRol && !!otroRol && (miRol === 'empresario') !== (otroRol === 'empresario');
+  // Lado cliente: organizador o particular. Los particulares entran con rol
+  // 'pending' (sin oficio) y hasta el 19 oct 2026 no podían cerrar nunca un
+  // acuerdo: el botón no les salía y la RPC lo rechazaba. Misma regla en
+  // cerrar_acuerdo_chat.
+  const esCliente = (r: string | null) => r === 'empresario' || r === 'pending';
+  const hayAcuerdoPosible = !!miRol && !!otroRol && esCliente(miRol) !== esCliente(otroRol);
   const registradosRef = useRef<Set<string>>(new Set());
   const aceptandoRef = useRef(false);
   const profesionalAcuerdo = !hayAcuerdoPosible || !user ? null
-    : miRol === 'empresario'
+    : esCliente(miRol)
       ? { userId: activeOtherUserId, name: activeOtherName, role: otroRol ?? 'dj' }
       : { userId: user.id, name: myDisplayName?.trim() || 'Profesional', role: miRol ?? 'dj' };
 
@@ -387,7 +392,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     void cargarReservas();
     if (activeConvId) void loadMessages(activeConvId);
   };
-  const valorarAcuerdo = () => navigate(miRol === 'empresario' ? '/dashboard?view=empresario&tab=historial' : '/dashboard?view=flashbooking&tab=solicitudes');
+  const valorarAcuerdo = () => navigate(miRol === 'empresario' ? '/dashboard?view=empresario&tab=historial'
+    : miRol === 'pending' ? '/dashboard?view=resenas' : '/dashboard?view=flashbooking&tab=solicitudes');
   useEffect(() => () => { if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current); }, []);
 
   const sendMessage = async (overrideContent?: string, adjunto?: { tipo: 'foto' | 'video'; ruta: string }): Promise<boolean> => {

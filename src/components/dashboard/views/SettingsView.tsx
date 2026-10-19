@@ -466,8 +466,11 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   <table>
     <tr><th>Fecha</th><th>Descripción</th><th>Ubicación</th><th>Estado</th></tr>
     ${bookings.slice(0, 20).map(b => {
-      const stClass = b.status === 'confirmed' || b.status === 'completed' ? 'st-ok' : b.status === 'pending' ? 'st-pend' : 'st-rej';
-      const stLabel = b.status === 'confirmed' || b.status === 'completed' ? 'Completado' : b.status === 'pending' ? 'Pendiente' : 'Cancelado';
+      const stClass = b.status === 'confirmed' || b.status === 'completed' ? 'st-ok' : b.status === 'pending' || b.status === 'disponible' ? 'st-pend' : 'st-rej';
+      // 'confirmed' es un acuerdo cerrado, no un trabajo hecho (19 oct 2026).
+      const stLabel = b.status === 'completed' ? 'Completado' : b.status === 'confirmed' ? 'Acordado'
+        : b.status === 'disponible' ? 'Sin cerrar' : b.status === 'pending' ? 'Pendiente'
+        : b.status === 'rejected' ? 'Rechazado' : 'Cancelado';
       return `<tr><td>${String(b.event_date ?? '').slice(0,10)}</td><td>${String(b.event_description ?? '').slice(0,35)}</td><td>${String(b.event_location ?? '').slice(0,20)}</td><td><span class="status ${stClass}">${stLabel}</span></td></tr>`;
     }).join('')}
   </table>` : '<p style="font-size:12px;color:#333;margin-bottom:32px">Sin bookings registrados en ' + reportYear + '</p>'}

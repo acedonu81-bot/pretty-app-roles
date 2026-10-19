@@ -68,7 +68,9 @@ const AdminMetrics = () => {
         // profesional se apunta a si mismo no es demanda real y falseaba
         // "solicitudes" y "aceptadas" del panel.
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('es_autorregistro', false),
-        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'pending').eq('es_autorregistro', false),
+        // "Sin cerrar" = pendientes + los que dijeron "Sí, puedo" (disponible) y aún
+        // no han cerrado en el chat (19 oct 2026).
+        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).in('status', ['pending', 'disponible']).eq('es_autorregistro', false),
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).in('status', ['confirmed', 'accepted', 'completed']).eq('es_autorregistro', false),
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'rejected').eq('es_autorregistro', false),
         // Las ofertas de evento son la otra mitad del Flash Booking y no se
@@ -114,8 +116,10 @@ const AdminMetrics = () => {
     // Antes solo se contaba la primera y el panel decía "0 solicitudes" con
     // una oferta viva y profesionales apuntados.
     { label: 'Solicitudes Totales', value: metrics.bookingsTotal + metrics.eventRequestsTotal, color: '#8A6D0F' },
-    { label: 'Pendientes',          value: metrics.bookingsPending + metrics.eventRequestsOpen, color: '#D97706' },
-    { label: 'Aceptadas',           value: metrics.bookingsAccepted + metrics.eventRequestsHired, color: '#22c55e' },
+    { label: 'Sin cerrar',          value: metrics.bookingsPending + metrics.eventRequestsOpen, color: '#D97706' },
+    // Solo acuerdos de verdad: cerrados en el chat, elegidos en una oferta o
+    // apuntados a mano. Un "Sí, puedo" ya no cuenta aquí (19 oct 2026).
+    { label: 'Acuerdos',            value: metrics.bookingsAccepted + metrics.eventRequestsHired, color: '#22c55e' },
     { label: 'Rechazadas',          value: metrics.bookingsRejected, color: '#dc2626' },
   ] : [];
 

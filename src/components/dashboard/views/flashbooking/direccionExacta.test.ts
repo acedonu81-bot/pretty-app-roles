@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { puedeVerDireccionExacta } from './SolicitudesTab';
+import { puedeVerDireccionExacta, puedeVerContacto } from './SolicitudesTab';
 
 describe('puedeVerDireccionExacta', () => {
   it('la oculta mientras la solicitud está pendiente', () => {
@@ -17,6 +17,12 @@ describe('puedeVerDireccionExacta', () => {
     for (const s of ['confirmed', 'accepted', 'completed', 'closed']) {
       expect(puedeVerDireccionExacta(s)).toBe(true);
     }
+  });
+
+  it('"Sí, puedo" (disponible) no es trato cerrado: sin dirección, pero con contacto', () => {
+    expect(puedeVerDireccionExacta('disponible')).toBe(false);
+    expect(puedeVerContacto('disponible')).toBe(true);
+    expect(puedeVerContacto('pending')).toBe(false);
   });
 
   it('la oculta si no hay estado', () => {

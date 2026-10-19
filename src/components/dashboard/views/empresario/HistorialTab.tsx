@@ -28,6 +28,8 @@ export interface Booking {
 
 const STATUS_LABEL: Record<string, { label: string; color: string; bg: string }> = {
   pending:   { label: 'Pendiente',  color: '#8A6D0F', bg: 'rgba(212,175,55,0.08)' },
+  // Dijo "Sí, puedo": falta cerrar fecha, sitio y precio en el chat.
+  disponible: { label: 'Puede, escríbele', color: '#2563EB', bg: 'rgba(37,99,235,0.08)' },
   confirmed: { label: 'Confirmado', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
   completed: { label: 'Completado', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
   cancelled: { label: 'Cancelado',  color: '#ff5f56', bg: 'rgba(255,95,86,0.08)' },
