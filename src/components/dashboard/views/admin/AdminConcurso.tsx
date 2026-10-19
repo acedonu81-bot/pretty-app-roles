@@ -12,7 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 const CONCURSO = 'dj-madrid-2026';
 
 type Estado = 'pendiente' | 'aceptada' | 'rechazada';
-type Inscripcion = { id: string; user_id: string; soundcloud_url: string; estado: Estado; created_at: string };
+type Inscripcion = { id: string; user_id: string; soundcloud_url: string; estado: Estado; created_at: string; frase?: string | null };
 type Perfil = { user_id: string; display_name: string | null; photo_url: string | null; zone: string | null; region: string | null; is_primary: boolean | null };
 
 // Los tipos generados de Supabase no incluyen la tabla ni la función del concurso.
@@ -43,7 +43,7 @@ export default function AdminConcurso() {
 
   const cargar = useCallback(async () => {
     const { data, error } = await sb.from('concurso_inscripciones')
-      .select('id, user_id, soundcloud_url, estado, created_at').eq('concurso', CONCURSO);
+      .select('id, user_id, soundcloud_url, estado, created_at, frase').eq('concurso', CONCURSO);
     if (error) { toast.error('No se pudieron cargar las inscripciones'); setLista([]); return; }
     const filas = ((data ?? []) as Inscripcion[])
       .sort((a, b) => ORDEN[a.estado] - ORDEN[b.estado] || b.created_at.localeCompare(a.created_at));
@@ -65,6 +65,16 @@ export default function AdminConcurso() {
   }, []);
 
   useEffect(() => { cargar(); }, [cargar]);
+
+  const borrarFrase = async (ins: Inscripcion) => {
+    if (!window.confirm('¿Borrar la frase de este DJ?')) return;
+    setGuardando(ins.id);
+    const { error } = await sb.from('concurso_inscripciones').update({ frase: null }).eq('id', ins.id);
+    setGuardando(null);
+    if (error) { toast.error('No se pudo borrar la frase'); return; }
+    setLista(l => l?.map(x => (x.id === ins.id ? { ...x, frase: null } : x)) ?? l);
+    toast.success('Frase borrada');
+  };
 
   const cambiar = async (ins: Inscripcion, estado: Estado) => {
     if (estado === 'rechazada' && !window.confirm('¿Rechazar esta sesión? El DJ verá que no cumple las bases.')) return;
@@ -134,6 +144,17 @@ export default function AdminConcurso() {
                 <p className="flex items-center gap-1.5 text-xs font-bold mb-2" style={{ color: '#b91c1c' }}>
                   <AlertTriangle size={13} /> Su perfil no es de la Comunidad de Madrid
                 </p>
+              )}
+
+              {/* Frase para pedir el voto (19 oct 2026): el admin la puede borrar. */}
+              {ins.frase && (
+                <div className="flex items-center gap-2 mb-2">
+                  <p className="text-xs italic flex-1" style={{ color: 'rgba(10,9,8,0.7)' }}>«{ins.frase}»</p>
+                  <button type="button" disabled={guardando === ins.id} onClick={() => borrarFrase(ins)}
+                    className="text-[0.7rem] font-bold px-2 py-1 rounded-lg disabled:opacity-50" style={{ background: 'rgba(220,38,38,0.08)', color: '#b91c1c' }}>
+                    Borrar frase
+                  </button>
+                </div>
               )}
 
               <iframe title={`Sesión de ${p?.display_name ?? 'DJ'}`} src={player(ins.soundcloud_url)} className="w-full rounded-lg" height={110} loading="lazy" />

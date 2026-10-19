@@ -8,6 +8,7 @@ import { useReproductorConcurso } from '@/components/concurso/ReproductorConcurs
 import { pistaSoundcloudExiste } from '@/lib/soundcloudEnlace';
 import { cambiarSesion } from '@/lib/concursoInscripcion';
 import { toast } from 'sonner';
+import { sanitizeInput } from '@/lib/contentFilter';
 import { track } from '@/lib/track';
 import { isNative } from '@/lib/capacitor';
 import { AvisoResultado, PedirVoto } from '@/components/concurso/CaptacionConcurso';
@@ -30,6 +31,8 @@ type Participante = {
   zone: string | null;
   soundcloud_url: string;
   me_gusta: number;
+  /** Frase corta del DJ para pedir el voto (19 oct 2026). */
+  frase?: string | null;
 };
 
 // Los tipos generados de Supabase no incluyen la tabla ni la función del concurso.
@@ -136,6 +139,79 @@ function CambiarSesion({ url, onCambiada }: { url: string; onCambiada: () => voi
           className="px-5 py-2.5 rounded-full text-sm text-white disabled:opacity-50"
           style={{ background: AZUL, boxShadow: clayButton('36,119,179'), fontFamily: HZ.display, fontWeight: 800 }}>
           {enviando ? 'Comprobando…' : 'Guardar sesión'}
+        </button>
+        <button type="button" onClick={() => { setAbierto(false); setError(''); }} className="px-3 py-2 text-sm" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 800 }}>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Frase del DJ para pedir el voto, en cursiva junto al me gusta (19 oct 2026).
+// Sin teléfonos, @, enlaces ni dominios: no puede servir para sacar el
+// contacto fuera de XPEAK. La base de datos lo vuelve a comprobar.
+const FRASE_MAX = 80;
+const FRASE_PROHIBIDA = /(\d[\s.-]*){6,}|@|https?:\/\/|www\.|\.(com|es|net|org|site|me|io|link)\b/i;
+
+function Frase({ texto }: { texto: string | null | undefined }) {
+  if (!texto) return null;
+  return (
+    <span className="flex-1 min-w-0 text-sm italic leading-snug !whitespace-normal break-words"
+      style={{ color: HZ.ink, fontFamily: HZ.body, fontWeight: 600 }}>
+      «{texto}»
+    </span>
+  );
+}
+
+function EditarFrase({ actual, onGuardada }: { actual: string | null | undefined; onGuardada: () => void }) {
+  const [abierto, setAbierto] = useState(false);
+  const [texto, setTexto] = useState(actual ?? '');
+  const [error, setError] = useState('');
+  const [enviando, setEnviando] = useState(false);
+  if (!concursoActivo()) return null;
+  if (!abierto) {
+    return (
+      <button type="button" onClick={() => { setTexto(actual ?? ''); setAbierto(true); }}
+        className="xp-cta-glow mt-3 w-full px-4 py-2.5 rounded-full text-sm text-white"
+        style={{ background: AZUL, fontFamily: HZ.body, fontWeight: 800, boxShadow: clayButton('37,99,235') }}>
+        {actual ? 'Cambiar tu frase' : 'Escribe una frase para pedir el voto'}
+      </button>
+    );
+  }
+  const guardar = async () => {
+    const f = texto.trim();
+    if (f && FRASE_PROHIBIDA.test(f)) { setError('Sin teléfonos, @, enlaces ni webs: los votos se piden aquí dentro.'); return; }
+    if (f) {
+      const r = sanitizeInput(f);
+      if (!r.clean) { setError(r.reason ?? 'Esa frase no está permitida.'); return; }
+    }
+    setEnviando(true); setError('');
+    const { error: e } = await sb.rpc('concurso_poner_frase', { p_concurso: CONCURSO, p_frase: f });
+    setEnviando(false);
+    if (e) { setError(/FRASE_NO_PERMITIDA/.test(e.message) ? 'Sin teléfonos, @, enlaces ni webs: los votos se piden aquí dentro.' : 'No se ha podido guardar. Prueba otra vez.'); return; }
+    toast.success(f ? 'Frase guardada' : 'Frase quitada');
+    setAbierto(false);
+    onGuardada();
+  };
+  return (
+    <div className="mt-3 rounded-2xl p-3" style={{ background: HZ.surface, boxShadow: clayInset }}>
+      <label className="block text-sm mb-1.5" htmlFor="frase-voto" style={{ color: HZ.ink, fontFamily: HZ.body, fontWeight: 800 }}>
+        Tu frase para pedir el voto
+      </label>
+      <input id="frase-voto" value={texto} maxLength={FRASE_MAX} onChange={e => setTexto(e.target.value)}
+        placeholder="Si te mueve el tech house, este voto es tuyo"
+        className="w-full px-3 py-2.5 rounded-xl text-base italic outline-none" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.12)', color: '#111' }} />
+      <p className="text-xs mt-1.5 flex justify-between gap-2" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>
+        <span>Sale en cursiva junto a tus me gusta. Déjala en blanco para quitarla.</span>
+        <span className="tabular-nums shrink-0">{texto.length}/{FRASE_MAX}</span>
+      </p>
+      {error && <p className="text-xs mt-1.5" style={{ color: '#b91c1c', fontFamily: HZ.body, fontWeight: 700 }}>{error}</p>}
+      <div className="flex items-center gap-2 mt-2.5">
+        <button type="button" disabled={enviando} onClick={guardar}
+          className="px-5 py-2.5 rounded-full text-sm text-white disabled:opacity-50"
+          style={{ background: AZUL, boxShadow: clayButton('36,119,179'), fontFamily: HZ.display, fontWeight: 800 }}>
+          {enviando ? 'Guardando…' : 'Guardar frase'}
         </button>
         <button type="button" onClick={() => { setAbierto(false); setError(''); }} className="px-3 py-2 text-sm" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 800 }}>
           Cancelar
@@ -301,23 +377,29 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                   {user && p.user_id === user.id ? (
                     <>
                       <span className="px-3.5 py-2 rounded-full tabular-nums" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>{Number(p.me_gusta)} me gusta</span>
+                      <Frase texto={p.frase} />
                       <span className="px-3.5 py-2 rounded-full" style={pastilla(TONES.sky.card, TONES.sky.stroke, TONES.sky.rgb)}>Tu sesión</span>
                     </>
                   ) : !activo ? (
                     <>
                       <span className="px-3.5 py-2 rounded-full tabular-nums" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>{Number(p.me_gusta)} me gusta</span>
+                      <Frase texto={p.frase} />
                       <span style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 700 }}>Votación cerrada</span>
                     </>
                   ) : user ? (
+                    <>
                     <span className="px-3.5 py-2 rounded-full" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>
                       <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={() => { cargar(); setVotoVersion(v => v + 1); }}
                         onError={(m) => toast.error(/LIMITE_VOTOS_CONCURSO/.test(m)
                           ? 'Ya has usado tus 3 votos. Si quieres votar a esta sesión, quita antes uno de los tuyos.'
                           : 'No se ha podido guardar tu voto. Prueba otra vez.')} />
                     </span>
+                    <Frase texto={p.frase} />
+                    </>
                   ) : (
                     <>
                       <span className="px-3.5 py-2 rounded-full tabular-nums" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>{Number(p.me_gusta)} me gusta</span>
+                      <Frase texto={p.frase} />
                       {/* Quien vota casi nunca tiene cuenta. "Entra para votar" llevaba
                           a iniciar sesión y una votante nueva probó 5 veces email y
                           contraseña de una cuenta que no existía (18 oct 2026). Google
@@ -335,6 +417,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                     </>
                   )}
                 </div>
+                {user && p.user_id === user.id && <EditarFrase actual={p.frase} onGuardada={cargar} />}
                 {user && p.user_id === user.id && <PedirVoto nombre={p.display_name} />}
                 {user && p.user_id === user.id && <CambiarSesion url={p.soundcloud_url} onCambiada={cargar} />}
               </div>
