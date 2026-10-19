@@ -155,10 +155,12 @@ function CambiarSesion({ url, onCambiada }: { url: string; onCambiada: () => voi
 const FRASE_MAX = 80;
 const FRASE_PROHIBIDA = /(\d[\s.-]*){6,}|@|https?:\/\/|www\.|\.(com|es|net|org|site|me|io|link)\b/i;
 
+// min-w-[11rem]: si junto a las pastillas no caben 11 rem, la frase baja a su propia
+// línea en vez de quedar aplastada entre ellas (móvil, 19 oct 2026).
 function Frase({ texto }: { texto: string | null | undefined }) {
   if (!texto) return null;
   return (
-    <span className="flex-1 min-w-0 text-sm italic leading-snug !whitespace-normal break-words"
+    <span className="order-last flex-1 min-w-[11rem] text-sm italic leading-snug !whitespace-normal break-words"
       style={{ color: HZ.ink, fontFamily: HZ.body, fontWeight: 600 }}>
       «{texto}»
     </span>
@@ -181,7 +183,7 @@ function FraseEditable({ actual, cambiadaEn, onGuardada }: { actual: string | nu
     return (
       <button type="button" onClick={() => { setTexto(actual ?? ''); setError(''); setAbierto(true); }}
         aria-label={actual ? 'Cambiar tu frase' : 'Escribir tu frase'}
-        className="flex-1 min-w-0 flex items-center gap-2 text-left !whitespace-normal">
+        className="order-last flex-1 min-w-[11rem] flex items-center justify-between gap-2 text-left !whitespace-normal">
         {actual
           ? <span className="text-sm italic leading-snug break-words" style={{ color: HZ.ink, fontFamily: HZ.body, fontWeight: 600 }}>«{actual}»</span>
           : <span className="text-sm italic leading-snug" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 700 }}>Escribe aquí tu frase para pedir el voto</span>}
