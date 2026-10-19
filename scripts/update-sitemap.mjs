@@ -123,6 +123,31 @@ function quitarUrlsNoindex(xml) {
   return { xml: out.join('\n'), quitadas };
 }
 
+// ─── Coherencia sitemap ↔ redirecciones ────────────────────────────────────
+// Una URL del sitemap que responde 3xx hace que Ahrefs/Search Console la marquen
+// como "redirect in sitemap": el sitemap debe listar solo destinos finales.
+// Medido 19 oct 2026: 168 URLs de blog por ciudad (azafatas, maquillaje y
+// camareros) que vercel.json redirige al artículo general. Se descarta cualquier
+// URL cuyo path coincida con una ruta 3xx de vercel.json.
+function quitarUrlsQueRedirigen(xml) {
+  let rutas = [];
+  try {
+    rutas = (JSON.parse(fs.readFileSync(path.join(ROOT, 'vercel.json'), 'utf8')).routes || [])
+      .filter(r => String(r.status || '').startsWith('3') && r.src)
+      .map(r => { try { return new RegExp(r.src.startsWith('^') ? r.src : `^${r.src}$`); } catch { return null; } })
+      .filter(Boolean);
+  } catch { return { xml, quitadas: [] }; }
+  const quitadas = [];
+  const out = xml.split('\n').filter(line => {
+    const m = line.match(/<loc>https:\/\/xpeak\.es([^<]*)<\/loc>/);
+    if (!m) return true;
+    const ruta = m[1] || '/';
+    if (rutas.some(rx => rx.test(ruta))) { quitadas.push(ruta); return false; }
+    return true;
+  });
+  return { xml: out.join('\n'), quitadas };
+}
+
 // ─── URL helpers ──────────────────────────────────────────────────────────
 function url(loc, lastmod, changefreq, priority) {
   return `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
@@ -442,7 +467,9 @@ ${eventLines.join('\n')}
 
 </urlset>`;
 
-  const { xml: sitemap, quitadas } = quitarUrlsNoindex(sitemapBruto);
+  const { xml: sinRedirects, quitadas: redirigen } = quitarUrlsQueRedirigen(sitemapBruto);
+  if (redirigen.length) console.log(`  → ${redirigen.length} URL(s) fuera del sitemap por redirigir (3xx en vercel.json)`);
+  const { xml: sitemap, quitadas } = quitarUrlsNoindex(sinRedirects);
   if (quitadas.length) console.log(`  → ${quitadas.length} URL(s) fuera del sitemap por noindex: ${quitadas.join(', ')}`);
   fs.writeFileSync(OUT, sitemap, 'utf-8');
   if (fs.existsSync(path.dirname(OUT_DIST))) fs.writeFileSync(OUT_DIST, sitemap, 'utf-8');
