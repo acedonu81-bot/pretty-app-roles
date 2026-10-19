@@ -28,6 +28,9 @@ export interface FichaReal {
 }
 
 const MAX_FICHAS = 8;
+// Fuera de la tira a mano (19 oct 2026): foto de Marc Sanchis con el torso
+// desnudo, queda mal en el blog de azafatas y en /auth. Sigue en el directorio.
+const EXCLUIDOS = new Set(['9aef0d30-91a1-47ce-b24e-ebe7e4f642cc']);
 // ROLE_ES también nombra a quien no ofrece servicios: fuera de la tira.
 const SIN_OFICIO = new Set(['empresario', 'pending']);
 
@@ -46,7 +49,7 @@ const MAX_MUSICA = 6;
 // tiene sesiones o portfolio y con el máximo la tira no salía nunca.
 export function elegirFichas(filas: FichaReal[], date = new Date(), minCompleteness = COMPLETENESS_MAX): FichaReal[] {
   const completos = filas
-    .filter(p => p.photo_url && p.display_name?.trim() && !SIN_OFICIO.has(p.role ?? '')
+    .filter(p => !EXCLUIDOS.has(p.user_id) && p.photo_url && p.display_name?.trim() && !SIN_OFICIO.has(p.role ?? '')
       && ROLE_ES[canonicalRole(p.role) ?? ''] && completeness(p) >= minCompleteness)
     .sort((a, b) => compararDirectorio(a, b, date));
   const esMusica = (p: FichaReal) => MUSICA.has(canonicalRole(p.role) ?? '');
