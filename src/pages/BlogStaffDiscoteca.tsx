@@ -155,6 +155,7 @@ const faqStructured = {
               <div className="space-y-2">
                 {[
                   { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
+                  { href: '/blog/como-trabajar-de-rrpp-discoteca', cat: 'Staff', title: 'Qué es un RRPP de discoteca y cómo trabajar de ello' },
                   { href: '/blog/cuanto-cobra-un-camarero-de-eventos', cat: 'Staff', title: 'Cuánto cobra un camarero de eventos 2026' },
                   { href: '/blog/precio-azafatas-eventos-espana', cat: 'Staff', title: 'Precio azafatas para eventos España 2026' },
                   { href: '/blog/contratar-barman-evento-privado', cat: 'Staff', title: 'Barman evento privado: precio 2026' },
