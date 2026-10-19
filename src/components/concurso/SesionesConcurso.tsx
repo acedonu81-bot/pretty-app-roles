@@ -417,7 +417,9 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                       <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={() => { cargar(); setVotoVersion(v => v + 1); }}
                         onError={(m) => toast.error(/LIMITE_VOTOS_CONCURSO/.test(m)
                           ? 'Ya has usado tus 3 votos. Si quieres votar a esta sesión, quita antes uno de los tuyos.'
-                          : 'No se ha podido guardar tu voto. Prueba otra vez.')} />
+                          : /VOTANTE_NO_VALIDO/.test(m)
+                            ? 'Para votar entra con Google o con un correo de Gmail, Hotmail, Outlook, Yahoo o iCloud.'
+                            : 'No se ha podido guardar tu voto. Prueba otra vez.')} />
                     </span>
                     <Frase texto={p.frase} />
                     </>
