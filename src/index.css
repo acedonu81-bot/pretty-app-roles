@@ -191,6 +191,15 @@ body.is-native-app .clay-btn-primary {
     font-weight: 800 !important;
   }
 
+  /* El overflow visible de arriba anulaba line-clamp en los títulos: nombres
+     largos (José Oscar Pérez Navarro Couce Fernandez, 19 oct 2026) salían
+     en 4 líneas por encima de la ciudad en las tarjetas del directorio. Si un
+     título pide límite de líneas, se recorta de verdad. */
+  :is(h1, h2, h3, h4):is(.line-clamp-1, .line-clamp-2, .line-clamp-3, .truncate) {
+    overflow: hidden !important;
+    padding-bottom: 0 !important;
+  }
+
   /* Evitar que leading-tight de Tailwind corte descenders en cualquier elemento */
   .leading-tight, .leading-none, .leading-snug {
     line-height: 1.2 !important;
