@@ -810,6 +810,34 @@ const Auth = () => {
                 )}
               </div>
 
+              {/* Interruptor grande arriba, igual en las dos pantallas: "¿Primera vez?
+                  Crear cuenta" / "¿Ya tienes cuenta? Entrar". Antes el aviso de
+                  "Inicia sesión" estaba al final de un registro de 3.500 px y la
+                  gente se liaba entre las dos pantallas (19 oct 2026). */}
+              <div role="tablist" aria-label="Crear cuenta o entrar" className="grid grid-cols-2 gap-2 mb-5">
+                {([
+                  { login: false, pre: '¿Primera vez?', main: 'Crear cuenta' },
+                  { login: true, pre: '¿Ya tienes cuenta?', main: 'Entrar' },
+                ] as const).map(t => {
+                  const activo = t.login === isLogin;
+                  return (
+                    <button key={t.main} type="button" role="tab" aria-selected={activo}
+                      onClick={() => {
+                        if (activo) return;
+                        track('auth_toggle_mode', { to: t.login ? 'login' : 'register', from: 'top_tabs' });
+                        setIsLogin(t.login); setLoginFailed(false); setShowForgot(false); setForgotSent(false);
+                      }}
+                      className="rounded-2xl py-3 px-2 text-center leading-tight transition-all hover:scale-[1.02]"
+                      style={activo
+                        ? { background: 'linear-gradient(135deg,#E9C866,#D4AF37)', border: '2px solid #B8941E', color: '#111', boxShadow: '0 4px 14px rgba(212,175,55,0.35)' }
+                        : { background: '#fff', border: '2px solid rgba(0,0,0,0.12)', color: '#111' }}>
+                      <span className="block text-[0.75rem] font-bold" style={{ color: activo ? '#5c4a12' : 'rgba(0,0,0,0.55)' }}>{t.pre}</span>
+                      <span className="block text-base font-black">{t.main}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
               <div className="md:hidden"><ConcursoAuthBanner variante="compacto" onParticipar={participarConcurso} /></div>
 
               {/* Heading */}
@@ -834,25 +862,6 @@ const Auth = () => {
                   <span>¿Quieres ver antes qué hay? Mira perfiles reales sin registrarte.</span>
                   <span className="shrink-0" style={{ color: '#8B6A00' }}>Ver →</span>
                 </Link>
-              )}
-
-              {/* Crear cuenta en grande y ANTES de los campos: la gente nueva
-                  llegaba al formulario de entrar, escribía email y contraseña
-                  sin tener cuenta y recibía "incorrectos" (7 oct 2026). El
-                  enlace pequeño de abajo no lo veía nadie. */}
-              {isLogin && (
-                <button type="button"
-                  onClick={() => { track('auth_toggle_mode', { to: 'register', from: 'big_cta' }); setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
-                  className="xp-cta-glow w-full mb-6 py-5 px-4 rounded-2xl font-black text-xl sm:text-2xl leading-tight transition-transform hover:scale-[1.02]"
-                  style={{ background: '#FBF3DD', border: '2px solid #D4AF37', color: '#111' }}>
-                  ¿Primera vez en XPEAK?
-                  <span className="block mt-1" style={{ color: '#8B6A00' }}>Crear cuenta →</span>
-                </button>
-              )}
-              {isLogin && (
-                <p className="text-xs font-bold text-center mb-4" style={{ color: 'rgba(0,0,0,0.5)' }}>
-                  ¿Ya tienes cuenta? Entra aquí:
-                </p>
               )}
 
               {/* Selector de tipo de cuenta — solo al registrarse.
