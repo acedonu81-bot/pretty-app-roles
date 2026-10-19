@@ -530,7 +530,7 @@ export default function AdminAnalytics() {
               })()}
             </div>
             <div className="flex flex-col divide-y" style={{ borderColor: 'rgba(10,9,8,0.06)' }}>
-              {personasPwaPorAperturas.slice(0, 15).map((p, idx) => (
+              {personasPwaPorAperturas.map((p, idx) => (
                 <div key={idx} className="flex items-center gap-3 py-2 first:pt-0 last:pb-0">
                   <Monitor size={13} style={{ color: 'rgba(10,9,8,0.3)' }} />
                   <span className="text-[0.75rem] flex-1" style={{ color: 'rgba(10,9,8,0.7)' }}>
