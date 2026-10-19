@@ -16,7 +16,6 @@ export interface SubscriptionPlan {
 export const TRIAL_DAYS = 15;
 export const ANNUAL_DISCOUNT = 0.30;
 export const BIRTHDAY_DISCOUNT = 0.40;
-export const FLASH_COMMISSION = 0.05;    // 5% comisión Flash Booking confirmado
 
 // Streaming (Amazon IVS)
 export const STREAMING_HOURS_BUSINESS = 1;   // horas/mes incluidas en Business

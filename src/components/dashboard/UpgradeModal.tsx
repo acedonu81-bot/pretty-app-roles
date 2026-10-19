@@ -13,16 +13,6 @@ const ROLE_UPSELL: Record<string, { headline: string; features: string[]; cta: s
     ],
     cta: 'Subir a Business y empezar a cobrar',
   },
-  rookie: {
-    headline: 'Despega como Artista Promesa',
-    features: [
-      'Posicionamiento prioritario entre Promesas',
-      'Streaming en vivo con chat',
-      'Flash Booking: no dejes pasar ninguna oferta',
-      'Sello Business dorado en tu ficha',
-    ],
-    cta: 'Activar Business y crecer más rápido',
-  },
   staff: {
     headline: 'Consigue más contratos de sala',
     features: [
@@ -121,17 +111,6 @@ const ROLE_UPSELL: Record<string, { headline: string; features: string[]; cta: s
       'Sello Business dorado',
     ],
     cta: 'Activar Business y atraer grandes marcas',
-  },
-  empresario: {
-    headline: 'Encuentra al profesional perfecto en minutos',
-    features: [
-      'Flash Jobs ilimitados activos simultáneamente',
-      'Verificación de sala con sello oficial',
-      'Acceso prioritario a artistas Business y Agencia',
-      'Ver tarifas de todos los profesionales',
-      'Historial de contrataciones completo',
-    ],
-    cta: 'Activar Business y contratar sin límites',
   },
 };
 
