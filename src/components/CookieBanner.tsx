@@ -89,6 +89,8 @@ const CookieBanner = () => {
 
   const save = (p: CookiePrefs) => {
     localStorage.setItem(COOKIE_KEY, JSON.stringify(p));
+    // Sin analítica, fuera el id de aparato de la app instalada (lib/track.ts).
+    if (!p.analytics) localStorage.removeItem('xpeak_pwa_aparato');
     // Sin este update, GTM/GA4 sigue en "denied" (el default de index.html) y
     // descarta los hits en silencio aunque la etiqueta se dispare con 200/204.
     (window as any).dataLayer = (window as any).dataLayer || [];

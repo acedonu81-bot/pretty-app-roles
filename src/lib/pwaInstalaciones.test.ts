@@ -32,11 +32,29 @@ describe('agruparInstalacionesPwa', () => {
     expect(gonzalo.aperturas).toBe(1);
   });
 
-  it('los anónimos no se pueden juntar: cada uno es una fila', () => {
+  const anon = (detalle: string, instalado_en: string): EventoPwa =>
+    ({ display_name: null, rol: null, evento: 'pwa_session', instalado_en, device: 'mobile', detalle });
+
+  it('anónimos con id de aparato: una fila por aparato', () => {
     const personas = agruparInstalacionesPwa([
-      ev(null, 'pwa_session', '2026-10-12T10:00:00Z', null),
-      ev(null, 'pwa_session', '2026-10-12T09:00:00Z', null),
+      anon('android#aaa', '2026-10-19T10:00:00Z'),
+      anon('android#aaa', '2026-10-18T10:00:00Z'),
+      anon('iphone#bbb', '2026-10-17T10:00:00Z'),
     ]);
     expect(personas).toHaveLength(2);
+    expect(personas[0]).toMatchObject({ sistema: 'android', aperturas: 2 });
+    expect(personas[1]).toMatchObject({ sistema: 'iphone', aperturas: 1 });
+  });
+
+  // Caso real del panel (19 oct 2026): 12 filas "Visitante anónimo" seguidas.
+  it('anónimos sin id: todos en una sola fila, al final', () => {
+    const personas = agruparInstalacionesPwa([
+      anon('android', '2026-10-19T10:00:00Z'),
+      ev('Gonzalo DJ', 'pwa_session', '2026-10-15T10:00:00Z'),
+      anon('mac', '2026-10-17T10:00:00Z'),
+      anon('android', '2026-10-13T10:00:00Z'),
+    ]);
+    expect(personas).toHaveLength(2);
+    expect(personas[1]).toMatchObject({ sinIdentificar: true, aperturas: 3, sistema: 'android, mac' });
   });
 });

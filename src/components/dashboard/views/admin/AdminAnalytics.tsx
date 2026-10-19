@@ -169,9 +169,13 @@ export default function AdminAnalytics() {
   const [instalaciones, setInstalaciones] = useState<EventoPwa[]>([]);
   const personasPwa = agruparInstalacionesPwa(instalaciones);
   // Lista de "App instalada": quien más abre la app, primero; a igualdad, el más reciente.
+  // La fila de anónimos sin identificar va siempre al final y no suma al total.
   const personasPwaPorAperturas = [...personasPwa].sort(
-    (a, b) => (b.aperturas || 0) - (a.aperturas || 0) || new Date(b.ultima).getTime() - new Date(a.ultima).getTime(),
+    (a, b) => Number(!!a.sinIdentificar) - Number(!!b.sinIdentificar)
+      || (b.aperturas || 0) - (a.aperturas || 0) || new Date(b.ultima).getTime() - new Date(a.ultima).getTime(),
   );
+  const pwaSinIdentificar = personasPwa.find(p => p.sinIdentificar);
+  const personasPwaReales = personasPwa.filter(p => !p.sinIdentificar);
 
   const cargar = useCallback(async () => {
     setCargando(true);
@@ -515,7 +519,7 @@ export default function AdminAnalytics() {
           <>
             <div className="flex items-center gap-4 mb-3 flex-wrap">
               {(() => {
-                const porDevice = personasPwa.reduce<Record<string, number>>((acc, p) => {
+                const porDevice = personasPwaReales.reduce<Record<string, number>>((acc, p) => {
                   const d = p.sistema || p.device || 'desconocido';
                   acc[d] = (acc[d] || 0) + 1;
                   return acc;
@@ -523,8 +527,9 @@ export default function AdminAnalytics() {
                 return (
                   <span className="flex items-center gap-1.5 text-[0.75rem] font-bold px-2.5 py-1 rounded-full"
                     style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
-                    <Download size={12} /> Total con la app instalada: {personasPwa.length}
-                    {' '}({Object.entries(porDevice).map(([d, n]) => `${n} ${d}`).join(', ')})
+                    <Download size={12} /> Total con la app instalada: {personasPwaReales.length}
+                    {personasPwaReales.length > 0 && <>{' '}({Object.entries(porDevice).map(([d, n]) => `${n} ${d}`).join(', ')})</>}
+                    {pwaSinIdentificar && <>, más anónimos sin identificar</>}
                   </span>
                 );
               })()}
@@ -536,7 +541,9 @@ export default function AdminAnalytics() {
                   <span className="text-[0.75rem] flex-1" style={{ color: 'rgba(10,9,8,0.7)' }}>
                     {p.display_name
                       ? <>{p.display_name}{p.rol && <span style={{ color: 'rgba(10,9,8,0.45)' }}> · {p.rol}</span>}</>
-                      : <span style={{ color: 'rgba(10,9,8,0.4)' }}>Visitante anónimo</span>}
+                      : p.sinIdentificar
+                        ? <span style={{ color: 'rgba(10,9,8,0.4)' }} title="Aperturas de antes del 19 oct o de gente que no aceptó las cookies de analítica: no se puede saber si son la misma persona.">Anónimos sin identificar (pueden ser los mismos)</span>
+                        : <span style={{ color: 'rgba(10,9,8,0.4)' }}>Visitante anónimo</span>}
                   </span>
                   {p.aperturas > 0 && (
                     <span className="text-[0.68rem]" style={{ color: 'rgba(10,9,8,0.45)' }}>

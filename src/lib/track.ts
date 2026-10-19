@@ -342,13 +342,37 @@ export function logAuthFieldTouched(campo: string) {
 }
 
 /**
+ * Sistema + id del aparato para los eventos pwa_* ("android#k3j9..."). Sin él,
+ * cada apertura anónima salía en el panel como un "Visitante anónimo" distinto
+ * y no se sabía si eran la misma persona (19 oct 2026). El id es aleatorio, no
+ * se saca del aparato, y solo se guarda si aceptó las cookies de analítica:
+ * un identificador persistente sí pide consentimiento (ver nota de arriba).
+ */
+const PWA_APARATO_KEY = 'xpeak_pwa_aparato';
+function sistemaYAparato(): string {
+  const sistema = sistemaOperativo();
+  try {
+    const consentimiento = JSON.parse(localStorage.getItem('xpeak-cookie-consent') || '{}');
+    if (!consentimiento.analytics) return sistema;
+    let id = localStorage.getItem(PWA_APARATO_KEY);
+    if (!id) {
+      id = Math.random().toString(36).slice(2, 12);
+      localStorage.setItem(PWA_APARATO_KEY, id);
+    }
+    return `${sistema}#${id}`;
+  } catch {
+    return sistema;
+  }
+}
+
+/**
  * Instalación de la PWA completada (evento nativo `appinstalled` del
  * navegador). Solo Chrome/Edge lo disparan — Safari (iOS) nunca, ni siquiera
  * tras "Añadir a pantalla de inicio" manual, así que esto no cuenta
  * instalaciones en iOS.
  */
 export function logPwaInstalled() {
-  void logEvent('pwa_installed', location.pathname, sistemaOperativo());
+  void logEvent('pwa_installed', location.pathname, sistemaYAparato());
   track('pwa_installed');
 }
 
@@ -367,6 +391,6 @@ export function logPwaSessionIfStandalone() {
       || window.matchMedia('(display-mode: standalone)').matches;
     if (!standalone) return;
     sessionStorage.setItem(PWA_SESSION_KEY, '1');
-    void logEvent('pwa_session', location.pathname, sistemaOperativo());
+    void logEvent('pwa_session', location.pathname, sistemaYAparato());
   } catch { /* storage bloqueado: sin efecto, no es crítico */ }
 }
