@@ -15,13 +15,20 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
  * todo o que vuelva a intentarlo.
  */
 interface Props { children: ReactNode }
-interface State { error: Error | null; esAdmin: boolean }
+interface State { error: Error | null; esAdmin: boolean; recargando: boolean }
+
+const CHUNK_VIEJO = /dynamically imported module|importing a module script failed|Failed to fetch/i;
 
 export default class AppErrorBoundary extends Component<Props, State> {
-  state: State = { error: null, esAdmin: false };
+  state: State = { error: null, esAdmin: false, recargando: false };
 
   static getDerivedStateFromError(error: Error): Partial<State> {
-    return { error };
+    // Si es un chunk viejo y todavía no se ha intentado recargar, componentDidCatch
+    // va a recargar la página: mientras tanto no se enseña la ventana de error,
+    // que salía un instante tras cada deploy y se iba sola (19 oct 2026).
+    let yaIntentado = true;
+    try { yaIntentado = !!sessionStorage.getItem('xpeak_chunk_reload_attempted'); } catch { /* noop */ }
+    return { error, recargando: CHUNK_VIEJO.test(error.message) && !yaIntentado };
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
@@ -33,9 +40,8 @@ export default class AppErrorBoundary extends Component<Props, State> {
     // script failed". Aquí no hace falta ni mostrar la pantalla de error: se
     // recarga sola UNA vez (el flag evita un bucle si el fallo fuera otro) y
     // coge la build nueva sin que el usuario tenga que hacer nada.
-    const pareceChunkViejo = /dynamically imported module|importing a module script failed|Failed to fetch/i.test(error.message);
-    if (pareceChunkViejo && !sessionStorage.getItem('xpeak_chunk_reload_attempted')) {
-      sessionStorage.setItem('xpeak_chunk_reload_attempted', '1');
+    if (this.state.recargando) {
+      try { sessionStorage.setItem('xpeak_chunk_reload_attempted', '1'); } catch { /* noop */ }
       window.location.reload();
       return;
     }
@@ -76,6 +82,8 @@ export default class AppErrorBoundary extends Component<Props, State> {
 
   render() {
     if (!this.state.error) return this.props.children;
+    // Recarga automática en curso: pantalla en blanco del color de la web, sin aviso.
+    if (this.state.recargando) return <div style={{ minHeight: '100dvh', background: '#FFFDF7' }} />;
     return (
       <div style={{
         minHeight: '100dvh', display: 'flex', flexDirection: 'column',
