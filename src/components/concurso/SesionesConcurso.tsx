@@ -310,7 +310,10 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                     </>
                   ) : user ? (
                     <span className="px-3.5 py-2 rounded-full" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>
-                      <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={() => { cargar(); setVotoVersion(v => v + 1); }} />
+                      <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={() => { cargar(); setVotoVersion(v => v + 1); }}
+                        onError={(m) => toast.error(/LIMITE_VOTOS_CONCURSO/.test(m)
+                          ? 'Ya has usado tus 3 votos. Si quieres votar a esta sesión, quita antes uno de los tuyos.'
+                          : 'No se ha podido guardar tu voto. Prueba otra vez.')} />
                     </span>
                   ) : (
                     <>

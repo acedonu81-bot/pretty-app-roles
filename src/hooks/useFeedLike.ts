@@ -5,7 +5,8 @@ interface FeedLikeState {
   count: number;
   liked: boolean;
   loading: boolean;
-  toggleLike: () => Promise<void>;
+  /** Devuelve el mensaje de error de la base de datos, o null si fue bien. */
+  toggleLike: () => Promise<string | null>;
 }
 
 // Like sobre un content_key de texto (el id que ya genera useFeedPosts.ts:
@@ -35,17 +36,23 @@ export const useFeedLike = (viewerId: string | undefined, contentKey: string): F
     return () => { cancelled = true; };
   }, [viewerId, contentKey]);
 
+  // Solo se marca como hecho si la base de datos lo acepta: antes el corazón
+  // se ponía rojo aunque el voto se rechazara (fuera de plazo, tope de 3 votos
+  // del concurso...) y la persona creía haber votado.
   const toggleLike = async () => {
-    if (!viewerId) return;
+    if (!viewerId) return null;
     if (liked) {
-      await supabase.from('feed_likes').delete().eq('user_id', viewerId).eq('content_key', contentKey);
+      const { error } = await supabase.from('feed_likes').delete().eq('user_id', viewerId).eq('content_key', contentKey);
+      if (error) return error.message;
       setLiked(false);
       setCount(c => Math.max(0, c - 1));
     } else {
-      await supabase.from('feed_likes').insert({ user_id: viewerId, content_key: contentKey });
+      const { error } = await supabase.from('feed_likes').insert({ user_id: viewerId, content_key: contentKey });
+      if (error) return error.message;
       setLiked(true);
       setCount(c => c + 1);
     }
+    return null;
   };
 
   return { count, liked, loading, toggleLike };

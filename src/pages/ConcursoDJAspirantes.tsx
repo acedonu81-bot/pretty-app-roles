@@ -75,7 +75,7 @@ export default function ConcursoDJAspirantes() {
               </p>
               <h1 className="text-4xl sm:text-6xl leading-none text-white mb-3" style={{ fontFamily: HZ.display, fontWeight: 800 }}>Aspirantes</h1>
               <p className="text-base sm:text-lg max-w-xl" style={{ color: 'rgba(255,255,255,0.9)', fontFamily: HZ.body, fontWeight: 600 }}>
-                Escucha las sesiones y vota a tus favoritas. Puede votar cualquier usuario de XPEAK. Las 3 con más me gusta el 2 de noviembre pasan a la final.
+                Escucha las sesiones y vota a tus 3 favoritas. Puede votar cualquier usuario de XPEAK. Las 3 con más me gusta el 2 de noviembre pasan a la final.
               </p>
             </div>
             <img src="/concurso/cascos-hdj-x5.webp" alt="Auriculares Pioneer DJ HDJ-X5, el premio" width={360} height={358}
