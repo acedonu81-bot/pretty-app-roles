@@ -1135,7 +1135,7 @@ const Auth = () => {
                       Prueba a continuar con Google en su lugar: no depende de esta verificación.
                     </p>
                     <button type="button" onClick={handleGoogleSignIn} disabled={googleLoading}
-                      className="w-full py-3.5 rounded-lg font-bold text-xs transition-all hover:scale-[1.01] disabled:opacity-60"
+                      className="w-full py-4 rounded-lg font-bold text-xs transition-all hover:scale-[1.01] disabled:opacity-60"
                       style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.4)', color: '#8B6A00' }}>
                       {googleLoading ? 'Conectando…' : 'Continuar con Google'}
                     </button>
