@@ -254,9 +254,28 @@ type Propia = { estado: 'pendiente' | 'rechazada'; soundcloud_url: string; displ
 // propia sesión aunque esté en revisión (antes solo salían las aceptadas y
 // parecía que no se había subido nada). Estilo clay del feed (healthy-zone/
 // clay): finalistas en dorado, el resto alterna cielo, verde y lila.
+// Voto recordado (19 oct 2026): quien pulsa "Vota con Google" no tiene cuenta, se
+// registra y vuelve a esta lista, y entonces tenía que buscar el corazón y
+// pulsarlo otra vez. Dos personas reales se registraron y se quedaron sin votar.
+// Se apunta a quién quería votar y se aplica solo al volver con la sesión.
+const VOTO_PENDIENTE = 'xpeak_voto_pendiente';
+const VOTO_PENDIENTE_HORAS = 48;
+function recordarVoto(userIdDj: string) {
+  try { localStorage.setItem(VOTO_PENDIENTE, JSON.stringify({ dj: userIdDj, en: Date.now() })); } catch { /* sin almacenamiento */ }
+}
+function leerVotoPendiente(): string | null {
+  try {
+    const v = JSON.parse(localStorage.getItem(VOTO_PENDIENTE) || 'null') as { dj?: string; en?: number } | null;
+    localStorage.removeItem(VOTO_PENDIENTE);
+    if (!v?.dj || !v.en || Date.now() - v.en > VOTO_PENDIENTE_HORAS * 3600_000) return null;
+    return v.dj;
+  } catch { return null; }
+}
+
 export default function SesionesConcurso({ volverA }: { volverA: string }) {
-  const votarConGoogle = async () => {
+  const votarConGoogle = async (para: string) => {
     track('concurso_votar_google_click');
+    recordarVoto(para);
     // En la app iOS Google va por un navegador in-app que solo sabe manejar /auth.
     if (isNative) { window.location.href = `/auth?mode=register&redirect=${encodeURIComponent(volverA)}`; return; }
     // Misma clave que lee Auth.tsx al volver de Google: sin ella acabaría en el panel.
@@ -270,6 +289,8 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
   const [propia, setPropia] = useState<Propia | null>(null);
   // Sube con cada voto para que el aviso de "avísame del resultado" se entere.
   const [votoVersion, setVotoVersion] = useState(0);
+  // Sube cuando se aplica un voto recordado, para que el corazón de esa ficha se vuelva a montar y lo muestre.
+  const [votoAuto, setVotoAuto] = useState(0);
 
   const cargar = useCallback(() => {
     sb.rpc('concurso_participantes', { p_concurso: CONCURSO })
@@ -293,6 +314,22 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
     const cada = window.setInterval(() => { if (document.visibilityState === 'visible') cargar(); }, 60_000);
     return () => { window.removeEventListener('concurso:inscrito', cargar); window.clearInterval(cada); };
   }, [cargar]);
+
+  // Aplica el voto recordado en cuanto hay sesión y lista cargada.
+  useEffect(() => {
+    if (!user || lista === null) return;
+    const dj = leerVotoPendiente();
+    if (!dj || dj === user.id || !lista.some(x => x.user_id === dj)) return;
+    const nombre = lista.find(x => x.user_id === dj)?.display_name ?? 'ese DJ';
+    (supabase as unknown as { from: (t: string) => { insert: (v: Record<string, string>) => Promise<{ error: { code?: string; message: string } | null }> } })
+      .from('feed_likes').insert({ user_id: user.id, content_key: `concurso-${CONCURSO}:${dj}` })
+      .then(({ error }) => {
+        if (!error) { toast.success(`Tu voto a ${nombre} ya está dentro. ¡Gracias!`); track('concurso_voto_recordado'); cargar(); setVotoAuto(v => v + 1); setVotoVersion(v => v + 1); return; }
+        if (error.code === '23505') return; // ya le había votado
+        if (/LIMITE_VOTOS_CONCURSO/.test(error.message)) toast.error('Ya has usado tus 3 votos.');
+        else if (/VOTANTE_NO_VALIDO/.test(error.message)) toast.error('Para votar entra con Google o con un correo de Gmail, Hotmail, Outlook, Yahoo o iCloud.');
+      });
+  }, [user, lista, cargar]);
 
   if (lista === null) return <p style={{ color: HZ.inkSoft, fontFamily: HZ.body }}>Cargando sesiones…</p>;
 
@@ -416,7 +453,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                   ) : user ? (
                     <>
                     <span className="px-3.5 py-2 rounded-full" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>
-                      <LikeButton viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={() => { cargar(); setVotoVersion(v => v + 1); }}
+                      <LikeButton key={`${p.user_id}-${votoAuto}`} viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={() => { cargar(); setVotoVersion(v => v + 1); }}
                         onError={(m) => toast.error(/LIMITE_VOTOS_CONCURSO/.test(m)
                           ? 'Ya has usado tus 3 votos. Si quieres votar a esta sesión, quita antes uno de los tuyos.'
                           : /VOTANTE_NO_VALIDO/.test(m)
@@ -434,11 +471,11 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                           contraseña de una cuenta que no existía (18 oct 2026). Google
                           entra o crea la cuenta en un toque; el email va a crear cuenta. */}
                       <span className="flex flex-col items-start gap-1">
-                        <button type="button" onClick={votarConGoogle} className="xp-cta-glow px-4 py-2 rounded-full text-white transition-transform hover:-translate-y-0.5"
+                        <button type="button" onClick={() => votarConGoogle(p.user_id)} className="xp-cta-glow px-4 py-2 rounded-full text-white transition-transform hover:-translate-y-0.5"
                           style={{ background: AZUL, fontFamily: HZ.body, fontWeight: 800, boxShadow: clayButton('37,99,235') }}>
                           Vota con Google
                         </button>
-                        <a href={`/auth?mode=register&redirect=${encodeURIComponent(volverA)}`} onClick={() => track('concurso_votar_email_click')}
+                        <a href={`/auth?mode=register&redirect=${encodeURIComponent(volverA)}`} onClick={() => { recordarVoto(p.user_id); track('concurso_votar_email_click'); }}
                           className="text-xs underline px-1" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 700 }}>
                           o con tu email
                         </a>
