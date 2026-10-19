@@ -61,7 +61,7 @@ async function fetchAllProfilesForPrerender() {
       console.warn('  ⚠ Sin credenciales Supabase: páginas ciudad/categoría se prerenderizan sin profesionales');
       return [];
     }
-    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,roles,specialty,hourly_rate,is_flash_active,is_seed,audio_embed_url,audio_session_urls,portfolio_urls,score,is_verified,is_primary,created_at&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;
+    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,city_ref,genres,role,roles,specialty,hourly_rate,is_flash_active,is_seed,audio_embed_url,audio_session_urls,portfolio_urls,score,is_verified,is_primary,created_at&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;
     const res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
     if (!res.ok) {
       console.warn('  ⚠ No se pudieron cargar profesionales para el prerender:', res.status);
@@ -94,6 +94,8 @@ function mapProfile(p) {
     score: p.score ?? 0,
     slug: toSlug(p.display_name ?? p.user_id),
     is_verified: p.is_verified ?? false,
+    precioHora: p.hourly_rate ?? null,
+    estilos: p.genres ?? null,
   };
 }
 
@@ -104,6 +106,18 @@ function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
   // Mismo gate que gateNoPhoto en CityLanding.tsx: sin foto no se publica,
   // retroactivo desde el 16 sep 2026.
   const byRole = allProfiles.filter(p => profileHasRole(p, roles) && passesPhotoGate(p));
+  // Página completa (/contratar-dj/madrid, 19 oct 2026): todos los DJs, también
+  // los de pueblos con city_ref Madrid, uno por cuenta. Mismo criterio que
+  // esPaginaCompleta y useCityProfessionals en CityLanding.tsx.
+  if (categorySlug === 'dj' && ciudad === 'Madrid') {
+    const vistos = new Set();
+    const todos = byRole
+      .filter(p => (p.zone && p.zone.toLowerCase().includes('madrid')) || p.city_ref === 'Madrid')
+      .sort((a, b) => (b.is_primary === true) - (a.is_primary === true) || (b.score ?? 0) - (a.score ?? 0))
+      .filter(p => !vistos.has(p.user_id) && vistos.add(p.user_id))
+      .slice(0, 80);
+    if (todos.length) return { profs: todos.map(mapProfile), suggestions: [] };
+  }
   const inCity = byRole
     .filter(p => p.zone && p.zone.toLowerCase().includes(ciudad.toLowerCase()))
     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))

@@ -101,10 +101,11 @@ const ROUTES = [
   // City landings — DJ
   {
     path: '/contratar-dj/madrid',
-    title: 'Contratar DJ en Madrid | XPEAK | DJs verificados',
-    desc: 'Contrata DJs profesionales en Madrid para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',
-    ogTitle: 'Contratar DJ en Madrid | XPEAK',
-    ogDesc: 'Directorio de DJs verificados en Madrid. Flash Booking, contratos digitales.',
+    // Mismo título y descripción que tituloCompleto/descCompleta de CityLanding.tsx (19 oct 2026).
+    title: 'DJ en Madrid para bodas, fiestas y empresas: precios y disponibilidad | XPEAK',
+    desc: 'DJs en Madrid con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.',
+    ogTitle: 'DJ en Madrid para bodas, fiestas y empresas: precios y disponibilidad',
+    ogDesc: 'DJs en Madrid con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.',
     ogType: 'website',
   },
   {

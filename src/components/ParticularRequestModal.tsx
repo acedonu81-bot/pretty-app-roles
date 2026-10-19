@@ -58,11 +58,13 @@ interface Props {
   onClose: () => void;
   // Para medir desde dónde llega la solicitud (p. ej. /auth) sin tocar la fila.
   onEnviado?: () => void;
+  // Para abrirlo ya rellenado desde una página concreta (p. ej. /contratar-dj/madrid).
+  inicial?: { service?: string; location?: string };
 }
 
-export default function ParticularRequestModal({ onClose, onEnviado }: Props) {
+export default function ParticularRequestModal({ onClose, onEnviado, inicial }: Props) {
   const [form, setForm] = useState({
-    name: '', email: '', eventType: '', service: '', date: '', location: '',
+    name: '', email: '', eventType: '', service: inicial?.service ?? '', date: '', location: inicial?.location ?? '',
     budget: '', message: '', website: '',
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');

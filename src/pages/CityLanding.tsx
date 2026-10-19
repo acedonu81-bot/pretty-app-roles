@@ -3,12 +3,13 @@ import { useDirectorioConInventario } from '@/hooks/useDirectorioConInventario';
 import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, MapPin, CheckCircle } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toSlug } from '@/data/profiles';
 import { passesPhotoGate } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
+const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
 // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
 // DirectorioPublico.tsx para el motivo).
 const gateNoPhoto = <T extends { photo_url: string | null }>(rows: T[]): T[] =>
@@ -18,7 +19,7 @@ const gateNoPhoto = <T extends { photo_url: string | null }>(rows: T[]): T[] =>
 // Señal de frescura para motores generativos, que penalizan contenido stale.
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 
-interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string; is_verified: boolean; }
+interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string; is_verified: boolean; precioHora?: number | null; estilos?: string[] | null; }
 
 const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
@@ -46,6 +47,12 @@ declare global {
   var __PRERENDER_PROFILES__: { profs: Prof[]; suggestions: Prof[] } | undefined;
 }
 
+// /contratar-dj/madrid (19 oct 2026): página completa con todos los DJs, su
+// precio por hora y estilos, en vez de la plantilla común de 6 fichas. Google la
+// tenía en posición 25 con 24 apariciones en 3 meses: era casi igual que las
+// otras ~50 ciudades. Si funciona, se pasa a más ciudades.
+export const esPaginaCompleta = (categorySlug: string, ciudad: string) => categorySlug === 'dj' && ciudad === 'Madrid';
+
 function useCityProfessionals(ciudad: string, categorySlug: string) {
   const preloaded = typeof globalThis !== 'undefined' ? globalThis.__PRERENDER_PROFILES__ : undefined;
   const [profs, setProfs] = useState<Prof[]>(preloaded?.profs ?? []);
@@ -60,7 +67,8 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
     const roles = ROLE_MAP[categorySlug] ?? ['dj'];
     // No existe columna slug en profiles — se deriva del nombre, igual que
     // hace PublicProfile.tsx al resolver /p/:slug.
-    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.zone, role: p.role, score: p.score ?? 0, slug: toSlug(p.display_name ?? p.user_id), is_verified: p.is_verified ?? false });
+    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.zone, role: p.role, score: p.score ?? 0, slug: toSlug(p.display_name ?? p.user_id), is_verified: p.is_verified ?? false, precioHora: p.hourly_rate ?? null, estilos: p.genres ?? null });
+    const completa = esPaginaCompleta(categorySlug, ciudad);
 
     // Match por el array `roles` ademas de por el `role` singular: un segundo
     // rol se guarda en `roles`, y filtrar solo por `role` dejaba fuera de esta
@@ -73,7 +81,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
 
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at')
+      .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at,hourly_rate,genres')
       .or(roleFilter)
       // Un empresario puede tener 'mago' en `roles` (segundo oficio marcado
       // por error o dato legacy) y coincidir con roleFilter via roles.cs — se
@@ -98,9 +106,11 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
       .or('is_public.is.null,is_public.eq.true')
       .order('is_primary', { ascending: false })
       .order('score', { ascending: false })
-      .limit(6)
+      .limit(completa ? 80 : 6)
       .then(({ data }) => {
-        const gated = gateNoPhoto(data ?? []);
+        // Una cuenta puede tener varios perfiles: en la página completa sale una vez.
+        const vistos = new Set<string>();
+        const gated = gateNoPhoto(data ?? []).filter(p => !completa || (!vistos.has(p.user_id) && !!vistos.add(p.user_id)));
         if (gated.length) {
           setProfs(gated.map(map));
           setLoaded(true);
@@ -642,7 +652,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
   },
 };
 
-const ProfGrid = ({ profs }: { profs: Prof[] }) => (
+const ProfGrid = ({ profs, detalle = false }: { profs: Prof[]; detalle?: boolean }) => (
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
     {profs.map(p => (
       <a key={p.id}
@@ -659,6 +669,12 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
         <div style={{ padding: '12px 14px' }}>
           <p style={{ fontWeight: 900, fontSize: 14, color: '#111', margin: '0 0 4px' }}>{p.display_name}</p>
           {p.city && <p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 4 }}>{p.city}</p>}
+          {detalle && precioValido(p.precioHora) && (
+            <p style={{ fontSize: 13, fontWeight: 900, color: '#8B6A00', margin: '0 0 6px' }}>{p.precioHora} €/hora</p>
+          )}
+          {detalle && !!p.estilos?.length && (
+            <p style={{ fontSize: 11, color: '#374151', margin: '0 0 6px' }}>{p.estilos.slice(0, 3).join(' · ')}</p>
+          )}
           {p.bio && <p style={{ fontSize: 12, color: '#4b5563', margin: 0, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.bio}</p>}
         </div>
       </a>
@@ -729,11 +745,158 @@ function precioPara(categorySlug: string, city: { precioMin: string; precioMax: 
   return `${r(min * factor[0])}€-${r(max * factor[1])}€`;
 }
 
+// Tarifas de 0 o 1 € son perfiles sin rellenar, no precios.
+const precioValido = (h: number | null | undefined): h is number => typeof h === 'number' && h >= 10 && h <= 2000;
+
+type EstadPrecio = { n: number; min: number; max: number; p25: number; p75: number; tipico: number };
+
+// Precio real calculado con los DJs de la página, nunca escrito a mano: si un
+// DJ cambia su tarifa, la página cambia sola. Con menos de 5 tarifas no se da.
+function estadisticasPrecio(profs: Prof[]): EstadPrecio | null {
+  const xs = profs.map(p => p.precioHora).filter(precioValido).sort((a, b) => a - b);
+  if (xs.length < 5) return null;
+  const q = (f: number) => { const i = (xs.length - 1) * f; const lo = Math.floor(i); return xs[lo] + (xs[Math.ceil(i)] - xs[lo]) * (i - lo); };
+  const r5 = (n: number) => Math.round(n / 5) * 5;
+  return { n: xs.length, min: xs[0], max: xs[xs.length - 1], p25: r5(q(0.25)), p75: r5(q(0.75)), tipico: r5(q(0.5)) };
+}
+
+function contar(valores: string[]): [string, number][] {
+  const m = new Map<string, { nombre: string; n: number }>();
+  for (const v of valores) {
+    const k = v.trim().toLowerCase();
+    if (!k) continue;
+    const e = m.get(k);
+    if (e) e.n++; else m.set(k, { nombre: v.trim(), n: 1 });
+  }
+  return [...m.values()].sort((a, b) => b.n - a.n).map(e => [e.nombre, e.n]);
+}
+
+const tituloCompleto = (ciudad: string) => `DJ en ${ciudad} para bodas, fiestas y empresas: precios y disponibilidad`;
+const descCompleta = (ciudad: string) => `DJs en ${ciudad} con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.`;
+
+function faqsCompletas(ciudad: string, st: EstadPrecio | null) {
+  return [
+    {
+      q: `¿Cuánto cuesta un DJ en ${ciudad}?`,
+      a: st
+        ? `Según los ${st.n} DJs de ${ciudad} que publican su tarifa en XPEAK, la mitad cobra entre ${st.p25} € y ${st.p75} € la hora (de ${st.min} € a ${st.max} € en total). Para una fiesta de 4 horas son unos ${st.p25 * 4}-${st.p75 * 4} €, sin contar desplazamiento ni equipo extra.`
+        : `Depende de las horas, del equipo que lleve y de la experiencia del DJ. En cada perfil de XPEAK ves su tarifa por hora antes de pedir nada.`,
+    },
+    {
+      q: '¿El equipo de sonido va incluido?',
+      a: 'Depende del DJ. Muchos llevan su propio equipo (altavoces, mesa y luces básicas) y otros pinchan con el equipo del local. Pregúntalo antes de cerrar: es lo que más cambia el precio.',
+    },
+    {
+      q: '¿Con cuánta antelación tengo que reservar?',
+      a: 'Para bodas y sábados de mayo a octubre, cuanto antes: los DJs más pedidos se llenan con meses. Para un cumpleaños o una fiesta entre semana suele bastar con una o dos semanas. Si es para ya, pídelo por XPEAK y se avisa al momento a los DJs de la zona.',
+    },
+    {
+      q: `¿Los DJs se desplazan fuera de ${ciudad} capital?`,
+      a: `Muchos trabajan en toda la Comunidad: Alcalá de Henares, Torrejón, Getafe, Móstoles, Alcobendas… Pregunta si el desplazamiento va aparte, sobre todo si el evento es lejos o en una finca.`,
+    },
+    {
+      q: `¿Cómo contrato un DJ en ${ciudad} con XPEAK?`,
+      a: `Pulsa «Pide DJ en ${ciudad}», di la fecha y la ciudad y confirma tu email. Se lo mandamos a varios DJs de ${ciudad} y, cuando uno dice que sí, habláis por el chat de XPEAK. Pedirlo no cuesta nada.`,
+    },
+  ];
+}
+
+const TIPOS_EVENTO = [
+  { t: 'Bodas', d: 'Cuenta con 5 a 7 horas entre cóctel, banquete y baile. Pregunta si incluye micrófono para los discursos, luces para la pista y si prepara la lista de canciones contigo.' },
+  { t: 'Cumpleaños y fiestas privadas', d: 'Suelen ser 3 o 4 horas. Dile qué música os gusta y cuánta gente viene: con eso sabe qué equipo llevar.' },
+  { t: 'Empresas', d: 'Cenas de Navidad, inauguraciones y presentaciones. Pide factura y confirma con el local el horario de montaje.' },
+  { t: 'Fiestas en casa o en finca', d: 'Mira si hay enchufes cerca y si hay límite de ruido o de horario. Hay DJs con equipo compacto para espacios pequeños.' },
+];
+
+function BloquesCompletos({ ciudad, profs, st, onPedir }: { ciudad: string; profs: Prof[]; st: EstadPrecio | null; onPedir: () => void }) {
+  const estilos = contar(profs.flatMap(p => p.estilos ?? [])).slice(0, 10);
+  const zonas = contar(profs.map(p => p.city ?? '').filter(Boolean)).slice(0, 8);
+  const caja = { background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' };
+  return (
+    <>
+      {st && (
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+          <h2 className="text-xl sm:text-2xl font-black mb-3">Cuánto cuesta un DJ en {ciudad}</h2>
+          <p className="text-sm sm:text-base mb-6 leading-relaxed max-w-3xl" style={{ color: '#374151' }}>
+            Precios reales de los {st.n} DJs de {ciudad} que publican su tarifa en XPEAK. Se actualizan solos cuando un DJ cambia la suya.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+            {[
+              { l: 'La mitad cobra', v: `${st.p25}-${st.p75} €/h` },
+              { l: 'Precio más habitual', v: `${st.tipico} €/h` },
+              { l: 'Fiesta de 4 horas', v: `${st.p25 * 4}-${st.p75 * 4} €` },
+            ].map(x => (
+              <div key={x.l} className="p-5 rounded-xl" style={caja}>
+                <p className="text-xs uppercase tracking-widest font-bold mb-1" style={{ color: '#6b7280' }}>{x.l}</p>
+                <p className="text-2xl font-black" style={{ color: '#8B6A00' }}>{x.v}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm leading-relaxed max-w-3xl" style={{ color: '#4b5563' }}>
+            Van de {st.min} € a {st.max} € la hora. Lo que más cambia el precio: si lleva equipo propio, las horas, el desplazamiento y la experiencia.
+            Para comparar con el resto de España, mira <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#8B6A00', fontWeight: 700 }}>cuánto cobra un DJ</a>.
+          </p>
+        </section>
+      )}
+
+      {estilos.length > 0 && (
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
+          <h2 className="text-xl sm:text-2xl font-black mb-3">DJs de {ciudad} por estilo de música</h2>
+          <p className="text-sm mb-5" style={{ color: '#4b5563' }}>Toca un estilo para ver solo los DJs que lo pinchan.</p>
+          <div className="flex flex-wrap gap-2">
+            {estilos.map(([nombre, n]) => (
+              <a key={nombre} href={`/directorio/dj?ciudad=${encodeURIComponent(ciudad)}&genero=${encodeURIComponent(nombre)}`}
+                className="px-4 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105"
+                style={{ ...caja, color: '#111', textDecoration: 'none' }}>
+                DJ {nombre} en {ciudad} <span style={{ color: '#8B6A00' }}>({n})</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
+        <h2 className="text-xl sm:text-2xl font-black mb-6">DJ en {ciudad} según tu evento</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {TIPOS_EVENTO.map(e => (
+            <div key={e.t} className="p-5 rounded-xl" style={caja}>
+              <h3 className="text-base font-black mb-2">DJ para {e.t.toLowerCase()} en {ciudad}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: '#4b5563' }}>{e.d}</p>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-6">
+          <button type="button" onClick={onPedir}
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
+            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            <Zap size={15} /> Pide DJ en {ciudad}
+          </button>
+        </div>
+      </section>
+
+      {zonas.length > 0 && (
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
+          <h2 className="text-xl sm:text-2xl font-black mb-3">Dónde trabajan nuestros DJs de {ciudad}</h2>
+          <p className="text-sm mb-5" style={{ color: '#4b5563' }}>Dónde tienen su base. Muchos se mueven por toda la Comunidad; pregúntales por el desplazamiento.</p>
+          <div className="flex flex-wrap gap-2">
+            {zonas.map(([z, n]) => (
+              <span key={z} className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ ...caja, color: '#374151' }}>
+                <MapPin size={11} className="inline mr-1" style={{ color: '#8B6A00' }} />{z} · {n} {n === 1 ? 'DJ' : 'DJs'}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
+
 export default function CityLanding() {
   const { ciudad } = useParams<{ ciudad: string }>();
   const { pathname } = useLocation();
   // Antes del return temprano: un hook nunca puede quedar detrás de él.
   const dirSlug = useDirectorioConInventario(pathname.split('/')[1]?.replace('contratar-', '') ?? 'dj');
+  const [pedir, setPedir] = useState(false);
 
   const cityData = ciudad ? CITIES[ciudad.toLowerCase()] : null;
   if (!cityData) {
@@ -754,6 +917,9 @@ export default function CityLanding() {
   const precio = precioPara(categorySlug, cityData);
   const canonicalBase = `/contratar-${categorySlug}/${cityData.slug}`;
   const { profs: professionals, suggestions: profSuggestions, loaded: profsLoaded } = useCityProfessionals(cityData.ciudad, categorySlug);
+  const completa = esPaginaCompleta(categorySlug, cityData.ciudad);
+  const st = completa ? estadisticasPrecio(professionals) : null;
+  const faqs = completa ? faqsCompletas(cityData.ciudad, st) : catData.faqs(cityData.ciudad, precio);
   const dirKeyword = dirSlug === categorySlug ? catData.keyword : (CATEGORIES[dirSlug]?.keyword ?? catData.keyword);
   // El equipo se alquila, no se contrata: "Contratar Alquiler de Equipos" no
   // se dice. Esa categoría usa su label como título y "alquilar" como verbo.
@@ -761,6 +927,8 @@ export default function CityLanding() {
   const h1 = esAlquiler
     ? `${catData.label} en ${cityData.ciudad}`
     : `Contratar ${catData.keyword} en ${cityData.ciudad}`;
+  const titulo = completa ? `${tituloCompleto(cityData.ciudad)} | XPEAK` : `${h1} | XPEAK | Directorio Profesional de Eventos`;
+  const descripcion = completa ? descCompleta(cityData.ciudad) : catData.desc(cityData.ciudad);
 
   const structuredData = {
     '@context': 'https://schema.org',
@@ -768,17 +936,18 @@ export default function CityLanding() {
     name: h1,
     provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     areaServed: { '@type': 'City', name: cityData.ciudad },
-    description: catData.desc(cityData.ciudad),
+    description: descripcion,
     url: `https://xpeak.es${canonicalBase}`,
     serviceType: esAlquiler ? catData.label : `Contratación de ${catData.keyword}`,
     dateModified: BUILD_DATE,
     termsOfService: 'El precio del profesional se consulta en su perfil y se acuerda directamente entre las partes.',
+    ...(st ? { offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: st.min, highPrice: st.max, offerCount: st.n, unitText: 'hora' } } : {}),
   };
 
   const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: catData.faqs(cityData.ciudad, precio).map(f => ({
+    mainEntity: faqs.map(f => ({
       '@type': 'Question',
       name: f.q,
       acceptedAnswer: { '@type': 'Answer', text: f.a },
@@ -808,15 +977,15 @@ export default function CityLanding() {
   return (
     <>
       <Helmet>
-        <title>{h1} | XPEAK | Directorio Profesional de Eventos</title>
+        <title>{titulo}</title>
         {/* Siempre explícito: si solo se emitiera el noindex, quedarían dos
             etiquetas robots (la global de index.html y esta). Declarar ambos
             casos hace que Helmet sustituya la global en vez de sumarse. */}
         <meta name="robots" content={shouldNoindex ? 'noindex, follow' : 'index, follow'} />
-        <meta name="description" content={catData.desc(cityData.ciudad)} />
+        <meta name="description" content={descripcion} />
         <link rel="canonical" href={`https://xpeak.es${canonicalBase}`} />
-        <meta property="og:title" content={`${h1} | XPEAK`} />
-        <meta property="og:description" content={catData.desc(cityData.ciudad)} />
+        <meta property="og:title" content={completa ? titulo : `${h1} | XPEAK`} />
+        <meta property="og:description" content={descripcion} />
         <meta property="og:url" content={`https://xpeak.es${canonicalBase}`} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -852,8 +1021,29 @@ export default function CityLanding() {
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">{h1}</h1>
           <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: '#4b5563' }}>
-            {catData.intro(cityData.ciudad, cityData.venues)}
+            {completa
+              ? `Encuentra DJ en ${cityData.ciudad} para tu boda, cumpleaños, fiesta de empresa o evento privado. ${professionals.length ? `${professionals.length} DJs de la Comunidad de ${cityData.ciudad} ` : 'DJs de la zona '}con su precio por hora, estilos y fotos. Pides gratis y habláis por el chat de XPEAK.`
+              : catData.intro(cityData.ciudad, cityData.venues)}
           </p>
+          {completa && (
+            <div className="flex flex-col sm:flex-row gap-3 mb-3">
+              <button type="button" onClick={() => setPedir(true)}
+                className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
+                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                <Zap size={15} /> Pide DJ en {cityData.ciudad}
+              </button>
+              <a href="#djs"
+                className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
+                style={{ background: '#FFFFFF', border: '1.5px solid #2563EB', color: '#2563EB' }}>
+                Ver los DJs y sus precios <ArrowRight size={14} />
+              </a>
+            </div>
+          )}
+          {completa ? (
+            <p className="text-xs" style={{ color: '#4b5563' }}>
+              ¿Eres sala o empresa? <a href="/auth?mode=register&role=empresario" style={{ color: '#8B6A00', fontWeight: 700 }}>Publica una oferta</a>
+            </p>
+          ) : (
           <div className="flex flex-col sm:flex-row gap-3">
             <a href="/auth?mode=register&role=empresario"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
@@ -866,6 +1056,7 @@ export default function CityLanding() {
               Ver directorio <ArrowRight size={14} />
             </a>
           </div>
+          )}
         </section>
 
         {/* Seasonal banner — only for cities with seasonal data */}
@@ -898,7 +1089,9 @@ export default function CityLanding() {
         <section className="border-y" style={{ borderColor: 'rgba(122,98,22,0.14)', background: '#FBF6E8' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { label: `Precio ${catData.keyword} en ${cityData.ciudad}`, value: `${precio}${catData.unidad}`, icon: <Star size={16} />, tono: '#8B6A00' },
+              st
+                ? { label: `Precio por hora en ${cityData.ciudad}`, value: `${st.p25}-${st.p75} €/h (la mitad de los DJs)`, icon: <Star size={16} />, tono: '#8B6A00' }
+                : { label: `Precio ${catData.keyword} en ${cityData.ciudad}`, value: `${precio}${catData.unidad}`, icon: <Star size={16} />, tono: '#8B6A00' },
               { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(categorySlug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} />, tono: '#2563EB' },
               { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} />, tono: '#059669' },
             ].map(s => (
@@ -916,7 +1109,9 @@ export default function CityLanding() {
           </div>
         </section>
 
-        {cityData.venues.length > 0 && (
+        {completa && <BloquesCompletos ciudad={cityData.ciudad} profs={professionals} st={st} onPedir={() => setPedir(true)} />}
+
+        {!completa && cityData.venues.length > 0 && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
             <h2 className="text-xl sm:text-2xl font-black mb-2">Espacios y venues en {cityData.ciudad}</h2>
             <p className="text-sm mb-6" style={{ color: '#4b5563' }}>
@@ -935,16 +1130,16 @@ export default function CityLanding() {
 
         {/* Profesionales reales de Supabase */}
         {profsLoaded && (
-          <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
+          <section id="djs" className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
             {professionals.length > 0 ? (
               <>
                 <h2 className="text-xl sm:text-2xl font-black mb-2">
-                  {catData.keyword} disponibles en {cityData.ciudad}
+                  {completa ? `Los ${professionals.length} DJs de ${cityData.ciudad} en XPEAK` : `${catData.keyword} disponibles en ${cityData.ciudad}`}
                 </h2>
                 <p className="text-sm mb-6" style={{ color: '#5b6472' }}>
                   Profesionales verificados activos en XPEAK. Contacto directo, sin intermediarios.
                 </p>
-                <ProfGrid profs={professionals} />
+                <ProfGrid profs={professionals} detalle={completa} />
               </>
             ) : (
               <>
@@ -975,11 +1170,15 @@ export default function CityLanding() {
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">{esAlquiler ? `Cómo alquilar equipo en ${cityData.ciudad} con XPEAK` : `Cómo contratar ${catData.keyword} en ${cityData.ciudad} con XPEAK`}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {[
+            {(completa ? [
+              { step: '01', title: 'Pide DJ', body: `Di qué día es y en qué parte de ${cityData.ciudad}. Sin registro ni contraseña.` },
+              { step: '02', title: 'Confirma tu email', body: 'Te llega un correo con un botón. Al pulsarlo se lo mandamos a varios DJs de la zona.' },
+              { step: '03', title: 'Habla con el DJ', body: 'Cuando uno dice que sí, te escribimos y habláis por el chat de XPEAK para cerrar precio y detalles.' },
+            ] : [
               { step: '01', title: 'Crea tu cuenta', body: `Regístrate como sala, promotora u organizador en menos de 2 minutos. Sin tarjeta.` },
               { step: '02', title: 'Publica tu oferta', body: `Describe el evento en ${cityData.ciudad}, fecha, horario y presupuesto. Flash Booking lo distribuye al instante.` },
               { step: '03', title: 'Cierra el contrato', body: `Elige al profesional, firma el contrato digital con un clic. PDF listo para facturación.` },
-            ].map(s => (
+            ]).map(s => (
               <div key={s.step} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 <p className="text-3xl font-black mb-3" style={{ color: 'rgba(184,148,30,0.45)' }}>{s.step}</p>
                 <p className="text-sm font-bold mb-1.5">{s.title}</p>
@@ -992,7 +1191,7 @@ export default function CityLanding() {
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes: {catData.keyword} en {cityData.ciudad}</h2>
           <div className="space-y-4">
-            {catData.faqs(cityData.ciudad, precio).map(faq => (
+            {faqs.map(faq => (
               <div key={faq.q} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
                 <p className="text-xs leading-relaxed" style={{ color: '#5b6472' }}>{faq.a}</p>
@@ -1021,20 +1220,35 @@ export default function CityLanding() {
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'linear-gradient(135deg,#FFFDF7,#FBF3DD)', border: '1px solid rgba(212,175,55,0.35)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {catData.keyword} en {cityData.ciudad}?</h2>
             <p className="text-sm mb-6" style={{ color: '#5b6472' }}>
-              {['promotores', 'azafata', 'peluqueria'].includes(categorySlug)
+              {completa
+                ? `Pedirlo es gratis. Te contestan DJs de ${cityData.ciudad} y habláis por el chat de XPEAK.`
+                : ['promotores', 'azafata', 'peluqueria'].includes(categorySlug)
                 ? 'Únete: contratos automáticos, Flash Booking para necesidades urgentes.'
                 : 'Únete: contratos automáticos, Flash Booking en menos de 1h.'}
             </p>
+            {completa ? (
+              <button type="button" onClick={() => setPedir(true)}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
+                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                <Zap size={15} /> Pide DJ en {cityData.ciudad}
+              </button>
+            ) : (
             <a href="/auth?mode=register&role=empresario"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Empezar en {cityData.ciudad}
             </a>
+            )}
           </div>
         </section>
 
         <FooterPublic />
       </div>
+      {pedir && (
+        <Suspense fallback={null}>
+          <ParticularRequestModal onClose={() => setPedir(false)} inicial={{ service: 'DJ', location: cityData.ciudad }} />
+        </Suspense>
+      )}
     </>
   );
 }
