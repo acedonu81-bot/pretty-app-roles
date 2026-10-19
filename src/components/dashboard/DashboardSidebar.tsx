@@ -517,7 +517,11 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
           {(toolsOpen || collapsed) && <SidebarMenu>
             <NavItem icon={CalendarDays} label="Calendario" isActive={activeView === 'calendar'} onClick={() => onViewChange('calendar')} navId="calendar" />
             <NavItem icon={FileText} label="Contratos" isActive={activeView === 'contracts'} onClick={() => onViewChange('contracts')} navId="contracts" />
-            <NavItem icon={Sparkles} label="Recursos" isActive={activeView === 'resources'} onClick={() => onViewChange('resources')} navId="resources" />
+            {/* El panel de Recursos (guías y material por oficio) no aporta al
+                organizador: lo pidió el usuario el 19 oct 2026. */}
+            {!isEmpresario && (
+              <NavItem icon={Sparkles} label="Recursos" isActive={activeView === 'resources'} onClick={() => onViewChange('resources')} navId="resources" />
+            )}
             {/* Mismo destino que el banner "colaboraciones pendientes de
                 valorar" — acceso siempre visible, no solo cuando hay pendientes,
                 para quien no vio la notificación o el banner y quiere entrar
