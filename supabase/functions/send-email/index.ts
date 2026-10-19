@@ -238,6 +238,9 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     // perfil se crea como 'pending' en vez de inventar un oficio. Sin este
     // caso, el texto de abajo diría "Tu perfil como Pendiente de elegir ya
     // está activo" — nada está activo de verdad hasta que elige su oficio.
+    // 19 oct 2026: quien entra así casi siempre viene a votar en el concurso
+    // (30 de 33 cuentas pending han votado). Solo bienvenida: sin pedirle
+    // que elija oficio ni rellene nada. Los recordatorios ya excluyen 'pending'.
     const sinRolTodavia = !esEmpresa && (!d.role || d.role === 'pending');
     return {
     subject: `Bienvenido a XPEAK, ${esc(d.name)}`,
@@ -252,10 +255,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Añade un logo y una breve descripción de tu negocio: los profesionales miran quién les escribe antes de responder.
       </p>
       ${btn('Buscar profesionales →', 'https://xpeak.es/dashboard')}` : sinRolTodavia ? `
-      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Tu cuenta ya está creada. Solo falta un paso: elige tu oficio (DJ, fotógrafo, camarero, animador...) para activar tu perfil y que los organizadores puedan encontrarte.
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Tu cuenta ya está creada y tu voto cuenta. Gracias por unirte a XPEAK.${Date.now() < Date.UTC(2026, 10, 2, 23) ? ' Puedes seguir escuchando las sesiones del Concurso DJ y repartir tus 3 votos hasta el 2 de noviembre.' : ''}
       </p>
-      ${btn('Elegir mi oficio →', 'https://xpeak.es/dashboard')}` : `
+      ${Date.now() < Date.UTC(2026, 10, 2, 23) ? btn('Ver las sesiones →', 'https://xpeak.es/concurso-dj-madrid/aspirantes') : btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}` : `
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
         Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> ya está activo. En cuanto subas una foto de perfil, aparecerás en el directorio y los organizadores de toda España podrán encontrarte y contactarte.
       </p>
