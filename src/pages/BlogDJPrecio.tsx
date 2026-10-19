@@ -23,7 +23,8 @@ const TABLE = [
 ];
 
 const CITIES = [
-  { ciudad: 'Madrid', rango: '80€-300€/h', note: 'Mayor oferta y demanda de España' },
+  // Madrid con datos reales de las tarifas de los DJs de XPEAK (19 oct 2026), igual que /contratar-dj/madrid.
+  { ciudad: 'Madrid', rango: '40€-150€/h', note: 'Datos reales de XPEAK: la mitad cobra 60-100 €/h' },
   { ciudad: 'Barcelona', rango: '100€-400€/h', note: 'Referente europeo, DJs internacionales' },
   { ciudad: 'Valencia', rango: '60€-250€/h', note: 'Mercado creciente, Lower Festival' },
   { ciudad: 'Sevilla', rango: '50€-200€/h', note: 'Fuerte tradición de eventos privados' },
@@ -157,7 +158,7 @@ const faqStructured = {
 
           <BlogAnswerBox
             question="¿Cuánto cobra un DJ en España en 2026?"
-            answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. Para bodas y eventos privados el presupuesto total es de 400€-1.200€ por actuación completa. Barcelona y Madrid son las ciudades más caras; las medianas del interior, las más económicas. El precio varía según experiencia, equipo incluido y tipo de evento."
+            answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. Para bodas y eventos privados el presupuesto total es de 400€-1.200€ por actuación completa. En Madrid, la mitad de los DJs de XPEAK cobra entre 60€ y 100€/hora. El precio varía según experiencia, equipo incluido y tipo de evento."
           />
           <picture>
             <source srcSet="/images/blog/cuanto-cobra-dj-espana-2026.webp" type="image/webp" />
