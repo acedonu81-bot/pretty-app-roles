@@ -201,6 +201,11 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
     [...lista].sort((a, b) => Number(b.me_gusta) - Number(a.me_gusta)).map((p, i) => [p.user_id, i]),
   );
 
+  // Fichas más marcadas (19 oct 2026): con solo la sombra clay el pastel se
+  // fundía con el fondo y se veían difuminadas. Borde de color y sombra corta.
+  const marcada = (rgb: string, fuerte: boolean) =>
+    `0 ${fuerte ? 6 : 4}px 0 rgba(${rgb},${fuerte ? 0.45 : 0.3}), 0 ${fuerte ? 14 : 10}px 24px rgba(${rgb},0.25)`;
+
   const pastilla = (bg: string, color: string, rgb: string) => ({
     background: bg, color, fontFamily: HZ.body, fontWeight: 800, boxShadow: clay(rgb, 'sm'),
   });
@@ -220,7 +225,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
 
       {propia && (
         <div className="rounded-[28px] p-5 mb-7"
-          style={{ background: propia.estado === 'pendiente' ? TONES.sky.card : '#FDE2E2', boxShadow: clay(propia.estado === 'pendiente' ? TONES.sky.rgb : '185,28,28') }}>
+          style={{ background: propia.estado === 'pendiente' ? TONES.sky.card : '#FDE2E2', border: `2px solid rgba(${propia.estado === 'pendiente' ? TONES.sky.rgb : '185,28,28'},0.5)`, boxShadow: marcada(propia.estado === 'pendiente' ? TONES.sky.rgb : '185,28,28', false) }}>
           <div className="flex items-center gap-3 mb-4">
             {propia.photo_url
               ? <img src={propia.photo_url} alt="" className="w-14 h-14 shrink-0 rounded-full object-cover" style={{ boxShadow: clay(TONES.sky.rgb, 'sm') }} />
@@ -261,7 +266,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
             const tono = enFinal ? TONES.sun : [TONES.sky, TONES.leaf, TONES.lilac][idx % 3];
             return (
               <div key={p.user_id} className="rounded-[28px] p-5 transition-transform hover:-translate-y-0.5"
-                style={{ order: idx, background: tono.card, boxShadow: clay(tono.rgb, enFinal ? 'lg' : 'md') }}>
+                style={{ order: idx, background: tono.card, border: `2px solid rgba(${tono.rgb},${enFinal ? 0.75 : 0.5})`, boxShadow: marcada(tono.rgb, enFinal) }}>
                 {/* Estado bajo el nombre (15 oct 2026): a su derecha, en un móvil
                     de 320 px dejaba 74 px para foto y nombre; la foto salía en
                     óvalo y la pastilla tapaba el nombre. */}
