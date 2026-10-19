@@ -168,6 +168,10 @@ export default function AdminAnalytics() {
   const [onlineAbierto, setOnlineAbierto] = useState(false);
   const [instalaciones, setInstalaciones] = useState<EventoPwa[]>([]);
   const personasPwa = agruparInstalacionesPwa(instalaciones);
+  // Lista de "App instalada": quien más abre la app, primero; a igualdad, el más reciente.
+  const personasPwaPorAperturas = [...personasPwa].sort(
+    (a, b) => (b.aperturas || 0) - (a.aperturas || 0) || new Date(b.ultima).getTime() - new Date(a.ultima).getTime(),
+  );
 
   const cargar = useCallback(async () => {
     setCargando(true);
@@ -526,7 +530,7 @@ export default function AdminAnalytics() {
               })()}
             </div>
             <div className="flex flex-col divide-y" style={{ borderColor: 'rgba(10,9,8,0.06)' }}>
-              {personasPwa.slice(0, 15).map((p, idx) => (
+              {personasPwaPorAperturas.slice(0, 15).map((p, idx) => (
                 <div key={idx} className="flex items-center gap-3 py-2 first:pt-0 last:pb-0">
                   <Monitor size={13} style={{ color: 'rgba(10,9,8,0.3)' }} />
                   <span className="text-[0.75rem] flex-1" style={{ color: 'rgba(10,9,8,0.7)' }}>
