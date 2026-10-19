@@ -312,7 +312,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
   // "Más" para que el menú enseñe primero lo que trae trabajo (Flash,
   // Mensajes, Perfil). Se abre solo si la vista activa es una de ellas, y en
   // el rail de iconos se ven siempre (no hay texto que plegar).
-  const TOOL_VIEWS = ['calendar', 'contracts', 'resources'];
+  const TOOL_VIEWS = ['calendar', 'contracts', 'resources', 'resenas'];
   const [toolsOpen, setToolsOpen] = useState(() => TOOL_VIEWS.includes(activeView));
   useEffect(() => { if (TOOL_VIEWS.includes(activeView)) setToolsOpen(true); }, [activeView]);
 
@@ -522,10 +522,9 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                 valorar" — acceso siempre visible, no solo cuando hay pendientes,
                 para quien no vio la notificación o el banner y quiere entrar
                 a valorar o revisar sus reseñas por su cuenta (pedido por el
-                usuario el 5 oct 2026). Sin onGoToReviews cae a 'resources'
-                en vez de navegar a ningún sitio, para no romper si algún
-                caller aún no pasa la prop nueva. */}
-            <NavItem icon={ThumbsUp} label="Reseñas" isActive={false} onClick={() => (onGoToReviews ?? (() => onViewChange('resources')))()} navId="resenas" />
+                usuario el 5 oct 2026). Sin onGoToReviews cae a la pantalla
+                'resenas' (19 oct 2026: antes caía en 'resources'). */}
+            <NavItem icon={ThumbsUp} label="Reseñas" isActive={activeView === 'resenas'} onClick={() => (onGoToReviews ?? (() => onViewChange('resenas')))()} navId="resenas" />
           </SidebarMenu>}
         </div>
 

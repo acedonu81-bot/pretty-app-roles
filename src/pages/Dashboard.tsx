@@ -66,6 +66,7 @@ import PerfilTabs from '@/components/dashboard/PerfilTabs';
 const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
 const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
 const ResourcesView = lazy(() => import('@/components/dashboard/views/ResourcesView'));
+const ResenasView = lazy(() => import('@/components/dashboard/views/ResenasView'));
 const LegalView = lazy(() => import('@/components/dashboard/views/LegalView').then(m => ({ default: m.LegalView })));
 const ProfessionalProfilePage = lazy(() => import('@/components/dashboard/ProfessionalProfilePage'));
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
@@ -578,18 +579,12 @@ const Dashboard = () => {
     navigate('/dashboard?view=flashbooking&tab=solicitudes', { replace: true });
   };
 
-  // El botón "Valorar" vive en sitios distintos según el rol: el profesional
-  // lo ve en Flash Booking → Solicitudes, el organizador en Empresario →
-  // Historial (mismo destino que ya usa el email pedir_valoracion).
-  const goToPendingReviews = () => {
-    if (profileRole === 'empresario') {
-      handleViewChange('empresario');
-      navigate('/dashboard?view=empresario&tab=historial&valorar=1', { replace: true });
-    } else {
-      handleViewChange('flashbooking');
-      navigate('/dashboard?view=flashbooking&tab=solicitudes&valorar=1', { replace: true });
-    }
-  };
+  // "Reseñas" (barra lateral, banner de pendientes y consejos) lleva a su propia
+  // pantalla: valorar lo pendiente y ver lo que dicen de ti. Antes caía en
+  // Flash Booking → Solicitudes o Empresario → Historial según el rol y, sin
+  // nada pendiente, no enseñaba ninguna reseña (19 oct 2026). Los enlaces de
+  // email con ?valorar=1 siguen abriendo directamente el formulario en esas pestañas.
+  const goToPendingReviews = () => handleViewChange('resenas');
 
   // Swipe-back desde el borde izquierdo (solo iOS nativo, ver useSwipeBack):
   // vuelve al "home" del stack, igual que el back gesture nativo. Reutiliza
@@ -692,6 +687,7 @@ const Dashboard = () => {
       case 'stats': return <StatsView />;
       case 'agency': return <AgencyView />;
       case 'resources': return <ResourcesView />;
+      case 'resenas': return <ResenasView />;
       case 'admin': return (
         <AdminGuard>
           <AdminView onNavigate={nav} />
