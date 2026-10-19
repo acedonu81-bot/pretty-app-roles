@@ -25,7 +25,7 @@ export default function NightlifeSelect({ value, onChange, options, placeholder 
   }, []);
 
   return (
-    <div ref={ref} className={`relative ${className}`} style={{ userSelect: 'none' }}>
+    <div ref={ref} className={`relative ${className}`} style={{ userSelect: 'none' }} data-select-open={open ? 'true' : undefined}>
       {/* Trigger */}
       <button
         type="button"

@@ -297,6 +297,15 @@ body.is-native-app .clay-btn-primary {
     border-color: rgba(0,0,0,0.12);
   }
 
+  /* Un desplegable abierto dentro de un panel quedaba tapado por los paneles de
+     debajo: backdrop-filter crea una capa propia y el z-50 del desplegable solo
+     vale dentro de ella (19 oct 2026: lista de Zona cortada por las tarjetas). El
+     panel que contiene un desplegable abierto sube por encima de sus vecinos. */
+  .glass-panel:has([data-select-open="true"]) {
+    position: relative;
+    z-index: 30;
+  }
+
   .glass-panel-subtle {
     background: rgba(0, 0, 0, 0.02);
     backdrop-filter: blur(12px);
