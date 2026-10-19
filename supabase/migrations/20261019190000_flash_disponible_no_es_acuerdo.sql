@@ -124,7 +124,7 @@ DECLARE
   v_fecha date; v_ciudad text; v_precio numeric; v_evento text;
   v_resumen text; v_par text; v_k text; v_v text; v_vistas text[] := '{}';
   x record; v_r text; v_cond text := ''; v_pend uuid[] := '{}'; v_cierra boolean := false;
-  v_id uuid;
+  v_id uuid; v_otro uuid; v_quien text; v_titulo text; v_cuerpo text;
 BEGIN
   IF v_uid IS NULL THEN RAISE EXCEPTION 'sin sesión'; END IF;
 
@@ -243,10 +243,27 @@ BEGIN
   END IF;
   END IF;
 
-  IF v_fecha IS NOT NULL THEN
-    INSERT INTO public.calendar_events (user_id, title, event_date, location, notes)
-    VALUES (v_pro, 'Trabajo: ' || COALESCE(v_org_nombre, 'acuerdo del chat'), v_fecha, v_ciudad, v_evento);
-  END IF;
+  INSERT INTO public.calendar_events (user_id, title, event_date, location, notes)
+  VALUES (v_pro, 'Trabajo: ' || COALESCE(v_org_nombre, 'acuerdo del chat'), v_fecha, v_ciudad, v_evento),
+         (v_org, 'Evento: ' || COALESCE(v_pro_nombre, 'profesional'), v_fecha, v_ciudad, v_evento);
+
+  v_otro := CASE WHEN m.sender_id = v_org THEN v_pro ELSE v_org END;
+  v_quien := CASE WHEN m.sender_id = v_org THEN v_org_nombre ELSE v_pro_nombre END;
+  v_titulo := 'Acuerdo cerrado con ' || COALESCE(v_quien, 'tu contacto');
+  v_cuerpo := concat_ws(' · ', v_evento, to_char(v_fecha, 'DD/MM/YYYY'), v_ciudad, v_precio::text || ' €');
+  INSERT INTO public.notifications (user_id, type, title, body, link)
+  VALUES (v_otro, 'acuerdo_cerrado', v_titulo, v_cuerpo, '/dashboard?view=messages');
+  BEGIN
+    PERFORM net.http_post(
+      url := 'https://ddrqhwravupjzysriblq.supabase.co/functions/v1/send-push',
+      headers := jsonb_build_object(
+        'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkcnFod3JhdnVwanp5c3JpYmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NjkwMTIsImV4cCI6MjA5MDE0NTAxMn0.sHR3zuVWIj6Xw_UBI_kuQCcfEFS3oQWjs0dKUtr2Puk',
+        'x-internal-secret', (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'send_email_internal_secret'),
+        'Content-Type', 'application/json'),
+      body := jsonb_build_object('user_id', v_otro, 'title', v_titulo, 'body', v_cuerpo, 'url', '/dashboard?view=messages'));
+  EXCEPTION WHEN OTHERS THEN
+    RAISE WARNING 'cerrar_acuerdo_chat push: %', SQLERRM;
+  END;
 
   RETURN v_id;
 END;
