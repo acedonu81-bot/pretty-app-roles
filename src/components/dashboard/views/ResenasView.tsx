@@ -24,7 +24,7 @@ const fecha = (iso: string | null) =>
 const Estrellas = ({ valor }: { valor: number }) => (
   <span className="inline-flex gap-0.5" aria-label={`${valor} de 5`}>
     {[1, 2, 3, 4, 5].map(n => (
-      <Star key={n} size={14} fill={n <= valor ? '#D4AF37' : 'none'} style={{ color: n <= valor ? '#D4AF37' : 'rgba(0,0,0,0.2)' }} />
+      <Star key={n} size={12} fill={n <= valor ? '#D4AF37' : 'none'} style={{ color: n <= valor ? '#D4AF37' : 'rgba(0,0,0,0.2)' }} />
     ))}
   </span>
 );
@@ -83,15 +83,15 @@ const ResenasView = () => {
 
   return (
     <div className="max-w-3xl">
-      <h2 className="text-2xl font-bold mb-1">Mis <span className="text-gradient">reseñas</span></h2>
-      <p className="text-sm mb-6" style={{ color: 'rgba(0,0,0,0.6)' }}>
+      <h2 className="text-xl font-bold mb-0.5">Mis <span className="text-gradient">reseñas</span></h2>
+      <p className="text-xs mb-4" style={{ color: 'rgba(0,0,0,0.6)' }}>
         Valora a quien ha trabajado contigo y mira lo que dicen de ti.
       </p>
 
       {/* Pendientes de valorar */}
-      <section className="mb-8" aria-labelledby="resenas-pendientes">
-        <div className="flex items-center gap-2 mb-3">
-          <h3 id="resenas-pendientes" className="text-base font-black">Pendientes de valorar</h3>
+      <section className="mb-5" aria-labelledby="resenas-pendientes">
+        <div className="flex items-center gap-2 mb-2">
+          <h3 id="resenas-pendientes" className="text-sm font-black">Pendientes de valorar</h3>
           {pendientes.length > 0 && (
             <span className="text-xs font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.18)', color: '#7a6216' }}>
               {pendientes.length}
@@ -99,26 +99,26 @@ const ResenasView = () => {
           )}
         </div>
         {cargando ? (
-          <div className="glass-panel p-5 text-sm" style={{ color: 'rgba(0,0,0,0.5)' }}>Cargando…</div>
+          <div className="glass-panel px-3 py-2.5 text-xs" style={{ color: 'rgba(0,0,0,0.5)' }}>Cargando…</div>
         ) : pendientes.length === 0 ? (
-          <div className="glass-panel p-5">
-            <p className="text-sm font-bold">No tienes valoraciones pendientes</p>
-            <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.6)' }}>
+          <div className="glass-panel px-3 py-2.5">
+            <p className="text-xs font-bold">No tienes valoraciones pendientes</p>
+            <p className="text-[0.75rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.6)' }}>
               Cuando cierres un trato con alguien podrás valorarlo desde aquí.
             </p>
           </div>
         ) : (
-          <div className="space-y-2.5">
+          <div className="space-y-1.5">
             {pendientes.map(p => (
-              <div key={p.id} className="glass-panel p-4 flex items-center gap-3">
+              <div key={p.id} className="glass-panel px-3 py-2 flex items-center gap-3">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-black truncate">{p.professional_name}</p>
-                  <p className="text-xs" style={{ color: 'rgba(0,0,0,0.55)' }}>Han trabajado juntos. Tu valoración ayuda a que la comunidad confíe.</p>
+                  <p className="text-xs font-black truncate">{p.professional_name}</p>
+                  <p className="text-[0.75rem]" style={{ color: 'rgba(0,0,0,0.55)' }}>Han trabajado juntos</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setValorando(p)}
-                  className="shrink-0 px-4 py-2.5 rounded-xl text-sm font-black animate-pulse motion-reduce:animate-none transition-transform hover:scale-105"
+                  className="shrink-0 px-3 py-1.5 rounded-lg text-xs font-black animate-pulse motion-reduce:animate-none transition-transform hover:scale-105"
                   style={{ background: 'linear-gradient(135deg,#E9C866,#D4AF37)', color: '#111', border: '1px solid #B8941E' }}
                 >
                   Valorar
@@ -131,8 +131,8 @@ const ResenasView = () => {
 
       {/* Lo que dicen de ti */}
       <section aria-labelledby="resenas-recibidas">
-        <div className="flex items-center gap-3 mb-3 flex-wrap">
-          <h3 id="resenas-recibidas" className="text-base font-black">Lo que dicen de ti</h3>
+        <div className="flex items-center gap-3 mb-2 flex-wrap">
+          <h3 id="resenas-recibidas" className="text-sm font-black">Lo que dicen de ti</h3>
           {publicadas.length > 0 && (
             <span className="flex items-center gap-2 text-xs font-bold">
               <Estrellas valor={Math.round(media)} />
@@ -141,30 +141,29 @@ const ResenasView = () => {
           )}
         </div>
         {cargando ? null : recibidas.length === 0 ? (
-          <div className="glass-panel p-5">
-            <p className="text-sm font-bold">Todavía no te han dejado reseñas</p>
-            <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.6)' }}>
+          <div className="glass-panel px-3 py-2.5">
+            <p className="text-xs font-bold">Todavía no te han dejado reseñas</p>
+            <p className="text-[0.75rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.6)' }}>
               Cuando alguien te valore, aparecerá aquí.
             </p>
           </div>
         ) : (
-          <div className="space-y-2.5">
+          <div className="space-y-1.5">
             {recibidas.map(r => (
-              <article key={r.id} className="glass-panel p-4">
-                <div className="flex items-center gap-2 flex-wrap mb-1.5">
+              <article key={r.id} className="glass-panel px-3 py-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <Estrellas valor={r.rating} />
-                  <span className="text-sm font-black">{r.reviewer_name || 'Usuario de XPEAK'}</span>
-                  {r.reviewer_role && <span className="text-xs" style={{ color: 'rgba(0,0,0,0.5)' }}>{r.reviewer_role}</span>}
+                  <span className="text-xs font-black">{r.reviewer_name || 'Usuario de XPEAK'}</span>
                   {!r.approved && (
-                    <span className="inline-flex items-center gap-1 text-[0.75rem] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.06)', color: '#555' }}>
-                      <Clock size={11} /> En revisión
+                    <span className="inline-flex items-center gap-1 text-[0.75rem] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.06)', color: '#555' }}>
+                      <Clock size={10} /> En revisión
                     </span>
                   )}
+                  <span className="ml-auto text-[0.75rem]" style={{ color: 'rgba(0,0,0,0.5)' }}>
+                    {[r.event_type, fecha(r.created_at)].filter(Boolean).join(' · ')}
+                  </span>
                 </div>
-                {r.comment && <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{r.comment}</p>}
-                <p className="text-xs mt-2" style={{ color: 'rgba(0,0,0,0.5)' }}>
-                  {[r.event_type, fecha(r.created_at)].filter(Boolean).join(' · ')}
-                </p>
+                {r.comment && <p className="text-xs leading-snug mt-0.5 line-clamp-2" style={{ color: '#222' }}>{r.comment}</p>}
               </article>
             ))}
           </div>
