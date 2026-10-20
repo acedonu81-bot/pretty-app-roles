@@ -1,4 +1,5 @@
 import { useParams, useLocation, Link, Navigate } from 'react-router-dom';
+import { apareceEnRol } from '@/lib/rolesVisibles';
 import { useDirectorioConInventario } from '@/hooks/useDirectorioConInventario';
 import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, MapPin, CheckCircle } from 'lucide-react';
@@ -81,7 +82,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
 
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at,hourly_rate,genres')
+      .select('user_id,display_name,photo_url,bio,zone,role,roles,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at,hourly_rate,genres')
       .or(roleFilter)
       // Un empresario puede tener 'mago' en `roles` (segundo oficio marcado
       // por error o dato legacy) y coincidir con roleFilter via roles.cs — se
@@ -110,7 +111,8 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
       .then(({ data }) => {
         // Una cuenta puede tener varios perfiles: en la página completa sale una vez.
         const vistos = new Set<string>();
-        const gated = gateNoPhoto(data ?? []).filter(p => !completa || (!vistos.has(p.user_id) && !!vistos.add(p.user_id)));
+        // Rol principal o, como mucho con 2 oficios marcados, uno adicional (lib/rolesVisibles).
+        const gated = gateNoPhoto((data ?? []).filter(p => apareceEnRol(p as { role?: string | null; roles?: string[] | null }, roles))).filter(p => !completa || (!vistos.has(p.user_id) && !!vistos.add(p.user_id)));
         if (gated.length) {
           setProfs(gated.map(map));
           setLoaded(true);
@@ -118,7 +120,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
           // No hay en esta ciudad — cargar sugerencias nacionales
           supabase
             .from('profiles')
-            .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at')
+            .select('user_id,display_name,photo_url,bio,zone,role,roles,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at')
             .or(roleFilter)
             .neq('role', 'empresario')
             .or('is_public.is.null,is_public.eq.true')
@@ -126,7 +128,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
             .order('score', { ascending: false })
             .limit(4)
             .then(({ data: sug }) => {
-              setSuggestions(gateNoPhoto(sug ?? []).map(map));
+              setSuggestions(gateNoPhoto((sug ?? []).filter(p => apareceEnRol(p as { role?: string | null; roles?: string[] | null }, roles))).map(map));
               setLoaded(true);
             });
         }

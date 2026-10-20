@@ -1,4 +1,5 @@
 import { useParams, useLocation, Navigate } from 'react-router-dom';
+import { apareceEnRol } from '@/lib/rolesVisibles';
 import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, CheckCircle, Sparkles } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
@@ -56,7 +57,7 @@ function useRoleProfessionals(categorySlug: string) {
     ].join(',');
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,zone,city_ref,role,score,is_verified,created_at')
+      .select('user_id,display_name,photo_url,bio,zone,city_ref,role,roles,score,is_verified,created_at')
       .or(roleFilter)
       // Ver CityLanding.tsx: excluye empresarios que tengan este oficio en
       // `roles` por dato legacy o error — buscan y contratan, no les contratan.
@@ -70,7 +71,7 @@ function useRoleProfessionals(categorySlug: string) {
       .then(({ data }) => {
         // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
         // DirectorioPublico.tsx para el motivo).
-        const gated = (data ?? []).filter((p: any) => passesPhotoGate(p));
+        const gated = (data ?? []).filter((p: any) => passesPhotoGate(p) && apareceEnRol(p, roles));
         setProfs(gated.map(map));
         setLoaded(true);
       });

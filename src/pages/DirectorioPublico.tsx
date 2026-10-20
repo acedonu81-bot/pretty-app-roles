@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { apareceEnRol } from '@/lib/rolesVisibles';
 import { ALL_CITIES } from '@/lib/regions';
 import { useParams, Navigate, useSearchParams, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -437,6 +438,8 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   let { data, error } = await q.or('is_public.is.null,is_public.eq.true');
   if (error) ({ data, error } = await q);
   if (error) throw error;
+  // Por rol principal o, con 2 oficios como mucho, por uno adicional (lib/rolesVisibles).
+  data = (data ?? []).filter((p: { role?: string | null; roles?: string[] | null }) => apareceEnRol(p, dbRoles));
 
   // Sin foto no se publica, con carácter retroactivo desde el 16 sep 2026:
   // el aviso "sube tu foto" (profile_incomplete_reminder) ya se envió a
