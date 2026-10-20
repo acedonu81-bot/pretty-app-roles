@@ -1239,6 +1239,28 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // Particular con solicitud sin datos (17 oct 2026, Kesia, food truck): le
   // pedimos fecha, zona, personas y tipo de comida para que los profesionales
   // puedan contestar. Solo con clave de servicio.
+  // 20 oct 2026: un DJ se registró y usó el formulario de particular con su propio
+  // correo (caso DJ DERRE). Se le explica cómo publicar su solicitud como organizador.
+  organizador_publicar_solicitud: (d) => ({
+    subject: `${esc(d.name)}, así publicas tu solicitud de ${esc(d.oficio ?? 'DJ')} en XPEAK`,
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Publica tu solicitud en 2 minutos</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hemos visto que entraste en XPEAK con una cuenta de ${esc(d.rol_actual ?? 'profesional')} y que pediste un ${esc(d.oficio ?? 'DJ')}${d.fecha ? ` para el ${esc(d.fecha)}` : ''}${d.ciudad ? ` en ${esc(d.ciudad)}` : ''}. Para que te lleguen respuestas, lo mejor es publicarlo desde un perfil de organizador:
+      </p>
+      <ol style="color:#4b5563;font-size:14px;line-height:1.9;margin:0 0 10px;padding-left:20px">
+        <li>Entra en <strong>Ajustes</strong> y pulsa <strong>Añadir perfil</strong>.</li>
+        <li>Elige <strong>Empresa / Sala</strong>. Puedes tener los dos perfiles, el tuyo y el de organizador.</li>
+        <li>Publica tu oferta con <strong>Flash Booking</strong>: fecha, lugar, horario, estilo de música y presupuesto. La reciben los profesionales de la zona.</li>
+      </ol>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Si prefieres, responde a este correo con esos datos y la publicamos nosotros.
+      </p>
+      ${btn('Añadir mi perfil de organizador →', 'https://xpeak.es/dashboard?view=settings')}`),
+  }),
+
   particular_aclarar_solicitud: (d) => ({
     subject: `${esc(d.name)}, cuéntanos un poco más de tu ${esc(d.oficio ?? 'evento')}`,
     to: d.email,
