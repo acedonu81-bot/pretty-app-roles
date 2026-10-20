@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { X, Send, CheckCircle, PartyPopper } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { faltanDatos, mensajeFaltan } from '@/lib/solicitudCompleta';
+import { faltanDatos, mensajeFaltan, detalleSolicitud } from '@/lib/solicitudCompleta';
+import CamposPersonasHorario from '@/components/CamposPersonasHorario';
 
 /**
  * "Soy particular" de la landing (Ficha XDS 73,6, aprobada 11 oct 2026; reparto
@@ -66,7 +67,7 @@ interface Props {
 export default function ParticularRequestModal({ onClose, onEnviado, inicial }: Props) {
   const [form, setForm] = useState({
     name: '', email: '', eventType: '', service: inicial?.service ?? '', date: '', location: inicial?.location ?? '',
-    budget: '', message: '', website: '',
+    personas: '', horario: '', budget: '', message: '', website: '',
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
   const [enviadas, setEnviadas] = useState<number | null>(null);
@@ -81,7 +82,7 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
   // futura, ciudad, nombre real y email válido.
   const faltan = [
     ...(form.service ? [] : ['qué profesional necesitas']),
-    ...faltanDatos({ name: form.name, contact: form.email, date: form.date, location: form.location, eventType: form.eventType }, { pideTipo: true }),
+    ...faltanDatos({ name: form.name, contact: form.email, date: form.date, location: form.location, eventType: form.eventType, personas: form.personas, horario: form.horario }, { pideTipo: true, pideDetalle: true }),
   ];
   const listo = faltan.length === 0 && ciudadOk && emailOk;
 
@@ -134,9 +135,9 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
       professional_role: 'general',
       requester_name: form.name.trim(),
       requester_contact: form.email.trim(),
-      event_date: form.date || 'Por confirmar',
+      event_date: form.date,
       event_location: form.location.trim(),
-      event_description: `[Particular] [${tipo}] [${form.service}] ${extras}`.trim(),
+      event_description: `${detalleSolicitud(form.personas, form.horario)} [Particular] [${tipo}] [${form.service}] ${extras}`.trim(),
       agreed_price: null,
       status: 'pending',
       created_by: null,
@@ -275,6 +276,8 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
                   {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
+              <CamposPersonasHorario personas={form.personas} horario={form.horario}
+                onPersonas={v => set('personas', v)} onHorario={v => set('horario', v)} />
               <details className="rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.1)' }}>
                 <summary className="px-3 py-2.5 text-xs font-bold cursor-pointer select-none" style={{ color: '#222' }}>
                   Añadir más detalles (opcional)

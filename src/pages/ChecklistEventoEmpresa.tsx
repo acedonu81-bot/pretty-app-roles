@@ -3,7 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import { CheckCircle, Send, ClipboardList } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import FooterPublic from '@/components/FooterPublic';
-import { faltanDatos, mensajeFaltan } from '@/lib/solicitudCompleta';
+import { faltanDatos, mensajeFaltan, detalleSolicitud } from '@/lib/solicitudCompleta';
+import CamposPersonasHorario from '@/components/CamposPersonasHorario';
 
 const LS_KEY = 'xpeak_checklist_empresa_v1';
 
@@ -58,6 +59,8 @@ const article = {
 export default function ChecklistEventoEmpresa() {
   const [eventDate, setEventDate] = useState('');
   const [lugar, setLugar] = useState('');
+  const [personas, setPersonas] = useState('');
+  const [horario, setHorario] = useState('');
   const [checkedTasks, setCheckedTasks] = useState<Set<string>>(new Set());
   const [form, setForm] = useState({ name: '', contact: '' });
   const [sending, setSending] = useState(false);
@@ -92,7 +95,7 @@ export default function ChecklistEventoEmpresa() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     // Sin todos los datos no se manda nada (20 oct 2026): nombre, contacto, fecha del evento y lugar.
-    if (faltanDatos({ name: form.name, contact: form.contact, date: eventDate, location: lugar }).length > 0) return;
+    if (faltanDatos({ name: form.name, contact: form.contact, date: eventDate, location: lugar, personas, horario }, { pideDetalle: true }).length > 0) return;
     setSending(true);
     const payload = {
       professional_name: 'Solicitud general: Evento de empresa',
@@ -101,7 +104,7 @@ export default function ChecklistEventoEmpresa() {
       requester_contact: form.contact,
       event_date: eventDate,
       event_location: lugar.trim(),
-      event_description: `[Evento de empresa] Checklist completado: ${doneCount}/${totalCount} tareas`,
+      event_description: `${detalleSolicitud(personas, horario)} [Evento de empresa] Checklist completado: ${doneCount}/${totalCount} tareas`,
       agreed_price: null,
       status: 'pending',
       created_by: null,
@@ -270,7 +273,7 @@ export default function ChecklistEventoEmpresa() {
                   <div>
                     <p className="text-lg font-black" style={{ lineHeight: 1.2 }}>¿Quieres que los profesionales te contacten?</p>
                     <p className="text-sm mt-1" style={{ color: '#4b5563' }}>
-                      Nombre, contacto, fecha del evento (arriba) y ciudad. Sin todos los datos no podemos mandar nada.
+                      Nombre, contacto, fecha del evento (arriba), ciudad, personas y horario. Sin todos los datos no podemos mandar nada.
                     </p>
                   </div>
                 </div>
@@ -281,9 +284,10 @@ export default function ChecklistEventoEmpresa() {
                     className="nightlife-input" style={{ colorScheme: 'dark' }} />
                   <input required placeholder="Ciudad o lugar del evento" value={lugar} onChange={e => setLugar(e.target.value)}
                     className="nightlife-input" style={{ colorScheme: 'dark' }} />
-                  {(() => { const f = faltanDatos({ name: form.name, contact: form.contact, date: eventDate, location: lugar });
+                  <CamposPersonasHorario personas={personas} horario={horario} onPersonas={setPersonas} onHorario={setHorario} />
+                  {(() => { const f = faltanDatos({ name: form.name, contact: form.contact, date: eventDate, location: lugar, personas, horario }, { pideDetalle: true });
                     return f.length > 0 ? <p className="text-xs font-bold" style={{ color: '#B45309' }}>{mensajeFaltan(f)}</p> : null; })()}
-                  <button type="submit" disabled={sending || faltanDatos({ name: form.name, contact: form.contact, date: eventDate, location: lugar }).length > 0}
+                  <button type="submit" disabled={sending || faltanDatos({ name: form.name, contact: form.contact, date: eventDate, location: lugar, personas, horario }, { pideDetalle: true }).length > 0}
                     className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black transition-all hover:scale-[1.02] disabled:opacity-60"
                     style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                     {sending ? 'Enviando...' : 'Solicitar presupuesto →'}

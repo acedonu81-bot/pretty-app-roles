@@ -4,7 +4,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useEventCart, precioCerrado, importeEstimado, removeFromCart } from '@/lib/eventCart';
 import { unidadTarifa } from '@/lib/constants';
-import { faltanDatos, mensajeFaltan, hoyMadrid } from '@/lib/solicitudCompleta';
+import { faltanDatos, mensajeFaltan, hoyMadrid, detalleSolicitud } from '@/lib/solicitudCompleta';
+import CamposPersonasHorario from '@/components/CamposPersonasHorario';
 import { useEsOrganizador } from '@/hooks/useEsOrganizador';
 import AvisoNecesitaOrganizador from '@/components/AvisoNecesitaOrganizador';
 
@@ -48,6 +49,8 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
     return { name: draft?.name ?? '', contact: draft?.contact ?? '', eventType: draft?.eventType ?? '', date: draft?.date ?? '', location: draft?.location ?? '', message: draft?.message ?? '', website: '' };
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [personas, setPersonas] = useState('');
+  const [horario, setHorario] = useState('');
   // Horas editables: se autorrellenan según el tipo de evento (tabla EVENT_HOURS),
   // pero el usuario puede ajustarlas — cada evento dura lo que dura, la tabla es
   // solo un punto de partida razonable, no un dato fijo.
@@ -66,7 +69,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
   // Sin todos los datos no se manda nada (20 oct 2026).
-  const faltan = faltanDatos({ name: form.name, contact: form.contact, date: form.date, location: form.location, eventType: form.eventType }, { pideTipo: true });
+  const faltan = faltanDatos({ name: form.name, contact: form.contact, date: form.date, location: form.location, eventType: form.eventType, personas, horario }, { pideTipo: true, pideDetalle: true });
 
   const handleEventTypeChange = (v: string) => {
     set('eventType', v);
@@ -113,9 +116,9 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
         professional_user_id: item.userId,
         requester_name: form.name,
         requester_contact: form.contact,
-        event_date: form.date || 'Por confirmar',
+        event_date: form.date,
         event_location: form.location,
-        event_description: `[${form.eventType}${estimatedHours > 0 ? ` · ${estimatedHours}h` : ''}] ${form.message}`,
+        event_description: `${detalleSolicitud(personas, horario)} [${form.eventType}${estimatedHours > 0 ? ` · ${estimatedHours}h` : ''}] ${form.message}`,
         // Presupuesto estimado que se le mostró al organizador (tarifa × horas).
         // Guardarlo como null hacía que el trabajo figurase a 0€ en el Historial
         // y en Gastos del empresario, pese a haberle enseñado una cifra.
@@ -145,7 +148,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
           data: {
             requester_name: form.name,
             requester_contact: form.contact,
-            event_date: form.date || 'Por confirmar',
+            event_date: form.date,
             event_location: form.location,
             professional_name: enviados.map(i => i.displayName).join(', '),
           },
@@ -295,6 +298,8 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
+
+              <CamposPersonasHorario personas={personas} horario={horario} onPersonas={setPersonas} onHorario={setHorario} />
 
               <div>
                 <label className="text-xs font-bold mb-1 flex items-center gap-1" style={{ color: '#333' }}>

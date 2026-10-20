@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { trackLead, logContactClick } from '@/lib/track';
-import { faltanDatos, mensajeFaltan, hoyMadrid } from '@/lib/solicitudCompleta';
+import { faltanDatos, mensajeFaltan, hoyMadrid, detalleSolicitud } from '@/lib/solicitudCompleta';
+import CamposPersonasHorario from '@/components/CamposPersonasHorario';
 import { useEsOrganizador } from '@/hooks/useEsOrganizador';
 import AvisoNecesitaOrganizador from '@/components/AvisoNecesitaOrganizador';
 
@@ -22,12 +23,12 @@ const EVENT_TYPES = [
 ];
 
 export default function PublicContactModal({ professionalName, professionalUserId, professionalRole, professionalZone, isFlashActive, onClose }: Props) {
-  const [form, setForm] = useState({ name: '', email: '', eventType: '', date: '', location: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', eventType: '', date: '', location: '', personas: '', horario: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
   const [uid, setUid] = useState<string | undefined>();
   const { data: esOrganizador, isLoading: cargandoRol } = useEsOrganizador(uid);
   // Sin todos los datos no se manda nada (20 oct 2026): nombre, contacto, tipo, fecha futura y lugar.
-  const faltan = faltanDatos({ name: form.name, contact: form.email, date: form.date, location: form.location, eventType: form.eventType }, { pideTipo: true });
+  const faltan = faltanDatos({ name: form.name, contact: form.email, date: form.date, location: form.location, eventType: form.eventType, personas: form.personas, horario: form.horario }, { pideTipo: true, pideDetalle: true });
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -64,9 +65,9 @@ export default function PublicContactModal({ professionalName, professionalUserI
         professional_role: professionalRole ?? 'profesional',
         requester_name: form.name,
         requester_contact: form.email,
-        event_date: form.date || 'Por confirmar',
+        event_date: form.date,
         event_location: form.location.trim(),
-        event_description: `[${form.eventType}] ${form.message}`,
+        event_description: `${detalleSolicitud(form.personas, form.horario)} [${form.eventType}] ${form.message}`,
         status: 'pending',
         created_by: sessionUser?.id ?? null,
         source: 'public_contact_modal',
@@ -217,6 +218,8 @@ export default function PublicContactModal({ professionalName, professionalUserI
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
+              <CamposPersonasHorario personas={form.personas} horario={form.horario}
+                onPersonas={v => set('personas', v)} onHorario={v => set('horario', v)} />
               <div>
                 <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Cuéntale algo más (opcional)</label>
                 <textarea id="xpeak-contact-message" value={form.message} onChange={e => set('message', e.target.value)} rows={2}

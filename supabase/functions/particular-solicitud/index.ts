@@ -64,6 +64,8 @@ type Perfil = {
 type Datos = {
   name: string; email: string; eventType: string; service: string;
   date: string; location: string; budget: string; message: string; iat: number;
+  // Obligatorios desde el 20 oct 2026; opcionales en el tipo para no invalidar enlaces ya enviados.
+  personas?: string; horario?: string;
 };
 
 // Enlace de confirmación: los datos van en el propio enlace, firmados con
@@ -170,6 +172,8 @@ serve(async (req) => {
       service: limpio(body.service, 40),
       date: limpio(body.date, 20),
       location: limpio(body.location, 80),
+      personas: limpio(body.personas, 30).replace(/[\[\]]/g, ''),
+      horario: limpio(body.horario, 40).replace(/[\[\]]/g, ''),
       budget: limpio(body.budget, 40),
       message: limpio(body.message, 600),
       iat: Date.now(),
@@ -179,6 +183,8 @@ serve(async (req) => {
     // Sin todos los datos no se manda nada a nadie (20 oct 2026): tampoco con texto de
     // prueba ("r", "jajaja", "test"...), que avisaba a profesionales reales.
     if (!limpio(body.eventType, 40)) return json({ error: 'Elige el tipo de evento' }, 400);
+    if (!d.personas) return json({ error: 'Pon el número aproximado de personas' }, 400);
+    if (!d.horario || d.horario.length < 4 || !/\d/.test(d.horario)) return json({ error: 'Pon el horario del evento (por ejemplo, de 22:00 a 03:00)' }, 400);
     if (textoBasura(d.name)) return json({ error: 'Pon tu nombre real para que los profesionales sepan con quién hablan' }, 400);
     if (textoBasura(d.location)) return json({ error: 'Pon la ciudad o el lugar del evento' }, 400);
     if (!fechaValida(d.date)) return json({ error: 'Pon la fecha del evento' }, 400);
@@ -259,7 +265,8 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
 
   const extras = [budget && `Presupuesto: ${budget}`, message].filter(Boolean).join(' · ');
   const faltan = !date || location.length < 3;
-  const descripcion = `Cliente particular que busca ${service.toLowerCase()} para un evento de tipo ${eventType}.`
+  const detalle = d.personas && d.horario ? `[Personas: ${d.personas}] [Horario: ${d.horario}] ` : '';
+  const descripcion = detalle + `Cliente particular que busca ${service.toLowerCase()} para un evento de tipo ${eventType}.`
     + (extras ? ` ${extras}.` : '')
     + (faltan ? ' Falta ' + [!date && 'la fecha', !location && 'el lugar'].filter(Boolean).join(' y ') + ': escríbele para concretarlo.' : '');
 
@@ -272,7 +279,7 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
     ? destinatarios.map(d => ({ ...base, professional_name: d.display_name, professional_role: d.role, professional_user_id: d.user_id, event_description: descripcion }))
     // Sin a quién mandarla: lead general para repartir a mano (como antes).
     : [{ ...base, professional_name: `Solicitud particular: ${service}`, professional_role: 'general', professional_user_id: null,
-         event_description: `[Particular] [${eventType}] [${service}] ${extras}`.trim() }];
+         event_description: `${detalle}[Particular] [${eventType}] [${service}] ${extras}`.trim() }];
 
   const { error: errIns } = await admin.from('flash_bookings').insert(filas);
   if (errIns) { console.error('[particular-solicitud] insert:', errIns); return json({ error: 'No se pudo registrar la solicitud' }, 500); }

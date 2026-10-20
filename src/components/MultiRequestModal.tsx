@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Users, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { faltanDatos, mensajeFaltan, hoyMadrid } from '@/lib/solicitudCompleta';
+import { faltanDatos, mensajeFaltan, hoyMadrid, elegirProfesionales, MAX_PROFESIONALES_POR_SOLICITUD, detalleSolicitud } from '@/lib/solicitudCompleta';
+import CamposPersonasHorario from '@/components/CamposPersonasHorario';
 import { useEsOrganizador } from '@/hooks/useEsOrganizador';
 import AvisoNecesitaOrganizador from '@/components/AvisoNecesitaOrganizador';
 
@@ -32,15 +33,15 @@ const EVENT_TYPES = [
 ];
 
 export default function MultiRequestModal({ categoryLabel, city, pros, onClose }: Props) {
-  const [form, setForm] = useState({ name: '', contact: '', eventType: '', date: '', location: '', message: '', website: '' });
+  const [form, setForm] = useState({ name: '', contact: '', eventType: '', date: '', location: '', personas: '', horario: '', message: '', website: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
   const [sentCount, setSentCount] = useState(0);
   const [uid, setUid] = useState<string | undefined>();
   const { data: esOrganizador, isLoading: cargandoRol } = useEsOrganizador(uid);
   // Sin todos los datos no se manda nada (20 oct 2026): la ciudad del listado vale como lugar.
   const faltan = faltanDatos(
-    { name: form.name, contact: form.contact, date: form.date, location: form.location.trim() || (city !== 'Todas' ? city : ''), eventType: form.eventType },
-    { pideTipo: true },
+    { name: form.name, contact: form.contact, date: form.date, location: form.location.trim() || (city !== 'Todas' ? city : ''), eventType: form.eventType, personas: form.personas, horario: form.horario },
+    { pideTipo: true, pideDetalle: true },
   );
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
@@ -77,15 +78,17 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
     const { data: { user: sessionUser } } = await supabase.auth.getUser();
     const grp = groupTag();
     const locationText = form.location.trim() || (city !== 'Todas' ? city : '');
-    const rows = pros.map(p => ({
+    // Como mucho 5 profesionales al azar por solicitud (20 oct 2026): antes llegaba a todos.
+    const elegidos = elegirProfesionales(pros);
+    const rows = elegidos.map(p => ({
       professional_name: p.display_name,
       professional_role: p.role,
       professional_user_id: p.user_id,
       requester_name: form.name.trim(),
       requester_contact: form.contact.trim(),
-      event_date: form.date || 'Por confirmar',
+      event_date: form.date,
       event_location: locationText,
-      event_description: `[${form.eventType}] ${form.message.trim()} [grupo:${grp}]`.trim(),
+      event_description: `${detalleSolicitud(form.personas, form.horario)} [${form.eventType}] ${form.message.trim()} [grupo:${grp}]`.trim(),
       status: 'pending',
       created_by: sessionUser?.id ?? null,
     }));
@@ -108,7 +111,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
           professional_name: `${rows.length} ${categoryLabel} (lead centralizado)`,
           requester_name: form.name.trim(),
           requester_contact: form.contact.trim(),
-          event_date: form.date || 'Por confirmar',
+          event_date: form.date,
           event_location: locationText,
           event_description: rows[0].event_description,
         },
@@ -123,7 +126,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
           data: {
             professional_name: `${rows.length} ${categoryLabel.toLowerCase()}`,
             requester_contact: form.contact.trim(),
-            event_date: form.date || 'Por confirmar',
+            event_date: form.date,
             event_location: locationText,
           },
         },
@@ -131,7 +134,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
     }
 
     // Notificación a cada profesional (best-effort, nunca bloquea el flujo).
-    pros.forEach(p => {
+    elegidos.forEach(p => {
       supabase.functions.invoke('send-email', {
         body: {
           type: 'booking_received',
@@ -140,7 +143,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
             professional_name: p.display_name,
             requester_name: form.name.trim(),
             requester_contact: form.contact.trim(),
-            event_date: form.date || 'Por confirmar',
+            event_date: form.date,
             event_location: locationText,
           },
         },
@@ -188,7 +191,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
               <h3 className="text-lg font-black" style={{ color: '#111' }}>Pide presupuesto a varios</h3>
             </div>
             <p className="text-xs mb-4" style={{ color: '#333' }}>
-              Un solo formulario. Lo enviamos a {pros.length} {categoryLabel.toLowerCase()}{city !== 'Todas' ? ` de ${city}` : ''} y te responden los disponibles. Sin registro.
+              Un solo formulario. Lo enviamos a {Math.min(pros.length, MAX_PROFESIONALES_POR_SOLICITUD)} {categoryLabel.toLowerCase()}{city !== 'Todas' ? ` de ${city}` : ''} y te responden los disponibles. Sin registro.
             </p>
 
             <div className="space-y-3">
@@ -227,6 +230,9 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
                 </div>
               </div>
 
+              <CamposPersonasHorario personas={form.personas} horario={form.horario}
+                onPersonas={v => set('personas', v)} onHorario={v => set('horario', v)} />
+
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Cuéntales qué necesitas (opcional)</label>
                 <textarea value={form.message} onChange={e => set('message', e.target.value)}
@@ -245,7 +251,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               {status === 'sending'
                 ? 'Enviando...'
-                : <><Zap size={15} /> Pedir presupuesto a {pros.length}</>}
+                : <><Zap size={15} /> Pedir presupuesto a {Math.min(pros.length, MAX_PROFESIONALES_POR_SOLICITUD)}</>}
             </button>
             <p className="text-center text-[0.75rem] mt-2" style={{ color: '#666' }}>
               Sin registro · Te responden directamente

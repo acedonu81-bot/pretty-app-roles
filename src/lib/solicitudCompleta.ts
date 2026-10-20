@@ -39,22 +39,51 @@ export function fechaValida(ymd: string): boolean {
   return ymd >= hoyMadrid();
 }
 
+/** Tope de profesionales a los que llega una misma solicitud (elegidos al azar). */
+export const MAX_PROFESIONALES_POR_SOLICITUD = 5;
+
+/** Mezcla Fisher-Yates sin tocar el original. */
+export function barajar<T>(lista: readonly T[]): T[] {
+  const a = [...lista];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+/** Elige hasta MAX_PROFESIONALES_POR_SOLICITUD profesionales al azar. */
+export const elegirProfesionales = <T,>(lista: readonly T[]): T[] =>
+  barajar(lista).slice(0, MAX_PROFESIONALES_POR_SOLICITUD);
+
+export const PERSONAS_OPCIONES = ['Hasta 30', '30 a 80', '80 a 150', '150 a 300', 'Más de 300'] as const;
+
+/** "De 22:00 a 03:00": al menos cuatro caracteres y alguna cifra. */
+export const horarioValido = (h: string): boolean => h.trim().length >= 4 && /\d/.test(h);
+
+/** Bloque que va al principio de la descripción y que la base de datos exige. */
+export const detalleSolicitud = (personas: string, horario: string): string =>
+  `[Personas: ${personas.replace(/[\[\]]/g, '')}] [Horario: ${horario.trim().replace(/[\[\]]/g, '')}]`;
+
 export type DatosSolicitud = {
   name?: string;
   contact?: string;
   date?: string;
   location?: string;
   eventType?: string;
+  personas?: string;
+  horario?: string;
 };
 
 /** Lista, en lenguaje llano, de lo que falta o está mal. Vacía = se puede enviar. */
-export function faltanDatos(d: DatosSolicitud, opts: { pideTipo?: boolean } = {}): string[] {
+export function faltanDatos(d: DatosSolicitud, opts: { pideTipo?: boolean; pideDetalle?: boolean } = {}): string[] {
   const f: string[] = [];
   if (!d.name || textoBasura(d.name)) f.push('tu nombre');
   if (!d.contact || !contactoValido(d.contact)) f.push('un email o teléfono válido');
   if (opts.pideTipo && !d.eventType) f.push('el tipo de evento');
   if (!d.date || !fechaValida(d.date)) f.push('la fecha del evento');
   if (!d.location || SOLO_LETRAS(d.location) < 3 || textoBasura(d.location)) f.push('la ciudad o el lugar');
+  if (opts.pideDetalle) {
+    if (!d.personas) f.push('el número aproximado de personas');
+    if (!d.horario || !horarioValido(d.horario)) f.push('el horario');
+  }
   return f;
 }
 
