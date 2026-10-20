@@ -59,16 +59,32 @@ $function$;
 GRANT EXECUTE ON FUNCTION public.es_organizador(uuid) TO authenticated;
 
 -- 3) Reservas / solicitudes a profesionales (flash_bookings).
--- Se exime lo interno: chat, manual_offline, mcp_agent y autorregistro (bolo propio).
+-- NADA de lo que manda el cliente exime del filtro (ni source ni es_autorregistro: la
+-- revisión de seguridad del 20 oct detectó que bastaba poner source='chat' para saltarlo).
+-- Solo pasan sin filtro: contextos de servidor (clave de servicio: edge functions, agente MCP,
+-- SQL Editor), admin, y reservas de chat que apuntan a un mensaje real del que el usuario
+-- participa. es_autorregistro es una columna generada (created_by = professional_user_id) y no
+-- está disponible en un trigger BEFORE: se calcula aquí a mano.
 CREATE OR REPLACE FUNCTION public.flash_bookings_exige_datos()
 RETURNS trigger
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public'
 AS $function$
-DECLARE falta text[] := ARRAY[]::text[];
+DECLARE
+  falta text[] := ARRAY[]::text[];
+  quien uuid := auth.uid();
+  autorregistro boolean := NEW.created_by IS NOT NULL AND NEW.professional_user_id IS NOT NULL
+                           AND NEW.created_by = NEW.professional_user_id;
 BEGIN
-  IF COALESCE(NEW.es_autorregistro, false)
-     OR COALESCE(NEW.source, '') IN ('chat', 'manual_offline', 'mcp_agent')
-     OR public.es_admin() THEN
+  IF COALESCE(auth.role(), 'service_role') NOT IN ('anon', 'authenticated') OR public.es_admin() THEN
+    RETURN NEW;
+  END IF;
+
+  IF NEW.source = 'chat' AND NEW.chat_message_id IS NOT NULL AND quien IS NOT NULL AND EXISTS (
+       SELECT 1 FROM public.messages m
+       JOIN public.conversations c ON c.id = m.conversation_id
+       WHERE m.id::text = NEW.chat_message_id::text
+         AND (c.participant_a = quien OR c.participant_b = quien)
+     ) THEN
     RETURN NEW;
   END IF;
 
@@ -83,11 +99,11 @@ BEGIN
       USING HINT = 'Sin todos los datos no se manda nada a ningún profesional';
   END IF;
 
-  -- Quien tiene cuenta y pide un profesional debe ser organizador. Los particulares
-  -- entran por la función particular-solicitud (source 'particular') y las anónimas
-  -- no llevan created_by.
-  IF NEW.created_by IS NOT NULL AND COALESCE(NEW.source, '') <> 'particular'
-     AND NOT public.es_organizador(NEW.created_by) THEN
+  -- Quien tiene sesión y pide un profesional debe ser organizador, rellene o no created_by.
+  -- Un bolo propio (autorregistro: contratarse a sí mismo) solo avisa a la propia persona,
+  -- así que no necesita perfil de organizador. Los particulares anónimos entran por la
+  -- función particular-solicitud (clave de servicio) y los leads sin cuenta no tienen sesión.
+  IF quien IS NOT NULL AND NOT autorregistro AND NOT public.es_organizador(quien) THEN
     RAISE EXCEPTION 'NECESITAS_PERFIL_ORGANIZADOR'
       USING HINT = 'Para pedir un profesional crea antes un perfil de organizador (Empresa / Sala)';
   END IF;
