@@ -99,6 +99,19 @@ const barajar = <T,>(xs: T[]): T[] => {
   return a;
 };
 
+// Teclazos, repeticiones o palabras de prueba (mismo criterio que src/lib/solicitudCompleta.ts).
+const textoBasura = (texto: string): boolean => {
+  const t = texto.trim().toLowerCase();
+  const letras = (t.match(/\p{L}/gu) ?? []).length;
+  if (letras < 2) return true;
+  const sinEsp = t.replace(/\s+/g, '');
+  if (/^(.)\1{2,}$/u.test(sinEsp)) return true;
+  if (sinEsp.length >= 4 && /^[jhaeiou]+$/u.test(sinEsp) && (sinEsp.match(/j/g) ?? []).length >= 2) return true;
+  if (/\b(asdf|qwer|zxcv|xxxx|test|prueba|pruebas|probando|fake|nada|ninguno)\b/u.test(t)) return true;
+  if (letras >= 4 && !/[aeiouáéíóúü]/u.test(t)) return true;
+  return false;
+};
+
 const fechaValida = (f: string) => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(f)) return false;
   const dia = new Date(`${f}T23:59:59Z`).getTime();
@@ -163,9 +176,23 @@ serve(async (req) => {
     };
 
     if (d.name.length < 2 || !d.service) return json({ error: 'Faltan datos' }, 400);
+    // Sin todos los datos no se manda nada a nadie (20 oct 2026): tampoco con texto de
+    // prueba ("r", "jajaja", "test"...), que avisaba a profesionales reales.
+    if (!limpio(body.eventType, 40)) return json({ error: 'Elige el tipo de evento' }, 400);
+    if (textoBasura(d.name)) return json({ error: 'Pon tu nombre real para que los profesionales sepan con quién hablan' }, 400);
+    if (textoBasura(d.location)) return json({ error: 'Pon la ciudad o el lugar del evento' }, 400);
     if (!fechaValida(d.date)) return json({ error: 'Pon la fecha del evento' }, 400);
     if (d.location.length < 3 || !/\p{L}{3}/u.test(d.location)) return json({ error: 'Pon la ciudad del evento' }, 400);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) return json({ error: 'Email no válido' }, 400);
+
+    // Un profesional que usa este formulario con su propio correo (caso DJ DERRE, 20 oct):
+    // primero que cree un perfil de organizador; si no, aquí todo el mundo prueba.
+    try {
+      const { data: esPro } = await admin.rpc('cuenta_profesional_sin_organizador', { p_email: d.email });
+      if (esPro === true) {
+        return json({ error: 'Este correo ya es de una cuenta de profesional. Para pedir un profesional entra en xpeak.es, ve a Ajustes, pulsa Añadir perfil y elige Empresa / Sala. Luego publica tu solicitud desde ahí.' }, 400);
+      }
+    } catch (e) { console.warn('[particular-solicitud] comprobación de profesional no disponible', e); }
 
     const chequeo = await comprobarEmail(admin, d.email);
     if (!chequeo.ok) return json({ error: chequeo.error }, 400);

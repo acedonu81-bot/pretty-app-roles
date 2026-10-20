@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, Send, CheckCircle, PartyPopper } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { faltanDatos, mensajeFaltan } from '@/lib/solicitudCompleta';
 
 /**
  * "Soy particular" de la landing (Ficha XDS 73,6, aprobada 11 oct 2026; reparto
@@ -76,7 +77,13 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
   const ciudadOk = /\p{L}{3}/u.test(form.location.trim());
-  const listo = !!form.service && ciudadOk && !!form.date && form.name.trim().length >= 2 && emailOk;
+  // Sin todos los datos no se manda nada a nadie (20 oct 2026): oficio, tipo de evento, fecha
+  // futura, ciudad, nombre real y email válido.
+  const faltan = [
+    ...(form.service ? [] : ['qué profesional necesitas']),
+    ...faltanDatos({ name: form.name, contact: form.email, date: form.date, location: form.location, eventType: form.eventType }, { pideTipo: true }),
+  ];
+  const listo = faltan.length === 0 && ciudadOk && emailOk;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -85,7 +92,7 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
     if (form.website.trim()) { onClose(); return; }
     setStatus('sending');
 
-    const tipo = form.eventType || 'Otro';
+    const tipo = form.eventType;
     const { data: res, error: fnError } = await supabase.functions.invoke('particular-solicitud', {
       body: { ...form, eventType: tipo },
     });
@@ -260,19 +267,19 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
 
               {/* Tipo de evento, presupuesto y notas son opcionales: plegados para
                   que el formulario no se vea largo (quien lo ve largo se va). */}
+              <div>
+                <label className={labelCls} style={{ color: '#222' }}>Tipo de evento *</label>
+                <select value={form.eventType} onChange={e => set('eventType', e.target.value)}
+                  className={`${inputCls} appearance-none`} required>
+                  <option value="">Elige el tipo de evento</option>
+                  {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
               <details className="rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.1)' }}>
                 <summary className="px-3 py-2.5 text-xs font-bold cursor-pointer select-none" style={{ color: '#222' }}>
                   Añadir más detalles (opcional)
                 </summary>
                 <div className="px-3 pb-3 space-y-3">
-                  <div>
-                    <label className={labelCls} style={{ color: '#222' }}>Tipo de evento</label>
-                    <select value={form.eventType} onChange={e => set('eventType', e.target.value)}
-                      className={`${inputCls} appearance-none`}>
-                      <option value="">Sin indicar</option>
-                      {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                    </select>
-                  </div>
                   <div>
                     <label className={labelCls} style={{ color: '#222' }}>Presupuesto aproximado</label>
                     <select value={form.budget} onChange={e => set('budget', e.target.value)}
@@ -304,6 +311,9 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
               </p>
             )}
 
+            {!listo && (form.name || form.email || form.location || form.date || form.eventType) && (
+              <p className="text-xs mt-3 text-center font-bold" style={{ color: '#B45309' }}>{mensajeFaltan(faltan)}</p>
+            )}
             <button type="submit" disabled={status === 'sending' || !listo}
               className="w-full mt-4 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-black text-base transition-all disabled:opacity-50"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>

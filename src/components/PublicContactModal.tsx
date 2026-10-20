@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { trackLead, logContactClick } from '@/lib/track';
+import { faltanDatos, mensajeFaltan, hoyMadrid } from '@/lib/solicitudCompleta';
+import { useEsOrganizador } from '@/hooks/useEsOrganizador';
+import AvisoNecesitaOrganizador from '@/components/AvisoNecesitaOrganizador';
 
 interface Props {
   professionalName: string;
@@ -19,8 +22,12 @@ const EVENT_TYPES = [
 ];
 
 export default function PublicContactModal({ professionalName, professionalUserId, professionalRole, professionalZone, isFlashActive, onClose }: Props) {
-  const [form, setForm] = useState({ name: '', email: '', eventType: '', date: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', eventType: '', date: '', location: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [uid, setUid] = useState<string | undefined>();
+  const { data: esOrganizador, isLoading: cargandoRol } = useEsOrganizador(uid);
+  // Sin todos los datos no se manda nada (20 oct 2026): nombre, contacto, tipo, fecha futura y lugar.
+  const faltan = faltanDatos({ name: form.name, contact: form.email, date: form.date, location: form.location, eventType: form.eventType }, { pideTipo: true });
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -31,6 +38,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
     supabase.auth.getUser().then(({ data }) => {
       const u = data?.user;
       if (!u || !vivo) return;
+      setUid(u.id);
       const nombre = String(u.user_metadata?.full_name ?? u.user_metadata?.name ?? u.user_metadata?.display_name ?? '');
       setForm(f => ({ ...f, name: f.name || nombre, email: f.email || (u.email ?? '') }));
     }).catch(() => {});
@@ -39,7 +47,8 @@ export default function PublicContactModal({ professionalName, professionalUserI
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name || !form.email || !form.eventType) return;
+    if (faltan.length > 0) return;
+    if (uid && esOrganizador === false) return;
     setStatus('sending');
     try {
       // Si resulta que hay sesión abierta, la solicitud se ata a esa cuenta.
@@ -56,7 +65,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
         requester_name: form.name,
         requester_contact: form.email,
         event_date: form.date || 'Por confirmar',
-        event_location: '',
+        event_location: form.location.trim(),
         event_description: `[${form.eventType}] ${form.message}`,
         status: 'pending',
         created_by: sessionUser?.id ?? null,
@@ -124,7 +133,9 @@ export default function PublicContactModal({ professionalName, professionalUserI
           <X size={18} style={{ color: '#333' }} />
         </button>
 
-        {status === 'done' ? (
+        {uid && !cargandoRol && esOrganizador === false ? (
+          <AvisoNecesitaOrganizador onClose={onClose} />
+        ) : status === 'done' ? (
           <div className="text-center py-6">
             <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
             <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>¡Solicitud enviada!</h3>
@@ -193,12 +204,18 @@ export default function PublicContactModal({ professionalName, professionalUserI
               </div>
 
               <div>
-                <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Fecha del evento</label>
-                <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
+                <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Fecha del evento *</label>
+                <input type="date" min={hoyMadrid()} value={form.date} onChange={e => set('date', e.target.value)}
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
 
+              </div>
+              <div>
+                <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Ciudad o lugar del evento *</label>
+                <input value={form.location} onChange={e => set('location', e.target.value)} placeholder="Ciudad, sala o pueblo"
+                  className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
+                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
               <div>
                 <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Cuéntale algo más (opcional)</label>
@@ -213,7 +230,8 @@ export default function PublicContactModal({ professionalName, professionalUserI
               <p className="text-xs mt-3" style={{ color: '#dc2626' }}>Algo ha fallado. Intenta de nuevo o escríbenos a info@xpeak.site</p>
             )}
 
-            <button type="submit" disabled={status === 'sending'}
+            {faltan.length > 0 && <p className="text-xs mt-3 text-center font-bold" style={{ color: '#B45309' }}>{mensajeFaltan(faltan)}</p>}
+            <button type="submit" disabled={status === 'sending' || faltan.length > 0}
               className="w-full mt-4 py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', opacity: status === 'sending' ? 0.7 : 1 }}>
               <Send size={15} />

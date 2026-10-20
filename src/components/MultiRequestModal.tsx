@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Users, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { faltanDatos, mensajeFaltan, hoyMadrid } from '@/lib/solicitudCompleta';
+import { useEsOrganizador } from '@/hooks/useEsOrganizador';
+import AvisoNecesitaOrganizador from '@/components/AvisoNecesitaOrganizador';
 
 /**
  * Lead centralizado: el organizador rellena UN formulario y la solicitud se
@@ -32,6 +35,13 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
   const [form, setForm] = useState({ name: '', contact: '', eventType: '', date: '', location: '', message: '', website: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
   const [sentCount, setSentCount] = useState(0);
+  const [uid, setUid] = useState<string | undefined>();
+  const { data: esOrganizador, isLoading: cargandoRol } = useEsOrganizador(uid);
+  // Sin todos los datos no se manda nada (20 oct 2026): la ciudad del listado vale como lugar.
+  const faltan = faltanDatos(
+    { name: form.name, contact: form.contact, date: form.date, location: form.location.trim() || (city !== 'Todas' ? city : ''), eventType: form.eventType },
+    { pideTipo: true },
+  );
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -41,6 +51,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
     supabase.auth.getUser().then(({ data }) => {
       const u = data?.user;
       if (!u || !vivo) return;
+      setUid(u.id);
       const nombre = String(u.user_metadata?.full_name ?? u.user_metadata?.name ?? u.user_metadata?.display_name ?? '');
       setForm(f => ({ ...f, name: f.name || nombre, contact: f.contact || (u.email ?? '') }));
     }).catch(() => {});
@@ -53,8 +64,8 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name.trim() || !form.contact.trim() || !form.eventType) return;
-    if (pros.length === 0) return;
+    if (faltan.length > 0 || pros.length === 0) return;
+    if (uid && esOrganizador === false) return;
     // Honeypot: campo oculto que un humano nunca rellena, pero un bot sí.
     if (form.website.trim()) { onClose(); return; }
     setStatus('sending');
@@ -149,7 +160,9 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
           <X size={16} style={{ color: '#333' }} />
         </button>
 
-        {status === 'done' ? (
+        {uid && !cargandoRol && esOrganizador === false ? (
+          <AvisoNecesitaOrganizador onClose={onClose} />
+        ) : status === 'done' ? (
           <div className="text-center py-6">
             <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
             <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>Enviado a {sentCount} profesional{sentCount > 1 ? 'es' : ''}</h3>
@@ -203,12 +216,12 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Fecha</label>
-                  <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
+                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Fecha *</label>
+                  <input type="date" min={hoyMadrid()} value={form.date} onChange={e => set('date', e.target.value)}
                     className="nightlife-input text-base !py-2 w-full" />
                 </div>
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Lugar / ciudad</label>
+                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Lugar / ciudad *</label>
                   <input value={form.location} onChange={e => set('location', e.target.value)}
                     placeholder={city !== 'Todas' ? city : 'Ciudad'} className="nightlife-input text-base !py-2 w-full" />
                 </div>
@@ -226,7 +239,8 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
               <p className="text-xs mt-3 text-center" style={{ color: '#ff5f56' }}>Error al enviar. Inténtalo de nuevo.</p>
             )}
 
-            <button type="submit" disabled={status === 'sending' || pros.length === 0}
+            {faltan.length > 0 && <p className="text-center text-xs mt-3 font-bold" style={{ color: '#B45309' }}>{mensajeFaltan(faltan)}</p>}
+            <button type="submit" disabled={status === 'sending' || pros.length === 0 || faltan.length > 0}
               className="w-full mt-4 flex items-center justify-center gap-2 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-[1.02] disabled:opacity-60"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               {status === 'sending'

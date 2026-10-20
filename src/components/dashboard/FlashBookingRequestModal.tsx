@@ -5,6 +5,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { trackLead, logEvent } from '@/lib/track';
+import { faltanDatos, mensajeFaltan, hoyMadrid } from '@/lib/solicitudCompleta';
+import { useEsOrganizador } from '@/hooks/useEsOrganizador';
+import AvisoNecesitaOrganizador from '@/components/AvisoNecesitaOrganizador';
 
 const EVENT_HOURS: Record<string, number> = {
   'Boda': 6, 'Comunión': 4, 'Evento corporativo': 5, 'Fiesta privada': 4,
@@ -22,6 +25,7 @@ interface Props {
 
 const FlashBookingRequestModal = ({ professionalName, professionalRole, professionalUserId, prefilledDate, onClose }: Props) => {
   const { user } = useAuth();
+  const { data: esOrganizador, isLoading: cargandoRol } = useEsOrganizador(user?.id);
   const [form, setForm] = useState({ name: '', contact: '', date: prefilledDate ?? '', location: '', exactAddress: '', description: '', price: '', eventType: '', website: '' });
   const [sending, setSending] = useState(false);
   const [hourlyRate, setHourlyRate] = useState<number | null>(null);
@@ -59,10 +63,10 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
   const send = async () => {
     if (!user) { toast.error('Inicia sesión para contactar con profesionales.'); return; }
     if (isEmergente) { toast.error('Este perfil aún no admite Flash Booking directo. Contáctalo por mensaje.'); return; }
-    if (!form.name.trim() || !form.contact.trim() || !form.date.trim()) {
-      toast.error('Rellena tu nombre, contacto y fecha del evento.');
-      return;
-    }
+    // Sin todos los datos no se manda nada: tu nombre, contacto, fecha futura y lugar.
+    const faltan = faltanDatos({ name: form.name, contact: form.contact, date: form.date, location: form.location });
+    if (faltan.length > 0) { toast.error(mensajeFaltan(faltan)); return; }
+    if (esOrganizador === false) { toast.error('Necesitas un perfil de organizador para pedir un profesional.'); return; }
     // Honeypot: campo oculto que un humano nunca rellena, pero un bot sí.
     // Fallamos en silencio (sin error visible) para no delatar la trampa.
     if (form.website.trim()) { onClose(); return; }
@@ -149,7 +153,9 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
             </button>
           </div>
 
-          {!user ? (
+          {user && !cargandoRol && esOrganizador === false ? (
+            <AvisoNecesitaOrganizador onClose={onClose} />
+          ) : !user ? (
             <div className="p-5 text-center">
               <p className="text-sm mb-4" style={{ color: '#333' }}>
                 Inicia sesión para contactar con {professionalName}: así evitamos spam y sabe que habla con alguien real.
@@ -184,12 +190,12 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
                   <Calendar size={10} /> Fecha del evento *
                 </label>
-                <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
+                <input type="date" min={hoyMadrid()} value={form.date} onChange={e => set('date', e.target.value)}
                   className="nightlife-input text-base !py-2 w-full" />
               </div>
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
-                  <MapPin size={10} /> Lugar
+                  <MapPin size={10} /> Lugar *
                 </label>
                 <input value={form.location} onChange={e => set('location', e.target.value)}
                   placeholder="Sala / Ciudad" className="nightlife-input text-base !py-2 w-full" />
@@ -247,7 +253,9 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
 
           {user && (
           <div className="px-5 pb-5">
-            <button onClick={send} disabled={sending}
+            {(() => { const f = faltanDatos({ name: form.name, contact: form.contact, date: form.date, location: form.location });
+              return f.length > 0 ? <p className="text-center text-xs mb-2 font-bold" style={{ color: '#B45309' }}>{mensajeFaltan(f)}</p> : null; })()}
+            <button onClick={send} disabled={sending || faltanDatos({ name: form.name, contact: form.contact, date: form.date, location: form.location }).length > 0}
               className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] disabled:opacity-60"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               {sending ? 'Enviando...' : <span className="block leading-tight">Enviar solicitud a <span className="block sm:inline truncate max-w-[180px] sm:max-w-none align-bottom">{professionalName}</span></span>}

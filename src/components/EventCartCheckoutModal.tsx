@@ -4,6 +4,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useEventCart, precioCerrado, importeEstimado, removeFromCart } from '@/lib/eventCart';
 import { unidadTarifa } from '@/lib/constants';
+import { faltanDatos, mensajeFaltan, hoyMadrid } from '@/lib/solicitudCompleta';
+import { useEsOrganizador } from '@/hooks/useEsOrganizador';
+import AvisoNecesitaOrganizador from '@/components/AvisoNecesitaOrganizador';
 
 interface Props {
   onClose: () => void;
@@ -39,6 +42,7 @@ function readDraft(): { name: string; contact: string; eventType: string; date: 
 export default function EventCartCheckoutModal({ onClose }: Props) {
   const { user } = useAuth();
   const { items, remove, clear } = useEventCart();
+  const { data: esOrganizador, isLoading: cargandoRol } = useEsOrganizador(user?.id);
   const [form, setForm] = useState(() => {
     const draft = readDraft();
     return { name: draft?.name ?? '', contact: draft?.contact ?? '', eventType: draft?.eventType ?? '', date: draft?.date ?? '', location: draft?.location ?? '', message: draft?.message ?? '', website: '' };
@@ -61,6 +65,8 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   const [rateLimited, setRateLimited] = useState(false);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
+  // Sin todos los datos no se manda nada (20 oct 2026).
+  const faltan = faltanDatos({ name: form.name, contact: form.contact, date: form.date, location: form.location, eventType: form.eventType }, { pideTipo: true });
 
   const handleEventTypeChange = (v: string) => {
     set('eventType', v);
@@ -84,7 +90,8 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name.trim() || !form.contact.trim() || !form.eventType) return;
+    if (faltan.length > 0) return;
+    if (user && esOrganizador === false) return;
     if (!legalAccepted) { setLegalError(true); return; }
     if (!user) {
       // Guarda lo ya escrito y lleva a registro — al volver (mismo pathname
@@ -171,7 +178,9 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
           <X size={16} style={{ color: '#333' }} />
         </button>
 
-        {status === 'done' ? (
+        {user && !cargandoRol && esOrganizador === false ? (
+          <AvisoNecesitaOrganizador onClose={onClose} />
+        ) : status === 'done' ? (
           <div className="text-center py-6">
             <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
             <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>¡Solicitudes enviadas!</h3>
@@ -258,15 +267,15 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-bold mb-1 flex items-center gap-1" style={{ color: '#333' }}>
-                    <Calendar size={10} /> Fecha del evento
+                    <Calendar size={10} /> Fecha del evento *
                   </label>
-                  <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
+                  <input type="date" min={hoyMadrid()} value={form.date} onChange={e => set('date', e.target.value)}
                     className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
                 </div>
                 <div>
                   <label className="text-xs font-bold mb-1 flex items-center gap-1" style={{ color: '#333' }}>
-                    <MapPin size={10} /> Lugar
+                    <MapPin size={10} /> Lugar *
                   </label>
                   <input value={form.location} onChange={e => set('location', e.target.value)}
                     placeholder="Sala / Ciudad"
@@ -353,7 +362,8 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
               <p className="text-xs mt-3" style={{ color: '#dc2626' }}>{rateLimited ? 'Has enviado varias solicitudes seguidas. Espera unos minutos y vuelve a intentarlo.' : 'Algo ha fallado enviando las solicitudes. Intenta de nuevo o escríbenos a info@xpeak.site'}</p>
             )}
 
-            <button type="submit" disabled={status === 'sending' || items.length === 0}
+            {faltan.length > 0 && <p className="text-xs mt-3 text-center font-bold" style={{ color: '#B45309' }}>{mensajeFaltan(faltan)}</p>}
+            <button type="submit" disabled={status === 'sending' || items.length === 0 || faltan.length > 0}
               className="w-full mt-4 py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] disabled:opacity-60"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Send size={15} />
