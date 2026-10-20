@@ -326,7 +326,7 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
       .then(({ error }) => {
         if (!error) { toast.success(`Tu voto a ${nombre} ya está dentro. ¡Gracias!`); track('concurso_voto_recordado'); cargar(); setVotoAuto(v => v + 1); setVotoVersion(v => v + 1); return; }
         if (error.code === '23505') return; // ya le había votado
-        if (/LIMITE_VOTOS_CONCURSO/.test(error.message)) toast.error('Ya has usado tus 3 votos.');
+        if (/LIMITE_VOTOS_CONCURSO/.test(error.message)) toast.error('Ya has votado: tus 3 votos están puestos y no se pueden cambiar.');
         else if (/VOTANTE_NO_VALIDO/.test(error.message)) toast.error('Para votar entra con Google o con un correo de Gmail, Hotmail, Outlook, Yahoo o iCloud.');
       });
   }, [user, lista, cargar]);
@@ -355,6 +355,9 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
       <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
         <p className="text-lg" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>
           {lista.length === 1 ? '1 sesión publicada' : `${lista.length} sesiones publicadas`}
+          <span className="block text-sm mt-0.5" style={{ color: HZ.inkSoft, fontFamily: HZ.body, fontWeight: 600 }}>
+            Cada persona tiene 3 votos. Cuando pones los tres, ya no se pueden cambiar.
+          </span>
         </p>
         <div className="flex items-center gap-2 flex-wrap text-xs">
           <span className="px-3 py-1.5 rounded-full" style={pastilla(TONES.sun.card, TONES.sun.stroke, TONES.sun.rgb)}>Top 3: a la final</span>
@@ -455,7 +458,9 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                     <span className="px-3.5 py-2 rounded-full" style={pastilla('#ffffff', '#E11D48', '225,29,72')}>
                       <LikeButton key={`${p.user_id}-${votoAuto}`} viewerId={user.id} contentKey={`concurso-${CONCURSO}:${p.user_id}`} onChange={() => { cargar(); setVotoVersion(v => v + 1); }}
                         onError={(m) => toast.error(/LIMITE_VOTOS_CONCURSO/.test(m)
-                          ? 'Ya has usado tus 3 votos. Si quieres votar a esta sesión, quita antes uno de los tuyos.'
+                          ? 'Ya has votado: tus 3 votos están puestos y no se pueden cambiar.'
+                          : /VOTOS_FIJOS_CONCURSO/.test(m)
+                            ? 'Ya has votado: tus 3 votos están puestos y no se pueden cambiar.'
                           : /VOTANTE_NO_VALIDO/.test(m)
                             ? 'Para votar entra con Google o con un correo de Gmail, Hotmail, Outlook, Yahoo o iCloud.'
                             : 'No se ha podido guardar tu voto. Prueba otra vez.')} />
