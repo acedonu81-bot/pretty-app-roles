@@ -72,18 +72,28 @@ AS $function$
 DECLARE
   falta text[] := ARRAY[]::text[];
   quien uuid := auth.uid();
-  autorregistro boolean := NEW.created_by IS NOT NULL AND NEW.professional_user_id IS NOT NULL
-                           AND NEW.created_by = NEW.professional_user_id;
+  -- Bolo propio: la persona con sesión se contrata a sí misma (solo avisa a ella).
+  autorregistro boolean := quien IS NOT NULL AND NEW.created_by = quien AND NEW.professional_user_id = quien;
 BEGIN
   IF COALESCE(auth.role(), 'service_role') NOT IN ('anon', 'authenticated') OR public.es_admin() THEN
     RETURN NEW;
   END IF;
 
-  IF NEW.source = 'chat' AND NEW.chat_message_id IS NOT NULL AND quien IS NOT NULL AND EXISTS (
+  -- Reserva cerrada en el chat (cerrar_acuerdo_chat): solo si apunta al mensaje de acuerdo real
+  -- de esa conversación, organizador y profesional son justo sus dos participantes, quien
+  -- llama es uno de ellos y ese mensaje no ha generado ya otra reserva.
+  IF NEW.source = 'chat' AND NEW.chat_message_id IS NOT NULL AND quien IS NOT NULL
+     AND NEW.created_by IS NOT NULL AND NEW.professional_user_id IS NOT NULL
+     AND NEW.created_by <> NEW.professional_user_id
+     AND quien IN (NEW.created_by, NEW.professional_user_id)
+     AND NOT EXISTS (SELECT 1 FROM public.flash_bookings b WHERE b.chat_message_id = NEW.chat_message_id)
+     AND EXISTS (
        SELECT 1 FROM public.messages m
        JOIN public.conversations c ON c.id = m.conversation_id
-       WHERE m.id::text = NEW.chat_message_id::text
-         AND (c.participant_a = quien OR c.participant_b = quien)
+       WHERE m.id = NEW.chat_message_id AND m.deleted_at IS NULL
+         AND m.content LIKE '[[acuerdo:aceptado|ACUERDO|%'
+         AND ((c.participant_a = NEW.created_by AND c.participant_b = NEW.professional_user_id)
+           OR (c.participant_b = NEW.created_by AND c.participant_a = NEW.professional_user_id))
      ) THEN
     RETURN NEW;
   END IF;
