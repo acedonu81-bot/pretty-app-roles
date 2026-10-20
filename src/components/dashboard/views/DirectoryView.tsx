@@ -21,6 +21,7 @@ import { RefreshCw } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
+import { coincideBusqueda } from '@/lib/busquedaTexto';
 
 interface DirectoryViewProps {
   role: string;
@@ -253,10 +254,9 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
 
   const filteredProfiles = realProfiles.filter(p => {
     if (searchQuery?.trim()) {
-      const q = searchQuery.toLowerCase();
-      const matchesSearch = p.name.toLowerCase().includes(q) || p.specialty.toLowerCase().includes(q) ||
-        p.zone.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
-      if (!matchesSearch) return false;
+      // Incluye los estilos (badges) y no depende del orden ni de las tildes:
+      // "house flamenco" encuentra a quien tiene "Flamenco House" (20 oct 2026).
+      if (!coincideBusqueda([p.name, p.specialty, p.zone, p.description, p.badges], searchQuery)) return false;
     }
     if (filterFlash && !p.isFlashActive) return false;
     if (filterVerified && !p.isVerified) return false;
@@ -295,14 +295,13 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     const t = setTimeout(async () => {
       const { data } = await supabase
         .from('profiles')
-        .select('role, display_name, specialty, zone, bio')
+        .select('role, display_name, specialty, zone, bio, genres')
         .not('display_name', 'is', null)
         .not('role', 'in', '("empresario","pending")')
         .limit(300);
       if (!vivo || !data) return;
       const encaja = (p: Record<string, unknown>) =>
-        [p.display_name, p.specialty, p.zone, p.bio]
-          .some(v => typeof v === 'string' && v.toLowerCase().includes(q));
+        coincideBusqueda([p.display_name as string, p.specialty as string, p.zone as string, p.bio as string, p.genres as string[]], q);
       const conteo: Record<string, number> = {};
       for (const p of data) {
         const r = (p as { role?: string }).role;

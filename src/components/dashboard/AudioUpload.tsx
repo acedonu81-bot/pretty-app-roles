@@ -9,6 +9,7 @@ import PresentarAlConcurso from '@/components/concurso/PresentarAlConcurso';
 const GENRE_GROUPS: { label: string; genres: string[] }[] = [
   { label: 'House', genres: ['Tech House', 'Deep House', 'House', 'Afro House', 'Organic House', 'Funky House', 'Tribal House', 'Progressive House', 'Acid House', 'Chicago House', 'Latin House'] },
   { label: 'Techno', genres: ['Techno', 'Melodic Techno', 'Minimal', 'Hard Techno', 'Industrial', 'Dub Techno', 'Detroit Techno'] },
+  { label: 'Flamenco & Fusión', genres: ['Techno Flamenco', 'Flamenco House'] },
   { label: 'Trance & Psy', genres: ['Trance', 'Progressive Trance', 'Psytrance', 'Uplifting Trance'] },
   { label: 'Bass Music', genres: ['Drum & Bass', 'Dubstep', 'Jungle', 'UK Garage', 'Grime', 'Breakbeat', 'Future Bass'] },
   { label: 'Urban & Latino', genres: ['Reggaetón', 'Dembow', 'Moombahton', 'Dancehall', 'R&B', 'Hip Hop', 'Trap', 'Afrobeats', 'Amapiano', 'Baile Funk'] },

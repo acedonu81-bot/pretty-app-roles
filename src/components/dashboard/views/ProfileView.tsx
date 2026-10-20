@@ -857,6 +857,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     const DJ_GROUPS: { label: string; items: string[] }[] = [
                       { label: 'House', items: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House'] },
                       { label: 'Techno', items: ['Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno'] },
+                      { label: 'Flamenco & Fusión', items: ['Techno Flamenco','Flamenco House'] },
                       { label: 'Trance & Psy', items: ['Trance','Progressive Trance','Psytrance'] },
                       { label: 'Bass Music', items: ['Drum & Bass','Dubstep','Jungle','UK Garage','Breakbeat'] },
                       { label: 'Urban & Latino', items: ['Reggaetón','Dembow','Moombahton','Dancehall','R&B','Hip Hop','Trap','Afrobeats','Amapiano'] },

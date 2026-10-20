@@ -45,6 +45,7 @@ const EVENT_TYPES = ['Boda', 'Comunión', 'Evento corporativo', 'Fiesta privada'
 const FAMILIAS_DJ: { label: string; incluye: string[] }[] = [
   { label: 'House / Electrónica', incluye: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House','Electro','Nu-Disco'] },
   { label: 'Techno', incluye: ['Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno'] },
+  { label: 'Flamenco / Fusión', incluye: ['Techno Flamenco','Flamenco House'] },
   { label: 'Comercial / Hits', incluye: ['Comercial','Top 40','Hits actuales','EDM'] },
   { label: 'Reggaetón / Latino', incluye: ['Reggaetón','Dembow','Moombahton','Dancehall','Latin House'] },
   { label: 'Hip Hop / R&B', incluye: ['Hip Hop','Trap','R&B','Afrobeats','Amapiano'] },
