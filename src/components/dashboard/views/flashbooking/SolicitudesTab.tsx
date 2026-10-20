@@ -367,7 +367,7 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
                     </a>
                   )}
                   {s.event_description && (
-                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                    <p className="text-xs text-muted-foreground leading-relaxed whitespace-pre-line break-words">
                       {s.event_description}
                     </p>
                   )}
