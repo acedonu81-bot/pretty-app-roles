@@ -1219,7 +1219,8 @@ const PublicProfile = () => {
         )}
 
         {/* Sticky CTA mobile */}
-        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden flex gap-2"
+        {/* Con un modal abierto la barra se pintaba encima (mismo z-50) y tapaba el texto y el botón */}
+        <div className={`fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden gap-2 ${showContact || flashBookingDate ? 'hidden' : 'flex'}`}
           style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', borderTop: '1px solid rgba(0,0,0,0.07)', paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
           {sbProfile && (
             <button
