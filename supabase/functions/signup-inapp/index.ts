@@ -13,8 +13,8 @@ const cors = {
 // 2026); sacar al usuario a Chrome con intent:// solo funcionó 1 de 34 veces.
 // El captcha se sustituye por: campo trampa, máximo 3 altas por IP y hora y
 // un tope global por hora que corta cualquier ataque masivo.
-// Devuelve un token_hash de magic link: el cliente lo canjea con verifyOtp
-// (que no pide captcha) y queda con sesión, igual que tras un signUp normal.
+// Desde el 21 oct 2026 no da sesión: la cuenta queda sin confirmar y se manda el
+// enlace de confirmación por correo (ver abajo).
 
 const IN_APP_UA = /TikTok|musical_ly|Instagram|FBAN|FBAV|FB_IAB|Line\//i;
 const MAX_POR_IP_HORA = 3;
@@ -73,29 +73,44 @@ serve(async (req) => {
     const revision = await comprobarEmail(admin, email);
     if (!revision.ok) return json({ error: revision.error }, 400);
 
-    const { error: createError } = await admin.auth.admin.createUser({
+    // 21 oct 2026: verificación de email para todos. Antes se creaba la cuenta ya
+    // confirmada y se devolvía un magic link para entrar al instante, sin demostrar
+    // que el correo era suyo. Ahora generateLink('signup') crea la cuenta SIN
+    // confirmar y el enlace de confirmación lo manda XPEAK (plantilla confirmar_cuenta):
+    // hasta que lo pulse no entra. Al confirmar le llega "cuenta activada" con el
+    // enlace a rellenar los datos obligatorios (trigger on_auth_user_confirmed).
+    const redirectTo = 'https://xpeak.es/auth?confirmado=1&mode=login&redirect=' + encodeURIComponent('/dashboard?completar=1');
+    const { data: link, error: linkError } = await admin.auth.admin.generateLink({
+      type: 'signup',
       email,
       password,
-      email_confirm: true,
-      user_metadata: {
-        display_name: displayName,
-        role: typeof meta.role === 'string' && /^[a-z_-]{1,30}$/.test(meta.role) ? meta.role : 'pending',
-        hourly_rate: 0,
-        category: 'pending',
-        zone: typeof meta.zone === 'string' ? meta.zone.slice(0, 80) : 'España',
-        marketing_consent: meta.marketing_consent === true,
-        signup_via: 'inapp',
+      options: {
+        redirectTo,
+        data: {
+          display_name: displayName,
+          role: typeof meta.role === 'string' && /^[a-z_-]{1,30}$/.test(meta.role) ? meta.role : 'pending',
+          hourly_rate: 0,
+          category: 'pending',
+          zone: typeof meta.zone === 'string' ? meta.zone.slice(0, 80) : 'España',
+          marketing_consent: meta.marketing_consent === true,
+          signup_via: 'inapp',
+        },
       },
     });
-    if (createError) {
-      const yaExiste = /already|registered|exists/i.test(createError.message);
-      return json({ error: yaExiste ? 'Ya hay una cuenta con este email. Pulsa "Entrar" y accede con tu contraseña.' : 'No se pudo crear la cuenta' }, yaExiste ? 409 : 400);
+    if (linkError || !link?.properties?.action_link) {
+      const yaExiste = /already|registered|exists/i.test(linkError?.message ?? '');
+      if (yaExiste) return json({ error: 'Ya hay una cuenta con este email. Pulsa "Entrar" y accede con tu contraseña.' }, 409);
+      throw linkError ?? new Error('Sin enlace de confirmación');
     }
 
-    const { data: link, error: linkError } = await admin.auth.admin.generateLink({ type: 'magiclink', email });
-    if (linkError || !link?.properties?.hashed_token) throw linkError ?? new Error('Sin token de sesión');
+    const envio = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/send-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''}` },
+      body: JSON.stringify({ type: 'confirmar_cuenta', data: { name: displayName, email, url: link.properties.action_link, user_id: link.user?.id } }),
+    });
+    if (!envio.ok) console.error('[signup-inapp] no se pudo mandar la confirmación', envio.status, await envio.text());
 
-    return json({ token_hash: link.properties.hashed_token });
+    return json({ verificar: true });
   } catch (e) {
     console.error('[signup-inapp]', e);
     return json({ error: 'No se pudo crear la cuenta' }, 500);

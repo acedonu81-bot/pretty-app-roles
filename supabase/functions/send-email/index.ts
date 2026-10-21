@@ -228,6 +228,21 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     `),
   }),
 
+  // 21 oct 2026: confirmación de email del alta desde el navegador de Instagram
+  // (signup-inapp). Ese alta no pasa por signUp de Supabase, así que el enlace
+  // (generateLink type 'signup') lo manda XPEAK. Solo con clave de servicio.
+  confirmar_cuenta: (d) => ({
+    subject: `${esc(d.name)}, confirma tu email para activar tu cuenta de XPEAK`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Confirma tu email</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, pulsa el botón para confirmar que este email es tuyo y activar tu cuenta. Sin este paso no podrás entrar en XPEAK.
+      </p>
+      ${btn('Confirmar mi email →', String(d.url ?? ''))}
+      <p style="color:#6B7280;font-size:12px;text-align:center">Si no has creado una cuenta en XPEAK, ignora este correo.</p>`),
+  }),
+
   // 1. Bienvenida al nuevo usuario
   // Registro directo sin aprobación manual desde el 22 sep 2026: el texto ya
   // no habla de revisión. Un profesional solo aparece en el directorio con
@@ -243,29 +258,32 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     // que elija oficio ni rellene nada. Los recordatorios ya excluyen 'pending'.
     const sinRolTodavia = !esEmpresa && (!d.role || d.role === 'pending');
     return {
-    subject: `Bienvenido a XPEAK, ${esc(d.name)}`,
+    // 21 oct 2026: con la verificación de email esto sale al CONFIRMAR el correo
+    // (trigger on_auth_user_confirmed), así que es la "cuenta activada" y lleva el
+    // enlace directo a rellenar los datos obligatorios (/dashboard?completar=1).
+    subject: sinRolTodavia ? `Bienvenido a XPEAK, ${esc(d.name)}` : `${esc(d.name)}, tu cuenta de XPEAK está activada`,
     to: d.email,
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hola, ${esc(d.name)}</h2>
       ${esEmpresa ? `
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Tu cuenta de organizador ya está activa. Puedes buscar DJs, fotógrafos, camareros y otros profesionales por zona, escribirles directamente o publicar una oferta con Flash Booking para que te respondan los que estén disponibles.
+        Tu email está confirmado y tu cuenta de organizador, activada. Antes de pedir profesionales, completa tus datos: el logo o una foto del local, una descripción de tu sala o empresa y tu ciudad.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Añade un logo y una breve descripción de tu negocio: los profesionales miran quién les escribe antes de responder.
+        Los profesionales miran quién les escribe antes de responder: con los datos completos te contestan antes.
       </p>
-      ${btn('Buscar profesionales →', 'https://xpeak.es/dashboard')}` : sinRolTodavia ? `
+      ${btn('Completar mis datos →', 'https://xpeak.es/dashboard?completar=1')}` : sinRolTodavia ? `
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Tu cuenta ya está creada y tu voto cuenta. Gracias por unirte a XPEAK.${Date.now() < Date.UTC(2026, 10, 2, 23) ? ' Puedes seguir escuchando las sesiones del Concurso DJ y repartir tus 3 votos hasta el 2 de noviembre.' : ''}
       </p>
       ${Date.now() < Date.UTC(2026, 10, 2, 23) ? btn('Ver las sesiones →', 'https://xpeak.es/concurso-dj-madrid/aspirantes') : btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}` : `
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> ya está activo. En cuanto subas una foto de perfil, aparecerás en el directorio y los organizadores de toda España podrán encontrarte y contactarte.
+        Tu email está confirmado y tu cuenta como <strong style="color:#8B6A00">${esc(rolLegible(d.role))}</strong>, activada. Falta un paso: rellena tus datos obligatorios (foto de perfil y ciudad) para aparecer en el directorio y que los organizadores puedan encontrarte.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Completa también tu descripción, tarifa y ejemplos de tu trabajo: cuanto más completo esté tu perfil, más fácil es que te contraten.
       </p>
-      ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard')}`}
+      ${btn('Completar mis datos →', 'https://xpeak.es/dashboard?completar=1')}`}
       <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
     };
   },

@@ -114,6 +114,11 @@ const AceptacionLegal = ({ accion }: { accion: string }) => (
 );
 
 const CLAVE_REDIRECT_GOOGLE = 'xpeak_redirect_google';
+
+/** Adónde lleva el enlace de confirmación del correo: de vuelta a /auth ya confirmado
+ * y, al entrar, al asistente de datos obligatorios (21 oct 2026). */
+const enlaceConfirmacion = (site: string) =>
+  `${site}/auth?confirmado=1&mode=login&redirect=${encodeURIComponent('/dashboard?completar=1')}`;
 function leerRedirectGoogle(): string | null {
   try {
     const v = sessionStorage.getItem(CLAVE_REDIRECT_GOOGLE);
@@ -136,6 +141,7 @@ const Auth = () => {
   const [redirectGoogle] = useState(leerRedirectGoogle);
   const redirectParam = searchParams.get('redirect') ?? redirectGoogle ?? '/descubrir';
   const refParam = searchParams.get('ref') ?? '';
+  const confirmadoParam = searchParams.get('confirmado') === '1';
   const content = ROLE_CONTENT[roleParam] ?? DEFAULT_CONTENT;
 
   // Quien llega desde un anuncio de Meta (?fbclid=) sin ?mode no tiene
@@ -156,6 +162,10 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  // Verificación de email para todos (21 oct 2026): quien intenta entrar sin haber
+  // confirmado ve este aviso con un botón para reenviar el enlace.
+  const [sinConfirmar, setSinConfirmar] = useState(false);
+  const [reenvio, setReenvio] = useState<'idle' | 'enviando' | 'enviado' | 'error'>('idle');
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotSent, setForgotSent] = useState(false);
@@ -470,6 +480,8 @@ const Auth = () => {
     const { data: res, error: fnError } = await supabase.functions.invoke('signup-inapp', {
       body: { email, password, data, website },
     });
+    // Desde el 21 oct 2026 el alta en Instagram no da sesión: hay que confirmar el email.
+    if (!fnError && res?.verificar) return { data: { user: null, session: null }, error: null };
     if (fnError || !res?.token_hash) {
       let message = res?.error as string | undefined;
       if (!message && fnError && 'context' in fnError) {
@@ -478,6 +490,19 @@ const Auth = () => {
       return { data: { user: null, session: null }, error: new Error(message || 'No se pudo crear la cuenta') };
     }
     return supabase.auth.verifyOtp({ token_hash: res.token_hash, type: 'magiclink' });
+  };
+
+  const reenviarConfirmacion = async () => {
+    if (!email) return;
+    setReenvio('enviando');
+    const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
+    const { error } = await supabase.auth.resend({
+      type: 'signup', email,
+      options: { emailRedirectTo: enlaceConfirmacion(SITE_URL), captchaToken: captchaToken ?? undefined },
+    });
+    renewCaptcha();
+    setReenvio(error ? 'error' : 'enviado');
+    track('auth_reenviar_confirmacion', { ok: !error });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -521,6 +546,8 @@ const Auth = () => {
           renewCaptcha();
           if (error.message.includes('Invalid login credentials')) {
             setLoginFailed(true);
+          } else if (/not confirmed/i.test(error.message) || (error as { code?: string }).code === 'email_not_confirmed') {
+            setSinConfirmar(true); setReenvio('idle');
           } else {
             authAlert(error.message || 'Error de autenticación');
           }
@@ -608,7 +635,9 @@ const Auth = () => {
             password,
             options: {
               data: signUpMeta,
-              emailRedirectTo: `${SITE_URL}/auth`,
+              // Al pulsar el enlace del correo vuelve aquí ya confirmado y, si el
+              // navegador es el mismo, entra directo a rellenar los datos obligatorios.
+              emailRedirectTo: enlaceConfirmacion(SITE_URL),
               captchaToken,
             },
           });
@@ -1157,6 +1186,32 @@ const Auth = () => {
                   <p className="text-center text-xs font-bold" style={{ color: '#8B6A00' }}>
                     Menos de 1 minuto para crear tu perfil
                   </p>
+                )}
+
+                {isLogin && sinConfirmar && (
+                  <div className="rounded-xl p-4 text-sm" role="alert"
+                    style={{ background: 'rgba(212,175,55,0.10)', border: '1px solid rgba(212,175,55,0.45)', color: '#111' }}>
+                    <p className="font-bold mb-1">Aún no has confirmado tu email.</p>
+                    <p className="text-xs mb-3" style={{ color: 'rgba(0,0,0,0.7)' }}>
+                      Te mandamos un enlace a <strong>{email}</strong> al crear la cuenta. Púlsalo para activarla (mira también en spam).
+                    </p>
+                    <button type="button" onClick={reenviarConfirmacion} disabled={reenvio === 'enviando' || reenvio === 'enviado'}
+                      className="xp-cta-glow w-full py-2.5 rounded-lg font-black text-sm disabled:opacity-60"
+                      style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#111' }}>
+                      {reenvio === 'enviando' ? 'Enviando…' : reenvio === 'enviado' ? 'Enlace reenviado: mira tu correo' : 'Reenviar el enlace'}
+                    </button>
+                    {reenvio === 'error' && (
+                      <p className="text-xs mt-2 font-bold" style={{ color: '#b91c1c' }}>No se pudo reenviar. Espera un minuto y vuelve a probar.</p>
+                    )}
+                  </div>
+                )}
+
+                {isLogin && confirmadoParam && !sinConfirmar && (
+                  <div className="rounded-xl p-4 text-sm" role="status"
+                    style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.35)', color: '#064e3b' }}>
+                    <p className="font-bold">Email confirmado. Tu cuenta está activada.</p>
+                    <p className="text-xs mt-1">Entra con tu email y contraseña para rellenar tus datos.</p>
+                  </div>
                 )}
 
                 {isLogin && loginFailed && (

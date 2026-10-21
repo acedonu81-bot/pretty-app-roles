@@ -447,8 +447,13 @@ const Dashboard = () => {
     // Quien llega desde un aviso de chat ("X ha dicho que sí", ?con=) viene a
     // hablar: el asistente de alta le tapaba la conversación (17 oct 2026). No
     // se marca como hecho, así que sale en la siguiente visita normal.
-    const vieneDeChat = new URLSearchParams(location.search).has('con');
-    if (user && !vieneDeChat && !localStorage.getItem(`xpeak_onboarded_${user.id}`)) {
+    const params = new URLSearchParams(location.search);
+    const vieneDeChat = params.has('con');
+    // ?completar=1 viene del correo de "cuenta activada": abre el asistente de datos
+    // obligatorios aunque este aparato ya lo tenga marcado como visto. WizardGate lo
+    // cierra solo si el perfil ya está completo.
+    const pideCompletar = params.get('completar') === '1';
+    if (user && !vieneDeChat && (pideCompletar || !localStorage.getItem(`xpeak_onboarded_${user.id}`))) {
       setShowWizard(true);
     }
   }, [user]);
@@ -539,7 +544,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate('/auth', { replace: true });
+      // Volver aquí tras entrar: el correo de "cuenta activada" enlaza a
+      // /dashboard?completar=1 y sin esto se perdía el destino (21 oct 2026).
+      const destino = location.pathname + location.search;
+      navigate(destino && destino !== '/dashboard' ? `/auth?mode=login&redirect=${encodeURIComponent(destino)}` : '/auth', { replace: true });
     }
   }, [loading, user, navigate]);
 
