@@ -89,23 +89,22 @@ export default function BajaEmails() {
               <button
                 type="submit"
                 disabled={status === 'loading' || !email.includes('@')}
-                className="w-full py-3 rounded-xl text-sm font-bold transition-all hover:scale-[1.02]"
+                className="w-full py-3.5 rounded-xl text-base font-black transition-all hover:scale-[1.02] disabled:opacity-60"
                 style={{
-                  background: status === 'loading'
-                    ? '#FFFDF7'
-                    : '#FBF3DD',
-                  border: '1px solid rgba(122,98,22,0.16)',
-                  color: status === 'loading' ? '#374151' : '#374151'}}
+                  background: 'linear-gradient(135deg,#D4AF37,#B8941E)',
+                  border: '1px solid rgba(122,98,22,0.35)',
+                  boxShadow: '0 4px 14px rgba(184,148,30,0.28)',
+                  color: '#1a1300'}}
               >
                 {status === 'loading' ? 'Procesando…' : 'Anular suscripción'}
               </button>
               {status === 'error' && (
-                <p className="text-xs mt-4" style={{ color: '#ff5f56' }}>
+                <p className="text-sm mt-4 font-bold" style={{ color: '#b91c1c' }}>
                   Algo ha ido mal. Escríbenos a{' '}
                   <a href="mailto:info@xpeak.site" style={{ color: '#8B6A00' }}>info@xpeak.site</a>
                 </p>
               )}
-              <p className="text-xs mt-6" style={{ color: '#6b7280' }}>
+              <p className="text-sm mt-6" style={{ color: '#374151' }}>
                 Los emails de seguridad (verificación, contraseña) seguirán llegando.
               </p>
             </form>

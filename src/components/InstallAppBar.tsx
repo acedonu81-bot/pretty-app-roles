@@ -46,7 +46,8 @@ export default function InstallAppBar() {
   // en móvil, se apila con el banner de cookies y deja el formulario de
   // registro casi sin hueco visible (bajón de altas verificado 10 oct 2026).
   // Tampoco sale si no hay nada que ofrecer: ni prompt nativo ni iOS.
-  const oculta = isNative || isStandalone || dismissed || !visitaRepetida || pathname.startsWith('/auth')
+  // Tampoco en /baja-emails (20 oct 2026): quien llega ahí a darse de baja no quiere instalar nada.
+  const oculta = isNative || isStandalone || dismissed || !visitaRepetida || pathname.startsWith('/auth') || pathname.startsWith('/baja-emails')
     || (!canPromptInstall && platform !== 'ios');
   // En iPhone/iPad la barra se sabe desde el primer render (no espera a
   // 'beforeinstallprompt'), así que va en el flujo sin provocar salto. Fija
