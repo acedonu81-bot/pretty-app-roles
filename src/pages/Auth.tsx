@@ -492,6 +492,22 @@ const Auth = () => {
     return supabase.auth.verifyOtp({ token_hash: res.token_hash, type: 'magiclink' });
   };
 
+  // El enlace de confirmación que manda XPEAK (alta desde Instagram, generateLink)
+  // vuelve con la sesión en el fragmento (#access_token=…). El cliente usa PKCE y no
+  // lo recoge solo: sin esto, quien confirmaba se quedaba sin entrar o, peor, con la
+  // sesión de otra cuenta abierta en ese navegador (visto en la prueba del 21 oct).
+  useEffect(() => {
+    const h = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const access_token = h.get('access_token');
+    const refresh_token = h.get('refresh_token');
+    if (!access_token || !refresh_token) return;
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    supabase.auth.setSession({ access_token, refresh_token }).then(({ error }) => {
+      if (error) { toast.error('El enlace ha caducado. Entra con tu email y contraseña.'); return; }
+      track('auth_confirmacion_email', { via: 'enlace' });
+    });
+  }, []);
+
   const reenviarConfirmacion = async () => {
     if (!email) return;
     setReenvio('enviando');
