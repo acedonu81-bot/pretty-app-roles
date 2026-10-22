@@ -6,6 +6,7 @@ import { faltanDatos, mensajeFaltan, hoyMadrid, detalleSolicitud } from '@/lib/s
 import CamposPersonasHorario from '@/components/CamposPersonasHorario';
 import { useEsOrganizador } from '@/hooks/useEsOrganizador';
 import AvisoNecesitaOrganizador from '@/components/AvisoNecesitaOrganizador';
+import { llevaAtraccionConRiesgo } from '@/lib/constants';
 
 interface Props {
   professionalName: string;
@@ -14,6 +15,7 @@ interface Props {
   professionalRole: string | null;
   professionalZone: string | null;
   isFlashActive?: boolean;
+  professionalTags?: string[] | null;
   onClose: () => void;
 }
 
@@ -22,7 +24,7 @@ const EVENT_TYPES = [
   'Festival / Concierto', 'Inauguración', 'Otro',
 ];
 
-export default function PublicContactModal({ professionalName, professionalUserId, professionalRole, professionalZone, isFlashActive, onClose }: Props) {
+export default function PublicContactModal({ professionalName, professionalUserId, professionalRole, professionalZone, isFlashActive, professionalTags, onClose }: Props) {
   const [form, setForm] = useState({ name: '', email: '', eventType: '', date: '', location: '', personas: '', horario: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
   const [uid, setUid] = useState<string | undefined>();
@@ -161,6 +163,13 @@ export default function PublicContactModal({ professionalName, professionalUserI
             <div className="mb-5">
               <h3 className="text-lg font-black mb-0.5 pr-10 break-words" style={{ color: '#111' }}>Escribe a {professionalName}</h3>
             </div>
+
+            {llevaAtraccionConRiesgo(professionalTags) && (
+              <p className="mb-4 px-3 py-2.5 rounded-xl text-xs leading-snug"
+                style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.35)', color: '#333' }}>
+                <strong>Antes de reservar:</strong> pide a la empresa su seguro de responsabilidad civil y la licencia de la atracción. XPEAK pone en contacto, no contrata ni verifica el servicio.
+              </p>
+            )}
 
             {isFlashActive && (
               <button type="button"

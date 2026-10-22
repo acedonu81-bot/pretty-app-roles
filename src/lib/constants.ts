@@ -184,7 +184,7 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     catering:   { label: 'Especialidades', tags: ['Catering de bodas','Cóctel','Banquete','Show cooking','Finger food','Barbacoa / brasa','Paellas','Cocina mediterránea','Cocina internacional','Menú vegano','Sin gluten','Servicio de barra','Postres y repostería'] },
     humorista:  { label: 'Estilos', tags: ['Monólogo','Stand-up','Humor blanco','Humor negro','Improvisación','Humor musical','Parodia','Presentación de eventos','Humor corporativo','Bodas','Despedidas','Clubs de comedia'] },
     mago:       { label: 'Especialidades', tags: ['Magia de cerca','Magia de escenario','Mentalismo','Magia infantil','Magia cómica','Ilusionismo','Cartomagia','Magia de bodas','Walking magic','Grandes ilusiones'] },
-    animador:   { label: 'Especialidades', tags: ['Animación infantil','Fiestas de cumpleaños','Hinchables','Pintacaras','Globoflexia','Talleres','Juegos','Espectáculo infantil','Bodas','Comuniones','Parques','Hoteles'] },
+    animador:   { label: 'Especialidades', tags: ['Animación infantil','Fiestas de cumpleaños','Hinchables','Castillos hinchables','Toro mecánico','Batucada','Pintacaras','Globoflexia','Talleres','Juegos','Espectáculo infantil','Bodas','Comuniones','Parques','Hoteles'] },
     payaso:     { label: 'Especialidades', tags: ['Payaso clásico','Clown','Circo','Malabares','Zancos','Espectáculo infantil','Cumpleaños','Comuniones','Ferias','Teatro de calle'] },
     speaker:    { label: 'Especialidades', tags: ['Presentador de eventos','Maestro de ceremonias','Locución','Speaker corporativo','Conferencias','Galas','Bodas','Deportivo','Voz en off','Presentación en inglés'] },
     vestuario:  { label: 'Servicios', tags: ['Estilismo','Vestuario de escena','Asesoría de imagen','Personal shopper','Alquiler de vestuario','Caracterización','Sastrería','Vestuario de novia','Producción de moda','Pasarela'] },
@@ -228,3 +228,8 @@ export const passesPhotoGate = (p: { photo_url?: string | null; user_id?: string
 export const PHOTO_GATE_OR = PHOTO_GATE_EXCEPTIONS.length
   ? `photo_url.not.is.null,user_id.in.(${PHOTO_GATE_EXCEPTIONS.join(',')})`
   : 'photo_url.not.is.null';
+
+/** Atracciones con riesgo físico para quien las usa: el cliente debe pedir seguro y licencia al proveedor. */
+export const ETIQUETAS_ATRACCION_RIESGO = ['Hinchables', 'Castillos hinchables', 'Toro mecánico'];
+export const llevaAtraccionConRiesgo = (etiquetas: string[] | null | undefined): boolean =>
+  (etiquetas ?? []).some(t => ETIQUETAS_ATRACCION_RIESGO.includes(t));
