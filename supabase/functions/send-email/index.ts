@@ -104,7 +104,8 @@ ${preview ? preheader(preview) : ''}
   </div>
   <div style="padding:20px 32px 28px;text-align:center;border-top:1px solid rgba(10,9,8,0.06)">
     <p style="color:#6B7280;font-size:12px;line-height:1.5;margin:0 0 6px">XPEAK · <a href="mailto:info@xpeak.site" style="color:#6B7280">info@xpeak.site</a> · <a href="https://xpeak.es" style="color:#6B7280">xpeak.es</a></p>
-    <p style="color:#6B7280;font-size:12px;line-height:1.5;margin:0">¿No quieres recibir más emails? <a href="${UNSUB_PLACEHOLDER}" style="color:#4B5563;text-decoration:underline">Anular suscripción</a></p>
+    <p style="color:#4B5563;font-size:14px;line-height:1.5;margin:0 0 12px">En XPEAK no queremos ataduras: salir tiene que ser tan fácil como entrar.</p>
+    <a href="${UNSUB_PLACEHOLDER}" style="display:inline-block;background:#ffffff;color:#0a0908;border:2px solid #0a0908;border-radius:10px;padding:12px 24px;font-size:16px;font-weight:700;text-decoration:none">Darme de baja de estos emails</a>
   </div>
 </div>
 </div>`;
@@ -1472,9 +1473,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         <p style="font-size:14px;font-weight:600;margin:0;line-height:1.6">Actualiza tu foto y bio: los perfiles actualizados reciben hasta 3× más contactos.</p>
       </div>
       ${btn('Ver mi perfil y actualizarlo →', 'https://xpeak.es/dashboard')}
-      <p style="color:#6B7280;font-size:12px;text-align:center">
-        ¿Quieres darte de baja de estos emails? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
-      </p>`),
+`),
   }),
 
   // 15. Lead blog — email automático tras capturar email en artículo
