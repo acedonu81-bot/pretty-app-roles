@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 interface Metrics {
   totalUsers: number;
   professionals: number;
+  pendientes: number;
   businesses: number;
   activeFlash: number;
   activeFlashRecent: number;
@@ -45,6 +46,7 @@ const AdminMetrics = () => {
         { count: totalUsers },
         { count: businesses },
         { count: realProfessionals },
+        { count: pendientes },
         { count: activeFlash },
         { count: activeFlashRecent },
         { count: bookingsTotal },
@@ -62,6 +64,10 @@ const AdminMetrics = () => {
         // engordaban la cifra de profesionales del panel (42-1=41 cuando los
         // reales eran 39).
         perfilesReales().not('role', 'in', '("empresario","pending")'),
+        // Altas sin oficio elegido (role 'pending'): casi todas son gente que
+        // entra a votar en el concurso, no profesionales. Van aparte para ver
+        // quién hay de verdad (22 oct 2026).
+        perfilesReales().eq('role', 'pending'),
         perfilesReales().eq('is_flash_active', true),
         perfilesReales().eq('is_flash_active', true).gte('updated_at', since24h),
         // Todos los conteos excluyen es_autorregistro: un bolo que el
@@ -83,6 +89,7 @@ const AdminMetrics = () => {
       setMetrics({
         totalUsers: totalUsers ?? 0,
         professionals: realProfessionals ?? 0,
+        pendientes: pendientes ?? 0,
         businesses: businesses ?? 0,
         activeFlash: activeFlash ?? 0,
         activeFlashRecent: activeFlashRecent ?? 0,
@@ -102,6 +109,7 @@ const AdminMetrics = () => {
   const kpis = metrics ? [
     { label: 'Usuarios Total',   value: metrics.totalUsers,    icon: Users,  color: '#8A6D0F' },
     { label: 'Profesionales',    value: metrics.professionals, icon: Users,  color: '#555' },
+    { label: 'Pending (votantes)', value: metrics.pendientes,   icon: Users,  color: '#b45309', sub: 'sin oficio elegido' },
     { label: 'Empresarios',      value: metrics.businesses,    icon: Shield, color: '#8A6D0F' },
     // Renombrado desde "Flash Activos": ese nombre se confundía con
     // solicitudes reales de Flash Booking (flash_bookings, tarjeta aparte
@@ -135,9 +143,9 @@ const AdminMetrics = () => {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
         {loading ? (
-          Array.from({ length: 4 }).map((_, i) => (
+          Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="glass-panel p-3 animate-pulse">
               <div className="h-3 w-16 rounded mb-2" style={{ background: 'rgba(0,0,0,0.05)' }} />
               <div className="h-5 w-10 rounded" style={{ background: 'rgba(0,0,0,0.05)' }} />
