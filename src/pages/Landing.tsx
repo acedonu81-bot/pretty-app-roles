@@ -95,7 +95,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import LandingMegaMenu from '@/components/LandingMegaMenu';
-import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal, LayoutDashboard, PartyPopper, Sun } from 'lucide-react';
+import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal, LayoutDashboard, PartyPopper } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
@@ -945,12 +945,14 @@ const Landing = () => {
             ))}
             <a href="/healthy-zone"
               onClick={() => (window as any).gtag?.('event', 'select_content', { content_type: 'landing_tipo_evento', item_id: 'healthy_zone' })}
-              className="group relative rounded-2xl overflow-hidden flex flex-col items-center justify-center text-center transition-all hover:scale-105 col-span-2 sm:col-span-3 lg:col-span-1 aspect-[16/6] lg:aspect-[3/4]"
-              style={{ border: '1px solid rgba(52,168,120,0.45)', background: 'linear-gradient(160deg, #bfe8d2 0%, #9fd3ee 100%)', boxShadow: '0 6px 0 rgba(52,168,120,0.25), 0 10px 20px rgba(52,168,120,0.18)' }}>
-              <Sun size={28} color="#1f7a55" className="mb-1" />
-              <p className="text-sm font-black tracking-wide" style={{ color: '#14513a' }}>Tardeo sin alcohol</p>
-              <p className="text-xs font-semibold px-2" style={{ color: '#1f6b50' }}>Healthy Zone</p>
-              <div className="mt-1 h-0.5 w-6 mx-auto rounded-full" style={{ background: '#1f7a55' }} />
+              className="group relative rounded-2xl overflow-hidden flex flex-col items-center justify-end text-center transition-all hover:scale-105 col-span-2 sm:col-span-3 lg:col-span-1 aspect-[16/7] lg:aspect-[3/4]"
+              style={{ border: '1px solid rgba(52,211,153,0.3)' }}>
+              <img src={px(9630128)} alt="Tardeo sin alcohol" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)' }} />
+              <div className="relative z-10 p-3 w-full">
+                <p className="text-sm font-black tracking-wide" style={{ color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}>Tardeo sin alcohol</p>
+                <div className="mt-1 h-0.5 w-6 mx-auto rounded-full" style={{ background: '#34d399' }} />
+              </div>
             </a>
           </div>
         </section>
