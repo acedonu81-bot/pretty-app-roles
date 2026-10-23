@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   ChevronDown, Zap, Search, MessageCircle, FileText, UserPlus, BadgeEuro,
   CalendarDays, BookOpen, Calculator, ClipboardList, HelpCircle, Info, Sparkles,
-  PartyPopper, Building2, Headphones, type LucideIcon,
+  PartyPopper, Building2, Headphones, Sun, type LucideIcon,
 } from 'lucide-react';
 
 // Mega-menú de la landing (23 sep 2026), inspirado en el de eventuy.com pero
@@ -118,6 +118,7 @@ const TABS: Tab[] = [
       { title: 'Blog', desc: 'Precios y consejos por tipo de evento', href: '/blog', icon: BookOpen },
       { title: 'Presupuesto de boda', desc: 'Calcula lo que vas a gastar', href: '/presupuesto-boda', icon: Calculator },
       { title: 'Checklist evento de empresa', desc: 'Todo lo que no se te puede olvidar', href: '/checklist-evento-empresa', icon: ClipboardList },
+      { title: 'Healthy Zone', desc: 'Tardeo, afterwork y eventos sin alcohol', href: '/healthy-zone', icon: Sun },
       { title: 'Preguntas frecuentes', desc: 'Resolvemos las dudas habituales', href: '#faq', icon: HelpCircle },
       { title: 'Sobre XPEAK', desc: 'Quién está detrás del proyecto', href: '/sobre-nosotros', icon: Info },
     ],

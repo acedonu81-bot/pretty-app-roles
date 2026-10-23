@@ -95,7 +95,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import LandingMegaMenu from '@/components/LandingMegaMenu';
-import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal, LayoutDashboard, PartyPopper } from 'lucide-react';
+import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal, LayoutDashboard, PartyPopper, Sun } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
@@ -923,7 +923,7 @@ const Landing = () => {
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-black tracking-tight" style={{ lineHeight: 1.2 }}>¿Qué estás organizando?</h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
             {[
               { label: 'Boda', color: '#c084fc', border: 'rgba(192,132,252,0.3)', img: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=400', href: '/bodas' },
               { label: 'Cumpleaños', color: '#fb923c', border: 'rgba(251,146,60,0.3)', img: 'https://images.pexels.com/photos/1405528/pexels-photo-1405528.jpeg?auto=compress&cs=tinysrgb&w=400', href: '/directorio/animador' },
@@ -943,6 +943,15 @@ const Landing = () => {
                 </div>
               </a>
             ))}
+            <a href="/healthy-zone"
+              onClick={() => (window as any).gtag?.('event', 'select_content', { content_type: 'landing_tipo_evento', item_id: 'healthy_zone' })}
+              className="group relative rounded-2xl overflow-hidden flex flex-col items-center justify-center text-center transition-all hover:scale-105 col-span-2 sm:col-span-3 lg:col-span-1 aspect-[16/6] lg:aspect-[3/4]"
+              style={{ border: '1px solid rgba(52,168,120,0.45)', background: 'linear-gradient(160deg, #bfe8d2 0%, #9fd3ee 100%)', boxShadow: '0 6px 0 rgba(52,168,120,0.25), 0 10px 20px rgba(52,168,120,0.18)' }}>
+              <Sun size={28} color="#1f7a55" className="mb-1" />
+              <p className="text-sm font-black tracking-wide" style={{ color: '#14513a' }}>Tardeo sin alcohol</p>
+              <p className="text-xs font-semibold px-2" style={{ color: '#1f6b50' }}>Healthy Zone</p>
+              <div className="mt-1 h-0.5 w-6 mx-auto rounded-full" style={{ background: '#1f7a55' }} />
+            </a>
           </div>
         </section>
       </FadeIn>
