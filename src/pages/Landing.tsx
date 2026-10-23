@@ -404,19 +404,38 @@ const FaqSection = () => {
 // evita el salto extra de "esperar a que el árbol de componentes termine
 // de montar" antes de empezar a pedir los datos. El useEffect de abajo
 // simplemente consume esta misma promesa si ya está en marcha.
-const communityReviewsPromise = supabase.from('reviews')
-  .select('id, reviewer_name, reviewer_role, reviewer_avatar, comment, rating, event_type')
-  .eq('approved', true).order('created_at', { ascending: false }).limit(30);
+/* Los datos de la portada salen de /home-data.json (generado en el build y
+   servido por la CDN) para que una visita sin sesión no toque Supabase. Si el
+   archivo no existe (dev, prerender SSR, build sin credenciales) se hacen las
+   consultas en vivo de siempre. */
+const homeDataPromise: Promise<{ reviews: any[]; freshRoles: Record<string, string>; roleCounts: Record<string, number> } | null> =
+  typeof window === 'undefined'
+    ? Promise.resolve(null)
+    : fetch('/home-data.json').then(r => { if (!r.ok) throw new Error('sin home-data'); return r.json(); }).catch(() => null);
 
-const freshRolesPromise = supabase.from('profiles' as any)
-  .select('role, display_name')
-  .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
+const communityReviewsPromise: Promise<{ data: any[] | null }> = homeDataPromise.then(h => h?.reviews
+  ? { data: h.reviews }
+  : supabase.from('reviews')
+      .select('id, reviewer_name, reviewer_role, reviewer_avatar, comment, rating, event_type')
+      .eq('approved', true).order('created_at', { ascending: false }).limit(30));
+
+const freshRolesPromise: Promise<{ data: any[] | null }> = homeDataPromise.then(h => {
+  if (h?.freshRoles) {
+    const corte = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    return { data: Object.entries(h.freshRoles).filter(([, t]) => t >= corte).map(([role]) => ({ role, display_name: 'ok' })) };
+  }
+  return supabase.from('profiles' as any)
+    .select('role, display_name')
+    .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
+});
 
 /* Nº total de perfiles por rol real — para ordenar las categorías del bento
    por popularidad real, siempre actualizado (no hardcodear un orden fijo). */
-const categoryCountsPromise = supabase.from('profiles' as any)
-  .select('role')
-  .not('role', 'in', '("empresario","pending")');
+const categoryCountsPromise: Promise<{ data: any[] | null }> = homeDataPromise.then(h => h?.roleCounts
+  ? { data: Object.entries(h.roleCounts).flatMap(([role, n]) => Array.from({ length: n }, () => ({ role }))) }
+  : supabase.from('profiles' as any)
+      .select('role')
+      .not('role', 'in', '("empresario","pending")'));
 
 /* Categoría agregada del bento → roles reales que la componen (mismo mapeo que CATEGORY_DEST/isFresh). */
 const CATEGORY_ROLES: Record<string, string[]> = {
