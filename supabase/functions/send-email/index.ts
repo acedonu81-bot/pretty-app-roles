@@ -1362,20 +1362,20 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // Captación (24 oct 2026, ficha XDS aprobada): una sola pregunta a empresas
   // de eventos de Madrid, una a una. Aspecto de correo normal (sin tarjeta ni
-  // logo) para que no parezca un boletín, pero con la baja visible. Si no
-  // contestan, no se les vuelve a escribir. Solo con la clave de servicio.
+  // logo) para que no parezca un boletín. Sin enlace de baja (decisión del
+  // usuario): es un correo único, no una lista; el propio texto dice que si no
+  // contestan no se les vuelve a escribir. Solo con la clave de servicio.
   captacion_pregunta: (d) => ({
     subject: 'Una cuenta para contratar y para que os contraten',
     to: d.email,
     replyTo: 'info@xpeak.site',
     html: `
 <div style="font-family:${FONT};font-size:15px;line-height:1.6;color:#1f2937;max-width:560px;padding:8px 4px">
-  <p style="margin:0 0 14px">Hola, equipo de ${esc(d.empresa)}:</p>
+  <p style="margin:0 0 14px">Hola,</p>
   <p style="margin:0 0 14px">Somos XPEAK, una plataforma de Madrid para el mundo de los eventos. Con una sola cuenta podéis hacer las dos cosas: encontrar profesionales para vuestros eventos (DJs, música, animación...) y aparecer vosotros como ${esc(d.tipo)} para que os encuentren otros organizadores. Gratis y sin comisiones.</p>
   <p style="margin:0 0 14px">Solo os queremos hacer una pregunta: ¿cómo encontráis a vuestros proveedores?</p>
   <p style="margin:0 0 20px">Si no os interesa, no contestéis y no volveremos a escribiros.</p>
   <p style="margin:0">El equipo de XPEAK<br><a href="mailto:info@xpeak.site" style="color:#1f2937">info@xpeak.site</a> · <a href="https://xpeak.es" style="color:#1f2937">xpeak.es</a></p>
-  <p style="margin:28px 0 0;padding-top:14px;border-top:1px solid #e5e7eb;font-size:14px;color:#4b5563">Si no queréis recibir ningún correo de XPEAK: <a href="${UNSUB_PLACEHOLDER}" style="color:#0a0908;font-weight:700">darme de baja</a></p>
 </div>`,
   }),
 
