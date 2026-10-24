@@ -1542,7 +1542,10 @@ try {
         const catSlug = ROLE_TO_CATEGORY_SLUG[p.role];
         const zoneSlug = zone ? toSlug(zone) : null;
         const categoryLink = catSlug ? `https://xpeak.es/contratar-${catSlug}` : 'https://xpeak.es/directorio';
-        const cityLink = catSlug && zoneSlug ? `https://xpeak.es/contratar-${catSlug}/${zoneSlug}` : null;
+        // Solo si esa ciudad tiene página generada: una zona fuera de CITIES
+        // (p. ej. Alcalá de Henares) daba un enlace a 404 en cada ficha.
+        const cityPath = catSlug && zoneSlug ? `/contratar-${catSlug}/${zoneSlug}` : null;
+        const cityLink = cityPath && existingPaths.has(cityPath) ? `https://xpeak.es${cityPath}` : null;
 
         const portfolioUrls = Array.isArray(p.portfolio_urls) ? p.portfolio_urls.filter(Boolean).slice(0, 9) : [];
         const allImages = [p.photo_url, ...portfolioUrls].filter(Boolean);
