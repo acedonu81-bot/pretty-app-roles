@@ -37,7 +37,7 @@ const FAQ = [
   { q: '¿Se puede negociar el precio con un DJ?', a: 'Sí. La mayoría de los DJs tienen márgenes de negociación, especialmente para contratos de temporada o más de una fecha. Plataformas como XPEAK muestran tarifas públicas de referencia para que la negociación parta de datos reales.' },
   { q: '¿El precio incluye equipo de sonido?', a: 'Depende del DJ. Muchos DJs emergentes no llevan equipo; los profesionales suelen tener setup propio (controladora, monitores). Comprueba en el perfil si el equipo está incluido o si necesitas contratar técnico de sonido aparte.' },
   { q: '¿Hay que pagar IRPF al contratar un DJ?', a: 'Si el DJ es autónomo (epígrafe 962 de IAE), la factura incluirá un 15% de retención de IRPF. El empresario descuenta ese porcentaje del pago y lo ingresa a Hacienda. Los contratos generados en XPEAK incluyen este cálculo automáticamente.' },
-  { q: '¿Cuánto vale un DJ para una boda en España?', a: 'Un DJ para boda en España cuesta entre 400€ y 1.200€ por actuación completa (4-6h), incluyendo equipo. El precio depende de la ciudad, duración y si incluye música en la ceremonia y cóctel.' },
+  { q: '¿Cuánto vale un DJ para una boda en España?', a: 'Solo la música de la fiesta, unas 6 horas, sale entre 360€ y 600€ con las tarifas por hora de los DJs de XPEAK. Si además pone la música de la ceremonia y el cóctel, lleva luces o viene de lejos, el total de la boda suele quedar entre 400€ y 1.200€ con equipo incluido.' },
   { q: '¿Cuánto cobra un DJ por una hora?', a: 'La tarifa por hora oscila entre 30€ (DJ emergente) y 500€+ (artista de referencia). Para eventos privados (bodas, cumpleaños, comuniones), lo habitual es contratar un bloque de 4-6 horas, no por hora suelta.' },
   { q: '¿Cuánto cobra un DJ para una fiesta de 18 cumpleaños o discomóvil?', a: 'Para fiestas de cumpleaños y discomóviles con equipo propio, el rango típico es 150€-400€ por 3-4 horas, dependiendo de si incluye iluminación y microfonía para juegos.' },
   { q: '¿Qué diferencia hay entre contratar un DJ por agencia o directamente?', a: 'Las agencias suelen añadir un 20-40% de comisión sobre la tarifa del DJ. Contratar directamente (por ejemplo, a través del directorio de XPEAK, sin intermediarios) permite pagar el precio real que fija el propio profesional.' },
@@ -159,7 +159,7 @@ const faqStructured = {
 
           <BlogAnswerBox
             question="¿Cuánto cobra un DJ en España en 2026?"
-            answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. Para bodas y eventos privados el presupuesto total es de 400€-1.200€ por actuación completa. En Madrid, la mitad de los DJs de XPEAK cobra entre 60€ y 100€/hora. El precio varía según experiencia, equipo incluido y tipo de evento."
+            answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. La mitad de los DJs de XPEAK cobra entre 60€ y 100€/hora, así que 6 horas de música salen por 360€-600€. Si en una boda pone también la música de la ceremonia y el cóctel, luces y desplazamiento, el total suele quedar entre 400€ y 1.200€."
           />
           <picture>
             <source srcSet="/images/blog/cuanto-cobra-dj-espana-2026.webp" type="image/webp" />
