@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
@@ -7,52 +6,20 @@ import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
+import CalculadoraPrecioDJ, { TARIFAS } from '@/components/CalculadoraPrecioDJ';
 
 const slug = 'calculadora-tarifa-dj';
 
-const BASES: Record<string, number> = {
-  boda: 1000,
-  empresa: 800,
-  comunion: 600,
-  cumpleanos: 400,
-  fiesta_privada: 350,
-  discoteca: 300,
-};
-
-const MULTIPLICADORES_CIUDAD: Record<string, number> = {
-  madrid: 1.25,
-  barcelona: 1.25,
-  sevilla: 1.0,
-  valencia: 1.05,
-  bilbao: 1.15,
-  malaga: 1.1,
-  otras: 0.9,
-};
-
 export default function BlogCalculadoraTarifaDJ() {
-  const [tipoEvento, setTipoEvento] = useState('boda');
-  const [ciudad, setCiudad] = useState('otras');
-  const [horas, setHoras] = useState(6);
-  const [experiencia, setExperiencia] = useState('medio');
-  const [luces, setLuces] = useState(false);
-
-  const base = BASES[tipoEvento] ?? 500;
-  const multCiudad = MULTIPLICADORES_CIUDAD[ciudad] ?? 0.9;
-  const multHoras = horas <= 4 ? 0.8 : horas <= 6 ? 1 : horas <= 8 ? 1.2 : 1.4;
-  const multExp = experiencia === 'junior' ? 0.7 : experiencia === 'medio' ? 1 : 1.4;
-  const extraLuces = luces ? 200 : 0;
-  const precio = Math.round((base * multCiudad * multHoras * multExp + extraLuces) / 50) * 50;
-  const rango = `${Math.round(precio * 0.8)}€ - ${Math.round(precio * 1.2)}€`;
-
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: "Calculadora de tarifa DJ 2026: precio estimado para tu evento",
-    description: "Calcula cuánto cuesta un DJ para tu evento. Introduce el tipo de evento, ciudad y horas y obtén un precio estimado real para 2026.",
+    description: "Calcula cuánto cuesta un DJ para tu evento. Elige el tipo de evento y las horas y verás el precio con las tarifas reales de los DJs de XPEAK.",
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
-    dateModified: '2026-06-07',
+    dateModified: '2026-10-24',
     url: "https://xpeak.es/blog/calculadora-tarifa-dj",
     mainEntityOfPage: { '@type': 'WebPage', '@id': "https://xpeak.es/blog/calculadora-tarifa-dj" },
   };
@@ -71,9 +38,9 @@ export default function BlogCalculadoraTarifaDJ() {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
-      { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en España?', acceptedAnswer: { '@type': 'Answer', text: 'La tarifa base de un DJ para boda parte de unos 1.000€ y varía según la ciudad, las horas de servicio y la experiencia del DJ. En Madrid o Barcelona el precio sube en torno a un 25% respecto a otras ciudades, y añadir equipo de luces suma entre 150€ y 300€.' } },
-      { '@type': 'Question', name: '¿De qué depende el precio de un DJ?', acceptedAnswer: { '@type': 'Answer', text: 'El precio depende del tipo de evento (una boda cuesta más que un cumpleaños o una fiesta privada), la ciudad, el número de horas de servicio y el nivel del DJ (junior, medio o senior). Incluir equipo de luces también incrementa la tarifa.' } },
-      { '@type': 'Question', name: '¿La calculadora da un precio real?', acceptedAnswer: { '@type': 'Answer', text: 'La calculadora ofrece una estimación orientativa basada en tarifas reales de DJs en España en 2026. Para presupuestos reales de DJs verificados en tu zona, en XPEAK introduces los detalles de tu evento y recibes 3 propuestas en menos de 24 horas.' } },
+      { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en España?', acceptedAnswer: { '@type': 'Answer', text: `Con las tarifas de los DJs de XPEAK (${TARIFAS.fecha}), una boda de 6 horas sale entre ${6 * TARIFAS.p25}€ y ${6 * TARIFAS.p75}€, y lo más habitual son unos ${6 * TARIFAS.mediana}€. El desplazamiento, el IVA y las luces extra van aparte.` } },
+      { '@type': 'Question', name: '¿De qué depende el precio de un DJ?', acceptedAnswer: { '@type': 'Answer', text: `Sobre todo de las horas de música y de la tarifa por hora del DJ. La mitad de los DJs de XPEAK cobra entre ${TARIFAS.p25}€ y ${TARIFAS.p75}€ la hora. Luego suman el desplazamiento y el equipo extra, como luces o un segundo equipo de sonido.` } },
+      { '@type': 'Question', name: '¿La calculadora da un precio real?', acceptedAnswer: { '@type': 'Answer', text: `Es una estimación con las tarifas por hora que han puesto ${TARIFAS.djs} DJs de XPEAK (${TARIFAS.fecha}). Para un precio cerrado, pide DJ gratis desde la calculadora y te contestan DJs de tu zona con su presupuesto.` } },
     ],
   };
 
@@ -81,7 +48,7 @@ export default function BlogCalculadoraTarifaDJ() {
     <>
       <Helmet>
         <title>Calculadora de tarifa DJ 2026: precio estimado para tu evento | XPEAK</title>
-        <meta name="description" content="Calcula cuánto cuesta un DJ para tu evento. Introduce el tipo de evento, ciudad y horas y obtén un precio estimado real para 2026." />
+        <meta name="description" content="Calcula cuánto cuesta un DJ para tu evento. Elige el tipo de evento y las horas y verás el precio con las tarifas reales de los DJs de XPEAK." />
         <link rel="canonical" href={`https://xpeak.es/blog/${slug}`} />
         <meta property="og:title" content="Calculadora tarifa DJ 2026 | XPEAK" />
         <meta property="og:description" content="Calcula el precio de un DJ para tu boda, empresa o fiesta privada. Estimación real 2026." />
@@ -106,84 +73,10 @@ export default function BlogCalculadoraTarifaDJ() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · Herramienta · XPEAK</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Calculadora de tarifa DJ 2026: ¿cuánto cuesta tu evento?</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Introduce los datos de tu evento y obtén un precio estimado real. Basado en tarifas reales de DJs en España en 2026.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Elige tu evento y las horas de música y verás cuánto cuesta el DJ, con las tarifas reales de los DJs de XPEAK.</p>
           </div>
 
-          {/* CALCULADORA */}
-          <div className="rounded-2xl p-6 mb-8" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
-            <h2 className="text-base font-black mb-5" style={{ color: '#8B6A00' }}>Calculadora de precio DJ</h2>
-
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs font-bold block mb-1.5" style={{ color: '#222' }}>Tipo de evento</label>
-                <select value={tipoEvento} onChange={e => setTipoEvento(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-lg text-sm"
-                  style={{ background: 'rgba(0,0,0,0.07)', border: '1px solid #777', color: '#111' }}>
-                  <option value="boda">Boda</option>
-                  <option value="empresa">Evento de empresa</option>
-                  <option value="comunion">Comunión</option>
-                  <option value="cumpleanos">Cumpleaños</option>
-                  <option value="fiesta_privada">Fiesta privada</option>
-                  <option value="discoteca">Discoteca / club</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold block mb-1.5" style={{ color: '#222' }}>Ciudad</label>
-                <select value={ciudad} onChange={e => setCiudad(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-lg text-sm"
-                  style={{ background: 'rgba(0,0,0,0.07)', border: '1px solid #777', color: '#111' }}>
-                  <option value="madrid">Madrid</option>
-                  <option value="barcelona">Barcelona</option>
-                  <option value="bilbao">Bilbao / País Vasco</option>
-                  <option value="valencia">Valencia</option>
-                  <option value="malaga">Málaga / Costa del Sol</option>
-                  <option value="sevilla">Sevilla / Andalucía</option>
-                  <option value="otras">Otras ciudades</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold block mb-1.5" style={{ color: '#222' }}>
-                  Horas de servicio: <span style={{ color: '#8B6A00' }}>{horas}h</span>
-                </label>
-                <input type="range" min={2} max={12} value={horas} onChange={e => setHoras(Number(e.target.value))}
-                  className="w-full accent-[#D4AF37]" />
-                <div className="flex justify-between text-[0.75rem] mt-1" style={{ color: '#555' }}>
-                  <span>2h</span><span>6h</span><span>12h</span>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold block mb-1.5" style={{ color: '#222' }}>Nivel del DJ</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {[{ v: 'junior', l: 'Junior', s: '< 2 años' }, { v: 'medio', l: 'Medio', s: '2-5 años' }, { v: 'senior', l: 'Senior', s: '5+ años' }].map(opt => (
-                    <button key={opt.v} onClick={() => setExperiencia(opt.v)}
-                      className="p-2.5 rounded-lg text-center transition-all"
-                      style={{
-                        background: experiencia === opt.v ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
-                        border: `1px solid ${experiencia === opt.v ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.08)'}`,
-                      }}>
-                      <p className="text-xs font-bold" style={{ color: experiencia === opt.v ? '#D4AF37' : '#fff' }}>{opt.l}</p>
-                      <p className="text-[0.75rem]" style={{ color: '#333' }}>{opt.s}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={luces} onChange={e => setLuces(e.target.checked)} className="w-4 h-4 accent-[#D4AF37]" />
-                <span className="text-xs font-medium" style={{ color: '#222' }}>Incluir equipo de luces (+150-300€)</span>
-              </label>
-            </div>
-
-            {/* Resultado */}
-            <div className="mt-6 p-5 rounded-xl text-center" style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.25)' }}>
-              <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: 'rgba(212,175,55,0.7)' }}>Precio estimado</p>
-              <p className="text-4xl font-black mb-1" style={{ color: '#8B6A00' }}>{rango}</p>
-              <p className="text-xs" style={{ color: '#333' }}>Sin IVA · Orientativo · Basado en tarifas reales 2026</p>
-            </div>
-          </div>
+          <CalculadoraPrecioDJ articlePath={`/blog/${slug}`} />
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath={`/blog/${slug}`} />
 
@@ -191,7 +84,7 @@ export default function BlogCalculadoraTarifaDJ() {
             <section>
               <h2 className="text-base font-black mb-3">¿Cómo consigo presupuestos reales?</h2>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
-                La calculadora da una estimación orientativa. Para tener presupuestos reales de DJs verificados en tu zona, usa XPEAK: introduce los detalles de tu evento y recibes 3 propuestas en menos de 24h.
+                La calculadora da una estimación. Para un presupuesto cerrado, pide DJ gratis desde el botón de arriba: sin registrarte, sin comisión, y te contestan DJs de tu zona.
               </p>
             </section>
 

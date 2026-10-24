@@ -13,6 +13,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 import BlogTopCTA from '@/components/BlogTopCTA';
 import ConcursoAuthBanner from '@/components/ConcursoAuthBanner';
 import { trackBlogCtaClick } from '@/lib/blogAnalytics';
+import CalculadoraPrecioDJ from '@/components/CalculadoraPrecioDJ';
 
 const TABLE = [
   { perfil: 'DJ emergente / rookie', experiencia: '< 1 año', rango: '30€-60€/h', nota: 'Bodas pequeñas, cumpleaños' },
@@ -52,7 +53,7 @@ export default function BlogDJPrecio() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-04-28',
-    dateModified: '2026-06-08',
+    dateModified: '2026-10-24',
     url: 'https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana' },
   };
@@ -173,6 +174,8 @@ const faqStructured = {
             />
           </picture>
 
+          <CalculadoraPrecioDJ articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
+
           {/* Tabla por experiencia */}
           <h2 className="text-xl font-black mb-4">Tarifas de DJ por nivel de experiencia</h2>
           <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
@@ -214,8 +217,8 @@ const faqStructured = {
             <a href="/blog/dj-bodas-sevilla" style={{ color: '#D4AF37' }}>Sevilla</a>{' '}
             o <a href="/blog/dj-bodas-valencia" style={{ color: '#D4AF37' }}>Valencia</a>.
             ¿Es en Madrid? Mira los <a href="/contratar-dj/madrid" style={{ color: '#D4AF37', fontWeight: 700 }}>DJs de Madrid con su precio por hora</a>.
-            Si ya tienes claro el precio, usa nuestra{' '}
-            <a href="/blog/calculadora-tarifa-dj" style={{ color: '#D4AF37' }}>calculadora de tarifa DJ</a>{' '}
+            Si quieres una cifra para tu evento, usa la{' '}
+            <a href="#calculadora" style={{ color: '#D4AF37' }}>calculadora del precio de un DJ</a>{' '}
             o descarga la{' '}
             <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla de contrato</a>.
           </p>
