@@ -13,7 +13,6 @@ import { expandRole, PHOTO_GATE_OR } from '@/lib/constants';
 import { compararDirectorio } from '@/lib/dailyRotation';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
-import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import UltimaContratacion from '@/components/dashboard/UltimaContratacion';
 import { logSearch, logProfileView, logFiltroRol, logEvent } from '@/lib/track';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
@@ -429,11 +428,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
 
       <UltimaContratacion />
 
-      {/* En DJs arriba va la escuela colaboradora y Recursos baja al final
-          del listado (decisión del usuario, 24 oct); el resto de oficios igual. */}
-      {role === 'dj'
-        ? <WarmUpAcademyBanner origen="app" className="mb-4 sm:mb-5" />
-        : <ResourcesBanner onNavigate={onNavigate} vistaActual={role} />}
+      <ResourcesBanner onNavigate={onNavigate} vistaActual={role} />
 
       {/* Filtros */}
       <div className="flex items-center gap-2 mb-4 sm:mb-5 flex-nowrap sm:flex-wrap overflow-x-auto no-scrollbar -mx-1 px-1 sm:mx-0 sm:px-0">
@@ -658,12 +653,6 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
             onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
         ))}
       </div>
-
-      {role === 'dj' && (
-        <div className="mt-6">
-          <ResourcesBanner onNavigate={onNavigate} vistaActual={role} />
-        </div>
-      )}
 
       <OffersWidget title={`Ofertas para ${title}`} role={role} />
       <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} item={checkoutItem} />

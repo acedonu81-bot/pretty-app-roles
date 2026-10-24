@@ -3,56 +3,56 @@ import { useDirectorioConInventario } from '@/hooks/useDirectorioConInventario';
 import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt, Mic, SlidersHorizontal, Speaker, Building2, Truck } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
-import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 
-const BLOG_LINKS: Record<string, { href: string; title: string; desc: string }[]> = {
+const BLOG_LINKS: Record<string, { href: string; emoji: string; title: string; desc: string }[]> = {
   dj: [
-    { href: '/blog/cuanto-cobra-un-dj-en-espana', title: '¿Cuánto cobra un DJ en España? Precios 2026', desc: 'Tarifas reales por tipo de evento, duración y ciudad.' },
-    { href: '/blog/dj-para-bodas-vs-discoteca', title: 'DJ de boda vs DJ de discoteca', desc: 'Diferencias clave, habilidades y cómo elegir el perfil correcto para tu evento.' },
+    { href: '/blog/cuanto-cobra-un-dj-en-espana', emoji: '💰', title: '¿Cuánto cobra un DJ en España? Precios 2026', desc: 'Tarifas reales por tipo de evento, duración y ciudad.' },
+    { href: '/blog/dj-para-bodas-vs-discoteca', emoji: '🆚', title: 'DJ de boda vs DJ de discoteca', desc: 'Diferencias clave, habilidades y cómo elegir el perfil correcto para tu evento.' },
   ],
   camareros: [
-    { href: '/blog/cuanto-cobra-un-camarero-de-eventos', title: '¿Cuánto cobra un camarero de eventos?', desc: 'Precios por hora, por evento y ratios boda vs corporativo.' },
-    { href: '/blog/cuantos-camareros-necesito-para-mi-boda', title: 'Cuántos camareros necesito para mi boda', desc: 'Tabla de ratios por número de invitados y tipo de servicio.' },
+    { href: '/blog/cuanto-cobra-un-camarero-de-eventos', emoji: '💰', title: '¿Cuánto cobra un camarero de eventos?', desc: 'Precios por hora, por evento y ratios boda vs corporativo.' },
+    { href: '/blog/cuantos-camareros-necesito-para-mi-boda', emoji: '💒', title: 'Cuántos camareros necesito para mi boda', desc: 'Tabla de ratios por número de invitados y tipo de servicio.' },
   ],
   catering: [
-    { href: '/blog/catering-para-eventos-de-empresa', title: 'Catering para eventos de empresa 2026', desc: 'Formatos, precios por persona y cómo elegir el servicio correcto.' },
-    { href: '/blog/cuanto-cuesta-una-boda-en-espana', title: '¿Cuánto cuesta una boda en España?', desc: 'Desglose por partidas: catering, DJ, personal y más.' },
+    { href: '/blog/catering-para-eventos-de-empresa', emoji: '🏢', title: 'Catering para eventos de empresa 2026', desc: 'Formatos, precios por persona y cómo elegir el servicio correcto.' },
+    { href: '/blog/cuanto-cuesta-una-boda-en-espana', emoji: '💒', title: '¿Cuánto cuesta una boda en España?', desc: 'Desglose por partidas: catering, DJ, personal y más.' },
   ],
   'food-truck': [
-    { href: '/blog/cuanto-cuesta-un-food-truck-para-evento', title: '¿Cuánto cuesta un food truck para un evento?', desc: 'Precios por formato, por comensal y por ciudad en 2026.' },
-    { href: '/blog/catering-para-eventos-de-empresa', title: 'Catering para eventos de empresa 2026', desc: 'Cuándo encaja un food truck y cuándo un catering con servicio de sala.' },
+    { href: '/blog/cuanto-cuesta-un-food-truck-para-evento', emoji: '', title: '¿Cuánto cuesta un food truck para un evento?', desc: 'Precios por formato, por comensal y por ciudad en 2026.' },
+    { href: '/blog/catering-para-eventos-de-empresa', emoji: '', title: 'Catering para eventos de empresa 2026', desc: 'Cuándo encaja un food truck y cuándo un catering con servicio de sala.' },
   ],
   fotografo: [
-    { href: '/blog/contratar-fotografo-de-bodas', title: 'Cómo contratar un fotógrafo de bodas 2026', desc: 'Precios por ciudad, qué incluye y cómo elegir el profesional.' },
-    { href: '/blog/cuanto-cuesta-una-boda-en-espana', title: '¿Cuánto cuesta una boda en España?', desc: 'Guía completa de presupuesto por partidas incluyendo fotografía.' },
+    { href: '/blog/contratar-fotografo-de-bodas', emoji: '📸', title: 'Cómo contratar un fotógrafo de bodas 2026', desc: 'Precios por ciudad, qué incluye y cómo elegir el profesional.' },
+    { href: '/blog/cuanto-cuesta-una-boda-en-espana', emoji: '💒', title: '¿Cuánto cuesta una boda en España?', desc: 'Guía completa de presupuesto por partidas incluyendo fotografía.' },
   ],
   staff: [
-    { href: '/blog/staff-de-discoteca-funciones-y-salario', title: 'Staff de discoteca: funciones y sueldos 2026', desc: 'Hostesses, RRPPs, camareros y coordinadores. Tarifas reales.' },
-    { href: '/blog/cuanto-cobra-un-camarero-de-eventos', title: '¿Cuánto cobra un camarero de eventos?', desc: 'Precios por hora y por evento en toda España.' },
+    { href: '/blog/staff-de-discoteca-funciones-y-salario', emoji: '🎪', title: 'Staff de discoteca: funciones y sueldos 2026', desc: 'Hostesses, RRPPs, camareros y coordinadores. Tarifas reales.' },
+    { href: '/blog/cuanto-cobra-un-camarero-de-eventos', emoji: '💰', title: '¿Cuánto cobra un camarero de eventos?', desc: 'Precios por hora y por evento en toda España.' },
   ],
   azafata: [
-    { href: '/blog/precio-azafatas-eventos-espana', title: 'Precio de azafatas para eventos: guía 2026', desc: 'Tarifas reales por tipo de evento, ferias y congresos.' },
-    { href: '/blog/staff-de-discoteca-funciones-y-salario', title: 'Staff de discoteca: funciones y sueldos 2026', desc: 'Diferencias entre hostess, azafata y RRPP.' },
+    { href: '/blog/precio-azafatas-eventos-espana', emoji: '💰', title: 'Precio de azafatas para eventos: guía 2026', desc: 'Tarifas reales por tipo de evento, ferias y congresos.' },
+    { href: '/blog/staff-de-discoteca-funciones-y-salario', emoji: '🎪', title: 'Staff de discoteca: funciones y sueldos 2026', desc: 'Diferencias entre hostess, azafata y RRPP.' },
   ],
   promotores: [
-    { href: '/blog/promotores-de-eventos-que-hacen', title: 'Promotores de eventos: qué hacen y cuánto cobran', desc: 'Tipos, funciones y cómo estructurar el contrato con métricas.' },
+    { href: '/blog/promotores-de-eventos-que-hacen', emoji: '📣', title: 'Promotores de eventos: qué hacen y cuánto cobran', desc: 'Tipos, funciones y cómo estructurar el contrato con métricas.' },
   ],
   'disco-movil': [
-    { href: '/blog/disco-movil-para-comuniones', title: 'Disco móvil para comuniones: precios 2026', desc: 'Paquetes, qué incluye y cómo elegir el DJ para tu comunión.' },
-    { href: '/blog/dj-para-bodas-vs-discoteca', title: 'DJ para bodas vs DJ de discoteca', desc: 'Diferencias, equipos y cómo elegir el perfil correcto.' },
+    { href: '/blog/disco-movil-para-comuniones', emoji: '🎵', title: 'Disco móvil para comuniones: precios 2026', desc: 'Paquetes, qué incluye y cómo elegir el DJ para tu comunión.' },
+    { href: '/blog/dj-para-bodas-vs-discoteca', emoji: '🆚', title: 'DJ para bodas vs DJ de discoteca', desc: 'Diferencias, equipos y cómo elegir el perfil correcto.' },
   ],
   'photo-booth': [
-    { href: '/blog/photobooth-precio-boda-evento', title: 'Cuánto cuesta un photo booth para boda 2026', desc: 'Precios según tipo: clásico, 360 y espejo glamour.' },
-    { href: '/presupuesto-boda', title: 'Calculadora de presupuesto de boda', desc: 'Calcula el coste total de tu boda incluyendo el photo booth.' },
+    { href: '/blog/photobooth-precio-boda-evento', emoji: '📸', title: 'Cuánto cuesta un photo booth para boda 2026', desc: 'Precios según tipo: clásico, 360 y espejo glamour.' },
+    { href: '/presupuesto-boda', emoji: '💒', title: 'Calculadora de presupuesto de boda', desc: 'Calcula el coste total de tu boda incluyendo el photo booth.' },
   ],
   'grupo-musical': [
-    { href: '/blog/cuarteto-cuerda-boda-precio', title: 'Cuarteto de cuerda para boda: precios 2026', desc: 'Cuánto cuesta y cuándo reservarlo.' },
-    { href: '/blog/grupo-musical-para-boda-precio', title: 'Grupo musical para boda: guía completa', desc: 'Tipos, precios y cómo elegir.' },
+    { href: '/blog/cuarteto-cuerda-boda-precio', emoji: '🎻', title: 'Cuarteto de cuerda para boda: precios 2026', desc: 'Cuánto cuesta y cuándo reservarlo.' },
+    { href: '/blog/grupo-musical-para-boda-precio', emoji: '🎵', title: 'Grupo musical para boda: guía completa', desc: 'Tipos, precios y cómo elegir.' },
   ],
 };
 
 export const CATEGORY_DATA: Record<string, {
   slug: string;
+  emoji: string;
   h1: string;
   tagline: string;
   desc: string;
@@ -67,6 +67,7 @@ export const CATEGORY_DATA: Record<string, {
 }> = {
   dj: {
     slug: 'dj',
+    emoji: '🎧',
     h1: 'Contratar DJ para Boda y Eventos en España',
     tagline: 'DJs profesionales verificados para bodas, fiestas y eventos en toda España',
     desc: 'Contrata DJ para boda, fiesta privada o evento en España. Precio DJ desde 40€/hora. DJ para bodas Madrid, Barcelona e Ibiza. Flash Booking en menos de 1h..',
@@ -101,6 +102,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   staff: {
     slug: 'staff',
+    emoji: '🎪',
     h1: 'Contratar Staff de Eventos',
     tagline: 'Hostesses, RR.PP. y promotores verificados en España',
     desc: 'Contrata staff profesional para tus eventos: hostesses, relaciones públicas, promotores y personal de sala. Flash Booking disponible..',
@@ -133,6 +135,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   azafata: {
     slug: 'azafata',
+    emoji: '🎀',
     h1: 'Contratar Azafatas para Eventos',
     tagline: 'Azafatas verificadas para ferias, congresos y eventos corporativos en España',
     desc: 'Contrata azafatas profesionales para ferias, congresos, eventos corporativos y presentaciones. Perfiles verificados, contrato digital automático. Flash Booking disponible..',
@@ -165,6 +168,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   fotografo: {
     slug: 'fotografo',
+    emoji: '📸',
     h1: 'Contratar Fotógrafo de Eventos',
     tagline: 'Fotógrafos y videógrafos profesionales para eventos en España',
     desc: 'Contrata fotógrafos y videógrafos especializados en eventos nocturnos, festivales y celebraciones. Perfiles verificados, entrega rápida..',
@@ -197,6 +201,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   camareros: {
     slug: 'camareros',
+    emoji: '🍽️',
     h1: 'Contratar Camareros para Eventos y Bodas',
     tagline: 'Camareros por horas, personal extra y servicio completo para bodas, hostelería y eventos de empresa',
     desc: 'Contrata camareros profesionales para bodas, eventos corporativos y fiestas privadas en España. Perfiles verificados, contrato digital automático, Flash Booking en menos de 1h.',
@@ -231,6 +236,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   catering: {
     slug: 'catering',
+    emoji: '🍾',
     h1: 'Contratar Catering para Eventos',
     tagline: 'Servicios de catering profesional para bodas, eventos corporativos y celebraciones',
     desc: 'Catering para eventos Madrid y Barcelona: bodas, cenas corporativas y fiestas privadas desde 25€/persona. Menús personalizados, servicio completo. Flash Booking disponible..',
@@ -264,6 +270,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   'food-truck': {
     slug: 'food-truck',
+    emoji: '',
     h1: 'Contratar Food Truck para Bodas y Eventos',
     tagline: 'Food trucks para bodas, festivales, eventos de empresa y fiestas privadas',
     desc: 'Alquila un food truck para tu boda, evento de empresa o fiesta privada. Hamburguesas, tacos, pizza, café y cocina del mundo. Desde 350€ por servicio o 15€ por comensal.',
@@ -297,6 +304,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   maquillaje: {
     slug: 'maquillaje',
+    emoji: '💄',
     h1: 'Contratar Maquillador para Eventos',
     tagline: 'Maquilladores profesionales para bodas, eventos y producción audiovisual',
     desc: 'Contrata maquilladores profesionales para bodas, eventos de moda y producción audiovisual en España. Artistas verificados, portafolio real, contrato digital en minutos.',
@@ -327,6 +335,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   peluqueria: {
     slug: 'peluqueria',
+    emoji: '✂️',
     h1: 'Peluquería para Bodas y Eventos',
     tagline: 'Peluqueras y peluqueros profesionales para tu evento',
     desc: 'Encuentra peluquera cerca de ti en España. Corte, color, peinados de novia y recogidos. Perfiles verificados, contrato digital en minutos.',
@@ -356,6 +365,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   promotores: {
     slug: 'promotores',
+    emoji: '📣',
     h1: 'Contratar Promotores de Eventos',
     tagline: 'Promotores y RRPP profesionales para discotecas, festivales y eventos nocturnos',
     desc: 'Contrata promotores y relaciones públicas profesionales para discotecas, festivales y eventos en España. Perfiles verificados, resultados medibles, contratos automáticos..',
@@ -387,6 +397,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   vestuario: {
     slug: 'vestuario',
+    emoji: '👗',
     h1: 'Contratar Estilista y Vestuario para Eventos',
     tagline: 'Estilistas, diseñadores y personal de vestuario profesional para eventos, producciones y bodas',
     desc: 'Contrata estilistas y profesionales del vestuario para eventos de moda, producciones audiovisuales, bodas y espectáculos en España. Perfiles verificados, portafolio real.',
@@ -417,6 +428,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   humorista: {
     slug: 'humorista',
+    emoji: '🎤',
     h1: 'Contratar Humorista y Monologuista para Eventos',
     tagline: 'Humoristas, monologuistas y cómicos de stand-up para bodas, cenas de empresa y eventos',
     desc: 'Contrata humoristas y monologuistas profesionales para bodas, cenas de empresa y eventos en España. Cómicos verificados, guión personalizado. Flash Booking disponible..',
@@ -449,6 +461,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   animador: {
     slug: 'animador',
+    emoji: '🎪',
     h1: 'Contratar Animador y Payaso para Eventos',
     tagline: 'Animadores infantiles, payasos y artistas de entretenimiento para cumpleaños, bodas y eventos',
     desc: 'Contrata animadores y payasos profesionales para cumpleaños infantiles, bodas, comuniones y eventos familiares en España. Perfiles verificados, animación garantizada..',
@@ -483,6 +496,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   speaker: {
     slug: 'speaker',
+    emoji: '🎙️',
     h1: 'Contratar Speaker y Ponente para Eventos',
     tagline: 'Speakers, conferenciantes y ponentes profesionales para congresos, cenas de empresa y eventos corporativos',
     desc: 'Contrata speakers y conferenciantes profesionales para congresos, teambuilding y eventos corporativos en España. Ponentes verificados, temas especializados. Flash Booking..',
@@ -515,6 +529,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   mago: {
     slug: 'mago',
+    emoji: '🎩',
     h1: 'Contratar Mago para Eventos y Bodas',
     tagline: 'Magos y ilusionistas profesionales para bodas, cenas de empresa, cumpleaños y eventos',
     desc: 'Contrata magos e ilusionistas profesionales para bodas, eventos corporativos y celebraciones en España. Actuaciones personalizadas verificadas. Flash Booking disponible..',
@@ -547,6 +562,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   bailarin: {
     slug: 'bailarin',
+    emoji: '💃',
     h1: 'Contratar Bailarín, Bailarina e Instructor de Baile',
     tagline: 'Bailarines, compañías de danza e instructores de salsa, bachata y kizomba para eventos y clases',
     desc: 'Contrata bailarines y bailarinas profesionales para bodas, shows de entretenimiento y eventos corporativos en España, o encuentra instructor de salsa, bachata y kizomba para clases particulares. Perfiles verificados..',
@@ -579,6 +595,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   payaso: {
     slug: 'payaso',
+    emoji: '🤡',
     h1: 'Contratar Payaso para Fiestas y Eventos',
     tagline: 'Payasos profesionales para cumpleaños infantiles, bodas, comuniones y eventos familiares',
     desc: 'Contrata payasos profesionales para cumpleaños infantiles, bodas y eventos familiares en España. Animadores verificados, espectáculo garantizado. Flash Booking disponible..',
@@ -611,6 +628,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   'photo-booth': {
     slug: 'photo-booth',
+    emoji: '📸',
     h1: 'Contratar Photo Booth para Boda y Eventos en España',
     tagline: 'Cabinas de fotos profesionales con impresión al instante y álbum digital',
     desc: 'Alquila un photo booth para tu boda, comunión o evento de empresa. Precio desde 300€. Con atrezzo, impresión al instante y álbum digital..',
@@ -633,6 +651,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   'grupo-musical': {
     slug: 'grupo-musical',
+    emoji: '🎵',
     h1: 'Contratar Grupo Musical para Boda y Eventos en España',
     tagline: 'Bandas, grupos de jazz, cuartetos y música en vivo para cualquier evento',
     desc: 'Contrata grupos musicales para bodas, comuniones y eventos. Jazz, flamenco, pop, rock, cuarteto de cuerda. Precio desde 350€..',
@@ -655,6 +674,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   monologo: {
     slug: 'monologo',
+    emoji: '🎤',
     h1: 'Contratar Monologuista para Eventos en España',
     tagline: 'Cómicos de stand-up y monologuistas con guion personalizado para cenas de empresa y bodas',
     desc: 'Contrata monologuista o cómico de stand-up para cenas de empresa, bodas y eventos en España. Guion personalizado..',
@@ -683,6 +703,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   'disco-movil': {
     slug: 'disco-movil',
+    emoji: '🎵',
     h1: 'Contratar Disco Móvil para Eventos',
     tagline: 'DJ con equipo completo de sonido, luces y efectos para bodas, comuniones y fiestas privadas',
     desc: 'Contrata disco móvil profesional para bodas, comuniones, cumpleaños y fiestas privadas en España. DJ + equipo completo incluido. Flash Booking..',
@@ -717,6 +738,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   'tecnico-sonido': {
     slug: 'tecnico-sonido',
+    emoji: '🎚️',
     h1: 'Contratar Técnico de Sonido y Montaje',
     tagline: 'Técnicos de sonido, iluminación y montaje de escenario para bodas, festivales y eventos en España',
     desc: 'Contrata técnico de sonido, iluminación y montaje de escenario para bodas, festivales, salas y eventos corporativos. Con equipo propio o solo mano de obra..',
@@ -751,6 +773,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   'alquiler-equipos': {
     slug: 'alquiler-equipos',
+    emoji: '🔊',
     h1: 'Alquiler de Equipos para Eventos',
     tagline: 'Sonido, equipo de DJ, backline, luces, fotomatón, escenarios y mobiliario para eventos y profesionales en toda España',
     desc: 'Alquila equipo para tu evento: sonido, equipo de DJ, backline, iluminación, efectos, pantallas, fotomatón, escenarios y mobiliario. Por día, para organizadores y profesionales. Precio y contacto directo.',
@@ -787,6 +810,7 @@ export const CATEGORY_DATA: Record<string, {
   },
   'locales-eventos': {
     slug: 'locales-eventos',
+    emoji: '🏛️',
     h1: 'Alquiler de Locales y Fincas para Eventos',
     tagline: 'Discotecas, salas, terrazas y fincas para bodas, cumpleaños y eventos de empresa en toda España',
     desc: 'Alquila local o finca para tu evento en España. Discotecas, salas privadas, terrazas y fincas con aforo desde 100 hasta 1.200 personas. Precio y contacto directo con quien gestiona el espacio.',
@@ -1033,14 +1057,6 @@ export default function CategoryLanding() {
           </div>
         </section>
 
-        {/* Escuela colaboradora: el único enlace público e indexable a Warm Up
-            (el de la app vive en /dashboard, que Google no rastrea). */}
-        {data.slug === 'dj' && (
-          <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
-            <WarmUpAcademyBanner origen="publica" />
-          </section>
-        )}
-
         {/* Ciudades */}
         {data.cities.length > 0 && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
@@ -1099,6 +1115,7 @@ export default function CategoryLanding() {
                 <a key={post.href} href={post.href}
                   className="flex items-start gap-4 p-5 rounded-xl transition-all hover:scale-[1.02]"
                   style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
+                  <span className="text-2xl flex-shrink-0">{post.emoji}</span>
                   <div>
                     <p className="text-sm font-black leading-snug mb-1.5">{post.title}</p>
                     <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>{post.desc}</p>
