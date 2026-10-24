@@ -276,7 +276,9 @@ function staticUrls(today, indexableCities, cityContentDates) {
     torrevieja:'0.65', benidorm:'0.70', gandia:'0.65', denia:'0.65', castellon:'0.68',
     reus:'0.65', sitges:'0.67', menorca:'0.68', ceuta:'0.63', melilla:'0.63',
   };
-  const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','peluqueria','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth','food-truck','tecnico-sonido','alquiler-equipos','locales-eventos'];
+  // animadores/payasos no van: /contratar-animadores/:ciudad y /contratar-payasos/:ciudad
+  // redirigen (vercel.json) a la forma singular, que es la que tiene contenido propio.
+  const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','peluqueria','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','bailarin','speaker','monologo','monologos','payaso','grupo-musical','photo-booth','food-truck','tecnico-sonido','alquiler-equipos','locales-eventos'];
 
   // Solo se publican las ciudades con al menos un profesional real. Una página
   // que dice "Aún no hay" es thin content: enseña a Google que el dominio

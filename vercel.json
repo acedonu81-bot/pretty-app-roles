@@ -1,5 +1,7 @@
 {
   "routes": [
+    { "src": "/contratar-animadores/(.+)", "status": 301, "headers": { "Location": "/contratar-animador/$1" } },
+    { "src": "/contratar-payasos/(.+)", "status": 301, "headers": { "Location": "/contratar-payaso/$1" } },
     { "src": "/directorio/emergentes", "status": 301, "headers": { "Location": "/directorio/djs-emergentes" } },
     { "src": "/directorio", "has": [{ "type": "query", "key": "categoria", "value": "camarero" }], "status": 301, "headers": { "Location": "/directorio/staff" } },
     { "src": "/directorio", "has": [{ "type": "query", "key": "categoria", "value": "camareros" }], "status": 301, "headers": { "Location": "/directorio/staff" } },
