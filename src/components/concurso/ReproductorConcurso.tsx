@@ -27,7 +27,7 @@ export function useReproductorConcurso(): Ctx {
 }
 
 const urlIframe = (url: string) =>
-  `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23d4af37&auto_play=true&hide_related=true&show_comments=false&show_reposts=false&show_teaser=false&visual=false`;
+  `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23d4af37&auto_play=true&hide_related=true&show_comments=false&show_reposts=false&show_teaser=false&show_artwork=false&visual=false`;
 
 export const ALTO_BARRA = 56;
 const CABECERA = 30;
@@ -81,8 +81,12 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
   }, [sesion, navigate]);
 
   // Espacio para que la barra no tape el final de la página (ver index.css).
+  // El widget clásico de SoundCloud necesita 166 px: con el tope antiguo de 120
+  // salía recortado en el móvil (24 oct 2026), con el pie "Privacy policy"
+  // asomando y la onda partida.
   const compacta = !sesion || !!sesion.audioSrc;
-  const altoBarra = compacta ? ALTO_BARRA : CABECERA + Math.min(sesion?.alto ?? 120, 120);
+  const altoIframe = sesion?.alto ?? (/soundcloud\.com/.test(sesion?.embedSrc ?? sesion?.url ?? '') ? 166 : 120);
+  const altoBarra = compacta ? ALTO_BARRA : CABECERA + Math.min(altoIframe, 166);
   useEffect(() => {
     const el = document.documentElement;
     el.toggleAttribute('data-reproductor', !!sesion);
@@ -135,7 +139,7 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
           style={{ bottom: 'var(--reproductor-bottom, 0px)', height: altoBarra, background: '#FFFDF7', borderTop: '1px solid rgba(212,175,55,0.45)', boxShadow: '0 -6px 20px rgba(0,0,0,0.08)' }}>
           <div className="flex items-center gap-2 px-3" style={{ height: CABECERA }}>
             <p className="min-w-0 flex-1 text-xs font-black truncate" style={{ color: '#111' }}>
-              {sesion.titulo} <span style={{ color: 'rgba(0,0,0,0.5)', fontWeight: 600 }}>· {sesion.subtitulo ?? 'sigue sonando mientras navegas'}</span>
+              {sesion.titulo} <span className="hidden min-[440px]:inline" style={{ color: 'rgba(0,0,0,0.5)', fontWeight: 600 }}>· {sesion.subtitulo ?? 'sigue sonando mientras navegas'}</span>
             </p>
             <button type="button" onClick={cerrar} aria-label="Cerrar el reproductor"
               className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center" style={{ color: '#555' }}>

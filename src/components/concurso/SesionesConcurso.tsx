@@ -401,7 +401,10 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
           </p>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2">
+        // grid-cols-1 = minmax(0,1fr): sin columnas definidas la columna crecía
+        // hasta el contenido más ancho y la ficha se salía por la derecha en
+        // móviles de 360 px (24 oct 2026).
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {lista.map((p) => {
             const idx = puesto.get(p.user_id) ?? 0;
             const enFinal = idx < 3 && Number(p.me_gusta) > 0;
