@@ -105,7 +105,7 @@ ${preview ? preheader(preview) : ''}
   <div style="padding:20px 32px 28px;text-align:center;border-top:1px solid rgba(10,9,8,0.06)">
     <p style="color:#6B7280;font-size:12px;line-height:1.5;margin:0 0 6px">XPEAK · <a href="mailto:info@xpeak.site" style="color:#6B7280">info@xpeak.site</a> · <a href="https://xpeak.es" style="color:#6B7280">xpeak.es</a></p>
     <p style="color:#4B5563;font-size:14px;line-height:1.5;margin:0 0 12px">En XPEAK no queremos ataduras: salir tiene que ser tan fácil como entrar.</p>
-    <a href="${UNSUB_PLACEHOLDER}" style="display:inline-block;background:#ffffff;color:#0a0908;border:2px solid #0a0908;border-radius:10px;padding:12px 24px;font-size:16px;font-weight:700;text-decoration:none">Darme de baja de estos emails</a>
+    <a href="${UNSUB_PLACEHOLDER}" style="display:inline-block;background:#ffffff;color:#0a0908;border:1.5px solid #0a0908;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:700;text-decoration:none">Darme de baja de estos emails</a>
   </div>
 </div>
 </div>`;
@@ -1323,6 +1323,42 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         El concurso está abierto hasta el 2 de noviembre.
       </p>`),
   }),
+
+  // Concurso DJ XPEAK Madrid (24 oct 2026): único correo a quien votó, el día
+  // que se anuncia al ganador (9 nov). Solo habla del concurso, sin ofertas.
+  // Los dos botones de abajo son opcionales y llevan utm_content distinto para
+  // saber, por GA4, qué busca cada votante. Solo con la clave de servicio.
+  concurso_resultado_votantes: (d) => {
+    const utm = (c: string) => `utm_source=email&utm_medium=email&utm_campaign=concurso_resultado&utm_content=${c}`;
+    const otros = (d.finalistas as string[] | undefined)?.filter((f) => f && f !== d.ganador) ?? [];
+    return {
+      subject: `Ya hay ganador del Concurso DJ XPEAK Madrid`,
+      to: d.email,
+      replyTo: 'info@xpeak.site',
+      html: base(`
+        <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Ya tenemos ganador</h2>
+        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+          Hola${d.name ? ` <strong style="color:#0a0908">${esc(d.name)}</strong>` : ''}, votaste en el <strong>Concurso DJ XPEAK Madrid</strong> y queremos que seas de los primeros en saber cómo ha acabado.
+        </p>
+        <p style="color:#0a0908;font-size:16px;line-height:1.6;margin:0 0 10px;text-align:center;font-weight:800">
+          Ganador: ${esc(d.ganador)}
+        </p>
+        ${otros.length ? `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px;text-align:center">Finalistas: ${otros.map(esc).join(' y ')}</p>` : ''}
+        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+          Gracias por tu voto. Los me gusta eligieron a los 3 finalistas y el jurado decidió entre ellos.
+        </p>
+        ${btn('Ver el resultado y escuchar las sesiones', 'https://xpeak.es/concurso-dj-madrid/aspirantes?' + utm('resultado'))}
+        <p style="color:#0a0908;font-size:15px;font-weight:700;line-height:1.6;margin:28px 0 6px;text-align:center">
+          Si quieres, cuéntanos para qué has venido a XPEAK
+        </p>
+        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 14px;text-align:center">
+          Es opcional y nos ayuda a mostrarte lo que te interesa. Si solo venías a votar, no hace falta que hagas nada.
+        </p>
+        <a href="https://xpeak.es/contratar-dj?${utm('contratar')}" style="display:block;text-align:center;background:#ffffff;color:#0a0908;border:2px solid #D4AF37;border-radius:10px;padding:13px;font-size:15px;font-weight:700;text-decoration:none;margin:0 0 10px">Busco un DJ para un evento</a>
+        <a href="https://xpeak.es/auth?${utm('soy_profesional')}" style="display:block;text-align:center;background:#ffffff;color:#0a0908;border:2px solid #D4AF37;border-radius:10px;padding:13px;font-size:15px;font-weight:700;text-decoration:none;margin:0">Soy DJ o artista</a>`,
+        'Gracias por tu voto: ya sabemos quién ha ganado el concurso.'),
+    };
+  },
 
   // Concurso DJ XPEAK Madrid (13 oct 2026). Aviso al admin de cada
   // inscripción nueva: antes nadie se enteraba y quedaban "pendiente" para
