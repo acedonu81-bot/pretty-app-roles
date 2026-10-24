@@ -241,7 +241,7 @@ export default function BlogSaxofonistaEventosPrecio() {
                 {[
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
                   { href: '/blog/musica-para-bodas-guia', cat: 'Bodas', title: 'Música para bodas: DJ, banda o playlist 2026' },
-                  { href: '/eventos-empresa', cat: 'Hub', title: 'Contratar profesionales para eventos de empresa' },
+                  { href: '/organizar-eventos', cat: 'Hub', title: 'Contratar profesionales para eventos de empresa' },
                   { href: '/blog/mago-precio-eventos-espana', cat: 'Entretenimiento', title: 'Cuánto cobra un mago para eventos 2026' },
                 ].map((link) => (
                   <a

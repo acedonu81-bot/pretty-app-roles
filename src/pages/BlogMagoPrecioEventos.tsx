@@ -233,7 +233,7 @@ export default function BlogMagoPrecioEventos() {
               <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
-                  { href: '/eventos-empresa', cat: 'Hub', title: 'Contratar profesionales para eventos de empresa' },
+                  { href: '/organizar-eventos', cat: 'Hub', title: 'Contratar profesionales para eventos de empresa' },
                   { href: '/blog/saxofonista-precio-espana', cat: 'Música', title: 'Cuánto cobra un saxofonista en España 2026' },
                   { href: '/blog/photobooth-precio-boda-evento', cat: 'Photo Booth', title: 'Cuánto cuesta un photo booth para boda 2026' },
                   { href: '/blog/profesionales-bodas', cat: 'Bodas', title: 'Profesionales para bodas: guía completa 2026' },

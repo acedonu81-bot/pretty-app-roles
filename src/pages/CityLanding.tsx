@@ -897,7 +897,9 @@ export default function CityLanding() {
   const { ciudad } = useParams<{ ciudad: string }>();
   const { pathname } = useLocation();
   // Antes del return temprano: un hook nunca puede quedar detrás de él.
-  const dirSlug = useDirectorioConInventario(pathname.split('/')[1]?.replace('contratar-', '') ?? 'dj');
+  // Peluquería no tiene directorio propio: comparte el de maquillaje.
+  const dirPropio = pathname.split('/')[1]?.replace('contratar-', '') ?? 'dj';
+  const dirSlug = useDirectorioConInventario(dirPropio === 'peluqueria' ? 'maquillaje' : dirPropio);
   const [pedir, setPedir] = useState(false);
 
   const cityData = ciudad ? CITIES[ciudad.toLowerCase()] : null;

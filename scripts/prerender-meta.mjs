@@ -1541,7 +1541,7 @@ try {
         // vivir aislado y solo alcanzable por sitemap.
         const catSlug = ROLE_TO_CATEGORY_SLUG[p.role];
         const zoneSlug = zone ? toSlug(zone) : null;
-        const categoryLink = catSlug ? `https://xpeak.es/contratar-${catSlug}` : 'https://xpeak.es/directorio';
+        const categoryLink = catSlug ? `https://xpeak.es/contratar-${catSlug}` : 'https://xpeak.es/directorio/dj';
         // Solo si esa ciudad tiene página generada: una zona fuera de CITIES
         // (p. ej. Alcalá de Henares) daba un enlace a 404 en cada ficha.
         const cityPath = catSlug && zoneSlug ? `/contratar-${catSlug}/${zoneSlug}` : null;
@@ -1611,7 +1611,7 @@ try {
             `<p>Contrata a ${escHtml(p.display_name)} directamente en XPEAK: tarifas públicas, contacto directo y contrato digital automático.</p>` +
             `<p><a href="${categoryLink}">Ver más ${escHtml(roleLabel.toLowerCase())}s${zone ? '' : ' en España'}</a>` +
             (cityLink ? ` · <a href="${cityLink}">${escHtml(roleLabel)} en ${escHtml(zone)}</a>` : '') +
-            ` · <a href="https://xpeak.es/directorio">Directorio completo</a></p>` +
+            ` · <a href="https://xpeak.es/directorio/dj">Directorio completo</a></p>` +
             `</div>`,
         });
         existingPaths.add(routePath);
