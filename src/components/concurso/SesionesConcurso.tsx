@@ -428,7 +428,9 @@ export default function SesionesConcurso({ volverA }: { volverA: string }) {
                       ? <img src={p.photo_url} alt="" className="w-12 h-12 shrink-0 rounded-full object-cover" loading="lazy" style={{ boxShadow: clay(tono.rgb, 'sm') }} />
                       : <div className="w-12 h-12 shrink-0 rounded-full" style={{ background: HZ.surface }} />}
                     <div className="min-w-0">
-                      <p className="text-lg leading-tight truncate" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800 }}>{p.display_name ?? 'DJ'}</p>
+                      {/* Nombre en dos líneas si no cabe (24 oct 2026): con truncate el recorte no
+                          se aplicaba y los nombres largos se salían de la tarjeta. */}
+                      <p className="text-lg leading-tight" style={{ color: HZ.ink, fontFamily: HZ.display, fontWeight: 800, overflowWrap: 'anywhere' }}>{p.display_name ?? 'DJ'}</p>
                       {p.zone && <p className="text-sm" style={{ color: tono.stroke, fontFamily: HZ.body, fontWeight: 700 }}>{p.zone}</p>}
                       <span className="inline-block mt-1.5 text-[0.75rem] px-2.5 py-1 rounded-full whitespace-nowrap"
                         style={enFinal ? pastilla('#FFF7DB', TONES.sun.stroke, TONES.sun.rgb) : pastilla(TONES.leaf.card, TONES.leaf.stroke, TONES.leaf.rgb)}>
