@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
@@ -77,6 +78,7 @@ export default function BlogDJBodaCivil() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos España 2026. Sin IVA. Variable según ciudad y experiencia del DJ.</p>
             </section>
             <BlogDJEquipoPrecio contexto="boda-civil" tituloClass="text-lg font-black mb-4" className="" />
+            <WarmUpAcademyBanner variante="tira" origen="blog:dj-boda-civil-precio-canciones" className="" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>

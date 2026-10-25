@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para comunión: precio y qué incluye el servicio en España (2026)', description: 'Cuánto cuesta contratar un DJ para una comunión en España. Precios por horas, diferencias con la disco móvil y qué música se pone.', datePublished: '2026-05-27', dateModified: '2026-05-27', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-para-comunion-precio' };
@@ -141,6 +142,8 @@ export default function BlogDJComunion() {
             </section>
 
             <BlogDJEquipoPrecio contexto="comunion" tituloClass="text-lg font-black mb-4" className="" />
+
+            <WarmUpAcademyBanner variante="tira" origen="blog:dj-para-comunion-precio" className="" />
 
 
             <section>

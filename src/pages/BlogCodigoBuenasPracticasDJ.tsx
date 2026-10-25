@@ -6,6 +6,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
@@ -151,6 +152,9 @@ export default function BlogCodigoBuenasPracticasDJ() {
                 <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#8B6A00' }}>cuánto cobra un DJ en España</a>.
               </p>
             </section>
+
+            <WarmUpAcademyBanner variante="tira" paraDJs origen="blog:codigo-buenas-practicas-dj" />
+
 
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>

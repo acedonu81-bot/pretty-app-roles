@@ -7,21 +7,35 @@ import { logEvent } from '@/lib/track';
  * pactado en oct 2026: ellos enlazan a nuestro artículo de precios DJ y
  * nosotros a su web.
  *
- * Va en DOS sitios a propósito:
+ * Dónde va:
  * - Directorio de DJs dentro de la app (origen "app"): ahí lo ven los DJs,
- *   que son su público. Pero /dashboard está en Disallow de robots.txt, así
- *   que ese enlace NO cuenta para Google.
- * - /contratar-dj (origen "publica"): el único enlace indexable, el que
- *   cumple el trato. Un solo sitio público: un enlace repetido en todas las
- *   ciudades parecería intercambio masivo.
+ *   que son su público. /dashboard está en Disallow de robots.txt, así que
+ *   ese enlace NO cuenta para Google.
+ * - /contratar-dj (origen "publica"): enlace indexable y sin nofollow, el que
+ *   cumple el trato.
+ * - Artículos de DJ del blog (origen "blog:<slug>", variante "tira"): versión
+ *   pequeña. Con nofollow (rel="sponsored") porque se repite en una decena de
+ *   artículos: el mismo enlace "que cuenta" en muchas páginas parecería
+ *   intercambio masivo. Su objetivo aquí son las visitas, no Google.
+ *
+ * Todos los enlaces llevan utm_source=xpeak para que la escuela vea en su
+ * propio Google Analytics las visitas que le mandamos (25 oct), y cada clic
+ * queda en nuestra analítica como partner_click con el origen.
  *
  * Colores y letra son los de su marca (negro azulado + menta, Antonio), no
  * los de XPEAK: su logo es blanco y menta y solo se lee sobre oscuro.
- * Enlace sin nofollow: es una colaboración real entre webs del sector.
  */
 const MENTA = '#B9D8D2';
 const FONDO = '#10141A';
-const URL_WARMUP = 'https://warmup-academy.com/';
+
+export function urlWarmUp(origen: string) {
+  const campana = origen.replace(/[^a-z0-9-]+/gi, '_');
+  return `https://warmup-academy.com/?utm_source=xpeak&utm_medium=referral&utm_campaign=${campana}`;
+}
+
+export function clicWarmUp(origen: string) {
+  void logEvent('partner_click', location.pathname, `warmup:${origen}`);
+}
 
 let fuenteCargada = false;
 function cargarAntonio() {
@@ -33,20 +47,70 @@ function cargarAntonio() {
   document.head.appendChild(link);
 }
 
-const WarmUpAcademyBanner = ({ origen, className = '' }: {
-  origen: 'app' | 'publica';
+const WarmUpAcademyBanner = ({ origen, variante = 'grande', paraDJs = false, className = '' }: {
+  /** 'app', 'publica' o 'blog:<slug>' */
+  origen: string;
+  /** 'tira' = versión pequeña para los artículos del blog */
+  variante?: 'grande' | 'tira';
+  /** Artículos leídos por DJs: el texto les habla a ellos, no a quien contrata. */
+  paraDJs?: boolean;
   className?: string;
 }) => {
   useEffect(cargarAntonio, []);
+
+  if (variante === 'tira') {
+    return (
+      <a
+        href={urlWarmUp(origen)}
+        target="_blank"
+        rel="noopener sponsored"
+        onClick={() => clicWarmUp(origen)}
+        className={`group relative flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 overflow-hidden rounded-2xl p-4 sm:px-6 sm:py-5 ${className}`}
+        style={{ background: FONDO, border: `1px solid ${MENTA}` }}
+      >
+        <img
+          src="/partners/warmup-academy-cabina.jpg"
+          alt=""
+          loading="lazy"
+          className="absolute inset-y-0 right-0 h-full w-1/2 object-cover opacity-40 transition-transform duration-500 group-hover:scale-105"
+        />
+        <span aria-hidden className="absolute inset-0"
+          style={{ background: 'linear-gradient(90deg, rgba(16,20,26,1) 45%, rgba(16,20,26,0.55) 100%)' }} />
+        <img
+          src="/partners/warmup-academy-logo.png"
+          alt="Warm Up Academy, escuela de DJ y producción musical en Madrid"
+          loading="lazy"
+          className="relative h-8 sm:h-9 w-auto self-start sm:self-center flex-shrink-0"
+        />
+        <span className="relative flex-1 min-w-0">
+          <span className="block text-[0.65rem] font-extrabold uppercase tracking-[0.14em] mb-0.5" style={{ color: MENTA }}>
+            Escuela colaboradora
+          </span>
+          <span className="block text-sm sm:text-[0.95rem] font-semibold leading-snug" style={{ color: '#fff' }}>
+            {paraDJs
+              ? 'Mejora tu técnica y consigue más bolos: cursos de DJ y producción en Madrid.'
+              : 'Escuela de DJ y producción musical en Madrid, con profesionales en activo.'}
+          </span>
+        </span>
+        <span
+          className="relative self-start sm:self-center flex-shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-extrabold transition-transform group-hover:translate-x-1"
+          style={{ background: MENTA, color: FONDO }}
+        >
+          {paraDJs ? 'Ver cursos' : 'Conocer la escuela'} <ArrowRight size={14} />
+        </span>
+      </a>
+    );
+  }
+
   // En la app va encima del listado: más baja para no esconder a los DJs.
   const compacta = origen === 'app';
 
   return (
     <a
-      href={URL_WARMUP}
+      href={urlWarmUp(origen)}
       target="_blank"
       rel="noopener"
-      onClick={() => { void logEvent('partner_click', location.pathname, `warmup:${origen}`); }}
+      onClick={() => clicWarmUp(origen)}
       className={`group relative block overflow-hidden rounded-2xl sm:rounded-3xl ${className}`}
       style={{ background: FONDO, border: `1px solid ${MENTA}` }}
     >

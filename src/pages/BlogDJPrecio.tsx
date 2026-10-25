@@ -10,6 +10,7 @@ import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAuthor from '@/components/BlogAuthor';
+import WarmUpAcademyBanner, { urlWarmUp, clicWarmUp } from '@/components/WarmUpAcademyBanner';
 import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import BlogTopCTA from '@/components/BlogTopCTA';
 import ConcursoAuthBanner from '@/components/ConcursoAuthBanner';
@@ -207,6 +208,8 @@ const faqStructured = {
 
           <BlogDJEquipoPrecio />
 
+          <WarmUpAcademyBanner variante="tira" origen="blog:cuanto-cobra-un-dj-en-espana" className="mb-10" />
+
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
           <FichasRealesTira roles={['dj', 'disco-movil']} titulo="DJs que ya están en XPEAK" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
           <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
@@ -386,7 +389,7 @@ const faqStructured = {
               equipo (25 oct). Discreta y al final, no como cita en el texto. */}
           <p className="text-xs mt-10 leading-relaxed" style={{ color: '#4b5563' }}>
             Agradecemos a{' '}
-            <a href="https://warmup-academy.com/" target="_blank" rel="noopener" className="underline" style={{ color: '#8B6A00' }}>Warm Up Academy</a>,
+            <a href={urlWarmUp('blog-nota')} onClick={() => clicWarmUp('blog-nota')} target="_blank" rel="noopener" className="underline" style={{ color: '#8B6A00' }}>Warm Up Academy</a>,
             escuela de DJ y producción musical en Madrid, la información que nos ha facilitado sobre tarifas y equipo para esta guía.
           </p>
           <BlogAuthor />

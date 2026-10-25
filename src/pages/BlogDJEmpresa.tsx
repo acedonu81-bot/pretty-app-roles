@@ -8,6 +8,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 
 const slug = 'dj-para-empresa-precio';
@@ -100,6 +101,8 @@ export default function BlogDJEmpresa() {
             <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath={`/blog/${slug}`} />
 
             <BlogDJEquipoPrecio contexto="empresa" tituloClass="text-lg font-black mb-4" className="" />
+
+            <WarmUpAcademyBanner variante="tira" origen="blog:dj-empresa-precio" className="" />
 
 
             <section>

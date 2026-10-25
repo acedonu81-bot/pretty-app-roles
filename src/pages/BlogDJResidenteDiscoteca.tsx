@@ -5,6 +5,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
@@ -123,6 +124,8 @@ export default function BlogDJResidenteDiscoteca() {
             </section>
 
             <BlogDJEquipoPrecio contexto="residente" tituloClass="text-lg font-black mb-4" className="" />
+
+            <WarmUpAcademyBanner variante="tira" origen="blog:dj-residente-discoteca-precio" className="" />
 
 
             <section>

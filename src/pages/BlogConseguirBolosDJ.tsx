@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo conseguir bolos como DJ en España: 8 estrategias para 2026', description: 'Guía práctica para DJs freelance que quieren conseguir más bolos: plataformas, redes sociales, precios, portfolio y cómo posicionarse en el mercado.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-conseguir-bolos-dj' };
@@ -85,6 +86,9 @@ export default function BlogConseguirBolosDJ() {
             </section>
 
             <BlogInlineCTA role="dj" articlePath="/blog/como-conseguir-bolos-dj" />
+
+            <WarmUpAcademyBanner variante="tira" paraDJs origen="blog:como-conseguir-bolos-dj" />
+
 
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
