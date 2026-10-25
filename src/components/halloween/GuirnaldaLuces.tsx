@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { halloweenActivo } from '@/lib/halloween';
 import { MurcielagoColgado } from '@/components/halloween/HalloweenHero';
-import FantasmaAsomado from '@/components/halloween/FantasmaAsomado';
 import { Telarana } from '@/components/halloween/Telarana';
 
 // PROVISIONAL: guirnalda de luces de verbena colgada del borde de arriba en
@@ -16,10 +15,9 @@ const GuirnaldaLuces = () => {
   const { pathname } = useLocation();
   if (!halloweenActivo()) return null;
   // La portada lleva su propia guirnalda dentro del hero: aquí solo el fantasma.
-  if (pathname === '/') return <FantasmaAsomado />;
+  if (pathname === '/') return null;
   return (
     <>
-    <FantasmaAsomado />
     {/* Telarañas en las esquinas de arriba, solo en ordenador. */}
     <Telarana className="hidden md:block fixed left-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
     <Telarana espejo className="hidden md:block fixed right-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
