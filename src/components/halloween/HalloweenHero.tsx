@@ -81,6 +81,7 @@ const HalloweenHero = () => {
             y por y≈17 en el 42% (Q de 0,6 a 500,10 con control en 250,40). */}
         <MurcielagoColgado claro modelo="a" className="w-[16px] sm:w-[28px]" style={{ left: '18%', top: 20 }} />
         <MurcielagoColgado claro modelo="b" className="w-[14px] sm:w-[24px]" retraso={1.1} style={{ left: '42%', top: 16 }} />
+        <MurcielagoColgado claro modelo="a" className="hidden md:block w-[26px]" retraso={2} style={{ left: '66%', top: 4 }} />
         {Array.from({ length: BOMBILLAS }, (_, i) => {
           const x = (i + 0.5) / BOMBILLAS;
           // Misma curva que el cable: dos senos aproximan el Q/T del SVG.

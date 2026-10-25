@@ -3,12 +3,12 @@ import BarraVolver from '@/components/BarraVolver';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { halloweenActivo } from "@/lib/halloween";
-// Fuera del bundle principal (límite de 300 KB): solo se descarga durante Halloween.
-const GuirnaldaLuces = lazy(() => import("@/components/halloween/GuirnaldaLuces"));
 import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { XPeakToastProvider } from "@/lib/xpeak-toast";
 import { lazy, Suspense, useEffect } from "react";
+// Fuera del bundle principal (límite de 300 KB): solo se descarga durante Halloween.
+const GuirnaldaLuces = lazy(() => import("@/components/halloween/GuirnaldaLuces"));
 const Landing = lazy(() => import("./pages/Landing"));
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";

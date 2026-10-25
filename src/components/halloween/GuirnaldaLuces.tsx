@@ -28,6 +28,8 @@ const GuirnaldaLuces = () => {
       {/* En los márgenes laterales: ahí no hay botones ni texto en ninguna página. */}
       <MurcielagoColgado modelo="a" className="w-[11px] sm:w-[18px]" style={{ left: '1.2%', top: 3 }} />
       <MurcielagoColgado modelo="b" className="w-[10px] sm:w-[16px]" retraso={1.3} style={{ right: '1.6%', top: 3 }} />
+      {/* Ordenador: el centro de la guirnalda queda muy vacío. */}
+      <MurcielagoColgado modelo="a" className="hidden md:block w-[17px]" retraso={0.6} style={{ left: '52%', top: 3 }} />
       {Array.from({ length: BOMBILLAS }, (_, i) => {
         const x = (i + 0.5) / BOMBILLAS;
         const color = COLORES[i % 2];
