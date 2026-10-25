@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 
 const article = {
@@ -137,6 +139,8 @@ export default function BlogComoCompararPresupuestosEventos() {
               </a>
             </div>
           </div>
+          <BlogAuthor />
+          <BlogShare />
         </main>
 
         <BlogRelatedPosts currentSlug='/blog/comparar-presupuestos-proveedores-eventos' tag='Eventos' />

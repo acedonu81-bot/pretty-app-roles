@@ -140,6 +140,7 @@ export default function BlogDJBodaValladolid() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-valladolid" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-valladolid' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_valladolid" articlePath="/blog/dj-bodas-valladolid" />

@@ -141,6 +141,7 @@ export default function BlogPrecioAzafatas() {
 </main>
       <DJResourcesAffiliate role="azafata" />
       <BlogAuthor />
+      <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-eventos-espana' tag='Staff' />
         <FooterPublic />
       <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_v2" articlePath="/blog/precio-azafatas-eventos-espana" />

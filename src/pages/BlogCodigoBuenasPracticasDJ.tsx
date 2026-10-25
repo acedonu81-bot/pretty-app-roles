@@ -6,6 +6,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Código de buenas prácticas del DJ profesional (2026)', description: 'Las normas de conducta profesional que todo DJ de eventos debería seguir, basadas en el decálogo de AEDYP y estándares de asociaciones internacionales como USDJA.', datePublished: '2026-10-06', dateModified: '2026-10-06', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/codigo-buenas-practicas-dj' };
@@ -210,6 +211,7 @@ export default function BlogCodigoBuenasPracticasDJ() {
           </div>
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/codigo-buenas-practicas-dj' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_codigo_buenas_practicas_dj" articlePath="/blog/codigo-buenas-practicas-dj" />

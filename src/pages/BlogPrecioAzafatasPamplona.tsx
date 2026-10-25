@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Pamplona: guía 2026', description: 'Cuánto cobran las azafatas para eventos corporativos, bodas en fincas de Navarra y ferias en Pamplona. Tarifas por perfil 2026.', datePublished: '2026-05-31', dateModified: '2026-06-18', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-pamplona' };
@@ -105,6 +106,7 @@ export default function BlogPrecioAzafatasPamplona() {
         </main>
         <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-pamplona' tag='Staff' />
         <FooterPublic />
         <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_pamplona_v2" articlePath="/blog/precio-azafatas-pamplona" />

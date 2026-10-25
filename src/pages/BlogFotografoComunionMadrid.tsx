@@ -152,6 +152,7 @@ export default function BlogFotografoComunionMadrid() {
 </main>
         <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/fotografo-comunion-madrid' tag='Fotografía' />
         <FooterPublic />
         <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion_madrid" articlePath="/blog/fotografo-comunion-madrid" />

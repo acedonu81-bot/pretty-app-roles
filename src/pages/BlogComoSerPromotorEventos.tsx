@@ -142,6 +142,7 @@ export default function BlogComoSerPromotorEventos() {
                   <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/como-ser-promotor-eventos" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/como-ser-promotor-eventos' tag='Staff' />
         <FooterPublic />
         <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_como_ser_promotor_eventos_v2" articlePath="/blog/como-ser-promotor-eventos" />

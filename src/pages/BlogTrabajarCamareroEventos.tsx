@@ -139,6 +139,7 @@ export default function BlogTrabajarCamareroEventos() {
                   <BlogEmailCapture variant="presupuestos" intent="general" articlePath="/blog/como-trabajar-de-camarero-eventos" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/como-trabajar-de-camarero-eventos' tag='Camareros' />
         <FooterPublic />
         <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_trabajar_camarero_eventos_v2" articlePath="/blog/como-trabajar-de-camarero-eventos" />

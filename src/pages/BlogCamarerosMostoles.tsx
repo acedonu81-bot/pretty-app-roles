@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de camareros para eventos en Móstoles: guía 2026', description: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Móstoles. Tarifas por perfil 2026.', datePublished: '2026-05-26', dateModified: '2026-07-05', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/camareros-eventos-mostoles' };
@@ -104,6 +105,7 @@ export default function BlogCamarerosMostoles() {
         </main>
         <DJResourcesAffiliate role="camareros" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-mostoles' tag='Camareros' />
         <FooterPublic />
         <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_mostoles_v2" articlePath="/blog/camareros-eventos-mostoles" />

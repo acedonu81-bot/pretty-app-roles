@@ -132,6 +132,7 @@ export default function BlogFiestaEmpresa() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/como-organizar-fiesta-empresa" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/como-organizar-fiesta-empresa' tag='Eventos' />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_fiesta_empresa" articlePath="/blog/como-organizar-fiesta-empresa" />

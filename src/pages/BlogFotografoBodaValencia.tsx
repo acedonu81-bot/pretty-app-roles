@@ -115,6 +115,7 @@ export default function BlogFotografoBodaValencia() {
 </main>
         <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-valencia' tag='Fotografía' />
         <FooterPublic />
         <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_valencia" articlePath="/blog/fotografo-boda-valencia" />

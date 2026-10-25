@@ -141,6 +141,7 @@ export default function BlogDJBodaTenerife() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-tenerife" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-tenerife' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_tenerife" articlePath="/blog/dj-bodas-tenerife" />

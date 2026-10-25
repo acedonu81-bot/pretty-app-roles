@@ -59,6 +59,7 @@ export default function BlogDJBodaBadajoz() {
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-badajoz" />
 </main>
     <BlogAuthor />
+    <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-badajoz' tag='DJ' />
         <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} articlePath="/blog/dj-bodas-badajoz" />

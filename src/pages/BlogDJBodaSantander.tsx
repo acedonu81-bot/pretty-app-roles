@@ -59,6 +59,7 @@ export default function BlogDJBodaSantander() {
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-santander" />
 </main>
     <BlogAuthor />
+    <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-santander' tag='DJ' />
         <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} articlePath="/blog/dj-bodas-santander" />

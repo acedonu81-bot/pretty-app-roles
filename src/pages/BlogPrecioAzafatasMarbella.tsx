@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Marbella: guía 2026', description: 'Cuánto cobran las azafatas para eventos, bodas de lujo y Puerto Banús en Marbella. Tarifas de temporada alta 2026.', datePublished: '2026-03-31', dateModified: '2026-05-31', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-marbella' };
@@ -104,6 +105,7 @@ export default function BlogPrecioAzafatasMarbella() {
         </main>
         <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-marbella' tag='Staff' />
         <FooterPublic />
         <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_marbella_v2" articlePath="/blog/precio-azafatas-marbella" />

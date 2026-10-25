@@ -169,6 +169,7 @@ export default function BlogDJResidenteDiscoteca() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-residente-discoteca-precio" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-residente-discoteca-precio' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_residente_discoteca_v2" articlePath="/blog/dj-residente-discoteca-precio" />

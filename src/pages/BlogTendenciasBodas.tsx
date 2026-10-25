@@ -118,6 +118,7 @@ export default function BlogTendenciasBodas() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/tendencias-bodas-2026" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/tendencias-bodas-2026' tag='Bodas' />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_tendencias_bodas" articlePath="/blog/tendencias-bodas-2026" />

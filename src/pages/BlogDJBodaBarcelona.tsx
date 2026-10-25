@@ -161,6 +161,7 @@ export default function BlogDJBodaBarcelona() {
                   <DJResourcesAffiliate role="dj" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-barcelona' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_barcelona" articlePath="/blog/dj-bodas-barcelona" />

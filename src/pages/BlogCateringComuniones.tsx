@@ -191,6 +191,7 @@ export default function BlogCateringComuniones() {
 </main>
         <DJResourcesAffiliate role="catering" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/catering-comuniones-precio-persona' tag='Catering' />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_catering_comuniones" articlePath="/blog/catering-comuniones-precio-persona" />

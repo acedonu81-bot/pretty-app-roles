@@ -141,6 +141,7 @@ export default function BlogDJBodaAlicante() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-alicante" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-alicante' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_alicante" articlePath="/blog/dj-bodas-alicante" />

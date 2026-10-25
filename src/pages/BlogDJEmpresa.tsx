@@ -131,6 +131,7 @@ export default function BlogDJEmpresa() {
           </div>
         </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-empresa-precio' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_empresa" articlePath="/blog/dj-empresa-precio" />

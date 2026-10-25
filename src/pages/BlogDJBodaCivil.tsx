@@ -109,6 +109,7 @@ export default function BlogDJBodaCivil() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-boda-civil-precio-canciones" />
 </main>
       <BlogAuthor />
+      <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-boda-civil-precio-canciones' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_civil" articlePath="/blog/dj-boda-civil-precio-canciones" />

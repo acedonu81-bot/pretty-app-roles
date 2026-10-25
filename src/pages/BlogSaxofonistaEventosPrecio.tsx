@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import BlogTopCTA from '@/components/BlogTopCTA';
 import FichasRealesTira from '@/components/FichasRealesTira';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -280,6 +282,8 @@ export default function BlogSaxofonistaEventosPrecio() {
               </a>
             </div>
           </div>
+          <BlogAuthor />
+          <BlogShare />
         </main>
 
         <BlogRelatedPosts currentSlug='/blog/saxofonista-precio-espana' tag='Eventos' />

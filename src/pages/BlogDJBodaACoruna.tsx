@@ -140,6 +140,7 @@ export default function BlogDJBodaACoruna() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-a-coruna" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-a-coruna' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_acoruna_v2" articlePath="/blog/dj-bodas-a-coruna" />

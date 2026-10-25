@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Estepona: guía 2026', description: 'Cuánto cobran las azafatas para bodas en villas, eventos hoteleros y actos en Estepona. Tarifas 2026.', datePublished: '2026-06-14', dateModified: '2026-07-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-estepona' };
@@ -105,6 +106,7 @@ export default function BlogPrecioAzafatasEstepona() {
         </main>
         <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-estepona' tag='Staff' />
         <FooterPublic />
         <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_estepona_v2" articlePath="/blog/precio-azafatas-estepona" />

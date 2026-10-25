@@ -1,12 +1,12 @@
-import { Instagram, Linkedin } from 'lucide-react';
-import { TikTokIcon } from '@/components/FooterPublic';
+import { LogoInstagram, LogoTikTok, LogoLinkedIn } from '@/components/IconosMarcas';
 
 // Perfiles de XPEAK debajo del autor: dan a quien lee una forma de seguirnos y
-// a Google la pista de que la marca existe fuera de la web.
+// a Google la pista de que la marca existe fuera de la web. Logo y color de
+// cada red, como en la barra de compartir (25 oct).
 const REDES = [
-  { label: 'Instagram', href: 'https://www.instagram.com/xpeaksite?utm_source=xpeak_web&utm_medium=social&utm_campaign=blog_autor', Icon: Instagram },
-  { label: 'TikTok', href: 'https://www.tiktok.com/@xpeak30?utm_source=xpeak_web&utm_medium=social&utm_campaign=blog_autor', Icon: TikTokIcon },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/xpeak-site-79a8a3436/?utm_source=xpeak_web&utm_medium=social&utm_campaign=blog_autor', Icon: Linkedin },
+  { label: 'Instagram', href: 'https://www.instagram.com/xpeaksite?utm_source=xpeak_web&utm_medium=social&utm_campaign=blog_autor', Icon: LogoInstagram, bg: 'linear-gradient(45deg,#F58529,#DD2A7B 50%,#8134AF)' },
+  { label: 'TikTok', href: 'https://www.tiktok.com/@xpeak30?utm_source=xpeak_web&utm_medium=social&utm_campaign=blog_autor', Icon: LogoTikTok, bg: '#000000' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/xpeak-site-79a8a3436/?utm_source=xpeak_web&utm_medium=social&utm_campaign=blog_autor', Icon: LogoLinkedIn, bg: '#0A66C2' },
 ];
 
 const BlogAuthor = () => (
@@ -25,10 +25,10 @@ const BlogAuthor = () => (
       </p>
       <div className="flex flex-wrap items-center gap-2 mt-2.5">
         <span className="text-xs font-semibold" style={{ color: '#4b5563' }}>Síguenos:</span>
-        {REDES.map(({ label, href, Icon }) => (
+        {REDES.map(({ label, href, Icon, bg }) => (
           <a key={label} href={href} target="_blank" rel="noopener noreferrer me"
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors hover:opacity-80"
-            style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.35)', color: '#7a6216' }}>
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-white transition-opacity hover:opacity-85"
+            style={{ background: bg }}>
             <Icon className="w-3.5 h-3.5" />
             {label}
           </a>

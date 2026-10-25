@@ -115,6 +115,7 @@ export default function BlogFotografoBodaBilbao() {
 </main>
         <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-bilbao' tag='Fotografía' />
         <FooterPublic />
         <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_bilbao" articlePath="/blog/fotografo-boda-bilbao" />

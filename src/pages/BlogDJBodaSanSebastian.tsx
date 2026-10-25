@@ -92,6 +92,7 @@ export default function BlogDJBodaSanSebastian() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-san-sebastian" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-san-sebastian' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} articlePath="/blog/dj-bodas-san-sebastian" />

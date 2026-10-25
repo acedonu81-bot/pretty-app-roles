@@ -301,6 +301,7 @@ export default function BlogWeddingPlanner() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/wedding-planner-precio-espana" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/wedding-planner-precio-espana' tag='Eventos' />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_wedding_planner" articlePath="/blog/wedding-planner-precio-espana" />

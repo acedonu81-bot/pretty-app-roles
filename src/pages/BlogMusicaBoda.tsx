@@ -264,6 +264,7 @@ export default function BlogMusicaBoda() {
           </div>
         </main>
       <BlogAuthor />
+      <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/musica-para-bodas-guia' tag='DJ' />
         <FooterPublic />
       <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_musica_boda" articlePath="/blog/musica-para-bodas-guia" />

@@ -6,6 +6,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de bailarines e instructores de salsa y bachata en España: guía 2026', description: 'Cuánto cobra un bailarín para eventos y cuánto cuesta una clase particular de salsa, bachata o kizomba en España. Tarifas 2026.', datePublished: '2026-07-11', dateModified: '2026-07-11', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-bailarin-instructor-salsa-bachata' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -122,6 +123,7 @@ export default function BlogPrecioBailarin() {
           <BlogEmailCapture variant="presupuestos" intent="contratar-bailarin" articlePath="/blog/precio-bailarin-instructor-salsa-bachata" />
         </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/precio-bailarin-instructor-salsa-bachata' tag='Bailarin' />
         <FooterPublic />
         <BlogScrollCTA role="bailarin_pro" storageKey="xpeak_scrollcta_precio_bailarin_v2" articlePath="/blog/precio-bailarin-instructor-salsa-bachata" />

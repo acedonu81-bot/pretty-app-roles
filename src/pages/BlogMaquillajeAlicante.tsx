@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de maquilladora para eventos en Alicante: guía 2026', description: 'Cuánto cobra una maquilladora para bodas en la Costa Blanca y eventos corporativos en Alicante. Tarifas 2026.', datePublished: '2026-03-06', dateModified: '2026-04-13', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/maquillaje-eventos-alicante' };
@@ -104,6 +105,7 @@ export default function BlogMaquillajeAlicante() {
         </main>
         <DJResourcesAffiliate role="maquillaje" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-alicante' tag='Maquillaje' />
         <FooterPublic />
         <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_alicante_v2" articlePath="/blog/maquillaje-eventos-alicante" />

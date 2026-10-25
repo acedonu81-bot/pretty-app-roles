@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Benalmádena: guía 2026', description: 'Cuánto cobran las azafatas para eventos en Puerto Marina y hoteles de Benalmádena. Tarifas de temporada alta 2026.', datePublished: '2026-03-10', dateModified: '2026-03-31', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-benalmadena' };
@@ -105,6 +106,7 @@ export default function BlogPrecioAzafatasBenalmadena() {
         </main>
         <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-benalmadena' tag='Staff' />
         <FooterPublic />
         <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_benalmadena_v2" articlePath="/blog/precio-azafatas-benalmadena" />

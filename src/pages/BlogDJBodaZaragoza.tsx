@@ -128,6 +128,7 @@ export default function BlogDJBodaZaragoza() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-zaragoza" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-zaragoza' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_zaragoza" articlePath="/blog/dj-bodas-zaragoza" />

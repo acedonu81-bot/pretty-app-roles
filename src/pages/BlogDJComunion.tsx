@@ -180,6 +180,7 @@ export default function BlogDJComunion() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-comunion-precio" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-para-comunion-precio' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_comunion" articlePath="/blog/dj-para-comunion-precio" />

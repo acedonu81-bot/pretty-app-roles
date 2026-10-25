@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de camareros para eventos en Córdoba: guía 2026', description: 'Cuánto cobran los camareros y bartenders para bodas en cortijos y eventos en Córdoba. Tarifas por perfil 2026.', datePublished: '2026-03-20', dateModified: '2026-04-28', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/camareros-eventos-cordoba' };
@@ -105,6 +106,7 @@ export default function BlogCamarerosCordoba() {
         </main>
         <DJResourcesAffiliate role="camareros" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-cordoba' tag='Camareros' />
         <FooterPublic />
         <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_cordoba_v2" articlePath="/blog/camareros-eventos-cordoba" />

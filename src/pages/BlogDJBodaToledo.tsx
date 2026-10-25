@@ -59,6 +59,7 @@ export default function BlogDJBodaToledo() {
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-toledo" />
 </main>
     <BlogAuthor />
+    <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-toledo' tag='DJ' />
         <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} articlePath="/blog/dj-bodas-toledo" />

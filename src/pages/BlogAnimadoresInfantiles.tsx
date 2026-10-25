@@ -114,6 +114,7 @@ export default function BlogAnimadoresInfantiles() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/animadores-infantiles-comuniones-cumpleanos" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/animadores-infantiles-comuniones-cumpleanos' tag='Animador' />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_animadores_infantiles" articlePath="/blog/animadores-infantiles-comuniones-cumpleanos" />

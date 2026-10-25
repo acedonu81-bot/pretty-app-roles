@@ -59,6 +59,7 @@ export default function BlogDJBodaOviedo() {
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-oviedo" />
 </main>
     <BlogAuthor />
+    <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-oviedo' tag='DJ' />
         <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} articlePath="/blog/dj-bodas-oviedo" />

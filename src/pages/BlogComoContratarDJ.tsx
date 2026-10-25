@@ -147,6 +147,7 @@ export default function BlogComoContratarDJ() {
           </div>
         </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/como-contratar-un-dj' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_como_contratar_dj" articlePath="/blog/como-contratar-un-dj" />

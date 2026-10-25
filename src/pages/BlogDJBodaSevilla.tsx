@@ -147,6 +147,7 @@ export default function BlogDJBodaSevilla() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-sevilla" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-sevilla' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_sevilla" articlePath="/blog/dj-bodas-sevilla" />

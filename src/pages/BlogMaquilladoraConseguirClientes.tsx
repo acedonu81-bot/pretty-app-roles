@@ -143,6 +143,7 @@ export default function BlogMaquilladoraConseguirClientes() {
 </main>
         <DJResourcesAffiliate role="maquillaje" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/maquilladora-conseguir-clientes' tag='Maquillaje' />
         <FooterPublic />
         <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquilladora_conseguir_clientes" articlePath="/blog/maquilladora-conseguir-clientes" />

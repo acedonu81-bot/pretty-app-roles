@@ -115,6 +115,7 @@ export default function BlogFotografoBodaMallorca() {
 </main>
         <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-mallorca' tag='Fotografía' />
         <FooterPublic />
         <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_mallorca" articlePath="/blog/fotografo-boda-mallorca" />

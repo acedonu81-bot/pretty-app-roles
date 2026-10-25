@@ -124,6 +124,7 @@ export default function BlogFotografoConseguirClientes() {
 </main>
         <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/fotografo-como-conseguir-clientes' tag='Fotografía' />
         <FooterPublic />
         <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_conseguir_clientes" articlePath="/blog/fotografo-como-conseguir-clientes" />

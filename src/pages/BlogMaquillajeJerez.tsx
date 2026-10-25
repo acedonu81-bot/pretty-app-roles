@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de maquilladora para eventos en Jerez de la Frontera: guía 2026', description: 'Cuánto cobra una maquilladora para bodas en bodegas y la Feria de Jerez. Tarifas por servicio 2026.', datePublished: '2026-05-15', dateModified: '2026-07-27', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/maquillaje-eventos-jerez' };
@@ -104,6 +105,7 @@ export default function BlogMaquillajeJerez() {
         </main>
         <DJResourcesAffiliate role="maquillaje" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-jerez' tag='Maquillaje' />
         <FooterPublic />
         <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_jerez_v2" articlePath="/blog/maquillaje-eventos-jerez" />

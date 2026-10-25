@@ -236,6 +236,7 @@ export default function BlogMaquillajeBoda() {
 </main>
       <DJResourcesAffiliate role="maquillaje" />
       <BlogAuthor />
+      <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-nupcial-precio-guia' tag='Maquillaje' />
         <FooterPublic />
         <BlogScrollCTA role="makeup" storageKey="xpeak_scrollcta_maquillaje_boda" articlePath="/blog/maquillaje-nupcial-precio-guia" />

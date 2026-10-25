@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de maquilladora para eventos en Torrevieja: guía 2026', description: 'Cuánto cobra una maquilladora para bodas y eventos en Torrevieja. Tarifas por servicio 2026.', datePublished: '2026-06-27', dateModified: '2026-07-05', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/maquillaje-eventos-torrevieja' };
@@ -104,6 +105,7 @@ export default function BlogMaquillajeTorrevieja() {
         </main>
         <DJResourcesAffiliate role="maquillaje" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-torrevieja' tag='Maquillaje' />
         <FooterPublic />
         <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_torrevieja_v2" articlePath="/blog/maquillaje-eventos-torrevieja" />

@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import { EMBLEMATICOS as emblematicos, SALAS as salas, BARES as bares, TERRAZAS as terrazas, HUERTAS_LATINA as huertasLatina, FINCAS as fincas, LocalInvestigado } from '@/data/localesEventosMadrid';
 
@@ -227,6 +229,8 @@ export default function BlogLocalesEventosMadrid() {
               </a>
             </div>
           </div>
+          <BlogAuthor />
+          <BlogShare />
         </main>
 
         <BlogRelatedPosts currentSlug='/blog/locales-para-eventos-madrid' tag='Organizadores' />

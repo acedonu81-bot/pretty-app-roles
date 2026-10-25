@@ -213,6 +213,7 @@ export default function BlogContratoDJ() {
           </div>
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/contrato-dj-que-debe-incluir' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_contrato_dj" articlePath="/blog/contrato-dj-que-debe-incluir" />

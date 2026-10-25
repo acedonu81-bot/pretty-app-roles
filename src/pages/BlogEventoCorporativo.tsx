@@ -196,6 +196,7 @@ export default function BlogEventoCorporativo() {
                   <BlogEmailCapture variant="presupuestos" intent="general" articlePath="/blog/como-organizar-evento-corporativo" />
 </main>
       <BlogAuthor />
+      <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/como-organizar-evento-corporativo' tag='Eventos' />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_evento_corporativo" articlePath="/blog/como-organizar-evento-corporativo" />

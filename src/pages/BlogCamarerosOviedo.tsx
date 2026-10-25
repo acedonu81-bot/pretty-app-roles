@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de camareros para eventos en Oviedo: guía 2026', description: 'Cuánto cobran los camareros y bartenders para bodas en el casco histórico y eventos corporativos en Oviedo. Tarifas 2026.', datePublished: '2026-04-07', dateModified: '2026-04-08', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/camareros-eventos-oviedo' };
@@ -105,6 +106,7 @@ export default function BlogCamarerosOviedo() {
         </main>
         <DJResourcesAffiliate role="camareros" />
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-oviedo' tag='Camareros' />
         <FooterPublic />
         <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_oviedo_v2" articlePath="/blog/camareros-eventos-oviedo" />

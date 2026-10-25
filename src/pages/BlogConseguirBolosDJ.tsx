@@ -127,6 +127,7 @@ export default function BlogConseguirBolosDJ() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/como-conseguir-bolos-dj" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/como-conseguir-bolos-dj' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_conseguir_bolos_dj" articlePath="/blog/como-conseguir-bolos-dj" />

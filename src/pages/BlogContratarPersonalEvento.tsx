@@ -200,6 +200,7 @@ export default function BlogContratarPersonalEvento() {
                   <BlogEmailCapture variant="presupuestos" intent="general" articlePath="/blog/como-contratar-personal-para-un-evento" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/como-contratar-personal-para-un-evento' tag='Staff' />
         <FooterPublic />
         <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_contratar_personal_evento" articlePath="/blog/como-contratar-personal-para-un-evento" />

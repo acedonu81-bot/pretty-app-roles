@@ -118,6 +118,7 @@ export default function BlogCalculadoraTarifaDJ() {
           </div>
         </main>
         <BlogAuthor />
+        <BlogShare />
         <DJResourcesAffiliate role="dj" />
         <BlogRelatedPosts currentSlug='/blog/calculadora-tarifa-dj' tag='DJ' />
         <FooterPublic />

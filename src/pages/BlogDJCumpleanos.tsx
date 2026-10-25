@@ -236,6 +236,7 @@ export default function BlogDJCumpleanos() {
                   <DJResourcesAffiliate role="dj" />
 </main>
       <BlogAuthor />
+      <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-para-cumpleanos-precio' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_cumpleanos" articlePath="/blog/dj-para-cumpleanos-precio" />

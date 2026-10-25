@@ -350,6 +350,8 @@ export default function BlogBodaLowCost() {
         </main>
 
         <BlogAuthor />
+
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/boda-low-cost-checklist-completo' tag='Bodas' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_boda_low_cost" articlePath="/blog/boda-low-cost-checklist-completo" />

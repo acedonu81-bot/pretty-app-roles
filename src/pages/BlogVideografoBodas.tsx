@@ -128,6 +128,7 @@ export default function BlogVideografoBodas() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/videografo-bodas-precio" />
 </main>
         <BlogAuthor />
+        <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/videografo-bodas-precio' tag='Fotografía' />
         <FooterPublic />
         <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_videografo_bodas" articlePath="/blog/videografo-bodas-precio" />
