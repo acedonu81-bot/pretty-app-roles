@@ -14,18 +14,13 @@ const MORADO = '#8B3FD9';
 
 const BOMBILLAS = 22;
 
-// Murciélago en silueta morada (no negra), alas con aleteo por CSS.
+// Murciélago volador (render clay de Higgsfield, fondo recortado). El aleteo
+// se simula aplastando la imagen en vertical muy rápido; el vuelo lo mueve el
+// contenedor .hw-vuelo.
 const Murcielago = () => (
-  <svg viewBox="0 0 120 50" width="72" height="30" aria-hidden className="hw-murcielago">
-    <g fill="#4A1D7A">
-      <path className="hw-ala-izq" d="M60 26 C50 10 34 6 18 12 C24 16 24 22 20 26 C28 24 32 28 32 34 C38 28 46 28 52 32 Z" />
-      <path className="hw-ala-der" d="M60 26 C70 10 86 6 102 12 C96 16 96 22 100 26 C92 24 88 28 88 34 C82 28 74 28 68 32 Z" />
-      <ellipse cx="60" cy="28" rx="8" ry="10" />
-      <path d="M54 20 L55 13 L58 19 Z M66 20 L65 13 L62 19 Z" />
-    </g>
-    <circle cx="57" cy="25" r="1.4" fill={NARANJA} />
-    <circle cx="63" cy="25" r="1.4" fill={NARANJA} />
-  </svg>
+  <img src="/halloween/murcielago-volando.webp" alt="" width={240} height={109} aria-hidden
+    decoding="async" className="hw-murcielago block w-[78px] sm:w-[104px] h-auto"
+    style={{ filter: 'drop-shadow(0 0 8px rgba(201,163,245,0.5)) drop-shadow(0 8px 10px rgba(20,0,60,0.35))' }} />
 );
 
 const HalloweenHero = () => {
@@ -47,19 +42,17 @@ const HalloweenHero = () => {
         @keyframes hwFocoB { 0%,100% { transform: rotate(26deg); } 50% { transform: rotate(-16deg); } }
         @keyframes hwBombilla { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
         @keyframes hwNiebla { 0% { transform: translate3d(-8%,0,0); } 50% { transform: translate3d(8%,-6px,0); } 100% { transform: translate3d(-8%,0,0); } }
-        @keyframes hwVuelo { 0% { transform: translate3d(-12vw, 40px, 0) scale(0.7); opacity: 0; } 8% { opacity: 1; } 50% { transform: translate3d(50vw, -30px, 0) scale(1.1); } 92% { opacity: 1; } 100% { transform: translate3d(112vw, 20px, 0) scale(0.8); opacity: 0; } }
-        @keyframes hwAlaI { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-22deg); } }
-        @keyframes hwAlaD { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(22deg); } }
+        @keyframes hwVuelo { 0% { transform: translate3d(-14vw, 26px, 0) scale(0.75); opacity: 0; } 8% { opacity: 1; } 30% { transform: translate3d(28vw, 2px, 0) scale(0.95); } 55% { transform: translate3d(58vw, 22px, 0) scale(1.05); } 92% { opacity: 1; } 100% { transform: translate3d(112vw, 4px, 0) scale(0.85); opacity: 0; } }
+        @keyframes hwAleteo { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.72) translateY(4px); } }
         .hw-foco { position: absolute; top: -10%; width: 34vw; max-width: 460px; height: 130%; transform-origin: 50% 0; mix-blend-mode: screen; filter: blur(6px); }
         .hw-foco-a { left: 6%; animation: hwFocoA 7s ease-in-out infinite; }
         .hw-foco-b { right: 6%; animation: hwFocoB 8.5s ease-in-out infinite; }
         .hw-bombilla { animation: hwBombilla 1.8s ease-in-out infinite; }
         .hw-niebla { animation: hwNiebla 14s ease-in-out infinite; will-change: transform; }
-        .hw-vuelo { position: absolute; top: 18%; left: 0; animation: hwVuelo 6.5s ease-in-out 1 forwards; }
-        .hw-ala-izq { transform-origin: 60px 26px; animation: hwAlaI 0.28s ease-in-out infinite; }
-        .hw-ala-der { transform-origin: 60px 26px; animation: hwAlaD 0.28s ease-in-out infinite; }
+        .hw-vuelo { position: absolute; top: 34px; left: 0; animation: hwVuelo 6.5s ease-in-out 1 forwards; }
+        .hw-murcielago { transform-origin: 50% 45%; animation: hwAleteo 0.32s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
-          .hw-foco-a, .hw-foco-b, .hw-bombilla, .hw-niebla, .hw-ala-izq, .hw-ala-der { animation: none; }
+          .hw-foco-a, .hw-foco-b, .hw-bombilla, .hw-niebla, .hw-murcielago { animation: none; }
           .hw-vuelo { display: none; }
         }
       `}</style>
