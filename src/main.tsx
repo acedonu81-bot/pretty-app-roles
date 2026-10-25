@@ -14,6 +14,12 @@ import { getNativeSessionReady } from "./lib/nativeEntry";
 initCapacitor(undefined, getNativeSessionReady());
 trackAIReferral();
 
+// Estilo "plastilina" solo en la app instalada, no en la web (decisión del
+// usuario, 25 oct 2026): index.css cuelga esos estilos de esta clase.
+if (window.matchMedia('(display-mode: standalone)').matches || (navigator as { standalone?: boolean }).standalone) {
+  document.documentElement.classList.add('app-instalada');
+}
+
 // Purga de emergencia: dispositivos con el Service Worker antiguo ('xpeak-v2')
 // se quedaban sirviendo bundles viejos cacheados (usuarios veían la versión
 // anterior de /descubrir pese a los deploys). Al arrancar: desregistrar TODOS

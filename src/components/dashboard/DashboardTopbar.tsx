@@ -213,7 +213,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           <button
             onClick={onBack}
             aria-label="Volver"
-            className="p-3 rounded-2xl flex-shrink-0 transition-colors"
+            className="clay-round p-3 rounded-2xl flex-shrink-0 transition-colors"
             style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}
           >
             <ArrowLeft size={20} />
@@ -223,7 +223,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           <button
             onClick={onMenuToggle}
             aria-label="Abrir menú"
-            className="p-3 rounded-2xl flex-shrink-0 transition-colors"
+            className="clay-round p-3 rounded-2xl flex-shrink-0 transition-colors"
             style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}
           >
             <Menu size={20} />
@@ -239,7 +239,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           <button
             onClick={() => setMobileSearchOpen(true)}
             aria-label="Buscar"
-            className="p-3 rounded-full flex-shrink-0 transition-colors"
+            className="clay-round p-3 rounded-full flex-shrink-0 transition-colors"
             style={{ background: '#f5f5f5', border: '1px solid rgba(0,0,0,0.1)', color: '#999' }}
           >
             <Search size={15} />

@@ -119,7 +119,7 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
       type="button"
       onClick={() => onNavigate?.(item.view)}
       aria-label={`Ver ${item.nombre}`}
-      className="relative w-full overflow-hidden rounded-2xl text-left transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.015] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2"
+      className="clay-categoria relative w-full overflow-hidden rounded-2xl text-left transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.015] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2"
       style={{
         aspectRatio: '3 / 2',
         background: '#ffffff',

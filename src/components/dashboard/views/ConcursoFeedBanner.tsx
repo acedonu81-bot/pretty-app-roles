@@ -122,13 +122,13 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         ) : (<>
         {!organizador && (
           <Link to="/concurso-dj-madrid#inscripcion"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
+            className="clay-btn-blanco inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
             style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
             Participar <ArrowRight size={15} strokeWidth={2.75} />
           </Link>
         )}
         <Link to="/concurso-dj-madrid/aspirantes"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
+          className="clay-btn-blanco inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm bg-white transition-transform hover:translate-x-0.5"
           style={{ color: '#3a1f9e', fontFamily: HZ.display, fontWeight: 800 }}>
           Ver aspirantes <ArrowRight size={15} strokeWidth={2.75} />
         </Link>

@@ -631,3 +631,50 @@ html[data-reproductor] { --reproductor-h: 56px; --reproductor-bottom: 0px; }
 /* Solo el panel tiene menú inferior móvil: ahí la barra se sienta encima de él. */
 html[data-reproductor]:has(.mobile-bottom-nav) { --reproductor-bottom: var(--mobile-nav-space); }
 html[data-reproductor] body { padding-bottom: var(--reproductor-h); }
+
+/* Estilo "plastilina" (claymorphismo nítido) SOLO en la app instalada
+   (25 oct 2026). main.tsx pone .app-instalada en <html>. Sombras cortas y
+   borde fino para que no se difumine; botones con "escalón" de tecla. Los
+   !important pisan los style={{}} en línea de cada componente. */
+html.app-instalada .clay-fondo { background: #F4ECDD !important; }
+html.app-instalada .clay-categoria {
+  border-radius: 28px !important; border: 2px solid #FFF8E6 !important;
+  box-shadow: 0 0 0 1px rgba(139,106,0,.22), 5px 7px 0 rgba(139,106,0,.16), 6px 9px 14px rgba(120,90,20,.22) !important;
+}
+html.app-instalada .clay-card {
+  border-radius: 24px !important; border: 1px solid rgba(139,106,0,.16) !important; background: #FBF5E8 !important;
+  box-shadow: 4px 5px 0 rgba(139,106,0,.10), 5px 7px 12px rgba(120,90,20,.14), inset 0 2px 0 rgba(255,255,255,.9), inset 0 -3px 0 rgba(139,106,0,.06) !important;
+}
+html.app-instalada .clay-btn {
+  border-radius: 999px !important; border: 1px solid #B8941E !important; font-weight: 900 !important;
+  background: linear-gradient(180deg,#F2D57E,#D4AF37) !important; color: #2b2000 !important;
+  box-shadow: 0 3px 0 #A8851A, 0 5px 8px rgba(139,106,0,.25), inset 0 2px 0 rgba(255,255,255,.65) !important;
+}
+html.app-instalada .clay-btn-blanco {
+  box-shadow: 0 3px 0 rgba(60,40,160,.35), 0 5px 10px rgba(40,20,120,.25), inset 0 2px 0 #fff !important;
+}
+html.app-instalada .clay-round {
+  border: 1px solid rgba(139,106,0,.18) !important; background: #FBF5E8 !important; border-radius: 16px !important; color: #8A6D0F !important;
+  box-shadow: 0 3px 0 rgba(139,106,0,.14), 0 5px 8px rgba(120,90,20,.14), inset 0 2px 0 #fff !important;
+}
+/* Al pulsar, la tecla se hunde: pierde el escalón. */
+html.app-instalada :is(.clay-btn, .clay-btn-blanco, .clay-round):active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(139,106,0,.3) !important; }
+/* Barra flotante: se separa del borde lo que antes era su relleno inferior,
+   y el panel reserva 10px más para que no tape lo último de la lista. */
+@media (max-width: 767px) {
+  html.app-instalada:not([data-chat-abierto]) { --mobile-nav-space: calc(64px + var(--mobile-nav-sab)); }
+}
+html.app-instalada .mobile-bottom-nav {
+  left: 12px !important; right: 12px !important; bottom: var(--mobile-nav-sab) !important;
+  height: 56px !important; padding-bottom: 0 !important; border-radius: 28px !important;
+  border: 1px solid rgba(139,106,0,.18) !important; background: #FBF5E8 !important;
+  box-shadow: 0 4px 0 rgba(139,106,0,.12), 0 8px 16px rgba(120,90,20,.18), inset 0 2px 0 #fff !important;
+}
+html.app-instalada .clay-tab-activa {
+  height: 32px !important; border: 1px solid #B8941E; background: linear-gradient(180deg,#F2D57E,#D4AF37) !important;
+  box-shadow: 0 3px 0 #A8851A, inset 0 2px 0 rgba(255,255,255,.6);
+}
+html.app-instalada .clay-tab-alerta {
+  height: 32px !important; border: 1px solid #15803d;
+  box-shadow: 0 3px 0 #166534, inset 0 2px 0 rgba(255,255,255,.35);
+}

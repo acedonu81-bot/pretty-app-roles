@@ -36,12 +36,12 @@ const TabButton = ({ tab, onClick }: { tab: Tab; onClick: () => void }) => (
   >
     <div className="relative">
       {tab.alerta ? (
-        <span className="flex items-center justify-center rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
+        <span className="clay-tab-alerta flex items-center justify-center rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]"
           style={{ width: 52, height: 28, background: '#16a34a' }}>
           <tab.icon size={20} strokeWidth={2.5} style={{ color: '#fff' }} />
         </span>
       ) : (
-        <span className="flex items-center justify-center rounded-full transition-colors"
+        <span className={`${tab.isActive ? 'clay-tab-activa ' : ''}flex items-center justify-center rounded-full transition-colors`}
           style={{ width: 52, height: 28, background: tab.isActive ? 'rgba(212,175,55,0.18)' : 'transparent' }}>
           <tab.icon
             size={22}

@@ -114,7 +114,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
   const instagramOnlyMissing = !hasInstagram && missingCount === 1;
 
   return (
-    <div className="mx-4 mt-3 mb-0 flex items-center gap-3 px-4 py-3 rounded-xl text-xs"
+    <div className="clay-card mx-4 mt-3 mb-0 flex items-center gap-3 px-4 py-3 rounded-xl text-xs"
       style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)' }}>
       <div className="flex-1 flex items-center gap-3 min-w-0">
         <div className="w-20 h-1.5 rounded-full flex-shrink-0" style={{ background: 'rgba(0,0,0,0.08)' }}>
@@ -132,7 +132,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
         </span>
       </div>
       <button onClick={() => onNavigate('profile')}
-        className="flex-shrink-0 px-3 py-1.5 rounded-lg font-bold transition-all hover:scale-105"
+        className="clay-btn flex-shrink-0 px-3 py-1.5 rounded-lg font-bold transition-all hover:scale-105"
         style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
         Completar
       </button>
@@ -161,13 +161,13 @@ const MarketingConsentBanner = () => {
   };
 
   return (
-    <div className="mx-4 mt-3 mb-0 flex items-center gap-3 px-4 py-3 rounded-xl text-xs"
+    <div className="clay-card mx-4 mt-3 mb-0 flex items-center gap-3 px-4 py-3 rounded-xl text-xs"
       style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)' }}>
       <span className="flex-1" style={{ color: '#222' }}>
         ¿Quieres recibir novedades y ofertas de XPEAK por email?
       </span>
       <button onClick={() => respond(true)}
-        className="flex-shrink-0 px-3 py-1.5 rounded-lg font-bold transition-all hover:scale-105"
+        className="clay-btn flex-shrink-0 px-3 py-1.5 rounded-lg font-bold transition-all hover:scale-105"
         style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
         Sí, quiero
       </button>
@@ -763,7 +763,7 @@ const Dashboard = () => {
         )}
 
         <main
-          className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0 no-scrollbar"
+          className="clay-fondo flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0 no-scrollbar"
           style={{ transition: 'width 300ms cubic-bezier(0.32,0.72,0,1)' }}
         >
           <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} userId={user?.id} isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange}
