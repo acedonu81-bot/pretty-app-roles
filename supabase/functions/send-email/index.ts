@@ -1311,7 +1311,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Tu solicitud tuvo respuesta</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
-        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, cuando pediste ${esc(d.detalle_solicitud ?? 'un profesional')}, <strong style="color:#0a0908">${esc(d.n_respuestas)} ${esc(d.plural ?? 'profesionales')} te contestaron</strong> por el chat de XPEAK en menos de un día.
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, cuando pediste ${esc(d.detalle_solicitud ?? 'un profesional')}, <strong style="color:#0a0908">${esc(d.n_respuestas)} ${esc(d.plural ?? 'profesionales')} te contestaron</strong> por el chat de XPEAK, el primero en menos de un día.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         La próxima vez que necesites cubrir una fecha, pídelo desde XPEAK y revisa tus mensajes: las respuestas llegan rápido.
