@@ -1,6 +1,6 @@
 import { Instagram, Linkedin, Facebook } from 'lucide-react';
 
-function TikTokIcon({ className }: { className?: string }) {
+export function TikTokIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
       <path d="M16.6 5.82c-.9-.95-1.4-2.17-1.4-3.46h-3.14v13.5c0 1.63-1.32 2.95-2.95 2.95a2.95 2.95 0 0 1 0-5.9c.26 0 .51.03.76.1v-3.2a6.15 6.15 0 0 0-.76-.05A6.1 6.1 0 0 0 3 15.86a6.1 6.1 0 0 0 6.1 6.1 6.1 6.1 0 0 0 6.1-6.1V9.4a8.25 8.25 0 0 0 4.8 1.54V7.8a4.85 4.85 0 0 1-3.4-1.98Z" />
