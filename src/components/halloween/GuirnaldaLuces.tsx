@@ -1,6 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import { halloweenActivo } from '@/lib/halloween';
 import { MurcielagoColgado } from '@/components/halloween/HalloweenHero';
+import FantasmaAsomado from '@/components/halloween/FantasmaAsomado';
+import { Telarana } from '@/components/halloween/Telarana';
 
 // PROVISIONAL: guirnalda de luces de verbena colgada del borde de arriba en
 // todas las páginas durante Halloween (25 oct - 1 nov 2026). Es el hilo común
@@ -12,8 +14,15 @@ const BOMBILLAS = 28;
 
 const GuirnaldaLuces = () => {
   const { pathname } = useLocation();
-  if (pathname === '/' || !halloweenActivo()) return null;
+  if (!halloweenActivo()) return null;
+  // La portada lleva su propia guirnalda dentro del hero: aquí solo el fantasma.
+  if (pathname === '/') return <FantasmaAsomado />;
   return (
+    <>
+    <FantasmaAsomado />
+    {/* Telarañas en las esquinas de arriba, solo en ordenador. */}
+    <Telarana className="hidden md:block fixed left-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
+    <Telarana espejo className="hidden md:block fixed right-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
     <div aria-hidden className="fixed left-0 right-0 z-[60] pointer-events-none h-3"
       style={{ top: 'env(safe-area-inset-top, 0px)' }}>
       <style>{`
@@ -26,10 +35,10 @@ const GuirnaldaLuces = () => {
         <path d="M0 1 Q125 9 250 3 T500 3 T750 3 T1000 1" stroke="rgba(74,29,122,0.35)" strokeWidth="1" fill="none" vectorEffect="non-scaling-stroke" />
       </svg>
       {/* En los márgenes laterales: ahí no hay botones ni texto en ninguna página. */}
-      <MurcielagoColgado modelo="a" className="w-[11px] sm:w-[18px]" style={{ left: '1.2%', top: 3 }} />
-      <MurcielagoColgado modelo="b" className="w-[10px] sm:w-[16px]" retraso={1.3} style={{ right: '1.6%', top: 3 }} />
+      <MurcielagoColgado modelo="a" className="w-[14px] sm:w-[24px]" style={{ left: '1.2%', top: 3 }} />
+      <MurcielagoColgado modelo="b" className="w-[13px] sm:w-[22px]" retraso={1.3} style={{ right: '1.6%', top: 3 }} />
       {/* Ordenador: el centro de la guirnalda queda muy vacío. */}
-      <MurcielagoColgado modelo="a" className="hidden md:block w-[17px]" retraso={0.6} style={{ left: '52%', top: 3 }} />
+      <MurcielagoColgado modelo="a" className="hidden md:block w-[24px]" retraso={0.6} style={{ left: '52%', top: 3 }} />
       {Array.from({ length: BOMBILLAS }, (_, i) => {
         const x = (i + 0.5) / BOMBILLAS;
         const color = COLORES[i % 2];
@@ -43,6 +52,7 @@ const GuirnaldaLuces = () => {
         );
       })}
     </div>
+    </>
   );
 };
 

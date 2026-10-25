@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type React from 'react';
+import { Telarana } from '@/components/halloween/Telarana';
 
 // PROVISIONAL: modo Halloween de la portada (25 oct - 1 nov 2026, ver
 // halloweenActivo). Capa encima del vídeo del hero: tinte morado, focos de
@@ -79,8 +80,8 @@ const HalloweenHero = () => {
       <div className="absolute left-0 right-0 top-0 h-12">
         {/* Colgados justo del cable: la curva del SVG pasa por y≈21 en el 18%
             y por y≈17 en el 42% (Q de 0,6 a 500,10 con control en 250,40). */}
-        <MurcielagoColgado claro modelo="a" className="w-[16px] sm:w-[28px]" style={{ left: '18%', top: 20 }} />
-        <MurcielagoColgado claro modelo="b" className="w-[14px] sm:w-[24px]" retraso={1.1} style={{ left: '42%', top: 16 }} />
+        <MurcielagoColgado claro modelo="a" className="w-[18px] sm:w-[38px]" style={{ left: '18%', top: 20 }} />
+        <MurcielagoColgado claro modelo="b" className="w-[16px] sm:w-[22px]" retraso={1.1} style={{ left: '42%', top: 16 }} />
         <MurcielagoColgado claro modelo="a" className="hidden md:block w-[26px]" retraso={2} style={{ left: '66%', top: 4 }} />
         {Array.from({ length: BOMBILLAS }, (_, i) => {
           const x = (i + 0.5) / BOMBILLAS;
@@ -105,6 +106,10 @@ const HalloweenHero = () => {
       }} />
 
       {murcielago && <div className="hw-vuelo"><Murcielago /></div>}
+
+      {/* Telarañas en las esquinas de arriba del hero, solo en ordenador. */}
+      <Telarana claro className="hidden md:block absolute left-0 top-0 w-[130px]" />
+      <Telarana claro espejo className="hidden md:block absolute right-0 top-0 w-[130px]" />
     </div>
   );
 };
