@@ -204,15 +204,15 @@ const faqStructured = {
             </table>
           </div>
 
-          {/* A mesa puesta vs con equipo: aclaración que pidió Warm Up Academy
+          {/* Solo a pinchar vs con equipo: aclaración que pidió Warm Up Academy
               (25 oct). Las tarifas de los perfiles no dicen si llevan equipo. */}
-          <h2 className="text-xl font-black mb-4">Precio a mesa puesta o con equipo propio</h2>
+          <h2 className="text-xl font-black mb-4">Precio solo por pinchar o con equipo propio</h2>
           <p className="text-base mb-4 leading-relaxed" style={{ color: '#222' }}>
-            No es lo mismo un DJ <strong>a mesa puesta</strong>, que llega, pincha con el equipo que ya tiene la sala y se va, que uno que trae sus propios altavoces, controladora, luces y micrófono. Las tarifas por hora de esta guía no siempre aclaran qué incluyen, así que al pedir presupuesto pregunta siempre si el equipo va incluido.
+            No es lo mismo un DJ que va <strong>solo a pinchar</strong>, con el equipo ya montado por la sala o el organizador, que uno que trae sus propios altavoces, controladora, luces y micrófono. Las tarifas por hora de esta guía no siempre aclaran qué incluyen, así que al pedir presupuesto pregunta siempre si el equipo va incluido.
           </p>
           <div className="mb-10 p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.18)' }}>
             <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
-              Según <a href="https://warmup-academy.com/" target="_blank" rel="noopener" className="font-bold underline" style={{ color: '#8B6A00' }}>Warm Up Academy</a>, escuela de DJ y producción musical en Madrid, un DJ contratado y dado de alta cobra como mínimo unos <strong>150 € por 3 horas</strong>, y eso a mesa puesta, sin llevar nada de equipo.
+              Según <a href="https://warmup-academy.com/" target="_blank" rel="noopener" className="font-bold underline" style={{ color: '#8B6A00' }}>Warm Up Academy</a>, escuela de DJ y producción musical en Madrid, un DJ contratado y dado de alta cobra como mínimo unos <strong>150 € por 3 horas</strong>, y eso yendo solo a pinchar, con el equipo ya montado y sin llevar nada.
             </p>
             <p className="text-base leading-relaxed" style={{ color: '#222' }}>
               En una boda o un evento lo normal es que el DJ lleve también el sonido, y entonces el precio tiene que ser más alto: ahí los 60 € la hora se quedan cortos.
