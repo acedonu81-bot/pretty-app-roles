@@ -358,7 +358,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                 </span>
               ) : 'X'}<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
             </h2>
-            <p className="text-[0.75rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: 'rgba(10,9,8,0.35)' }}>España · Directorio Profesional</p>
+            <p className="text-[0.75rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: halloweenActivo() ? '#E0650C' : 'rgba(10,9,8,0.35)' }}>{halloweenActivo() ? 'Semana de Halloween' : 'España · Directorio Profesional'}</p>
           </a>
           {!forceExpanded && <SidebarCollapseToggle />}
         </div>

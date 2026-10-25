@@ -2,6 +2,7 @@ import { ReproductorConcursoProvider } from '@/components/concurso/ReproductorCo
 import BarraVolver from '@/components/BarraVolver';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
+import GuirnaldaLuces from "@/components/halloween/GuirnaldaLuces";
 import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { XPeakToastProvider } from "@/lib/xpeak-toast";
@@ -423,6 +424,7 @@ const App = () => (
         <InstallAppBar />
         <BarraVolver />
         <RastreadorDeRutas />
+        <GuirnaldaLuces />
         {/* Un solo pixel visible durante la carga (no un color plano a pantalla
             completa) para que un "se queda pensando y luego en blanco" real se
             pueda distinguir de este fallback esperado durante los ms que tarda
