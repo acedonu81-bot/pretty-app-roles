@@ -382,6 +382,13 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          {/* Nota de agradecimiento: la escuela aportó lo de tocar solo o con
+              equipo (25 oct). Discreta y al final, no como cita en el texto. */}
+          <p className="text-xs mt-10 leading-relaxed" style={{ color: '#4b5563' }}>
+            Agradecemos a{' '}
+            <a href="https://warmup-academy.com/" target="_blank" rel="noopener" className="underline" style={{ color: '#8B6A00' }}>Warm Up Academy</a>,
+            escuela de DJ y producción musical en Madrid, la información que nos ha facilitado sobre tarifas y equipo para esta guía.
+          </p>
           <BlogAuthor />
           <BlogShare />
           <DJResourcesAffiliate role="dj" />
