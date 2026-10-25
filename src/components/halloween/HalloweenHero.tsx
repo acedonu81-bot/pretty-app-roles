@@ -77,6 +77,10 @@ const HalloweenHero = () => {
         <path d="M0 6 Q250 40 500 10 T1000 8" stroke="#5B2A86" strokeWidth="2" fill="none" />
       </svg>
       <div className="absolute left-0 right-0 top-0 h-12">
+        {/* Colgados justo del cable: la curva del SVG pasa por y≈21 en el 18%
+            y por y≈17 en el 42% (Q de 0,6 a 500,10 con control en 250,40). */}
+        <MurcielagoColgado claro ancho={26} style={{ left: '18%', top: 20 }} />
+        <MurcielagoColgado claro ancho={21} retraso={1.1} style={{ left: '42%', top: 16 }} />
         {Array.from({ length: BOMBILLAS }, (_, i) => {
           const x = (i + 0.5) / BOMBILLAS;
           // Misma curva que el cable: dos senos aproximan el Q/T del SVG.
@@ -121,3 +125,32 @@ export const SombreroBruja = ({ className = '' }: { className?: string }) => (
     <rect x="11" y="21" width="17" height="3" rx="1.5" fill="#FF8A1F" />
   </svg>
 );
+
+// Murciélago colgado boca abajo de la guirnalda, con las alas plegadas y un
+// balanceo lento. Morado noche (sin negro), ojos naranja.
+// claro: para fondo oscuro (hero de la portada), cuerpo morado vivo con borde lila.
+export const MurcielagoColgado = ({ ancho = 16, retraso = 0, claro = false, style }: { ancho?: number; retraso?: number; claro?: boolean; style?: React.CSSProperties }) => {
+  const cuerpo = claro ? '#8B3FD9' : '#4A1D7A';
+  const cabeza = claro ? '#A770E8' : '#5B2A86';
+  const borde = claro ? { stroke: '#E6D3FF', strokeWidth: 0.8 } : {};
+  return (
+  <span aria-hidden className="murcielago-colgado absolute block" style={{ width: ancho, transformOrigin: '50% 0', animationDelay: `${retraso}s`, ...style }}>
+    <style>{`
+      @keyframes murcielagoBalanceo { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+      .murcielago-colgado { animation: murcielagoBalanceo 3.2s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce) { .murcielago-colgado { animation: none; } }
+    `}</style>
+    <svg viewBox="0 0 24 34" width="100%" height="auto" style={{ display: 'block' }}>
+      {/* patas agarradas al cable */}
+      <path d="M10 0 L10.6 4 M14 0 L13.4 4" stroke={claro ? '#E6D3FF' : cuerpo} strokeWidth="1.4" strokeLinecap="round" />
+      {/* alas plegadas envolviendo el cuerpo */}
+      <path d="M12 3 C5 4 2 10 3 18 C4 24 7 27 9 29 C8 25 8 21 9 18 C10 22 11 26 12 30 C13 26 14 22 15 18 C16 21 16 25 15 29 C17 27 20 24 21 18 C22 10 19 4 12 3 Z" fill={cuerpo} {...borde} />
+      {/* cabeza abajo con orejas apuntando hacia el suelo */}
+      <ellipse cx="12" cy="27.5" rx="4" ry="3.6" fill={cabeza} {...borde} />
+      <path d="M9 29.5 L8.2 33.5 L10.6 30.8 Z M15 29.5 L15.8 33.5 L13.4 30.8 Z" fill={cabeza} />
+      <circle cx="10.6" cy="27" r="0.9" fill="#FF8A1F" />
+      <circle cx="13.4" cy="27" r="0.9" fill="#FF8A1F" />
+    </svg>
+  </span>
+  );
+};

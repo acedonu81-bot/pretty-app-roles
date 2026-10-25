@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { halloweenActivo } from '@/lib/halloween';
+import { MurcielagoColgado } from '@/components/halloween/HalloweenHero';
 
 // PROVISIONAL: guirnalda de luces de verbena colgada del borde de arriba en
 // todas las páginas durante Halloween (25 oct - 1 nov 2026). Es el hilo común
@@ -24,6 +25,8 @@ const GuirnaldaLuces = () => {
       <svg className="absolute inset-x-0 top-0 w-full" height="10" viewBox="0 0 1000 10" preserveAspectRatio="none">
         <path d="M0 1 Q125 9 250 3 T500 3 T750 3 T1000 1" stroke="rgba(74,29,122,0.35)" strokeWidth="1" fill="none" vectorEffect="non-scaling-stroke" />
       </svg>
+      <MurcielagoColgado ancho={16} style={{ left: '23%', top: 3 }} />
+      <MurcielagoColgado ancho={14} retraso={1.3} style={{ left: '71%', top: 3 }} />
       {Array.from({ length: BOMBILLAS }, (_, i) => {
         const x = (i + 0.5) / BOMBILLAS;
         const color = COLORES[i % 2];
