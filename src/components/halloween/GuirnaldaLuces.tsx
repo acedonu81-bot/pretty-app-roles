@@ -25,8 +25,9 @@ const GuirnaldaLuces = () => {
       <svg className="absolute inset-x-0 top-0 w-full" height="10" viewBox="0 0 1000 10" preserveAspectRatio="none">
         <path d="M0 1 Q125 9 250 3 T500 3 T750 3 T1000 1" stroke="rgba(74,29,122,0.35)" strokeWidth="1" fill="none" vectorEffect="non-scaling-stroke" />
       </svg>
-      <MurcielagoColgado ancho={16} style={{ left: '23%', top: 3 }} />
-      <MurcielagoColgado ancho={14} retraso={1.3} style={{ left: '71%', top: 3 }} />
+      {/* En los márgenes laterales: ahí no hay botones ni texto en ninguna página. */}
+      <MurcielagoColgado modelo="a" className="w-[11px] sm:w-[18px]" style={{ left: '1.2%', top: 3 }} />
+      <MurcielagoColgado modelo="b" className="w-[10px] sm:w-[16px]" retraso={1.3} style={{ right: '1.6%', top: 3 }} />
       {Array.from({ length: BOMBILLAS }, (_, i) => {
         const x = (i + 0.5) / BOMBILLAS;
         const color = COLORES[i % 2];
