@@ -5,6 +5,8 @@ import { HZ, clay, clayButton } from '@/components/healthy-zone/clay';
 import { concursoActivo, CIERRA_CONCURSO } from '@/lib/concursoMadrid';
 import { useEffect, useState } from 'react';
 import { useProfile } from '@/hooks/useProfile';
+import { halloweenActivo } from '@/lib/halloween';
+import { CalabazaDJ } from '@/components/halloween/HalloweenHero';
 
 // PROVISIONAL: banner del Concurso DJ XPEAK Madrid (13 oct - 2 nov 2026), en
 // el Feed y en Inicio (en el móvil el Feed no está en la barra de abajo y los
@@ -14,7 +16,7 @@ const MS_DIA = 86_400_000;
 
 // Cuenta atrás hasta el cierre (hora de Madrid, ver CIERRA_CONCURSO). Última
 // jornada: cifras en rosa y "Último día" en la etiqueta.
-export function CuentaAtras({ onFin, claro = false }: { onFin: () => void; claro?: boolean }) {
+export function CuentaAtras({ onFin, claro = false, hw = false }: { onFin: () => void; claro?: boolean; hw?: boolean }) {
   const [ahora, setAhora] = useState(() => Date.now());
   const resta = Math.max(0, CIERRA_CONCURSO.getTime() - ahora);
   useEffect(() => {
@@ -36,18 +38,18 @@ export function CuentaAtras({ onFin, claro = false }: { onFin: () => void; claro
       {trozos.map((t, i) => (
         <div key={t.l} aria-hidden className="min-w-[3.6rem] max-sm:min-w-0 max-sm:flex-1 px-1.5 pt-2 pb-1.5 rounded-2xl text-center"
           style={claro
-            ? { background: '#F4F9FF', boxShadow: clay('36,119,179', 'sm') }
+            ? { background: hw ? '#FFF8F0' : '#F4F9FF', boxShadow: clay(hw ? '139,63,217' : '36,119,179', 'sm') }
             : {
               background: 'rgba(255,255,255,0.16)',
               boxShadow: 'inset 3px 3px 8px rgba(255,255,255,0.28), inset -3px -3px 8px rgba(0,0,0,0.2), 0 6px 12px rgba(20,0,80,0.25)',
             }}>
           <span className="block text-[1.9rem] max-sm:text-2xl leading-none tabular-nums text-white"
             style={claro
-              ? { fontFamily: HZ.display, fontWeight: 800, color: urgente ? '#C2264B' : '#14407A' }
+              ? { fontFamily: HZ.display, fontWeight: 800, color: urgente ? '#C2264B' : hw ? '#4A1D7A' : '#14407A' }
               : { fontFamily: HZ.display, fontWeight: 800, color: urgente ? '#ff9aa8' : i === 3 ? '#ffe08a' : '#fff', textShadow: '0 2px 8px rgba(20,0,80,0.4)' }}>
             {p(t.v)}
           </span>
-          <span className="block text-[0.75rem] uppercase tracking-[0.08em] sm:tracking-[0.14em] mt-1" style={{ color: claro ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>{t.l}</span>
+          <span className="block text-[0.75rem] uppercase tracking-[0.08em] sm:tracking-[0.14em] mt-1" style={{ color: hw ? '#E0650C' : claro ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>{t.l}</span>
         </div>
       ))}
     </div>
@@ -64,6 +66,10 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
   if (cerrado || !concursoActivo()) return null;
   const ultimoDia = CIERRA_CONCURSO.getTime() - Date.now() < MS_DIA;
   const organizador = role === 'empresario';
+  // Halloween (25 oct - 1 nov): hw = landing (claro), hwPanel = Inicio y Feed.
+  const enHalloween = halloweenActivo();
+  const hw = sinTexto && enHalloween;
+  const hwPanel = !sinTexto && enHalloween;
 
   return (
     <>
@@ -72,12 +78,14 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
     {sinTexto && (
       <style>{`
         @keyframes concursoBrillo { 0%,100% { filter: drop-shadow(0 0 0 rgba(36,119,179,0)); } 50% { filter: drop-shadow(0 0 26px rgba(36,119,179,0.7)); } }
+        @keyframes concursoBrilloHw { 0%,100% { filter: drop-shadow(0 0 0 rgba(255,138,31,0)); } 50% { filter: drop-shadow(0 0 30px rgba(255,138,31,0.85)); } }
+        .concurso-parpadeo-hw { animation: concursoBrilloHw 1.6s ease-in-out infinite; }
         @keyframes concursoPulso { 0%,100% { transform: scale(1); } 50% { transform: scale(1.09); } }
         .concurso-parpadeo { animation: concursoBrillo 1.6s ease-in-out infinite; }
         @keyframes concursoCascos { 0%,100% { transform: translate3d(0,0,0) rotate(-8deg) scale(1); } 25% { transform: translate3d(0,-9px,0) rotate(-3deg) scale(1.03); } 50% { transform: translate3d(0,-14px,0) rotate(3deg) scale(1.05); } 75% { transform: translate3d(0,-6px,0) rotate(-2deg) scale(1.02); } }
         .concurso-cascos { animation: concursoCascos 4.2s ease-in-out infinite; will-change: transform; backface-visibility: hidden; }
         .concurso-boton-pulso { animation: concursoPulso 1.6s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) { .concurso-parpadeo, .concurso-boton-pulso, .concurso-cascos { animation: none; transform: rotate(-6deg); } }
+        @media (prefers-reduced-motion: reduce) { .concurso-parpadeo, .concurso-parpadeo-hw, .concurso-boton-pulso, .concurso-cascos { animation: none; transform: rotate(-6deg); } }
       `}</style>
     )}
     {/* Rejilla (15 oct 2026): en el móvil el contador iba en la columna del
@@ -86,23 +94,30 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         título y el contador y los botones van a todo el ancho; desde sm los
         cascos ocupan toda la altura a la derecha, como antes. */}
     <div
-      className={`relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-3xl mb-4 ${sinTexto ? 'p-5 sm:p-12 concurso-parpadeo' : 'p-5 sm:p-6'}`}
-      style={sinTexto
+      className={`relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-3xl mb-4 ${sinTexto ? `p-5 sm:p-12 ${hw ? 'concurso-parpadeo-hw' : 'concurso-parpadeo'}` : 'p-5 sm:p-6'}`}
+      style={hw
+        ? { background: 'linear-gradient(135deg,#FFF3E6 0%,#FFD9B0 50%,#E3C8FA 100%)', boxShadow: clay('139,63,217', 'lg') }
+        : sinTexto
         ? { background: 'linear-gradient(135deg,#F4F9FF 0%,#D3E6FB 55%,#B9D4F7 100%)', boxShadow: clay('36,119,179', 'lg') }
+        : hwPanel
+        ? {
+          background: 'linear-gradient(120deg,#4A1D7A 0%,#7A2FC0 45%,#F07212 100%)',
+          boxShadow: '10px 14px 30px rgba(122,47,192,0.35), inset -6px -6px 14px rgba(0,0,0,0.18), inset 6px 6px 14px rgba(255,255,255,0.25)',
+        }
         : {
         background: 'linear-gradient(120deg,#1d3fd6 0%,#2b6dff 40%,#a52ee0 100%)',
         boxShadow: '10px 14px 30px rgba(74,60,200,0.35), inset -6px -6px 14px rgba(0,0,0,0.18), inset 6px 6px 14px rgba(255,255,255,0.25)',
       }}
     >
       {/* Haces de luz, mismo aire que el carrusel de Instagram */}
-      {!sinTexto && <span aria-hidden className="absolute -left-10 top-[70%] h-[3px] w-[140%] -rotate-12 opacity-50" style={{ background: '#7fd3ff', filter: 'blur(2px)' }} />}
+      {!sinTexto && <span aria-hidden className="absolute -left-10 top-[70%] h-[3px] w-[140%] -rotate-12 opacity-50" style={{ background: hwPanel ? '#FFB25E' : '#7fd3ff', filter: 'blur(2px)' }} />}
       {!sinTexto && <span aria-hidden className="absolute -left-10 top-[90%] h-[3px] w-[140%] -rotate-[20deg] opacity-40" style={{ background: '#f08cff', filter: 'blur(2px)' }} />}
 
       <div className="relative min-w-0">
-        <p className="inline-flex items-center gap-1.5 text-[0.75rem] uppercase tracking-[0.2em] mb-1.5" style={{ color: sinTexto ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
-          <Trophy size={12} strokeWidth={2.5} /> {ultimoDia ? 'Último día' : 'Hasta el 2 nov'} · Madrid
+        <p className="inline-flex items-center gap-1.5 text-[0.75rem] uppercase tracking-[0.2em] mb-1.5" style={{ color: hw ? '#7A2FC0' : sinTexto ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>
+          <Trophy size={12} strokeWidth={2.5} /> {ultimoDia ? 'Último día' : 'Hasta el 2 nov'} · {enHalloween ? 'Halloween' : 'Madrid'}
         </p>
-        <p className={`leading-tight ${sinTexto ? 'text-[#14407A]' : 'text-white'} ${sinTexto ? 'text-[1.7rem] sm:text-6xl' : 'text-xl sm:text-2xl'}`} style={{ fontFamily: HZ.display, fontWeight: 800 }}>
+        <p className={`leading-tight ${hw ? 'text-[#4A1D7A]' : sinTexto ? 'text-[#14407A]' : 'text-white'} ${sinTexto ? 'text-[1.7rem] sm:text-6xl' : 'text-xl sm:text-2xl'}`} style={{ fontFamily: HZ.display, fontWeight: 800 }}>
           Concurso DJ XPEAK Madrid
         </p>
       </div>
@@ -111,12 +126,12 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         Para DJs de la Comunidad de Madrid. Sube tu sesión: las 3 con más me gusta van a la final y el jurado elige quién se lleva los Pioneer DJ HDJ-X5.
       </p>
       )}
-      <div className="relative col-span-2 sm:col-span-1"><CuentaAtras onFin={() => setCerrado(true)} claro={sinTexto} /></div>
+      <div className="relative col-span-2 sm:col-span-1"><CuentaAtras onFin={() => setCerrado(true)} claro={sinTexto} hw={hw} /></div>
       <div className="relative col-span-2 sm:col-span-1 flex flex-wrap items-center gap-2 mt-3.5">
         {sinTexto ? (
           <Link to="/concurso-dj-madrid"
             className="concurso-boton-pulso inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-lg sm:text-xl"
-            style={{ background: '#2477B3', color: '#fff', boxShadow: clayButton('36,119,179'), fontFamily: HZ.display, fontWeight: 800 }}>
+            style={{ background: hw ? '#F07212' : '#2477B3', color: '#fff', boxShadow: clayButton(hw ? '240,114,18' : '36,119,179'), fontFamily: HZ.display, fontWeight: 800 }}>
             Entrar <ArrowRight size={20} strokeWidth={2.75} />
           </Link>
         ) : (<>
@@ -145,6 +160,8 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         className={`relative h-auto shrink-0 self-center col-start-2 row-start-1 sm:[grid-row:1/span_4] ${sinTexto ? 'w-24 sm:w-48 md:w-72 concurso-cascos' : 'w-24 sm:w-36 -rotate-6'}`}
         style={{ filter: 'drop-shadow(0 10px 18px rgba(20,0,60,0.45))' }}
       />
+      {hw && <CalabazaDJ className="absolute right-3 bottom-3 sm:right-6 sm:bottom-5 w-20 sm:w-28 md:w-32 h-auto" />}
+      {hwPanel && <CalabazaDJ className="absolute right-1 bottom-1 sm:right-3 sm:bottom-2 w-14 sm:w-20 h-auto rotate-6" />}
     </div>
     </>
   );

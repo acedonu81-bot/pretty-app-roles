@@ -79,6 +79,7 @@ const AmbientBackground = lazy(() => import('@/components/AmbientBackground'));
 import { logProfileView } from '@/lib/track';
 import { computeProfileCompleteness } from '@/hooks/useProfileCompleteness';
 import FuegosArtificiales from '@/components/FuegosArtificiales';
+import HalloweenPanel from '@/components/halloween/HalloweenPanel';
 
 const PROFILE_VIEWS = new Set(['profile', 'ficha', 'stats']);
 
@@ -771,6 +772,7 @@ const Dashboard = () => {
             // pushState de arriba): volver es deshacerla, igual que el gesto
             // o el botón atrás de Android.
             onBack={!ROOT_VIEWS.has(activeView) ? () => window.history.back() : undefined} />
+          <HalloweenPanel isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange} />
           <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
           <PendingReviewsBanner onGoToReviews={goToPendingReviews} />
           <MarketingConsentBanner />

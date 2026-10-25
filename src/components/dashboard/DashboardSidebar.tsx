@@ -10,6 +10,8 @@ import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useEffect, useState, useRef } from 'react';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 import { concursoActivo } from '@/lib/concursoMadrid';
+import { halloweenActivo } from '@/lib/halloween';
+import { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { useFeedAlert } from '@/hooks/useFeedAlert';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
@@ -350,7 +352,11 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
               sin eso, pulsar el logo devolvía al mismo sitio sin moverse. */}
           <a href="/?stay=1" className="text-left transition-opacity hover:opacity-70">
             <h2 className="text-[1.3rem] font-black tracking-[0.02em] font-display group-data-[collapsible=icon]:text-[1.1rem]">
-              X<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
+              {halloweenActivo() ? (
+                <span className="relative inline-block">
+                  <SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X
+                </span>
+              ) : 'X'}<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
             </h2>
             <p className="text-[0.75rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: 'rgba(10,9,8,0.35)' }}>España · Directorio Profesional</p>
           </a>

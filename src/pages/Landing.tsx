@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { concursoActivo } from '@/lib/concursoMadrid';
+import { halloweenActivo } from '@/lib/halloween';
+import HalloweenHero, { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { resolverVistaDeBusqueda } from '@/pages/Dashboard';
 import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
 
@@ -508,6 +510,7 @@ const Landing = () => {
   // Durante el concurso el hero pierde el titular y el subtítulo para dar paso al
   // banner; al cerrar el plazo vuelven solos (se queda sr-only para SEO).
   const concursoEnCurso = concursoActivo();
+  const halloween = halloweenActivo();
   const navigate = useNavigate();
   const [showParticular, setShowParticular] = useState(false);
   const { user, loading: authLoading } = useAuth();
@@ -681,7 +684,12 @@ const Landing = () => {
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="text-2xl font-black tracking-tight transition-opacity hover:opacity-70 font-display whitespace-nowrap shrink-0"
             style={{ color: '#1a1208' }}>
-            X<span className="text-gradient">PEAK</span>
+            {halloween ? (
+              // Halloween: sombrero de bruja pequeño sobre la X.
+              <span className="relative inline-block">
+                <SombreroBruja className="absolute -top-[13px] -left-[3px] -rotate-12" />X
+              </span>
+            ) : 'X'}<span className="text-gradient">PEAK</span>
           </button>
           <LandingMegaMenu onParticular={() => setShowParticular(true)} />
           <div className="flex items-center gap-2 sm:gap-3">
@@ -768,6 +776,7 @@ const Landing = () => {
         <div className="absolute inset-0 pointer-events-none" style={{
           background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.3) 70%, #ffffff 100%)'
         }} />
+        {halloween && <HalloweenHero />}
       <header className="relative max-w-[1200px] mx-auto px-5 md:px-8 pt-6 pb-8 md:pt-16 md:pb-16 text-center">
         {/* md:pt-16 deja sitio a la píldora "Nuevo bolo conseguido". */}
         <GigWonPopup />
@@ -796,6 +805,13 @@ const Landing = () => {
             terminaba navegando a ciegas hasta /auth vía navbar/footer. */}
         {/* Concurso DJ Madrid (13 oct - 2 nov 2026): primera cosa del hero para verse
             sin scroll en móvil; se apaga solo al cerrar el plazo. */}
+        {halloween && (
+          <p className="max-w-2xl mx-auto mt-6 md:mt-0 mb-4 text-center text-2xl sm:text-4xl font-black tracking-tight font-display"
+            style={{ color: '#fff', lineHeight: 1.15, textShadow: '0 3px 18px rgba(74,29,122,0.7)' }}>
+            La noche más terrorífica del año,{' '}
+            <span style={{ color: '#FFB25E' }}>sin miedo a quedarte sin DJ</span>
+          </p>
+        )}
         <div className="max-w-2xl mx-auto mb-5 text-left">
           <Suspense fallback={null}><ConcursoFeedBanner sinTexto /></Suspense>
         </div>
