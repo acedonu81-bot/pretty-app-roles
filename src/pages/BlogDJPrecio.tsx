@@ -162,15 +162,15 @@ const faqStructured = {
             answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. La mitad de los DJs de XPEAK cobra entre 60€ y 100€/hora, así que 6 horas de música salen por 360€-600€. Si en una boda pone también la música de la ceremonia y el cóctel, luces y desplazamiento, el total suele quedar entre 400€ y 1.200€."
           />
           <picture>
-            <source srcSet="/images/blog/cuanto-cobra-dj-espana-2026.webp" type="image/webp" />
+            <source srcSet="/images/blog/dj-boda-precio.webp" type="image/webp" />
             <img
-              src="/images/blog/cuanto-cobra-dj-espana-2026.jpg"
-              alt="DJ profesional en cabina con controladora y luces de evento: precios de DJ en España 2026"
+              src="/images/blog/dj-boda-precio.jpg"
+              alt="DJ pinchando en el banquete de una boda, con la novia y los invitados junto a las mesas"
               className="w-full rounded-xl my-6 object-cover"
-              style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
+              style={{ maxHeight: 320 }}
               loading="lazy"
-              width={800}
-              height={450}
+              width={1280}
+              height={512}
             />
           </picture>
 
