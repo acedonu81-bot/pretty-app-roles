@@ -6,7 +6,9 @@
  * se muestra: nunca si ya está activado o bloqueado, una vez por sesión como
  * mucho y 14 días de descanso tras un "Ahora no".
  */
-export type PushAskMotivo = 'alta' | 'mensaje' | 'solicitud';
+// 'instalada' (25 oct 2026): app instalada sin avisos. Es el único motivo que
+// también sale con los avisos bloqueados, para explicar cómo desbloquearlos.
+export type PushAskMotivo = 'alta' | 'mensaje' | 'solicitud' | 'instalada';
 
 export const PUSH_ASK_EVENT = 'xpeak:push-ask';
 

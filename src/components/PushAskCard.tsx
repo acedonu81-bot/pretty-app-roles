@@ -26,16 +26,34 @@ const COPY: Record<PushAskMotivo, { title: string; body: string }> = {
     title: 'Tienes solicitudes de organizadores',
     body: 'Activa los avisos para enterarte de las próximas al momento. Responder rápido marca la diferencia.',
   },
+  instalada: {
+    title: 'Ya tienes XPEAK instalada, falta un paso',
+    body: 'Activa los avisos y verás al momento mensajes y solicitudes, con el número en el icono como cualquier app.',
+  },
 };
+
+const BLOQUEADOS = {
+  title: 'Tus avisos de XPEAK están bloqueados',
+  body: 'Así se te pueden escapar mensajes y solicitudes. Se activan en dos pasos:',
+};
+
+function pasosDesbloquear(ios: boolean): string[] {
+  if (ios) return ['Abre Ajustes del iPhone y entra en Notificaciones.', 'Busca XPEAK y activa Permitir notificaciones.'];
+  if (/Android/i.test(navigator.userAgent)) {
+    return ['Mantén pulsado el icono de XPEAK y toca Información de la app.', 'Entra en Notificaciones y actívalas.'];
+  }
+  return ['Pulsa el icono de ajustes junto a la dirección de la web, arriba.', 'En Notificaciones, elige Permitir.'];
+}
 
 // localStorage/sessionStorage pueden lanzar (modo privado, datos bloqueados):
 // si fallan, se trata como "no mostrado" y "sin descanso".
 const leer = (s: Storage, k: string) => { try { return s.getItem(k); } catch { return null; } };
 const guardar = (s: Storage, k: string, v: string) => { try { s.setItem(k, v); } catch { /* sin almacenamiento */ } };
 
-function puedePreguntar(): boolean {
+function puedePreguntar(aunqueBloqueados = false): boolean {
   if (isNative || !isPushSupported()) return false;
-  if (Notification.permission !== 'default') return false;
+  const p = Notification.permission;
+  if (p === 'granted' || (p === 'denied' && !aunqueBloqueados)) return false;
   if (leer(sessionStorage, SESSION_KEY)) return false;
   const hasta = Number(leer(localStorage, SNOOZE_KEY) ?? 0);
   return !hasta || Date.now() > hasta;
@@ -70,6 +88,15 @@ export default function PushAskCard({ userId }: { userId: string }) {
     return () => window.removeEventListener(PUSH_ASK_EVENT, onAsk);
   }, [iosSinInstalar]);
 
+  // Momento 4: ya tiene la app instalada y sigue sin avisos (25 oct 2026: 4
+  // de 10 usuarios de la app). Va antes que el 3 para que gane si coinciden.
+  useEffect(() => {
+    if (!isStandalone || !puedePreguntar(true)) return;
+    guardar(sessionStorage, SESSION_KEY, '1');
+    setMotivo('instalada');
+    track('push_ask_shown', { motivo: 'instalada', bloqueados: Notification.permission === 'denied' });
+  }, [isStandalone]);
+
   // Momento 3: el profesional ya tiene solicitudes sin leer de organizadores.
   useEffect(() => {
     if (!puedePreguntar()) return;
@@ -86,7 +113,7 @@ export default function PushAskCard({ userId }: { userId: string }) {
 
   if (!motivo) return null;
 
-  const cerrar = (accion: 'ahora_no' | 'cerrar') => {
+  const cerrar = (accion: 'ahora_no' | 'cerrar' | 'entendido') => {
     guardar(localStorage, SNOOZE_KEY, String(Date.now() + SNOOZE_DAYS * 24 * 60 * 60 * 1000));
     track('push_ask_dismiss', { motivo, accion });
     setMotivo(null);
@@ -111,7 +138,8 @@ export default function PushAskCard({ userId }: { userId: string }) {
     setMotivo(null);
   };
 
-  const { title, body } = COPY[motivo];
+  const bloqueados = Notification.permission === 'denied';
+  const { title, body } = bloqueados ? BLOQUEADOS : COPY[motivo];
 
   return (
     <>
@@ -130,6 +158,11 @@ export default function PushAskCard({ userId }: { userId: string }) {
           <div>
             <p className="font-black text-sm leading-snug" style={{ color: '#111' }}>{title}</p>
             <p className="text-xs leading-relaxed mt-1" style={{ color: 'rgba(0,0,0,0.65)' }}>{body}</p>
+            {bloqueados && (
+              <ol className="text-xs leading-relaxed mt-2 list-decimal pl-4 space-y-1" style={{ color: '#111' }}>
+                {pasosDesbloquear(platform === 'ios').map(p => <li key={p}>{p}</li>)}
+              </ol>
+            )}
             {iosSinInstalar && (
               <p className="text-xs leading-relaxed mt-1" style={{ color: 'rgba(0,0,0,0.65)' }}>
                 En iPhone los avisos funcionan con XPEAK instalada en tu pantalla de inicio.
@@ -137,6 +170,13 @@ export default function PushAskCard({ userId }: { userId: string }) {
             )}
           </div>
         </div>
+        {bloqueados ? (
+          <button type="button" onClick={() => cerrar('entendido')}
+            className="w-full mt-4 py-2.5 rounded-xl font-black text-sm"
+            style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#111' }}>
+            Entendido
+          </button>
+        ) : (
         <div className="flex gap-2 mt-4">
           <button type="button" onClick={activar} disabled={activando}
             className="flex-1 py-2.5 rounded-xl font-black text-sm disabled:opacity-60"
@@ -148,6 +188,7 @@ export default function PushAskCard({ userId }: { userId: string }) {
             Ahora no
           </button>
         </div>
+        )}
       </div>
       {verPasosIos && (
         <IosInstallSheet browser={iosBrowser} onClose={() => { setVerPasosIos(false); setMotivo(null); }} />

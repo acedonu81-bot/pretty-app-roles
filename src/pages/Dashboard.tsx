@@ -19,6 +19,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import PushAskCard from '@/components/PushAskCard';
+import AppIconBadge from '@/components/AppIconBadge';
 import { askForPush } from '@/lib/pushAsk';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet';
@@ -806,6 +807,7 @@ const Dashboard = () => {
         )}
       </Suspense>
       {user && <PushAskCard userId={user.id} />}
+      {user && <AppIconBadge userId={user.id} isEmpresario={profileRole === 'empresario'} />}
 
       {/* AnimatePresence aquí, no dentro de ProfessionalProfilePage: el exit de
           framer-motion solo se reproduce si el componente que lo declara sigue

@@ -170,7 +170,15 @@ serve(async (req) => {
       const vapidPrivate = Deno.env.get('VAPID_PRIVATE_KEY');
       if (vapidPublic && vapidPrivate) {
         webpush.setVapidDetails('mailto:info@xpeak.site', vapidPublic, vapidPrivate);
-        const payload = JSON.stringify({ title, body, url, tag });
+        // Número para el icono de la app instalada: avisos sin leer. Algunos
+        // triggers mandan el push antes de guardar el aviso, por eso mínimo 1.
+        // Solo web: en la app nativa iOS nadie lo borraría al leer.
+        const { count: sinLeer } = await adminClient
+          .from('notifications')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', user_id)
+          .eq('is_read', false);
+        const payload = JSON.stringify({ title, body, url, tag, badge: Math.max(sinLeer ?? 0, 1) });
 
         await Promise.all(webSubs.map(async (sub) => {
           try {

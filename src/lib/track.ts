@@ -22,6 +22,12 @@ export function track(eventName: string, props?: Record<string, string | number 
     const extra = props ? Object.entries(props).map(([k, v]) => `${k}=${v}`).join(' ') : '';
     void logEvent('auth_paso', '/auth', `${eventName.slice(5)} ${extra}`.trim().slice(0, 120));
   }
+  // La tarjeta que pide los avisos, igual (Ficha XDS 25 oct 2026): sin esto no
+  // hay forma de saber cuántos la ven y cuántos activan.
+  if (eventName.startsWith('push_ask_')) {
+    const extra = props ? Object.entries(props).map(([k, v]) => `${k}=${v}`).join(' ') : '';
+    void logEvent('cta_click', location.pathname, `push_ask ${eventName.slice(9)} ${extra}`.trim().slice(0, 120));
+  }
 }
 
 /**

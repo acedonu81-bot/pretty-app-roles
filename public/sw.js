@@ -14,6 +14,12 @@ self.addEventListener('push', e => {
   if (!e.data) return;
   let p;
   try { p = e.data.json(); } catch { p = { title: 'XPEAK', body: e.data.text() }; }
+  // Número sobre el icono de la app instalada (iPhone y ordenador; en Android
+  // el sistema pone su propio punto). send-push manda el total sin leer y, al
+  // abrir la app, AppIconBadge lo ajusta al contador del panel.
+  if (typeof p.badge === 'number' && self.navigator.setAppBadge) {
+    self.navigator.setAppBadge(p.badge).catch(() => {});
+  }
   e.waitUntil(self.registration.showNotification(p.title ?? 'XPEAK', {
     body: p.body ?? '',
     icon: '/favicon.png',

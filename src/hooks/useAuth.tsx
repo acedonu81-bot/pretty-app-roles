@@ -37,6 +37,8 @@ export const useAuth = () => {
   }, []);
 
   const signOut = async () => {
+    // Sin sesión no hay nada pendiente: fuera el número del icono de la app.
+    if ('clearAppBadge' in navigator) navigator.clearAppBadge().catch(() => {});
     await supabase.auth.signOut();
   };
 
