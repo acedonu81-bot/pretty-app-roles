@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 
@@ -75,6 +76,8 @@ export default function BlogDJBodaCivil() {
               <div className="space-y-2">{[{ s: 'Solo pista de baile (4-5h)', p: '350-700€' }, { s: 'Cóctel + pista de baile', p: '500-900€' }, { s: 'Ceremonia + cóctel + cena + pista', p: '700-1.500€' }, { s: 'Pack completo con equipo de luces', p: '900-1.800€' }].map((item, i) => (<div key={item.s} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.04)' }}><p className="text-xs font-medium">{item.s}</p><span className="text-xs font-bold" style={{ color: '#8B6A00' }}>{item.p}</span></div>))}</div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos España 2026. Sin IVA. Variable según ciudad y experiencia del DJ.</p>
             </section>
+            <BlogDJEquipoPrecio contexto="boda-civil" tituloClass="text-lg font-black mb-4" className="" />
+
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p></div>))}</div>

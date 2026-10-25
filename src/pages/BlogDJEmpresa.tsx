@@ -8,6 +8,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 
 const slug = 'dj-para-empresa-precio';
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -97,6 +98,9 @@ export default function BlogDJEmpresa() {
             </section>
 
             <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath={`/blog/${slug}`} />
+
+            <BlogDJEquipoPrecio contexto="empresa" tituloClass="text-lg font-black mb-4" className="" />
+
 
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>

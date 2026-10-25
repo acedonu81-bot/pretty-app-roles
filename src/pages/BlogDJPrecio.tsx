@@ -10,6 +10,7 @@ import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import BlogTopCTA from '@/components/BlogTopCTA';
 import ConcursoAuthBanner from '@/components/ConcursoAuthBanner';
 import { trackBlogCtaClick } from '@/lib/blogAnalytics';
@@ -204,20 +205,7 @@ const faqStructured = {
             </table>
           </div>
 
-          {/* Solo a pinchar vs con equipo propio: el precio cambia mucho
-              (25 oct). Las tarifas de los perfiles no dicen si llevan equipo. */}
-          <h2 className="text-xl font-black mb-4">Precio solo por pinchar o con equipo propio</h2>
-          <p className="text-base mb-4 leading-relaxed" style={{ color: '#222' }}>
-            Una cosa es contratar a un DJ <strong>solo para pinchar</strong>, con el sonido ya montado por la sala o el organizador, y otra que traiga su propio equipo. En bodas y eventos suele ser lo segundo, y el presupuesto cambia: además de las horas de música entran los altavoces, la controladora, las luces y el montaje.
-          </p>
-          <div className="mb-10 p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.18)' }}>
-            <p className="text-sm font-bold mb-2" style={{ color: '#8B6A00' }}>Antes de comparar presupuestos, pregunta:</p>
-            <ul className="text-base leading-relaxed list-disc pl-5 space-y-1" style={{ color: '#222' }}>
-              <li>¿Lleva altavoces y controladora, o usa los de la sala?</li>
-              <li>¿Incluye luces y micrófono para los discursos?</li>
-              <li>¿El montaje y el desplazamiento van aparte?</li>
-            </ul>
-          </div>
+          <BlogDJEquipoPrecio />
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
           <FichasRealesTira roles={['dj', 'disco-movil']} titulo="DJs que ya están en XPEAK" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />

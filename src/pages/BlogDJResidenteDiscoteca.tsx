@@ -5,6 +5,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)', description: 'Qué hace un DJ residente, cuánto cobra y cómo diferenciarlo de un DJ invitado. Precios por ciudad y tipo de sala en España 2026.', datePublished: '2026-05-07',
@@ -120,6 +121,9 @@ export default function BlogDJResidenteDiscoteca() {
                 ))}
               </div>
             </section>
+
+            <BlogDJEquipoPrecio contexto="residente" tituloClass="text-lg font-black mb-4" className="" />
+
 
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>

@@ -6,6 +6,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TABLE = [
@@ -150,6 +151,8 @@ const faqStructured = {
               </li>
             ))}
           </ul>
+
+          <BlogDJEquipoPrecio contexto="corporativo" tituloClass="text-xl font-black mb-5" />
 
           <h2 className="text-xl font-black mb-5">Preguntas frecuentes</h2>
           <div className="space-y-4 mb-12">

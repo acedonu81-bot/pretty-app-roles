@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = {
@@ -192,6 +193,9 @@ export default function BlogDJCumpleanos() {
                 Un DJ de eventos privados sabe cómo manejar peticiones en directo, adaptar el ritmo a la edad de los invitados y dar paso a momentos especiales (soplar las velas, discursos). Un DJ de discoteca está entrenado para mantener un piso de baile durante horas con un género definido: muy diferente.
               </p>
             </section>
+
+            <BlogDJEquipoPrecio contexto="cumpleanos" tituloClass="text-lg font-black mb-4" className="" />
+
 
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
