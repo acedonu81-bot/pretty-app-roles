@@ -1300,22 +1300,23 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>`),
   }),
 
-  // 25 oct 2026: particular que pidió profesional y nunca abrió las respuestas
-  // del chat (caso DJ DERRE: 2 DJs le contestaron, 0 leídos). Solo con la
-  // clave de servicio (no está en PUBLIC/LOGGED/ADMIN_TYPES).
+  // 25 oct 2026: particular que pidió profesional, le contestaron por el chat
+  // y nunca abrió los mensajes; la fecha ya pasó (caso DJ DERRE: 2 DJs le
+  // escribieron en menos de un día). Es para que vuelva la próxima vez. Solo
+  // con la clave de servicio (no está en PUBLIC/LOGGED/ADMIN_TYPES).
   particular_respuestas_sin_leer: (d) => ({
-    subject: `${esc(d.name)}, tienes respuestas a tu solicitud de ${esc(d.oficio ?? 'profesional')}`,
+    subject: `${esc(d.name)}, tu solicitud de ${esc(d.oficio ?? 'profesional')} tuvo respuesta`,
     to: d.email,
     replyTo: 'info@xpeak.site',
     html: base(`
-      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Te han contestado</h2>
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Tu solicitud tuvo respuesta</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
-        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, ${d.detalle_solicitud ? `pediste ${esc(d.detalle_solicitud)}` : 'nos enviaste una solicitud'} y <strong style="color:#0a0908">${esc(d.n_respuestas)} profesionales te han escrito</strong> por el chat de XPEAK. Todavía no has abierto sus mensajes.
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, cuando pediste ${esc(d.detalle_solicitud ?? 'un profesional')}, <strong style="color:#0a0908">${esc(d.n_respuestas)} ${esc(d.plural ?? 'profesionales')} te contestaron</strong> por el chat de XPEAK en menos de un día.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Si ya lo tienes resuelto, perfecto. Si vuelves a necesitar ${esc(d.oficio ?? 'un profesional')} para otra fecha, puedes pedirlo desde XPEAK en un minuto.
+        La próxima vez que necesites cubrir una fecha, pídelo desde XPEAK y revisa tus mensajes: las respuestas llegan rápido.
       </p>
-      ${btn('Ver mis mensajes →', 'https://xpeak.es/dashboard?view=messages')}`),
+      ${btn('Ver los mensajes →', 'https://xpeak.es/dashboard?view=messages')}`),
   }),
 
   // Concurso DJ XPEAK Madrid (17 oct 2026): al DJ cuya sesión de SoundCloud ya
