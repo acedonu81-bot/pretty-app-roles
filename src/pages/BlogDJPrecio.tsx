@@ -204,19 +204,19 @@ const faqStructured = {
             </table>
           </div>
 
-          {/* Solo a pinchar vs con equipo: aclaración pedida por una escuela de DJ
+          {/* Solo a pinchar vs con equipo propio: el precio cambia mucho
               (25 oct). Las tarifas de los perfiles no dicen si llevan equipo. */}
           <h2 className="text-xl font-black mb-4">Precio solo por pinchar o con equipo propio</h2>
           <p className="text-base mb-4 leading-relaxed" style={{ color: '#222' }}>
-            No es lo mismo un DJ que va <strong>solo a pinchar</strong>, con el equipo ya montado por la sala o el organizador, que uno que trae sus propios altavoces, controladora, luces y micrófono. Las tarifas por hora de esta guía no siempre aclaran qué incluyen, así que al pedir presupuesto pregunta siempre si el equipo va incluido.
+            Una cosa es contratar a un DJ <strong>solo para pinchar</strong>, con el sonido ya montado por la sala o el organizador, y otra que traiga su propio equipo. En bodas y eventos suele ser lo segundo, y el presupuesto cambia: además de las horas de música entran los altavoces, la controladora, las luces y el montaje.
           </p>
           <div className="mb-10 p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.18)' }}>
-            <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
-              Como referencia, un DJ contratado y dado de alta difícilmente cobra menos de unos <strong>150 € por 3 horas</strong>, y eso yendo solo a pinchar, con el equipo ya montado y sin llevar nada.
-            </p>
-            <p className="text-base leading-relaxed" style={{ color: '#222' }}>
-              En una boda o un evento lo normal es que el DJ lleve también el sonido, y entonces el precio tiene que ser más alto: ahí los 60 € la hora se quedan cortos.
-            </p>
+            <p className="text-sm font-bold mb-2" style={{ color: '#8B6A00' }}>Antes de comparar presupuestos, pregunta:</p>
+            <ul className="text-base leading-relaxed list-disc pl-5 space-y-1" style={{ color: '#222' }}>
+              <li>¿Lleva altavoces y controladora, o usa los de la sala?</li>
+              <li>¿Incluye luces y micrófono para los discursos?</li>
+              <li>¿El montaje y el desplazamiento van aparte?</li>
+            </ul>
           </div>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
