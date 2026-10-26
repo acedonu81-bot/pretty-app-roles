@@ -1,7 +1,7 @@
 -- Precio real para las páginas públicas (26 oct 2026). Devuelve solo el
 -- resumen (nunca tarifas sueltas ni identificadores) y solo con 5 tarifas o
 -- más. Excluye cuentas propias/demo (es_trafico_propio), perfiles semilla,
--- rechazados, empresarios y tarifas sin rellenar o por defecto (0, 1, 40 €/h).
+-- no aprobados, empresarios y tarifas sin rellenar o por defecto (0, 1, 40 €/h).
 -- p_user_ids limita el cálculo a los perfiles que ya muestra la página (ciudad);
 -- null = todo el país (página de oficio).
 create or replace function public.tarifas_publicas(p_roles text[], p_user_ids uuid[] default null)
@@ -21,7 +21,10 @@ as $$
     and p.role <> 'empresario'
     and not coalesce(p.is_seed, false)
     and not coalesce(p.is_seed_profile, false)
-    and p.validation_status is distinct from 'rejected'
+    -- Solo perfiles aprobados: los mismos que anon ya ve con su tarifa por RLS
+    -- ("Anon can view approved profiles"), así que elegir p_user_ids no
+    -- permite deducir la tarifa de un perfil que no sea público.
+    and p.validation_status = 'approved'
     and p.hourly_rate between 10 and 2000
     and p.hourly_rate <> 40
     and not public.es_trafico_propio(p.user_id)
