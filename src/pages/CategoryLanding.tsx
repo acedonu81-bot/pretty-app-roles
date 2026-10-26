@@ -3,6 +3,7 @@ import { useDirectorioConInventario } from '@/hooks/useDirectorioConInventario';
 import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt, Mic, SlidersHorizontal, Speaker, Building2, Truck } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import CtaProfesional from '@/components/CtaProfesional';
 import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 
 const BLOG_LINKS: Record<string, { href: string; title: string; desc: string }[]> = {
@@ -1059,6 +1060,8 @@ export default function CategoryLanding() {
             </div>
           </section>
         )}
+
+        <CtaProfesional slug={data.slug} />
 
         {/* Cómo funciona */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">

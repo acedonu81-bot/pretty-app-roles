@@ -4,6 +4,7 @@ import { useDirectorioConInventario } from '@/hooks/useDirectorioConInventario';
 import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, MapPin, CheckCircle } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import CtaProfesional from '@/components/CtaProfesional';
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toSlug } from '@/data/profiles';
@@ -1170,6 +1171,8 @@ export default function CityLanding() {
             </div>
           </section>
         )}
+
+        <CtaProfesional slug={categorySlug} ciudad={cityData.ciudad} />
 
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">{esAlquiler ? `Cómo alquilar equipo en ${cityData.ciudad} con XPEAK` : `Cómo contratar ${catData.keyword} en ${cityData.ciudad} con XPEAK`}</h2>
