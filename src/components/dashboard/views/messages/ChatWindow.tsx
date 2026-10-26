@@ -1,6 +1,7 @@
 import { lazy, Suspense, useRef, useState } from 'react';
 import { leerAcuerdo, estadoAcepto, REF_ACUERDO } from '@/lib/acuerdoChat';
 import AdjuntoChat from './AdjuntoChat';
+import AvatarChat from './AvatarChat';
 import { FormCondiciones, TarjetaAcepto, type ReservaAcuerdo } from './AcuerdoAcepto';
 import { fechaIso, type Condiciones } from '@/lib/acuerdoChat';
 import type { Profile } from '@/data/profiles';
@@ -19,23 +20,9 @@ interface Message {
   deleted_at?: string | null;
 }
 
-const avatarGradients = [
-  'linear-gradient(135deg,#D4AF37,#B8941E)',
-  'linear-gradient(135deg,#8B5CF6,#6D28D9)',
-  'linear-gradient(135deg,#EC4899,#BE185D)',
-  'linear-gradient(135deg,#10B981,#059669)',
-  'linear-gradient(135deg,#3B82F6,#1D4ED8)',
-  'linear-gradient(135deg,#F59E0B,#D97706)',
-];
-const getGradient = (name: string) => avatarGradients[name.charCodeAt(0) % avatarGradients.length];
-
-const formatTime = (iso: string) => {
-  const d = new Date(iso);
-  const now = new Date();
-  if (d.toDateString() === now.toDateString())
-    return d.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
-  return d.toLocaleDateString('es', { day: 'numeric', month: 'short' });
-};
+// Dentro del chat la fecha ya la ponen los separadores: aquí solo la hora.
+const formatTime = (iso: string) =>
+  new Date(iso).toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
 
 interface Props {
   messages: Message[];
@@ -113,23 +100,20 @@ const ChatWindow = ({
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Chat header */}
-      <div className="px-4 py-3 flex items-center gap-3 flex-shrink-0"
-        style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
+      <div className="px-4 sm:px-5 py-3.5 flex items-center gap-3.5 flex-shrink-0"
+        style={{ borderBottom: '1px solid rgba(139,106,0,0.14)', background: '#FFFDF9' }}>
         <button onClick={onBack}
           aria-label="Volver a conversaciones"
           title="Volver a conversaciones"
-          className="p-1.5 rounded-lg mr-1 transition-colors hover:bg-black/10"
-          style={{ background: 'rgba(0,0,0,0.05)' }}>
-          <ArrowLeft size={16} />
+          className="p-1.5 -ml-1 rounded-full transition-colors hover:bg-[rgba(139,106,0,0.08)]"
+          style={{ color: '#5B5238' }}>
+          <ArrowLeft size={18} />
         </button>
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0"
-          style={{ background: getGradient(activeOtherName), color: '#000' }}>
-          {activeOtherName.charAt(0).toUpperCase()}
-        </div>
+        <AvatarChat name={activeOtherName} size={42} />
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold">{activeOtherName}</p>
-          <p className="text-xs flex items-center gap-1" style={{ color: '#333' }}>
-            <Shield size={9} /> Comunicación privada · XPEAK
+          <p className="font-display text-[1rem] font-bold truncate" style={{ color: '#2A2412' }}>{activeOtherName}</p>
+          <p className="text-[0.72rem] flex items-center gap-1.5" style={{ color: '#8B6A00' }}>
+            <Shield size={11} /> Conversación privada en XPEAK
           </p>
         </div>
 
@@ -138,9 +122,9 @@ const ChatWindow = ({
             <button onClick={() => setShowHeaderMenu(v => !v)}
               aria-label="Más opciones"
               title="Más opciones"
-              className="p-1.5 rounded-lg transition-colors hover:bg-black/10"
-              style={{ background: 'rgba(0,0,0,0.05)' }}>
-              <MoreVertical size={16} />
+              className="p-2 rounded-full transition-colors hover:bg-[rgba(139,106,0,0.08)]"
+              style={{ color: '#5B5238' }}>
+              <MoreVertical size={18} />
             </button>
             {showHeaderMenu && (
               <>
@@ -241,13 +225,13 @@ const ChatWindow = ({
       )}
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-2"
-        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.02) 0%, transparent 70%)' }}>
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 flex flex-col gap-2.5"
+        style={{ background: '#FBF8EE' }}>
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-center">
-            <span className="text-4xl">👋</span>
-            <p className="text-sm font-bold">Inicia la conversación</p>
-            <p className="text-xs text-muted-foreground">Los mensajes son privados y solo visibles entre vosotros.</p>
+            <AvatarChat name={activeOtherName} size={64} />
+            <p className="font-display text-base font-bold" style={{ color: '#2A2412' }}>Inicia la conversación con {activeOtherName}</p>
+            <p className="text-xs max-w-[240px]" style={{ color: '#5B5238' }}>Los mensajes son privados y solo visibles entre vosotros.</p>
           </div>
         )}
         {messages.map((msg, idx) => {
@@ -262,23 +246,19 @@ const ChatWindow = ({
           return (
             <div key={msg.id}>
               {showDateSep && (
-                <div className="flex items-center gap-3 my-2">
-                  <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.05)' }} />
-                  <span className="text-xs text-muted-foreground px-2 py-0.5 rounded-full"
-                    style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                <div className="flex items-center gap-4 my-3">
+                  <div className="flex-1 h-px" style={{ background: 'rgba(139,106,0,0.16)' }} />
+                  <span className="text-[0.68rem] font-semibold uppercase" style={{ color: '#8B6A00', letterSpacing: '0.16em' }}>
                     {new Date(msg.created_at).toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short' })}
                   </span>
-                  <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.05)' }} />
+                  <div className="flex-1 h-px" style={{ background: 'rgba(139,106,0,0.16)' }} />
                 </div>
               )}
               <div className={`flex items-end gap-2 ${isMe ? 'justify-end' : 'justify-start'} group`}
                 onMouseEnter={() => setHoveredMsgId(msg.id)}
                 onMouseLeave={() => setHoveredMsgId(null)}>
                 {!isMe && (
-                  <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0 mb-1"
-                    style={{ background: getGradient(activeOtherName), color: '#000' }}>
-                    {activeOtherName.charAt(0).toUpperCase()}
-                  </div>
+                  <div className="mb-5"><AvatarChat name={activeOtherName} size={28} /></div>
                 )}
                 {isMe && onDeleteMessage && !msg.deleted_at && !msg.id.startsWith('tmp-') && (
                   <button onClick={() => setConfirmDeleteMsgId(msg.id)}
@@ -289,7 +269,7 @@ const ChatWindow = ({
                     <Trash2 size={13} />
                   </button>
                 )}
-                <div className={`max-w-[68%] ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
+                <div className={`max-w-[78%] sm:max-w-[68%] ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
                   {msg.deleted_at ? (
                     <div className="px-4 py-2.5 rounded-2xl text-sm italic"
                       style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)', color: '#666' }}>
@@ -331,31 +311,31 @@ const ChatWindow = ({
                   ) : adjunto ? (
                     <div className="rounded-2xl overflow-hidden"
                       style={{
-                        border: `1px solid ${isMe ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)'}`,
+                        border: `1px solid ${isMe ? 'rgba(139,106,0,0.3)' : 'rgba(139,106,0,0.16)'}`,
                         borderBottomRightRadius: isMe ? 4 : undefined,
                         borderBottomLeftRadius: !isMe ? 4 : undefined,
                       }}>
                       <AdjuntoChat ruta={adjunto.ruta} tipo={adjunto.tipo} />
                     </div>
                   ) : (
-                    <div className="px-4 py-2.5 rounded-2xl text-sm"
+                    <div className="px-4 py-2.5 text-[0.92rem]"
                       style={{
-                        background: isMe
-                          ? 'linear-gradient(135deg, #D4AF37, #C9A227)'
-                          : 'rgba(0,0,0,0.05)',
-                        border: `1px solid ${isMe ? 'rgba(184,148,30,0.5)' : 'rgba(0,0,0,0.06)'}`,
-                        borderBottomRightRadius: isMe ? 4 : undefined,
-                        borderBottomLeftRadius: !isMe ? 4 : undefined,
-                        boxShadow: isMe ? '0 2px 12px rgba(212,175,55,0.18)' : 'none',
-                        color: isMe ? '#1a1208' : '#222',
-                        fontWeight: isMe ? 600 : 400,
-                        lineHeight: '1.5',
+                        background: isMe ? '#F1E2B5' : '#FFFFFF',
+                        border: `1px solid ${isMe ? 'rgba(139,106,0,0.3)' : 'rgba(139,106,0,0.16)'}`,
+                        borderRadius: 18,
+                        borderBottomRightRadius: isMe ? 5 : 18,
+                        borderBottomLeftRadius: !isMe ? 5 : 18,
+                        boxShadow: '0 1px 2px rgba(42,36,18,0.06)',
+                        color: '#2A2412',
+                        fontWeight: 400,
+                        lineHeight: '1.55',
+                        overflowWrap: 'anywhere',
                       }}>
                       {msg.content}
                     </div>
                   )}
                   <div className={`flex items-center gap-1 mt-1 px-1 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <span className="text-[0.75rem]" style={{ color: '#333' }}>
+                    <span className="text-[0.7rem]" style={{ color: '#7A7360' }}>
                       {formatTime(msg.created_at)}
                     </span>
                     {/* tmp-: enviándose (envío optimista de MessagesView). */}
@@ -397,8 +377,8 @@ const ChatWindow = ({
           sin cajita gris: con py-3 y tres cajas de 44px se veía una franja
           blanca enorme encima de la barra inferior (16 oct 2026). Sin botón
           de emoticonos: el teclado del móvil ya los trae. */}
-      <div className="px-2 py-2 flex-shrink-0 relative"
-        style={{ borderTop: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
+      <div className="px-2 sm:px-4 py-2 flex-shrink-0 relative"
+        style={{ borderTop: '1px solid rgba(139,106,0,0.14)', background: '#FFFDF9' }}>
         {formAcepto && onAcepto && (
           <FormCondiciones inicial={formAcepto.inicial} otroNombre={activeOtherName} enviando={sending}
             onCancelar={() => setFormAcepto(null)}
@@ -422,7 +402,7 @@ const ChatWindow = ({
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
             aria-label="Enviar foto o vídeo" title="Enviar foto o vídeo"
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90 disabled:opacity-40"
-            style={{ background: 'transparent', color: '#555' }}>
+            style={{ background: 'transparent', color: '#8B6A00' }}>
             {uploadingPhoto
               ? <div className="w-4 h-4 rounded-full border border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} />
               : <Image size={22} />}
@@ -446,19 +426,19 @@ const ChatWindow = ({
               onKeyDown={e => {
                 if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSend(); }
               }}
-              placeholder="Escribe un mensaje..."
+              placeholder="Escribe un mensaje"
               maxLength={1000}
               className="w-full px-4 py-2 rounded-full text-base sm:text-sm outline-none transition-all"
-              style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
-              onFocus={e => (e.target.style.borderColor = 'rgba(212,175,55,0.3)')}
-              onBlur={e => (e.target.style.borderColor = 'rgba(0,0,0,0.08)')}
+              style={{ background: '#FFFFFF', border: '1px solid rgba(139,106,0,0.25)', color: '#2A2412' }}
+              onFocus={e => (e.target.style.borderColor = '#B8941E')}
+              onBlur={e => (e.target.style.borderColor = 'rgba(139,106,0,0.25)')}
             />
           </div>
 
           <button type="button" onClick={() => onSend()} disabled={sending || !input.trim()}
             aria-label="Enviar"
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90 disabled:opacity-40"
-            style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.05)', color: input.trim() ? '#000' : '#555' }}>
+            style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(139,106,0,0.08)', color: input.trim() ? '#2A2412' : '#8B6A00' }}>
             <Send size={18} />
           </button>
         </div>
@@ -468,16 +448,14 @@ const ChatWindow = ({
 };
 
 export const EmptyChatPlaceholder = () => (
-  <div className="flex-1 flex flex-col items-center justify-center text-center p-8 gap-4">
-    <div className="relative">
-      <div className="w-20 h-20 rounded-2xl flex items-center justify-center"
-        style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
-        <MessageSquare size={32} style={{ color: 'rgba(212,175,55,0.3)' }} />
-      </div>
+  <div className="flex-1 flex flex-col items-center justify-center text-center p-8 gap-5" style={{ background: '#FBF8EE' }}>
+    <div className="w-20 h-20 rounded-full flex items-center justify-center"
+      style={{ background: '#FBF3DD', boxShadow: '0 0 0 1px rgba(139,106,0,0.3)' }}>
+      <MessageSquare size={30} style={{ color: '#8B6A00' }} />
     </div>
     <div>
-      <p className="text-base font-bold mb-1">Selecciona una conversación</p>
-      <p className="text-xs text-muted-foreground">O inicia contacto desde el perfil de un profesional.</p>
+      <p className="font-display text-lg font-bold mb-1" style={{ color: '#2A2412' }}>Selecciona una conversación</p>
+      <p className="text-xs" style={{ color: '#5B5238' }}>O inicia contacto desde el perfil de un profesional.</p>
     </div>
   </div>
 );

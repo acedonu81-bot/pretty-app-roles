@@ -632,7 +632,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       <div className={`mb-4 items-center justify-between ${chatAbiertoMovil ? 'hidden sm:flex' : 'flex'}`}>
         <div>
           <h2 className="text-2xl font-bold mb-0.5 flex items-center gap-2">
-            <span className="text-gradient">Mensajes</span>
+            <span className="font-display" style={{ color: '#2A2412' }}>Mensajes</span>
             {totalUnread > 0 && (
               <span className="text-xs px-2 py-0.5 rounded-full font-bold"
                 style={{ background: 'rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
@@ -645,8 +645,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       </div>
 
       <div className="flex-1 overflow-hidden rounded-2xl sm:rounded-2xl relative"
-        style={{ border: '1px solid rgba(0,0,0,0.08)', background: '#ffffff' }}>
-        <div className="flex flex-col sm:grid h-full" style={{ gridTemplateColumns: 'minmax(0,280px) 1fr' }}>
+        style={{ border: '1px solid rgba(139,106,0,0.22)', background: '#FFFDF9', boxShadow: '0 12px 40px -18px rgba(42,36,18,0.25)' }}>
+        <div className="flex flex-col sm:grid h-full" style={{ gridTemplateColumns: 'minmax(0,330px) 1fr' }}>
 
           {/* Lista de conversaciones — siempre visible en desktop; en móvil oculta al abrir un chat */}
           <div className={`${mobileShowChat ? 'hidden' : 'flex'} sm:flex flex-col h-full overflow-hidden`}
