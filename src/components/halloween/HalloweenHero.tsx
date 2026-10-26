@@ -134,10 +134,19 @@ export const MurcielagoColgado = ({ modelo = 'a', className = '', retraso = 0, c
     <style>{`
       @keyframes murcielagoBalanceo { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
       .murcielago-colgado { animation: murcielagoBalanceo 3.4s ease-in-out infinite; }
-      @media (prefers-reduced-motion: reduce) { .murcielago-colgado { animation: none; } }
+      @keyframes murcielagoPlegado { 0%,22% { opacity: 1; } 40%,66% { opacity: 0; } 84%,100% { opacity: 1; } }
+      @keyframes murcielagoAbierto { 0%,22% { opacity: 0; transform: translateX(-50%) scale(0.86); } 40%,66% { opacity: 1; transform: translateX(-50%) scale(1); } 84%,100% { opacity: 0; transform: translateX(-50%) scale(0.86); } }
+      .murcielago-plegado { animation: murcielagoPlegado 9s ease-in-out infinite; }
+      .murcielago-abierto { animation: murcielagoAbierto 9s ease-in-out infinite; transform-origin: 50% 0; }
+      @media (prefers-reduced-motion: reduce) { .murcielago-colgado, .murcielago-plegado, .murcielago-abierto { animation: none; } .murcielago-abierto { display: none; } }
     `}</style>
     <img src={`/halloween/murcielago-${modelo}.webp`} alt="" width={modelo === 'a' ? 123 : 116} height={280}
-      decoding="async" className="block w-full h-auto"
-      style={{ filter: claro ? 'drop-shadow(0 0 6px rgba(201,163,245,0.55)) drop-shadow(0 6px 8px rgba(20,0,60,0.4))' : 'drop-shadow(0 3px 4px rgba(74,29,122,0.3))' }} />
+      decoding="async" className={`block w-full h-auto ${modelo === 'a' ? 'murcielago-plegado' : ''}`}
+      style={{ animationDelay: `${retraso}s`, filter: claro ? 'drop-shadow(0 0 6px rgba(201,163,245,0.55)) drop-shadow(0 6px 8px rgba(20,0,60,0.4))' : 'drop-shadow(0 3px 4px rgba(74,29,122,0.3))' }} />
+    {modelo === 'a' && (
+      <img src="/halloween/murcielago-a-abierto.webp" alt="" width={360} height={286} decoding="async" loading="lazy"
+        className="murcielago-abierto absolute top-0 h-auto max-w-none pointer-events-none"
+        style={{ left: '50%', width: '290%', opacity: 0, animationDelay: `${retraso}s`, filter: claro ? 'drop-shadow(0 0 6px rgba(201,163,245,0.55)) drop-shadow(0 6px 8px rgba(20,0,60,0.4))' : 'drop-shadow(0 3px 4px rgba(74,29,122,0.3))' }} />
+    )}
   </span>
 );
