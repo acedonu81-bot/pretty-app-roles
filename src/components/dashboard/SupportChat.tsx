@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { logEvent } from '@/lib/track';
+import { abrirFeedback } from '@/components/FeedbackWebCard';
 
 // Uso del bot (26 oct 2026): antes no se guardaba nada. 'abre' = abre el panel,
 // 'kb' = respondió la base local, 'ia' = respondió chat-ai, 'sin' = no hubo
@@ -770,7 +771,8 @@ const SupportChat = () => {
                 </button>
               </div>
               <p className="text-[0.58rem] text-center mt-1.5" style={{ color: '#333' }}>
-                XPEAK · Asistente virtual · 24h
+                XPEAK · Asistente virtual · 24h ·{' '}
+                <button type="button" onClick={() => { setOpen(false); abrirFeedback(); }} className="underline font-bold">¿Qué te falta?</button>
               </p>
             </div>
           </motion.div>

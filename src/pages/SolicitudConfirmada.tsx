@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import FeedbackWebForm from '@/components/FeedbackWebForm';
 
 /**
  * Botón "Confirmar y enviar" del email del particular (18 oct 2026). Hasta que
@@ -14,6 +15,7 @@ export default function SolicitudConfirmada() {
   const [estado, setEstado] = useState<'cargando' | 'ok' | 'error'>('cargando');
   const [enviadas, setEnviadas] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [fbHecho, setFbHecho] = useState(false);
 
   useEffect(() => {
     const t = new URLSearchParams(window.location.search).get('t');
@@ -60,6 +62,11 @@ export default function SolicitudConfirmada() {
               <p className="text-sm mb-8" style={{ color: '#374151' }}>
                 Cuando uno diga que sí, te escribimos con un botón para hablar con él. No tienes que hacer nada más.
               </p>
+              <div className="text-left mb-8 p-4 rounded-2xl" style={{ background: '#FBF3DD', border: '1px solid rgba(122,98,22,0.16)' }}>
+                {fbHecho
+                  ? <p className="text-sm font-bold text-center" style={{ color: '#111' }}>Gracias, lo leemos todo.</p>
+                  : <FeedbackWebForm momento="solicitud" rol="particular" onEnviado={() => setFbHecho(true)} />}
+              </div>
               <a href="/" className="inline-block px-6 py-3 rounded-xl text-sm font-bold"
                 style={{ background: '#FBF3DD', border: '1px solid rgba(122,98,22,0.16)', color: '#374151' }}>
                 Volver a XPEAK

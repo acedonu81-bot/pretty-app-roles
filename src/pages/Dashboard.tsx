@@ -71,6 +71,7 @@ const ResenasView = lazy(() => import('@/components/dashboard/views/ResenasView'
 const LegalView = lazy(() => import('@/components/dashboard/views/LegalView').then(m => ({ default: m.LegalView })));
 const ProfessionalProfilePage = lazy(() => import('@/components/dashboard/ProfessionalProfilePage'));
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
+const FeedbackWebCard = lazy(() => import('@/components/FeedbackWebCard'));
 const LocalEventosView = lazy(() => import('@/components/dashboard/views/LocalEventosView'));
 const OnboardingTour = lazy(() => import('@/components/dashboard/OnboardingTour'));
 const ConsejosPanel = lazy(() => import('@/components/dashboard/ConsejosPanel'));
@@ -804,6 +805,7 @@ const Dashboard = () => {
         {!showWizard && <OnboardingTour onNavigate={handleViewChange} oculto={activeView === 'messages'} />}
         {!showWizard && <ConsejosPanel isMobile={isMobile} onNavigate={handleViewChange} onGoToReviews={goToPendingReviews} />}
         {activeView !== 'messages' && <div className="hidden sm:block"><SupportChat /></div>}
+        {user && !showWizard && <FeedbackWebCard rol={profileRole} oculto={activeView === 'messages'} />}
         {showWizard && (
           <OnboardingWizard
             onClose={() => { setShowWizard(false); askForPush('alta'); }}
