@@ -12,7 +12,7 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAuthor from '@/components/BlogAuthor';
 import WarmUpAcademyBanner, { urlWarmUp, clicWarmUp } from '@/components/WarmUpAcademyBanner';
 import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
-import BlogTopCTA from '@/components/BlogTopCTA';
+import BlogPrimerPaso from '@/components/BlogPrimerPaso';
 import ConcursoAuthBanner from '@/components/ConcursoAuthBanner';
 import { trackBlogCtaClick } from '@/lib/blogAnalytics';
 import CalculadoraPrecioDJ from '@/components/CalculadoraPrecioDJ';
@@ -119,7 +119,7 @@ const faqStructured = {
             {/* 16 oct 2026: el botón de arriba era solo para quien contrata y no
                 destacaba; el del camarero (pro, dorado) convierte mejor. Aquí
                 van los dos públicos y, hasta el 2 nov, el concurso de Madrid. */}
-            <BlogTopCTA href="/auth?mode=register&role=dj" label="Crear mi perfil DJ →" text="¿Eres DJ? Publica tu tarifa y que te encuentren directamente" highlight role="dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
+            <BlogPrimerPaso rol="dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
             <ConcursoAuthBanner variante="compacto" onParticipar={() => {
               trackBlogCtaClick({ component: 'top', role: 'concurso', href: '/auth?mode=register&role=dj', article_path: '/blog/cuanto-cobra-un-dj-en-espana' });
               try { sessionStorage.setItem('xpeak_volver_a', '/concurso-dj-madrid#inscripcion'); } catch { /* sin almacenamiento */ }

@@ -37,7 +37,9 @@ export function trackBlogCtaClick(params: BlogCtaEventParams) {
   // También a analytics_events (16 oct 2026): hasta hoy los clics de blog solo
   // iban a GTM/GA4 (con consentimiento) y no se sabía qué botón de qué
   // artículo funcionaba. 'cta_click' ya está en la lista de eventos de la BD.
-  const detalle = `blog ${params.component} ${params.role ?? '-'} ${params.variant ?? '-'} > ${params.href ?? '-'}`;
+  // Las impresiones (aparece el CTA) NO son clics: se marcan 'vista' para no inflar la tasa (26 oct 2026).
+  const vista = params.role?.endsWith('_impression') ? 'vista ' : '';
+  const detalle = `${vista}blog ${params.component} ${params.role ?? '-'} ${params.variant ?? '-'} > ${params.href ?? '-'}`;
   void logEvent('cta_click', params.article_path || location.pathname, detalle.slice(0, 120));
 }
 

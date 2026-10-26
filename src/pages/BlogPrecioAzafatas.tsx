@@ -9,7 +9,7 @@ import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
-import BlogTopCTA from '@/components/BlogTopCTA';
+import BlogPrimerPaso from '@/components/BlogPrimerPaso';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en España: guía completa 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad.', datePublished: '2026-05-04',
   dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' };
@@ -53,7 +53,7 @@ export default function BlogPrecioAzafatas() {
         </nav>
         <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
-          <BlogTopCTA href="/auth?mode=register&role=azafata" label="Crea tu perfil →" text="¿Eres azafata? Publica tu perfil y que te encuentren directamente" highlight role="azafata" articlePath="/blog/precio-azafatas-eventos-espana" />
+          <BlogPrimerPaso rol="azafata" articlePath="/blog/precio-azafatas-eventos-espana" />
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Staff · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de azafatas para eventos en España: guía completa 2026</h1>

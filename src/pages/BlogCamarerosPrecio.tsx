@@ -9,7 +9,7 @@ import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
-import BlogTopCTA from '@/components/BlogTopCTA';
+import BlogPrimerPaso from '@/components/BlogPrimerPaso';
 
 export default function BlogCamarerosPrecio() {
   const breadcrumb = {
@@ -75,7 +75,7 @@ const faqStructured = {
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-5xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
         <article className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-            <BlogTopCTA href="/auth?mode=register&role=staff" label="Crea tu perfil →" text="¿Eres camarero? Publica tu perfil y que te encuentren directamente" highlight articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
+            <BlogPrimerPaso rol="staff" articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
           <a href="/contratar-camareros" className="inline-flex items-center gap-1.5 text-xs mb-6 transition-opacity hover:opacity-60"
             style={{ color: 'rgba(37,99,235,0.7)' }}>
             <ArrowLeft size={12} /> Contratar camareros
