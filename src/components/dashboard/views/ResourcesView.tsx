@@ -39,6 +39,7 @@ type Guide = { title: string; desc: string; href: string };
 // rutas vivas en App.tsx — un enlace roto aquí es peor que no poner nada.
 const GUIDES_BY_ROLE: Record<string, Guide[]> = {
   dj: [
+    { title: 'Cómo empezar a pinchar en eventos', desc: 'Precios reales de DJs de XPEAK y primeros pasos.', href: '/blog/como-empezar-dj-eventos-principiante' },
     { title: 'Cómo conseguir bolos como DJ', desc: 'De dónde salen los bolos y cómo encadenarlos.', href: '/blog/como-conseguir-bolos-dj' },
     { title: 'Cuánto cobra un DJ en España', desc: 'Tarifas reales por tipo de evento y zona.', href: '/blog/cuanto-cobra-un-dj-en-espana' },
     { title: 'Calculadora de tarifa DJ', desc: 'Calcula tu caché según horas, desplazamiento y equipo.', href: '/blog/calculadora-tarifa-dj' },
@@ -70,6 +71,7 @@ const GUIDES_BY_ROLE: Record<string, Guide[]> = {
     { title: 'Cuánto cobra un estilista de eventos', desc: 'Referencias de precio por servicio.', href: '/blog/cuanto-cobra-un-estilista-de-eventos' },
   ],
   azafata: [
+    { title: 'Cómo trabajar de azafata de eventos', desc: 'Sueldo con fuentes y cómo empezar.', href: '/blog/como-trabajar-de-azafata-de-eventos' },
     { title: 'Precio de azafatas para eventos', desc: 'Tarifas por jornada de feria, congreso y promoción.', href: '/blog/precio-azafatas-eventos-espana' },
     { title: 'Cuánto cobra un promotor / RRPP', desc: 'Fijo, comisión y mixto: cómo se paga de verdad.', href: '/blog/cuanto-cobra-un-promotor-rrpp' },
     { title: 'Contrato con proveedores de eventos', desc: 'Qué firmar antes de un servicio.', href: '/blog/contrato-proveedores-eventos' },

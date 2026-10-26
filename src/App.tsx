@@ -316,6 +316,10 @@ const BlogDJBodaValencia = lazy(() => import("./pages/BlogDJBodaValencia"));
 const BlogFotografoComunionMadrid = lazy(() => import("./pages/BlogFotografoComunionMadrid"));
 const BlogConseguirBolosDJ = lazy(() => import("./pages/BlogConseguirBolosDJ"));
 const BlogTrabajarCamareroEventos = lazy(() => import("./pages/BlogTrabajarCamareroEventos"));
+const BlogEmpezarDJPrincipiante = lazy(() => import("./pages/BlogEmpezarDJPrincipiante"));
+const BlogTrabajarAzafataEventos = lazy(() => import("./pages/BlogTrabajarAzafataEventos"));
+const BlogTrabajarTecnicoSonido = lazy(() => import("./pages/BlogTrabajarTecnicoSonido"));
+const BlogTrabajarAnimadorInfantil = lazy(() => import("./pages/BlogTrabajarAnimadorInfantil"));
 const BlogFotografoConseguirClientes = lazy(() => import("./pages/BlogFotografoConseguirClientes"));
 const BlogComoSerPromotorEventos = lazy(() => import("./pages/BlogComoSerPromotorEventos"));
 const BlogMaquilladoraConseguirClientes = lazy(() => import("./pages/BlogMaquilladoraConseguirClientes"));
@@ -817,6 +821,10 @@ const App = () => (
             <Route path="/blog/fotografo-comunion-madrid" element={<BlogFotografoComunionMadrid />} />
             <Route path="/blog/como-conseguir-bolos-dj" element={<BlogConseguirBolosDJ />} />
             <Route path="/blog/como-trabajar-de-camarero-eventos" element={<BlogTrabajarCamareroEventos />} />
+            <Route path="/blog/como-empezar-dj-eventos-principiante" element={<BlogEmpezarDJPrincipiante />} />
+            <Route path="/blog/como-trabajar-de-azafata-de-eventos" element={<BlogTrabajarAzafataEventos />} />
+            <Route path="/blog/como-trabajar-de-tecnico-de-sonido-eventos" element={<BlogTrabajarTecnicoSonido />} />
+            <Route path="/blog/como-trabajar-de-animador-infantil" element={<BlogTrabajarAnimadorInfantil />} />
             <Route path="/blog/fotografo-como-conseguir-clientes" element={<BlogFotografoConseguirClientes />} />
             <Route path="/blog/como-ser-promotor-eventos" element={<BlogComoSerPromotorEventos />} />
             <Route path="/blog/maquilladora-conseguir-clientes" element={<BlogMaquilladoraConseguirClientes />} />
