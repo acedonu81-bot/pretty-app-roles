@@ -104,7 +104,7 @@ const HalloweenHero = () => {
       {/* Telarañas en las esquinas de arriba del hero, solo en ordenador. */}
       <Telarana claro className="hidden md:block [.app-instalada_&]:block absolute left-0 top-0 w-[130px]" />
       <Telarana claro espejo className="hidden md:block [.app-instalada_&]:block absolute right-0 top-0 w-[130px]" />
-      <AranaColgante claro className="absolute top-0" style={{ right: 30 }} />
+      <AranaColgante claro className="absolute top-0" style={{ right: '7%' }} />
     </div>
   );
 };

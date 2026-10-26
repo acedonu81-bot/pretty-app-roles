@@ -24,7 +24,7 @@ const GuirnaldaLuces = () => {
     {/* Telarañas en las esquinas de arriba: en ordenador y en la app instalada (con la araña). */}
     <Telarana className="hidden md:block [.app-instalada_&]:block fixed left-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
     <Telarana espejo className="hidden md:block [.app-instalada_&]:block fixed right-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
-    <AranaColgante className="fixed z-[59]" style={{ top: 'env(safe-area-inset-top, 0px)', right: 26 }} />
+    <AranaColgante className="fixed z-[59]" style={{ top: 'env(safe-area-inset-top, 0px)', right: '7%' }} />
     <div aria-hidden className="fixed left-0 right-0 z-[60] pointer-events-none h-3"
       style={{ top: 'env(safe-area-inset-top, 0px)' }}>
       <style>{`
