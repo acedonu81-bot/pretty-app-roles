@@ -11,6 +11,8 @@ import { useEffect, useState, useRef } from 'react';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import { halloweenActivo } from '@/lib/halloween';
+import { movemberActivo } from '@/lib/movember';
+import { Bigote } from '@/components/movember/Movember';
 import { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { useFeedAlert } from '@/hooks/useFeedAlert';
@@ -356,9 +358,13 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                 <span className="relative inline-block">
                   <SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X
                 </span>
+              ) : movemberActivo() ? (
+                <span className="relative inline-block">
+                  <Bigote className="absolute -top-[4px] left-[1px] -rotate-3" />X
+                </span>
               ) : 'X'}<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
             </h2>
-            <p className="text-[0.75rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: halloweenActivo() ? '#E0650C' : 'rgba(10,9,8,0.35)' }}>{halloweenActivo() ? 'Semana de Halloween' : 'España · Directorio Profesional'}</p>
+            <p className="text-[0.75rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: halloweenActivo() ? '#E0650C' : movemberActivo() ? '#8B6A00' : 'rgba(10,9,8,0.35)' }}>{halloweenActivo() ? 'Semana de Halloween' : movemberActivo() ? 'Movember' : 'España · Directorio Profesional'}</p>
           </a>
           {!forceExpanded && <SidebarCollapseToggle />}
         </div>

@@ -2,6 +2,8 @@ import { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspense } fro
 import { ALL_CITIES } from '@/lib/regions';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import { halloweenActivo } from '@/lib/halloween';
+import { movemberActivo } from '@/lib/movember';
+import { Bigote, MovemberPastilla } from '@/components/movember/Movember';
 import HalloweenHero, { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { resolverVistaDeBusqueda } from '@/pages/Dashboard';
 import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
@@ -511,6 +513,7 @@ const Landing = () => {
   // banner; al cerrar el plazo vuelven solos (se queda sr-only para SEO).
   const concursoEnCurso = concursoActivo();
   const halloween = halloweenActivo();
+  const movember = movemberActivo();
   const navigate = useNavigate();
   const [showParticular, setShowParticular] = useState(false);
   const { user, loading: authLoading } = useAuth();
@@ -689,6 +692,10 @@ const Landing = () => {
               <span className="relative inline-block">
                 <SombreroBruja className="absolute -top-[13px] -left-[3px] -rotate-12" />X
               </span>
+            ) : movember ? (
+              <span className="relative inline-block">
+                <Bigote className="absolute -top-[5px] left-[1px] -rotate-3" />X
+              </span>
             ) : 'X'}<span className="text-gradient">PEAK</span>
           </button>
           <LandingMegaMenu onParticular={() => setShowParticular(true)} />
@@ -812,6 +819,7 @@ const Landing = () => {
             <span style={{ color: '#FFB25E' }}>sin miedo a quedarte sin DJ</span>
           </p>
         )}
+        {movember && <MovemberPastilla />}
         <div className="max-w-2xl mx-auto mb-5 text-left">
           <Suspense fallback={null}><ConcursoFeedBanner sinTexto /></Suspense>
         </div>
