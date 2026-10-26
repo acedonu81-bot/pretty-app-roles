@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { fotoOptimizada } from '@/lib/imagen';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack, normalizeStreamUrl } from '@/lib/streaming';
 import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
@@ -723,7 +724,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                     <a key={i} href={url} target="_blank" rel="noopener noreferrer"
                       className="rounded-xl overflow-hidden aspect-square relative group cursor-pointer block"
                       style={{ border: `1px solid ${cfg.color}15` }}>
-                      <img src={url} alt={`${p.name} trabajo ${i + 1}`} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      <img src={fotoOptimizada(url, 600)} alt={`${p.name} trabajo ${i + 1}`} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         onError={e => { (e.currentTarget.closest('a') as HTMLElement)?.style.setProperty('display', 'none'); }} />
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                         style={{ background: 'rgba(0,0,0,0.5)' }}>

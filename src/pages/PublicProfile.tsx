@@ -1060,7 +1060,7 @@ const PublicProfile = () => {
                 {sbProfile.portfolio_urls.slice(0, 9).map((url, i) => (
                   <div key={i} className="aspect-square rounded-2xl overflow-hidden group cursor-pointer"
                     onClick={() => window.open(url, '_blank', 'noopener')}>
-                    <img src={url} alt={`${sbProfile.display_name} ${i + 1}`}
+                    <img src={fotoOptimizada(url, 600)} alt={`${sbProfile.display_name} ${i + 1}`}
                       className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
                       loading="lazy" />
                   </div>
