@@ -8,6 +8,15 @@ import {
   Award, Building2, RefreshCw,
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { logEvent } from '@/lib/track';
+
+// Uso del bot (26 oct 2026): antes no se guardaba nada. 'abre' = abre el panel,
+// 'kb' = respondió la base local, 'ia' = respondió chat-ai, 'sin' = no hubo
+// respuesta. Solo se guarda el texto de la pregunta, sin emails ni números largos.
+const medirBot = (paso: 'abre' | 'kb' | 'ia' | 'sin', texto = '') => {
+  const limpio = texto.replace(/\S+@\S+/g, '[email]').replace(/\d{6,}/g, '[num]').replace(/\s+/g, ' ').trim().slice(0, 70);
+  void logEvent('cta_click', location.pathname, `bot ${paso} ${limpio}`.trim().slice(0, 120));
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -108,7 +117,7 @@ const KB: KBEntry[] = [
   {
     id: 'negotiation',
     patterns: [/negoci|negociación|negociacion|precio.*discutir|cómo.*precio|como.*precio|caché.*negoci|cache.*negoci|cuánto.*cobrar|cuanto.*cobrar|tarifa.*justa/i],
-    answer: 'XPEAK no impone precios: el acuerdo económico lo fijáis vosotros.\n\n**La negociación ocurre en Mensajes:**\n• Inicia indicando tu disponibilidad y tarifa base\n• El empresario puede contraoferta, tú decides si aceptas\n• No hay presión: si no hay acuerdo, la conversación queda archivada\n\n**Referencias de mercado en España (2025):**\n• DJ sesión club 4h, entre €150 y €800 según experiencia y sala\n• Staff / azafata noche, entre €80 y €200\n• Fotógrafo evento, entre €150 y €500\n• Maquillaje artístico, entre €80 y €250\n\n**Tip:** Si has publicado tarifa en el perfil, los empresarios llegan habiendo visto ese precio, reduce el regateo.',
+    answer: 'XPEAK no impone precios: el acuerdo económico lo fijáis vosotros.\n\n**La negociación ocurre en Mensajes:**\n• Inicia indicando tu disponibilidad y tarifa base\n• El empresario puede contraoferta, tú decides si aceptas\n• No hay presión: si no hay acuerdo, la conversación queda archivada\n\n**Referencia:** cada perfil muestra su tarifa, y en los artículos de precios del blog (DJ, camareros, azafatas) ves lo que ponen los profesionales de XPEAK.\n\n**Tip:** Si has publicado tarifa en el perfil, los empresarios llegan habiendo visto ese precio, reduce el regateo.',
     followUps: ['¿Cómo genero el contrato tras acordar?', '¿Qué incluye el contrato?'],
   },
 
@@ -164,7 +173,7 @@ const KB: KBEntry[] = [
   {
     id: 'rookie',
     patterns: [/dj promesa|artista promesa|rookie|junior|emergente|nuevo.*dj|principiante|diferencia.*dj.*promesa/i],
-    answer: 'La sección **DJ / Artista Promesa** está diseñada para talento emergente.\n\n**Diferencias clave con el directorio principal de DJs:**\n• Aparece en una sección separada que los empresarios filtran específicamente cuando buscan precios más accesibles o apostar por talento nuevo\n• Las tarifas son generalmente más bajas (€50-€200 vs €150-€800 en DJ senior)\n• Menor competencia, menos perfiles, más visibilidad relativa\n• Ideal para residencias locales, fiestas privadas y aperturas de sala\n\n**Cuándo "graduarse":**\nNo hay un límite automático. Cuando consideres que tu experiencia y caché están al nivel del directorio principal, cambia tu rol en Ajustes.\n\n**Los empresarios que miran Promesas buscan:** precio ajustado, energía fresca y flexibilidad horaria.',
+    answer: 'La sección **DJ / Artista Promesa** está diseñada para talento emergente.\n\n**Diferencias clave con el directorio principal de DJs:**\n• Aparece en una sección separada que los empresarios filtran específicamente cuando buscan precios más accesibles o apostar por talento nuevo\n• Cada Promesa pone su propia tarifa en el perfil\n• Menor competencia, menos perfiles, más visibilidad relativa\n• Ideal para residencias locales, fiestas privadas y aperturas de sala\n\n**Cuándo "graduarse":**\nNo hay un límite automático. Cuando consideres que tu experiencia y caché están al nivel del directorio principal, cambia tu rol en Ajustes.\n\n**Los empresarios que miran Promesas buscan:** precio ajustado, energía fresca y flexibilidad horaria.',
     followUps: ['¿Cómo cambio de rol?', '¿Qué géneros debo seleccionar?'],
   },
 
@@ -480,6 +489,10 @@ const SupportChat = () => {
   }, [open]);
 
   useEffect(() => {
+    if (open) medirBot('abre');
+  }, [open]);
+
+  useEffect(() => {
     if (open) bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [msgs, typing, open]);
 
@@ -508,6 +521,7 @@ const SupportChat = () => {
     const match = getBestMatch(text);
 
     if (match) {
+      medirBot('kb', text);
       await new Promise(r => setTimeout(r, 500 + Math.random() * 400));
       setTyping(false);
       pushBot(match.answer, match.followUps);
@@ -529,9 +543,11 @@ const SupportChat = () => {
         throw new Error('AI unavailable');
       }
 
+      medirBot('ia', text);
       pushBot(data.reply ?? 'Lo siento, no pude procesar tu consulta. Escríbenos a info@xpeak.site');
       setNoMatchCount(0);
     } catch {
+      medirBot('sin', text);
       setTyping(false);
       const newCount = noMatchCount + 1;
       setNoMatchCount(newCount);
