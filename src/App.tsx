@@ -320,6 +320,19 @@ const BlogEmpezarDJPrincipiante = lazy(() => import("./pages/BlogEmpezarDJPrinci
 const BlogTrabajarAzafataEventos = lazy(() => import("./pages/BlogTrabajarAzafataEventos"));
 const BlogTrabajarTecnicoSonido = lazy(() => import("./pages/BlogTrabajarTecnicoSonido"));
 const BlogTrabajarAnimadorInfantil = lazy(() => import("./pages/BlogTrabajarAnimadorInfantil"));
+const BlogLlenarLocalEventosPrivados = lazy(() => import("./pages/BlogLlenarLocalEventosPrivados"));
+const BlogAlquilarEquipoSonidoEventos = lazy(() => import("./pages/BlogAlquilarEquipoSonidoEventos"));
+const BlogAlquilarPhotoBoothEventos = lazy(() => import("./pages/BlogAlquilarPhotoBoothEventos"));
+const BlogConseguirEventosFoodTruck = lazy(() => import("./pages/BlogConseguirEventosFoodTruck"));
+const BlogConseguirEventosCatering = lazy(() => import("./pages/BlogConseguirEventosCatering"));
+const BlogConseguirEventosDiscoMovil = lazy(() => import("./pages/BlogConseguirEventosDiscoMovil"));
+const BlogTrabajarPeluqueraDomicilio = lazy(() => import("./pages/BlogTrabajarPeluqueraDomicilio"));
+const BlogTrabajarEstilistaEventos = lazy(() => import("./pages/BlogTrabajarEstilistaEventos"));
+const BlogTrabajarPresentadorEventos = lazy(() => import("./pages/BlogTrabajarPresentadorEventos"));
+const BlogTrabajarHumoristaEventos = lazy(() => import("./pages/BlogTrabajarHumoristaEventos"));
+const BlogConseguirBolosGrupoMusical = lazy(() => import("./pages/BlogConseguirBolosGrupoMusical"));
+const BlogTrabajarBailarinEventos = lazy(() => import("./pages/BlogTrabajarBailarinEventos"));
+const BlogTrabajarMagoEventos = lazy(() => import("./pages/BlogTrabajarMagoEventos"));
 const BlogFotografoConseguirClientes = lazy(() => import("./pages/BlogFotografoConseguirClientes"));
 const BlogComoSerPromotorEventos = lazy(() => import("./pages/BlogComoSerPromotorEventos"));
 const BlogMaquilladoraConseguirClientes = lazy(() => import("./pages/BlogMaquilladoraConseguirClientes"));
@@ -825,6 +838,19 @@ const App = () => (
             <Route path="/blog/como-trabajar-de-azafata-de-eventos" element={<BlogTrabajarAzafataEventos />} />
             <Route path="/blog/como-trabajar-de-tecnico-de-sonido-eventos" element={<BlogTrabajarTecnicoSonido />} />
             <Route path="/blog/como-trabajar-de-animador-infantil" element={<BlogTrabajarAnimadorInfantil />} />
+            <Route path="/blog/como-llenar-local-con-eventos-privados" element={<BlogLlenarLocalEventosPrivados />} />
+            <Route path="/blog/como-alquilar-equipo-de-sonido-para-eventos" element={<BlogAlquilarEquipoSonidoEventos />} />
+            <Route path="/blog/como-alquilar-photo-booth-en-eventos" element={<BlogAlquilarPhotoBoothEventos />} />
+            <Route path="/blog/como-conseguir-eventos-food-truck" element={<BlogConseguirEventosFoodTruck />} />
+            <Route path="/blog/como-conseguir-eventos-catering" element={<BlogConseguirEventosCatering />} />
+            <Route path="/blog/como-conseguir-eventos-disco-movil" element={<BlogConseguirEventosDiscoMovil />} />
+            <Route path="/blog/como-trabajar-de-peluquera-a-domicilio-en-bodas" element={<BlogTrabajarPeluqueraDomicilio />} />
+            <Route path="/blog/como-trabajar-de-estilista-en-bodas-y-eventos" element={<BlogTrabajarEstilistaEventos />} />
+            <Route path="/blog/como-trabajar-de-presentador-de-eventos" element={<BlogTrabajarPresentadorEventos />} />
+            <Route path="/blog/como-trabajar-de-humorista-en-eventos" element={<BlogTrabajarHumoristaEventos />} />
+            <Route path="/blog/como-conseguir-bolos-grupo-musical" element={<BlogConseguirBolosGrupoMusical />} />
+            <Route path="/blog/como-trabajar-de-bailarin-en-eventos" element={<BlogTrabajarBailarinEventos />} />
+            <Route path="/blog/como-trabajar-de-mago-en-eventos" element={<BlogTrabajarMagoEventos />} />
             <Route path="/blog/fotografo-como-conseguir-clientes" element={<BlogFotografoConseguirClientes />} />
             <Route path="/blog/como-ser-promotor-eventos" element={<BlogComoSerPromotorEventos />} />
             <Route path="/blog/maquilladora-conseguir-clientes" element={<BlogMaquilladoraConseguirClientes />} />

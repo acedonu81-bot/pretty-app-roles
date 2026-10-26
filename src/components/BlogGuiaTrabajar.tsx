@@ -21,9 +21,10 @@ export interface GuiaTrabajar {
   intro: string;
   fecha: string;           // ISO
   fechaTexto: string;
-  tituloTarifas: string;
+  // Sin datos con fuente, el artículo va sin tabla de precios (tarifas vacío).
+  tituloTarifas?: string;
   tarifas: { perfil: string; tarifa: string }[];
-  notaTarifas: string;
+  notaTarifas?: string;
   // Solo datos con fuente (decisión del usuario, 26 oct 2026: "no inventes
   // datos, y si hay fuentes nómbralas"). Cada cifra de tarifas sale de aquí o
   // de los perfiles de XPEAK.
@@ -34,7 +35,7 @@ export interface GuiaTrabajar {
   relacionados: { href: string; cat: string; title: string }[];
   ctaSlug: string;         // slug de CtaProfesional
   tag: string;             // tag de BlogRelatedPosts
-  scrollRole: 'dj_pro' | 'azafata_pro' | 'profesional_pro';
+  scrollRole: 'dj_pro' | 'azafata_pro' | 'bailarin_pro' | 'grupo_musical_pro' | 'humorista_pro' | 'mago_pro' | 'speaker_pro' | 'vestuario_pro' | 'profesional_pro';
   storageKey: string;
 }
 
@@ -84,7 +85,7 @@ export default function BlogGuiaTrabajar({ g }: { g: GuiaTrabajar }) {
           </div>
 
           <div className="space-y-10">
-            <section>
+            {g.tarifas.length > 0 && <section>
               <h2 className="text-lg font-black mb-4">{g.tituloTarifas}</h2>
               <div className="space-y-2">
                 {g.tarifas.map((row, i) => (
@@ -95,7 +96,7 @@ export default function BlogGuiaTrabajar({ g }: { g: GuiaTrabajar }) {
                 ))}
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>{g.notaTarifas}</p>
-            </section>
+            </section>}
 
             {g.secciones?.map(s => (
               <section key={s.titulo}>
@@ -133,7 +134,7 @@ export default function BlogGuiaTrabajar({ g }: { g: GuiaTrabajar }) {
               </div>
             </section>
 
-            <section>
+            {g.fuentes.length > 0 && <section>
               <h2 className="text-base font-black mb-3">Fuentes</h2>
               <ul className="space-y-2">
                 {g.fuentes.map(f => (
@@ -142,7 +143,7 @@ export default function BlogGuiaTrabajar({ g }: { g: GuiaTrabajar }) {
                   </li>
                 ))}
               </ul>
-            </section>
+            </section>}
 
             <section>
               <h2 className="text-base font-black mb-3">Artículos relacionados</h2>
