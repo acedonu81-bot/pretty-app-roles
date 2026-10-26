@@ -32,28 +32,27 @@ export function respuestaPrecio(keyword: string, donde: string, st: EstadPrecio 
 export const valorPrecio = (st: EstadPrecio | null) =>
   st ? `${st.p25}-${st.p75} €/h (la mitad de ${st.n} perfiles)` : 'En el perfil de cada profesional';
 
-// Tarifas reales de un oficio (función tarifas_publicas: sin cuentas propias ni
-// demo, semillas, rechazados ni tarifas por defecto). null mientras carga o si
-// la función no existe todavía: en ese caso la página no da cifra.
-export function useTarifasReales(roles: string[]): Map<string, number> | null {
-  const [tarifas, setTarifas] = useState<Map<string, number> | null>(null);
+// Resumen de tarifas reales (función tarifas_publicas: sin cuentas propias ni
+// demo, semillas, rechazados ni tarifas por defecto; solo con 5 o más). La
+// función nunca devuelve tarifas sueltas. null mientras carga, si no hay
+// bastantes tarifas o si la función no existe todavía: la página no da cifra.
+// userIds limita el cálculo a los perfiles que ya enseña la página (ciudad).
+export function usePrecioReal(roles: string[], userIds?: string[]): EstadPrecio | null {
+  const [st, setSt] = useState<EstadPrecio | null>(null);
   const clave = roles.join(',');
+  const ids = userIds?.join(',');
   useEffect(() => {
-    if (!clave) return;
+    if (!clave || ids === '') return;
     let vivo = true;
     const sb = supabase as unknown as {
-      rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: { user_id: string; hourly_rate: number }[] | null; error: unknown }>;
+      rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: { n: number; min_eur: number; max_eur: number; p25: number; p50: number; p75: number }[] | null; error: unknown }>;
     };
-    sb.rpc('tarifas_publicas', { p_roles: clave.split(',') }).then(({ data, error }) => {
-      if (vivo && !error && data) setTarifas(new Map(data.map(t => [t.user_id, Number(t.hourly_rate)])));
+    sb.rpc('tarifas_publicas', { p_roles: clave.split(','), p_user_ids: ids ? ids.split(',') : null }).then(({ data, error }) => {
+      const r = !error && data?.[0];
+      const r5 = (n: number) => Math.round(Number(n) / 5) * 5;
+      if (vivo) setSt(r ? { n: r.n, min: r.min_eur, max: r.max_eur, p25: r5(r.p25), p75: r5(r.p75), tipico: r5(r.p50) } : null);
     });
     return () => { vivo = false; };
-  }, [clave]);
-  return tarifas;
-}
-
-// Todo el país (páginas /contratar-<oficio>).
-export function usePrecioReal(roles: string[]): EstadPrecio | null {
-  const tarifas = useTarifasReales(roles);
-  return tarifas ? estadisticasPrecio([...tarifas.values()]) : null;
+  }, [clave, ids]);
+  return st;
 }

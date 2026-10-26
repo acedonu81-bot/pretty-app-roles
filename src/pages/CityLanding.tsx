@@ -11,7 +11,7 @@ import { toSlug } from '@/data/profiles';
 import { passesPhotoGate } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
 import { ROLE_MAP } from '@/lib/rolesPorCategoria';
-import { precioValido, estadisticasPrecio, useTarifasReales, esPreguntaPrecio, respuestaPrecio, valorPrecio, type EstadPrecio } from '@/lib/precioReal';
+import { precioValido, usePrecioReal, esPreguntaPrecio, respuestaPrecio, valorPrecio, type EstadPrecio } from '@/lib/precioReal';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
 // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
@@ -879,8 +879,6 @@ export default function CityLanding() {
   const dirPropio = pathname.split('/')[1]?.replace('contratar-', '') ?? 'dj';
   const dirSlug = useDirectorioConInventario(dirPropio === 'peluqueria' ? 'maquillaje' : dirPropio);
   const [pedir, setPedir] = useState(false);
-  // Solo tarifas reales (sin cuentas propias ni demo): ver src/lib/precioReal.ts.
-  const tarifasReales = useTarifasReales(ROLE_MAP[dirPropio] ?? ['dj']);
 
   const cityData = ciudad ? CITIES[ciudad.toLowerCase()] : null;
   if (!cityData) {
@@ -901,7 +899,9 @@ export default function CityLanding() {
   const canonicalBase = `/contratar-${categorySlug}/${cityData.slug}`;
   const { profs: professionals, suggestions: profSuggestions, loaded: profsLoaded } = useCityProfessionals(cityData.ciudad, categorySlug);
   const completa = esPaginaCompleta(categorySlug, cityData.ciudad);
-  const st = tarifasReales ? estadisticasPrecio(professionals.filter(p => tarifasReales.has(p.id)).map(p => p.precioHora)) : null;
+  // Solo tarifas reales de los perfiles de esta página (sin cuentas propias ni
+  // demo): ver src/lib/precioReal.ts. Sin perfiles cargados no se pide nada.
+  const st = usePrecioReal(ROLE_MAP[categorySlug] ?? ['dj'], profsLoaded ? professionals.map(p => p.id) : []);
   const faqs = completa
     ? faqsCompletas(cityData.ciudad, st)
     : catData.faqs(cityData.ciudad, '').map(f => esPreguntaPrecio(f.q) ? { ...f, a: respuestaPrecio(catData.keyword, cityData.ciudad, st) } : f);
