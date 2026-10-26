@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { halloweenActivo } from '@/lib/halloween';
 import { MurcielagoColgado } from '@/components/halloween/HalloweenHero';
 import { Telarana } from '@/components/halloween/Telarana';
+import { AranaColgante } from '@/components/halloween/AranaColgante';
 import FantasmaAsomado from '@/components/halloween/FantasmaAsomado';
 
 // PROVISIONAL: guirnalda de luces de verbena colgada del borde de arriba en
@@ -20,9 +21,10 @@ const GuirnaldaLuces = () => {
   return (
     <>
     <FantasmaAsomado />
-    {/* Telarañas en las esquinas de arriba, solo en ordenador. */}
-    <Telarana className="hidden md:block fixed left-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
-    <Telarana espejo className="hidden md:block fixed right-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
+    {/* Telarañas en las esquinas de arriba: en ordenador y en la app instalada (con la araña). */}
+    <Telarana className="hidden md:block [.app-instalada_&]:block fixed left-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
+    <Telarana espejo className="hidden md:block [.app-instalada_&]:block fixed right-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
+    <AranaColgante className="fixed z-[59]" style={{ top: 'env(safe-area-inset-top, 0px)', right: 26 }} />
     <div aria-hidden className="fixed left-0 right-0 z-[60] pointer-events-none h-3"
       style={{ top: 'env(safe-area-inset-top, 0px)' }}>
       <style>{`
