@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, Star, TrendingUp } from 'lucide-react';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -295,6 +296,7 @@ export default function BlogMaestroCeremonias() {
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maestro-de-ceremonias-boda-precio-guia" />
         <BlogRelatedPosts currentSlug='/blog/maestro-de-ceremonias-boda-precio-guia' tag='Bodas' />
+        <CtaProfesional slug="speaker" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maestro_ceremonias" articlePath="/blog/maestro-de-ceremonias-boda-precio-guia" />
       </div>

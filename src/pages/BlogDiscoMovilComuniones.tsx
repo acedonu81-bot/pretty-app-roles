@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -173,6 +174,7 @@ const faqStructured = {
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/disco-movil-para-comuniones" />
       <BlogRelatedPosts currentSlug='/blog/disco-movil-para-comuniones' tag='DJ' />
+        <CtaProfesional slug="disco-movil" origen="blog" />
         <FooterPublic />
       <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_disco_movil_comuniones" articlePath="/blog/disco-movil-para-comuniones" />
       </div>

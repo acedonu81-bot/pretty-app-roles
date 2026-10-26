@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -155,6 +156,7 @@ export default function BlogIndex() {
 </main>
 
         <BlogAuthor />
+        <CtaProfesional slug="" origen="blog" />
         <FooterPublic />
       </div>
     </>

@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -193,6 +194,7 @@ export default function BlogCateringComuniones() {
         <BlogAuthor />
         <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/catering-comuniones-precio-persona' tag='Catering' />
+        <CtaProfesional slug="catering" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_catering_comuniones" articlePath="/blog/catering-comuniones-precio-persona" />
       </div>

@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -212,6 +213,7 @@ export default function BlogAnimadoresComunionPrecio() {
           <BlogShare />
         </main>
         <BlogRelatedPosts currentSlug='/blog/animadores-comunion-precio' tag='Eventos' />
+        <CtaProfesional slug="animador" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_animadores_comunion_precio" articlePath="/blog/animadores-comunion-precio" />
       </div>

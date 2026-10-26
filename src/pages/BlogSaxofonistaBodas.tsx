@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -212,6 +213,7 @@ const faqStructured = {
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-musico" articlePath="/blog/saxofonista-para-bodas-precio" />
         <BlogRelatedPosts currentSlug='/blog/saxofonista-para-bodas-precio' tag='Bodas' />
+        <CtaProfesional slug="" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_saxofonista_bodas" articlePath="/blog/saxofonista-para-bodas-precio" />
       </div>

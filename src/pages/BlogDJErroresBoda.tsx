@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Zap } from 'lucide-react';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -252,6 +253,7 @@ export default function BlogDJErroresBoda() {
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/10-errores-contratar-dj-boda" />
         <BlogRelatedPosts currentSlug='/blog/10-errores-contratar-dj-boda' tag='DJ' />
+        <CtaProfesional slug="dj" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_errores_boda" articlePath="/blog/10-errores-contratar-dj-boda" />
       </div>

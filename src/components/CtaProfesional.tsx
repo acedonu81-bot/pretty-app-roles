@@ -39,7 +39,7 @@ const OFICIOS: Record<string, [string, string]> = {
   'locales-eventos': ['¿Tienes un local para eventos', 'local_eventos'],
 };
 
-export default function CtaProfesional({ slug, ciudad }: { slug: string; ciudad?: string }) {
+export default function CtaProfesional({ slug, ciudad, origen }: { slug: string; ciudad?: string; origen?: 'blog' }) {
   const [pregunta, rol] = OFICIOS[slug] ?? ['¿Trabajas en eventos', ''];
   const href = `/auth?mode=register${rol ? `&role=${rol}` : ''}`;
   return (
@@ -57,7 +57,7 @@ export default function CtaProfesional({ slug, ciudad }: { slug: string; ciudad?
           </p>
         </div>
         <a href={href}
-          onClick={() => void logEvent('cta_click', location.pathname, `pro_${ciudad ? 'ciudad' : 'oficio'} rol=${rol || 'ninguno'}`)}
+          onClick={() => void logEvent('cta_click', location.pathname, `pro_${origen ?? (ciudad ? 'ciudad' : 'oficio')} rol=${rol || 'ninguno'}`)}
           className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-black text-sm transition-all hover:scale-105 whitespace-nowrap"
           style={{ background: '#2563EB', color: '#FFFFFF' }}>
           Crear mi perfil profesional <ArrowRight size={14} />

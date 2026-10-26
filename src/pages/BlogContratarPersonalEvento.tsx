@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -202,6 +203,7 @@ export default function BlogContratarPersonalEvento() {
         <BlogAuthor />
         <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/como-contratar-personal-para-un-evento' tag='Staff' />
+        <CtaProfesional slug="staff" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_contratar_personal_evento" articlePath="/blog/como-contratar-personal-para-un-evento" />
       </div>

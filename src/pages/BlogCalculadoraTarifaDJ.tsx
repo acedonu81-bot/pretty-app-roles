@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -121,6 +122,7 @@ export default function BlogCalculadoraTarifaDJ() {
         <BlogShare />
         <DJResourcesAffiliate role="dj" />
         <BlogRelatedPosts currentSlug='/blog/calculadora-tarifa-dj' tag='DJ' />
+        <CtaProfesional slug="dj" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_calculadora_dj" articlePath="/blog/calculadora-tarifa-dj" />
       </div>

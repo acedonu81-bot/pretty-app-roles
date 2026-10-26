@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -129,6 +130,7 @@ export default function BlogComoElegirPresentadorEventoEmpresa() {
         </main>
 
         <BlogRelatedPosts currentSlug='/blog/como-elegir-presentador-evento-empresa' tag='Speaker' />
+        <CtaProfesional slug="speaker" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_elegir_presentador" articlePath="/blog/como-elegir-presentador-evento-empresa" />
       </div>

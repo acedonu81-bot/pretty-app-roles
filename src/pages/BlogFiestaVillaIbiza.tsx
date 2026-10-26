@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogShare from '@/components/BlogShare';
@@ -126,6 +127,7 @@ export default function BlogFiestaVillaIbiza() {
           </article>
         </div>
         <BlogRelatedPosts currentSlug='/blog/fiesta-privada-villa-ibiza' tag='DJ' />
+        <CtaProfesional slug="dj" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_villa_ibiza" articlePath="/blog/fiesta-privada-villa-ibiza" />
       </div>

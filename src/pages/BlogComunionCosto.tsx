@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -218,6 +219,7 @@ const faqStructured = {
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-comunion-en-espana" />
         <BlogRelatedPosts currentSlug='/blog/cuanto-cuesta-una-comunion-en-espana' tag='Eventos' />
+        <CtaProfesional slug="" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_comunion_costo" articlePath="/blog/cuanto-cuesta-una-comunion-en-espana" />
       </div>

@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogShare from '@/components/BlogShare';
@@ -150,6 +151,7 @@ export default function BlogDiscoMovilVerbenas() {
           </article>
         </div>
         <BlogRelatedPosts currentSlug='/blog/disco-movil-verbenas-fiestas-pueblo' tag='DJ' />
+        <CtaProfesional slug="disco-movil" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_disco_movil_verbenas" articlePath="/blog/disco-movil-verbenas-fiestas-pueblo" />
       </div>

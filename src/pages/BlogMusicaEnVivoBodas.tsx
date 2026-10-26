@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, Star, TrendingUp } from 'lucide-react';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -281,6 +282,7 @@ export default function BlogMusicaEnVivoBodas() {
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/musica-en-vivo-para-bodas" />
         <BlogRelatedPosts currentSlug='/blog/musica-en-vivo-para-bodas' tag='Bodas' />
+        <CtaProfesional slug="grupo-musical" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_musica_en_vivo_bodas" articlePath="/blog/musica-en-vivo-para-bodas" />
       </div>

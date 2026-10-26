@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -234,6 +235,7 @@ export default function BlogLocalesEventosMadrid() {
         </main>
 
         <BlogRelatedPosts currentSlug='/blog/locales-para-eventos-madrid' tag='Organizadores' />
+        <CtaProfesional slug="locales-eventos" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_locales_madrid" articlePath="/blog/locales-para-eventos-madrid" />
       </div>

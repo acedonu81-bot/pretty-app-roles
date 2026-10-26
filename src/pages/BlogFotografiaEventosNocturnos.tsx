@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -216,6 +217,7 @@ export default function BlogFotografiaEventosNocturnos() {
       <BlogAuthor />
       <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/fotografia-eventos-nocturnos' tag='Fotografía' />
+        <CtaProfesional slug="fotografo" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografia_eventos_nocturnos" articlePath="/blog/fotografia-eventos-nocturnos" />
       </div>

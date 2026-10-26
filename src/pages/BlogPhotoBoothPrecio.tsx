@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -305,6 +306,7 @@ export default function BlogPhotoBoothPrecio() {
         </main>
 
         <BlogRelatedPosts currentSlug='/blog/photobooth-precio-boda-evento' tag='Fotografía' />
+        <CtaProfesional slug="photo-booth" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_photo_booth_precio" articlePath="/blog/photobooth-precio-boda-evento" />
       </div>

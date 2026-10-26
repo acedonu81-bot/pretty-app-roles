@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogShare from '@/components/BlogShare';
@@ -170,6 +171,7 @@ export default function BlogChecklistEventoSala() {
           </article>
         </div>
         <BlogRelatedPosts currentSlug='/blog/checklist-organizar-evento-sala' tag='Eventos' />
+        <CtaProfesional slug="" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_checklist_sala" articlePath="/blog/checklist-organizar-evento-sala" />
       </div>

@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -209,6 +210,7 @@ export default function BlogCuartetoCuerdaPrecio() {
           <BlogShare />
         </main>
         <BlogRelatedPosts currentSlug='/blog/cuarteto-cuerda-boda-precio' tag='Bodas' />
+        <CtaProfesional slug="grupo-musical" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_cuarteto_cuerda_precio" articlePath="/blog/cuarteto-cuerda-boda-precio" />
       </div>

@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import CtaProfesional from '@/components/CtaProfesional';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogShare from '@/components/BlogShare';
@@ -114,6 +115,7 @@ export default function BlogFlashBookingComoFunciona() {
           </article>
         </div>
         <BlogRelatedPosts currentSlug='/blog/como-funciona-flash-booking-xpeak' tag='Eventos' />
+        <CtaProfesional slug="" origen="blog" />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_flash_booking" articlePath="/blog/como-funciona-flash-booking-xpeak" />
       </div>
