@@ -10,6 +10,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { toSlug } from '@/data/profiles';
 import { passesPhotoGate } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
+import { ROLE_MAP } from '@/lib/rolesPorCategoria';
+import { precioValido, estadisticasPrecio, useTarifasReales, esPreguntaPrecio, respuestaPrecio, valorPrecio, type EstadPrecio } from '@/lib/precioReal';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
 // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
@@ -23,20 +25,6 @@ const BUILD_DATE = new Date().toISOString().slice(0, 10);
 
 interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string; is_verified: boolean; precioHora?: number | null; estilos?: string[] | null; }
 
-const ROLE_MAP: Record<string, string[]> = {
-  dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
-  catering: ['catering'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
-  'disco-movil': ['disco-movil', 'dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
-  // Categorías que antes caían al fallback ['dj'] y por eso nunca encontraban
-  // a nadie, pese a existir esos roles en la BD (bailarin, grupo-musical…).
-  bailarin: ['bailarin'], 'grupo-musical': ['grupo-musical'],
-  humorista: ['humorista'], monologo: ['humorista'], monologos: ['humorista'],
-  mago: ['mago'], animador: ['animador'], animadores: ['animador'],
-  payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
-  'photo-booth': ['photo-booth'], 'food-truck': ['food-truck'],
-  'tecnico-sonido': ['tecnico'], 'alquiler-equipos': ['alquiler'],
-  'locales-eventos': ['local_eventos'],
-};
 
 // Durante el prerender de build (prerender-content.mjs), esta variable global
 // trae los profesionales ya resueltos para la ruta actual — renderToString es
@@ -326,7 +314,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     intro: (c, venues) => {
       if (c === 'Ibiza') return 'Ibiza es el destino número uno para DJs y eventos privados en Europa. Villas, yates, pool parties y clubs de clase mundial como Amnesia, Pacha o DC-10. XPEAK conecta organizadores con DJs verificados disponibles en Ibiza para fiestas privadas, eventos en villa y clubs. Temporada activa de mayo a octubre.';
       if (c === 'Palma') return 'Mallorca concentra cientos de eventos privados en finca, villa y yate de mayo a octubre. XPEAK conecta organizadores con DJs verificados en Palma y toda Mallorca: desde pool parties en villas hasta bodas en finca y eventos corporativos en hotel resort.';
-      return `${c} concentra una de las escenas de eventos y entretenimiento más activas de España. Desde clubs como ${venues.slice(0,2).join(' y ')} hasta eventos privados, XPEAK conecta salas, promotoras y organizadores con DJs verificados disponibles ahora mismo.`;
+      return `${c} concentra una de las escenas de eventos y entretenimiento más activas de España. Desde clubs hasta eventos privados, XPEAK conecta salas, promotoras y organizadores con DJs verificados disponibles ahora mismo.`;
     },
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un DJ en ${c}?`, a: c === 'Ibiza'
@@ -357,7 +345,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
       { q: `¿Cuánto cobran los camareros en ${c}?`, a: c === 'Ibiza'
         ? `Los camareros en Ibiza cobran entre ${precio}/hora en temporada, con suplemento nocturno habitual de 2-4€/hora. Para eventos de villa o yate el precio puede ser superior al incluir desplazamiento y posible alojamiento. En XPEAK todos los perfiles muestran su tarifa pública.`
         : `Los camareros profesionales en ${c} cobran entre ${precio}/hora. Para eventos de boda o corporativos con servicio completo el precio suele incluir desplazamiento y uniforme.` },
-      { q: `¿Cuántos camareros necesito para mi evento en ${c}?`, a: 'La regla estándar es 1 camarero por cada 15-20 personas en formato cóctel, y 1 por cada 8-10 en cena sentada con servicio completo.' },
+      { q: `¿Cuántos camareros necesito para mi evento en ${c}?`, a: 'Depende del formato: un cóctel necesita menos personal que una cena sentada con servicio a mesa. Indica el número de invitados y el formato en la solicitud y los camareros te dirán cuántos hacen falta.' },
       { q: c === 'Ibiza' ? '¿Puedo contratar camareros por temporada en Ibiza?' : '¿Puedo contratar camareros para una sola noche?',
         a: c === 'Ibiza'
           ? 'Sí. XPEAK permite acuerdos de temporada completa (mayo-octubre) con contrato digital automático. También contrataciones puntuales para una sola noche o evento. El Flash Booking cubre urgencias en menos de 1 hora.'
@@ -373,7 +361,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta el staff de eventos en ${c}?`, a: `El precio del staff profesional en ${c} varía entre ${precio}/hora según el perfil: hostesses desde 15€, coordinadores desde 25€, RRPP con lista propia desde 100€/noche.` },
       { q: `¿Puedo contratar staff para un festival en ${c}?`, a: `Sí. XPEAK tiene perfiles con experiencia en festivales de música en ${c} y alrededores. Puedes contratar desde 1 persona hasta equipos completos de producción.` },
-      { q: '¿El staff tiene experiencia en eventos nocturnos?', a: 'Todos los perfiles en XPEAK incluyen historial de venues y referencias verificadas de eventos anteriores.' },
+      { q: '¿El staff tiene experiencia en eventos nocturnos?', a: 'Cada perfil cuenta su experiencia. Pregunta al profesional por eventos nocturnos parecidos al tuyo antes de cerrar.' },
     ],
   },
   azafata: {
@@ -396,7 +384,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     intro: (c) => `Encuentra fotógrafos y videógrafos especializados en eventos en ${c}: bodas, clubs, festivales y eventos corporativos. XPEAK conecta organizadores con profesionales verificados, con portfolio real y disponibilidad confirmada.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un fotógrafo de eventos en ${c}?`, a: `Un fotógrafo profesional de eventos en ${c} cobra entre ${precio} por evento completo. Las bodas suelen incluir ceremonia, cóctel y banquete. Eventos de una noche desde 300€.` },
-      { q: `¿Puedo contratar fotógrafo y videógrafo juntos en ${c}?`, a: `Sí. Muchos perfiles en XPEAK ofrecen pack foto + vídeo con descuento. Contratar ambos con el mismo profesional suele ser un 20% más económico.` },
+      { q: `¿Puedo contratar fotógrafo y videógrafo juntos en ${c}?`, a: `Algunos profesionales hacen foto y vídeo. Pregúntalo al pedir presupuesto y compara con contratar a dos personas por separado.` },
       { q: '¿En cuánto tiempo recibo las fotos?', a: 'La mayoría de fotógrafos en XPEAK entregan una selección de fotos editadas en 2-5 días y el reportaje completo en 2-4 semanas. Los plazos están especificados en cada perfil.' },
     ],
   },
@@ -409,7 +397,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta el catering para una boda en ${c}?`, a: `El catering para bodas en ${c} cuesta entre ${precio} por comensal según el menú y el servicio. Banquete sentado completo con vinos: 70€-120€/persona. Bufé: 50€-80€/persona.` },
       { q: `¿Qué incluye un servicio de catering completo en ${c}?`, a: 'Un catering completo incluye aperitivo, cóctel, banquete, barra libre, montaje, personal de sala y limpieza. En XPEAK cada proveedor detalla exactamente qué está incluido.' },
-      { q: '¿Con cuánta antelación debo contratar el catering?', a: 'Para bodas, mínimo 3-6 meses. Para eventos corporativos de menos de 50 personas el Flash Booking puede conseguirte disponibilidad en menos de una semana.' },
+      { q: '¿Con cuánta antelación debo contratar el catering?', a: 'Para bodas, cuanto antes: los caterings cierran sus fechas con meses de antelación. Para eventos de empresa pequeños, Flash Booking te ayuda a encontrar disponibilidad más rápido.' },
     ],
   },
   'disco-movil': {
@@ -452,7 +440,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Bailarín / Instructor',
     keyword: 'Bailarín e Instructor de Baile',
     unidad: '/evento',
-    desc: (c) => `Contratar bailarines en ${c} para bodas, eventos y espectáculos: flamenco, baile moderno, latino y danza contemporánea. También instructores de salsa y bachata para clases. Shows desde 30 min. Flash Booking..`,
+    desc: (c) => `Contratar bailarines en ${c} para bodas, eventos y espectáculos: flamenco, baile moderno, latino y danza contemporánea. También instructores de salsa y bachata para clases. Flash Booking..`,
     intro: (c) => `Encuentra bailarines y compañías de danza en ${c} para amenizar cualquier evento: flamenco para bodas y eventos internacionales, shows de baile moderno para convenciones, danza contemporánea para galas y espectáculos de apertura. XPEAK conecta organizadores con bailarines profesionales verificados.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar bailarines en ${c}?`, a: `Un espectáculo de baile en ${c} cuesta entre ${precio} por show según la duración y el número de bailarines. Shows de flamenco desde 300€; compañías de 4-6 bailarines desde 600€.` },
@@ -469,7 +457,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un estilista en ${c}?`, a: `Un estilista integral para boda en ${c} (novia, novio y séquito) cobra entre 300€ y 1.500€ según el alcance. Producciones audiovisuales: ${precio} por jornada.` },
       { q: `¿Puedo contratar estilistas para una producción audiovisual en ${c}?`, a: 'Sí. XPEAK incluye coordinadores de vestuario con experiencia en rodajes, videoclips y campañas publicitarias. Especifica el número de días de rodaje y el tipo de producción en tu oferta.' },
-      { q: `¿Qué es un personal shopper para eventos en ${c}?`, a: 'Un personal shopper te ayuda a elegir el outfit correcto para cada tipo de evento: gala, boda, presentación corporativa o evento de moda. Tarifa habitual: entre 80€ y 200€ por sesión de 2-3 horas.' },
+      { q: `¿Qué es un personal shopper para eventos en ${c}?`, a: 'Un personal shopper te ayuda a elegir el outfit correcto para cada tipo de evento: gala, boda, presentación corporativa o evento de moda.' },
     ],
   },
   monologo: {
@@ -481,8 +469,8 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un monologuista en ${c}?`, a: `Un monólogo profesional en ${c} cuesta entre ${precio} por actuación según la duración y el perfil del cómico. Actuaciones de 20-30 min para cenas de empresa: 300€-600€. Shows de stand-up de 45-60 min: 500€-1.200€.` },
       { q: `¿El monologuista puede personalizar el guión para mi empresa en ${c}?`, a: 'Sí. La mayoría de monologuistas en XPEAK ofrecen guión 100% personalizado con referencias a tu empresa, sector, equipo o ciudad. Es el formato más demandado para cenas de empresa y convenciones.' },
-      { q: `¿Un monólogo funciona para una boda en ${c}?`, a: 'Absolutamente. El monólogo de boda es el entretenimiento que más recuerdan los invitados. El cómico recoge anécdotas de la pareja y los invitados para crear un show único e irrepetible de 20-30 minutos.' },
-      { q: '¿Cuánto dura una actuación de stand-up para eventos?', a: 'Lo más habitual es 20-30 minutos para cenas y bodas (formato cóctel o sobremesa) y 45-60 minutos para shows de teatro o festivales. Puedes especificar la duración exacta al hacer la solicitud.' },
+      { q: `¿Un monólogo funciona para una boda en ${c}?`, a: 'Absolutamente. El monólogo de boda es el entretenimiento que más recuerdan los invitados. El cómico recoge anécdotas de la pareja y los invitados para crear un show único e irrepetible.' },
+      { q: '¿Cuánto dura una actuación de stand-up para eventos?', a: 'Depende del evento: en una cena o una boda suele ser más corta que en un show de teatro o un festival. Indica la duración que quieres al hacer la solicitud y el cómico te dirá si le encaja.' },
     ],
   },
   monologos: {
@@ -605,7 +593,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
       return `Contratar promotor o RRPP en ${c} para clubs, festivales y eventos. Gestión de listas VIP, captación de público y relaciones públicas. Flash Booking..`;
     },
     intro: (c, venues) => {
-      if (c === 'A Coruña') return `A Coruña tiene una escena de ocio nocturno consolidada, con salas como ${venues.slice(0,2).join(' y ')} entre las más activas de Galicia. XPEAK conecta discotecas, promotoras y organizadores con promotores y RRPP verificados en A Coruña: gestión de listas VIP, captación de público y coordinación de puerta.`;
+      if (c === 'A Coruña') return `A Coruña tiene una escena de ocio nocturno consolidada. XPEAK conecta discotecas, promotoras y organizadores con promotores y RRPP verificados en A Coruña: gestión de listas VIP, captación de público y coordinación de puerta.`;
       return `Encuentra promotores y relaciones públicas profesionales en ${c} para clubs nocturnos, festivales y eventos. XPEAK conecta salas y organizadores con promotores verificados: gestión de listas VIP, captación de público, street marketing y coordinación de prensa.`;
     },
     faqs: (c, precio) => [
@@ -637,8 +625,8 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta alquilar un local para un evento en ${c}?`, a: `Un local o sala en ${c} cuesta entre ${precio} por evento, según aforo, día de la semana y si incluye catering. Una sala pequeña para 80-100 personas suele estar en la parte baja del rango; una discoteca con aforo grande o una finca con exclusividad de todo el día, en la parte alta.` },
       { q: `¿El alquiler del local en ${c} incluye catering?`, a: 'Depende del espacio. Muchas salas y discotecas solo cobran el alquiler y dejan traer catering externo; otras, sobre todo fincas para bodas, exigen su propio servicio o una lista cerrada de proveedores. Cada ficha en XPEAK lo indica cuando el local lo especifica.' },
-      { q: `¿Qué aforo tienen los locales disponibles en ${c}?`, a: `Varía mucho según el tipo de espacio: salas y bares privados suelen moverse entre 80 y 200 personas, y discotecas o fincas grandes llegan a los 800-1.200. Filtra por aforo en el directorio de ${c} para no perder tiempo con espacios que no encajan.` },
-      { q: `¿Hay que dejar fianza para reservar un local en ${c}?`, a: 'Sí, es lo habitual: entre el 20% y el 50% del precio total para bloquear la fecha, que se devuelve o se descuenta del pago final si no hay incidencias. Confirma también el horario límite con el local antes de cerrar, porque varía según licencia y zona.' },
+      { q: `¿Qué aforo tienen los locales disponibles en ${c}?`, a: `Varía mucho según el tipo de espacio: no es lo mismo un bar privado que una discoteca o una finca. Mira el aforo de cada local en el directorio de ${c} para no perder tiempo con espacios que no encajan.` },
+      { q: `¿Hay que dejar fianza para reservar un local en ${c}?`, a: 'Es lo habitual: se paga una señal para bloquear la fecha. Pregunta cuánto es, si se devuelve o se descuenta del pago final y cuál es el horario límite, porque varía según licencia y zona.' },
     ],
   },
   payaso: {
@@ -733,7 +721,11 @@ const FACTOR_PRECIO: Record<string, [number, number]> = {
   'locales-eventos': [6.5, 8],
 };
 
-function precioPara(categorySlug: string, city: { precioMin: string; precioMax: string }): string {
+// 26 oct 2026, decisión del usuario: "no inventes datos". Los precios salían de
+// precioMin/precioMax por ciudad × FACTOR_PRECIO, cifras escritas a mano sin
+// fuente. Ahora solo salen de los perfiles reales (src/lib/precioReal.ts);
+// precioPara y FACTOR_PRECIO quedan sin uso en la página.
+export function precioPara(categorySlug: string, city: { precioMin: string; precioMax: string }): string {
   const factor = FACTOR_PRECIO[categorySlug];
   const min = parseInt(city.precioMin, 10);
   const max = parseInt(city.precioMax, 10);
@@ -746,21 +738,6 @@ function precioPara(categorySlug: string, city: { precioMin: string; precioMax: 
   // Redondeo a 5€ para que no queden cifras de falsa precisión (13,2€).
   const r = (n: number) => Math.max(5, Math.round((n * 1) / 5) * 5);
   return `${r(min * factor[0])}€-${r(max * factor[1])}€`;
-}
-
-// Tarifas de 0 o 1 € son perfiles sin rellenar, no precios.
-const precioValido = (h: number | null | undefined): h is number => typeof h === 'number' && h >= 10 && h <= 2000;
-
-type EstadPrecio = { n: number; min: number; max: number; p25: number; p75: number; tipico: number };
-
-// Precio real calculado con los DJs de la página, nunca escrito a mano: si un
-// DJ cambia su tarifa, la página cambia sola. Con menos de 5 tarifas no se da.
-function estadisticasPrecio(profs: Prof[]): EstadPrecio | null {
-  const xs = profs.map(p => p.precioHora).filter(precioValido).sort((a, b) => a - b);
-  if (xs.length < 5) return null;
-  const q = (f: number) => { const i = (xs.length - 1) * f; const lo = Math.floor(i); return xs[lo] + (xs[Math.ceil(i)] - xs[lo]) * (i - lo); };
-  const r5 = (n: number) => Math.round(n / 5) * 5;
-  return { n: xs.length, min: xs[0], max: xs[xs.length - 1], p25: r5(q(0.25)), p75: r5(q(0.75)), tipico: r5(q(0.5)) };
 }
 
 function contar(valores: string[]): [string, number][] {
@@ -902,6 +879,8 @@ export default function CityLanding() {
   const dirPropio = pathname.split('/')[1]?.replace('contratar-', '') ?? 'dj';
   const dirSlug = useDirectorioConInventario(dirPropio === 'peluqueria' ? 'maquillaje' : dirPropio);
   const [pedir, setPedir] = useState(false);
+  // Solo tarifas reales (sin cuentas propias ni demo): ver src/lib/precioReal.ts.
+  const tarifasReales = useTarifasReales(ROLE_MAP[dirPropio] ?? ['dj']);
 
   const cityData = ciudad ? CITIES[ciudad.toLowerCase()] : null;
   if (!cityData) {
@@ -919,12 +898,13 @@ export default function CityLanding() {
   const categorySlug = pathname.split('/')[1]?.replace('contratar-', '') ?? 'dj';
   const catData = CATEGORIES[categorySlug] ?? CATEGORIES['dj'];
 
-  const precio = precioPara(categorySlug, cityData);
   const canonicalBase = `/contratar-${categorySlug}/${cityData.slug}`;
   const { profs: professionals, suggestions: profSuggestions, loaded: profsLoaded } = useCityProfessionals(cityData.ciudad, categorySlug);
   const completa = esPaginaCompleta(categorySlug, cityData.ciudad);
-  const st = completa ? estadisticasPrecio(professionals) : null;
-  const faqs = completa ? faqsCompletas(cityData.ciudad, st) : catData.faqs(cityData.ciudad, precio);
+  const st = tarifasReales ? estadisticasPrecio(professionals.filter(p => tarifasReales.has(p.id)).map(p => p.precioHora)) : null;
+  const faqs = completa
+    ? faqsCompletas(cityData.ciudad, st)
+    : catData.faqs(cityData.ciudad, '').map(f => esPreguntaPrecio(f.q) ? { ...f, a: respuestaPrecio(catData.keyword, cityData.ciudad, st) } : f);
   const dirKeyword = dirSlug === categorySlug ? catData.keyword : (CATEGORIES[dirSlug]?.keyword ?? catData.keyword);
   // El equipo se alquila, no se contrata: "Contratar Alquiler de Equipos" no
   // se dice. Esa categoría usa su label como título y "alquilar" como verbo.
@@ -1095,8 +1075,8 @@ export default function CityLanding() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             {[
               st
-                ? { label: `Precio por hora en ${cityData.ciudad}`, value: `${st.p25}-${st.p75} €/h (la mitad de los DJs)`, icon: <Star size={16} />, tono: '#8B6A00' }
-                : { label: `Precio ${catData.keyword} en ${cityData.ciudad}`, value: `${precio}${catData.unidad}`, icon: <Star size={16} />, tono: '#8B6A00' },
+                ? { label: `Precio por hora en ${cityData.ciudad}`, value: valorPrecio(st), icon: <Star size={16} />, tono: '#8B6A00' }
+                : { label: `Precio ${catData.keyword} en ${cityData.ciudad}`, value: valorPrecio(st), icon: <Star size={16} />, tono: '#8B6A00' },
               { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(categorySlug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} />, tono: '#2563EB' },
               { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} />, tono: '#059669' },
             ].map(s => (
@@ -1116,22 +1096,6 @@ export default function CityLanding() {
 
         {completa && <BloquesCompletos ciudad={cityData.ciudad} profs={professionals} st={st} onPedir={() => setPedir(true)} />}
 
-        {!completa && cityData.venues.length > 0 && (
-          <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-            <h2 className="text-xl sm:text-2xl font-black mb-2">Espacios y venues en {cityData.ciudad}</h2>
-            <p className="text-sm mb-6" style={{ color: '#4b5563' }}>
-              Profesionales con experiencia en los principales espacios de la ciudad.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {cityData.venues.map(v => (
-                <span key={v} className="px-3 py-1.5 rounded-lg text-xs font-bold"
-                  style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)', color: '#374151' }}>
-                  {v}
-                </span>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* Profesionales reales de Supabase */}
         {profsLoaded && (

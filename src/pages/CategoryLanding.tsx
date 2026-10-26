@@ -4,6 +4,8 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt, Mic, SlidersHorizontal, Speaker, Building2, Truck } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import CtaProfesional from '@/components/CtaProfesional';
+import { usePrecioReal, esPreguntaPrecio, respuestaPrecio, valorPrecio } from '@/lib/precioReal';
+import { ROLE_MAP } from '@/lib/rolesPorCategoria';
 import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 
 const BLOG_LINKS: Record<string, { href: string; title: string; desc: string }[]> = {
@@ -70,7 +72,7 @@ export const CATEGORY_DATA: Record<string, {
     slug: 'dj',
     h1: 'Contratar DJ para Boda y Eventos en España',
     tagline: 'DJs profesionales verificados para bodas, fiestas y eventos en toda España',
-    desc: 'Contrata DJ para boda, fiesta privada o evento en España. Precio DJ desde 40€/hora. DJ para bodas Madrid, Barcelona e Ibiza. Flash Booking en menos de 1h..',
+    desc: 'Contrata DJ para boda, fiesta privada o evento en España. DJ para bodas Madrid, Barcelona e Ibiza. Flash Booking en menos de 1h..',
     intro: 'XPEAK es la plataforma de referencia para contratar DJ en Madrid, Barcelona, Ibiza, Valencia, Sevilla y toda España. DJ para bodas, fiestas privadas y eventos corporativos. Perfiles verificados, precio público y contratos digitales en minutos.',
     keyword: 'DJ',
     keywords: 'contratar dj madrid, contratar dj barcelona, contratar dj ibiza, contratar dj para boda, dj para fiestas madrid, precio dj madrid, dj eventos madrid, dj fiestas privadas barcelona, DJ boda España, contratar DJ profesional',
@@ -234,7 +236,7 @@ export const CATEGORY_DATA: Record<string, {
     slug: 'catering',
     h1: 'Contratar Catering para Eventos',
     tagline: 'Servicios de catering profesional para bodas, eventos corporativos y celebraciones',
-    desc: 'Catering para eventos Madrid y Barcelona: bodas, cenas corporativas y fiestas privadas desde 25€/persona. Menús personalizados, servicio completo. Flash Booking disponible..',
+    desc: 'Catering para eventos Madrid y Barcelona: bodas, cenas corporativas y fiestas privadas. Menús personalizados, servicio completo. Flash Booking disponible..',
     intro: 'XPEAK incluye proveedores de catering especializados en eventos en toda España. Desde banquetes de boda hasta coffee breaks corporativos, catas de vino y cenas de gala. Compara perfiles, solicita menús y cierra contratos digitales en minutos sin intermediarios.',
     keyword: 'Catering',
     keywords: 'catering para eventos madrid, contratar catering madrid, catering empresas madrid, catering bodas madrid, catering para eventos barcelona, catering empresas barcelona, catering bodas barcelona, catering por persona España, catering cena empresa, catering boda precio',
@@ -267,7 +269,7 @@ export const CATEGORY_DATA: Record<string, {
     slug: 'food-truck',
     h1: 'Contratar Food Truck para Bodas y Eventos',
     tagline: 'Food trucks para bodas, festivales, eventos de empresa y fiestas privadas',
-    desc: 'Alquila un food truck para tu boda, evento de empresa o fiesta privada. Hamburguesas, tacos, pizza, café y cocina del mundo. Desde 350€ por servicio o 15€ por comensal.',
+    desc: 'Alquila un food truck para tu boda, evento de empresa o fiesta privada. Hamburguesas, tacos, pizza, café y cocina del mundo.',
     intro: 'Un food truck convierte la comida en parte del espectáculo: los invitados ven cocinar, eligen lo que quieren y la cola se vuelve punto de encuentro. XPEAK reúne food trucks para bodas, festivales, eventos de empresa y fiestas privadas en toda España. Compara su cocina, su capacidad y su precio, y habla directamente con quien lleva el camión.',
     keyword: 'Food Truck',
     keywords: 'alquilar food truck, contratar food truck, food truck para eventos, food truck boda, food truck precio, food truck evento empresa, food truck madrid, food truck barcelona, food truck valencia, alquiler food truck fiesta',
@@ -318,7 +320,7 @@ export const CATEGORY_DATA: Record<string, {
       { q: '¿Cuánto cuesta un maquillador profesional para una boda?', a: 'El precio de un maquillador de boda en España varía entre 150€ y 500€ para la novia, más 80€-150€ por cada persona adicional del séquito. Incluye prueba previa y el día del evento.' },
       { q: '¿Puedo contratar maquillador para producción audiovisual?', a: 'Sí. XPEAK incluye artistas especializados en maquillaje para cine, televisión, videoclips y fotografía publicitaria, con experiencia en sets de rodaje y entregas ajustadas a tiempos de producción.' },
       { q: '¿Los maquilladores trabajan a domicilio?', a: 'La mayoría de los profesionales en XPEAK ofrecen servicio a domicilio o en el venue del evento. Puedes especificarlo en tu solicitud.' },
-      { q: '¿Qué incluye una prueba de maquillaje?', a: 'La prueba de maquillaje previa al evento incluye la sesión de test del look completo (1-2 horas) y suele tener un coste entre 60€ y 120€ que normalmente se descuenta del precio total.' },
+      { q: '¿Qué incluye una prueba de maquillaje?', a: 'La prueba previa al evento sirve para probar el look completo antes del gran día. Pregunta a la maquilladora si la cobra aparte o si se descuenta del precio final.' },
     ],
     steps: [
       { title: 'Busca en el directorio', body: 'Explora perfiles de artistas con tarifa pública. Sin registro.' },
@@ -408,7 +410,7 @@ export const CATEGORY_DATA: Record<string, {
       { q: '¿Cuánto cuesta contratar un estilista para una boda?', a: 'Un estilista integral para boda (novia, novio y séquito) cobra entre 300€ y 1.500€ según el alcance del servicio. El estilismo solo del día suele estar entre 200€ y 600€, mientras que el asesoramiento completo desde la elección del traje puede superar los 1.000€.' },
       { q: '¿Puedo contratar estilistas para una producción audiovisual?', a: 'Sí. XPEAK incluye coordinadores de vestuario con experiencia en rodajes, videoclips y campañas publicitarias. Especifica el número de días de rodaje y el tipo de producción en tu oferta.' },
       { q: '¿Los estilistas trabajan con proveedores de alquiler de trajes?', a: 'Muchos estilistas en XPEAK tienen acuerdos con boutiques y almacenes de alquiler. Puedes especificar si necesitas que el estilista gestione también el vestuario o si solo necesitas el servicio de coordinación.' },
-      { q: '¿Qué es un personal shopper para eventos?', a: 'Un personal shopper de eventos te ayuda a elegir el outfit correcto para cada tipo de evento: gala, boda, presentación corporativa o evento de moda. Tarifa habitual: entre 80€ y 200€ por sesión de 2-3 horas.' },
+      { q: '¿Qué es un personal shopper para eventos?', a: 'Un personal shopper de eventos te ayuda a elegir el outfit correcto para cada tipo de evento: gala, boda, presentación corporativa o evento de moda.' },
     ],
     steps: [
       { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública. Sin registro ni tarjeta.' },
@@ -614,7 +616,7 @@ export const CATEGORY_DATA: Record<string, {
     slug: 'photo-booth',
     h1: 'Contratar Photo Booth para Boda y Eventos en España',
     tagline: 'Cabinas de fotos profesionales con impresión al instante y álbum digital',
-    desc: 'Alquila un photo booth para tu boda, comunión o evento de empresa. Precio desde 300€. Con atrezzo, impresión al instante y álbum digital..',
+    desc: 'Alquila un photo booth para tu boda, comunión o evento de empresa. Con atrezzo, impresión al instante y álbum digital..',
     intro: 'Un photo booth es uno de los elementos que más éxito tiene en bodas, comuniones y eventos de empresa. XPEAK conecta organizadores con proveedores de photo booth profesionales en toda España.',
     keyword: 'Photo Booth',
     keywords: 'alquilar photo booth boda, photo booth eventos españa, cabina fotos boda precio, photobooth comunión, photo booth 360 evento empresa',
@@ -636,7 +638,7 @@ export const CATEGORY_DATA: Record<string, {
     slug: 'grupo-musical',
     h1: 'Contratar Grupo Musical para Boda y Eventos en España',
     tagline: 'Bandas, grupos de jazz, cuartetos y música en vivo para cualquier evento',
-    desc: 'Contrata grupos musicales para bodas, comuniones y eventos. Jazz, flamenco, pop, rock, cuarteto de cuerda. Precio desde 350€..',
+    desc: 'Contrata grupos musicales para bodas, comuniones y eventos. Jazz, flamenco, pop, rock, cuarteto de cuerda..',
     intro: 'XPEAK conecta organizadores con grupos musicales profesionales en toda España. Desde cuartetos de cuerda para ceremonias hasta bandas de pop-rock para bodas y grupos de jazz para eventos de empresa.',
     keyword: 'Grupo Musical',
     keywords: 'contratar grupo musical boda, banda musical eventos españa, cuarteto cuerda boda, música en vivo evento, grupo jazz evento empresa',
@@ -673,7 +675,7 @@ export const CATEGORY_DATA: Record<string, {
     roles: ['Stand-Up Comedy', 'Monólogo Personalizado', 'Impro', 'Cena de Empresa', 'Monólogo de Boda', 'Festival de Humor'],
     faqs: [
       { q: '¿Cuánto cuesta contratar un monologuista?', a: 'Un monólogo profesional cuesta entre 300€ y 1.200€ según la duración y el perfil del cómico. Actuaciones de 20-30 min para cenas de empresa: 300€-600€. Shows de stand-up de 45-60 min: 500€-1.200€.' },
-      { q: '¿El monologuista puede personalizar el guion para mi empresa?', a: 'Sí. La mayoría de monologuistas en XPEAK ofrecen guion 100% personalizado con referencias a tu empresa, sector, equipo o ciudad.' },
+      { q: '¿El monologuista puede personalizar el guion para mi empresa?', a: 'Muchos lo hacen. Pídelo en la solicitud con detalles de tu empresa, tu sector o tu equipo, y el cómico te dirá qué puede preparar.' },
       { q: '¿Un monólogo funciona para una boda?', a: 'Sí, es uno de los entretenimientos que más recuerdan los invitados. El cómico recoge anécdotas de la pareja y los invitados para crear un show único de 20-30 minutos.' },
     ],
     steps: [
@@ -812,7 +814,7 @@ export const CATEGORY_DATA: Record<string, {
       { q: '¿Cuánto cuesta alquilar un local para un evento en España?', a: 'Una sala privada o bar para una fiesta pequeña (hasta 80 personas) suele arrancar en torno a 400-800€ la noche. Una discoteca o sala con aforo medio (200-400 personas) va de 1.000€ a 3.000€ según ciudad y día de la semana. Una finca para boda con exclusividad de todo el día se mueve entre 3.000€ y 12.000€ o más, dependiendo de si el precio incluye catering. En XPEAK cada ficha muestra el rango de precio orientativo del espacio.' },
       { q: '¿El precio incluye catering o hay que contratarlo aparte?', a: 'Depende del local. Muchas discotecas y salas solo cobran el alquiler del espacio y dejan que traigas tu propio catering o DJ; otras, sobre todo fincas para bodas, exigen usar su servicio de catering propio o tienen una lista cerrada de proveedores homologados. Conviene preguntarlo antes de reservar, y cada ficha lo indica cuando el local lo especifica.' },
       { q: '¿Qué aforo necesito según el tipo de evento?', a: 'Para un cumpleaños o despedida entre amigos, una sala o bar de 80-150 personas suele sobrar. Para una boda con banquete y baile, lo habitual son fincas o salones de 150-300 invitados. Para un evento de empresa grande o una fiesta con entrada, hay discotecas y salas de hasta 800-1.200 personas. XPEAK permite filtrar por aforo para no visitar espacios que no encajan.' },
-      { q: '¿Hay que dejar fianza para reservar un local o finca?', a: 'Sí, es lo habitual: la mayoría de espacios piden una fianza (normalmente entre el 20% y el 50% del precio total) para bloquear la fecha, que se devuelve o se descuenta del pago final si no hay incidencias. El horario límite también varía mucho según licencia y zona, así que conviene confirmarlo con el local antes de cerrar la reserva.' },
+      { q: '¿Hay que dejar fianza para reservar un local o finca?', a: 'Es lo habitual: se paga una señal o fianza para bloquear la fecha. Pregunta cuánto es y si se devuelve o se descuenta del pago final. El horario límite también varía mucho según licencia y zona, así que conviene confirmarlo con el local antes de cerrar la reserva.' },
     ],
     steps: [
       { title: 'Filtra por ciudad y aforo', body: 'Busca discotecas, salas, terrazas o fincas según el tamaño y tipo de tu evento. Precio orientativo visible sin registro.' },
@@ -881,6 +883,11 @@ export default function CategoryLanding() {
   const slug = pathname.replace(/^\/contratar-/, '').split('/')[0];
   const data = CATEGORY_DATA[slug] ?? null;
   const dirSlug = useDirectorioConInventario(DIRECTORIO_SLUG[slug] ?? 'dj');
+  // Precio solo con tarifas reales de perfiles (26 oct 2026): el campo
+  // `precio` y los importes de las FAQs de CATEGORY_DATA ya no se muestran.
+  const st = usePrecioReal(ROLE_MAP[slug] ?? []);
+
+  const faqs = (data?.faqs ?? []).map(f => esPreguntaPrecio(f.q) ? { ...f, a: respuestaPrecio(data!.keyword, 'España', st) } : f);
 
   if (!data) {
     navigate('/');
@@ -901,7 +908,7 @@ export default function CategoryLanding() {
   const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: data.faqs.map(f => ({
+    mainEntity: faqs.map(f => ({
       '@type': 'Question',
       name: f.q,
       acceptedAnswer: { '@type': 'Answer', text: f.a },
@@ -989,7 +996,7 @@ export default function CategoryLanding() {
         <section className="border-y" style={{ borderColor: 'rgba(122,98,22,0.14)', background: '#FBF6E8' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8">
             {[
-              { label: `Precio medio ${data.keyword}`, value: data.precio, icon: <Star size={16} />, tono: '#8B6A00' },
+              { label: `Precio ${data.keyword}`, value: valorPrecio(st), icon: <Star size={16} />, tono: '#8B6A00' },
               { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(data.slug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} />, tono: '#2563EB' },
               { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} />, tono: '#059669' },
             ].map(s => (
@@ -1081,7 +1088,7 @@ export default function CategoryLanding() {
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes</h2>
           <div className="space-y-4">
-            {data.faqs.map(faq => (
+            {faqs.map(faq => (
               <div key={faq.q} className="p-5 rounded-xl" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,0.16)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
                 <p className="text-xs leading-relaxed" style={{ color: '#5b6472' }}>{faq.a}</p>
