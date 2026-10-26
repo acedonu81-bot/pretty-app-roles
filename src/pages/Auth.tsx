@@ -1125,7 +1125,7 @@ const Auth = () => {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                    className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-white transition-colors">
+                    className="absolute right-1 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-muted-foreground hover:text-white transition-colors">
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
@@ -1191,7 +1191,7 @@ const Auth = () => {
                       Prueba a continuar con Google en su lugar: no depende de esta verificación.
                     </p>
                     <button type="button" onClick={handleGoogleSignIn} disabled={googleLoading}
-                      className="w-full py-2.5 rounded-lg font-bold text-xs transition-all hover:scale-[1.01] disabled:opacity-60"
+                      className="w-full py-3.5 rounded-lg font-bold text-xs transition-all hover:scale-[1.01] disabled:opacity-60"
                       style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.4)', color: '#8B6A00' }}>
                       {googleLoading ? 'Conectando…' : 'Continuar con Google'}
                     </button>
@@ -1464,7 +1464,7 @@ const Auth = () => {
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center" style={{ color: '#999' }}>
+                  className="absolute right-1 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center" style={{ color: '#999' }}>
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
