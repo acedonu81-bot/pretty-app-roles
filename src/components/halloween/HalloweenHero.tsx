@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import type React from 'react';
 import { Telarana } from '@/components/halloween/Telarana';
-import { AranaColgante } from '@/components/halloween/AranaColgante';
 
 // PROVISIONAL: modo Halloween de la portada (25 oct - 1 nov 2026, ver
 // halloweenActivo). Capa encima del vídeo del hero: tinte morado, focos de
@@ -104,7 +103,6 @@ const HalloweenHero = () => {
       {/* Telarañas en las esquinas de arriba del hero, solo en ordenador. */}
       <Telarana claro className="hidden md:block [.app-instalada_&]:block absolute left-0 top-0 w-[130px]" />
       <Telarana claro espejo className="hidden md:block [.app-instalada_&]:block absolute right-0 top-0 w-[130px]" />
-      <AranaColgante claro className="absolute top-0" style={{ right: '7%' }} />
     </div>
   );
 };

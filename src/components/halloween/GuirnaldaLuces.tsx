@@ -2,8 +2,6 @@ import { useLocation } from 'react-router-dom';
 import { halloweenActivo } from '@/lib/halloween';
 import { MurcielagoColgado } from '@/components/halloween/HalloweenHero';
 import { Telarana } from '@/components/halloween/Telarana';
-import { AranaColgante } from '@/components/halloween/AranaColgante';
-import FantasmaAsomado from '@/components/halloween/FantasmaAsomado';
 
 // PROVISIONAL: guirnalda de luces de verbena colgada del borde de arriba en
 // todas las páginas durante Halloween (25 oct - 1 nov 2026). Es el hilo común
@@ -16,15 +14,13 @@ const BOMBILLAS = 28;
 const GuirnaldaLuces = () => {
   const { pathname } = useLocation();
   if (!halloweenActivo()) return null;
-  // La portada lleva su propia guirnalda dentro del hero: aquí solo el fantasma.
-  if (pathname === '/') return <FantasmaAsomado />;
+  // La portada lleva su propia guirnalda dentro del hero.
+  if (pathname === '/') return null;
   return (
     <>
-    <FantasmaAsomado />
-    {/* Telarañas en las esquinas de arriba: en ordenador y en la app instalada (con la araña). */}
+    {/* Telarañas en las esquinas de arriba: en ordenador y en la app instalada. */}
     <Telarana className="hidden md:block [.app-instalada_&]:block fixed left-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
     <Telarana espejo className="hidden md:block [.app-instalada_&]:block fixed right-0 z-[59] pointer-events-none w-[92px]" style={{ top: 'env(safe-area-inset-top, 0px)' }} />
-    <AranaColgante className="fixed z-[59]" style={{ top: 'env(safe-area-inset-top, 0px)', right: '7%' }} />
     <div aria-hidden className="fixed left-0 right-0 z-[60] pointer-events-none h-3"
       style={{ top: 'env(safe-area-inset-top, 0px)' }}>
       <style>{`
