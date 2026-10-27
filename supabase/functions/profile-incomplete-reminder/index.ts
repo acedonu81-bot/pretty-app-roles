@@ -60,12 +60,12 @@ function completeness(p: Record<string, unknown>): { percent: number; missing: s
 // constraint, ver migración 20260926130000) dejó a un usuario recibiendo
 // este email 13 días seguidos sin parar (ivanperezblanco1992@gmail.com,
 // 12-23 sep 2026). Ahora se cuenta cuántos recordatorios lleva y se corta.
-const MAX_REMINDERS = 4;
+const MAX_REMINDERS = 3;
 // Separación entre recordatorios (14 oct 2026): el tope de 4 se cumplía pero
 // sin espacio entre ellos, así que salían 4 días seguidos (10 personas en un
-// mes). Ahora: día 1, 3, 7 y 14. ESPERA_DIAS[n] = días mínimos desde el
+// mes). 27 oct 2026: tope 3, días 1, 5 y 14. ESPERA_DIAS[n] = días mínimos desde el
 // recordatorio anterior para mandar el siguiente cuando ya se han mandado n.
-const ESPERA_DIAS = [0, 2, 4, 7];
+const ESPERA_DIAS = [0, 4, 9];
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
