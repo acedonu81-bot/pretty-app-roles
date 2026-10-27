@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ExternalLink, ShoppingBag, BookOpen, Calculator, FileText, ArrowUpRight, Handshake, GraduationCap, Sparkles, ChevronDown } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
+import FeedbackWebForm from '@/components/FeedbackWebForm';
 import { logAffiliateClick, logEvent } from '@/lib/track';
 import {
   AFFILIATE_CATALOG, resolveAffiliateKey, hexToRgba, partnersForRole,
@@ -144,6 +145,7 @@ const ROLES_CON_CATALOGO = Object.keys(AFFILIATE_CATALOG);
 
 export default function ResourcesView() {
   const { role, display_name } = useProfile();
+  const [feedbackEnviado, setFeedbackEnviado] = useState(false);
   const propioKey = role ? resolveAffiliateKey(role) : null;
 
   // El rol de la cuenta solo PRESELECCIONA (comodidad); el usuario puede
@@ -399,6 +401,27 @@ export default function ResourcesView() {
           y estamos añadiendo oficios poco a poco.
         </p>
       )}
+
+      {/* Feedback siempre a mano: quien necesite algo de nosotros lo dice aquí
+          sin buscar un enlace. Mismo formulario y misma tabla que la tarjeta
+          del panel; si lo envía aquí, la tarjeta ya no vuelve a salir. */}
+      <section id="feedback" className="mt-8 rounded-2xl p-5 scroll-mt-4"
+        style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.45)' }}>
+        {feedbackEnviado ? (
+          <p className="text-sm font-bold" style={{ color: '#111' }}>Gracias, lo leemos todo.</p>
+        ) : (
+          <>
+            <p className="text-xs font-extrabold uppercase tracking-[0.14em] mb-1" style={{ color: '#7A6216' }}>
+              ¿Necesitas algo de nosotros?
+            </p>
+            <FeedbackWebForm momento="recursos" rol={role}
+              onEnviado={() => {
+                setFeedbackEnviado(true);
+                try { localStorage.setItem('xpeak_fb_hecho', '1'); } catch { /* sin almacenamiento */ }
+              }} />
+          </>
+        )}
+      </section>
 
       <p className="text-[0.75rem] leading-relaxed mt-6" style={{ color: 'rgba(10,9,8,0.4)' }}>
         XPEAK puede recibir una comisión por las compras realizadas a través de los enlaces de esta página, sin coste

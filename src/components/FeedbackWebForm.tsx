@@ -13,7 +13,7 @@ export const limpiarFeedback = (t: string) =>
   t.replace(/\S+@\S+/g, '[email]').replace(/\d[\d\s.-]{5,}\d/g, '[num]').trim().slice(0, 1000);
 
 interface Props {
-  momento: 'dashboard' | 'solicitud' | 'enlace';
+  momento: 'dashboard' | 'solicitud' | 'enlace' | 'recursos';
   rol?: string | null;
   onEnviado: () => void;
 }
