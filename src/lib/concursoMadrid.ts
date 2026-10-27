@@ -23,3 +23,11 @@ export const CIERRA_CONCURSO = new Date('2026-11-03T00:00:00+01:00');
 export function concursoActivo(ahora: Date = new Date()): boolean {
   return ahora >= ABRE_CONCURSO && ahora < CIERRA_CONCURSO;
 }
+
+/** Del cierre al anuncio del ganador (9 nov): los banners enseñan a los 3 con
+ *  más me gusta mientras se revisan los votos y el jurado escucha. */
+export const FIN_REVISION_CONCURSO = new Date('2026-11-10T00:00:00+01:00');
+
+export function concursoEnRevision(ahora: Date = new Date()): boolean {
+  return ahora >= CIERRA_CONCURSO && ahora < FIN_REVISION_CONCURSO;
+}

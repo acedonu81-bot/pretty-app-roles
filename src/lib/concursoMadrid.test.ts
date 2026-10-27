@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { estadoInscripcionMadrid, concursoActivo } from './concursoMadrid';
+import { estadoInscripcionMadrid, concursoActivo, concursoEnRevision } from './concursoMadrid';
 
 const perfil = (p: Partial<{ photo_url: string | null; bio: string | null; region: string | null }>) =>
   ({ photo_url: 'https://x/foto.jpg', bio: 'DJ de bodas', region: 'Madrid', ...p });
@@ -33,5 +33,14 @@ describe('concursoActivo', () => {
     expect(concursoActivo(new Date('2026-10-13T00:00:00+02:00'))).toBe(true);
     expect(concursoActivo(new Date('2026-11-02T23:59:00+01:00'))).toBe(true);
     expect(concursoActivo(new Date('2026-11-03T00:00:00+01:00'))).toBe(false);
+  });
+});
+
+describe('concursoEnRevision', () => {
+  it('solo del cierre al anuncio del ganador', () => {
+    expect(concursoEnRevision(new Date('2026-11-02T23:59:00+01:00'))).toBe(false);
+    expect(concursoEnRevision(new Date('2026-11-03T00:00:00+01:00'))).toBe(true);
+    expect(concursoEnRevision(new Date('2026-11-09T23:00:00+01:00'))).toBe(true);
+    expect(concursoEnRevision(new Date('2026-11-10T00:00:00+01:00'))).toBe(false);
   });
 });

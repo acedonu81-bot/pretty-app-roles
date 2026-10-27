@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Trophy } from 'lucide-react';
 import { HZ, clay, clayButton } from '@/components/healthy-zone/clay';
-import { concursoActivo, CIERRA_CONCURSO } from '@/lib/concursoMadrid';
+import { concursoActivo, concursoEnRevision, CIERRA_CONCURSO } from '@/lib/concursoMadrid';
+import ConcursoFinalistas from '@/components/dashboard/views/ConcursoFinalistas';
 import { useEffect, useState } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import { halloweenActivo } from '@/lib/halloween';
@@ -63,6 +64,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
   // "Ver aspirantes" (la página con las sesiones, separada de las bases).
   const { role } = useProfile();
   const [cerrado, setCerrado] = useState(false);
+  if (!sinTexto && concursoEnRevision()) return <ConcursoFinalistas />;
   if (cerrado || !concursoActivo()) return null;
   const ultimoDia = CIERRA_CONCURSO.getTime() - Date.now() < MS_DIA;
   const organizador = role === 'empresario';
