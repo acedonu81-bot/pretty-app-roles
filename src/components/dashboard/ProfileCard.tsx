@@ -244,11 +244,11 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         </div>
 
         {/* Name + specialty overlaid — desktop only */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-3 hidden sm:block" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)' }}>
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-3 pt-10 hidden sm:block" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.6) 55%, transparent 100%)' }}>
           <div className="flex items-end justify-between gap-2">
             <div className="flex-1 min-w-0">
               <h3 className="text-base font-black line-clamp-2 break-words" style={{ color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.5)', lineHeight: 1.2 }}>{p.name}</h3>
-              {p.specialty && <p className="text-xs truncate sm:whitespace-normal" style={{ color: '#F5D77A' }}>{p.specialty}</p>}
+              {p.specialty && <p className="text-xs line-clamp-1" style={{ color: '#F5D77A', textShadow: '0 1px 3px rgba(0,0,0,0.6)' }}>{p.specialty}</p>}
             </div>
             {priceLabel && (
               <span className="text-sm font-black shrink-0" style={{ color: '#F5D77A' }}>{priceLabel}</span>
