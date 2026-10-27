@@ -127,6 +127,7 @@ const BlogCamarerosMalaga = lazy(() => import("./pages/BlogCamarerosMalaga"));
 const BlogCamarerosZaragoza = lazy(() => import("./pages/BlogCamarerosZaragoza"));
 const BlogCamarerosPalma = lazy(() => import("./pages/BlogCamarerosPalma"));
 const BlogCamarerosIbiza = lazy(() => import("./pages/BlogCamarerosIbiza"));
+const BlogCateringIbizaPrecio = lazy(() => import("./pages/BlogCateringIbizaPrecio"));
 const BlogCamarerosAlicante = lazy(() => import("./pages/BlogCamarerosAlicante"));
 const BlogCamarerosGranada = lazy(() => import("./pages/BlogCamarerosGranada"));
 const BlogCamarerosMurcia = lazy(() => import("./pages/BlogCamarerosMurcia"));
@@ -668,6 +669,7 @@ const App = () => (
             <Route path="/blog/camareros-eventos-zaragoza" element={<BlogCamarerosZaragoza />} />
             <Route path="/blog/camareros-eventos-palma" element={<BlogCamarerosPalma />} />
             <Route path="/blog/camareros-eventos-ibiza" element={<BlogCamarerosIbiza />} />
+            <Route path="/blog/precio-catering-ibiza" element={<BlogCateringIbizaPrecio />} />
             <Route path="/blog/camareros-eventos-alicante" element={<BlogCamarerosAlicante />} />
             <Route path="/blog/camareros-eventos-granada" element={<BlogCamarerosGranada />} />
             <Route path="/blog/camareros-eventos-murcia" element={<BlogCamarerosMurcia />} />

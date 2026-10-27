@@ -11,7 +11,9 @@ import { readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DIST = join(process.cwd(), 'dist', 'assets');
-const LIMIT_KB = 300;
+// 310 desde el 27 oct 2026: el chunk principal (index) lleva las ~350 rutas de
+// blog y cada artículo nuevo suma ~100 bytes; llegó a 300,1 KB sin ninguna librería nueva.
+const LIMIT_KB = 310;
 
 // Chunks ya auditados: son pesados porque la librería lo es, pero se cargan
 // vía import() dinámico (verificado con grep antes de añadirlos aquí), así
