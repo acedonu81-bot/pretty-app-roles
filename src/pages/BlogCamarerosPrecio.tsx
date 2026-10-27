@@ -11,6 +11,11 @@ import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogPrimerPaso from '@/components/BlogPrimerPaso';
 
+const FUENTES_CAMAREROS = [
+  { nombre: 'Qamarero, guía de contratación por horas (julio de 2025)', href: 'https://qamarero.com/blog/contratar-camareros-por-horas-guia/', dato: 'De 12 a 20 € por hora', mide: 'Rango general de tarifas por hora según la guía. No indica ciudad, si lleva IVA ni mínimo de horas' },
+  { nombre: 'Qamarero, convenio de hostelería de Madrid (actualizada en junio de 2026)', href: 'https://qamarero.com/blog/convenio-de-hosteleria-de-madrid/', dato: '1.250,91 € brutos al mes, nivel III, 14 pagas', mide: 'Salario base de un camarero según las tablas de 2025, vigentes en 2026. La guía estima unos 10 a 11 € brutos por hora' },
+];
+
 export default function BlogCamarerosPrecio() {
   const breadcrumb = {
   '@context': 'https://schema.org',
@@ -37,7 +42,7 @@ const faqStructured = {
     '@type': 'Article',
     headline: 'Cuánto cobra un camarero de eventos por horas en España (2026)',
     datePublished: '2026-04-01',
-    dateModified: '2026-06-08',
+    dateModified: '2026-10-27',
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Guía completa de precios de camareros para eventos en España 2026: bodas, empresas, fiestas privadas. Cuánto cobran y cuántos necesitas.',
@@ -96,7 +101,7 @@ const faqStructured = {
           </p>
 
           <div className="p-5 rounded-xl mb-8" style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)' }}>
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#2563EB' }}>Resumen de precios 2026</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#2563EB' }}>Resumen orientativo 2026, sin fuente publicada</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 ['Camarero/a de sala', '10€-18€/hora'],
@@ -114,6 +119,30 @@ const faqStructured = {
               ))}
             </div>
           </div>
+
+          <section className="mb-8">
+            <h2 className="text-xl sm:text-2xl font-black mb-3">Qué dicen las fuentes publicadas</h2>
+            <p className="text-base leading-relaxed mb-4" style={{ color: '#333' }}>
+              Casi ninguna empresa de personal para eventos publica su tarifa por hora. Estas son las referencias con fuente que hemos podido verificar, y qué miden exactamente:
+            </p>
+            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
+              <table className="w-full text-xs">
+                <thead><tr style={{ background: 'rgba(37,99,235,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}><th className="text-left px-4 py-3 font-bold">Fuente</th><th className="text-left px-4 py-3 font-bold">Dato</th><th className="text-left px-4 py-3 font-bold">Qué mide</th></tr></thead>
+                <tbody>
+                  {FUENTES_CAMAREROS.map((f, i) => (
+                    <tr key={f.nombre} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
+                      <td className="px-4 py-3 font-medium align-top"><a href={f.href} target="_blank" rel="noopener noreferrer nofollow" style={{ color: '#2563EB' }}>{f.nombre}</a></td>
+                      <td className="px-4 py-3 font-bold align-top">{f.dato}</td>
+                      <td className="px-4 py-3 align-top">{f.mide}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs mt-3 leading-relaxed" style={{ color: '#666' }}>
+              Revisado el 27 de octubre de 2026. Los sueldos son lo que cobra el camarero, no lo que paga el cliente: el precio al cliente suma la empresa, los costes laborales y el margen. Los rangos del resumen de arriba y de las tablas de más abajo son orientativos y no tienen una fuente publicada.
+            </p>
+          </section>
 
           <div className="space-y-8">
             <section>

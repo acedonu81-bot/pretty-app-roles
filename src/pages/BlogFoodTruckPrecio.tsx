@@ -35,6 +35,15 @@ const FAQ = [
   { q: '¿Puedo contratar varios food trucks para el mismo evento?', a: 'Sí, es habitual en festivales, bodas grandes o eventos corporativos con más de 150 asistentes montar un "street food market" con 2-4 food trucks de propuestas distintas (salado, dulce, bebidas). El coste conjunto suele ir desde 2.000€.' },
 ];
 
+const PUBLICADOS = [
+  { nombre: 'Eventos con Sabor', href: 'https://www.bodas.net/food-truck-y-mesas-dulces/eventos-con-sabor--e282193', zona: 'Madrid', desde: '250 €', invitados: '50 a 800', extras: 'Hora extra: 30 €. Cargo de desplazamiento fuera de la Comunidad de Madrid, sin importe publicado' },
+  { nombre: 'AristoTrucks', href: 'https://www.bodas.net/food-truck-y-mesas-dulces/aristotrucks--e274015', zona: 'Madrid', desde: '300 €', invitados: '50 a 600', extras: 'Desplazamiento y horas extra a convenir con el cliente' },
+  { nombre: 'Delicias y Sueños Catering', href: 'https://www.bodas.net/food-truck-y-mesas-dulces/delicias-y-suenos-catering--e85112', zona: 'Pedrezuela, Madrid', desde: '400 €', invitados: 'No indicado', extras: 'Transporte de la caravana desde 50 €. 50 % al reservar y 50 % una semana antes. Antelación mínima de 15 días' },
+  { nombre: 'Chik Plant Based', href: 'https://www.bodas.net/bodas/proveedores/food-truck-y-mesas-dulces/barcelona/terrassa', zona: 'Terrassa, Barcelona', desde: '500 €', invitados: '50', extras: 'No publica' },
+  { nombre: 'Jappi Foods', href: 'https://www.bodas.net/bodas/proveedores/food-truck-y-mesas-dulces/barcelona/terrassa', zona: 'Terrassa, Barcelona', desde: '250 €', invitados: '20 a 5.000', extras: 'No publica' },
+  { nombre: 'Arte en Lonchas', href: 'https://www.bodas.net/bodas/proveedores/food-truck-y-mesas-dulces/barcelona/terrassa', zona: 'Terrassa, Barcelona', desde: '120 €', invitados: '20 a 500', extras: 'No publica' },
+];
+
 export default function BlogFoodTruckPrecio() {
   const structuredData = {
     '@context': 'https://schema.org',
@@ -44,7 +53,7 @@ export default function BlogFoodTruckPrecio() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-09-24',
-    dateModified: '2026-09-24',
+    dateModified: '2026-10-27',
     url: 'https://xpeak.es/blog/cuanto-cuesta-un-food-truck-para-evento',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/cuanto-cuesta-un-food-truck-para-evento' },
   };
@@ -125,7 +134,7 @@ export default function BlogFoodTruckPrecio() {
             ¿Cuánto cuesta un food truck para tu evento? Precios 2026
           </h1>
           <p className="text-sm mb-8" style={{ color: '#555' }}>
-            XPEAK · 24 de septiembre de 2026 · 6 min de lectura
+            XPEAK · Actualizado el 27 de octubre de 2026 · 6 min de lectura
           </p>
 
           {/* Intro */}
@@ -138,10 +147,35 @@ export default function BlogFoodTruckPrecio() {
             answer="Un food truck para boda o evento cuesta entre 350€ y 2.000€ por servicio, o entre 15€ y 70€ por persona según el menú. El precio depende del número de comensales, el tipo de comida (básico o cocina en directo) y si hay que sumar desplazamiento. Para festivales o eventos grandes con varios food trucks, el presupuesto conjunto empieza en 2.000€."
           />
 
+          {/* Precios publicados con fuente (27 oct 2026) */}
+          <h2 className="text-xl font-black mb-4">Precios publicados por food trucks, con su fuente</h2>
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
+            Estos son precios que cada empresa publica en su ficha de Bodas.net. Son precios «desde»: el presupuesto final cambia con el menú, los invitados, las horas y el desplazamiento.
+          </p>
+          <div className="overflow-x-auto mb-4 rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
+            <table className="w-full text-xs">
+              <thead><tr style={{ background: 'rgba(37,99,235,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}><th className="text-left px-4 py-3 font-bold">Empresa</th><th className="text-left px-4 py-3 font-bold">Zona</th><th className="text-left px-4 py-3 font-bold">Precio desde</th><th className="text-left px-4 py-3 font-bold">Invitados</th><th className="text-left px-4 py-3 font-bold">Extras que publican</th></tr></thead>
+              <tbody>
+                {PUBLICADOS.map((f, i) => (
+                  <tr key={f.nombre} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
+                    <td className="px-4 py-3 font-medium align-top"><a href={f.href} target="_blank" rel="noopener noreferrer nofollow" style={{ color: '#2563EB' }}>{f.nombre}</a></td>
+                    <td className="px-4 py-3 align-top">{f.zona}</td>
+                    <td className="px-4 py-3 font-bold align-top whitespace-nowrap">{f.desde}</td>
+                    <td className="px-4 py-3 align-top">{f.invitados}</td>
+                    <td className="px-4 py-3 align-top">{f.extras}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs mb-10 leading-relaxed" style={{ color: '#666' }}>
+            Datos de las fichas de Bodas.net revisados el 27 de octubre de 2026. Las fichas no indican si el precio lleva IVA. No son tarifas cerradas ni comparables uno a uno: cada empresa define distinto qué entra en el «desde».
+          </p>
+
           {/* Tabla por formato */}
           <h2 className="text-xl font-black mb-4">Precio de un food truck por formato</h2>
           <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
-            El factor que más influye en el precio es el tipo de menú y el número de comensales. Esta tabla resume los rangos habituales del mercado español en 2026:
+            El factor que más influye en el precio es el tipo de menú y el número de comensales. Los rangos de esta tabla y de la de ciudades son orientativos y no tienen una fuente publicada; para precios con fuente mira la tabla de arriba:
           </p>
           <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs min-w-[560px]">
