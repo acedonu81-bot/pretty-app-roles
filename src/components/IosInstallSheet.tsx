@@ -10,6 +10,8 @@ import type { IosBrowser } from '@/hooks/useInstallPrompt';
  * Instagram, TikTok…) ni siquiera existe la opción, así que ahí se le pide
  * que abra la web en Safari y se le deja copiar el enlace.
  *
+ * z-[10000]: por encima del aviso de cookies (z-[9999]); con menos, el aviso tapaba
+ * los últimos pasos y el botón de copiar el enlace (grabación de Clarity, 27 oct).
  * Va en portal a <body>: InstallPwaBanner usa backdrop-filter, que convierte
  * al banner en el contenedor de los `fixed` de dentro y encerraría la hoja.
  */
@@ -47,7 +49,7 @@ export default function IosInstallSheet({ browser, onClose }: Props) {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[90] flex items-end justify-center" role="dialog" aria-modal="true"
+    <div className="fixed inset-0 z-[10000] flex items-end justify-center" role="dialog" aria-modal="true"
       aria-label="Cómo instalar XPEAK" onClick={onClose}
       style={{ background: 'rgba(17,17,17,0.45)' }}>
       <div className="w-full max-w-md rounded-t-3xl px-5 pt-5"
