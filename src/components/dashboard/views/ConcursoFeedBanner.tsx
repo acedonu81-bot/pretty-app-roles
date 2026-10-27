@@ -16,7 +16,7 @@ const MS_DIA = 86_400_000;
 
 // Cuenta atrás hasta el cierre (hora de Madrid, ver CIERRA_CONCURSO). Última
 // jornada: cifras en rosa y "Último día" en la etiqueta.
-export function CuentaAtras({ onFin, claro = false, hw = false }: { onFin: () => void; claro?: boolean; hw?: boolean }) {
+export function CuentaAtras({ onFin, claro = false, hw = false, compacto = false }: { onFin: () => void; claro?: boolean; hw?: boolean; compacto?: boolean }) {
   const [ahora, setAhora] = useState(() => Date.now());
   const resta = Math.max(0, CIERRA_CONCURSO.getTime() - ahora);
   useEffect(() => {
@@ -34,22 +34,22 @@ export function CuentaAtras({ onFin, claro = false, hw = false }: { onFin: () =>
   const urgente = resta < MS_DIA;
   const texto = `Quedan ${trozos[0].v} días, ${trozos[1].v} horas y ${trozos[2].v} minutos`;
   return (
-    <div className="flex gap-2 mt-3.5" role="timer" aria-label={texto}>
+    <div className={`flex gap-2 ${compacto ? '' : 'mt-3.5'}`} role="timer" aria-label={texto}>
       {trozos.map((t, i) => (
-        <div key={t.l} aria-hidden className="min-w-[3.6rem] max-sm:min-w-0 max-sm:flex-1 px-1.5 pt-2 pb-1.5 rounded-2xl text-center"
+        <div key={t.l} aria-hidden className={`${compacto ? 'min-w-[3rem] px-1 pt-1 pb-1 rounded-xl' : 'min-w-[3.6rem] px-1.5 pt-2 pb-1.5 rounded-2xl'} max-sm:min-w-0 max-sm:flex-1 text-center`}
           style={claro
             ? { background: hw ? '#FFF8F0' : '#F4F9FF', boxShadow: clay(hw ? '139,63,217' : '36,119,179', 'sm') }
             : {
               background: 'rgba(255,255,255,0.16)',
               boxShadow: 'inset 3px 3px 8px rgba(255,255,255,0.28), inset -3px -3px 8px rgba(0,0,0,0.2), 0 6px 12px rgba(20,0,80,0.25)',
             }}>
-          <span className="block text-[1.9rem] max-sm:text-2xl leading-none tabular-nums text-white"
+          <span className={`block ${compacto ? 'text-xl' : 'text-[1.9rem] max-sm:text-2xl'} leading-none tabular-nums text-white`}
             style={claro
               ? { fontFamily: HZ.display, fontWeight: 800, color: urgente ? '#C2264B' : hw ? '#4A1D7A' : '#14407A' }
               : { fontFamily: HZ.display, fontWeight: 800, color: urgente ? '#ff9aa8' : i === 3 ? '#ffe08a' : '#fff', textShadow: '0 2px 8px rgba(20,0,80,0.4)' }}>
             {p(t.v)}
           </span>
-          <span className="block text-[0.75rem] uppercase tracking-[0.08em] sm:tracking-[0.14em] mt-1" style={{ color: hw ? '#E0650C' : claro ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>{t.l}</span>
+          <span className={`block text-[0.7rem] uppercase tracking-[0.08em] sm:tracking-[0.14em] ${compacto ? 'mt-0.5' : 'mt-1'}`} style={{ color: hw ? '#E0650C' : claro ? '#2477B3' : '#bfe8ff', fontFamily: HZ.body, fontWeight: 800 }}>{t.l}</span>
         </div>
       ))}
     </div>
@@ -94,7 +94,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         título y el contador y los botones van a todo el ancho; desde sm los
         cascos ocupan toda la altura a la derecha, como antes. */}
     <div
-      className={`relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-3xl mb-4 ${sinTexto ? `p-5 sm:p-12 ${hw ? 'concurso-parpadeo-hw' : 'concurso-parpadeo'}` : 'p-5 sm:p-6'}`}
+      className={`relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-3xl mb-4 ${sinTexto ? `p-5 sm:p-12 ${hw ? 'concurso-parpadeo-hw' : 'concurso-parpadeo'}` : 'p-4 sm:px-6 sm:py-4'}`}
       style={hw
         ? { background: 'linear-gradient(135deg,#FFF3E6 0%,#FFD9B0 50%,#E3C8FA 100%)', boxShadow: clay('139,63,217', 'lg') }
         : sinTexto
@@ -122,12 +122,13 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         </p>
       </div>
       {!sinTexto && (
-      <p className="relative col-span-2 sm:col-span-1 text-sm mt-1.5 max-w-md" style={{ color: 'rgba(255,255,255,0.88)', fontFamily: HZ.body }}>
+      <p className="relative col-span-2 sm:col-span-1 text-[0.8rem] sm:text-sm mt-1 max-w-md" style={{ color: 'rgba(255,255,255,0.88)', fontFamily: HZ.body }}>
         Para DJs de la Comunidad de Madrid. Sube tu sesión: las 3 con más me gusta van a la final y el jurado elige quién se lleva los Pioneer DJ HDJ-X5.
       </p>
       )}
-      <div className="relative col-span-2 sm:col-span-1"><CuentaAtras onFin={() => setCerrado(true)} claro={sinTexto} hw={hw} /></div>
-      <div className="relative col-span-2 sm:col-span-1 flex flex-wrap items-center gap-2 mt-3.5">
+      <div className={`relative col-span-2 sm:col-span-1 ${sinTexto ? '' : 'flex flex-wrap items-center gap-x-5 gap-y-2.5 mt-2.5'}`}>
+      <CuentaAtras onFin={() => setCerrado(true)} claro={sinTexto} hw={hw} compacto={!sinTexto} />
+      <div className={`flex flex-wrap items-center gap-2 ${sinTexto ? 'mt-3.5' : ''}`}>
         {sinTexto ? (
           <Link to="/concurso-dj-madrid"
             className="concurso-boton-pulso inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-lg sm:text-xl"
@@ -149,6 +150,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         </Link>
         </>)}
       </div>
+      </div>
 
       <img
         src="/concurso/cascos-hdj-x5.webp"
@@ -157,7 +159,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
         height={358}
         loading={sinTexto ? 'eager' : 'lazy'}
         decoding="async"
-        className={`relative h-auto shrink-0 self-center col-start-2 row-start-1 sm:[grid-row:1/span_4] ${sinTexto ? 'w-24 sm:w-48 md:w-72 concurso-cascos' : 'w-24 sm:w-36 -rotate-6'}`}
+        className={`relative h-auto shrink-0 self-center col-start-2 row-start-1 sm:[grid-row:1/span_4] ${sinTexto ? 'w-24 sm:w-48 md:w-72 concurso-cascos' : 'w-20 sm:w-28 -rotate-6'}`}
         style={{ filter: 'drop-shadow(0 10px 18px rgba(20,0,60,0.45))' }}
       />
       {hw && <CalabazaDJ className="absolute right-3 bottom-3 sm:right-6 sm:bottom-5 w-20 sm:w-28 md:w-32 h-auto" />}

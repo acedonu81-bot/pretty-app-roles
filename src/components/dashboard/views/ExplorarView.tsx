@@ -16,6 +16,8 @@
  * dentro de cada grupo (más profesionales a la izquierda), sin mostrarse.
  */
 import { useEffect, useState } from 'react';
+import FeedbackSeccion from '@/components/FeedbackSeccion';
+import { useProfile } from '@/hooks/useProfile';
 import ConcursoFeedBanner from '@/components/dashboard/views/ConcursoFeedBanner';
 import { supabase } from '@/integrations/supabase/client';
 import { expandRole, PHOTO_GATE_OR } from '@/lib/constants';
@@ -193,6 +195,7 @@ const contar = (filas: FilaRol[], view: string) => {
 };
 
 const ExplorarView = ({ onNavigate }: Props) => {
+  const { role } = useProfile();
   const [conteo, setConteo] = useState<Record<string, number> | null>(null);
 
   useEffect(() => {
@@ -250,6 +253,8 @@ const ExplorarView = ({ onNavigate }: Props) => {
         </div>
       ))}
     </div>
+
+    <FeedbackSeccion rol={role} className="mt-8" />
   </div>
   );
 };
