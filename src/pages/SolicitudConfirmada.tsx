@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import FeedbackWebForm from '@/components/FeedbackWebForm';
+import { SERVICIO_ORGANIZA } from '@/lib/solicitudCompleta';
 
 /**
  * Botón "Confirmar y enviar" del email del particular (18 oct 2026). Hasta que
@@ -14,6 +15,7 @@ import FeedbackWebForm from '@/components/FeedbackWebForm';
 export default function SolicitudConfirmada() {
   const [estado, setEstado] = useState<'cargando' | 'ok' | 'error'>('cargando');
   const [enviadas, setEnviadas] = useState<number | null>(null);
+  const [organiza, setOrganiza] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fbHecho, setFbHecho] = useState(false);
 
@@ -33,6 +35,7 @@ export default function SolicitudConfirmada() {
         return;
       }
       setEnviadas(typeof data.enviadas === 'number' ? data.enviadas : null);
+      setOrganiza(data.servicio === SERVICIO_ORGANIZA);
       setEstado('ok');
       (window as any).gtag?.('event', 'generate_lead', { lead_type: 'particular_confirmado' });
     })();
@@ -55,12 +58,16 @@ export default function SolicitudConfirmada() {
               <CheckCircle size={48} className="mx-auto mb-5" style={{ color: '#059669' }} />
               <h1 className="text-xl font-black mb-3">Solicitud enviada</h1>
               <p className="text-sm mb-3" style={{ color: '#374151' }}>
-                {enviadas
+                {organiza
+                  ? 'La ha recibido nuestro equipo.'
+                  : enviadas
                   ? `Se la hemos mandado a ${enviadas} ${enviadas === 1 ? 'profesional' : 'profesionales'}.`
                   : 'La estamos revisando para mandársela a los profesionales adecuados.'}
               </p>
               <p className="text-sm mb-8" style={{ color: '#374151' }}>
-                Cuando uno diga que sí, te escribimos con un botón para hablar con él. No tienes que hacer nada más.
+                {organiza
+                  ? 'Te escribimos para entender qué necesitas y contarte el precio antes de empezar. No hay ningún cobro hasta que lo aceptes.'
+                  : 'Cuando uno diga que sí, te escribimos con un botón para hablar con él. No tienes que hacer nada más.'}
               </p>
               <div className="text-left mb-8 p-4 rounded-2xl" style={{ background: '#FBF3DD', border: '1px solid rgba(122,98,22,0.16)' }}>
                 {fbHecho

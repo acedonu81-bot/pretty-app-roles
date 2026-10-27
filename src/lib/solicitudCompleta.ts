@@ -93,3 +93,8 @@ export function mensajeFaltan(faltan: string[]): string {
   const lista = faltan.length === 1 ? faltan[0] : `${faltan.slice(0, -1).join(', ')} y ${faltan[faltan.length - 1]}`;
   return `Falta ${lista}.`;
 }
+
+// Prueba real (27 oct 2026): el particular que no sabe qué necesita pide que lo organice
+// XPEAK, de momento solo en Madrid. No está en ROLES_POR_SERVICIO de particular-solicitud,
+// así que no se reparte a profesionales: entra como lead general y avisa al admin.
+export const SERVICIO_ORGANIZA = 'Que lo organice XPEAK';

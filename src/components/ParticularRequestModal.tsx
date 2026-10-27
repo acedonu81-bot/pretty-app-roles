@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { X, Send, CheckCircle, PartyPopper } from 'lucide-react';
+import { X, Send, CheckCircle, PartyPopper, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { faltanDatos, mensajeFaltan, detalleSolicitud } from '@/lib/solicitudCompleta';
+import { faltanDatos, mensajeFaltan, detalleSolicitud, SERVICIO_ORGANIZA } from '@/lib/solicitudCompleta';
 import CamposPersonasHorario from '@/components/CamposPersonasHorario';
 
 /**
@@ -84,6 +84,8 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
     ...(form.service ? [] : ['qué profesional necesitas']),
     ...faltanDatos({ name: form.name, contact: form.email, date: form.date, location: form.location, eventType: form.eventType, personas: form.personas, horario: form.horario }, { pideTipo: true, pideDetalle: true }),
   ];
+  const organiza = form.service === SERVICIO_ORGANIZA;
+  if (organiza && ciudadOk && !/madrid/i.test(form.location)) faltan.push('que el evento sea en Madrid (de momento)');
   const listo = faltan.length === 0 && ciudadOk && emailOk;
 
   async function handleSubmit(e: React.FormEvent) {
@@ -181,7 +183,14 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
                   Te hemos mandado un email a <strong>{form.email.trim()}</strong>.
                 </p>
                 <p className="text-sm mb-6" style={{ color: '#333' }}>
-                  Pulsa <strong>Confirmar y enviar</strong> en ese correo y se lo mandamos a los profesionales. Si no lo ves, mira en spam.
+                  Pulsa <strong>Confirmar y enviar</strong> en ese correo y {organiza ? 'se lo pasamos a nuestro equipo' : 'se lo mandamos a los profesionales'}. Si no lo ves, mira en spam.
+                </p>
+              </>
+            ) : organiza ? (
+              <>
+                <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>Recibido, {form.name.trim().split(' ')[0]}</h3>
+                <p className="text-sm mb-6" style={{ color: '#333' }}>
+                  Te escribimos a <strong>{form.email.trim()}</strong> para entender qué necesitas y contarte el precio. No tienes que hacer nada más.
                 </p>
               </>
             ) : (
@@ -236,6 +245,21 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
                 );
               })}
             </div>
+
+            {/* Prueba real: si no sabe qué necesita, lo organizamos nosotros (solo Madrid). */}
+            <button type="button" onClick={() => set('service', SERVICIO_ORGANIZA)} aria-pressed={organiza}
+              className="w-full mb-4 px-3 py-3 rounded-xl text-left transition-all flex items-start gap-3"
+              style={{
+                background: organiza ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : '#fff',
+                color: organiza ? '#000' : '#222',
+                border: organiza ? '2px solid #8A6D0F' : '1px dashed rgba(138,109,15,0.6)',
+              }}>
+              <Sparkles size={18} className="flex-shrink-0 mt-0.5" />
+              <span>
+                <span className="block text-sm font-bold">No lo tengo claro: organizadlo vosotros</span>
+                <span className="block text-xs mt-0.5">De momento solo en Madrid. Te contamos el precio antes de empezar.</span>
+              </span>
+            </button>
 
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
@@ -303,7 +327,9 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
 
             {/* A dónde va lo que se manda: cambia según lo que elige. */}
             <p className="text-xs mt-4 rounded-lg px-3 py-2" style={{ background: 'rgba(22,163,74,0.08)', color: '#14532d' }}>
-              {destino
+              {organiza
+                ? 'Lo recibe nuestro equipo. Confirmas tu email y te escribimos para entender qué quieres y contarte el precio antes de empezar. No hay ningún cobro hasta que lo aceptes.'
+                : destino
                 ? <>Se lo enviamos directamente a los <strong>{destino}</strong>{ciudad ? <> de <strong>{ciudad}</strong></> : ''}. Confirmas tu email y, cuando uno diga que sí, habláis por el chat de XPEAK.</>
                 : 'Elige qué necesitas y se lo enviamos directamente a los profesionales de ese oficio. Te avisamos por email cuando uno diga que sí.'}
             </p>
