@@ -93,7 +93,7 @@ const noAutolink = (html: string) =>
 const base = (content: string, preview?: string) => `
 <div style="background:#E8E9EB;padding:40px 16px;font-family:${FONT}">
 ${preview ? preheader(preview) : ''}
-<div style="max-width:520px;margin:0 auto;background:#FFFFFF;border-radius:16px;box-shadow:0 1px 3px rgba(10,9,8,0.06),0 12px 32px rgba(10,9,8,0.16),0 32px 64px rgba(10,9,8,0.14);overflow:hidden">
+<div style="max-width:520px;margin:0 auto;background:#FFFFFF;border-radius:16px;word-break:break-word;overflow-wrap:anywhere;box-shadow:0 1px 3px rgba(10,9,8,0.06),0 12px 32px rgba(10,9,8,0.16),0 32px 64px rgba(10,9,8,0.14);overflow:hidden">
   <div style="text-align:center;padding:32px 32px 20px;border-bottom:1px solid rgba(212,175,55,0.25)">
     <a href="https://xpeak.es" style="text-decoration:none;display:inline-block">
       <img src="https://xpeak.es/xpeak-icon-512.png" width="40" height="40" alt="XPEAK"
@@ -101,7 +101,7 @@ ${preview ? preheader(preview) : ''}
       <span style="font-size:24px;font-weight:800;letter-spacing:1.5px;color:#0a0908">X<span style="color:#D4AF37">PEAK</span></span>
     </a>
   </div>
-  <div style="padding:32px">
+  <div style="padding:32px 24px">
     ${content}
   </div>
   <div style="padding:20px 32px 28px;text-align:center;border-top:1px solid rgba(10,9,8,0.06)">
@@ -145,22 +145,23 @@ const confirmSeal = () => `
  * estrecha y salía partido en dos palabras por línea — ilegible en móvil, que
  * es donde se leen casi todos.
  *
- * Ahora, si el valor pasa de 60 caracteres, la etiqueta va encima y el texto
- * ocupa el ancho completo. Los valores cortos (fecha, lugar, pago) siguen en
+ * Ahora, si el valor pasa de 60 caracteres (o es largo y sin espacios, como un
+ * email, que en 2 columnas se cortaba en el borde en móviles estrechos), la
+ * etiqueta va encima y el texto ocupa el ancho completo. Los valores cortos (fecha, lugar, pago) siguen en
  * dos columnas, que para ellos se lee mejor.
  */
 const rows = (pairs: [string, string][]) =>
   `<table style="width:100%;border-collapse:collapse">${pairs.map(([k, v]) => {
     const val = esc(v) || '—';
     const borde = 'border-bottom:1px solid rgba(10,9,8,0.06)';
-    if (val.length > 60) {
+    if (val.length > 60 || (val.length > 20 && !/\s/.test(val))) {
       return `<tr><td colspan="2" style="padding:10px 0;${borde}">`
         + `<div style="color:#6B7280;font-size:12px;margin-bottom:4px">${esc(k)}</div>`
         + `<div style="color:#0a0908;font-size:13px;font-weight:600;line-height:1.6">${noAutolink(val)}</div>`
         + `</td></tr>`;
     }
-    return `<tr><td style="padding:10px 12px 10px 0;color:#6B7280;font-size:12px;white-space:nowrap;${borde}">${esc(k)}</td>`
-      + `<td style="padding:10px 0;color:#0a0908;font-size:13px;font-weight:600;line-height:1.6;${borde}">${noAutolink(val)}</td></tr>`;
+    return `<tr><td style="padding:10px 12px 10px 0;color:#6B7280;font-size:12px;vertical-align:top;${borde}">${esc(k)}</td>`
+      + `<td style="padding:10px 0;color:#0a0908;font-size:13px;font-weight:600;line-height:1.6;word-break:break-word;overflow-wrap:anywhere;${borde}">${noAutolink(val)}</td></tr>`;
   }).join('')}</table>`;
 
 // Fechas de una oferta ("2026-10-16", "2026-10-17") a texto: "16 y 17 de octubre".
