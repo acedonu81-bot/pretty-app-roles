@@ -695,7 +695,7 @@ const Landing = () => {
             ) : 'X'}<span className="text-gradient">PEAK</span>
           </button>
           <LandingMegaMenu onParticular={() => setShowParticular(true)} />
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
             {/* Logueado (profesional que se queda en la landing, ver efecto
                 arriba): antes era un botón de texto gris casi invisible, el
                 mismo peso que el "Acceder" de un visitante sin cuenta. Es la
