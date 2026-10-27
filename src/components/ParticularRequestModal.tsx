@@ -225,7 +225,7 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
               <h3 className="text-lg font-black" style={{ color: '#111' }}>¿Qué necesitas?</h3>
             </div>
             <p className="text-xs mb-4" style={{ color: '#333' }}>
-              5 datos y listo. Sin registro ni contraseña.
+              Sin registro ni contraseña.
             </p>
 
             {/* 1. Qué necesita: botones grandes, un toque. */}

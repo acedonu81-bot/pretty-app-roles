@@ -132,7 +132,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
           <Link to="/concurso-dj-madrid"
             className="concurso-boton-pulso inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-lg sm:text-xl"
             style={{ background: hw ? '#F07212' : '#2477B3', color: '#fff', boxShadow: clayButton(hw ? '240,114,18' : '36,119,179'), fontFamily: HZ.display, fontWeight: 800 }}>
-            Entrar <ArrowRight size={20} strokeWidth={2.75} />
+            Ver el concurso <ArrowRight size={20} strokeWidth={2.75} />
           </Link>
         ) : (<>
         {!organizador && (
