@@ -200,7 +200,9 @@ const AdminActivity = () => {
     // RPC en vez de leer la vista directamente (ver migración 20260909120000
     // — la vista solo da SELECT a postgres/service_role).
     const { data } = await (supabase.rpc as any)('panel_admin_activity');
-    setItems(((data as Movimiento[]) ?? []).slice(0, 300));
+    // Sin recorte propio: con .slice(0, 300) los contadores (Todo, Altas...) se
+    // quedaban clavados en 300 al entrar un movimiento nuevo y salir uno viejo.
+    setItems((data as Movimiento[]) ?? []);
     setCargando(false);
   };
 
