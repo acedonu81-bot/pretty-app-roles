@@ -14,7 +14,7 @@ const article = {
   headline: 'Maquillaje nupcial: precios y cómo elegir tu maquilladora en España (2026)',
   description: 'Guía de precios de maquillaje para novias en España. Cuánto cuesta, qué incluye el servicio y cómo elegir la maquilladora perfecta.',
   datePublished: '2026-05-03',
-  dateModified: '2026-05-25',
+  dateModified: '2026-10-05',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -119,7 +119,7 @@ export default function BlogMaquillajeBoda() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               El maquillaje de boda es uno de los detalles más recordados en las fotos. Guía completa de precios, qué incluye y cómo no equivocarte en la elección.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>3 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>5 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

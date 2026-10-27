@@ -81,7 +81,7 @@ export default function BlogComoContratarDJ() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · Guía · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo contratar un DJ para tu evento: guía completa 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Contratar un DJ parece sencillo pero hay muchas variables que pueden arruinar tu evento si no las controlas. Esta guía te explica los 6 pasos exactos, qué preguntar y qué errores evitar.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>6 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>7 junio 2026</time>
           </div>
 
           <DJResourcesAffiliate role="dj" />

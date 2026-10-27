@@ -13,7 +13,7 @@ const article = {
   headline: 'Locales para eventos en Madrid: guía de salas, terrazas y fincas (2026)',
   description: 'Discotecas, terrazas, azoteas y fincas para despedidas en Madrid y alrededores, con web y contacto directo de cada espacio.',
   datePublished: '2026-09-21',
-  dateModified: '2026-09-21',
+  dateModified: '2026-10-26',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/img/locales-madrid/generico-discoteca-1.jpg',
@@ -186,7 +186,7 @@ export default function BlogLocalesEventosMadrid() {
                 </a>
               ))}
             </div>
-            <time className="text-xs mt-6 block" style={{ color: '#666' }}>21 septiembre 2026</time>
+            <time className="text-xs mt-6 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
 
           <SectionDivider id="emblematicas" title="Discotecas emblemáticas" />

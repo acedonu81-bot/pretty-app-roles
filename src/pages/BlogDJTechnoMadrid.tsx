@@ -13,7 +13,7 @@ const article = {
   '@context': 'https://schema.org', '@type': 'Article',
   headline: 'DJ de Techno en Madrid: tarifas, escena y cómo contratar 2026',
   description: 'Guía completa para contratar un DJ de techno en Madrid. Precios reales 2026, los clubs más activos, la escena underground y qué piden las salas.',
-  datePublished: '2026-06-08', dateModified: '2026-06-08',
+  datePublished: '2026-06-08', dateModified: '2026-09-28',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/dj-techno-madrid',

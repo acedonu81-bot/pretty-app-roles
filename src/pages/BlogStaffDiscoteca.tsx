@@ -31,7 +31,7 @@ export default function BlogStaffDiscoteca() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
-    dateModified: '2026-05-03',
+    dateModified: '2026-10-19',
     url: 'https://xpeak.es/blog/staff-de-discoteca-funciones-y-salario',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/staff-de-discoteca-funciones-y-salario' },
   };

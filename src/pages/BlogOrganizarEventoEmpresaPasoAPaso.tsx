@@ -12,7 +12,7 @@ const article = {
   headline: 'Cómo organizar un evento de empresa paso a paso (2026)',
   description: 'Checklist completo para organizar un evento corporativo en España: presupuesto, proveedores, timeline y errores más comunes a evitar.',
   datePublished: '2026-07-16',
-  dateModified: '2026-07-16',
+  dateModified: '2026-10-26',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -94,7 +94,7 @@ export default function BlogOrganizarEventoEmpresaPasoAPaso() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Un checklist realista, sin florituras: qué contratar primero, cuánto presupuesto asignar a cada partida y qué errores cuestan más tiempo y dinero cuando organizas un evento corporativo sin agencia.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>16 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

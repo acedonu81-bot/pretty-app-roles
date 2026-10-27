@@ -51,7 +51,7 @@ const structuredData = {
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   datePublished: '2026-05-16',
-  dateModified: '2026-05-16',
+  dateModified: '2026-10-26',
   url: 'https://xpeak.es/blog/musica-en-vivo-para-bodas',
   mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/musica-en-vivo-para-bodas' },
 };

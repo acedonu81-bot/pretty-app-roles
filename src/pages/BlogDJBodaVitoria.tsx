@@ -56,7 +56,7 @@ export default function BlogDJBodaVitoria() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · {ciudad} · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en {ciudad}: precio y cómo contratar en 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>{ciudad} es la capital del País Vasco y ofrece una mezcla única de palacios medievales en la ciudad y bodegas espectaculares en la Rioja Alavesa. Guía completa de precios para bodas en 2026.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>6 junio 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cuesta un DJ para una boda en Vitoria?"
               answer="Un DJ para el servicio completo de una boda en Vitoria (ceremonia, cóctel, cena y pista de baile) cuesta entre 700 y 1.800€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."

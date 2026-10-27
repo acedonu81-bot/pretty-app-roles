@@ -33,7 +33,7 @@ export default function BlogDJFiestaPrivada() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
-    dateModified: '2026-05-23',
+    dateModified: '2026-10-25',
     url: 'https://xpeak.es/blog/dj-para-fiesta-privada-precio',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/dj-para-fiesta-privada-precio' },
   };

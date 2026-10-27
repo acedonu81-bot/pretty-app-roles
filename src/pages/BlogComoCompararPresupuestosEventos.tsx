@@ -12,7 +12,7 @@ const article = {
   headline: 'Cómo comparar presupuestos de proveedores de eventos sin perder días (2026)',
   description: 'Método práctico para comparar presupuestos de DJ, catering, fotógrafo y staff sin perder tiempo en llamadas y correos cruzados.',
   datePublished: '2026-07-16',
-  dateModified: '2026-07-16',
+  dateModified: '2026-10-26',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -80,7 +80,7 @@ export default function BlogComoCompararPresupuestosEventos() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Pedir presupuestos por WhatsApp a diez proveedores distintos y esperar respuesta es el mayor cuello de botella al organizar un evento. Este es el método para comparar rápido y sin sorpresas después.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>16 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

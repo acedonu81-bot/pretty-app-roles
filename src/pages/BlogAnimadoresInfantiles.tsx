@@ -8,7 +8,7 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Animadores infantiles para comuniones y cumpleaños: precios en España (2026)', description: 'Cuánto cuesta contratar animadores infantiles para comuniones y cumpleaños en España. Tipos de animación, precios por horas y cómo elegir el servicio.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/animadores-infantiles-comuniones-cumpleanos' };
+  dateModified: '2026-10-26', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/animadores-infantiles-comuniones-cumpleanos' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta contratar animadores infantiles para una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de los animadores infantiles para comuniones en España varía entre 150€ y 400€ por 2-3 horas, dependiendo del número de animadores, el tipo de actividades y la ciudad. Paquetes con monitor + manualidades + juegos de 2h cuestan entre 180€ y 280€. Los espectáculos de magia o cuentacuentos cuestan entre 200€ y 450€.' } },
   { '@type': 'Question', name: '¿Cuántos animadores necesito según el número de niños?', acceptedAnswer: { '@type': 'Answer', text: 'La ratio recomendada es 1 animador por cada 10-12 niños hasta 6 años, y 1 por cada 15-20 niños de 6-12 años. Para 30 niños necesitarás 2-3 monitores. Siempre pide que te especifiquen el número de monitores incluidos en el presupuesto, ya que afecta directamente a la calidad del servicio.' } },
@@ -56,7 +56,7 @@ export default function BlogAnimadoresInfantiles() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#EA580C' }}>Staff · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Animadores infantiles para comuniones y cumpleaños: precios en España (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Que los adultos disfruten del evento sin preocuparse de los más pequeños. Guía de precios, tipos de animación y cómo elegir el servicio según el número de niños y la edad.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
           <div className="space-y-10">
             <section>

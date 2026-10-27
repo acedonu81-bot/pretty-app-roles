@@ -29,7 +29,7 @@ export default function BlogPromotoresEventos() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
-    dateModified: '2026-05-03',
+    dateModified: '2026-06-06',
     url: 'https://xpeak.es/blog/promotores-de-eventos-que-hacen',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/promotores-de-eventos-que-hacen' },
   };

@@ -12,7 +12,7 @@ const article = {
   headline: 'Cuánto cuesta contratar animadores para comunión en España 2026',
   description: 'Precios de animadores para comunión en España. Animación infantil, karaoke, magia e hinchables. Cuándo contratarlos y consejos para elegir bien.',
   datePublished: '2026-06-14',
-  dateModified: '2026-06-14',
+  dateModified: '2026-10-26',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -98,7 +98,7 @@ export default function BlogAnimadoresComunionPrecio() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6D28D9' }}>Animación · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cuánto cuesta contratar animadores para comunión en España (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Guía de precios por tipo de animación, cuándo reservar y consejos para que los niños lo pasen genial mientras los adultos disfrutan tranquilos.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>14 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
           <div className="space-y-10">
 

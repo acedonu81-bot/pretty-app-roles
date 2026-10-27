@@ -12,7 +12,7 @@ const article = {
   headline: 'Contrato con proveedores de eventos: qué debe incluir para estar protegido (2026)',
   description: 'Cláusulas imprescindibles en el contrato con DJ, catering, fotógrafo o cualquier proveedor de eventos: cancelación, pagos, incumplimientos y qué evitar.',
   datePublished: '2026-07-16',
-  dateModified: '2026-07-16',
+  dateModified: '2026-10-26',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -89,7 +89,7 @@ export default function BlogContratoProveedoresEventos() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Da igual si contratas un DJ o un catering para 200 personas: sin un contrato claro, cualquier imprevisto se convierte en un problema difícil de resolver. Esto es lo mínimo que debe incluir.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>16 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

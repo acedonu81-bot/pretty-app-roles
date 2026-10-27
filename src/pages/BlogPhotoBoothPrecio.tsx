@@ -12,7 +12,7 @@ const article = {
   headline: 'Cuánto cuesta un photo booth para boda o evento en España 2026',
   description: 'Precios reales de photo booth para bodas y eventos en España 2026. Tipos, qué incluye cada modalidad y cómo elegir el correcto para tu celebración.',
   datePublished: '2026-06-01',
-  dateModified: '2026-06-01',
+  dateModified: '2026-10-26',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: {
     '@type': 'Organization',
@@ -151,7 +151,7 @@ export default function BlogPhotoBoothPrecio() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               El photo booth se ha convertido en uno de los elementos más solicitados en bodas y eventos en España. Da igual si buscas el clásico con impresión, el moderno 360° o la elegante mirror booth: en esta guía encontrarás los precios reales de 2026 y todo lo que incluye cada modalidad.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>1 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

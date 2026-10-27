@@ -61,7 +61,7 @@ export default function BlogRRPPDiscoteca() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Para RRPP · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo trabajar de RRPP en discoteca en España: guía 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El trabajo de relaciones públicas en discotecas es uno de los más flexibles del sector: sin horario fijo, cobras por resultados y puedes trabajar con varias salas a la vez. Lo que necesitas no es un título: es red de contactos, capacidad de gestión y saber estructurar tu negocio desde el principio.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>2 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>19 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

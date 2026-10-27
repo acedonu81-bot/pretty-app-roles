@@ -9,7 +9,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Segovia: guía 2026', description: 'Cuánto cobran las azafatas para eventos y bodas en Segovia. Tarifas por perfil 2026.', datePublished: '2026-06-30', dateModified: '2026-06-30', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-segovia' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Segovia: guía 2026', description: 'Cuánto cobran las azafatas para eventos y bodas en Segovia. Tarifas por perfil 2026.', datePublished: '2026-06-30', dateModified: '2026-10-12', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-segovia' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en Segovia?', acceptedAnswer: { '@type': 'Answer', text: 'En Segovia una azafata de eventos cobra entre 10€ y 16€/hora bruto, algo por debajo de la media de Madrid por ser un mercado más pequeño, aunque con cercanía a la capital que ayuda a mantener perfiles cualificados disponibles. Las agencias facturan entre 100€ y 160€/día, cifra que incluye el margen de gestión de la agencia.' } },
   { '@type': 'Question', name: '¿Dónde se concentra la demanda de azafatas en Segovia?', acceptedAnswer: { '@type': 'Answer', text: 'El Acueducto y el casco histórico (Patrimonio de la Humanidad) generan demanda de azafatas para eventos turísticos e institucionales. Las bodas en fincas de la provincia también requieren personal de recepción y protocolo en temporada alta.' } },
@@ -53,7 +53,7 @@ export default function BlogPrecioAzafatasSegovia() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Staff · Segovia · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de azafatas para eventos en Segovia: guía 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Segovia combina un turismo patrimonial constante con bodas en fincas de la provincia, en un mercado más pequeño que Madrid pero con acceso a perfiles cualificados por la cercanía a la capital.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>8 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>12 octubre 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cobran las azafatas en Segovia?"
               answer="Una azafata de eventos en Segovia cobra entre 10€ y 16€/hora bruto, y las agencias facturan entre 100€ y 160€/día por el servicio completo. Los precios son algo más ajustados que en Madrid."

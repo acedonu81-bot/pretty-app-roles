@@ -9,7 +9,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Cuenca: guía 2026', description: 'Cuánto cobran las azafatas para eventos culturales y turísticos en Cuenca. Tarifas por perfil 2026.', datePublished: '2026-05-18', dateModified: '2026-05-27', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-cuenca' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Cuenca: guía 2026', description: 'Cuánto cobran las azafatas para eventos culturales y turísticos en Cuenca. Tarifas por perfil 2026.', datePublished: '2026-05-18', dateModified: '2026-10-12', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-cuenca' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en Cuenca?', acceptedAnswer: { '@type': 'Answer', text: 'En Cuenca una azafata de eventos cobra entre 9€ y 15€/hora bruto, por debajo de la media nacional por ser un mercado pequeño. Las agencias facturan al cliente entre 90€ y 145€/día por el servicio completo, cifra que incluye el margen de gestión de la agencia.' } },
   { '@type': 'Question', name: '¿Dónde se concentra la demanda de azafatas en Cuenca?', acceptedAnswer: { '@type': 'Answer', text: 'Las Casas Colgadas y el casco histórico (Patrimonio de la Humanidad) generan demanda turística y cultural constante. La Ciudad Encantada también atrae eventos y visitas organizadas que requieren personal de recepción y apoyo.' } },
@@ -53,7 +53,7 @@ export default function BlogPrecioAzafatasCuenca() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Staff · Cuenca · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de azafatas para eventos en Cuenca: guía 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Cuenca es un mercado de eventos pequeño donde el atractivo turístico de las Casas Colgadas y la Ciudad Encantada genera demanda puntual de personal de recepción, con precios claramente por debajo de la media nacional.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>8 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>12 octubre 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cobran las azafatas en Cuenca?"
               answer="Una azafata de eventos en Cuenca cobra entre 9€ y 15€/hora bruto, y las agencias facturan entre 90€ y 145€/día por el servicio completo. Es uno de los mercados más económicos de Castilla-La Mancha."

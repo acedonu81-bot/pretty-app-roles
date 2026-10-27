@@ -31,7 +31,7 @@ export default function BlogPersonalImagen() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
-    dateModified: '2026-05-23',
+    dateModified: '2026-10-12',
     url: 'https://xpeak.es/blog/personal-de-imagen-ferias-y-congresos',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/personal-de-imagen-ferias-y-congresos' },
   };

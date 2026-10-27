@@ -13,7 +13,7 @@ const article = {
   headline: 'Cuánto cobra un saxofonista para eventos y bodas en España 2026',
   description: 'Precios reales de saxofonistas para bodas, cócteles y eventos en España 2026. Tarifas por tipo de actuación y qué incluye el servicio.',
   datePublished: '2026-06-01',
-  dateModified: '2026-06-01',
+  dateModified: '2026-10-24',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: {
     '@type': 'Organization',
@@ -136,7 +136,7 @@ export default function BlogSaxofonistaEventosPrecio() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               El saxofón es uno de los instrumentos más solicitados en bodas y eventos de empresa en España. Su sonido cálido y versátil lo convierte en la opción perfecta para cócteles, ceremonias y galas corporativas. En esta guía encontrarás los precios reales para 2026 y todo lo que necesitas saber antes de contratar.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>1 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>24 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

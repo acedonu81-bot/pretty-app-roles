@@ -36,7 +36,7 @@ export default function BlogDJEmpresa() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
-    dateModified: '2026-06-07',
+    dateModified: '2026-10-25',
     url: "https://xpeak.es/blog/dj-para-empresa-precio",
     mainEntityOfPage: { '@type': 'WebPage', '@id': "https://xpeak.es/blog/dj-para-empresa-precio" },
   };
@@ -82,7 +82,7 @@ export default function BlogDJEmpresa() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · Empresas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para eventos de empresa: precio y cómo contratar en 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Desde la cena de Navidad hasta el team building o el incentive de fin de año: el DJ corporativo es uno de los servicios más demandados en eventos de empresa. Te explicamos precios, qué pedir y cómo elegir el perfil correcto.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>6 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>25 octubre 2026</time>
           </div>
           <div className="space-y-10">
             <section>

@@ -9,7 +9,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Huesca: guía 2026', description: 'Cuánto cobran las azafatas para eventos y bodas en Huesca y el Alto Aragón. Tarifas por perfil 2026.', datePublished: '2026-03-27', dateModified: '2026-07-12', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-huesca' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Huesca: guía 2026', description: 'Cuánto cobran las azafatas para eventos y bodas en Huesca y el Alto Aragón. Tarifas por perfil 2026.', datePublished: '2026-03-27', dateModified: '2026-10-12', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-huesca' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en Huesca?', acceptedAnswer: { '@type': 'Answer', text: 'En Huesca una azafata de eventos cobra entre 10€ y 16€/hora bruto, por debajo de la media de Zaragoza pero algo más alto que otros mercados pequeños por la actividad turística de montaña. Las agencias facturan entre 95€ y 155€/día, cifra que incluye el margen de gestión de la agencia.' } },
   { '@type': 'Question', name: '¿Dónde se concentra la demanda de azafatas en Huesca?', acceptedAnswer: { '@type': 'Answer', text: 'El turismo de montaña del Pirineo aragonés genera demanda estacional de personal para eventos y presentaciones. También hay actividad ligada a bodas en fincas del Somontano y actos institucionales en la capital oscense.' } },
@@ -53,7 +53,7 @@ export default function BlogPrecioAzafatasHuesca() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Staff · Huesca · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de azafatas para eventos en Huesca: guía 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Huesca combina un mercado de eventos pequeño con la estacionalidad del turismo de montaña del Pirineo aragonés, lo que genera picos de demanda concretos y precios más contenidos que en Zaragoza.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>8 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>12 octubre 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cobran las azafatas en Huesca?"
               answer="Una azafata de eventos en Huesca cobra entre 10€ y 16€/hora bruto, y las agencias facturan entre 95€ y 155€/día por el servicio completo. Los precios suben algo en temporada de montaña por la mayor demanda turística."

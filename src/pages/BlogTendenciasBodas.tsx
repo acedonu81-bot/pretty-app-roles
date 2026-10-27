@@ -8,7 +8,7 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Tendencias en bodas 2026 en España: decoración, música y experiencias', description: 'Las tendencias más buscadas para bodas en España en 2026. Decoración, música, catering experiencial y qué está pidiendo la nueva generación de novios.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/tendencias-bodas-2026' };
+  dateModified: '2026-10-26', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/tendencias-bodas-2026' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuál es la tendencia más popular en bodas 2026?', acceptedAnswer: { '@type': 'Answer', text: 'Las bodas íntimas (menos de 80 invitados) con experiencias gastronómicas personalizadas y espacios rurales con encanto son la tendencia más fuerte en 2026. Los novios priorizan la calidad de la experiencia sobre el número de invitados y buscan personalización total: desde la música en directo hasta el menú degustación.' } },
   { '@type': 'Question', name: '¿Qué colores se llevan en bodas 2026?', acceptedAnswer: { '@type': 'Answer', text: 'Los tonos tierra y naturales (beige, terracota, verde salvia, blanco roto) dominan la paleta de bodas 2026. Los arreglos florales en tonos melocotón y burdeos son muy demandados. El blanco puro ha cedido terreno ante los tonos marfil y champán tanto en vestidos como en decoración.' } },
@@ -56,7 +56,7 @@ export default function BlogTendenciasBodas() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#DB2777' }}>Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Tendencias en bodas 2026 en España: decoración, música y experiencias</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>La generación que se casa en 2026 tiene muy claro lo que quiere: experiencias únicas, personalización total y presupuesto invertido en calidad, no en cantidad de invitados.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
           <div className="space-y-10">
             <section>

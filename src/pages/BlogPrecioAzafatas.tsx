@@ -12,7 +12,7 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogPrimerPaso from '@/components/BlogPrimerPaso';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en España: guía completa 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' };
+  dateModified: '2026-10-26', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio medio de una azafata para eventos es de 12-18€/hora bruto para el profesional. Para ferias y congresos de varios días el precio suele fijarse por jornada completa (120-180€/día para stand o feria, hasta 300€/día para perfiles trilingües), una cifra que ya incluye el margen de gestión de la agencia.' } },
   { '@type': 'Question', name: '¿Qué diferencia hay entre azafata de stand y azafata de imagen?', acceptedAnswer: { '@type': 'Answer', text: 'La azafata de stand trabaja en ferias y exposiciones atendiendo a visitantes, recogiendo contactos y explicando el producto. La azafata de imagen trabaja en eventos de marca, entregas de premios o actos de representación, priorizando la presencia y protocolo sobre las ventas.' } },
@@ -58,7 +58,7 @@ export default function BlogPrecioAzafatas() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Staff · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de azafatas para eventos en España: guía completa 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Tarifas reales de azafatas para ferias, congresos y eventos corporativos. Lo que cobran, lo que se factura y cómo elegir el perfil correcto.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cobran las azafatas en España?"
               answer="Una azafata de eventos en España cobra entre 12€ y 18€/hora bruto de forma directa. A través de agencia, con el margen de gestión incluido, el precio por jornada completa (8h) va de 120€ a 180€/día para stand o feria, hasta 300€/día para perfiles trilingües. Las azafatas de imagen para eventos premium pueden superar los 250€/día."

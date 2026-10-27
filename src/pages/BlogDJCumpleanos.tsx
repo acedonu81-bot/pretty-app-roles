@@ -16,7 +16,7 @@ const article = {
   headline: 'DJ para cumpleaños: precios y qué incluye el servicio en España (2026)',
   description: 'Cuánto cuesta contratar un DJ para un cumpleaños en España. Precios por horas, qué incluye y cómo elegir el perfil correcto.',
   datePublished: '2026-05-03',
-  dateModified: '2026-05-25',
+  dateModified: '2026-10-25',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -115,7 +115,7 @@ export default function BlogDJCumpleanos() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Un DJ marca la diferencia entre una fiesta de cumpleaños memorable y una con el Bluetooth del móvil. Te contamos cuánto cuesta y qué debes pedir.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>3 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>25 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

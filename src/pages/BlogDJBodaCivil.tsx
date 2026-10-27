@@ -12,7 +12,7 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para boda civil: precio y qué canciones poner en cada momento (2026)', description: 'Guía completa de música para boda civil: cuánto cuesta el DJ, canciones para la entrada, firma y fiesta. Precios reales en España 2026.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-boda-civil-precio-canciones' };
+  dateModified: '2026-10-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-boda-civil-precio-canciones' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda civil en España?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda civil en España cuesta entre 600€ y 1.500€ para el servicio completo (ceremonia + cóctel + cena + pista de baile). Si solo contratas para la pista de baile (4-5h), el precio baja a 350-700€.' } },
   { '@type': 'Question', name: '¿Qué canciones se ponen en la entrada de la novia en una boda civil?', acceptedAnswer: { '@type': 'Answer', text: 'Las más elegidas para entrada de novia en boda civil: "A Thousand Years" (Christina Perri), "Canon in D" (Pachelbel versión contemporánea), "La vie en rose" (versión jazz), "Perfect" (Ed Sheeran versión instrumental), "Thinking Out Loud" (Ed Sheeran). La ventaja de la boda civil es que no hay restricciones religiosas.' } },
@@ -59,7 +59,7 @@ export default function BlogDJBodaCivil() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para boda civil: precio y qué canciones poner en cada momento (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>En una boda civil tienes libertad total con la música. Te contamos cuánto cuesta el DJ y qué poner en cada momento para que fluya perfectamente.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>25 octubre 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cuesta un DJ para una boda civil en España?"
               answer="Un DJ para una boda civil en España cuesta entre 600€ y 1.500€ para el servicio completo (ceremonia, cóctel, cena y pista de baile). Si solo se contrata para la pista de baile (4-5h), el precio baja a 350-700€. La boda civil no impone restricciones musicales, así que el repertorio es totalmente libre."

@@ -9,7 +9,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Cáceres: guía 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en Cáceres. Tarifas por perfil 2026.', datePublished: '2026-04-20', dateModified: '2026-06-07', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-caceres' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Cáceres: guía 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en Cáceres. Tarifas por perfil 2026.', datePublished: '2026-04-20', dateModified: '2026-10-12', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-caceres' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en Cáceres?', acceptedAnswer: { '@type': 'Answer', text: 'En Cáceres una azafata de eventos cobra entre 9€ y 15€/hora bruto, por debajo de la media nacional al ser un mercado más pequeño con menos volumen ferial. Las agencias facturan al cliente entre 90€ y 150€/día por el servicio completo, cifra que incluye el margen de gestión de la agencia.' } },
   { '@type': 'Question', name: '¿Dónde se concentra la demanda de azafatas en Cáceres?', acceptedAnswer: { '@type': 'Answer', text: 'El casco histórico (Patrimonio de la Humanidad) genera demanda de azafatas para eventos culturales e institucionales. También hay demanda puntual ligada a ferias comerciales y congresos en el recinto ferial de la ciudad.' } },
@@ -53,7 +53,7 @@ export default function BlogPrecioAzafatasCaceres() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Staff · Cáceres · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de azafatas para eventos en Cáceres: guía 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Cáceres es un mercado de eventos más pequeño que las grandes capitales, con precios ajustados y una demanda concentrada en eventos culturales del casco histórico y actos institucionales.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>8 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>12 octubre 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cobran las azafatas en Cáceres?"
               answer="Una azafata de eventos en Cáceres cobra entre 9€ y 15€/hora bruto, y las agencias facturan entre 90€ y 150€/día por el servicio completo. Es un mercado más económico que las grandes capitales, con menos presión de demanda."

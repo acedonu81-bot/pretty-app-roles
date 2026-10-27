@@ -41,7 +41,7 @@ export default function BlogFotografoBodas() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
-    dateModified: '2026-05-03',
+    dateModified: '2026-09-21',
     url: 'https://xpeak.es/blog/contratar-fotografo-de-bodas',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/contratar-fotografo-de-bodas' },
   };

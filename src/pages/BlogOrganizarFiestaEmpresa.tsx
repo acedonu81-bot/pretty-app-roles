@@ -12,7 +12,7 @@ const article = {
   '@context': 'https://schema.org', '@type': 'Article',
   headline: 'Cómo organizar una fiesta de empresa: guía completa y presupuesto 2026',
   description: 'Todo lo que necesitas para organizar una fiesta de empresa exitosa. Presupuesto, checklist, proveedores y errores a evitar en eventos corporativos.',
-  datePublished: '2026-06-08', dateModified: '2026-06-08',
+  datePublished: '2026-06-08', dateModified: '2026-09-28',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/como-organizar-fiesta-de-empresa',

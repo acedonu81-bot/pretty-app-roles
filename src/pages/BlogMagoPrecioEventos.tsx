@@ -11,7 +11,7 @@ const article = {
   headline: 'Cuánto cobra un mago para eventos y fiestas en España 2026',
   description: 'Precios reales de magos para eventos corporativos, bodas y fiestas en España 2026. Tarifas por tipo de magia y qué buscar antes de contratar.',
   datePublished: '2026-06-01',
-  dateModified: '2026-06-01',
+  dateModified: '2026-10-24',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: {
     '@type': 'Organization',
@@ -132,7 +132,7 @@ export default function BlogMagoPrecioEventos() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               La magia sigue siendo uno de los recursos de entretenimiento más efectivos para romper el hielo en bodas, cenas de empresa y fiestas privadas. En esta guía encontrarás los precios reales de 2026 según el tipo de actuación y los criterios clave para elegir al mago correcto.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>1 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>24 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

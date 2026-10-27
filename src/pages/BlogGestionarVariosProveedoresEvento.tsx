@@ -12,7 +12,7 @@ const article = {
   headline: 'Cómo gestionar varios proveedores en un mismo evento sin perder el control (2026)',
   description: 'Coordinar DJ, catering, fotógrafo y staff a la vez sin liarte con mensajes cruzados y hojas de cálculo. Sistema práctico para organizadores.',
   datePublished: '2026-07-16',
-  dateModified: '2026-07-16',
+  dateModified: '2026-10-26',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -80,7 +80,7 @@ export default function BlogGestionarVariosProveedoresEvento() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Cuantos más proveedores tiene un evento, más fácil es que algo se descoordine: un mensaje sin responder, un pago que no se sabe si se hizo, un horario que cambió y nadie avisó. Así se evita.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>16 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

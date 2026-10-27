@@ -8,7 +8,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: '¿Cuánto cuesta el catering de una boda? Precio por persona en España (2026)', description: 'Guía de precios del catering para bodas en España. Coste por persona según menú, formato y número de invitados. Todo lo que incluye y cómo negociar.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-boda-precio-por-persona' };
+  dateModified: '2026-10-26', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-boda-precio-por-persona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta el catering de una boda por persona?', acceptedAnswer: { '@type': 'Answer', text: 'En España el precio medio del catering de boda oscila entre 60€ y 150€ por persona. Un cóctel de bienvenida más banquete de 3 platos ronda los 75-100€/persona. Los menús premium con maridaje de vinos y postres elaborados pueden superar los 120-150€/persona. Las bodas rurales o en finca propia suelen ser más económicas (50-80€/persona).' } },
   { '@type': 'Question', name: '¿Qué incluye el precio del catering de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Normalmente incluye: cóctel de bienvenida (canapés, bebidas), menú de banquete (entrantes, principal, postre), bebidas durante la cena (vino, agua, refrescos), personal de sala, menaje (vajilla, cubertería, cristalería) y montaje/desmontaje. La tarta nupcial, barra libre nocturna y decoración floral se presupuestan aparte.' } },
@@ -56,7 +56,7 @@ export default function BlogCateringBoda() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#B45309' }}>Catering · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">¿Cuánto cuesta el catering de una boda? Precio por persona en España (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El catering es la partida más grande del presupuesto de una boda. Aquí tienes los precios reales por formato, qué incluye cada paquete y cómo no llevarte sorpresas el día del evento.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
           <div className="space-y-10">
             <section>

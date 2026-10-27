@@ -12,7 +12,7 @@ const article = {
   headline: 'Cómo contratar promotores para tu discoteca o sala',
   description: 'Guía práctica para salas y discotecas: cómo elegir promotores, qué acuerdo de pago conviene según el tipo de noche y errores comunes al gestionar un equipo de promotores.',
   datePublished: '2026-07-16',
-  dateModified: '2026-07-16',
+  dateModified: '2026-10-26',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -93,7 +93,7 @@ export default function BlogComoContratarPromotoresDiscoteca() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Guía para salas y discotecas: cómo elegir perfiles, qué modelo de pago conviene según el tipo de noche y los errores que más fricción generan al gestionar un equipo de promotores.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>16 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

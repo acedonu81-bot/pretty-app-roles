@@ -9,7 +9,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para comunión: precio y qué incluye el servicio en España (2026)', description: 'Cuánto cuesta contratar un DJ para una comunión en España. Precios por horas, diferencias con la disco móvil y qué música se pone.', datePublished: '2026-05-27', dateModified: '2026-05-27', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-para-comunion-precio' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para comunión: precio y qué incluye el servicio en España (2026)', description: 'Cuánto cuesta contratar un DJ para una comunión en España. Precios por horas, diferencias con la disco móvil y qué música se pone.', datePublished: '2026-05-27', dateModified: '2026-10-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-para-comunion-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para comunión en España cuesta entre 300€ y 700€ para una sesión de 3-4 horas. El precio incluye equipo básico (altavoces, CDJs, luces de ambiente) y gestión de peticiones en directo. La disco móvil es la opción más económica (200-400€) pero ofrece menos personalización.' } },
   { '@type': 'Question', name: '¿Qué música se pone en una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Lo habitual es dividir la pista en dos momentos: durante el banquete se pone música de fondo suave o pop actual para los adultos; al final de la comida, cuando empieza el baile, se mezclan hits infantiles y juveniles (reggaeton, hits del momento) con música de los 80-90 para que bailen los mayores también.' } },
@@ -69,7 +69,7 @@ export default function BlogDJComunion() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para comunión: precio y qué incluye el servicio en España (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>La música es lo que hace que los niños sigan bailando a las 5 de la tarde y los abuelos aguanten hasta las 7. Te contamos cuánto cuesta y qué elegir para tu comunión.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>27 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>25 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

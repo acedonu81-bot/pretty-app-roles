@@ -55,7 +55,7 @@ export default function BlogDJPrecio() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-04-28',
-    dateModified: '2026-10-24',
+    dateModified: '2026-10-26',
     url: 'https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana' },
   };

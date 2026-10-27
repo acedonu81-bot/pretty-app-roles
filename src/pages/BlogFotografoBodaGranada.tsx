@@ -15,7 +15,7 @@ const article = {
   headline: 'Fotógrafo para bodas en Granada: precio y guía 2026',
   description: 'Cuánto cuesta un fotógrafo para una boda en Granada. Precios reales 2026, La Alhambra, el Albaicín y la magia de la luz andaluza.',
   datePublished: '2026-06-08',
-  dateModified: '2026-06-08',
+  dateModified: '2026-08-20',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',

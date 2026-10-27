@@ -8,7 +8,7 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Videógrafo para bodas: precio y qué incluye el vídeo en España (2026)', description: 'Cuánto cuesta contratar un videógrafo para tu boda. Precios por tipo de vídeo, duración, ciudad y diferencias con el fotógrafo. Guía 2026.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/videografo-bodas-precio' };
+  dateModified: '2026-10-26', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/videografo-bodas-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un videógrafo de bodas en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un videógrafo de bodas en España varía entre 600€ y 3.000€ dependiendo del nivel de experiencia, ciudad y paquete. Un vídeo de highlights de 3-5 minutos cuesta entre 800€ y 1.500€ con un profesional de nivel medio. Los videógrafos más reconocidos con estilo cinematográfico pueden cobrar 2.500-4.000€.' } },
   { '@type': 'Question', name: '¿Qué incluye el paquete de vídeo de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Lo habitual es: grabación el día de la boda (8-10h), edición y postproducción, vídeo de highlights (3-5 min), vídeo completo de la ceremonia y el banquete (30-90 min), entrega en archivo digital y enlace para compartir. Los paquetes premium añaden un segundo cámara, sesión previa (preboda) y película cinematográfica de autor.' } },
@@ -64,7 +64,7 @@ export default function BlogVideografoBodas() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Videógrafo para bodas: precio y qué incluye el vídeo en España (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Las fotos congelan momentos, el vídeo conserva las emociones. Guía de precios reales de videógrafos de boda en España, qué incluye cada paquete y cómo elegir el estilo correcto.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
           <div className="space-y-10">
             <section>

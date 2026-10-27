@@ -12,7 +12,7 @@ const article = {
   headline: 'Cómo elegir presentador para un evento de empresa',
   description: 'MC, keynote speaker o presentador bilingüe: cómo elegir el perfil correcto según el tipo de evento corporativo y qué preguntar antes de contratar.',
   datePublished: '2026-07-16',
-  dateModified: '2026-07-16',
+  dateModified: '2026-10-26',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -87,7 +87,7 @@ export default function BlogComoElegirPresentadorEventoEmpresa() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               MC, keynote speaker, presentador bilingüe o moderador de mesa redonda: cada formato cumple una función distinta en el evento.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>16 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
 
           <div className="space-y-10">

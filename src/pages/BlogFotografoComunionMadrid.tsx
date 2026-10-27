@@ -8,7 +8,7 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para comunión en Madrid: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una comunión en Madrid. Precios reales 2026 con el sobrecoste de la capital y cómo elegir el mejor fotógrafo para tu comunión.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-comunion-madrid' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para comunión en Madrid: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una comunión en Madrid. Precios reales 2026 con el sobrecoste de la capital y cómo elegir el mejor fotógrafo para tu comunión.', datePublished: '2026-05-28', dateModified: '2026-09-21', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-comunion-madrid' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de comunión en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de comunión en Madrid cuesta entre 400€ y 1.500€. El reportaje completo (ceremonia + sesión exterior + banquete) ronda los 600-1.200€. Los precios en Madrid son un 20-30% superiores a la media nacional. Un reportaje básico de 2-3h puede conseguirse desde 350-600€.' } },
   { '@type': 'Question', name: '¿Cuánto dura un reportaje de comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Un reportaje de comunión completo dura entre 5 y 8 horas: 1h de preparativos en casa, 1-1.5h de ceremonia, 30-45 min de sesión exterior, 1-2h de cóctel y 1-2h de banquete. Muchos fotógrafos ofrecen paquetes de 4-5h sin los preparativos, más económicos, si el banquete es corto.' } },
@@ -67,7 +67,7 @@ export default function BlogFotografoComunionMadrid() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · Madrid · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para comunión en Madrid: precio y guía 2026</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid tiene los fotógrafos de comunión más demandados de España, y los más caros. Precios reales, paquetes y todo lo que necesitas saber para no quedarte sin fotógrafo en mayo o junio.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>21 septiembre 2026</time>
           </div>
 
           <div className="space-y-10">

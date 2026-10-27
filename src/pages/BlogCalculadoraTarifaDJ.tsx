@@ -20,7 +20,7 @@ export default function BlogCalculadoraTarifaDJ() {
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
-    dateModified: '2026-10-24',
+    dateModified: '2026-10-26',
     url: "https://xpeak.es/blog/calculadora-tarifa-dj",
     mainEntityOfPage: { '@type': 'WebPage', '@id': "https://xpeak.es/blog/calculadora-tarifa-dj" },
   };

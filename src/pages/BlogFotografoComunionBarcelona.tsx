@@ -13,7 +13,7 @@ const article = {
   '@context': 'https://schema.org', '@type': 'Article',
   headline: 'Fotógrafo de comunión en Barcelona: precio y guía 2026',
   description: 'Cuánto cuesta un fotógrafo de comunión en Barcelona. Precios reales 2026, mejores sesiones fotográficas, qué incluye y cómo reservar con antelación.',
-  datePublished: '2026-06-08', dateModified: '2026-06-08',
+  datePublished: '2026-06-08', dateModified: '2026-08-20',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/fotografo-comunion-barcelona',

@@ -10,7 +10,7 @@ import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Código de buenas prácticas del DJ profesional (2026)', description: 'Las normas de conducta profesional que todo DJ de eventos debería seguir, basadas en el decálogo de AEDYP y estándares de asociaciones internacionales como USDJA.', datePublished: '2026-10-06', dateModified: '2026-10-06', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/codigo-buenas-practicas-dj' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Código de buenas prácticas del DJ profesional (2026)', description: 'Las normas de conducta profesional que todo DJ de eventos debería seguir, basadas en el decálogo de AEDYP y estándares de asociaciones internacionales como USDJA.', datePublished: '2026-10-06', dateModified: '2026-10-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/codigo-buenas-practicas-dj' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Existe un código de buenas prácticas oficial para DJs en España?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. La Asociación Española de DJs y Productores (AEDYP) publica un Decálogo de Buenas Prácticas que cubre uso legal de música, derechos de autor, fiscalidad, respeto entre profesionales y condiciones de trabajo. No es de obligado cumplimiento fuera de sus asociados, pero es la referencia más citada del sector en España.' } },
   { '@type': 'Question', name: '¿Es obligatorio estar asociado a AEDYP para ser DJ profesional?', acceptedAnswer: { '@type': 'Answer', text: 'No. Ejercer de DJ no requiere colegiación ni asociación obligatoria en España. AEDYP es una asociación voluntaria: sus normas son un estándar de referencia del sector, no una exigencia legal para trabajar.' } },
@@ -111,7 +111,7 @@ export default function BlogCodigoBuenasPracticasDJ() {
                 United States Disc Jockey Association (USDJA)
               </a>. Esta guía reúne las 9 normas en las que coinciden.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>6 octubre 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>25 octubre 2026</time>
             <BlogAnswerBox
               question="¿Qué es el código de buenas prácticas de un DJ?"
               answer="Es el conjunto de normas de conducta profesional que rigen el trabajo de un DJ de eventos: uso legal de música y equipo, cumplimiento fiscal, puntualidad, trato al cliente, respeto entre profesionales y condiciones de trabajo adecuadas. En España, la referencia más citada es el Decálogo de Buenas Prácticas de AEDYP."

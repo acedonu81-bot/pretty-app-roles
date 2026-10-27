@@ -18,7 +18,7 @@ const articleSchema = {
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   datePublished: '2026-06-07',
-  dateModified: '2026-06-07',
+  dateModified: '2026-06-15',
   url: `https://xpeak.es/blog/${slug}`,
   mainEntityOfPage: { '@type': 'WebPage', '@id': `https://xpeak.es/blog/${slug}` },
 };

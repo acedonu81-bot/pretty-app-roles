@@ -9,7 +9,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Contratar barman para evento privado: precios y qué incluye en España (2026)', description: 'Cuánto cuesta contratar un barman o coctelero para un evento privado en España. Tarifas, equipo incluido y diferencias con camarero de barra.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contratar-barman-evento-privado' };
+  dateModified: '2026-10-26', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contratar-barman-evento-privado' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta contratar un barman para un evento privado?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un barman profesional para eventos privados en España oscila entre 150€ y 400€ por evento (4-6 horas), dependiendo del nivel de coctelería, equipamiento y ciudad. Los barmans de show o flair cobran entre 300€ y 600€.' } },
   { '@type': 'Question', name: '¿El barman trae el equipo y los productos?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del paquete. Muchos barmans ofrecen un servicio todo incluido (coctelería, equipo, hielo, decoración de barra) con un precio por persona. Si traes el alcohol tú, el precio del barman baja significativamente. Especifícalo siempre en el presupuesto.' } },
@@ -54,7 +54,7 @@ export default function BlogBarmanEventos() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#2563EB' }}>Camareros · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Contratar barman para evento privado: precios y qué incluye en España (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Un buen barman convierte una barra libre ordinaria en un espectáculo. Guía de precios, paquetes y cuándo vale la pena invertir en coctelería de autor.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
           </div>
           <div className="space-y-10">
             <section>

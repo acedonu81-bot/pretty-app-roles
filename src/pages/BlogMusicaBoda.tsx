@@ -14,7 +14,7 @@ const article = {
   headline: 'Música para bodas: DJ, banda en directo o lista de reproducción, guía 2026',
   description: 'Comparativa completa entre DJ, banda en directo y música grabada para bodas en España. Precios, ventajas y cuándo elegir cada opción.',
   datePublished: '2026-05-03',
-  dateModified: '2026-05-25',
+  dateModified: '2026-07-06',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -120,7 +120,7 @@ export default function BlogMusicaBoda() {
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               La música es lo que hace bailar a tus invitados a las 3 de la mañana. Comparativa honesta de todas las opciones con precios reales y cuándo elegir cada una.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>3 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>6 julio 2026</time>
             <BlogAnswerBox
               question="¿Qué música poner en una boda?"
               answer="Una boda tiene cuatro momentos musicales: ceremonia (música clásica o acústica), cóctel (jazz o lounge suave), cena (ambiente discreto de fondo) y baile (pop, latino o el género favorito de los novios). La diferencia entre DJ y banda en directo está en el presupuesto: 600-1.200€ vs 2.000-5.000€, con resultados muy similares para los invitados."

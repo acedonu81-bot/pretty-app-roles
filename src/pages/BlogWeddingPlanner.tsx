@@ -7,7 +7,7 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Wedding Planner: precio y qué hace en España (2026)', description: 'Cuánto cobra un wedding planner en España. Precios por paquete, diferencias entre coordinador y planificador integral, y cómo elegir el perfecto para tu boda.', datePublished: '2026-05-07',
-  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/wedding-planner-precio-espana' };
+  dateModified: '2026-09-17', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/wedding-planner-precio-espana' };
 
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un wedding planner en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un wedding planner en España varía entre 800€ y 6.000€ según el paquete. La coordinación del día cuesta entre 800€ y 2.000€. La planificación parcial (últimos 3 meses) ronda los 1.500-3.500€. La planificación integral desde cero suele costar entre 3.000€ y 8.000€ o un porcentaje del presupuesto total de la boda (normalmente entre el 8% y el 15%).' } },
@@ -68,7 +68,7 @@ export default function BlogWeddingPlanner() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6D28D9' }}>Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Wedding Planner en España: precio y qué hace exactamente (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Contratar un wedding planner puede ser la diferencia entre una boda perfecta y el caos. Aquí tienes los precios reales por tipo de servicio, qué incluye cada modalidad y cómo saber cuándo merece la pena.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>7 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>17 septiembre 2026</time>
           </div>
 
           <div className="space-y-10">

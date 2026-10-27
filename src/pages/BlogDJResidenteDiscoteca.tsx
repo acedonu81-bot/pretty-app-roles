@@ -10,7 +10,7 @@ import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)', description: 'Qué hace un DJ residente, cuánto cobra y cómo diferenciarlo de un DJ invitado. Precios por ciudad y tipo de sala en España 2026.', datePublished: '2026-05-07',
-  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-residente-discoteca-precio' };
+  dateModified: '2026-10-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-residente-discoteca-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un DJ residente de discoteca?', acceptedAnswer: { '@type': 'Answer', text: 'En España, un DJ residente en sala pequeña o mediana cobra entre 200€ y 600€ por noche. En salas de referencia de grandes ciudades (Madrid, Barcelona, Ibiza), el rango es 600€-2.000€. Los cachés mensuales para residencias largas oscilan entre 1.500€ y 8.000€/mes dependiendo del nivel del artista y la sala.' } },
   { '@type': 'Question', name: '¿Qué diferencia hay entre DJ residente y DJ invitado?', acceptedAnswer: { '@type': 'Answer', text: 'El DJ residente toca regularmente en la misma sala (semanalmente o en fechas fijas) y se convierte en imagen del club. El DJ invitado actúa puntualmente, normalmente como acto principal o en sesiones especiales. Los invitados suelen cobrar entre 2x y 10x más que el residente de la misma sala.' } },
@@ -55,7 +55,7 @@ export default function BlogDJResidenteDiscoteca() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>DJ · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)</h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El DJ residente es el corazón sonoro de una sala. Ni es un headliner de festival ni un DJ de boda: es un artista que conoce tu público como nadie. Esta guía te explica qué buscar y cuánto pagar.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>7 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>25 octubre 2026</time>
           </div>
           <div className="space-y-10">
 
