@@ -71,7 +71,7 @@ function Reproductor({ url, titulo }: { url: string; titulo: string }) {
   }
   return (
     <button type="button" onClick={escuchar} aria-label={`Escuchar: ${titulo}`}
-      className="w-full h-[120px] rounded-xl flex items-center gap-4 px-4 text-left transition-transform active:scale-[0.99]"
+      className="w-full min-h-[120px] rounded-xl flex items-center gap-4 px-4 py-3 text-left transition-transform active:scale-[0.99]"
       style={{ background: '#ffffff' }}>
       <span className="w-14 h-14 shrink-0 rounded-full flex items-center justify-center"
         style={{ background: `linear-gradient(135deg,${GOLD},#B8941E)`, boxShadow: clayButton('184,148,30') }}>
