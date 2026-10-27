@@ -20,6 +20,8 @@ async function signEmail(email: string): Promise<string> {
 }
 
 const ADMIN = 'info@xpeak.site';
+// Lead general de particular que pide que lo organice XPEAK (lo crea particular-solicitud).
+const ORGANIZA_NOMBRE = 'Solicitud particular: Que lo organice XPEAK';
 
 // Los emails recibian el slug interno del rol: "Tu perfil como **staff** ya
 // esta activo". Un camarero no se llama staff a si mismo, y menos uno que
@@ -866,7 +868,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 2. Flash Booking — aviso a admin
   flash_booking: (d) => ({
-    subject: `Flash Booking: ${esc(d.professional_name)} · ${esc(d.event_date ?? 'Sin fecha')}`,
+    // Particular que pide que lo organice XPEAK (27 oct 2026): se distingue en la bandeja.
+    subject: ORGANIZA_NOMBRE === d.professional_name
+      ? `ORGANIZAR EVENTO (Madrid): ${esc(d.requester_name)} · ${esc(d.event_date ?? 'Sin fecha')}`
+      : `Flash Booking: ${esc(d.professional_name)} · ${esc(d.event_date ?? 'Sin fecha')}`,
     to: ADMIN,
     replyTo: d.requester_contact?.includes('@') ? d.requester_contact : ADMIN,
     html: base(`
@@ -888,7 +893,9 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   flash_booking_confirm: (d) => ({
     // Las del particular llegan como "Solicitud particular: DJ" (18 oct 2026):
     // el asunto salía "Solicitud enviada a Solicitud particular: DJ".
-    subject: String(d.professional_name ?? '').startsWith('Solicitud particular: ')
+    subject: ORGANIZA_NOMBRE === d.professional_name
+      ? 'Hemos recibido tu solicitud ✓'
+      : String(d.professional_name ?? '').startsWith('Solicitud particular: ')
       ? `Tu solicitud de ${esc(String(d.professional_name).slice(22))} está en marcha ✓`
       : `Solicitud enviada a ${esc(d.professional_name)} ✓`,
     to: d.requester_contact,
@@ -896,11 +903,13 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${confirmSeal()}
       <h2 style="font-size:22px;font-weight:900;margin:0 0 8px;text-align:center;color:#0a0908">Solicitud enviada</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center">
-        <strong style="color:#D4AF37">${esc(d.professional_name)}</strong> ha recibido tu solicitud y se pondrá en contacto contigo en breve.
+        ${ORGANIZA_NOMBRE === d.professional_name
+          ? 'Nuestro equipo ha recibido tu solicitud y te escribe en breve para entender qué necesitas y contarte el precio antes de empezar. No hay ningún cobro hasta que lo aceptes.'
+          : `<strong style="color:#D4AF37">${esc(d.professional_name)}</strong> ha recibido tu solicitud y se pondrá en contacto contigo en breve.`}
       </p>
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:18px;margin:0 0 20px;box-shadow:0 6px 16px rgba(212,175,55,0.14)">
         ${rows([
-          ['Profesional', d.professional_name],
+          ...(ORGANIZA_NOMBRE === d.professional_name ? [] : [['Profesional', d.professional_name] as [string, string]]),
           ['Evento', d.event_date],
           ['Lugar', d.event_location],
         ])}
