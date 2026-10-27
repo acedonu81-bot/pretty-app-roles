@@ -642,7 +642,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
           {isOwn && (profile.audio_embed_url || (profile as any).stream_url) && (
             <div className="glass-panel p-5" style={{ border: '1px solid rgba(255,85,85,0.2)' }}>
               <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
                     <AlertCircle size={14} style={{ color: '#ff5555' }} />
                     Contenido vinculado al perfil
