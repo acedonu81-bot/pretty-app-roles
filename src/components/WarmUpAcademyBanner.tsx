@@ -126,27 +126,41 @@ const WarmUpAcademyBanner = ({ origen, variante = 'grande', paraDJs = false, cla
         className="absolute inset-0"
         style={{ background: 'linear-gradient(90deg, rgba(16,20,26,0.97) 0%, rgba(16,20,26,0.88) 50%, rgba(16,20,26,0.4) 100%)' }}
       />
-      <div className={`relative flex flex-col gap-3 ${compacta ? 'p-5 sm:p-7' : 'p-5 sm:p-10 sm:gap-4'}`}>
-        <span className="text-[0.7rem] font-extrabold uppercase tracking-[0.14em]" style={{ color: MENTA }}>
-          Escuela colaboradora
-        </span>
-        <img
-          src="/partners/warmup-academy-logo.png"
-          alt="Warm Up Academy, escuela de DJ y producción musical en Madrid"
-          loading="lazy"
-          className={`h-9 w-auto self-start ${compacta ? 'sm:h-10' : 'sm:h-12'}`}
-        />
-        <p
-          className={`text-[1.9rem] leading-none uppercase max-w-xl ${compacta ? 'sm:text-4xl' : 'sm:text-5xl'}`}
-          style={{ fontFamily: 'Antonio, Syne, sans-serif', fontWeight: 700, color: '#fff' }}
-        >
-          Detrás de un buen DJ hay horas de cabina
-        </p>
-        <p className="text-sm sm:text-base leading-relaxed max-w-lg" style={{ color: '#D5E6E2' }}>
-          Warm Up Academy forma DJs y productores en Madrid, con profesionales en activo.
-        </p>
+      <div className={`relative flex flex-col ${compacta ? 'gap-3 p-4 sm:flex-row sm:items-center sm:gap-6 sm:px-7 sm:py-5' : 'gap-3 p-5 sm:p-10 sm:gap-4'}`}>
+        <div className={`flex flex-col ${compacta ? 'gap-2 sm:flex-1 sm:min-w-0' : 'gap-3 sm:gap-4'}`}>
+          <div className="flex items-center gap-3">
+            {compacta && (
+              <img
+                src="/partners/warmup-academy-logo.png"
+                alt="Warm Up Academy, escuela de DJ y producción musical en Madrid"
+                loading="lazy"
+                className="h-7 w-auto flex-shrink-0"
+              />
+            )}
+            <span className="text-[0.7rem] font-extrabold uppercase tracking-[0.14em]" style={{ color: MENTA }}>
+              Escuela colaboradora
+            </span>
+          </div>
+          {!compacta && (
+            <img
+              src="/partners/warmup-academy-logo.png"
+              alt="Warm Up Academy, escuela de DJ y producción musical en Madrid"
+              loading="lazy"
+              className="h-9 w-auto self-start sm:h-12"
+            />
+          )}
+          <p
+            className={`leading-none uppercase max-w-xl ${compacta ? 'text-2xl sm:text-3xl' : 'text-[1.9rem] sm:text-5xl'}`}
+            style={{ fontFamily: 'Antonio, Syne, sans-serif', fontWeight: 700, color: '#fff' }}
+          >
+            Detrás de un buen DJ hay horas de cabina
+          </p>
+          <p className={`leading-relaxed max-w-lg ${compacta ? 'text-sm' : 'text-sm sm:text-base'}`} style={{ color: '#D5E6E2' }}>
+            Warm Up Academy forma DJs y productores en Madrid, con profesionales en activo.
+          </p>
+        </div>
         <span
-          className="self-start flex items-center gap-2 mt-1 px-5 sm:px-6 py-3 rounded-full text-sm font-extrabold transition-transform group-hover:translate-x-1"
+          className={`self-start flex items-center gap-2 px-5 sm:px-6 py-3 rounded-full text-sm font-extrabold transition-transform group-hover:translate-x-1 ${compacta ? 'sm:self-center sm:flex-shrink-0' : 'mt-1'}`}
           style={{ background: MENTA, color: FONDO }}
         >
           Conocer Warm Up Academy <ArrowRight size={15} />
