@@ -10,10 +10,37 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.4"
   }
   public: {
     Tables: {
+      admin_actions_log: {
+        Row: {
+          action: string
+          admin_user_id: string | null
+          created_at: string
+          details: Json | null
+          id: string
+          target_user_id: string | null
+        }
+        Insert: {
+          action: string
+          admin_user_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          target_user_id?: string | null
+        }
+        Update: {
+          action?: string
+          admin_user_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
       admin_actividad_ocultada: {
         Row: {
           clave: string
@@ -164,6 +191,21 @@ export type Database = {
         }
         Relationships: []
       }
+      blocked_email_domains: {
+        Row: {
+          created_at: string
+          domain: string
+        }
+        Insert: {
+          created_at?: string
+          domain: string
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+        }
+        Relationships: []
+      }
       blocked_users: {
         Row: {
           blocked_id: string
@@ -275,6 +317,42 @@ export type Database = {
           url?: string | null
           user_agent?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      concurso_inscripciones: {
+        Row: {
+          acepta_bases: boolean
+          concurso: string
+          created_at: string
+          estado: string
+          frase: string | null
+          frase_cambiada_en: string | null
+          id: string
+          soundcloud_url: string
+          user_id: string
+        }
+        Insert: {
+          acepta_bases: boolean
+          concurso?: string
+          created_at?: string
+          estado?: string
+          frase?: string | null
+          frase_cambiada_en?: string | null
+          id?: string
+          soundcloud_url: string
+          user_id: string
+        }
+        Update: {
+          acepta_bases?: boolean
+          concurso?: string
+          created_at?: string
+          estado?: string
+          frase?: string | null
+          frase_cambiada_en?: string | null
+          id?: string
+          soundcloud_url?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -479,6 +557,30 @@ export type Database = {
           created_at?: string
           endpoint?: string
           id?: never
+        }
+        Relationships: []
+      }
+      email_fallos: {
+        Row: {
+          created_at: string
+          id: number
+          motivo: string | null
+          status: number
+          type: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          motivo?: string | null
+          status: number
+          type?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          motivo?: string | null
+          status?: number
+          type?: string | null
         }
         Relationships: []
       }
@@ -829,9 +931,73 @@ export type Database = {
         }
         Relationships: []
       }
+      feed_likes: {
+        Row: {
+          content_key: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          content_key: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          content_key?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feed_seen: {
+        Row: {
+          seen_at: string
+          user_id: string
+        }
+        Insert: {
+          seen_at?: string
+          user_id: string
+        }
+        Update: {
+          seen_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feedback_web: {
+        Row: {
+          created_at: string
+          id: number
+          momento: string
+          path: string | null
+          rol: string | null
+          texto: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          momento: string
+          path?: string | null
+          rol?: string | null
+          texto: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          momento?: string
+          path?: string | null
+          rol?: string | null
+          texto?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       flash_bookings: {
         Row: {
           agreed_price: number | null
+          chat_message_id: string | null
           created_at: string | null
           created_by: string | null
           es_autorregistro: boolean | null
@@ -840,11 +1006,13 @@ export type Database = {
           event_location: string | null
           exact_address: string | null
           id: string
+          oculta_admin_at: string | null
           professional_name: string
           professional_note: string | null
           professional_role: string | null
           professional_user_id: string | null
           reminder_sent_at: string | null
+          reminder2_sent_at: string | null
           requester_contact: string
           requester_name: string
           source: string
@@ -852,6 +1020,7 @@ export type Database = {
         }
         Insert: {
           agreed_price?: number | null
+          chat_message_id?: string | null
           created_at?: string | null
           created_by?: string | null
           es_autorregistro?: boolean | null
@@ -860,11 +1029,13 @@ export type Database = {
           event_location?: string | null
           exact_address?: string | null
           id?: string
+          oculta_admin_at?: string | null
           professional_name: string
           professional_note?: string | null
           professional_role?: string | null
           professional_user_id?: string | null
           reminder_sent_at?: string | null
+          reminder2_sent_at?: string | null
           requester_contact: string
           requester_name: string
           source?: string
@@ -872,6 +1043,7 @@ export type Database = {
         }
         Update: {
           agreed_price?: number | null
+          chat_message_id?: string | null
           created_at?: string | null
           created_by?: string | null
           es_autorregistro?: boolean | null
@@ -880,11 +1052,13 @@ export type Database = {
           event_location?: string | null
           exact_address?: string | null
           id?: string
+          oculta_admin_at?: string | null
           professional_name?: string
           professional_note?: string | null
           professional_role?: string | null
           professional_user_id?: string | null
           reminder_sent_at?: string | null
+          reminder2_sent_at?: string | null
           requester_contact?: string
           requester_name?: string
           source?: string
@@ -925,6 +1099,81 @@ export type Database = {
           pay?: string | null
           role_needed?: string | null
           title?: string
+        }
+        Relationships: []
+      }
+      follows: {
+        Row: {
+          created_at: string
+          followed_user_id: string
+          follower_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          followed_user_id: string
+          follower_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          followed_user_id?: string
+          follower_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      image_contact_config: {
+        Row: {
+          id: boolean
+          modo: string
+        }
+        Insert: {
+          id?: boolean
+          modo?: string
+        }
+        Update: {
+          id?: boolean
+          modo?: string
+        }
+        Relationships: []
+      }
+      image_contact_flags: {
+        Row: {
+          bucket: string
+          created_at: string
+          estado: string
+          id: string
+          nivel: string
+          owner_id: string | null
+          path: string
+          reviewed_at: string | null
+          texto: string | null
+          tipos: string[]
+        }
+        Insert: {
+          bucket: string
+          created_at?: string
+          estado: string
+          id?: string
+          nivel: string
+          owner_id?: string | null
+          path: string
+          reviewed_at?: string | null
+          texto?: string | null
+          tipos?: string[]
+        }
+        Update: {
+          bucket?: string
+          created_at?: string
+          estado?: string
+          id?: string
+          nivel?: string
+          owner_id?: string | null
+          path?: string
+          reviewed_at?: string | null
+          texto?: string | null
+          tipos?: string[]
         }
         Relationships: []
       }
@@ -1027,33 +1276,33 @@ export type Database = {
           conversation_id: string | null
           created_at: string | null
           deleted_at: string | null
-          photo_url: string | null
-          video_url: string | null
           id: string
+          photo_url: string | null
           read: boolean | null
           sender_id: string | null
+          video_url: string | null
         }
         Insert: {
           content: string
           conversation_id?: string | null
           created_at?: string | null
           deleted_at?: string | null
-          photo_url?: string | null
-          video_url?: string | null
           id?: string
+          photo_url?: string | null
           read?: boolean | null
           sender_id?: string | null
+          video_url?: string | null
         }
         Update: {
           content?: string
           conversation_id?: string | null
           created_at?: string | null
           deleted_at?: string | null
-          photo_url?: string | null
-          video_url?: string | null
           id?: string
+          photo_url?: string | null
           read?: boolean | null
           sender_id?: string | null
+          video_url?: string | null
         }
         Relationships: [
           {
@@ -1248,6 +1497,24 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_private_data: {
+        Row: {
+          created_at: string
+          email: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profile_views: {
         Row: {
           created_at: string
@@ -1318,7 +1585,6 @@ export type Database = {
           dance_role: string | null
           display_name: string | null
           distance_from_madrid_km: number | null
-          email: string | null
           email_opt_out: boolean
           emergente_anios: number | null
           emergente_sub_nivel: string | null
@@ -1410,7 +1676,6 @@ export type Database = {
           dance_role?: string | null
           display_name?: string | null
           distance_from_madrid_km?: number | null
-          email?: string | null
           email_opt_out?: boolean
           emergente_anios?: number | null
           emergente_sub_nivel?: string | null
@@ -1502,7 +1767,6 @@ export type Database = {
           dance_role?: string | null
           display_name?: string | null
           distance_from_madrid_km?: number | null
-          email?: string | null
           email_opt_out?: boolean
           emergente_anios?: number | null
           emergente_sub_nivel?: string | null
@@ -2103,6 +2367,24 @@ export type Database = {
           visitas: number
         }[]
       }
+      analytics_por_hora_hoy: {
+        Args: never
+        Returns: {
+          hora: number
+          visitas: number
+        }[]
+      }
+      analytics_pwa_instalaciones: {
+        Args: { p_dias?: number }
+        Returns: {
+          detalle: string
+          device: string
+          display_name: string
+          evento: string
+          instalado_en: string
+          rol: string
+        }[]
+      }
       analytics_quien_online: {
         Args: never
         Returns: {
@@ -2145,6 +2427,11 @@ export type Database = {
           role: string
         }[]
       }
+      cancelar_acuerdo_chat: {
+        Args: { p_booking_id: string }
+        Returns: boolean
+      }
+      cerrar_acuerdo_chat: { Args: { p_message_id: string }; Returns: string }
       city_ref_from_zone: { Args: { p_zone: string }; Returns: string }
       clean_stale_live_sessions: { Args: never; Returns: undefined }
       completar_preguntas_resena: {
@@ -2156,16 +2443,44 @@ export type Database = {
         }
         Returns: undefined
       }
+      concurso_participantes: {
+        Args: { p_concurso?: string }
+        Returns: {
+          display_name: string
+          frase: string
+          frase_cambiada_en: string
+          me_gusta: number
+          photo_url: string
+          soundcloud_url: string
+          user_id: string
+          zone: string
+        }[]
+      }
+      concurso_poner_frase: {
+        Args: { p_concurso: string; p_frase: string }
+        Returns: undefined
+      }
+      concurso_sesion_publicada: { Args: { p_key: string }; Returns: boolean }
+      concurso_votante_valido: { Args: { p_user: string }; Returns: boolean }
       contratado_en_solicitud: {
         Args: { p_request_id: string }
         Returns: boolean
       }
+      cuenta_profesional_sin_organizador: {
+        Args: { p_email: string }
+        Returns: boolean
+      }
+      email_domain_blocked: { Args: { p_email: string }; Returns: boolean }
       email_opted_out: {
         Args: { p_email: string; p_user_id: string }
         Returns: boolean
       }
       es_admin: { Args: never; Returns: boolean }
+      es_organizador: { Args: { p_user: string }; Returns: boolean }
       es_trafico_propio: { Args: { p_user_id: string }; Returns: boolean }
+      fecha_legible: { Args: { p: string }; Returns: string }
+      feed_marcar_visto: { Args: never; Returns: undefined }
+      feed_nuevos: { Args: never; Returns: number }
       flash_bookings_last_7_days: {
         Args: { p_professional_user_id: string }
         Returns: number
@@ -2241,6 +2556,8 @@ export type Database = {
         }
         Returns: undefined
       }
+      market_rate_percent_diff: { Args: { p_user_id: string }; Returns: number }
+      my_profile: { Args: never; Returns: Json }
       normalize_zone: { Args: { p_zone: string }; Returns: string }
       panel_admin_activity: {
         Args: never
@@ -2270,6 +2587,36 @@ export type Database = {
           veces_visto_este_mensaje: number
         }[]
       }
+      panel_admin_concurso_captacion: {
+        Args: never
+        Returns: {
+          con_consentimiento: number
+          quieren_proxima_edicion: number
+          votantes: number
+        }[]
+      }
+      panel_admin_concurso_referidos: {
+        Args: never
+        Returns: {
+          altas: number
+          ref: string
+          sesiones: number
+        }[]
+      }
+      panel_admin_concurso_votantes: {
+        Args: never
+        Returns: {
+          con_foto: boolean
+          consentimiento_marketing: boolean
+          cuenta_creada: string
+          dj: string
+          minutos_hasta_voto: number
+          rol: string
+          via: string
+          votante: string
+          voto: string
+        }[]
+      }
       panel_admin_contrato_chat: {
         Args: { p_user_a: string; p_user_b: string }
         Returns: {
@@ -2277,6 +2624,10 @@ export type Database = {
           num_mensajes: number
           ultimo_mensaje: string
         }[]
+      }
+      panel_admin_ocultar_solicitud: {
+        Args: { p_id: string }
+        Returns: undefined
       }
       panel_admin_pending_bookings: {
         Args: never
@@ -2317,12 +2668,55 @@ export type Database = {
           tipo: string
         }[]
       }
+      panel_admin_solicitudes_estado: {
+        Args: never
+        Returns: {
+          agreed_price: number
+          created_at: string
+          estado: string
+          event_date: string
+          event_description: string
+          event_location: string
+          id: string
+          mensajes: number
+          professional_name: string
+          requester_name: string
+          source: string
+          status: string
+        }[]
+      }
+      panel_admin_solicitudes_semaforo: {
+        Args: never
+        Returns: {
+          created_at: string
+          event_date: string
+          event_description: string
+          event_location: string
+          id: string
+          mensajes: number
+          professional_name: string
+          requester_name: string
+          status: string
+        }[]
+      }
       panel_analytics_afiliados: {
         Args: { p_dias?: number; p_limite?: number }
         Returns: {
           clics: number
           desde: string
           producto: string
+        }[]
+      }
+      panel_analytics_banners: {
+        Args: { p_dias?: number }
+        Returns: {
+          banner: string
+          cuando: string
+          device: string
+          origen: string
+          path: string
+          quien: string
+          session_id: string
         }[]
       }
       panel_analytics_blog: {
@@ -2366,6 +2760,13 @@ export type Database = {
           visitas: number
         }[]
       }
+      panel_analytics_hora_hoy: {
+        Args: never
+        Returns: {
+          hora: number
+          visitas: number
+        }[]
+      }
       panel_analytics_negocio: {
         Args: { p_dias?: number }
         Returns: {
@@ -2379,6 +2780,17 @@ export type Database = {
         Args: never
         Returns: {
           online: number
+        }[]
+      }
+      panel_analytics_pwa_instalaciones: {
+        Args: { p_dias?: number }
+        Returns: {
+          detalle: string
+          device: string
+          display_name: string
+          evento: string
+          instalado_en: string
+          rol: string
         }[]
       }
       panel_analytics_quien_online: {
@@ -2421,6 +2833,13 @@ export type Database = {
         Returns: string[]
       }
       perfil_completitud: { Args: { p_user_id: string }; Returns: number }
+      profile_emails_for_admin: {
+        Args: { p_user_ids: string[] }
+        Returns: {
+          email: string
+          user_id: string
+        }[]
+      }
       profile_views_last_7_days: {
         Args: { p_viewed_user_id: string }
         Returns: number
@@ -2441,6 +2860,21 @@ export type Database = {
       }
       region_from_zone: { Args: { p_zone: string }; Returns: string }
       remind_pending_flash_bookings: { Args: never; Returns: undefined }
+      set_marketing_consent: { Args: { p_valor: boolean }; Returns: undefined }
+      solicitud_contacto_valido: { Args: { c: string }; Returns: boolean }
+      solicitud_fecha_valida: { Args: { d: string }; Returns: boolean }
+      solicitud_texto_basura: { Args: { t: string }; Returns: boolean }
+      tarifas_publicas: {
+        Args: { p_roles: string[]; p_user_ids?: string[] }
+        Returns: {
+          max_eur: number
+          min_eur: number
+          n: number
+          p25: number
+          p50: number
+          p75: number
+        }[]
+      }
       ultima_contratacion_publica: {
         Args: never
         Returns: {
