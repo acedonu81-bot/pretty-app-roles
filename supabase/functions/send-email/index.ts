@@ -1228,6 +1228,49 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}`),
   }),
 
+  // Recordatorio del Concurso DJ (28 oct 2026) a los DJs que aún no han subido
+  // sesión. Tres variantes según lo que les falte para poder inscribirse, porque
+  // las bases piden residir en la Comunidad de Madrid y tener foto y bio:
+  //   d.variante = 'completo' (solo falta pegar el enlace) | 'falta_perfil'
+  //   (foto/bio) | 'sin_ciudad' (no han indicado ciudad). d.falta = "una foto".
+  // Plazo según las bases: hasta el 2 de noviembre a las 23:59, hora de Madrid.
+  // Solo con clave de servicio, uno a uno. No promete fechas ni detalles de los
+  // próximos concursos porque aún no están definidos.
+  concurso_recordatorio: (d) => {
+    const v = d.variante === 'falta_perfil' || d.variante === 'sin_ciudad' ? d.variante : 'completo';
+    const falta = esc(d.falta ?? 'foto y bio');
+    return {
+      subject: `${esc(d.name)}, hasta el 2 de noviembre para entrar en el Concurso DJ XPEAK Madrid`,
+      to: d.email,
+      replyTo: 'info@xpeak.site',
+      html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Aún estás a tiempo</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>. El Concurso DJ XPEAK Madrid cierra el <strong style="color:#0a0908">2 de noviembre a las 23:59</strong> (hora de Madrid) y todavía no has subido tu sesión. Estás a tiempo de participar y optar a unos <strong style="color:#0a0908">Pioneer DJ HDJ-X5</strong>.
+      </p>
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:16px 18px;margin:16px 0">
+        <p style="margin:0 0 6px;font-size:14px;font-weight:900;color:#0a0908">Cómo funciona</p>
+        <ul style="margin:0;padding-left:18px;font-size:13px;color:#4b5563;line-height:1.8">
+          <li>Pegas el enlace de una sesión tuya de SoundCloud, de 30 a 80 minutos.</li>
+          <li>Hasta el 2 de noviembre, cualquier usuario de XPEAK puede votar con un me gusta.</li>
+          <li>Las 3 sesiones con más me gusta pasan a la final y un jurado elige al ganador el 9 de noviembre.</li>
+        </ul>
+      </div>
+      ${v === 'completo'
+        ? `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">Tu perfil ya está listo: solo te falta pegar el enlace de tu sesión.</p>
+           ${btn('Inscribirme ahora →', 'https://xpeak.es/concurso-dj-madrid#inscripcion')}`
+        : v === 'falta_perfil'
+        ? `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">Para inscribirte, tu perfil necesita ${falta}. Así el público y el jurado saben quién hay detrás de cada sesión. Son un par de minutos, y después vuelves al concurso a pegar tu enlace.</p>
+           ${btn('Completar mi perfil y entrar →', 'https://xpeak.es/concurso-dj-madrid#inscripcion')}`
+        : `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">El concurso es para DJs de la Comunidad de Madrid. Si vives allí, indica tu ciudad en tu perfil${d.falta ? ` y añade ${falta}` : ''}, y ya podrás inscribirte.</p>
+           ${btn('Completar mi perfil y entrar →', 'https://xpeak.es/concurso-dj-madrid#inscripcion')}`}
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:20px 0 0">
+        Este es el primer concurso de XPEAK. Vendrán más y te avisaremos por aquí.
+      </p>
+      <p style="color:#6B7280;font-size:12px;text-align:center;margin-top:18px"><a href="https://xpeak.es/concurso-dj-madrid#bases" style="color:#D4AF37">Leer las bases completas</a></p>`),
+    };
+  },
+
   // Recordatorio puntual (28 oct 2026) a quien se registró con email y contraseña
   // y no ha confirmado el correo: sin confirmar no puede entrar. Solo con clave de
   // servicio, uno a uno. No cita nada de lo que miró en la web.
