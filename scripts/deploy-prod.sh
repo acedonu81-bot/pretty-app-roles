@@ -65,10 +65,13 @@ for DOMINIO in xpeak.es www.xpeak.es xpeak.site; do
   npx vercel alias set "$URL" "$DOMINIO" >/dev/null 2>&1 && echo "   ↳ $DOMINIO" || echo "   ⚠️ no se pudo asignar $DOMINIO"
 done
 
-# `vercel inspect` a veces muere con "Abort trap: 6" justo después de los
-# alias y daba un falso "NO apunta" (dos veces el 28 oct 2026): se reintenta.
+# La salida de `vercel inspect` se guarda ANTES de buscar en ella. Con
+# `inspect | grep -q` grep cierra la tubería al acertar y vercel muere con
+# "Abort trap: 6": daba un falso "NO apunta" justo cuando todo iba bien (tres
+# veces el 28 oct 2026; los reintentos no lo arreglaban).
 for INTENTO in 1 2 3; do
-  if npx vercel inspect xpeak.es 2>&1 | grep -q "${URL#https://}"; then
+  INSPECT=$(npx vercel inspect xpeak.es 2>&1 || true)
+  if grep -q "${URL#https://}" <<<"$INSPECT"; then
     echo "✅ xpeak.es sirve $SHA"
     exit 0
   fi
