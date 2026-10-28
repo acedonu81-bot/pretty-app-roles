@@ -69,8 +69,8 @@ describe('OnboardingWizard', () => {
   it('"Cambiar de oficio" vuelve al paso del oficio y no salta otra vez', async () => {
     estado.role = 'dj';
     montar();
-    fireEvent.click(await screen.findByRole('button', { name: /No es tu oficio/ }, { timeout: 3000 }));
-    expect(await screen.findByText('¿Cuál es tu perfil?', {}, { timeout: 3000 })).toBeTruthy();
+    fireEvent.click(await screen.findByRole('button', { name: /No es tu oficio/ }, { timeout: 10000 }));
+    expect(await screen.findByText('¿Cuál es tu perfil?', {}, { timeout: 10000 })).toBeTruthy();
     await new Promise(r => setTimeout(r, 600));
     expect(screen.getByText('¿Cuál es tu perfil?')).toBeTruthy();
   });

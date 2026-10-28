@@ -12,6 +12,7 @@ import { VISTA_TRAS_LOGIN } from '@/pages/Dashboard';
 import TurnstileWidget from '@/components/TurnstileWidget';
 import { ALL_CITIES } from '@/lib/regions';
 import { isNative } from '@/lib/capacitor';
+import { traducirErrorAuth } from '@/lib/authErrores';
 import { isInAppBrowser as detectInAppBrowser, openInExternalBrowser } from '@/lib/inAppBrowser';
 import { useMedirPermanencia } from '@/hooks/useMedirPermanencia';
 import FichasRealesTira from '@/components/FichasRealesTira';
@@ -722,7 +723,11 @@ const Auth = () => {
       }
     } catch (err: any) {
       renewCaptcha();
-      authAlert(err.message || 'Error de autenticación');
+      // Si el error es de un campo (contraseña filtrada, email ya registrado)
+      // se resalta ese campo en vez de un alert() en inglés (28 oct 2026).
+      const { campo, texto } = traducirErrorAuth(err);
+      if (campo && !isLogin) authFieldError(campo, texto);
+      else authAlert(texto);
     } finally {
       setLoading(false);
     }
@@ -1141,6 +1146,11 @@ const Auth = () => {
                     ))}
                   </div>
                 )}
+                {passwordStrength && (
+                  <p className="text-[0.72rem] px-1 -mt-1" style={{ color: '#888' }}>
+                    Evita contraseñas típicas (123456, el nombre de tu empresa): si han salido en filtraciones de datos, no las aceptamos.
+                  </p>
+                )}
 
                 {/* Marketing — opcional, nunca premarcado, no bloquea el registro */}
                 {!isLogin && (
@@ -1444,7 +1454,7 @@ const Auth = () => {
               setRecoveryLoading(true);
               const { error } = await supabase.auth.updateUser({ password: newPassword });
               setRecoveryLoading(false);
-              if (error) { authAlert(error.message); return; }
+              if (error) { authAlert(traducirErrorAuth(error).texto); return; }
               toast.success('Contraseña actualizada correctamente');
               setShowRecovery(false);
               navigate(redirectParam, { replace: true });
