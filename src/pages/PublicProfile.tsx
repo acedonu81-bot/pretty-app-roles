@@ -27,7 +27,7 @@ import FollowButton from '@/components/FollowButton';
 import PostCard from '@/components/PostCard';
 import ReviewsSection from '@/components/ReviewsSection';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
-import { clicRedSocial } from '@/lib/track';
+import { clicRedSocial, logContactClick } from '@/lib/track';
 // Se reexporta para los tests que lo importan desde aquí.
 export { reviewQuestionStats } from '@/components/ReviewsSection';
 
@@ -198,6 +198,9 @@ const PublicProfile = () => {
   const [showContact, setShowContact] = useState(false);
 
   const handleContactClick = () => {
+    // Paso "Pulsan Contactar" del embudo del panel (28 oct): hasta ahora no se
+    // medía en ningún sitio. Se cuenta la intención, tenga o no sesión.
+    logContactClick(authUser ? 'perfil_publico' : 'perfil_publico_sin_sesion');
     // Perfil de ejemplo del rol local_eventos (id fijo, ccbceb86...): se
     // muestra en el directorio para que la categoría no se vea vacía, pero
     // no hay nadie real al otro lado que vaya a responder. Se bloquea solo

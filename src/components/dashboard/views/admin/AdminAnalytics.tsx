@@ -572,11 +572,40 @@ export default function AdminAnalytics() {
       {/* EMBUDO — la cifra que dice si el tráfico sirve para algo. 400 visitas
           con 0 solicitudes es un problema distinto de 40 con 4, y la gráfica
           de tráfico sola no los distingue. */}
-      {embudo.length > 0 && embudo.some(e => Number(e.cantidad) > 0) && (
-        <Panel title="Embudo" hint="De la visita al contacto. Cada paso son personas distintas, no clics."
-          ayuda="Barra: cuánta gente llegó a ese paso. % debajo del nombre: cuánto se cayó respecto al paso ANTERIOR (esto es lo que señala dónde se pierde la gente). % a la derecha: cuánto queda respecto al primer paso, para ver el cuadro completo.">
+      {/* Desde el 28 oct cada paso es un subconjunto del anterior (misma
+          sesión) y los registros van aparte (orden 99): antes mezclaba
+          poblaciones y el último paso salía mayor que el anterior. */}
+      {embudo.length > 0 && embudo.some(e => Number(e.cantidad) > 0) && (() => {
+        const pasos = embudo.filter(e => e.orden < 90);
+        const registros = embudo.find(e => e.orden === 99);
+        // El paso con mayor caída es donde hay que trabajar; cada uno apunta
+        // a un problema distinto y a un sitio distinto donde mirar.
+        const QUE_SIGNIFICA: Record<number, string> = {
+          2: 'La gente entra pero no abre fichas: la portada y el blog no llevan a los profesionales. Mira qué páginas reciben visitas y si tienen botón hacia el directorio.',
+          3: 'Ven fichas pero no pulsan "Contactar": la ficha no convence (fotos, precio, reseñas) o el botón no se ve. Es lo primero a mejorar si es aquí.',
+          4: 'Pulsan "Contactar" pero no envían: se caen en el registro obligatorio o en el formulario. Revisa ese paso en Clarity.',
+        };
+        let peor: { orden: number; caida: number } | null = null;
+        pasos.forEach((e, i) => {
+          if (i === 0) return;
+          const ant = Number(pasos[i - 1].cantidad) || 0;
+          if (ant === 0) return;
+          const caida = Math.round(100 - (Number(e.cantidad) / ant) * 100);
+          if (!peor || caida > peor.caida) peor = { orden: e.orden, caida };
+        });
+        const conclusion = peor as { orden: number; caida: number } | null;
+        return (
+        <Panel title="Embudo" hint="El camino de quien viene a contratar: entra, abre una ficha, pulsa Contactar y envía la solicitud. Cada paso cuenta solo a quien hizo también el anterior."
+          ayuda="Barra: personas (sesiones) que llegaron a ese paso. % debajo del nombre: cuánto se cayó respecto al paso ANTERIOR, que es lo que señala dónde se pierde la gente. % a la derecha: lo que queda respecto a los que entraron. Los registros van aparte porque llegan sobre todo por la portada e Instagram, no por este camino. 'Pulsan Contactar' se mide desde el 28 oct: antes de esa fecha solo cuenta a quien envió la solicitud.">
+          {conclusion && (
+            <div className="mb-3 rounded-lg px-3 py-2 text-[0.75rem]" style={{ background: 'rgba(212,175,55,0.1)', color: 'rgba(10,9,8,0.75)' }}>
+              <span className="font-bold">Dónde se pierde más gente: </span>
+              {conclusion.caida}% se cae antes de "{pasos.find(p => p.orden === conclusion.orden)?.paso}". {QUE_SIGNIFICA[conclusion.orden]}
+            </div>
+          )}
           <div className="flex flex-col gap-2">
-            {embudo.map((e, i) => {
+            {pasos.map((e, i) => {
+              const embudo = pasos;
               const max = Math.max(...embudo.map(x => Number(x.cantidad) || 0), 1);
               const cantidad = Number(e.cantidad) || 0;
               const pct = (cantidad / max) * 100;
@@ -613,8 +642,14 @@ export default function AdminAnalytics() {
               );
             })}
           </div>
+          {registros && (
+            <p className="mt-3 text-[0.72rem]" style={{ color: 'rgba(10,9,8,0.5)' }}>
+              Aparte: <span className="font-bold" style={{ color: 'rgba(10,9,8,0.75)' }}>{registros.cantidad}</span> personas se registraron en este periodo (portada, Instagram, campañas).
+            </p>
+          )}
         </Panel>
-      )}
+        );
+      })()}
 
       {/* BÚSQUEDAS INTERNAS — lo que la gente pide dentro de XPEAK. Las que dan
           0 resultados son literalmente la lista de qué inventario falta. */}
