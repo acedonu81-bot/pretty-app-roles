@@ -1228,6 +1228,27 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}`),
   }),
 
+  // Recordatorio puntual (28 oct 2026) a quien se registró con email y contraseña
+  // y no ha confirmado el correo: sin confirmar no puede entrar. Solo con clave de
+  // servicio, uno a uno. No cita nada de lo que miró en la web.
+  confirmar_email_recordatorio: (d) => ({
+    subject: `${esc(d.name)}, un último paso para activar tu cuenta de XPEAK`,
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Falta confirmar tu email</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, te has registrado en XPEAK y solo falta un paso: confirmar tu email con el enlace que te hemos enviado a esta misma dirección. Si no lo ves, mira en spam o en promociones.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        <strong style="color:#0a0908">Sin confirmarlo no podrás entrar.</strong> Cuando lo hagas, podrás publicar tu solicitud y los profesionales de XPEAK te responderán.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        ¿No lo encuentras? Responde a este correo y te ayudamos.
+      </p>
+      ${btn('Entrar en XPEAK →', 'https://xpeak.es/auth')}`),
+  }),
+
   // Particular (18 oct 2026): antes de repartir su solicitud tiene que pulsar
   // este botón, así no llegan pruebas ni emails falsos a los profesionales.
   // Solo con clave de servicio y solo con enlaces a xpeak.es.
