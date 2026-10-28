@@ -270,13 +270,14 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hola, ${esc(d.name)}</h2>
       ${esEmpresa ? `
-      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Tu email está confirmado y tu cuenta de organizador, activada. Antes de pedir profesionales, completa tus datos: el logo o una foto del local, una descripción de tu sala o empresa y tu ciudad.
-      </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Los profesionales miran quién les escribe antes de responder: con los datos completos te contestan antes.
+        Tu email está confirmado y tu cuenta de organizador, activada. Ya puedes pedir lo que necesitas: publica tu solicitud con lo que buscas, la fecha y la ciudad, y la verán los profesionales de XPEAK durante 7 días.
       </p>
-      ${btn('Completar mis datos →', 'https://xpeak.es/dashboard?completar=1')}` : sinRolTodavia ? `
+      ${btn('Publicar mi primera solicitud →', 'https://xpeak.es/dashboard?view=flashbooking')}
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:20px 0 6px">
+        Cuando tengas un momento, añade el logo o una foto de tu local, una descripción y tu ciudad: los profesionales miran quién les escribe antes de responder, y con tus datos completos te contestan antes.
+      </p>
+      <p style="font-size:14px;margin:0 0 20px"><a href="https://xpeak.es/dashboard?completar=1" style="color:#8B6A00;font-weight:700">Completar mis datos →</a></p>` : sinRolTodavia ? `
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Tu cuenta ya está creada y tu voto cuenta. Gracias por unirte a XPEAK.${Date.now() < Date.UTC(2026, 10, 2, 23) ? ' Puedes seguir escuchando las sesiones del Concurso DJ y repartir tus 3 votos hasta el 2 de noviembre.' : ''}
       </p>
@@ -983,23 +984,6 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>
       <p style="font-size:15px;line-height:1.6;margin:0">Un saludo,<br>XPEAK</p>
       ${btn('Ver mi perfil →', 'https://xpeak.es/dashboard')}`),
-  }),
-
-  // 5. Empresario — confirmación pendiente aprobación
-  empresario_pending: (d) => ({
-    subject: 'Tu cuenta empresario está pendiente de aprobación',
-    to: d.email,
-    html: base(`
-      <h2 style="font-size:20px;font-weight:900;margin:0 0 10px;color:#0a0908">Solicitud recibida</h2>
-      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Hola <strong>${esc(d.name)}</strong>, hemos recibido tu solicitud de cuenta empresario en XPEAK.
-      </p>
-      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Nuestro equipo revisará tu perfil en las próximas <strong style="color:#D4AF37">24-48 horas</strong> y te notificaremos cuando esté activo.
-      </p>
-      <p style="color:#6B7280;font-size:12px;text-align:center">
-        ¿Tienes prisa? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
-      </p>`),
   }),
 
   // 6. Cancelación de suscripción — aviso admin
