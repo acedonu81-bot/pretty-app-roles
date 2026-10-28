@@ -5,6 +5,9 @@ import { toast } from 'sonner';
 import { DEFAULT_ZONE } from '@/lib/constants';
 
 interface ProfileData {
+  id: string;
+  is_verified: boolean | null;
+  google_review_url: string | null;
   display_name: string;
   birthday: string | null;
   photo_url: string | null;
@@ -117,6 +120,9 @@ interface ProfileCtx extends ProfileData {
 }
 
 const defaults: ProfileData = {
+  id: '',
+  is_verified: null,
+  google_review_url: null,
   display_name: '',
   birthday: null,
   photo_url: null,
@@ -200,7 +206,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     // si la migración aún no está aplicada, Postgres rechaza TODA la consulta y
     // el perfil no cargaría para nadie. Se pide primero con ellas y, si falla,
     // se reintenta sin ellas usando los defaults.
-    const BASE_COLS = 'id, user_id, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, created_at, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, blocked_dates, min_notice_hours, conditions_note';
+    const BASE_COLS = 'id, user_id, is_verified, google_review_url, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, created_at, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, blocked_dates, min_notice_hours, conditions_note';
     const PRIVACY_COLS = 'is_public, show_online, email_opt_out, marketing_consent, marketing_consent_asked_at';
     const EMERGENTE_COLS = 'experience_level, emergente_sub_nivel, emergente_anios, show_new_badge';
 

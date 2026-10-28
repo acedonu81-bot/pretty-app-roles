@@ -17,7 +17,7 @@ import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
 import CalendarHowItWorksModal from '@/components/CalendarHowItWorksModal';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { instagramUrl, extractInstagramHandle } from '@/lib/social';
 import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
@@ -94,6 +94,8 @@ const BASE_URL = 'https://xpeak.es';
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 interface SupabaseProfile {
+  id: string;
+  google_review_url: string | null;
   user_id: string;
   display_name: string;
   role: string;
@@ -243,7 +245,7 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .eq('user_id', slug)
           // Un mismo user_id puede tener varios perfiles (varios roles, ej.
           // food-truck + empresario): .maybeSingle() con 2+ filas devuelve
@@ -260,7 +262,7 @@ const PublicProfile = () => {
             return { data: elegido, error };
           })
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -503,7 +505,7 @@ const PublicProfile = () => {
         .slice(0, 3)
         .map(p => ({ key: String(p.id), name: p.name, role: p.role, specialty: p.specialty, zone: p.zone ?? '', href: `/p/${toSlug(p.name)}`, rating: p.rating, id: p.id, photo: p.photo ?? '' }));
 
-  const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } };
+  const fadeUp: Variants = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } };
   const stagger = { show: { transition: { staggerChildren: 0.1 } } };
   const responseBucketText = responseBucketLabel(sbProfile?.response_bucket ?? null);
 

@@ -2,6 +2,7 @@ import {
   LayoutGrid, Home, Search, MessageSquare, Megaphone, Settings,
   BarChart3, FileText, CalendarDays, Sparkles, Rss,
   ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield, ThumbsUp,
+  type LucideIcon,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
@@ -171,7 +172,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
 };
 
 const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, iconColor, navId, etiqueta }: {
-  icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
+  icon: LucideIcon;
   label: string;
   isActive: boolean;
   onClick: () => void;
