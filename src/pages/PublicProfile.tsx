@@ -27,6 +27,7 @@ import FollowButton from '@/components/FollowButton';
 import PostCard from '@/components/PostCard';
 import ReviewsSection from '@/components/ReviewsSection';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
+import { clicRedSocial } from '@/lib/track';
 // Se reexporta para los tests que lo importan desde aquí.
 export { reviewQuestionStats } from '@/components/ReviewsSection';
 
@@ -769,6 +770,7 @@ const PublicProfile = () => {
               {sbProfile?.instagram && (
                 <div className="mb-4">
                   <a href={instagramUrl(sbProfile.instagram)} target="_blank" rel="noopener noreferrer"
+                    onClick={() => clicRedSocial('instagram', 'perfil_publico', sbProfile.user_id)}
                     className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
                     style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
                     <Instagram size={12} /> @{extractInstagramHandle(sbProfile.instagram)}

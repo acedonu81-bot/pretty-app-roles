@@ -400,3 +400,20 @@ export function logPwaSessionIfStandalone() {
     void logEvent('pwa_session', location.pathname, sistemaYAparato());
   } catch { /* storage bloqueado: sin efecto, no es crítico */ }
 }
+
+/**
+ * Clic en el Instagram/TikTok de un profesional (28 oct 2026). Las redes se
+ * enseñan como escaparate, pero cada clic es alguien que puede acabar
+ * escribiéndole por fuera de XPEAK: contarlo dice cuánto pesa esa fuga frente
+ * al contacto dentro de la app. Va como cta_click ("redes <red> <origen>
+ * <user_id>") porque log_analytics_event solo acepta una lista cerrada de
+ * nombres y así no hace falta migración.
+ */
+export function clicRedSocial(
+  red: 'instagram' | 'tiktok',
+  origen: 'perfil_publico' | 'panel',
+  profesionalUserId: string,
+) {
+  track('social_click', { red, origen });
+  void logEvent('cta_click', location.pathname, `redes ${red} ${origen} ${profesionalUserId}`);
+}
