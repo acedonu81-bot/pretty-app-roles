@@ -32,6 +32,21 @@ cp .env "$TMP/"
 [ -f .env.production ] && cp .env.production "$TMP/"
 cp -R .vercel "$TMP/"
 
+# Tests y tipos sobre la copia de HEAD, no sobre la carpeta de trabajo: se
+# comprueba exactamente lo que va a salir. node_modules se enlaza para no
+# reinstalar y se quita antes de subir. Si algo falla, no se despliega
+# (28 oct 2026, tras Codex rompiendo producción el 23 sep).
+ln -s "$ROOT/node_modules" "$TMP/node_modules"
+echo "🧪 Tests de $SHA..."
+if ! (cd "$TMP" && npx vitest run > "$LOG" 2>&1); then
+  tail -40 "$LOG"
+  echo "❌ Fallan tests, NO se despliega $SHA"
+  exit 1
+fi
+echo "   ↳ $(grep -E 'Tests +[0-9]' "$LOG" | tail -1 | sed 's/^ *//')"
+(cd "$TMP" && node scripts/check-types.mjs) || { echo "❌ Más errores de tipos que el listón, NO se despliega $SHA"; exit 1; }
+rm "$TMP/node_modules"
+
 cd "$TMP"
 echo "🚀 Desplegando $SHA a producción..."
 # Sin terminal: si la CLI pregunta algo, falla en vez de quedarse esperando.

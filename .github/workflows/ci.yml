@@ -1,0 +1,42 @@
+# Tests y tipos en cada push y PR a main.
+#
+# Hasta ahora nada comprobaba el código antes de producción: el 23 sep un
+# cambio de Codex rompió xpeak.es y nadie lo paró. deploy-prod.sh pasa estas
+# mismas comprobaciones en local antes de subir; esto avisa en GitHub por si
+# algo llega a main sin pasar por ahí.
+#
+# El lint no está aquí a propósito: arrastra más de 3.000 errores viejos y
+# fallaría siempre. Entra cuando esté limpio.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Tests
+        run: npx vitest run
+
+      # Falla solo si hay MÁS errores de tipos que el listón guardado.
+      - name: Tipos (trinquete)
+        run: node scripts/check-types.mjs
