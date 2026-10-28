@@ -6,7 +6,7 @@ describe('traducirErrorAuth', () => {
     const r = traducirErrorAuth({ message: 'Password is known to be weak and easy to guess, please choose a different one.' });
     expect(r.campo).toBe('password');
     expect(r.texto).not.toMatch(/Password is known/);
-    expect(r.texto).toMatch(/10 o más caracteres/);
+    expect(r.texto).toMatch(/8 o más caracteres/);
   });
 
   it('reconoce el código weak_password aunque el mensaje cambie', () => {

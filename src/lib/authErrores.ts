@@ -24,7 +24,7 @@ export function traducirErrorAuth(error: { message?: string; code?: string } | n
       campo: 'password',
       texto:
         'Esa contraseña es demasiado típica: ha salido en filtraciones de datos y no podemos aceptarla. ' +
-        'Prueba con otra de 10 o más caracteres que mezcle letras y números (evita 123456 y el nombre de tu empresa).',
+        'Prueba con otra de 8 o más caracteres que mezcle letras y números (evita 123456 y el nombre de tu empresa).',
     };
   }
   if (code === 'user_already_exists' || /already registered|already been registered/i.test(message)) {

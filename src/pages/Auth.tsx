@@ -735,7 +735,7 @@ const Auth = () => {
 
   const passwordStrength = !isLogin && password.length > 0 ? [
     { ok: password.length >= 6, label: '6+ caracteres' },
-    { ok: password.length >= 10, label: 'Segura' },
+    { ok: password.length >= 8, label: 'Segura' },
   ] : null;
 
   if (oauthCallbackPending) {
