@@ -9,6 +9,7 @@ ciudad×categoría sin inventario (esas van a noindex y fuera del sitemap).
 - [Directorio completo de dj](https://xpeak.es/directorio/dj)
 - [DJ en A Coruña](https://xpeak.es/contratar-dj/coruna)
 - [DJ en Alicante](https://xpeak.es/contratar-dj/alicante)
+- [DJ en Barcelona](https://xpeak.es/contratar-dj/barcelona)
 - [DJ en Granada](https://xpeak.es/contratar-dj/granada)
 - [DJ en Guadalajara](https://xpeak.es/contratar-dj/guadalajara)
 - [DJ en Madrid](https://xpeak.es/contratar-dj/madrid)
@@ -29,15 +30,15 @@ Profesionales de dj en XPEAK:
 - [Toni vapin dj](https://xpeak.es/p/toni-vapin-dj) (Murcia), desde 150€/h
 - [RUBEN TRIAS](https://xpeak.es/p/ruben-trias) (Madrid), desde 100€/h
 - [deejayantuan](https://xpeak.es/p/deejayantuan) (Madrid), desde 75€/h
-- [Dj Dafra](https://xpeak.es/p/dj-dafra) (Salamanca), desde 80€/h
 - [DJ Geliux](https://xpeak.es/p/dj-geliux) (Málaga), desde 75€/h
 - [Marcos Rivera](https://xpeak.es/p/marcos-rivera) (Madrid), desde 150€/h
 - [Dj Jhosval Mix (Jhosval mix producciones)](https://xpeak.es/p/dj-jhosval-mix-jhosval-mix-producciones) (Madrid)
 - [Dj GuimoX ](https://xpeak.es/p/dj-guimox) (Madrid), desde 60€/h
-- [Twodeck](https://xpeak.es/p/twodeck) (Madrid), desde 80€/h
+- [Dj Dafra](https://xpeak.es/p/dj-dafra) (Salamanca), desde 80€/h
 - [DJ VIZARD](https://xpeak.es/p/dj-vizard) (Alcalá de Henares), desde 50€/h · Verificado
 - [Dj Manu ](https://xpeak.es/p/dj-manu) (Málaga), desde 100€/h
 - [Djmariobpm](https://xpeak.es/p/djmariobpm) (Sevilla)
+- [Twodeck](https://xpeak.es/p/twodeck) (Madrid), desde 80€/h
 - [Niehbo Dj](https://xpeak.es/p/niehbo-dj) (Valencia), desde 65€/h
 - [Dr.Kenobi](https://xpeak.es/p/dr-kenobi) (Sevilla), desde 30€/h
 - [DJ Rick.Art](https://xpeak.es/p/dj-rick-art) (Tarragona)
@@ -148,6 +149,7 @@ Profesionales de promotores en XPEAK:
 - [Directorio completo de disco móvil](https://xpeak.es/directorio/disco-movil)
 - [Disco móvil en A Coruña](https://xpeak.es/contratar-disco-movil/coruna)
 - [Disco móvil en Alicante](https://xpeak.es/contratar-disco-movil/alicante)
+- [Disco móvil en Barcelona](https://xpeak.es/contratar-disco-movil/barcelona)
 - [Disco móvil en Granada](https://xpeak.es/contratar-disco-movil/granada)
 - [Disco móvil en Guadalajara](https://xpeak.es/contratar-disco-movil/guadalajara)
 - [Disco móvil en Madrid](https://xpeak.es/contratar-disco-movil/madrid)
@@ -161,6 +163,8 @@ Profesionales de promotores en XPEAK:
 
 Profesionales de disco móvil en XPEAK:
 - [Dj eloy](https://xpeak.es/p/dj-eloy) (A Coruña), desde 80€/h
+- [GGDEEJAYS (GINÉS GÓMEZ DJ)](https://xpeak.es/p/ggdeejays-gines-gomez-dj) (Madrid)
+- [Dj Karloss](https://xpeak.es/p/dj-karloss) (Barcelona), desde 70€/h
 
 ## Vestuario
 
@@ -252,6 +256,11 @@ Profesionales de food trucks en XPEAK:
 - [Gula, sabor argentino](https://xpeak.es/p/gula-sabor-argentino) (Valencia)
 - [Vulcano Grill](https://xpeak.es/p/vulcano-grill) (Madrid)
 - [All i Menta](https://xpeak.es/p/all-i-menta) (Denia)
+
+## Técnicos de sonido
+
+- [Directorio completo de técnicos de sonido](https://xpeak.es/directorio/tecnico-sonido)
+- [Técnicos de sonido en Madrid](https://xpeak.es/contratar-tecnico-sonido/madrid)
 
 ## Alquiler de equipos
 

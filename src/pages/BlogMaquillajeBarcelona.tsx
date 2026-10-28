@@ -9,22 +9,22 @@ import BlogAuthor from '@/components/BlogAuthor';
 import BlogShare from '@/components/BlogShare';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de maquilladora para eventos en Barcelona: guía 2026', description: 'Cuánto cobra una maquilladora para bodas, eventos corporativos y sesiones de foto en Barcelona. Tarifas por servicio 2026.', datePublished: '2026-03-18', dateModified: '2026-04-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/maquillaje-eventos-barcelona' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de maquilladora para eventos en Barcelona: guía 2026', description: 'Precios de maquillaje de novia y de invitada en Barcelona según Fresha, Bodas.net y Cronoshare, con fuente y fecha de consulta.', datePublished: '2026-03-18', dateModified: '2026-10-28', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/maquillaje-eventos-barcelona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Cuánto cobra una maquilladora para eventos en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'En Barcelona una maquilladora para novia cobra entre 110€ y 265€, en línea con Madrid. Para eventos corporativos y sesiones de moda, el precio por persona ronda 35€-75€. El sector moda y diseño de la ciudad genera bastante demanda de maquillaje editorial y de pasarela.' } },
-  { '@type': 'Question', name: '¿Dónde se concentra la demanda de maquilladoras en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Las masías del Penedès, Maresme y Garraf concentran la mayoría de bodas con maquillaje a domicilio. En la ciudad, el sector moda y diseño (showrooms, desfiles) y los estudios de foto del Eixample generan demanda constante de maquillaje editorial y de producto.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar maquilladora para una boda en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en masías del Penedès en temporada alta (mayo-septiembre), reserva con 3-4 meses de antelación. Muchas maquilladoras de Barcelona combinan bodas con trabajo editorial, así que las fechas de fin de semana en temporada alta se agotan rápido.' } },
-  { '@type': 'Question', name: '¿Es más caro el maquillaje de novia que el de invitada en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. El maquillaje de novia incluye prueba previa y una sesión más larga (60-90 min), por lo que cuesta entre 110€ y 265€. El de madrina o invitada especial es más rápido (45-60 min) y ronda los 60€-125€ en Barcelona.' } },
+  { '@type': 'Question', name: '¿Cuánto cobra una maquilladora para eventos en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Según los precios publicados en Fresha, Bodas.net y Cronoshare, consultados el 28 de octubre de 2026, el maquillaje de novia suelto en salón va casi siempre de 47€ a 150€. Un pack de novia con prueba, peinado y maquillaje del día parte de 250€ en Bodas.net, y Cronoshare da un rango de 70€ a 200€ para el maquillaje de novia. No son tarifas oficiales: pide siempre un presupuesto cerrado.' } },
+  { '@type': 'Question', name: '¿Qué hay que preguntar antes de contratar maquilladora en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Si el precio incluye la prueba, si los materiales van aparte y si el desplazamiento está incluido. Hay profesionales que lo incluyen dentro de Barcelona ciudad y lo cobran aparte fuera, por ejemplo para bodas en masías y fincas del entorno. Conviene dejar todo por escrito.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar maquilladora para una boda en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'No hemos encontrado un plazo oficial. Lo prudente es reservar en cuanto tengas fecha y lugar, sobre todo para fines de semana de primavera y verano, y confirmar por escrito qué incluye el pack.' } },
+  { '@type': 'Question', name: '¿Es más caro el maquillaje de novia que el de invitada en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Depende de lo que incluya. En Fresha, el maquillaje de novia suelto va de 47€ a 150€ y el de invitada de 60€ a 185€, así que la diferencia la marcan la prueba y el peinado más que el tipo de clienta. Un pack de novia con prueba, peinado y maquillaje parte de 250€ en Bodas.net.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Barcelona', item: 'https://xpeak.es/blog/maquillaje-eventos-barcelona' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '110-265€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '215-470€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '60-125€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '370-740€', nota: 'Desplazamiento a masía incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '35-75€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / moda', tarifa: '90-230€', nota: 'Editorial, flash-friendly, retoque incluido' },
+  { perfil: 'Maquillaje de novia, servicio suelto en salón', tarifa: '47-150€', nota: 'Fresha. Un servicio aislado a 30€; algunos incluyen prueba' },
+  { perfil: 'Pack novia con pruebas (recogido y maquillaje)', tarifa: '150€', nota: 'Una peluquería en Fresha: 2 pruebas de maquillaje y 3 de recogido' },
+  { perfil: 'Pack novia con prueba, peinado y maquillaje del día', tarifa: 'Desde 250€', nota: 'Una profesional en Bodas.net; materiales aparte' },
+  { perfil: 'Maquillaje de invitada o madrina', tarifa: '60-185€', nota: 'Fresha: desde 60€ sin prueba hasta 185€ con prueba' },
+  { perfil: 'Maquillaje de novia, rango de plataforma', tarifa: '70-200€', nota: 'Cronoshare, según tipo de maquillaje' },
+  { perfil: 'Sesión de maquillaje profesional, media', tarifa: '45€', nota: 'Cronoshare; varía con desplazamiento y extras' },
 ];
 
 export default function BlogMaquillajeBarcelona() {
@@ -32,10 +32,10 @@ export default function BlogMaquillajeBarcelona() {
     <>
       <Helmet>
         <title>Precio maquilladora para eventos en Barcelona 2026 | XPEAK</title>
-        <meta name="description" content="Cuánto cobra una maquilladora para bodas y eventos corporativos en Barcelona. Tarifas por servicio 2026." />
+        <meta name="description" content="Precios de maquillaje de novia y de invitada en Barcelona según Fresha, Bodas.net y Cronoshare, con fuente y fecha de consulta." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-barcelona" />
         <meta property="og:title" content="Precio maquilladora eventos Barcelona 2026 | XPEAK Blog" />
-        <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos corporativos en Barcelona." />
+        <meta property="og:description" content="Precios publicados de maquillaje de novia y de invitada en Barcelona, con fuente." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-barcelona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
@@ -53,11 +53,11 @@ export default function BlogMaquillajeBarcelona() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#DB2777' }}>Maquillaje · Barcelona · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de maquilladora para eventos en Barcelona: guía 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Barcelona combina un mercado de bodas fuerte en las masías del entorno con una demanda constante de maquillaje editorial gracias al sector moda y diseño de la ciudad. Las tarifas están en línea con Madrid.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>8 julio 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Sobre el precio de una maquilladora en Barcelona circulan muchas cifras y casi ninguna dice de dónde sale. Aquí recogemos solo los precios publicados en Fresha, Bodas.net y Cronoshare, con la fuente y la fecha en que los consultamos.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 octubre 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cobra una maquilladora en Barcelona?"
-              answer="Una maquilladora de novia en Barcelona cobra entre 110€ y 265€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 370€-740€. Para eventos corporativos, el precio por persona está entre 35€ y 75€."
+              answer="Según Fresha, Bodas.net y Cronoshare (consultados el 28 de octubre de 2026), el maquillaje de novia en salón va casi siempre de 47€ a 150€, un pack con prueba, peinado y maquillaje del día parte de 250€ y una sesión de maquillaje profesional ronda de media 45€. Son precios publicados, no una tarifa oficial."
             />
           </div>
           <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-barcelona" />
@@ -70,7 +70,12 @@ export default function BlogMaquillajeBarcelona() {
                   <tbody>{PRECIOS.map((row, i) => (<tr key={row.perfil} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}><td className="px-4 py-3 font-medium">{row.perfil}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#DB2777' }}>{row.tarifa}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.nota}</td></tr>))}</tbody>
                 </table>
               </div>
-              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Barcelona 2026. Desplazamiento a masías fuera del área metropolitana puede facturarse aparte.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios publicados, consultados el 28 de octubre de 2026. Proceden de fichas y anuncios individuales sin fecha de publicación, así que pueden haber cambiado. Pregunta siempre si incluyen prueba, materiales y desplazamiento.</p>
+              <p className="text-xs mt-2" style={{ color: '#3d3d4e' }}>Fuentes:{' '}
+                <a href="https://www.fresha.com/lp/en/tt/bridal-makeup/in/es-barcelona" rel="nofollow noopener" target="_blank" className="underline">Fresha</a>,{' '}
+                <a href="https://www.bodas.net/belleza-novias/maquillaje-novias-barcelona--e50543" rel="nofollow noopener" target="_blank" className="underline">Bodas.net</a> y{' '}
+                <a href="https://www.cronoshare.com/servicios/maquilladoras-profesionales/barcelona/barcelona" rel="nofollow noopener" target="_blank" className="underline">Cronoshare</a>.
+              </p>
             </section>
             <section>
               <h2 className="text-lg font-black mb-3">Dónde se concentra la demanda en Barcelona</h2>
