@@ -28,6 +28,7 @@ type Top = { tipo: string; valor: string; visitas: number };
 type Negocio = { dia: string; altas: number; solicitudes: number; mensajes: number };
 type Busqueda = { termino: string; veces: number; sin_resultados: number };
 type Afiliado = { producto: string; clics: number; desde: string };
+type ClicRed = { cuando: string; red: string; origen: string; profesional: string | null; profesional_user_id: string | null; quien: string | null; session_id: string | null; device: string | null };
 type ClicBanner = { cuando: string; banner: string; origen: string | null; path: string; device: string | null; session_id: string | null; quien: string | null };
 type Blog = { articulo: string; visitas: number; sesiones: number; desde_buscador: number };
 type Embudo = { paso: string; orden: number; cantidad: number };
@@ -159,6 +160,7 @@ export default function AdminAnalytics() {
   const [busquedas, setBusquedas] = useState<Busqueda[]>([]);
   const [afiliados, setAfiliados] = useState<Afiliado[]>([]);
   const [clicsBanner, setClicsBanner] = useState<ClicBanner[]>([]);
+  const [clicsRedes, setClicsRedes] = useState<ClicRed[]>([]);
   const [blog, setBlog] = useState<Blog[]>([]);
   const [embudo, setEmbudo] = useState<Embudo[]>([]);
   const [recursos, setRecursos] = useState<Recurso[]>([]);
@@ -196,7 +198,7 @@ export default function AdminAnalytics() {
     // hoy (corta en la hora actual), no el patrón histórico agregado que da
     // panel_analytics_hora — ese sirve para "¿a qué hora entra tu gente?"
     // pero pintaba horas futuras del día como si ya hubieran pasado.
-    const [d, h, t, n, bus, afi, blg, emb, rec, uu, pwa, ban] = await Promise.all([
+    const [d, h, t, n, bus, afi, blg, emb, rec, uu, pwa, ban, red] = await Promise.all([
       sb.rpc('panel_analytics_dia', { p_dias: dias }),
       dias === 1 && hoy
         ? sb.rpc('panel_analytics_hora_hoy', {})
@@ -214,6 +216,7 @@ export default function AdminAnalytics() {
       sb.rpc('panel_analytics_usuarios_unicos', { p_dias: dias, p_desde_medianoche: hoy }),
       sb.rpc('panel_analytics_pwa_instalaciones', { p_dias: dias }),
       sb.rpc('panel_analytics_banners', { p_dias: dias }),
+      sb.rpc('panel_analytics_redes', { p_dias: dias }),
     ]);
 
     const fallo = [d, h, t, n].find(r => r.error);
@@ -238,6 +241,7 @@ export default function AdminAnalytics() {
     setBusquedas((bus.data as Busqueda[]) ?? []);
     setAfiliados((afi.data as Afiliado[]) ?? []);
     setClicsBanner((ban.data as ClicBanner[]) ?? []);
+    setClicsRedes((red.data as ClicRed[]) ?? []);
     setBlog((blg.data as Blog[]) ?? []);
     setEmbudo((emb.data as Embudo[]) ?? []);
     setRecursos((rec.data as Recurso[]) ?? []);
@@ -725,6 +729,65 @@ export default function AdminAnalytics() {
                   <span className="flex-1 truncate" style={{ color: 'rgba(10,9,8,0.75)' }}>{c.quien || 'Sin sesión'}</span>
                   <span className="flex-shrink-0" style={{ color: 'rgba(10,9,8,0.45)' }}>
                     {c.origen === 'app' ? 'App' : c.origen === 'publica' ? 'Pública' : c.origen}{c.device ? ` · ${c.device}` : ''}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </Panel>
+
+      {/* REDES DE LOS PROFESIONALES — se enseñan como escaparate (28 oct),
+          pero cada clic es alguien que puede escribirle por fuera de XPEAK.
+          Comparar con los mensajes del chat dice cuánto pesa esa fuga. */}
+      <Panel
+        title="Clics en redes de profesionales"
+        hint="Quién pincha el Instagram o TikTok de cada profesional y desde dónde. Cuenta desde el 28 oct; no incluye a los admins."
+        ayuda="'Perfil público' es la ficha /p/...; 'Panel' es la ficha dentro de la app (solo registrados). Personas = sesiones distintas, así que alguien que pincha tres veces cuenta una. Si esto crece mucho más que los mensajes del chat, el contacto se está yendo fuera."
+      >
+        {clicsRedes.length === 0 ? (
+          <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
+            Sin clics en este periodo.
+          </p>
+        ) : (
+          <>
+            <div className="flex flex-col gap-1.5 mb-3">
+              {Object.entries(clicsRedes.reduce<Record<string, ClicRed[]>>((acc, c) => {
+                const k = `${c.profesional ?? 'Perfil borrado'}|${c.red}`;
+                (acc[k] ||= []).push(c);
+                return acc;
+              }, {})).sort((a, b) => b[1].length - a[1].length).map(([k, filas]) => {
+                const [profesional, red] = k.split('|');
+                const personas = new Set(filas.map(f => f.session_id)).size;
+                return (
+                  <div key={k} className="flex items-center gap-2 py-1">
+                    <span className="text-[0.78rem] flex-1 truncate font-bold" style={{ color: 'rgba(10,9,8,0.75)' }}>
+                      {profesional}
+                    </span>
+                    <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
+                      style={{ background: 'rgba(10,9,8,0.05)', color: 'rgba(10,9,8,0.5)' }}>
+                      {red === 'tiktok' ? 'TikTok' : 'Instagram'}
+                    </span>
+                    <span className="text-[0.65rem] flex-shrink-0" style={{ color: 'rgba(10,9,8,0.45)' }}>
+                      {personas} {personas === 1 ? 'persona' : 'personas'}
+                    </span>
+                    <span className="text-[0.75rem] font-black flex-shrink-0 w-8 text-right" style={{ color: GOLD }}>{filas.length}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="text-[0.65rem] font-bold uppercase tracking-wide mb-1" style={{ color: 'rgba(10,9,8,0.4)' }}>Registro</p>
+            <div className="flex flex-col max-h-64 overflow-y-auto">
+              {clicsRedes.slice(0, 50).map((c, i) => (
+                <div key={i} className="flex items-center gap-2 py-1 text-[0.7rem]" style={{ borderTop: i ? '1px solid rgba(10,9,8,0.05)' : undefined }}>
+                  <span className="flex-shrink-0 w-24" style={{ color: 'rgba(10,9,8,0.5)' }}>
+                    {new Date(c.cuando).toLocaleString('es-ES', { timeZone: 'Europe/Madrid', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                  <span className="flex-1 truncate" style={{ color: 'rgba(10,9,8,0.75)' }}>
+                    {c.quien || 'Sin sesión'} → {c.profesional ?? 'Perfil borrado'}
+                  </span>
+                  <span className="flex-shrink-0" style={{ color: 'rgba(10,9,8,0.45)' }}>
+                    {c.origen === 'panel' ? 'Panel' : 'Perfil público'}{c.device ? ` · ${c.device}` : ''}
                   </span>
                 </div>
               ))}
