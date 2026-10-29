@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Send, PenSquare, Search } from 'lucide-react';
+import { ArrowLeft, Send, PenSquare, Search, Check, CheckCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -223,8 +223,12 @@ export default function AdminBandejaXpeak({ onSinLeer }: { onSinLeer?: (n: numbe
                     {m.content && <p className="whitespace-pre-wrap break-words">{textoVisible(m.content)}</p>}
                     {m.photo_url && <a href={m.photo_url} target="_blank" rel="noreferrer" className="text-xs underline">Ver foto</a>}
                     {m.video_url && <a href={m.video_url} target="_blank" rel="noreferrer" className="text-xs underline ml-2">Ver vídeo</a>}
-                    <p className="text-[0.7rem] mt-1 text-right" style={{ color: '#6b7280' }}>
-                      {hora(m.created_at)}{m.de_xpeak ? (m.leido ? ' · leído' : ' · enviado') : ''}
+                    <p className="text-[0.7rem] mt-1 flex items-center justify-end gap-1" style={{ color: '#6b7280' }}>
+                      {hora(m.created_at)}
+                      {/* Como WhatsApp: un tick enviado, doble azul leído. */}
+                      {m.de_xpeak && (m.leido
+                        ? <CheckCheck size={14} style={{ color: '#2563EB' }} aria-label="Leído" />
+                        : <Check size={14} style={{ color: '#9ca3af' }} aria-label="Enviado" />)}
                     </p>
                   </div>
                 </div>
