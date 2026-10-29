@@ -206,6 +206,9 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   const [localPhone, setLocalPhone] = useState<string | null>(null);
   const [localExperienceLevel, setLocalExperienceLevel] = useState<string | null>(null);
   const [localEmergenteAnios, setLocalEmergenteAnios] = useState<string | null>(null);
+  // Sondeo interno: ¿viajaría al extranjero? (tabla viaje_extranjero, solo DJs)
+  const [viajaria, setViajaria] = useState<boolean | null>(null);
+  const [paisesViaje, setPaisesViaje] = useState<string[]>([]);
 
   // Notification prefs — backed by localStorage + Web Push
   const [pushEnabled, setPushEnabled] = useState(() => isPushSubscribed());
@@ -254,6 +257,32 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
     // más de lo que lo hacía antes y no se rompe nada.
     if (error) console.warn('[SettingsView] notif pref not persisted server-side:', error.message);
   };
+
+  const persistViaje = async (nextViajaria: boolean, nextPaises: string[]) => {
+    if (!user) return;
+    const { error } = await supabase.from('viaje_extranjero' as any).upsert({
+      user_id: user.id,
+      viajaria: nextViajaria,
+      paises: nextViajaria ? nextPaises : [],
+      updated_at: new Date().toISOString(),
+    });
+    if (error) { toast.error('No se pudo guardar. Inténtalo de nuevo.'); return; }
+    toast.success('Respuesta guardada.');
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('viaje_extranjero' as any)
+      .select('viajaria, paises')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (error || !data) return;
+        const row = data as any;
+        setViajaria(row.viajaria === true);
+        setPaisesViaje(Array.isArray(row.paises) ? row.paises : []);
+      });
+  }, [user]);
 
   // Carga inicial desde servidor: es la fuente de verdad, y así la preferencia
   // viaja entre dispositivos en vez de quedarse en un solo navegador.
@@ -866,6 +895,55 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                 </p>
               </>
             )}
+          </div>
+        )}
+
+        {/* Sondeo interno de oferta para contratación internacional: no se
+            muestra en el perfil público ni se cruza con nada; solo lo vemos
+            los admins para decidir si abrir Francia/Italia/UK. De momento
+            solo Europa. */}
+        {isDj && (
+          <div className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <label className="block text-xs font-bold mb-1.5" style={{ color: '#8A6D0F' }}>¿Viajarías a pinchar al extranjero?</label>
+            <NightlifeSelect
+              value={viajaria === null ? '' : viajaria ? 'si' : 'no'}
+              onChange={v => {
+                const next = v === 'si';
+                setViajaria(next);
+                if (!next) persistViaje(false, []);
+              }}
+              options={[
+                { value: 'si', label: 'Sí, viajaría' },
+                { value: 'no', label: 'No, de momento no' },
+              ]}
+              active
+            />
+            {viajaria === true && (
+              <div className="mt-3">
+                <p className="text-xs text-muted-foreground mb-2 font-medium">¿A qué países de Europa? (puedes marcar varios)</p>
+                <div className="flex flex-wrap gap-2">
+                  {['Francia', 'Italia', 'Reino Unido', 'Portugal', 'Alemania', 'Países Bajos', 'Bélgica', 'Otro país de Europa'].map(pais => {
+                    const on = paisesViaje.includes(pais);
+                    return (
+                      <button key={pais} type="button"
+                        onClick={() => setPaisesViaje(on ? paisesViaje.filter(p => p !== pais) : [...paisesViaje, pais])}
+                        className="text-xs px-3 py-1.5 rounded-full font-medium transition-all"
+                        style={{ background: on ? 'rgba(212,175,55,0.25)' : 'rgba(0,0,0,0.05)', border: `1px solid ${on ? 'rgba(212,175,55,0.6)' : 'rgba(0,0,0,0.1)'}`, color: on ? '#8A6D0F' : 'inherit' }}>
+                        {pais}
+                      </button>
+                    );
+                  })}
+                </div>
+                <button type="button" className="btn-nightlife-primary text-sm py-2 px-4 mt-3 disabled:opacity-60"
+                  disabled={paisesViaje.length === 0}
+                  onClick={() => persistViaje(true, paisesViaje)}>
+                  Guardar respuesta
+                </button>
+              </div>
+            )}
+            <p className="text-[0.75rem] text-muted-foreground mt-2 leading-snug">
+              Solo lo vemos nosotros, no aparece en tu perfil. Nos sirve para saber si merece la pena abrir contrataciones desde otros países. No supone ningún compromiso.
+            </p>
           </div>
         )}
 
