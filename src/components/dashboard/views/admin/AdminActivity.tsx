@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle, X, HelpCircle, Mail, CheckCheck, Megaphone, Hand, UserCheck, Handshake } from 'lucide-react';
@@ -82,6 +83,9 @@ const EmailsTooltip = ({ userId }: { userId: string }) => {
   const [cargando, setCargando] = useState(false);
   const [emails, setEmails] = useState<EmailEnviado[] | null>(null);
   const [activo, setActivo] = useState(0);
+  // La vista previa del tooltip es pequeña y corta el email; "Ver completo"
+  // lo abre entero en grande (29 oct 2026).
+  const [completo, setCompleto] = useState(false);
 
   const cargar = async () => {
     if (emails !== null || cargando) return;
@@ -104,7 +108,7 @@ const EmailsTooltip = ({ userId }: { userId: string }) => {
       </button>
       {abierto && (
         <div
-          className="absolute z-50 top-5 left-0 rounded-xl overflow-hidden shadow-2xl"
+          className="absolute z-50 top-4 left-0 rounded-xl overflow-hidden shadow-2xl"
           style={{ width: 340, background: '#fff', border: '1px solid rgba(0,0,0,0.12)' }}
           onClick={e => e.stopPropagation()}
         >
@@ -137,6 +141,10 @@ const EmailsTooltip = ({ userId }: { userId: string }) => {
               <div className="px-3 pt-1.5 pb-1">
                 <p className="text-[0.65rem]" style={{ color: '#888' }}>{new Date(emails[activo].sent_at).toLocaleString('es-ES')}</p>
                 <p className="text-xs font-bold truncate">{emails[activo].subject}</p>
+                <button type="button" onClick={() => { setCompleto(true); setAbierto(false); }}
+                  className="mt-1 text-[0.7rem] font-bold underline" style={{ color: '#8A6D0F' }}>
+                  Ver completo
+                </button>
               </div>
               <iframe
                 title="preview-email"
@@ -147,6 +155,27 @@ const EmailsTooltip = ({ userId }: { userId: string }) => {
             </>
           )}
         </div>
+      )}
+      {completo && emails && emails[activo] && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.45)' }}
+          onClick={() => setCompleto(false)}>
+          <div className="w-full max-w-[680px] rounded-2xl overflow-hidden shadow-2xl flex flex-col" style={{ background: '#fff', height: '90vh' }}
+            onClick={e => e.stopPropagation()}>
+            <div className="px-4 py-3 flex items-center gap-2" style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+              <span className="flex-1 min-w-0">
+                <span className="block text-[0.7rem]" style={{ color: '#888' }}>
+                  {emails[activo].type} · {new Date(emails[activo].sent_at).toLocaleString('es-ES')}
+                </span>
+                <span className="block text-sm font-bold truncate">{emails[activo].subject}</span>
+              </span>
+              <button type="button" onClick={() => setCompleto(false)} aria-label="Cerrar"
+                className="p-1.5 rounded-lg hover:bg-black/5"><X size={16} /></button>
+            </div>
+            <iframe title="email-completo" srcDoc={emails[activo].html} sandbox=""
+              style={{ flex: 1, width: '100%', border: 'none', background: '#fff' }} />
+          </div>
+        </div>,
+        document.body,
       )}
     </span>
   );
