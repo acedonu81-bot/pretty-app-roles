@@ -887,6 +887,14 @@ const ROUTES = [
     ogType: 'website',
   },
   {
+    path: '/directorio/limpieza',
+    title: 'Servicios de limpieza para eventos y locales | XPEAK',
+    desc: 'Directorio de servicios de limpieza para eventos: limpieza antes, durante y después de bodas, fiestas y eventos de empresa. Locales, salas y fincas. Contacto directo.',
+    ogTitle: 'Limpieza para eventos | XPEAK',
+    ogDesc: 'Limpieza antes, durante y después de tu evento: locales, salas, fincas y recogida de residuos.',
+    ogType: 'website',
+  },
+  {
     path: '/directorio/locales-eventos',
     title: 'Alquilar locales para eventos en España | XPEAK',
     desc: 'Directorio de locales para bodas, fiestas corporativas y eventos privados en España. Espacios únicos con opciones de catering. Contacto directo con propietarios.',
@@ -1599,7 +1607,7 @@ const ROLE_LABELS = {
   animador: 'Animador/a', speaker: 'Speaker', vestuario: 'Estilista', ambassador: 'Brand ambassador',
   'grupo-musical': 'Grupo musical', event_manager: 'Coordinador/a de eventos',
   'photo-booth': 'Photo booth', 'food-truck': 'Food truck', 'disco-movil': 'Disco móvil', peluqueria: 'Peluquería', local_eventos: 'Local para eventos',
-  tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos',
+  tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos', limpieza: 'Limpieza',
 };
 
 // rol de perfil (BD) → slug de categoría en /contratar-{slug} — para enlazar
