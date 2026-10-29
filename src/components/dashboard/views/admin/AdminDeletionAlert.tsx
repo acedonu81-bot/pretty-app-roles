@@ -24,7 +24,7 @@ interface Deletion {
 
 const roleLabel = (r: string | null) => (r ? ROLE_ES[r] ?? r : 'Sin rol');
 
-const AdminDeletionAlert = ({ onOpenDeletions }: { onOpenDeletions?: () => void } = {}) => {
+const AdminDeletionAlert = ({ onOpenDeletions, onCount }: { onOpenDeletions?: () => void; onCount?: (n: number) => void } = {}) => {
   const [pending, setPending] = useState<Deletion[]>([]);
   const [acking, setAcking] = useState(false);
 
@@ -42,6 +42,8 @@ const AdminDeletionAlert = ({ onOpenDeletions }: { onOpenDeletions?: () => void 
       });
     return () => { cancelled = true; };
   }, []);
+
+  useEffect(() => { onCount?.(pending.length); }, [pending.length, onCount]);
 
   if (pending.length === 0) return null;
 

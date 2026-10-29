@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion } from 'lucide-react';
+import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion, Inbox } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
@@ -10,11 +10,6 @@ import AdminFeatureRequests from './admin/AdminFeatureRequests';
 import AdminCancellations from './admin/AdminCancellations';
 import AdminReviews from './admin/AdminReviews';
 import AdminPromoCodes from './admin/AdminPromoCodes';
-import AdminDeletionAlert from './admin/AdminDeletionAlert';
-import AdminNewProfileAlert from './admin/AdminNewProfileAlert';
-import AdminInvisibleProfilesAlert from './admin/AdminInvisibleProfilesAlert';
-import AdminPendingBookingsAlert from './admin/AdminPendingBookingsAlert';
-import AdminSolicitudesSemaforo from './admin/AdminSolicitudesSemaforo';
 import AdminActivity from './admin/AdminActivity';
 import AdminSaludSistema from './admin/AdminSaludSistema';
 import AdminDeletions from './admin/AdminDeletions';
@@ -24,9 +19,12 @@ import AdminEmergentes from './admin/AdminEmergentes';
 import AdminConcurso from './admin/AdminConcurso';
 import AdminConcursoVotantes from './admin/AdminConcursoVotantes';
 import AdminFeedbackWeb from './admin/AdminFeedbackWeb';
+import AdminAvisos from './admin/AdminAvisos';
+import AdminBandejaXpeak from './admin/AdminBandejaXpeak';
 
 const TABS = [
   { id: 'activity', label: 'Actividad', icon: Activity },
+  { id: 'xpeak', label: 'Mensajes XPEAK', icon: Inbox },
   { id: 'salud',    label: 'Salud',     icon: ShieldCheck },
   { id: 'analytics', label: 'Tráfico', icon: LineChart },
   { id: 'overview', label: 'General', icon: LayoutGrid },
@@ -53,6 +51,13 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
   const [reviewsBadge, setReviewsBadge] = useState(0);
   // Inscripciones del concurso sin revisar: mismo aviso rojo que las reseñas.
   const [concursoBadge, setConcursoBadge] = useState(0);
+  // Mensajes sin leer en los chats de la cuenta XPEAK; la bandeja lo actualiza al abrirla.
+  const [xpeakBadge, setXpeakBadge] = useState(0);
+  useEffect(() => {
+    (supabase.rpc as any)('admin_xpeak_conversaciones').then(({ data }: { data: { sin_leer: number | string }[] | null }) => {
+      setXpeakBadge((data ?? []).reduce((s, c) => s + Number(c.sin_leer), 0));
+    });
+  }, []);
   const instanceId = useRef(Math.random().toString(36).slice(2)).current;
 
   useEffect(() => {
@@ -83,11 +88,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
           verlas entres por donde entres, no solo en la pestaña que toque.
           El alta va primero porque es la accionable: revisar rol y zona a
           tiempo evita que el perfil quede invisible en el directorio. */}
-      <AdminPendingBookingsAlert />
-      <AdminSolicitudesSemaforo />
-      <AdminNewProfileAlert onOpenUsers={() => setTab('users')} />
-      <AdminInvisibleProfilesAlert onOpenUsers={() => setTab('users')} />
-      <AdminDeletionAlert onOpenDeletions={() => setTab('deletions')} />
+      <AdminAvisos onOpenUsers={() => setTab('users')} onOpenDeletions={() => setTab('deletions')} />
 
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-1">
@@ -116,6 +117,12 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
                 {concursoBadge}
               </span>
             )}
+            {t.id === 'xpeak' && xpeakBadge > 0 && (
+              <span className="flex items-center justify-center rounded-full text-[0.75rem] font-black"
+                style={{ minWidth: 16, height: 16, padding: '0 4px', background: '#dc2626', color: '#fff' }}>
+                {xpeakBadge}
+              </span>
+            )}
             {t.id === 'content' && reviewsBadge > 0 && (
               <span className="flex items-center justify-center rounded-full text-[0.75rem] font-black"
                 style={{ minWidth: 16, height: 16, padding: '0 4px', background: '#dc2626', color: '#fff' }}>
@@ -127,6 +134,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       </div>
 
       {tab === 'activity' && <AdminActivity />}
+      {tab === 'xpeak' && <AdminBandejaXpeak onSinLeer={setXpeakBadge} />}
       {tab === 'salud' && <AdminSaludSistema />}
       {tab === 'analytics' && <AdminAnalytics />}
       {tab === 'overview' && (

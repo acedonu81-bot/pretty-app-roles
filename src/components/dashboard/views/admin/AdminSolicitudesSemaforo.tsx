@@ -78,7 +78,7 @@ const que = (d: string | null) => {
   return m ? m[1] : '';
 };
 
-const AdminSolicitudesSemaforo = () => {
+const AdminSolicitudesSemaforo = ({ onCount }: { onCount?: (n: number) => void } = {}) => {
   const [filas, setFilas] = useState<Fila[]>([]);
 
   useEffect(() => {
@@ -95,6 +95,8 @@ const AdminSolicitudesSemaforo = () => {
     window.addEventListener('xpeak:solicitud-quitada', quitar);
     return () => window.removeEventListener('xpeak:solicitud-quitada', quitar);
   }, []);
+
+  useEffect(() => { onCount?.(filas.length); }, [filas.length, onCount]);
 
   if (filas.length === 0) return null;
 

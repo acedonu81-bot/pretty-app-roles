@@ -37,7 +37,7 @@ interface Perfil {
 
 const roleLabel = (r: string | null) => (r ? ROLE_ES[r] ?? r : 'Sin rol');
 
-const AdminInvisibleProfilesAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}) => {
+const AdminInvisibleProfilesAlert = ({ onOpenUsers, onCount }: { onOpenUsers?: () => void; onCount?: (n: number) => void } = {}) => {
   const [perfiles, setPerfiles] = useState<Perfil[]>([]);
   const [dismissedSignature, setDismissedSignature] = useState<string | null>(null);
 
@@ -59,6 +59,9 @@ const AdminInvisibleProfilesAlert = ({ onOpenUsers }: { onOpenUsers?: () => void
       });
     return () => { cancelled = true; };
   }, []);
+
+  const oculto = dismissedSignature !== null && dismissedSignature === signatureOf(perfiles);
+  useEffect(() => { onCount?.(oculto ? 0 : perfiles.length); }, [oculto, perfiles.length, onCount]);
 
   if (perfiles.length === 0) return null;
   if (dismissedSignature !== null && dismissedSignature === signatureOf(perfiles)) return null;

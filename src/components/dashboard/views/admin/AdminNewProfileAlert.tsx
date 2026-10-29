@@ -30,7 +30,7 @@ interface NewProfile {
 
 const roleLabel = (r: string | null) => (r ? ROLE_ES[r] ?? r : 'Sin rol');
 
-const AdminNewProfileAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}) => {
+const AdminNewProfileAlert = ({ onOpenUsers, onCount }: { onOpenUsers?: () => void; onCount?: (n: number) => void } = {}) => {
   const [pending, setPending] = useState<NewProfile[]>([]);
   const [acking, setAcking] = useState(false);
   const [rejectingId, setRejectingId] = useState<string | null>(null);
@@ -52,6 +52,8 @@ const AdminNewProfileAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}
       });
     return () => { cancelled = true; };
   }, []);
+
+  useEffect(() => { onCount?.(pending.length); }, [pending.length, onCount]);
 
   if (pending.length === 0) return null;
 

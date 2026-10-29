@@ -51,7 +51,7 @@ const esperando = (h: number) => {
   return d === 1 ? 'hace 1 día' : `hace ${d} días`;
 };
 
-const AdminPendingBookingsAlert = ({ onOpenBookings }: { onOpenBookings?: () => void } = {}) => {
+const AdminPendingBookingsAlert = ({ onOpenBookings, onCount }: { onOpenBookings?: () => void; onCount?: (n: number) => void } = {}) => {
   const [pending, setPending] = useState<PendingBooking[]>([]);
 
   useEffect(() => {
@@ -76,6 +76,8 @@ const AdminPendingBookingsAlert = ({ onOpenBookings }: { onOpenBookings?: () => 
     window.addEventListener('xpeak:solicitud-quitada', quitar);
     return () => window.removeEventListener('xpeak:solicitud-quitada', quitar);
   }, []);
+
+  useEffect(() => { onCount?.(pending.length); }, [pending.length, onCount]);
 
   if (pending.length === 0) return null;
 
