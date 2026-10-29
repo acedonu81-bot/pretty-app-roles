@@ -469,6 +469,13 @@ const GREETING: Msg = {
   followUps: ['¿Qué es XPEAK?', '¿Cómo funciona el Flash Booking?', '¿Cómo consigo más bookings?'],
 };
 
+// WhatsApp de empresa de XPEAK (29 oct 2026). Uso limitado a propósito: solo se
+// ofrece dentro del panel (con sesión), cuando el bot no resuelve o se pide
+// hablar con el equipo, y solo para mensajes. No va en el pie, emails ni
+// páginas públicas para no recibir llamadas ni ráfagas.
+export const WHATSAPP_XPEAK = '34625527760';
+const WHATSAPP_TEXTO = 'Hola XPEAK, necesito ayuda con: ';
+
 const SupportChat = () => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
@@ -478,6 +485,7 @@ const SupportChat = () => {
   const [unread, setUnread] = useState(0);
   const [noMatchCount, setNoMatchCount] = useState(0);
   const [showTopics, setShowTopics] = useState(false);
+  const [ofrecerWa, setOfrecerWa] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -526,6 +534,7 @@ const SupportChat = () => {
       await new Promise(r => setTimeout(r, 500 + Math.random() * 400));
       setTyping(false);
       pushBot(match.answer, match.followUps);
+      if (match.id === 'support') setOfrecerWa(true);
       setNoMatchCount(0);
       if (!open) setUnread(n => n + 1);
       return;
@@ -554,6 +563,7 @@ const SupportChat = () => {
       setNoMatchCount(newCount);
       if (newCount >= 2) {
         setShowTopics(true);
+        setOfrecerWa(true);
         pushBot('No he encontrado una respuesta para eso. Aquí tienes los temas disponibles o escríbenos a **info@xpeak.site**:', ['Ver todos los temas']);
       } else {
         pushBot('Mmm, no estoy seguro de entender eso. ¿Puedes reformularlo?', ['Ver todos los temas', '¿Qué es XPEAK?', '¿Cómo puedo contactar con soporte?']);
@@ -721,6 +731,19 @@ const SupportChat = () => {
                       {t.label}
                     </button>
                   ))}
+                </motion.div>
+              )}
+
+              {ofrecerWa && !typing && (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="ml-8 mt-1">
+                  <a href={`https://wa.me/${WHATSAPP_XPEAK}?text=${encodeURIComponent(WHATSAPP_TEXTO)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    onClick={() => void logEvent('cta_click', location.pathname, 'soporte whatsapp')}
+                    className="inline-flex items-center gap-1.5 text-[0.7rem] font-bold px-3 py-2 rounded-lg"
+                    style={{ background: '#25D366', color: '#fff' }}>
+                    <MessageCircle size={13} /> Escribir por WhatsApp
+                  </a>
+                  <p className="text-[0.62rem] mt-1" style={{ color: '#555' }}>Solo mensajes de texto. No atendemos llamadas.</p>
                 </motion.div>
               )}
 
