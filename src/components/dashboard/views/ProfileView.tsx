@@ -471,8 +471,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             ))}
           </div>
 
-          {/* — Compartir perfil — */}
-          {user && (
+          {/* — Compartir perfil — (el empresario no tiene enlace público) */}
+          {user && profile.role !== 'empresario' && (
             <div className="glass-panel p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Share2 size={13} style={{ color: '#8A6D0F' }} />

@@ -691,8 +691,11 @@ const Dashboard = () => {
       case 'feed': return <FeedView onNavigate={handleViewChange} />;
       case 'calendar':   return <CalendarView />;
       case 'contracts':  return <ContractView />;
-      case 'profile': return <><PerfilTabs active="profile" onNavigate={handleViewChange} /><ProfileView onNavigate={nav} /></>;
-      case 'ficha':   return <><PerfilTabs active="ficha" onNavigate={handleViewChange} /><FichaView onNavigate={handleViewChange} /></>;
+      case 'profile': return <><PerfilTabs active="profile" onNavigate={handleViewChange} esEmpresario={profileRole === 'empresario'} /><ProfileView onNavigate={nav} /></>;
+      // El empresario no tiene ficha pública (30 sep 2026): los enlaces viejos a 'ficha' le llevan a Mis datos.
+      case 'ficha':   return profileRole === 'empresario'
+        ? <ProfileView onNavigate={nav} />
+        : <><PerfilTabs active="ficha" onNavigate={handleViewChange} /><FichaView onNavigate={handleViewChange} /></>;
       case 'mapa': return <MapaView />;
       case 'flashbooking':
       case 'flash': return <FlashBookingWallView onMessage={handleMessage} />;

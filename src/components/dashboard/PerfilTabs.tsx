@@ -9,6 +9,8 @@
 interface Props {
   active: 'profile' | 'ficha';
   onNavigate: (view: string) => void;
+  /** El empresario no tiene ficha pública (decisión 30 sep): solo "Mis datos", sin pestañas. */
+  esEmpresario?: boolean;
 }
 
 const TABS: { id: 'profile' | 'ficha'; label: string }[] = [
@@ -16,7 +18,7 @@ const TABS: { id: 'profile' | 'ficha'; label: string }[] = [
   { id: 'ficha', label: 'Fotos, vídeo y música' },
 ];
 
-const PerfilTabs = ({ active, onNavigate }: Props) => (
+const PerfilTabs = ({ active, onNavigate, esEmpresario }: Props) => esEmpresario ? null : (
   <div role="tablist" aria-label="Mi perfil" className="flex gap-1 p-1 mb-5 rounded-xl w-full sm:w-auto sm:inline-flex"
     style={{ background: 'rgba(10,9,8,0.05)' }}>
     {TABS.map(t => {
