@@ -119,6 +119,7 @@ const ROLE_CFG: Record<string, {
   camarero:  { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Sala & Barra',        tagline: 'El engranaje invisible del show', icon: Users },
   tecnico:   { color: '#38BDF8', glow: 'rgba(56,189,248,0.35)',   label: 'Técnico · Sonido y Montaje', tagline: 'Que todo suene como debe', icon: Music },
   alquiler:  { color: '#0EA5E9', glow: 'rgba(14,165,233,0.35)',   label: 'Alquiler de Equipos', tagline: 'El equipo que tu evento necesita', icon: Music },
+  limpieza:  { color: '#14B8A6', glow: 'rgba(20,184,166,0.35)',   label: 'Servicio de Limpieza', tagline: 'El evento termina y todo queda impecable', icon: Music },
 };
 
 /** Sin entrada propia NO se cae en 'dj': eso etiquetaba de DJ a quien no lo es.

@@ -25,6 +25,7 @@ export const ROLE_ES: Record<string, string> = {
   media:         'Media / Fotografía',
   tecnico:       'Técnico de Sonido y Montaje',
   alquiler:      'Alquiler de Equipos',
+  limpieza:      'Servicio de Limpieza',
   local_eventos: 'Locales para eventos',
   'grupo-musical': 'Grupo Musical',
   'disco-movil': 'Disco Móvil',
@@ -88,6 +89,7 @@ export const JOB_WORD: Record<string, string> = {
   media: 'encargo',
   tecnico: 'montaje',
   alquiler: 'alquiler',
+  limpieza: 'servicio',
   local_eventos: 'reserva',
   'grupo-musical': 'bolo',
   'disco-movil': 'evento',
@@ -213,6 +215,7 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     // un festival preguntan cosas distintas. Ordenadas por área (sonido, luces,
     // montaje, vídeo) y con las marcas de mesa que se piden por nombre propio.
     tecnico:   { label: 'Especialidades',         tags: ['Técnico de sonido','Sonido en directo','Mesa de mezclas','Monitores','Microfonía','P.A. / Line array','Backline','Pruebas de sonido','Técnico de iluminación','Diseño de iluminación','Luces de espectáculo','Máquinas de humo','Montaje de escenario','Desmontaje','Estructuras / truss','Rigging','Carga y descarga','Alquiler de equipo','Técnico de vídeo','Pantallas LED','Proyección','Streaming en directo','Bodas','Festivales','Salas y clubs','Eventos corporativos'] },
+    limpieza:  { label: 'Servicios', tags: ['Limpieza post-evento','Limpieza previa al evento','Limpieza durante el evento','Limpieza de locales y salas','Limpieza de fincas y jardines','Limpieza de cocinas y office','Limpieza de cristales','Recogida de residuos','Desinfección','Limpieza de moqueta y suelos','Limpieza de baños','Personal de limpieza por horas','Productos y material incluidos','Seguro de responsabilidad civil','Servicio 24 h'] },
     local_eventos: { label: 'Tipo de espacio', tags: ['Discoteca', 'Sala de fiestas', 'Bar de eventos', 'Rooftop / terraza', 'Finca', 'Casa rural', 'Salón de bodas', 'Espacio diáfano', 'Permite pernoctar', 'Zona chill-out', 'Barra libre incluida', 'Catering propio', 'DJ booth', 'Parking privado', 'Acceso adaptado'] },
   }
 

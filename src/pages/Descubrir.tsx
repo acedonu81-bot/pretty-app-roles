@@ -209,7 +209,7 @@ export default function Descubrir() {
           onBookNow={(p) => { window.location.href = profileUrl(p as DirProfile); }}
           onAddToCart={(p) => {
             const prof = p as DirProfile;
-            const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
+            const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone, minHours: (prof as any).min_hours ?? null });
             if (result === 'added') toast.success(`${prof.display_name} añadido a "Mi evento"`);
             else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
           }}

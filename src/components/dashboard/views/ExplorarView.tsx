@@ -111,6 +111,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
     items: [
       { id: 'tecnico', view: 'tecnico', nombre: 'Técnicos de Sonido y Montaje', gancho: 'Sonido, iluminación y escenario' },
       { id: 'alquiler', view: 'alquiler', nombre: 'Alquiler de Equipos', gancho: 'Sonido, luces, fotomatón y más' },
+      { id: 'limpieza', view: 'limpieza', nombre: 'Servicio de Limpieza', gancho: 'Antes, durante y después del evento' },
     ],
   },
 ];

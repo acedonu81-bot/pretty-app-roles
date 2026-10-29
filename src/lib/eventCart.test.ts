@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { addToCart, removeFromCart, clearCart, isInCart, useEventCart, MAX_CART_ITEMS, importeEstimado, type CartItem } from './eventCart';
+import { addToCart, removeFromCart, clearCart, isInCart, useEventCart, MAX_CART_ITEMS, importeEstimado, esLimpieza, type CartItem } from './eventCart';
 
 function makeItem(userId: string, overrides: Partial<CartItem> = {}): CartItem {
   return {
@@ -164,5 +164,13 @@ describe('eventCart', () => {
     localStorage.setItem('xpeak_event_cart', '{"no":"es una lista"}');
     expect(isInCart('a')).toBe(false);
     expect(addToCart(makeItem('a'))).toBe('added');
+  });
+});
+
+describe('limpieza en el carrito', () => {
+  it('va a presupuesto: no suma cifra al estimado', () => {
+    const limp = makeItem('l1', { role: 'limpieza', hourlyRate: 20 });
+    expect(esLimpieza(limp)).toBe(true);
+    expect(importeEstimado(limp, 6)).toBe(0);
   });
 });

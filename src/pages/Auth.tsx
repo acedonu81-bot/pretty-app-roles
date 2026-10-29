@@ -635,7 +635,7 @@ const Auth = () => {
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
-        const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'event_manager', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'food-truck', 'disco-movil', 'tecnico', 'alquiler', 'local_eventos'];
+        const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'event_manager', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'food-truck', 'disco-movil', 'tecnico', 'alquiler', 'limpieza', 'local_eventos'];
         const signUpMeta = {
           display_name: safeName,
           role: KNOWN_ROLES.includes(roleParam) ? roleParam : 'pending',

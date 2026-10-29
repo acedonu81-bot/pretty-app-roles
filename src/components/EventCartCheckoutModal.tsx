@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Calendar, MapPin, MessageSquare, Trash2, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { useEventCart, precioCerrado, importeEstimado, removeFromCart } from '@/lib/eventCart';
+import { useEventCart, precioCerrado, importeEstimado, removeFromCart, esLimpieza, HORAS_MIN_LIMPIEZA } from '@/lib/eventCart';
 import { unidadTarifa } from '@/lib/constants';
 import { faltanDatos, mensajeFaltan, hoyMadrid, detalleSolicitud } from '@/lib/solicitudCompleta';
 import CamposPersonasHorario from '@/components/CamposPersonasHorario';
@@ -17,6 +17,9 @@ const EVENT_TYPES = [
   'Boda', 'Cumpleaños', 'Evento corporativo', 'Comunión', 'Fiesta privada',
   'Festival / Concierto', 'Inauguración', 'Otro',
 ];
+
+const LIMPIEZA_CUANDO = ['Antes del evento', 'Durante el evento', 'Después del evento'];
+const LIMPIEZA_TAREAS = ['Salón / sala', 'Cocina / office', 'Baños', 'Terraza / jardín', 'Cristales', 'Recogida de residuos'];
 
 const EVENT_HOURS: Record<string, number> = {
   'Boda': 6, 'Comunión': 4, 'Evento corporativo': 5, 'Fiesta privada': 4,
@@ -56,6 +59,11 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   // solo un punto de partida razonable, no un dato fijo.
   const [hours, setHours] = useState<number | ''>('');
   const [hoursTouched, setHoursTouched] = useState(false);
+  // Limpieza: se pide aparte porque no se limpia durante las horas del evento.
+  const [limpCuando, setLimpCuando] = useState<string[]>([]);
+  const [limpTareas, setLimpTareas] = useState<string[]>([]);
+  const [limpM2, setLimpM2] = useState<number | ''>('');
+  const toggle = (lista: string[], v: string) => lista.includes(v) ? lista.filter(x => x !== v) : [...lista, v];
   // Este envío comparte nombre + contacto con cada profesional seleccionado —
   // mismo consentimiento explícito que pide el registro (Auth.tsx) antes de
   // compartir datos personales con terceros.
@@ -69,6 +77,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
   // Sin todos los datos no se manda nada (20 oct 2026).
+  const hayLimpieza = items.some(esLimpieza);
   const faltan = faltanDatos({ name: form.name, contact: form.contact, date: form.date, location: form.location, eventType: form.eventType, personas, horario }, { pideTipo: true, pideDetalle: true });
 
   const handleEventTypeChange = (v: string) => {
@@ -77,8 +86,11 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   };
 
   const estimatedHours = hours === '' ? 0 : hours;
+  // Limpieza no suma: va a presupuesto (importeEstimado devuelve 0).
   const estimatedTotal = items.reduce((sum, i) => sum + importeEstimado(i, estimatedHours), 0);
-  const itemsWithoutRate = items.filter(i => !i.hourlyRate).length;
+  const conTarifa = items.filter(i => i.hourlyRate && !esLimpieza(i));
+  const faltaLimpieza = hayLimpieza && (limpCuando.length === 0 || limpM2 === '' || limpM2 <= 0);
+  const itemsWithoutRate = items.filter(i => !i.hourlyRate && !esLimpieza(i)).length;
 
   // Si se vacía la cesta desde dentro del modal (última papelera), cerramos solos.
   useEffect(() => {
@@ -93,7 +105,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (faltan.length > 0) return;
+    if (faltan.length > 0 || faltaLimpieza) return;
     if (user && esOrganizador === false) return;
     if (!legalAccepted) { setLegalError(true); return; }
     if (!user) {
@@ -118,11 +130,11 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
         requester_contact: form.contact,
         event_date: form.date,
         event_location: form.location,
-        event_description: `${detalleSolicitud(personas, horario)} [${form.eventType}${estimatedHours > 0 ? ` · ${estimatedHours}h` : ''}] ${form.message}`,
+        event_description: `${detalleSolicitud(personas, horario)} [${form.eventType}${estimatedHours > 0 ? ` · ${estimatedHours}h` : ''}]${esLimpieza(item) ? ` LIMPIEZA: ${limpCuando.join(' + ')} · ${limpM2} m² aprox.${limpTareas.length ? ` · ${limpTareas.join(', ')}` : ''}.` : ''} ${form.message}`,
         // Presupuesto estimado que se le mostró al organizador (tarifa × horas).
         // Guardarlo como null hacía que el trabajo figurase a 0€ en el Historial
         // y en Gastos del empresario, pese a haberle enseñado una cifra.
-        agreed_price: item.hourlyRate && (estimatedHours > 0 || precioCerrado(item)) ? importeEstimado(item, estimatedHours) : null,
+        agreed_price: item.hourlyRate && !esLimpieza(item) && (estimatedHours > 0 || precioCerrado(item)) ? importeEstimado(item, estimatedHours) : null,
         status: 'pending',
         created_by: user?.id ?? null,
       };
@@ -312,11 +324,45 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
               </div>
             </div>
 
-            {estimatedHours > 0 && items.some(i => i.hourlyRate) && (
+            {hayLimpieza && (
+              <div className="rounded-xl mt-4 p-3 space-y-3" style={{ background: 'rgba(20,184,166,0.06)', border: '1px solid rgba(20,184,166,0.25)' }}>
+                <p className="text-xs font-black" style={{ color: '#0f766e' }}>Limpieza del evento</p>
+                <div>
+                  <p className="text-xs font-bold mb-1" style={{ color: '#333' }}>¿Cuándo se limpia?</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {LIMPIEZA_CUANDO.map(c => (
+                      <button key={c} type="button" onClick={() => setLimpCuando(l => toggle(l, c))}
+                        className="px-2.5 py-1 rounded-full text-[0.75rem] font-bold"
+                        style={{ background: limpCuando.includes(c) ? '#14b8a6' : '#fff', color: limpCuando.includes(c) ? '#fff' : '#333', border: '1px solid rgba(0,0,0,0.12)' }}>{c}</button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Metros cuadrados (aprox.)</label>
+                  <input type="number" min={1} value={limpM2} onChange={e => setLimpM2(e.target.value === '' ? '' : Number(e.target.value))}
+                    className="w-full px-3 py-2 rounded-xl text-sm outline-none" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
+                </div>
+                <div>
+                  <p className="text-xs font-bold mb-1" style={{ color: '#333' }}>Qué hay que limpiar (opcional)</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {LIMPIEZA_TAREAS.map(t => (
+                      <button key={t} type="button" onClick={() => setLimpTareas(l => toggle(l, t))}
+                        className="px-2.5 py-1 rounded-full text-[0.75rem] font-bold"
+                        style={{ background: limpTareas.includes(t) ? '#14b8a6' : '#fff', color: limpTareas.includes(t) ? '#fff' : '#333', border: '1px solid rgba(0,0,0,0.12)' }}>{t}</button>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-[0.75rem]" style={{ color: '#333' }}>
+                  La limpieza va a presupuesto: la empresa decide cuántas personas y horas hacen falta según los metros, los invitados y lo que haya que limpiar. Servicio mínimo de {HORAS_MIN_LIMPIEZA} horas.
+                </p>
+              </div>
+            )}
+
+            {estimatedHours > 0 && conTarifa.length > 0 && (
               <div className="rounded-xl mt-4 overflow-hidden"
                 style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
                 <div className="px-3 pt-2.5 space-y-1">
-                  {items.filter(i => i.hourlyRate).map(i => (
+                  {conTarifa.map(i => (
                     <div key={i.userId} className="flex items-center justify-between text-[0.75rem]" style={{ color: '#555' }}>
                       <span className="truncate mr-2">{i.displayName}</span>
                       <span className="flex-shrink-0">{precioCerrado(i) ? `${i.hourlyRate}€${unidadTarifa(i.role, true)}` : `${i.hourlyRate}€/h × ${estimatedHours}h`} = <span className="font-bold" style={{ color: '#222' }}>{importeEstimado(i, estimatedHours)}€</span></span>
@@ -326,6 +372,9 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                 <div className="flex items-center justify-between px-3 py-2.5 mt-1" style={{ borderTop: '1px solid rgba(212,175,55,0.15)' }}>
                   <p className="text-xs" style={{ color: '#222' }}>
                     Presupuesto estimado ({estimatedHours}h)
+                    {hayLimpieza && (
+                      <span className="block text-[0.75rem] mt-0.5" style={{ color: '#333' }}>+ limpieza: a presupuesto de la empresa</span>
+                    )}
                     {itemsWithoutRate > 0 && (
                       <span className="block text-[0.75rem] mt-0.5" style={{ color: '#333' }}>
                         +{itemsWithoutRate} profesional{itemsWithoutRate !== 1 ? 'es' : ''} sin tarifa pública: a consultar
@@ -368,7 +417,8 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
             )}
 
             {faltan.length > 0 && <p className="text-xs mt-3 text-center font-bold" style={{ color: '#B45309' }}>{mensajeFaltan(faltan)}</p>}
-            <button type="submit" disabled={status === 'sending' || items.length === 0 || faltan.length > 0}
+            {faltan.length === 0 && faltaLimpieza && <p className="text-xs mt-3 text-center font-bold" style={{ color: '#B45309' }}>Para la limpieza falta: cuándo se limpia y los metros cuadrados.</p>}
+            <button type="submit" disabled={status === 'sending' || items.length === 0 || faltan.length > 0 || faltaLimpieza}
               className="w-full mt-4 py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] disabled:opacity-60"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Send size={15} />

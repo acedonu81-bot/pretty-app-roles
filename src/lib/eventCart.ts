@@ -8,6 +8,8 @@ export interface CartItem {
   photoUrl: string | null;
   hourlyRate: number | null;
   zone: string | null;
+  /** Mínimo de horas que fija el profesional (Mis condiciones). */
+  minHours?: number | null;
 }
 
 const STORAGE_KEY = 'xpeak_event_cart';
@@ -41,9 +43,17 @@ export const precioCerrado = (item: Pick<CartItem, 'role'>) => tarifaCerrada(ite
 
 /** Importe estimado de un profesional del carrito para un evento de `horas` horas. */
 export function importeEstimado(item: CartItem, horas: number): number {
-  if (!item.hourlyRate) return 0;
+  if (!item.hourlyRate || esLimpieza(item)) return 0;
   return precioCerrado(item) ? item.hourlyRate : item.hourlyRate * horas;
 }
+
+/** Mínimo de horas de limpieza si la empresa no ha fijado el suyo (decisión 29 oct 2026). */
+export const HORAS_MIN_LIMPIEZA = 3;
+
+/** Limpieza va siempre a presupuesto: cuánta gente y cuántas horas depende de
+ *  los metros y del evento, y tarifa × horas daba cifras irreales para una
+ *  boda (29 oct 2026). */
+export const esLimpieza = (item: Pick<CartItem, 'role'>) => item.role === 'limpieza';
 
 export type AddToCartResult = 'added' | 'duplicate' | 'limit_reached';
 

@@ -251,6 +251,14 @@ export const ROLE_CONFIG: Record<string, {
     seoDesc: 'Alquiler de equipos para eventos en España: sonido, equipo de DJ, backline, luces, fotomatón, escenarios y mobiliario. Precio por día y contacto directo.',
     cta: 'Pedir disponibilidad',
   },
+  limpieza: {
+    dbRole: 'limpieza',
+    title: 'Servicios de limpieza para eventos',
+    subtitle: 'Limpieza antes, durante y después de bodas, fiestas y eventos de empresa: locales, salas, fincas, cocinas y recogida de residuos. Contacto directo con quien limpia.',
+    seoTitle: 'Servicios de limpieza para eventos y locales | XPEAK',
+    seoDesc: 'Directorio de servicios de limpieza para eventos: limpieza post-evento, de locales, salas y fincas. Precio por hora o por servicio y contacto directo.',
+    cta: 'Pedir presupuesto',
+  },
   'locales-eventos': {
     dbRole: 'local_eventos',
     title: 'Locales y fincas para eventos',
@@ -296,6 +304,7 @@ export const ALL_ROLES = [
   { slug: 'diseno-grafico', label: 'Diseño Gráfico' },
   { slug: 'tecnico-sonido', label: 'Técnicos de Sonido y Montaje' },
   { slug: 'alquiler-equipos', label: 'Alquiler de Equipos' },
+  { slug: 'limpieza', label: 'Servicio de Limpieza' },
   { slug: 'locales-eventos', label: 'Locales para eventos' },
 ];
 
@@ -1086,7 +1095,7 @@ function DirectorioPublicoContenido() {
                         disabled={p.user_id === '9bf7c5e7-68fd-472f-843d-5bed981701ae' || cartItems.some(i => i.userId === p.user_id)}
                         onClick={() => {
                           if (p.user_id === '9bf7c5e7-68fd-472f-843d-5bed981701ae') return;
-                          const result = addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone });
+                          const result = addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone, minHours: (p as any).min_hours ?? null });
                           if (result === 'added') toast.success(`${p.display_name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
                           else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
                         }}

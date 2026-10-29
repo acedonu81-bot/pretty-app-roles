@@ -453,6 +453,7 @@ const PublicProfile = () => {
       photoUrl: profile.photo || null,
       hourlyRate: profile.price || null,
       zone: profile.zone,
+      minHours: (sbProfile as any).min_hours ?? null,
     });
     if (result === 'limit_reached') {
       toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
@@ -484,7 +485,7 @@ const PublicProfile = () => {
     monologo: 'Monólogo & Stand-Up', animador: 'Animador Infantil', speaker: 'Speaker & Presentador',
     vestuario: 'Personal Shopper & Vestuario', 'photo-booth': 'Photo Booth', 'food-truck': 'Food Truck', 'disco-movil': 'Disco Móvil',
     'grupo-musical': 'Grupo Musical', 'wedding-planner': 'Wedding Planner', 'diseno-grafico': 'Diseño Gráfico',
-    tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', local_eventos: 'Local para eventos', camarero: 'Camarero',
+    tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', limpieza: 'Servicio de Limpieza', local_eventos: 'Local para eventos', camarero: 'Camarero',
   };
 
   // Related profiles: Supabase results for real profiles, static data for

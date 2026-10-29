@@ -71,6 +71,7 @@ const ROLE_OPTIONS = [
   { value: 'photo-booth',     label: 'Photo Booth' },
   { value: 'tecnico',         label: 'Técnico de Sonido y Montaje' },
   { value: 'alquiler',        label: 'Alquiler de Equipos' },
+  { value: 'limpieza',        label: 'Servicio de Limpieza' },
   { value: 'local_eventos',   label: 'Local para eventos' },
   { value: 'makeup',          label: 'Maquillaje' },
   { value: 'peluqueria',      label: 'Peluquería a Domicilio' },

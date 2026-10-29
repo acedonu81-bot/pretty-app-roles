@@ -456,7 +456,7 @@ const CATEGORY_ROLES: Record<string, string[]> = {
   // vacía, aunque al pulsarla lleva a /directorio/staff y sí hay gente.
   gastro: ['staff', 'camarero', 'catering', 'food-truck'],
   animacion: ['animador', 'mago', 'humorista', 'bailarin'],
-  tecnica: ['tecnico', 'alquiler'],
+  tecnica: ['tecnico', 'alquiler', 'limpieza'],
   locales: ['local_eventos'],
 };
 

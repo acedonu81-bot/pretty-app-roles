@@ -41,6 +41,7 @@ const ROLES = [
   { value: 'photo-booth',  label: 'Photo Booth',         desc: 'Cabinas de fotos y espejos 360',    icon: Camera,         color: '#f43f5e' },
   { value: 'tecnico',      label: 'Técnico de Sonido y Montaje', desc: 'Sonido, iluminación y montaje de escenario', icon: SlidersHorizontal, color: '#38bdf8' },
   { value: 'alquiler',     label: 'Alquiler de Equipos', desc: 'Empresas de sonido, luces, cabinas DJ, escenarios', icon: Speaker, color: '#0ea5e9' },
+  { value: 'limpieza',     label: 'Servicio de Limpieza', desc: 'Limpieza antes, durante y después de eventos', icon: Sparkles, color: '#14b8a6' },
   { value: 'local_eventos', label: 'Local / Sala para Eventos', desc: 'Alquiler de espacio para eventos privados', icon: Briefcase,     color: '#a3a3a3' },
 ];
 
@@ -215,6 +216,14 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
       ['Enseña tu material', 'Fotos reales del equipo, con marca y modelo'],
       ['Aclara qué incluye', 'Transporte, montaje, técnico o solo recogida'],
       ['Añade tus precios', 'Por día o por fin de semana, y la fianza'],
+    ],
+  },
+  limpieza: {
+    title: 'Tu perfil de Limpieza está listo',
+    tips: [
+      ['Enseña tu trabajo', 'Fotos de antes y después de un local o evento real'],
+      ['Aclara qué incluyes', 'Personal, productos, material y recogida de residuos'],
+      ['Añade tus precios', 'Por hora o por servicio, y desde cuántas horas trabajas'],
     ],
   },
   azafata: {

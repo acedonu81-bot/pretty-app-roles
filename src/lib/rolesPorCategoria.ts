@@ -11,6 +11,6 @@ export const ROLE_MAP: Record<string, string[]> = {
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],
   payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
   'photo-booth': ['photo-booth'], 'food-truck': ['food-truck'],
-  'tecnico-sonido': ['tecnico'], 'alquiler-equipos': ['alquiler'],
+  'tecnico-sonido': ['tecnico'], 'alquiler-equipos': ['alquiler'], limpieza: ['limpieza'],
   'locales-eventos': ['local_eventos'],
 };
