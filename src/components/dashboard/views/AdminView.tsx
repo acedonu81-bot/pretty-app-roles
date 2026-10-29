@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy } from 'lucide-react';
+import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
@@ -23,6 +23,7 @@ import AdminConversations from './admin/AdminConversations';
 import AdminEmergentes from './admin/AdminEmergentes';
 import AdminConcurso from './admin/AdminConcurso';
 import AdminConcursoVotantes from './admin/AdminConcursoVotantes';
+import AdminFeedbackWeb from './admin/AdminFeedbackWeb';
 
 const TABS = [
   { id: 'activity', label: 'Actividad', icon: Activity },
@@ -34,6 +35,7 @@ const TABS = [
   { id: 'emergentes', label: 'DJs Emergentes', icon: Sparkles },
   { id: 'concurso', label: 'Concurso DJ', icon: Trophy },
   { id: 'content', label: 'Reseñas', icon: MessageSquare },
+  { id: 'feedback', label: 'Feedback', icon: MessageCircleQuestion },
   { id: 'business', label: 'Negocio', icon: TrendingDown },
   { id: 'deletions', label: 'Bajas', icon: UserMinus },
   { id: 'promos', label: 'Códigos Promo', icon: Tag },
@@ -140,6 +142,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       {tab === 'emergentes' && <AdminEmergentes />}
       {tab === 'concurso' && <><AdminConcurso /><AdminConcursoVotantes /></>}
       {tab === 'content' && <AdminReviews />}
+      {tab === 'feedback' && <AdminFeedbackWeb />}
       {tab === 'business' && (
         <>
           <AdminFeatureRequests />
