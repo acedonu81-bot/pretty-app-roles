@@ -49,7 +49,8 @@ const hora = (iso: string) => {
     : d.toLocaleString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
 };
 
-const rpc = supabase.rpc as any;
+// bind: sin él, rpc pierde su `this` y cada llamada revienta antes de salir.
+const rpc = supabase.rpc.bind(supabase) as any;
 
 export default function AdminBandejaXpeak({ onSinLeer }: { onSinLeer?: (n: number) => void }) {
   const [convs, setConvs] = useState<Conversacion[] | null>(null);
