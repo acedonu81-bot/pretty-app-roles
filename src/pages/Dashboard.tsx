@@ -65,6 +65,7 @@ const EmergentesView = lazy(() => import('@/components/dashboard/views/Emergente
 const ContractView = lazy(() => import('@/components/dashboard/views/ContractView'));
 import PerfilTabs from '@/components/dashboard/PerfilTabs';
 const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
+const OrganizadoresView = lazy(() => import('@/components/dashboard/views/OrganizadoresView'));
 const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
 const ResourcesView = lazy(() => import('@/components/dashboard/views/ResourcesView'));
 const ResenasView = lazy(() => import('@/components/dashboard/views/ResenasView'));
@@ -699,6 +700,7 @@ const Dashboard = () => {
       case 'mapa': return <MapaView />;
       case 'flashbooking':
       case 'flash': return <FlashBookingWallView onMessage={handleMessage} />;
+      case 'organizadores': return <OrganizadoresView onMessage={handleMessage} />;
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'agency': return <AgencyView />;

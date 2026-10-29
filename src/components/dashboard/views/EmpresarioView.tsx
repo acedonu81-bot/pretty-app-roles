@@ -10,6 +10,7 @@ import { buildWorkbook, downloadWorkbook } from '@/lib/csvExport';
 import { instagramUrl } from '@/lib/social';
 import type { Pro } from '@/types';
 import DiscoverTab from './empresario/DiscoverTab';
+import TarjetaMostrarMarca from './empresario/TarjetaMostrarMarca';
 import HistorialTab from './empresario/HistorialTab';
 import GastosTab from './empresario/GastosTab';
 import BenchmarkTab from './empresario/BenchmarkTab';
@@ -263,6 +264,8 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
       </div>
 
       <OfertasRelanzarBanner userId={user?.id} />
+
+      <TarjetaMostrarMarca />
 
       {/* Guía rápida — antes había una cifra hardcodeada ("47+ profesionales
           activos") que no era real; sustituida por 3 pasos concretos que

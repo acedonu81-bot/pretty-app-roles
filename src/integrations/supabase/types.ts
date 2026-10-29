@@ -1600,6 +1600,7 @@ export type Database = {
           id: string
           instagram: string | null
           is_flash_active: boolean | null
+          mostrar_organizador: boolean
           is_live: boolean | null
           is_premium: boolean | null
           is_primary: boolean
@@ -1691,6 +1692,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           is_flash_active?: boolean | null
+          mostrar_organizador?: boolean
           is_live?: boolean | null
           is_premium?: boolean | null
           is_primary?: boolean
@@ -1782,6 +1784,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           is_flash_active?: boolean | null
+          mostrar_organizador?: boolean
           is_live?: boolean | null
           is_premium?: boolean | null
           is_primary?: boolean

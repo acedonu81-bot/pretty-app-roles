@@ -1073,6 +1073,17 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
 
       {/* ── Privacy ── */}
       <Section title="Privacidad" icon={<Shield size={15} />}>
+        {isEmpresario && (
+          <ToggleRow label="Mostrar mi empresa a los profesionales"
+            desc="Opcional. Si lo activas, los profesionales ven tu logo, ciudad, descripción y tus contrataciones en XPEAK, nunca tu teléfono ni email."
+            checked={!!profile.mostrar_organizador}
+            onChange={async () => {
+              const next = !profile.mostrar_organizador;
+              const ok = await profile.updateField({ mostrar_organizador: next });
+              if (ok) toast.success(next ? 'Tu empresa ya aparece para los profesionales' : 'Tu empresa ya no aparece para los profesionales');
+            }} />
+        )}
+        {!isEmpresario && (
         <ToggleRow label="Perfil público en el directorio" desc="Si está desactivado, no apareces en el directorio público" checked={profilePublic} onChange={async () => {
           const next = !profilePublic;
           if (!next && !window.confirm('Vas a desaparecer del directorio público: nadie podrá encontrarte ni contactarte desde XPEAK hasta que lo vuelvas a activar. ¿Seguro que quieres desactivarlo?')) {
@@ -1083,6 +1094,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
           if (!ok) { setProfilePublic(!next); return; }
           toast.success(next ? 'Tu perfil vuelve a ser público' : 'Tu perfil ya no aparece en el directorio');
         }} />
+        )}
         {!isEmpresario && (
         <ToggleRow label="Mostrar tarifa en mi ficha" desc="Si está desactivado, aparece 'A consultar' en tu perfil" checked={showRate} onChange={async () => {
           const next = !showRate;

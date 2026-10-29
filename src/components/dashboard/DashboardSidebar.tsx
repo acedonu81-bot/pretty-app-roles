@@ -376,6 +376,9 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
           <SidebarMenu>
             <NavItem icon={Home} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} navId={homeView === 'profile' ? 'inicio' : homeView} />
             <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} iconAlert={flashTotal > 0} badge={flashTotal} badgeColor="green" navId="flashbooking" />
+            {!isEmpresario && (
+              <NavItem icon={Building2} label="Organizadores" isActive={activeView === 'organizadores'} onClick={() => onViewChange('organizadores')} navId="organizadores" />
+            )}
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} iconAlert={msgBadge > 0} navId="messages" />
             <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" navId="feed" etiqueta={concursoActivo() ? 'Concurso DJ' : undefined} />
           </SidebarMenu>
