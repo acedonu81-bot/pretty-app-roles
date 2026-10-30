@@ -33,6 +33,7 @@ const ROLES_POR_SERVICIO: Record<string, string[]> = {
   'Food truck': ['food-truck'],
   'Animación': ['animador'],
   'Azafatas': ['azafata'],
+  'Limpieza': ['limpieza'],
   'Alquiler de equipo': ['alquiler'],
 };
 
