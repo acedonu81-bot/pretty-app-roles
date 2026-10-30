@@ -25,15 +25,17 @@ import CamposPersonasHorario from '@/components/CamposPersonasHorario';
 
 const SERVICES = [
   'DJ', 'Disco móvil', 'Música en directo', 'Fotógrafo / vídeo',
-  'Camareros / catering', 'Food truck', 'Animación', 'Alquiler de equipo',
-  'Varios / no lo sé',
+  'Camareros / catering', 'Food truck', 'Animación', 'Azafatas', 'Alquiler de equipo',
 ];
+// "Varios / no lo sé" fuera (30 oct 2026): dejaba entrar solicitudes sin saber
+// a quién mandarlas (caso Patricia). Quien no lo tiene claro tiene
+// "organizadlo vosotros" (Madrid) o elige uno y lo explica en las notas.
 
 // Cómo se nombra a quien recibe la solicitud en la frase "a dónde va".
 const DESTINO: Record<string, string> = {
   'DJ': 'DJs', 'Disco móvil': 'discos móviles', 'Música en directo': 'grupos de música en directo',
   'Fotógrafo / vídeo': 'fotógrafos y videógrafos', 'Camareros / catering': 'camareros y catering',
-  'Food truck': 'food trucks', 'Animación': 'animadores', 'Alquiler de equipo': 'empresas de alquiler de equipo',
+  'Food truck': 'food trucks', 'Animación': 'animadores', 'Azafatas': 'azafatas', 'Alquiler de equipo': 'empresas de alquiler de equipo',
 };
 
 const EVENT_TYPES = [

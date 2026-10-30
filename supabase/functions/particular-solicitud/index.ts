@@ -32,6 +32,7 @@ const ROLES_POR_SERVICIO: Record<string, string[]> = {
   'Camareros / catering': ['catering', 'camarero'],
   'Food truck': ['food-truck'],
   'Animación': ['animador'],
+  'Azafatas': ['azafata'],
   'Alquiler de equipo': ['alquiler'],
 };
 

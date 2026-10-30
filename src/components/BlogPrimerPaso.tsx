@@ -26,7 +26,7 @@ const CONFIG: Record<RolPrimerPaso, {
 }> = {
   dj: { oficio: 'DJs', roles: ['dj', 'disco-movil'], servicio: 'DJ', registro: '/auth?mode=register&role=dj', contratar: 'DJs' },
   staff: { oficio: 'camareros', roles: ['staff', 'camarero'], servicio: 'Camareros / catering', registro: '/auth?mode=register&role=staff', contratar: 'camareros' },
-  azafata: { oficio: 'azafatas', roles: ['azafata'], servicio: 'Varios / no lo sé', registro: '/auth?mode=register&role=azafata', contratar: 'azafatas' },
+  azafata: { oficio: 'azafatas', roles: ['azafata'], servicio: 'Azafatas', registro: '/auth?mode=register&role=azafata', contratar: 'azafatas' },
 };
 
 export default function BlogPrimerPaso({ rol, articlePath }: { rol: RolPrimerPaso; articlePath: string }) {
