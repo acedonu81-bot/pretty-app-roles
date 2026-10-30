@@ -69,7 +69,10 @@ describe('OnboardingWizard', () => {
   it('"Cambiar de oficio" vuelve al paso del oficio y no salta otra vez', async () => {
     estado.role = 'dj';
     montar();
-    fireEvent.click(await screen.findByRole('button', { name: /No es tu oficio/ }, { timeout: 10000 }));
+    // findByText y no findByRole: role recorre el árbol de accesibilidad de
+    // toda la pantalla y con la máquina cargada pasaba de 20 s (30 oct 2026).
+    const noEsTuOficio = await screen.findByText(/No es tu oficio/, {}, { timeout: 10000 });
+    fireEvent.click(noEsTuOficio.closest('button')!);
     expect(await screen.findByText('¿Cuál es tu perfil?', {}, { timeout: 10000 })).toBeTruthy();
     await new Promise(r => setTimeout(r, 600));
     expect(screen.getByText('¿Cuál es tu perfil?')).toBeTruthy();
