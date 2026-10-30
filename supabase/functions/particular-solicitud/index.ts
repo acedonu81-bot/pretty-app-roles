@@ -29,7 +29,12 @@ const ROLES_POR_SERVICIO: Record<string, string[]> = {
   'Disco móvil': ['disco-movil'],
   'Música en directo': ['grupo-musical'],
   'Fotógrafo / vídeo': ['media'],
-  'Camareros / catering': ['catering', 'camarero'],
+  // 'staff' es el rol con el que se dan de alta los camareros: sin él, el
+  // botón no llegaba a casi ninguno (30 oct 2026).
+  'Camareros': ['staff', 'camarero'],
+  'Catering': ['catering'],
+  // Solicitudes antiguas o formularios en caché.
+  'Camareros / catering': ['catering', 'staff', 'camarero'],
   'Food truck': ['food-truck'],
   'Animación': ['animador'],
   'Azafatas': ['azafata'],
@@ -43,6 +48,8 @@ const ULTIMO_DATO: Record<string, string> = {
   'Disco móvil': 'Estilo de música que te gusta',
   'Música en directo': 'Estilo de música que buscas',
   'Fotógrafo / vídeo': 'Si quieres foto, vídeo o las dos',
+  'Camareros': 'Cuántos camareros y si es barra, sala o las dos',
+  'Catering': 'Si es comida, bebida o las dos, y cuántos servicios',
   'Camareros / catering': 'Si es comida, bebida o las dos, y cuántos servicios',
   'Food truck': 'Qué tipo de comida te gustaría',
   'Animación': 'Edad de los asistentes',

@@ -25,7 +25,7 @@ const CONFIG: Record<RolPrimerPaso, {
   oficio: string; roles: string[]; servicio: string; registro: string; contratar: string;
 }> = {
   dj: { oficio: 'DJs', roles: ['dj', 'disco-movil'], servicio: 'DJ', registro: '/auth?mode=register&role=dj', contratar: 'DJs' },
-  staff: { oficio: 'camareros', roles: ['staff', 'camarero'], servicio: 'Camareros / catering', registro: '/auth?mode=register&role=staff', contratar: 'camareros' },
+  staff: { oficio: 'camareros', roles: ['staff', 'camarero'], servicio: 'Camareros', registro: '/auth?mode=register&role=staff', contratar: 'camareros' },
   azafata: { oficio: 'azafatas', roles: ['azafata'], servicio: 'Azafatas', registro: '/auth?mode=register&role=azafata', contratar: 'azafatas' },
 };
 
