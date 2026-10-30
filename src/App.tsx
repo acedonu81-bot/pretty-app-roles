@@ -38,6 +38,7 @@ const CategoryLanding = lazy(() => import("./pages/CategoryLanding"));
 const BlogDJPrecio = lazy(() => import("./pages/BlogDJPrecio"));
 const BlogMejoresPlataformasContratarDJ = lazy(() => import("./pages/BlogMejoresPlataformasContratarDJ"));
 const BlogCamarerosPrecio = lazy(() => import("./pages/BlogCamarerosPrecio"));
+const BlogLimpiezaDespuesEvento = lazy(() => import("./pages/BlogLimpiezaDespuesEvento"));
 const BlogCuantosCalmarerosBoda = lazy(() => import("./pages/BlogCuantosCalmarerosBoda"));
 const BlogDJBodaVsDiscoteca = lazy(() => import("./pages/BlogDJBodaVsDiscoteca"));
 const BlogCosteBoda = lazy(() => import("./pages/BlogCosteBoda"));
@@ -581,6 +582,7 @@ const App = () => (
             <Route path="/blog/cuanto-cobra-un-dj-en-espana" element={<BlogDJPrecio />} />
             <Route path="/blog/mejores-plataformas-contratar-dj-espana" element={<BlogMejoresPlataformasContratarDJ />} />
             <Route path="/blog/cuanto-cobra-un-camarero-de-eventos" element={<BlogCamarerosPrecio />} />
+            <Route path="/blog/limpieza-despues-de-un-evento" element={<BlogLimpiezaDespuesEvento />} />
             <Route path="/blog/cuantos-camareros-necesito-para-mi-boda" element={<BlogCuantosCalmarerosBoda />} />
             <Route path="/blog/dj-para-bodas-vs-discoteca" element={<BlogDJBodaVsDiscoteca />} />
             <Route path="/blog/cuanto-cuesta-una-boda-en-espana" element={<BlogCosteBoda />} />

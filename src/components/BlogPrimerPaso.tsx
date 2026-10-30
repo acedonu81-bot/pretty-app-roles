@@ -19,14 +19,15 @@ const ParticularRequestModal = lazy(() => import('@/components/ParticularRequest
  * artículos con más tráfico pulsa aquí o 0 solicitudes/altas, se quita. Se mide
  * en analytics_events (event_name 'cta_click', detalle 'primer_paso <paso> <rol>').
  */
-export type RolPrimerPaso = 'dj' | 'staff' | 'azafata';
+export type RolPrimerPaso = 'dj' | 'staff' | 'azafata' | 'limpieza';
 
 const CONFIG: Record<RolPrimerPaso, {
-  oficio: string; roles: string[]; servicio: string; registro: string; contratar: string;
+  oficio: string; roles: string[]; servicio: string; registro: string; contratar: string; ejemplo: string;
 }> = {
-  dj: { oficio: 'DJs', roles: ['dj', 'disco-movil'], servicio: 'DJ', registro: '/auth?mode=register&role=dj', contratar: 'DJs' },
-  staff: { oficio: 'camareros', roles: ['staff', 'camarero'], servicio: 'Camareros', registro: '/auth?mode=register&role=staff', contratar: 'camareros' },
-  azafata: { oficio: 'azafatas', roles: ['azafata'], servicio: 'Azafatas', registro: '/auth?mode=register&role=azafata', contratar: 'azafatas' },
+  dj: { oficio: 'DJs', roles: ['dj', 'disco-movil'], servicio: 'DJ', registro: '/auth?mode=register&role=dj', contratar: 'DJs', ejemplo: '60' },
+  staff: { oficio: 'camareros', roles: ['staff', 'camarero'], servicio: 'Camareros', registro: '/auth?mode=register&role=staff', contratar: 'camareros', ejemplo: '60' },
+  azafata: { oficio: 'azafatas', roles: ['azafata'], servicio: 'Azafatas', registro: '/auth?mode=register&role=azafata', contratar: 'azafatas', ejemplo: '60' },
+  limpieza: { oficio: 'empresas de limpieza', roles: ['limpieza'], servicio: 'Limpieza', registro: '/auth?mode=register&role=limpieza', contratar: 'empresas de limpieza', ejemplo: '20' },
 };
 
 export default function BlogPrimerPaso({ rol, articlePath }: { rol: RolPrimerPaso; articlePath: string }) {
@@ -89,7 +90,7 @@ export default function BlogPrimerPaso({ rol, articlePath }: { rol: RolPrimerPas
         </label>
         <div className="flex items-center gap-2 mb-2">
           <input id={`tarifa-${rol}`} type="text" inputMode="decimal" value={tarifa}
-            onChange={(e) => cambiarTarifa(e.target.value)} placeholder="Ej. 60"
+            onChange={(e) => cambiarTarifa(e.target.value)} placeholder={`Ej. ${c.ejemplo}`}
             className="w-24 px-3 py-2 rounded-lg text-sm"
             style={{ border: '1px solid rgba(122,98,22,0.35)', background: '#fff', color: '#111' }} />
           <span className="text-sm" style={{ color: '#374151' }}>€/hora</span>

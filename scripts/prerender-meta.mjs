@@ -269,6 +269,14 @@ const ROUTES = [
     ogType: 'article',
   },
   {
+    path: '/blog/limpieza-despues-de-un-evento',
+    title: 'Limpieza después de un evento: qué incluye y cómo pedir presupuesto (2026) | XPEAK',
+    desc: 'Qué se limpia antes, durante y después de una boda o fiesta, cómo se cobra (por hora y con mínimo), qué datos dar y qué preguntar a la empresa de limpieza.',
+    ogTitle: 'Limpieza después de un evento: cómo pedir presupuesto | XPEAK',
+    ogDesc: 'Antes, durante y después de tu evento: qué se limpia, cómo se cobra y qué preguntar a la empresa.',
+    ogType: 'article',
+  },
+  {
     path: '/blog/cuanto-cobra-un-camarero-de-eventos',
     title: 'Cuánto cobra un camarero de eventos por horas en España (2026) | XPEAK',
     desc: 'Guía completa de precios de camareros para eventos en España 2026: bodas, empresas y fiestas privadas. Cuánto cobran y cuántos necesitas contratar.',

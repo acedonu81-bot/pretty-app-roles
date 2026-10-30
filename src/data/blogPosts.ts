@@ -11,6 +11,7 @@ export interface BlogPostMeta {
 }
 
 export const BLOG_POSTS: BlogPostMeta[] = [
+  { slug: '/blog/limpieza-despues-de-un-evento', title: 'Limpieza después de un evento: qué incluye y cómo pedir presupuesto (2026)', desc: 'Qué se limpia antes, durante y después de una boda o fiesta, cómo se cobra (por hora y con mínimo), qué datos dar y qué preguntar a la empresa de limpieza.', tag: 'Eventos' },
   { slug: '/blog/tardeo-privado-madrid', title: 'Tardeo privado en Madrid: horario, DJ y cuánto cuesta (2026)', desc: 'Cómo montar un tardeo privado en Madrid: qué horario funciona, cuánto cobra un DJ de tarde, qué local buscar y qué música poner para que la gente no se vaya a las ocho.', tag: 'Healthy Zone' },
   { slug: '/blog/afterwork-empresa-madrid', title: 'Afterwork de empresa en Madrid: horario, DJ y cuánto cuesta (2026)', desc: 'Cómo organizar un afterwork de empresa en Madrid: a qué hora empezar, qué local elegir, cuánto cuesta un DJ y qué servir para que vaya todo el equipo y no solo los de siempre.', tag: 'Healthy Zone' },
   { slug: '/blog/eventos-sin-alcohol', title: 'Eventos sin alcohol: cómo organizarlos y qué servir (2026)', desc: 'Cómo organizar un evento sin alcohol, o con poco alcohol, que no sea aburrido: cócteles sin alcohol, bartender, horario, música y qué poner en la invitación.', tag: 'Healthy Zone' },
