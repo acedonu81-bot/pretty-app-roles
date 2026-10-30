@@ -1358,6 +1358,26 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>`),
   }),
 
+  // 30 oct 2026: particular que eligió "Varios / no lo sé" (caso Patricia). Ya
+  // dio fecha, lugar y personas: solo falta qué quiere, así que se le proponen
+  // opciones según el tipo de evento. Solo con la clave de servicio.
+  particular_que_necesitas: (d) => ({
+    subject: `${esc(d.name)}, ¿qué te gustaría para tu ${esc(d.tipo_evento ?? 'evento')}?`,
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Te ayudamos a elegir</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hemos recibido tu solicitud: ${esc(d.resumen)}. Para pasársela a los profesionales adecuados solo nos falta saber qué te gustaría tener. Lo que más se pide para un ${esc(d.tipo_evento ?? 'evento')} así:
+      </p>
+      <ul style="color:#4b5563;font-size:14px;line-height:1.9;margin:0 0 10px;padding-left:20px">
+        ${(d.opciones as string[]).map((o) => `<li>${esc(o)}</li>`).join('')}
+      </ul>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Responde a este correo con lo que te encaje, aunque sea en una línea, y hoy mismo se lo pasamos a profesionales de tu zona para que te den precio.
+      </p>`),
+  }),
+
   // 25 oct 2026: particular que pidió profesional, le contestaron por el chat
   // y nunca abrió los mensajes; la fecha ya pasó (caso DJ DERRE: 2 DJs le
   // escribieron en menos de un día). Es para que vuelva la próxima vez. Solo
