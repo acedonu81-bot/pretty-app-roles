@@ -1378,6 +1378,20 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>`),
   }),
 
+  // 30 oct 2026: mensaje suelto de XPEAK a un particular (caso Patricia, que
+  // contestó al correo de aclaración). Plantilla genérica para no crear una por
+  // caso: asunto, título y párrafos vienen en `data`. Solo con la clave de
+  // servicio (no está en PUBLIC/LOGGED/ADMIN_TYPES); siempre sale como XPEAK.
+  particular_mensaje: (d) => ({
+    subject: esc(d.asunto ?? 'Tu solicitud en XPEAK'),
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">${esc(d.titulo ?? 'Tu solicitud')}</h2>
+      ${(Array.isArray(d.parrafos) ? d.parrafos as string[] : []).map((p) =>
+        `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">${esc(p)}</p>`).join('')}`),
+  }),
+
   // 25 oct 2026: particular que pidió profesional, le contestaron por el chat
   // y nunca abrió los mensajes; la fecha ya pasó (caso DJ DERRE: 2 DJs le
   // escribieron en menos de un día). Es para que vuelva la próxima vez. Solo
