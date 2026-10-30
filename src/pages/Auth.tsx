@@ -173,6 +173,15 @@ const Auth = () => {
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotSent, setForgotSent] = useState(false);
   const [forgotLoading, setForgotLoading] = useState(false);
+  // "Soy particular": quien pidió algo sin cuenta propia no tiene contraseña y
+  // el enlace del primer correo caduca. Aquí pide otro a su correo y entra
+  // directo a sus conversaciones (30 oct 2026, caso Patricia). ?acceso=1&e=
+  // llega desde los correos de mensaje nuevo y abre el panel con el correo puesto.
+  const [showAcceso, setShowAcceso] = useState(searchParams.get('acceso') === '1');
+  const [accesoEmail, setAccesoEmail] = useState(searchParams.get('e') ?? '');
+  const [accesoSent, setAccesoSent] = useState(false);
+  const [accesoLoading, setAccesoLoading] = useState(false);
+  const [accesoCaptcha, setAccesoCaptcha] = useState<string | null>(null);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [showRecovery, setShowRecovery] = useState(false);
   const [newPassword, setNewPassword] = useState('');
@@ -385,6 +394,25 @@ const Auth = () => {
       );
       setGoogleLoading(false);
     }
+  };
+
+  const handleAccesoParticular = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
+    const correo = accesoEmail.trim().toLowerCase();
+    if (!correo.includes('@')) { authAlert('Escribe tu email'); return; }
+    if (!accesoCaptcha) { authAlert('Espera a que termine la verificación de seguridad e inténtalo de nuevo.'); return; }
+    setAccesoLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({
+      email: correo,
+      options: { shouldCreateUser: false, emailRedirectTo: `${SITE_URL}/dashboard?view=messages`, captchaToken: accesoCaptcha },
+    });
+    setAccesoLoading(false);
+    // Un correo sin cuenta recibe el mismo mensaje que uno con cuenta: así no se
+    // revela quién está registrado. Solo se enseñan los fallos reales.
+    if (error && !/signups? not allowed|not found|no user/i.test(error.message)) { authAlert(error.message); return; }
+    track('auth_particular_acceso_enlace');
+    setAccesoSent(true);
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
@@ -1319,6 +1347,54 @@ const Auth = () => {
                 {!isLogin && <AceptacionLegal accion="Al registrarte" />}
 
               </form>
+
+              {/* Particular: entrar a sus conversaciones sin contraseña */}
+              {isLogin && (
+                <div className="mt-4">
+                  {!showAcceso ? (
+                    <button type="button" onClick={() => { track('auth_particular_acceso_abre'); setShowAcceso(true); }}
+                      className="w-full py-3 px-4 rounded-xl text-left transition-opacity hover:opacity-90"
+                      style={{ background: '#FBF3DD', border: '1px solid rgba(139,106,0,0.35)', color: '#111' }}>
+                      <span className="block text-sm font-black">Soy particular: entrar a mis conversaciones</span>
+                      <span className="block text-xs mt-0.5" style={{ color: '#444' }}>Sin contraseña. Te mandamos un enlace a tu correo.</span>
+                    </button>
+                  ) : (
+                    <div className="p-4 rounded-xl" style={{ background: '#FBF3DD', border: '1px solid rgba(139,106,0,0.35)' }}>
+                      {accesoSent ? (
+                        <p className="text-sm" style={{ color: '#111' }}>
+                          Si ese correo está en XPEAK, te hemos mandado un enlace. Ábrelo y entras en tus conversaciones. Mira también en spam o promociones.
+                        </p>
+                      ) : (
+                        <form onSubmit={handleAccesoParticular} className="space-y-2">
+                          <p className="text-sm font-black" style={{ color: '#111' }}>Entra a tus conversaciones</p>
+                          <p className="text-xs mb-2" style={{ color: '#444' }}>
+                            Escribe el correo con el que pediste y te mandamos un enlace. Tus conversaciones se quedan guardadas.
+                          </p>
+                          <div className="relative">
+                            <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                            <input type="email" value={accesoEmail} onChange={e => setAccesoEmail(e.target.value)}
+                              autoComplete="email" inputMode="email" placeholder="tu@email.com"
+                              className="nightlife-input !py-2.5 !pl-9 text-base" />
+                          </div>
+                          <TurnstileWidget onVerify={setAccesoCaptcha} onExpire={() => setAccesoCaptcha(null)} />
+                          <div className="flex gap-2">
+                            <button type="button" onClick={() => setShowAcceso(false)}
+                              className="flex-1 py-2 rounded-lg text-xs font-bold"
+                              style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.15)', color: '#555' }}>
+                              Cancelar
+                            </button>
+                            <button type="submit" disabled={accesoLoading || !accesoCaptcha}
+                              className="flex-1 py-2 rounded-lg text-xs font-bold disabled:opacity-50"
+                              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#1a1405' }}>
+                              {accesoLoading ? 'Enviando...' : 'Enviarme el enlace'}
+                            </button>
+                          </div>
+                        </form>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Forgot password */}
               {isLogin && !showForgot && (

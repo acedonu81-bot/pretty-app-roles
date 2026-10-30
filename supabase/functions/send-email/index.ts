@@ -1840,7 +1840,11 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           Tienes una conversación esperando respuesta en XPEAK.
         </p>
       </div>
-      ${btn('Ver mensaje →', 'https://xpeak.es/dashboard')}
+      ${btn('Ver mensaje →', enlaceSeguro(d.action_url, 'https://xpeak.es/dashboard'))}
+      ${d.particular ? `<p style="color:#6B7280;font-size:12px;line-height:1.6;text-align:center;margin:0 0 8px">
+        Si el botón ya no funciona, entra en <a href="https://xpeak.es/auth?acceso=1&e=${encodeURIComponent(String(d.email ?? ''))}" style="color:#8B6A00">xpeak.es</a>
+        y te mandamos otro enlace a tu correo. Tus conversaciones se quedan guardadas.
+      </p>` : ''}
       <p style="color:#6B7280;font-size:11px;text-align:center;margin:0">
         Puedes desactivar estas notificaciones en Ajustes → Privacidad.
       </p>`),
@@ -2382,6 +2386,22 @@ async function atender(req: Request): Promise<Response> {
       const { data: userData } = await adminClient.auth.admin.getUserById(targetUserId);
       if (userData?.user?.email) data.email = userData.user.email;
 
+      // Particular sin contraseña (30 oct 2026, caso Patricia): el enlace de
+      // acceso del primer correo caduca y no tiene otra forma de volver a sus
+      // conversaciones. Cada aviso de mensaje lleva un enlace NUEVO que la mete
+      // directa en el chat, y debajo la entrada de respaldo. Solo para cuentas
+      // creadas por el formulario del particular y con el remitente verificado
+      // por el JWT (callerId), nunca por lo que mande el navegador.
+      if (type === 'new_message' && callerId && userData?.user?.email
+          && userData.user.user_metadata?.particular === 'true') {
+        const nombre = String(data.sender_name ?? 'Profesional').replace(/[&#?=+%]/g, '').slice(0, 60);
+        const destino = `https://xpeak.es/dashboard?view=messages&con=${callerId}&nombre=${encodeURIComponent(nombre)}`;
+        const enlace = await adminClient.auth.admin.generateLink({ type: 'magiclink', email: userData.user.email, options: { redirectTo: destino } });
+        const url = enlace.data?.properties?.action_link;
+        if (url) data.action_url = url;
+        data.particular = true;
+      }
+
       if (data?.professional_user_id && !data?.professional_name) {
         const { data: prof } = await adminClient
           .from('profiles').select('display_name').eq('user_id', data.professional_user_id).single();
@@ -2496,14 +2516,19 @@ async function atender(req: Request): Promise<Response> {
       // salía un email cada 2 minutos (12 en un día a la misma persona el 16
       // oct). Para lo inmediato ya están el push y el aviso dentro de la app.
       const twoMinAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
-      const { data: recent } = await throttleClient
+      // Particular (30 oct 2026): el tope era por destinatario, no por quien
+      // escribe. Con 4 profesionales contestándole, solo avisaba el primero y
+      // los otros 3 quedaban sin aviso (no tiene app ni push). Para ella el tope
+      // es por profesional (el asunto lleva su nombre): como mucho 1 correo cada
+      // 6 h por conversación, nunca uno por mensaje.
+      let consultaRecent = throttleClient
         .from('email_send_log' as any)
         .select('id')
         .eq('to_email', to)
         .eq('type', 'new_message')
-        .gte('sent_at', twoMinAgo)
-        .limit(1)
-        .maybeSingle();
+        .gte('sent_at', twoMinAgo);
+      if (data?.particular) consultaRecent = consultaRecent.eq('subject', subject);
+      const { data: recent } = await consultaRecent.limit(1).maybeSingle();
       if (recent) {
         return new Response(JSON.stringify({ ok: true, skipped: 'throttled' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }

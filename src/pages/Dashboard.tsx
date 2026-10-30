@@ -370,8 +370,11 @@ export function resolverVistaInicial(opts: {
   queryView?: string | null;
   guardada?: string | null;
   rol?: string | null;
+  // Cuenta creada por el formulario del particular: viene a sus conversaciones.
+  particular?: boolean;
 }): string {
-  const { stateView, queryView, guardada, rol } = opts;
+  const { stateView, queryView, guardada, rol, particular } = opts;
+  if (particular && !queryView && (!stateView || stateView === VISTA_TRAS_LOGIN)) return 'messages';
   if (stateView === VISTA_TRAS_LOGIN) {
     if (rol && SIN_EXPLORAR.has(rol)) return ROLE_TO_VIEW[rol] ?? rol;
     return 'explorar';
@@ -456,7 +459,9 @@ const Dashboard = () => {
     // hablar: el asistente de alta le tapaba la conversación (17 oct 2026). No
     // se marca como hecho, así que sale en la siguiente visita normal.
     const params = new URLSearchParams(location.search);
-    const vieneDeChat = params.has('con');
+    // Un particular (cuenta creada por su solicitud, sin oficio) no viene a
+    // darse de alta: viene a sus conversaciones, y el asistente se las tapaba.
+    const vieneDeChat = params.has('con') || user?.user_metadata?.particular === 'true';
     // ?completar=1 viene del correo de "cuenta activada": abre el asistente de datos
     // obligatorios aunque este aparato ya lo tenga marcado como visto. WizardGate lo
     // cierra solo si el perfil ya está completo.
@@ -496,6 +501,7 @@ const Dashboard = () => {
       queryView: new URLSearchParams(location.search).get('view'),
       guardada: (() => { try { return localStorage.getItem('xpeak_view'); } catch { return null; } })(),
       rol: profileRole,
+      particular: user?.user_metadata?.particular === 'true',
     }));
     viewAdjusted.current = true;
     urlAplicada.current = location.key;

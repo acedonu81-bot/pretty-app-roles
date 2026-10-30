@@ -1,0 +1,43 @@
+<!--
+  Plantilla "Magic Link" de Supabase Auth (Authentication > Email Templates).
+  Se pega a mano en el panel, como confirmar-registro.html (30 oct 2026).
+  La usa el botón "Soy particular: entrar a mis conversaciones" de /auth: el
+  particular no tiene contraseña y pide un enlace a su correo para volver a sus
+  conversaciones con los profesionales.
+
+  Asunto a poner en el campo "Subject":
+    Tu enlace para entrar en XPEAK
+
+  Sin condicionales de Go: si una variable falta el correo falla.
+-->
+<div style="background:#E8E9EB;padding:40px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <div style="display:none;font-size:1px;color:#FFFFFF;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden">
+    Pulsa el botón para entrar en tus conversaciones de XPEAK.&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+  </div>
+  <div style="max-width:520px;margin:0 auto;background:#FFFFFF;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(10,9,8,0.06),0 12px 32px rgba(10,9,8,0.16)">
+    <div style="text-align:center;padding:32px 32px 20px;border-bottom:1px solid rgba(212,175,55,0.25)">
+      <a href="https://xpeak.es" style="text-decoration:none;display:inline-block">
+        <img src="https://xpeak.es/xpeak-icon-512.png" width="40" height="40" alt="XPEAK"
+          style="display:block;margin:0 auto 10px;border-radius:9px;border:0">
+        <span style="font-size:24px;font-weight:800;letter-spacing:1.5px;color:#0a0908">X<span style="color:#D4AF37">PEAK</span></span>
+      </a>
+    </div>
+    <div style="padding:32px 24px">
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Entra en tus conversaciones</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Pulsa el botón y entras directamente, sin contraseña. Tus conversaciones con los profesionales se quedan guardadas y las encuentras siempre aquí.
+      </p>
+      <a href="{{ .ConfirmationURL }}" style="display:block;text-align:center;background:linear-gradient(135deg,#E0BC4B,#B8941E);color:#0a0908;font-weight:700;font-size:14px;padding:15px;border-radius:10px;text-decoration:none;margin:24px 0 16px;box-shadow:0 6px 14px rgba(212,175,55,0.35)">Entrar en mis conversaciones</a>
+      <p style="color:#6B7280;font-size:12px;line-height:1.6;margin:0 0 6px">
+        ¿No funciona el botón? Copia y pega este enlace en tu navegador:
+      </p>
+      <p style="color:#6B7280;font-size:11px;line-height:1.5;margin:0 0 18px;word-break:break-all">{{ .ConfirmationURL }}</p>
+      <p style="color:#6B7280;font-size:12px;line-height:1.6;margin:0">
+        ¿No lo ves? Mira también en spam o promociones. El enlace caduca pasado un tiempo. Si no lo has pedido tú, ignora este correo.
+      </p>
+    </div>
+    <div style="padding:20px 32px 28px;text-align:center;border-top:1px solid rgba(10,9,8,0.06)">
+      <p style="color:#6B7280;font-size:12px;line-height:1.5;margin:0">XPEAK · <a href="mailto:info@xpeak.site" style="color:#6B7280">info@xpeak.site</a> · <a href="https://xpeak.es" style="color:#6B7280">xpeak.es</a></p>
+    </div>
+  </div>
+</div>
