@@ -1,4 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { firmarAcceso } from '../_shared/accesoParticular.ts';
 import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -1389,7 +1390,8 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">${esc(d.titulo ?? 'Tu solicitud')}</h2>
       ${(Array.isArray(d.parrafos) ? d.parrafos as string[] : []).map((p) =>
-        `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">${esc(p)}</p>`).join('')}`),
+        `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">${esc(p)}</p>`).join('')}
+      ${d.action_url ? btn(String(d.boton ?? 'Entrar a mis conversaciones →'), enlaceSeguro(d.action_url, 'https://xpeak.es')) : ''}`),
   }),
 
   // 25 oct 2026: particular que pidió profesional, le contestaron por el chat
@@ -1883,7 +1885,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           Te escribió ayer y aún no has entrado a verlo. Una respuesta rápida marca la diferencia.
         </p>
       </div>
-      ${btn('Responder ahora →', 'https://xpeak.es/dashboard')}
+      ${btn('Responder ahora →', enlaceSeguro(d.action_url, 'https://xpeak.es/dashboard'))}
       <p style="color:#6B7280;font-size:11px;text-align:center;margin:0">
         Puedes desactivar estas notificaciones en Ajustes → Privacidad.
       </p>`),
@@ -2396,8 +2398,9 @@ async function atender(req: Request): Promise<Response> {
           && userData.user.user_metadata?.particular === 'true') {
         const nombre = String(data.sender_name ?? 'Profesional').replace(/[&#?=+%]/g, '').slice(0, 60);
         const destino = `https://xpeak.es/dashboard?view=messages&con=${callerId}&nombre=${encodeURIComponent(nombre)}`;
-        const enlace = await adminClient.auth.admin.generateLink({ type: 'magiclink', email: userData.user.email, options: { redirectTo: destino } });
-        const url = enlace.data?.properties?.action_link;
+        // Enlace firmado y duradero (ver _shared/accesoParticular.ts): los
+        // enlaces mágicos se anulaban entre sí y caducaban.
+        const url = await firmarAcceso(targetUserId, destino.replace('https://xpeak.es', ''));
         if (url) data.action_url = url;
         data.particular = true;
       }

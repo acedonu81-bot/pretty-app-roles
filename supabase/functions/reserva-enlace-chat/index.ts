@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { firmarAcceso } from '../_shared/accesoParticular.ts';
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -44,9 +45,10 @@ serve(async (req) => {
     const proNombre = (prof?.display_name ?? b.professional_name ?? 'Profesional').replace(/[&#?=+%]/g, '').slice(0, 60);
 
     const destino = `https://xpeak.es/dashboard?view=messages&con=${callerId}&nombre=${encodeURIComponent(proNombre)}`;
-    const enlace = await admin.auth.admin.generateLink({ type: 'magiclink', email, options: { redirectTo: destino } });
-    const actionUrl = enlace.data?.properties?.action_link;
-    if (!actionUrl) { console.error('[reserva-enlace-chat] generateLink', enlace.error); return json({ error: 'No se pudo generar el enlace' }, 500); }
+    // Enlace firmado y duradero en vez de un enlace mágico de un solo uso, que el
+    // siguiente correo anulaba (Cristina, 31 oct 2026). Ver _shared/accesoParticular.ts.
+    const actionUrl = await firmarAcceso(b.created_by, destino.replace('https://xpeak.es', ''));
+    if (!actionUrl) { console.error('[reserva-enlace-chat] firmarAcceso'); return json({ error: 'No se pudo generar el enlace' }, 500); }
 
     const r = await fetch(`${url}/functions/v1/send-email`, {
       method: 'POST',

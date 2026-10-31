@@ -1,4 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { firmarAcceso } from '../_shared/accesoParticular.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { isDemoAccount } from './isDemoAccount.ts';
 
@@ -103,6 +104,10 @@ serve(async (req) => {
         .eq('user_id', msg.sender_id)
         .maybeSingle();
 
+      // Particular sin contraseña: el botón entra directo a sus mensajes.
+      const accion = recipientAuth.user.user_metadata?.particular === 'true'
+        ? await firmarAcceso(recipientId, '/dashboard?view=messages') : null;
+
       const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${serviceKey}`, 'x-internal-secret': Deno.env.get('INTERNAL_SECRET') ?? '' },
@@ -111,6 +116,7 @@ serve(async (req) => {
           data: {
             email: recipientAuth.user.email,
             sender_name: senderProfile?.display_name ?? 'Alguien',
+            ...(accion ? { action_url: accion } : {}),
           },
         }),
       });

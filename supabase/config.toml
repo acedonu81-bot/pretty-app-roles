@@ -34,3 +34,8 @@ verify_jwt = false
 # (POST one-click, RFC 8058), sin apikey. La función exige la firma HMAC del
 # enlace, así que sin JWT no se abre nada.
 verify_jwt = false
+
+[functions.acceso-particular]
+# Se abre desde el botón de los correos, sin sesión: la firma HMAC del enlace
+# es lo que da paso (ver _shared/accesoParticular.ts).
+verify_jwt = false
