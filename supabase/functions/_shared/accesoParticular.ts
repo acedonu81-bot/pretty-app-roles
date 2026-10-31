@@ -4,13 +4,21 @@
 // enlace y ninguno servía). Aquí el correo lleva un enlace FIRMADO y duradero a
 // xpeak.es/acceso; el enlace mágico real se genera al pulsar el botón (POST),
 // así que ni caduca antes de tiempo ni lo gastan los antivirus del correo.
-const CADUCA_MS = 30 * 24 * 3600_000;
+const CADUCA_MS = 7 * 24 * 3600_000;
 const enc = new TextEncoder();
 const b64url = (b: Uint8Array) => btoa(String.fromCharCode(...b)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 const deB64url = (s: string) => Uint8Array.from(
   atob(s.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - s.length % 4) % 4)), c => c.charCodeAt(0));
-const clave = () => crypto.subtle.importKey('raw', enc.encode(Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''),
-  { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
+// Clave derivada de la de servicio con un propósito propio: una firma de estos
+// enlaces no vale para los otros enlaces firmados (confirmar solicitud, baja) y
+// al revés. Sin clave de servicio no se firma nada.
+const clave = async () => {
+  const base = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  if (!base) throw new Error('Sin clave para firmar');
+  const raiz = await crypto.subtle.importKey('raw', enc.encode(base), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const derivada = await crypto.subtle.sign('HMAC', raiz, enc.encode('xpeak-acceso-particular-v1'));
+  return crypto.subtle.importKey('raw', derivada, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
+};
 
 export interface DatosAcceso { u: string; d: string; iat: number }
 
