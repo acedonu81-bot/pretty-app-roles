@@ -65,6 +65,12 @@ const fmt = (iso: string | null) => {
   return new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
+// Precio orientativo: entero entre 1 y 100.000 (lo mismo que comprueba la base de datos).
+const precioValido = (v?: string): number | undefined => {
+  const n = Math.round(Number(v));
+  return Number.isFinite(n) && n >= 1 && n <= 100000 ? n : undefined;
+};
+
 const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: string) => void } = {}) => {
   const { user } = useAuth();
   const profile = useProfile();
@@ -183,13 +189,13 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
   // en el chat con ACEPTO y crea su propia reserva confirmada
   // (cerrar_acuerdo_chat). Antes esto disparaba "Bolo aceptado", calendario,
   // email "Trabajo confirmado" y derecho a reseña verificada sin haber nada.
-  const updateStatus = async (id: string, status: 'disponible' | 'rejected') => {
+  const updateStatus = async (id: string, status: 'disponible' | 'rejected', precio?: number) => {
     if (updatingRef.current === id) return;
     updatingRef.current = id;
     setUpdating(id);
     const { error } = await supabase
       .from('flash_bookings' as any)
-      .update({ status })
+      .update(status === 'disponible' && precio ? { status, precio_orientativo: precio } : { status })
       .eq('id', id)
       .eq('professional_user_id', user!.id);
     updatingRef.current = null;
@@ -255,6 +261,7 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
             status,
             event_date: booking.event_date,
             event_location: booking.event_location,
+            ...(status === 'disponible' && precio ? { precio_orientativo: precio } : {}),
           },
         },
       }).catch((err: unknown) => console.warn('[SolicitudesTab] status email failed:', err));
@@ -271,6 +278,9 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
       }
     }
   };
+
+  // Precio orientativo opcional junto al "Sí, puedo" (31 oct 2026): la clienta lo ve en el correo.
+  const [precios, setPrecios] = useState<Record<string, string>>({});
 
   const pending = items.filter(i => i.status === 'pending').length;
 
@@ -388,8 +398,15 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
                         style={{ background: 'rgba(255,95,86,0.08)', border: '1px solid rgba(255,95,86,0.2)', color: '#ff5f56' }}>
                         <XCircle size={12} /> No puedo
                       </button>
+                      <label className="flex items-center gap-1 px-2 rounded-lg text-xs" style={{ border: '1px solid rgba(0,0,0,0.15)', background: '#fff', color: '#374151' }}>
+                        <span className="font-bold whitespace-nowrap">Desde</span>
+                        <input type="number" inputMode="numeric" min={1} max={100000} placeholder="€ (opcional)"
+                          value={precios[s.id] ?? ''} onChange={e => setPrecios(p => ({ ...p, [s.id]: e.target.value }))}
+                          aria-label="Precio orientativo en euros, opcional"
+                          className="w-24 py-2 text-xs bg-transparent outline-none" />
+                      </label>
                       <button
-                        onClick={() => updateStatus(s.id, 'disponible')}
+                        onClick={() => updateStatus(s.id, 'disponible', precioValido(precios[s.id]))}
                         disabled={updating === s.id}
                         className="flex items-center gap-1.5 px-5 py-2 rounded-lg text-sm font-black transition-all hover:scale-105 disabled:opacity-50 animate-pulse motion-reduce:animate-none"
                         style={{ background: '#16a34a', color: '#fff', boxShadow: '0 4px 14px rgba(22,163,74,0.45)' }}>

@@ -35,7 +35,7 @@ serve(async (req) => {
 
     const admin = createClient(url, key);
     const { data: b } = await admin.from('flash_bookings')
-      .select('id, requester_contact, requester_name, professional_user_id, professional_name, status, event_date, event_location, created_by')
+      .select('id, requester_contact, requester_name, professional_user_id, professional_name, status, event_date, event_location, created_by, precio_orientativo')
       .eq('id', booking_id).maybeSingle();
     if (!b || b.professional_user_id !== callerId || !['disponible', 'confirmed'].includes(String(b.status))) return json({ error: 'Sin reserva aceptada' }, 403);
     const email = String(b.requester_contact ?? '').trim().toLowerCase();
@@ -58,6 +58,7 @@ serve(async (req) => {
         data: {
           email, status: b.status, requester_name: b.requester_name, professional_name: proNombre,
           event_date: b.event_date, event_location: b.event_location, action_url: actionUrl,
+          ...(b.precio_orientativo ? { precio_orientativo: b.precio_orientativo } : {}),
         },
       }),
     });

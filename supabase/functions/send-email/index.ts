@@ -1995,6 +1995,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           ['Profesional', d.professional_name],
           ['Fecha del evento', d.event_date],
           ['Lugar', d.event_location ?? '—'],
+          ...(Number(d.precio_orientativo) > 0 ? [['Precio orientativo', `desde ${Number(d.precio_orientativo)} € (sin compromiso hasta que lo cerréis en el chat)`] as [string, string]] : []),
         ])}
       </div>
       ${btn('Escribir por el chat →', enlaceSeguro(d.action_url, 'https://xpeak.es/dashboard?view=messages'))}
