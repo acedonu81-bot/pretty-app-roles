@@ -14,7 +14,9 @@ import QuitarSolicitudBoton from './QuitarSolicitudBoton';
 //
 //   ROJO      sin_respuesta         el profesional no ha contestado.
 //   AMARILLO  aceptada_sin_hablar   dijo que sí y no han cruzado ningún mensaje.
-//   AMARILLO  hablando              hablan, falta que cierren el acuerdo.
+//   AMARILLO  hablando              hablan, falta que cierren el acuerdo. Si solo
+//                                   escribe uno, "Habla solo X" (parpadea); si
+//                                   escriben los dos, "Hablando los dos, casi cerrado" (31 oct 2026).
 //   VERDE     cerrado               acuerdo aceptado (en el chat) o completada.
 //   GRIS      no                    dijo que no o se canceló.
 
@@ -33,6 +35,9 @@ interface Fila {
   created_at: string;
   mensajes: number;
   estado: Estado;
+  created_by?: string | null;
+  del_cliente?: number;
+  del_profesional?: number;
 }
 
 export type Semaforo = { color: string; bg: string; etiqueta: string; accion: string; parpadea: boolean; orden: number };
@@ -50,6 +55,24 @@ export const clasificar = (estado: Estado): Semaforo => {
     default:
       return { color: '#16a34a', bg: 'rgba(22,163,74,0.10)', etiqueta: 'Trato cerrado', accion: 'Acuerdo aceptado', parpadea: false, orden: 3 };
   }
+};
+
+// Dentro de "hablando": quién ha escrito. Con los dos es "casi cerrado"; con uno
+// solo, el que no contesta es quien hay que avisar (Cristina / Dj GuimoX, 31 oct).
+export const quienHabla = (
+  delCliente: number | undefined, delPro: number | undefined, cliente: string, pro: string,
+): Semaforo | null => {
+  if (delCliente == null || delPro == null) return null;
+  if (delCliente > 0 && delPro > 0) {
+    return { color: '#65a30d', bg: 'rgba(101,163,13,0.10)', etiqueta: 'Hablando los dos, casi cerrado', accion: `${cliente} ${delCliente} y ${pro} ${delPro} mensajes; falta que acepten el acuerdo`, parpadea: false, orden: 2 };
+  }
+  if (delPro > 0) {
+    return { color: '#d97706', bg: 'rgba(217,119,6,0.14)', etiqueta: `Solo escribe ${pro}`, accion: `${cliente} aún no ha contestado (${delPro} ${delPro === 1 ? 'mensaje' : 'mensajes'} suyos)`, parpadea: true, orden: 1 };
+  }
+  if (delCliente > 0) {
+    return { color: '#d97706', bg: 'rgba(217,119,6,0.14)', etiqueta: `Solo escribe ${cliente}`, accion: `${pro} aún no ha contestado (${delCliente} ${delCliente === 1 ? 'mensaje' : 'mensajes'} suyos)`, parpadea: true, orden: 1 };
+  }
+  return null;
 };
 
 const fechaLegible = (d: string | null) => {
@@ -83,8 +106,17 @@ const AdminSolicitudesSemaforo = ({ onCount }: { onCount?: (n: number) => void }
 
   useEffect(() => {
     let cancelled = false;
-    (supabase.rpc as any)('panel_admin_solicitudes_estado').then(({ data }: { data: Fila[] | null }) => {
-      if (!cancelled) setFilas(data ?? []);
+    Promise.all([
+      (supabase.rpc as any)('panel_admin_solicitudes_estado'),
+      (supabase.rpc as any)('panel_admin_solicitudes_quien_habla'),
+    ]).then(([est, quien]: { data: any[] | null }[]) => {
+      if (cancelled) return;
+      // Si la segunda llamada falla, el semáforo sigue como antes (sin detalle).
+      const lados = new Map((quien.data ?? []).map((q: any) => [q.id, q]));
+      setFilas(((est.data ?? []) as Fila[]).map(f => {
+        const q = lados.get(f.id);
+        return q ? { ...f, del_cliente: Number(q.del_cliente), del_profesional: Number(q.del_profesional) } : f;
+      }));
     });
     return () => { cancelled = true; };
   }, []);
@@ -101,7 +133,10 @@ const AdminSolicitudesSemaforo = ({ onCount }: { onCount?: (n: number) => void }
   if (filas.length === 0) return null;
 
   const ordenadas = [...filas]
-    .map(f => ({ f, s: clasificar(f.estado) }))
+    .map(f => ({
+      f,
+      s: (f.estado === 'hablando' && quienHabla(f.del_cliente, f.del_profesional, f.requester_name || 'el cliente', f.professional_name?.trim() || 'el profesional')) || clasificar(f.estado),
+    }))
     .sort((a, b) => a.s.orden - b.s.orden || +new Date(b.f.created_at) - +new Date(a.f.created_at));
   const cuenta = (o: number) => ordenadas.filter(x => x.s.orden === o).length;
 
@@ -110,8 +145,8 @@ const AdminSolicitudesSemaforo = ({ onCount }: { onCount?: (n: number) => void }
       <p className="text-base font-extrabold mb-1" style={{ color: '#1f2937' }}>Solicitudes: cómo van</p>
       <p className="text-xs mb-3 flex flex-wrap gap-x-4 gap-y-1" style={{ color: '#4b5563' }}>
         <span><b style={{ color: '#dc2626' }}>{cuenta(0)}</b> sin respuesta</span>
-        <span><b style={{ color: '#d97706' }}>{cuenta(1)}</b> aceptadas sin hablar</span>
-        <span><b style={{ color: '#d97706' }}>{cuenta(2)}</b> hablando, sin cerrar</span>
+        <span><b style={{ color: '#d97706' }}>{cuenta(1)}</b> sin hablar o habla uno solo</span>
+        <span><b style={{ color: '#65a30d' }}>{cuenta(2)}</b> hablando los dos, casi cerrado</span>
         <span><b style={{ color: '#16a34a' }}>{cuenta(3)}</b> trato cerrado</span>
         <span><b style={{ color: '#6b7280' }}>{cuenta(4)}</b> dijeron que no</span>
       </p>
