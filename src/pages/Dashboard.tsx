@@ -7,6 +7,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
+import NuevaOfertaBanner from '@/components/dashboard/NuevaOfertaBanner';
 import PendingReviewsBanner from '@/components/dashboard/PendingReviewsBanner';
 import { marcarFlashVisto } from '@/hooks/useDashboardBadges';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
@@ -601,6 +602,12 @@ const Dashboard = () => {
     navigate('/dashboard?view=flashbooking&tab=solicitudes', { replace: true });
   };
 
+  // Sin ?tab= Flash Booking abre en "Ofertas para ti" (la pestaña demanda).
+  const goToOfertasFlashBooking = () => {
+    handleViewChange('flashbooking');
+    navigate('/dashboard?view=flashbooking', { replace: true });
+  };
+
   // "Reseñas" (barra lateral, banner de pendientes y consejos) lleva a su propia
   // pantalla: valorar lo pendiente y ver lo que dicen de ti. Antes caía en
   // Flash Booking → Solicitudes o Empresario → Historial según el rol y, sin
@@ -791,6 +798,7 @@ const Dashboard = () => {
             onBack={!ROOT_VIEWS.has(activeView) ? () => window.history.back() : undefined} />
           <HalloweenPanel isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange} />
           {movemberActivo() && <MovemberFranja />}
+          <NuevaOfertaBanner userId={user?.id} isEmpresario={profileRole === 'empresario'} oculto={activeView === 'flashbooking'} onVer={goToOfertasFlashBooking} />
           <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
           <PendingReviewsBanner onGoToReviews={goToPendingReviews} />
           <MarketingConsentBanner />
