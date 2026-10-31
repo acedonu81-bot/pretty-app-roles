@@ -301,6 +301,7 @@ const DespedidasMadrid = lazy(() => import("./pages/DespedidasMadrid"));
 const ConcursoDJMadrid = lazy(() => import("./pages/ConcursoDJMadrid"));
 const ConcursoDJAspirantes = lazy(() => import("./pages/ConcursoDJAspirantes"));
 const BlogTardeoPrivadoMadrid = lazy(() => import("./pages/BlogTardeoPrivadoMadrid"));
+const BlogDespedidaSolteraMadrid = lazy(() => import("./pages/BlogDespedidaSolteraMadrid"));
 const BlogAfterworkEmpresaMadrid = lazy(() => import("./pages/BlogAfterworkEmpresaMadrid"));
 const BlogEventosSinAlcohol = lazy(() => import("./pages/BlogEventosSinAlcohol"));
 const BlogJornadaBienestarEmpresa = lazy(() => import("./pages/BlogJornadaBienestarEmpresa"));
@@ -962,6 +963,7 @@ const App = () => (
             <Route path="/concurso-dj-madrid" element={<ConcursoDJMadrid />} />
             <Route path="/concurso-dj-madrid/aspirantes" element={<ConcursoDJAspirantes />} />
             <Route path="/blog/tardeo-privado-madrid" element={<BlogTardeoPrivadoMadrid />} />
+            <Route path="/blog/despedida-de-soltera-madrid-cuanto-cuesta" element={<BlogDespedidaSolteraMadrid />} />
             <Route path="/blog/afterwork-empresa-madrid" element={<BlogAfterworkEmpresaMadrid />} />
             <Route path="/blog/eventos-sin-alcohol" element={<BlogEventosSinAlcohol />} />
             <Route path="/blog/jornada-bienestar-empresa" element={<BlogJornadaBienestarEmpresa />} />

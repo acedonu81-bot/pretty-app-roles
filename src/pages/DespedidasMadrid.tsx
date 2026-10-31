@@ -85,6 +85,9 @@ export default function DespedidasMadrid() {
           <p className="mt-5 text-sm" style={{ color: '#4B5563' }}>
             ¿Necesitas transporte para el grupo, como un bus o una furgoneta? Cuéntalo en las notas de la solicitud y lo tenemos en cuenta.
           </p>
+          <p className="mt-3 text-sm" style={{ color: '#4B5563' }}>
+            ¿Quieres hacerte una idea del coste antes de pedir? Mira la <a href="/blog/despedida-de-soltera-madrid-cuanto-cuesta" className="underline" style={{ color: '#8B6A00' }}>guía de precios de una despedida en Madrid</a>.
+          </p>
         </section>
 
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-14 sm:pb-20">
