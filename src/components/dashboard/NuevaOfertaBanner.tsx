@@ -3,20 +3,24 @@ import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 // 31 oct 2026: la oferta nueva de un organizador solo avisaba dentro de Flash
 // Booking y con un globo en el menú; el profesional que entraba al Inicio no
 // la veía. Este aviso va arriba de todo en cualquier pantalla del panel, en
-// verde parpadeante como el resto de "hay algo que hacer", y se apaga solo al
-// abrir "Ofertas para ti" (marcarOfertasVistas lee las notificaciones).
+// verde parpadeante como el resto de "hay algo que hacer". Cuenta dos cosas:
+// ofertas de organizadores sin ver (se apaga al abrir "Ofertas para ti") y
+// solicitudes directas sin contestar, p. ej. de un particular (se apaga al
+// contestarlas; mismo conteo que el globo de Flash Booking).
 interface Props {
   userId?: string;
   isEmpresario: boolean;
   /** Dentro de Flash Booking ya hay un aviso propio con el mismo conteo. */
   oculto?: boolean;
-  onVer: () => void;
+  /** `solicitudes` si solo hay solicitudes directas, `ofertas` si hay ofertas de organizadores. */
+  onVer: (destino: 'ofertas' | 'solicitudes') => void;
 }
 
 const NuevaOfertaBanner = ({ userId, isEmpresario, oculto, onVer }: Props) => {
-  const { demandaBadge } = useDashboardBadges(userId, isEmpresario);
+  const { demandaBadge, flashBadge } = useDashboardBadges(userId, isEmpresario);
+  const total = demandaBadge + flashBadge;
 
-  if (isEmpresario || oculto || demandaBadge < 1) return null;
+  if (isEmpresario || oculto || total < 1) return null;
 
   return (
     <div
@@ -30,13 +34,13 @@ const NuevaOfertaBanner = ({ userId, isEmpresario, oculto, onVer }: Props) => {
       />
       <div className="flex-1 min-w-0">
         <p className="text-sm md:text-base font-black" style={{ color: '#15803d' }}>
-          {demandaBadge === 1 ? 'Nueva oferta disponible' : `${demandaBadge} ofertas nuevas disponibles`}
+          {total === 1 ? 'Nueva oferta disponible' : `${total} ofertas nuevas disponibles`}
         </p>
         <p className="text-xs" style={{ color: '#166534' }}>Atento a las notificaciones</p>
       </div>
       <button
         type="button"
-        onClick={onVer}
+        onClick={() => onVer(demandaBadge > 0 ? 'ofertas' : 'solicitudes')}
         className="px-3 py-2 rounded-lg text-xs font-black flex-shrink-0"
         style={{ background: '#15803d', color: '#fff' }}
       >
