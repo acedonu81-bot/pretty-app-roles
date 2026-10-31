@@ -34,7 +34,7 @@ export const FormCondiciones = ({ inicial, otroNombre, onEnviar, onCancelar, env
           <input type="number" inputMode="decimal" min={1} value={precio} onChange={e => setPrecio(e.target.value)} placeholder="500" className={campo} style={estilo} />
         </label>
         <label className="text-[0.75rem] font-bold" style={{ color: '#5c4a12' }}>Ciudad
-          <input type="text" maxLength={60} value={ciudad} onChange={e => setCiudad(e.target.value)} placeholder="Madrid" className={campo} style={estilo} />
+          <input type="text" maxLength={60} value={ciudad} onChange={e => setCiudad(e.target.value)} placeholder="Ciudad del evento" className={campo} style={estilo} />
         </label>
         <label className="text-[0.75rem] font-bold" style={{ color: '#5c4a12' }}>Evento (opcional)
           <input type="text" maxLength={60} value={evento} onChange={e => setEvento(e.target.value)} placeholder="Boda, cumpleaños…" className={campo} style={estilo} />

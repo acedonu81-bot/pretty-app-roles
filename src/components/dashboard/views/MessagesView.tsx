@@ -1,3 +1,4 @@
+import { leerSolicitud, type SolicitudChat } from '@/lib/solicitudChat';
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -60,6 +61,22 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   const [activeConvId, setActiveConvId] = useState<string | null>(null);
   const [activeOtherName, setActiveOtherName] = useState('');
   const [activeOtherUserId, setActiveOtherUserId] = useState('');
+  // Solicitud que originó esta conversación (ver lib/solicitudChat.ts).
+  const [solicitud, setSolicitud] = useState<SolicitudChat | null>(null);
+  useEffect(() => {
+    setSolicitud(null);
+    if (!user?.id || !activeOtherUserId) return;
+    let vivo = true;
+    supabase.from('flash_bookings' as any)
+      .select('event_date, event_location, event_description, source')
+      .or(`and(created_by.eq.${user.id},professional_user_id.eq.${activeOtherUserId}),and(created_by.eq.${activeOtherUserId},professional_user_id.eq.${user.id})`)
+      .neq('source', 'chat').order('created_at', { ascending: false }).limit(1)
+      .then(({ data }) => {
+        const r = (data as unknown as { event_date: string | null; event_location: string | null; event_description: string | null }[] | null)?.[0];
+        if (vivo && r) setSolicitud(leerSolicitud(r));
+      });
+    return () => { vivo = false; };
+  }, [user?.id, activeOtherUserId]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
@@ -679,6 +696,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 messages={messages}
                 userId={user?.id ?? ''}
                 activeOtherName={activeOtherName}
+                solicitud={solicitud}
                 input={input}
                 setInput={setInput}
                 sending={sending}

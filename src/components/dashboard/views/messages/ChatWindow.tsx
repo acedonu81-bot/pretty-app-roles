@@ -1,3 +1,4 @@
+import { fechaLegible, type SolicitudChat } from '@/lib/solicitudChat';
 import { lazy, Suspense, useRef, useState } from 'react';
 import { leerAcuerdo, estadoAcepto, REF_ACUERDO } from '@/lib/acuerdoChat';
 import AdjuntoChat from './AdjuntoChat';
@@ -51,6 +52,8 @@ interface Props {
   onValorarAcuerdo?: () => void;
   /** El profesional acepta el contrato propuesto en el chat. */
   onAceptarAcuerdo?: (ref: string) => void;
+  /** Datos de la solicitud que originó la conversación, si la hay. */
+  solicitud?: SolicitudChat | null;
 }
 
 const REPORT_REASONS = [
@@ -62,7 +65,7 @@ const REPORT_REASONS = [
 ];
 
 const ChatWindow = ({
-  messages, userId, activeOtherName,
+  messages, userId, activeOtherName, solicitud,
   input, setInput,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
@@ -227,6 +230,17 @@ const ChatWindow = ({
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 flex flex-col gap-2.5"
         style={{ background: '#FBF8EE' }}>
+        {solicitud && (solicitud.fecha || solicitud.lugar || solicitud.personas || solicitud.horario || solicitud.tipo) && (
+          <div className="rounded-xl px-4 py-3 text-xs" style={{ background: '#FFFFFF', border: '1px solid rgba(122,98,22,0.25)', color: '#2A2412' }}>
+            <p className="font-black mb-1.5" style={{ color: '#8B6A00' }}>Lo que pidió en su solicitud</p>
+            <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
+              {([['Evento', solicitud.tipo], ['Fecha', solicitud.fecha && fechaLegible(solicitud.fecha)], ['Lugar', solicitud.lugar], ['Personas', solicitud.personas], ['Horario', solicitud.horario]] as const)
+                .filter(([, v]) => v).map(([k, v]) => (
+                  <div key={k} className="contents"><dt className="font-bold">{k}</dt><dd>{v}</dd></div>
+                ))}
+            </dl>
+          </div>
+        )}
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-center">
             <AvatarChat name={activeOtherName} size={64} />
@@ -380,7 +394,7 @@ const ChatWindow = ({
       <div className="px-2 sm:px-4 py-2 flex-shrink-0 relative"
         style={{ borderTop: '1px solid rgba(139,106,0,0.14)', background: '#FFFDF9' }}>
         {formAcepto && onAcepto && (
-          <FormCondiciones inicial={formAcepto.inicial} otroNombre={activeOtherName} enviando={sending}
+          <FormCondiciones inicial={formAcepto.inicial ?? (solicitud ? { fecha: solicitud.fecha, ciudad: solicitud.lugar, precio: '', evento: solicitud.tipo } : null)} otroNombre={activeOtherName} enviando={sending}
             onCancelar={() => setFormAcepto(null)}
             onEnviar={cod => { setFormAcepto(null); onAcepto(cod); }} />
         )}
