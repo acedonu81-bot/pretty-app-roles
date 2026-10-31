@@ -33,7 +33,7 @@ export default function EliminarCuenta() {
 
             <section>
               <h2 className="text-xl font-bold mb-3" style={{ color: '#8B6A00' }}>Opción 2: Por email</h2>
-              <p className="text-neutral-300 mb-3">Envía un email a <a href="mailto:acedonu81@gmail.com" className="underline" style={{ color: '#8B6A00' }}>acedonu81@gmail.com</a> con el asunto <strong>"Solicitud eliminación de cuenta"</strong> e indica:</p>
+              <p className="text-neutral-300 mb-3">Envía un email a <a href="mailto:info@xpeak.site" className="underline" style={{ color: '#8B6A00' }}>info@xpeak.site</a> con el asunto <strong>"Solicitud eliminación de cuenta"</strong> e indica:</p>
               <ul className="list-disc list-inside space-y-1 text-neutral-300">
                 <li>El email con el que estás registrado en XPEAK</li>
                 <li>Si quieres eliminar solo algunos datos o la cuenta completa</li>
@@ -60,7 +60,7 @@ export default function EliminarCuenta() {
 
           <div className="mt-12 p-4 rounded-xl border border-white/10 text-sm text-neutral-400">
             Para cualquier consulta sobre privacidad o protección de datos, contacta con nosotros en{' '}
-            <a href="mailto:acedonu81@gmail.com" style={{ color: '#8B6A00' }}>acedonu81@gmail.com</a>
+            <a href="mailto:info@xpeak.site" style={{ color: '#8B6A00' }}>info@xpeak.site</a>
           </div>
         </div>
         <FooterPublic />

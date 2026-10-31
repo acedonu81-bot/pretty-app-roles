@@ -173,7 +173,7 @@ Play Store **requiere AAB** (no APK) para nuevas apps desde 2021.
 - **Nombre:** XPEAK
 - **Descripción corta (80 chars):** La red profesional del ocio nocturno en España
 - **Categoría:** Empresa / Profesional
-- **Email de contacto:** acedonu81@gmail.com
+- **Email de contacto:** info@xpeak.site
 - **URL de privacidad:** https://xpeak.es/privacidad
 - **Tipo de contenido:** Para todos (con mención a temática de ocio nocturno)
 
