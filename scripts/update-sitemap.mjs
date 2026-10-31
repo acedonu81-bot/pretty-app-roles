@@ -9,6 +9,8 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { hasInventory, contentDate, extractObjectLiteral } from './city-inventory.mjs';
 
+const ventanas = JSON.parse(fs.readFileSync(new URL('../src/config/ventanasPrueba.json', import.meta.url), 'utf8'));
+
 // Copia de PHOTO_GATE_EXCEPTIONS (src/lib/constants.ts): perfiles sin foto que se publican igual.
 const PHOTO_GATE_EXCEPTIONS = [];
 const passesPhotoGate = p => !!p.photo_url || PHOTO_GATE_EXCEPTIONS.includes(p.user_id);
@@ -202,6 +204,7 @@ function staticUrls(today, indexableCities, cityContentDates) {
   lines.push(url('https://xpeak.es/sobre-nosotros', sobreNosotrosDate, 'monthly', '0.6'));
   lines.push(url('https://xpeak.es/autor/daniel', autorDanielDate, 'monthly', '0.4'));
   lines.push(url('https://xpeak.es/soporte', soporteDate, 'monthly', '0.5'));
+  if (ventanas.despedidas.activa) lines.push(url('https://xpeak.es/despedidas-madrid', lastCommitDate('src/pages/DespedidasMadrid.tsx'), 'weekly', '0.6'));
   lines.push(url('https://xpeak.es/healthy-zone', lastCommitDate('src/pages/HealthyZone.tsx'), 'weekly', '0.7'));
   lines.push(url('https://xpeak.es/concurso-dj-madrid', lastCommitDate('src/pages/ConcursoDJMadrid.tsx'), 'weekly', '0.7'));
   lines.push(url('https://xpeak.es/concurso-dj-madrid/aspirantes', lastCommitDate('src/components/concurso/SesionesConcurso.tsx'), 'daily', '0.6'));

@@ -18,6 +18,7 @@ import EventCartWidget from "./components/EventCartWidget";
 import { logPageView, logPwaInstalled, logPwaSessionIfStandalone } from "@/lib/track";
 import { NativeRootRedirect, useNativeGuardedPath } from "./lib/nativeEntry";
 import { isNative } from "./lib/capacitor";
+import { ventanaActiva } from "./config/ventanasPrueba";
 
 // Code-split heavy routes — loaded on demand
 const Auth = lazy(() => import("./pages/Auth"));
@@ -296,6 +297,7 @@ const BlogComoContratarPromotoresDiscoteca = lazy(() => import("./pages/BlogComo
 const BlogComoElegirMagoEventos = lazy(() => import("./pages/BlogComoElegirMagoEventos"));
 const BlogTiposAnimacionEventos = lazy(() => import("./pages/BlogTiposAnimacionEventos"));
 const HealthyZone = lazy(() => import("./pages/HealthyZone"));
+const DespedidasMadrid = lazy(() => import("./pages/DespedidasMadrid"));
 const ConcursoDJMadrid = lazy(() => import("./pages/ConcursoDJMadrid"));
 const ConcursoDJAspirantes = lazy(() => import("./pages/ConcursoDJAspirantes"));
 const BlogTardeoPrivadoMadrid = lazy(() => import("./pages/BlogTardeoPrivadoMadrid"));
@@ -956,6 +958,7 @@ const App = () => (
             <Route path="/blog/como-elegir-mago-para-tu-evento" element={<BlogComoElegirMagoEventos />} />
             <Route path="/blog/tipos-de-animacion-para-eventos" element={<BlogTiposAnimacionEventos />} />
             <Route path="/healthy-zone" element={<HealthyZone />} />
+            {ventanaActiva("despedidas") && <Route path="/despedidas-madrid" element={<DespedidasMadrid />} />}
             <Route path="/concurso-dj-madrid" element={<ConcursoDJMadrid />} />
             <Route path="/concurso-dj-madrid/aspirantes" element={<ConcursoDJAspirantes />} />
             <Route path="/blog/tardeo-privado-madrid" element={<BlogTardeoPrivadoMadrid />} />

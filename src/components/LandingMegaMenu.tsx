@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ventanaActiva } from '@/config/ventanasPrueba';
 import {
   ChevronDown, Zap, Search, MessageCircle, FileText, UserPlus, BadgeEuro,
   CalendarDays, BookOpen, Calculator, ClipboardList, HelpCircle, Info, Sparkles,
@@ -118,7 +119,8 @@ const TABS: Tab[] = [
       { title: 'Blog', desc: 'Precios y consejos por tipo de evento', href: '/blog', icon: BookOpen },
       { title: 'Presupuesto de boda', desc: 'Calcula lo que vas a gastar', href: '/presupuesto-boda', icon: Calculator },
       { title: 'Checklist evento de empresa', desc: 'Todo lo que no se te puede olvidar', href: '/checklist-evento-empresa', icon: ClipboardList },
-      { title: 'Healthy Zone', desc: 'Tardeo, afterwork y eventos sin alcohol', href: '/healthy-zone', icon: Sun },
+      ...(ventanaActiva('healthyZone') ? [{ title: 'Healthy Zone', desc: 'Tardeo, afterwork y eventos sin alcohol', href: '/healthy-zone', icon: Sun }] : []),
+      ...(ventanaActiva('despedidas') ? [{ title: 'Despedidas en Madrid', desc: 'DJ, catering y más para tu despedida', href: '/despedidas-madrid', icon: PartyPopper }] : []),
       { title: 'Preguntas frecuentes', desc: 'Resolvemos las dudas habituales', href: '#faq', icon: HelpCircle },
       { title: 'Sobre XPEAK', desc: 'Quién está detrás del proyecto', href: '/sobre-nosotros', icon: Info },
     ],

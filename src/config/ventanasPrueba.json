@@ -1,0 +1,12 @@
+{
+  "healthyZone": {
+    "activa": true,
+    "revisar": "2026-11-05",
+    "retirarSi": "0 solicitudes (leads source healthy_zone) con la tarjeta de portada puesta. Solo quita tarjeta y menú; las guías siguen publicadas."
+  },
+  "despedidas": {
+    "activa": true,
+    "revisar": "2026-12-12",
+    "retirarSi": "Menos de 3 solicitudes reales de despedida en 6 semanas desde el despliegue (sin cuentas propias ni de prueba). Quita tarjeta, menú, ruta, prerender y sitemap."
+  }
+}

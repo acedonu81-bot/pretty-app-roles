@@ -109,6 +109,7 @@ const bentoAnimacion = 'https://images.pexels.com/photos/1405528/pexels-photo-14
 import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
 import GigWonPopup from '@/components/GigWonPopup';
+import { ventanaActiva } from '@/config/ventanasPrueba';
 
 const ConcursoFeedBanner = lazy(() => import('@/components/dashboard/views/ConcursoFeedBanner'));
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
@@ -962,7 +963,7 @@ const Landing = () => {
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-black tracking-tight" style={{ lineHeight: 1.2 }}>¿Qué estás organizando?</h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+          <div className={`grid grid-cols-2 sm:grid-cols-3 gap-3 ${{ 6: 'lg:grid-cols-6', 7: 'lg:grid-cols-7', 8: 'lg:grid-cols-8' }[6 + Number(ventanaActiva('healthyZone')) + Number(ventanaActiva('despedidas'))]}`}>
             {[
               { label: 'Boda', color: '#c084fc', border: 'rgba(192,132,252,0.3)', img: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=400', href: '/bodas' },
               { label: 'Cumpleaños', color: '#fb923c', border: 'rgba(251,146,60,0.3)', img: 'https://images.pexels.com/photos/1405528/pexels-photo-1405528.jpeg?auto=compress&cs=tinysrgb&w=400', href: '/directorio/animador' },
@@ -982,6 +983,7 @@ const Landing = () => {
                 </div>
               </a>
             ))}
+            {ventanaActiva('healthyZone') && (
             <a href="/healthy-zone"
               onClick={() => (window as any).gtag?.('event', 'select_content', { content_type: 'landing_tipo_evento', item_id: 'healthy_zone' })}
               className="group relative rounded-2xl overflow-hidden flex flex-col items-center justify-end text-center transition-all hover:scale-105 col-span-2 sm:col-span-3 lg:col-span-1 aspect-[16/7] lg:aspect-[3/4]"
@@ -993,6 +995,20 @@ const Landing = () => {
                 <div className="mt-1 h-0.5 w-6 mx-auto rounded-full" style={{ background: '#34d399' }} />
               </div>
             </a>
+            )}
+            {ventanaActiva('despedidas') && (
+            <a href="/despedidas-madrid"
+              onClick={() => (window as any).gtag?.('event', 'select_content', { content_type: 'landing_tipo_evento', item_id: 'despedidas' })}
+              className="group relative rounded-2xl overflow-hidden flex flex-col items-center justify-end text-center transition-all hover:scale-105 col-span-2 sm:col-span-3 lg:col-span-1 aspect-[16/7] lg:aspect-[3/4]"
+              style={{ border: '1px solid rgba(212,175,55,0.3)' }}>
+              <img src={px(2747449)} alt="Despedidas" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)' }} />
+              <div className="relative z-10 p-3 w-full">
+                <p className="text-sm font-black tracking-wide" style={{ color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}>Despedidas</p>
+                <div className="mt-1 h-0.5 w-6 mx-auto rounded-full" style={{ background: '#D4AF37' }} />
+              </div>
+            </a>
+            )}
           </div>
         </section>
       </FadeIn>
