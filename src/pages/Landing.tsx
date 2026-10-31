@@ -1001,7 +1001,7 @@ const Landing = () => {
               onClick={() => (window as any).gtag?.('event', 'select_content', { content_type: 'landing_tipo_evento', item_id: 'despedidas' })}
               className="group relative rounded-2xl overflow-hidden flex flex-col items-center justify-end text-center transition-all hover:scale-105 col-span-2 sm:col-span-3 lg:col-span-1 aspect-[16/7] lg:aspect-[3/4]"
               style={{ border: '1px solid rgba(212,175,55,0.3)' }}>
-              <img src={px(2747449)} alt="Despedidas" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <img src={px(6113603)} alt="Despedidas" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)' }} />
               <div className="relative z-10 p-3 w-full">
                 <p className="text-sm font-black tracking-wide" style={{ color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}>Despedidas</p>
