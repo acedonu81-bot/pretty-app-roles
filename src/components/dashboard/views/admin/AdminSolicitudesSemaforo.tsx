@@ -38,6 +38,7 @@ interface Fila {
   created_by?: string | null;
   del_cliente?: number;
   del_profesional?: number;
+  sin_entrar?: boolean;
 }
 
 export type Semaforo = { color: string; bg: string; etiqueta: string; accion: string; parpadea: boolean; orden: number };
@@ -109,13 +110,16 @@ const AdminSolicitudesSemaforo = ({ onCount }: { onCount?: (n: number) => void }
     Promise.all([
       (supabase.rpc as any)('panel_admin_solicitudes_estado'),
       (supabase.rpc as any)('panel_admin_solicitudes_quien_habla'),
-    ]).then(([est, quien]: { data: any[] | null }[]) => {
+      (supabase.rpc as any)('panel_admin_solicitudes_clientas_sin_entrar'),
+    ]).then(([est, quien, sinEntrar]: { data: any[] | null }[]) => {
       if (cancelled) return;
       // Si la segunda llamada falla, el semáforo sigue como antes (sin detalle).
       const lados = new Map((quien.data ?? []).map((q: any) => [q.id, q]));
+      // Clientas que nunca han iniciado sesión: sin contraseña, solo entran por el correo.
+      const sin = new Set((sinEntrar.data ?? []).map((x: any) => x.id));
       setFilas(((est.data ?? []) as Fila[]).map(f => {
         const q = lados.get(f.id);
-        return q ? { ...f, del_cliente: Number(q.del_cliente), del_profesional: Number(q.del_profesional) } : f;
+        return { ...f, sin_entrar: sin.has(f.id), ...(q ? { del_cliente: Number(q.del_cliente), del_profesional: Number(q.del_profesional) } : {}) };
       }));
     });
     return () => { cancelled = true; };
@@ -162,6 +166,9 @@ const AdminSolicitudesSemaforo = ({ onCount }: { onCount?: (n: number) => void }
               <p className="truncate">
                 <b>{f.requester_name || 'Sin nombre'}</b> pidió{que(f.event_description) ? ` ${que(f.event_description)}` : ''} a <b>{f.professional_name || 'un profesional'}</b>
                 <span style={{ opacity: 0.7 }}> · {hace(f.created_at)}</span>
+                {f.sin_entrar && f.estado !== 'no' && (
+                  <span className="ml-2 px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(220,38,38,0.12)', color: '#b91c1c' }}>Aún no ha entrado a XPEAK</span>
+                )}
               </p>
               <p style={{ color: s.color }}><b>{s.etiqueta}.</b> {f.estado === 'cerrado' && detalleCerrado(f) ? `${s.accion}: ${detalleCerrado(f)}` : s.accion}</p>
             </div>
