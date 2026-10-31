@@ -11,9 +11,10 @@ export interface SolicitudChat {
   personas: string;
   horario: string;
   tipo: string;
+  musica: string;
 }
 
-const ETIQUETAS_PROPIAS = /^(personas|horario)\s*:/i;
+const ETIQUETAS_PROPIAS = /^(personas|horario|música)\s*:/i;
 
 export function leerSolicitud(r: { event_date?: string | null; event_location?: string | null; event_description?: string | null }): SolicitudChat {
   const desc = r.event_description ?? '';
@@ -28,6 +29,7 @@ export function leerSolicitud(r: { event_date?: string | null; event_location?: 
     personas: valor(/^personas\s*:/i),
     horario: valor(/^horario\s*:/i),
     tipo: sueltas[0] ?? deTexto ?? '',
+    musica: valor(/^música\s*:/i),
   };
 }
 

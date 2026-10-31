@@ -1,3 +1,4 @@
+import { ESTILOS_MUSICA, PIDE_MUSICA, alternarEstilo } from '@/lib/musicaSolicitud';
 import { useState } from 'react';
 import { X, Send, CheckCircle, PartyPopper, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -71,6 +72,8 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
     name: '', email: '', eventType: inicial?.eventType ?? '', service: inicial?.service ?? '', date: '', location: inicial?.location ?? '',
     personas: '', horario: '', budget: '', message: '', website: '',
   });
+  // Estilos de música que pide (obligatorio para el DJ: se reparte por estilo y ciudad).
+  const [musica, setMusica] = useState<string[]>([]);
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
   const [enviadas, setEnviadas] = useState<number | null>(null);
   // La función pide confirmar el email antes de repartir (18 oct 2026).
@@ -86,6 +89,7 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
     ...(form.service ? [] : ['qué profesional necesitas']),
     ...faltanDatos({ name: form.name, contact: form.email, date: form.date, location: form.location, eventType: form.eventType, personas: form.personas, horario: form.horario }, { pideTipo: true, pideDetalle: true }),
   ];
+  if (PIDE_MUSICA(form.service) && musica.length === 0) faltan.push('qué música quieres');
   const organiza = form.service === SERVICIO_ORGANIZA;
   if (organiza && ciudadOk && !/madrid/i.test(form.location)) faltan.push('que el evento sea en Madrid (de momento)');
   const listo = faltan.length === 0 && ciudadOk && emailOk;
@@ -99,7 +103,7 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
 
     const tipo = form.eventType;
     const { data: res, error: fnError } = await supabase.functions.invoke('particular-solicitud', {
-      body: { ...form, eventType: tipo },
+      body: { ...form, eventType: tipo, musica: musica.join('|') },
     });
 
     if (fnError || !res?.ok) {
@@ -141,7 +145,7 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
       requester_contact: form.email.trim(),
       event_date: form.date,
       event_location: form.location.trim(),
-      event_description: `${detalleSolicitud(form.personas, form.horario)} [Particular] [${tipo}] [${form.service}] ${extras}`.trim(),
+      event_description: `${detalleSolicitud(form.personas, form.horario)}${musica.length ? ` [Música: ${musica.join(', ')}]` : ''} [Particular] [${tipo}] [${form.service}] ${extras}`.trim(),
       agreed_price: null,
       status: 'pending',
       created_by: null,
@@ -302,6 +306,24 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
                   {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
+              {PIDE_MUSICA(form.service) && (
+                <div>
+                  <label className={labelCls} style={{ color: '#222' }}>¿Qué música quieres? * <span className="normal-case font-medium" style={{ color: '#555' }}>(hasta 3)</span></label>
+                  <div className="flex flex-wrap gap-2">
+                    {ESTILOS_MUSICA.map(e => {
+                      const activo = musica.includes(e);
+                      return (
+                        <button key={e} type="button" aria-pressed={activo} onClick={() => setMusica(m => alternarEstilo(m, e))}
+                          className="px-3 py-2 rounded-full text-xs font-bold"
+                          style={{ background: activo ? '#D4AF37' : '#FFFFFF', color: '#111', border: `1.5px solid ${activo ? '#8B6A00' : 'rgba(0,0,0,0.15)'}` }}>
+                          {e}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="text-xs mt-1.5" style={{ color: '#555' }}>Se lo mandamos a los DJs de tu ciudad que ponen ese estilo.</p>
+                </div>
+              )}
               <CamposPersonasHorario personas={form.personas} horario={form.horario}
                 onPersonas={v => set('personas', v)} onHorario={v => set('horario', v)} />
               <details className="rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.1)' }}>

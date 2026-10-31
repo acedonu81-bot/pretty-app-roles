@@ -1874,6 +1874,29 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   }),
 
   // 13c. Mensaje sin responder pasadas ~24h — segundo aviso, más directo
+  // 31 oct 2026: la clienta (particular) tiene profesionales que le han dicho que
+  // sí y lleva más de 1 h sin abrir nada (Cristina, Patricia: 0 respuestas, 0
+  // entradas). Lo manda la función SQL avisar_clientas_sin_entrar cada 15 min,
+  // con el secreto interno; el botón lleva el enlace de acceso firmado.
+  particular_te_esperan: (d) => {
+    const pros = (Array.isArray(d.profesionales) ? d.profesionales as string[] : []).slice(0, 3);
+    const n = Number(d.n ?? pros.length) || pros.length || 1;
+    return {
+      subject: `${esc(d.name ?? 'Hola')}, ${n === 1 ? 'un profesional te espera' : `${n} profesionales te esperan`} en XPEAK`,
+      to: d.email,
+      replyTo: 'info@xpeak.site',
+      html: base(`
+        <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">${n === 1 ? 'Ya te han dicho que sí' : `Ya te han dicho que sí ${n} profesionales`}</h2>
+        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+          Hola <strong style="color:#0a0908">${esc(d.name ?? '')}</strong>, ${pros.length ? `<strong style="color:#0a0908">${esc(pros.join(', '))}</strong> ${pros.length === 1 ? 'puede' : 'pueden'} ir a tu evento` : 'hay profesionales disponibles para tu evento'} y quieren concretar contigo precio y detalles.
+        </p>
+        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+          Entra con un toque y habla con ellos. No necesitas contraseña.
+        </p>
+        ${btn('Entrar a mis conversaciones →', enlaceSeguro(d.action_url, 'https://xpeak.es/auth?acceso=1'))}`),
+    };
+  },
+
   unread_message_reminder: (d) => ({
     subject: `Aún no has respondido a ${esc(d.sender_name)} en XPEAK`,
     to: d.email,
@@ -2403,6 +2426,14 @@ async function atender(req: Request): Promise<Response> {
         const url = await firmarAcceso(targetUserId, destino.replace('https://xpeak.es', ''));
         if (url) data.action_url = url;
         data.particular = true;
+      }
+
+      // Aviso a la clienta sin contraseña que no abre sus conversaciones: solo con
+      // el secreto interno (lo manda la función SQL avisar_clientas_sin_entrar).
+      if (type === 'particular_te_esperan' && (isInternal || isService) && userData?.user?.email
+          && userData.user.user_metadata?.particular === 'true') {
+        const url = await firmarAcceso(targetUserId, '/dashboard?view=messages');
+        if (url) data.action_url = url;
       }
 
       if (data?.professional_user_id && !data?.professional_name) {

@@ -230,11 +230,11 @@ const ChatWindow = ({
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 flex flex-col gap-2.5"
         style={{ background: '#FBF8EE' }}>
-        {solicitud && (solicitud.fecha || solicitud.lugar || solicitud.personas || solicitud.horario || solicitud.tipo) && (
+        {solicitud && (solicitud.fecha || solicitud.lugar || solicitud.personas || solicitud.horario || solicitud.tipo || solicitud.musica) && (
           <div className="rounded-xl px-4 py-3 text-xs" style={{ background: '#FFFFFF', border: '1px solid rgba(122,98,22,0.25)', color: '#2A2412' }}>
             <p className="font-black mb-1.5" style={{ color: '#8B6A00' }}>Lo que pidió en su solicitud</p>
             <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
-              {([['Evento', solicitud.tipo], ['Fecha', solicitud.fecha && fechaLegible(solicitud.fecha)], ['Lugar', solicitud.lugar], ['Personas', solicitud.personas], ['Horario', solicitud.horario]] as const)
+              {([['Evento', solicitud.tipo], ['Fecha', solicitud.fecha && fechaLegible(solicitud.fecha)], ['Lugar', solicitud.lugar], ['Música', solicitud.musica], ['Personas', solicitud.personas], ['Horario', solicitud.horario]] as const)
                 .filter(([, v]) => v).map(([k, v]) => (
                   <div key={k} className="contents"><dt className="font-bold">{k}</dt><dd>{v}</dd></div>
                 ))}

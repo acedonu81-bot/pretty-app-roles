@@ -1,6 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { comprobarEmail } from '../_shared/comprobarEmail.ts';
+import { encajaConEstilos, leerEstilos } from '../_shared/musicaSolicitud.ts';
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -68,6 +69,7 @@ const limpio = (v: unknown, max: number) => String(v ?? '').replace(/<[^>]*>/g, 
 type Perfil = {
   user_id: string; display_name: string; role: string; zone: string | null; region: string | null;
   city_ref: string | null; is_seed: boolean | null; is_seed_profile: boolean | null;
+  genres?: string[] | null;
 };
 
 type Datos = {
@@ -75,6 +77,8 @@ type Datos = {
   date: string; location: string; budget: string; message: string; iat: number;
   // Obligatorios desde el 20 oct 2026; opcionales en el tipo para no invalidar enlaces ya enviados.
   personas?: string; horario?: string;
+  // Estilos de música separados por | (obligatorio para el DJ desde el 31 oct 2026).
+  musica?: string;
 };
 
 // Enlace de confirmación: los datos van en el propio enlace, firmados con
@@ -183,6 +187,7 @@ serve(async (req) => {
       location: limpio(body.location, 80),
       personas: limpio(body.personas, 30).replace(/[\[\]]/g, ''),
       horario: limpio(body.horario, 40).replace(/[\[\]]/g, ''),
+      musica: leerEstilos(body.musica).join('|'),
       budget: limpio(body.budget, 40),
       message: limpio(body.message, 600),
       iat: Date.now(),
@@ -194,6 +199,8 @@ serve(async (req) => {
     if (!limpio(body.eventType, 40)) return json({ error: 'Elige el tipo de evento' }, 400);
     if (!d.personas) return json({ error: 'Pon el número aproximado de personas' }, 400);
     if (!d.horario || d.horario.length < 4 || !/\d/.test(d.horario)) return json({ error: 'Pon el horario del evento (por ejemplo, de 22:00 a 03:00)' }, 400);
+    // El DJ se reparte por estilo de música y ciudad: sin estilo no se manda nada.
+    if (d.service === 'DJ' && !d.musica) return json({ error: 'Elige qué música quieres (hasta 3 estilos, o variada)' }, 400);
     if (textoBasura(d.name)) return json({ error: 'Pon tu nombre real para que los profesionales sepan con quién hablan' }, 400);
     if (textoBasura(d.location)) return json({ error: 'Pon la ciudad o el lugar del evento' }, 400);
     if (!fechaValida(d.date)) return json({ error: 'Pon la fecha del evento' }, 400);
@@ -227,6 +234,24 @@ serve(async (req) => {
   }
 });
 
+// Proporción de solicitudes que cada profesional ha contestado en 90 días
+// (response_bucket está vacío en casi todos). Sin historial (menos de 2) = 0,5.
+// deno-lint-ignore no-explicit-any
+async function ritmoDeRespuesta(admin: any, ids: string[]): Promise<Map<string, number>> {
+  const out = new Map<string, number>();
+  if (!ids.length) return out;
+  const { data } = await admin.from('flash_bookings').select('professional_user_id, status')
+    .in('professional_user_id', ids).gte('created_at', new Date(Date.now() - 90 * 86_400_000).toISOString());
+  const n = new Map<string, { t: number; r: number }>();
+  for (const f of (data ?? []) as { professional_user_id: string; status: string }[]) {
+    const x = n.get(f.professional_user_id) ?? { t: 0, r: 0 };
+    x.t++; if (f.status !== 'pending') x.r++;
+    n.set(f.professional_user_id, x);
+  }
+  for (const [id, x] of n) if (x.t >= 2) out.set(id, x.r / x.t);
+  return out;
+}
+
 // deno-lint-ignore no-explicit-any
 async function repartir(admin: any, d: Datos): Promise<Response> {
   const { name, email, eventType, service, date, location, budget, message } = d;
@@ -251,7 +276,7 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
   let destinatarios: { user_id: string; display_name: string; role: string }[] = [];
   if (roles.length && userId) {
     const { data: perfiles } = await admin.from('profiles')
-      .select('user_id, display_name, role, roles, zone, region, city_ref, is_seed, is_seed_profile')
+      .select('user_id, display_name, role, roles, zone, region, city_ref, is_seed, is_seed_profile, genres')
       .eq('validation_status', 'approved')
       .or(roles.map(r => `role.eq.${r}`).join(','));
     const vistos = new Set<string>();
@@ -268,13 +293,21 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
       : [];
     // Al azar entre los que encajan: antes salían siempre los 10 primeros que
     // devolvía la base de datos (los mismos DJs de Madrid en cada solicitud).
-    const elegidos = barajar(coinciden.length ? coinciden : (candidatos.length <= OFERTA_PEQUENA ? candidatos : []));
+    // DJ: solo los que tocan lo que pide la clienta, en su ciudad. Si no hay
+    // ninguno, no se manda a quien no encaja: lo reparte el admin a mano.
+    const estilos = d.musica ? d.musica.split('|') : [];
+    const porEstilo = estilos.length ? coinciden.filter(p => encajaConEstilos(p.genres, estilos)) : coinciden;
+    const pool = estilos.length ? porEstilo : (coinciden.length ? coinciden : (candidatos.length <= OFERTA_PEQUENA ? candidatos : []));
+    // Primero los que suelen contestar (últimos 90 días), al azar entre iguales.
+    const ritmo = await ritmoDeRespuesta(admin, pool.map(p => p.user_id));
+    const elegidos = barajar(pool).sort((a, b) => (ritmo.get(b.user_id) ?? 0.5) - (ritmo.get(a.user_id) ?? 0.5));
     destinatarios = elegidos.slice(0, MAX_PROFESIONALES).map(p => ({ user_id: p.user_id, display_name: p.display_name, role: p.role }));
   }
 
   const extras = [budget && `Presupuesto: ${budget}`, message].filter(Boolean).join(' · ');
   const faltan = !date || location.length < 3;
-  const detalle = d.personas && d.horario ? `[Personas: ${d.personas}] [Horario: ${d.horario}] ` : '';
+  const detalle = (d.personas && d.horario ? `[Personas: ${d.personas}] [Horario: ${d.horario}] ` : '')
+    + (d.musica ? `[Música: ${d.musica.split('|').join(', ')}] ` : '');
   const descripcion = detalle + `Cliente particular que busca ${service.toLowerCase()} para un evento de tipo ${eventType}.`
     + (extras ? ` ${extras}.` : '')
     + (faltan ? ' Falta ' + [!date && 'la fecha', !location && 'el lugar'].filter(Boolean).join(' y ') + ': escríbele para concretarlo.' : '');
