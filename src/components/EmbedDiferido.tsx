@@ -19,6 +19,8 @@ interface Props {
   autor?: string;
   className?: string;
   style?: React.CSSProperties;
+  /** El iframe ya montado (o null al desmontarse): para hablar con el widget de SoundCloud. */
+  onIframe?: (el: HTMLIFrameElement | null) => void;
 }
 
 const conAutoplay = (src: string) =>
@@ -26,7 +28,7 @@ const conAutoplay = (src: string) =>
     ? `${src}${src.includes('?') ? '&' : '?'}auto_play=true`
     : src;
 
-export default function EmbedDiferido({ src, alto, tipo, titulo, autor, className, style }: Props) {
+export default function EmbedDiferido({ src, alto, tipo, titulo, autor, className, style, onIframe }: Props) {
   const [cargado, setCargado] = useState(false);
   const { sesion, reproducir } = useReproductorConcurso();
   const enBarra = !!sesion && claveSesion(sesion) === src;
@@ -40,7 +42,7 @@ export default function EmbedDiferido({ src, alto, tipo, titulo, autor, classNam
     };
     return (
       <div className="relative">
-        <iframe src={conAutoplay(src)} width="100%" height={alto} allow="autoplay; encrypted-media"
+        <iframe ref={onIframe} src={conAutoplay(src)} width="100%" height={alto} allow="autoplay; encrypted-media"
           title={titulo} className={className} style={{ border: 'none', ...style }} />
         <button type="button" onClick={anclar} aria-label="Anclar: seguir escuchando al navegar"
           title="Seguir escuchando mientras navegas"
@@ -85,7 +87,11 @@ export default function EmbedDiferido({ src, alto, tipo, titulo, autor, classNam
         ))}
       </span>
       <span className="min-w-0">
-        <span className="block text-sm font-bold" style={{ color: '#111' }}>Escuchar {titulo.toLowerCase()}</span>
+        {/* Los títulos genéricos van en minúscula ("Escuchar sesión de audio");
+            el título propio de un set se respeta tal cual. */}
+        <span className="block text-sm font-bold truncate" style={{ color: '#111' }}>
+          Escuchar {/^(Sesión de audio|Mix)$/.test(titulo) ? titulo.toLowerCase() : titulo}
+        </span>
         {tipo && <span className="block text-xs" style={{ color: '#6b7280' }}>{tipo}</span>}
       </span>
       <style>{`

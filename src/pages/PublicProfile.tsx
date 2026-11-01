@@ -11,6 +11,7 @@ import SetCard from '@/components/SetCard';
 import PestanasPerfilDJ, { ContadoresDJ, PanelPerfilDJ, type PestanaDJ } from '@/components/PestanasPerfilDJ';
 import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
 import { useSetFichas } from '@/hooks/useSetFichas';
+import { useSetOndas } from '@/hooks/useSetOndas';
 import ProductionLink from '@/components/ProductionLink';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
@@ -381,6 +382,7 @@ const PublicProfile = () => {
   // se cargan para cualquier rol con sesiones (sin ficha, el set se ve igual).
   const esDJ = sbProfile?.role === 'dj';
   const { fichas: fichasSet } = useSetFichas(sbProfile?.user_id);
+  const ondasSet = useSetOndas(esDJ ? sbProfile?.user_id : undefined);
   const [pestanaElegida, setPestanaElegida] = useState<PestanaDJ | null>(null);
   const [seguidores, setSeguidores] = useState<number | null>(null);
   useEffect(() => {
@@ -1132,7 +1134,9 @@ const PublicProfile = () => {
               <div className="flex flex-col gap-3">
                 {sesiones.map((url, i) => (
                   <div key={i} className="w-full">
-                    <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} artista={esDJ} numero={i + 1} />
+                    <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} artista={esDJ} numero={i + 1}
+                      djUserId={sbProfile?.user_id} viewerId={authUser?.id} onda={ondasSet[url]}
+                      onIniciarSesion={() => navigate(`/auth?mode=register&redirect=${encodeURIComponent(window.location.pathname)}`)} />
                   </div>
                 ))}
               </div>

@@ -42,7 +42,7 @@ const CabeceraArtistaDJ = ({ nombre, foto, zona, estilos, verificado, precio, ac
             avatar se monta sobre el banner y el nombre queda siempre debajo. */}
         <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-5 relative">
           {tieneFoto ? (
-            <img src={fotoOptimizada(foto, 400)} alt={nombre} loading="eager" fetchPriority="high"
+            <img src={fotoOptimizada(foto, 400)} alt={nombre} loading="eager" {...{ fetchpriority: 'high' }}
               className="w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover flex-shrink-0 -mt-14 sm:-mt-20"
               style={{ border: '4px solid #fff', boxShadow: '0 8px 24px rgba(139,106,0,0.25)', objectPosition: '50% 20%' }} />
           ) : (

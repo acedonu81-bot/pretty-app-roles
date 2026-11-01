@@ -2095,6 +2095,78 @@ export type Database = {
         }
         Relationships: []
       }
+      set_comentarios: {
+        Row: {
+          autor_id: string
+          created_at: string
+          dj_user_id: string
+          id: string
+          segundo: number
+          set_url: string
+          texto: string
+        }
+        Insert: {
+          autor_id: string
+          created_at?: string
+          dj_user_id: string
+          id?: string
+          segundo: number
+          set_url: string
+          texto: string
+        }
+        Update: {
+          autor_id?: string
+          created_at?: string
+          dj_user_id?: string
+          id?: string
+          segundo?: number
+          set_url?: string
+          texto?: string
+        }
+        Relationships: []
+      }
+      set_ondas: {
+        Row: {
+          created_at: string
+          duracion: number
+          picos: number[]
+          set_url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duracion: number
+          picos: number[]
+          set_url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duracion?: number
+          picos?: number[]
+          set_url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      set_silenciados: {
+        Row: {
+          autor_id: string
+          created_at: string
+          dj_user_id: string
+        }
+        Insert: {
+          autor_id: string
+          created_at?: string
+          dj_user_id: string
+        }
+        Update: {
+          autor_id?: string
+          created_at?: string
+          dj_user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string

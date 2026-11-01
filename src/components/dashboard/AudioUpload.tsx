@@ -8,6 +8,7 @@ import PresentarAlConcurso from '@/components/concurso/PresentarAlConcurso';
 import SetFichaEditor from '@/components/dashboard/SetFichaEditor';
 import { useSetFichas } from '@/hooks/useSetFichas';
 import { fichaTieneContenido } from '@/lib/setFicha';
+import { calcularOnda } from '@/lib/ondaAudio';
 
 const GENRE_GROUPS: { label: string; genres: string[] }[] = [
   { label: 'House', genres: ['Tech House', 'Deep House', 'House', 'Afro House', 'Organic House', 'Funky House', 'Tribal House', 'Progressive House', 'Acid House', 'Chicago House', 'Latin House'] },
@@ -193,9 +194,14 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
   // .then(() => {}) sin comprobar el resultado, así que "Mix añadido" /
   // "eliminado" se mostraba aunque el update a profiles fallara y el link
   // nunca llegara a aparecer en el perfil público.
+  // 1 nov 2026: guarda TODAS las sesiones (archivos + enlaces). Antes esta
+  // función guardaba solo los enlaces y la subida solo los archivos, así que
+  // añadir un enlace borraba los archivos del perfil público y subir un archivo
+  // borraba los enlaces. El panel no lo notaba porque lista los archivos desde
+  // storage; el perfil público y los comentarios leen esta columna.
   const persistLinks = async (next: SessionFile[], userId?: string) => {
-    const linkUrls = next.filter(s => s.type !== 'file').map(s => s.url);
-    const { error } = await supabase.from('profiles').update({ audio_session_urls: linkUrls } as any).eq('user_id', userId ?? user!.id);
+    const urls = next.map(s => s.url);
+    const { error } = await supabase.from('profiles').update({ audio_session_urls: urls } as any).eq('user_id', userId ?? user!.id);
     return error;
   };
 
@@ -241,8 +247,7 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     const newSession = { name: file.name, url: urlData.publicUrl, storagePath: path, type: 'file' as SessionType };
     const nextSessions = [...sessions, newSession];
-    const fileUrls = nextSessions.filter(s => s.type === 'file').map(s => s.url);
-    const { error: syncError } = await supabase.from('profiles').update({ audio_session_urls: fileUrls } as any).eq('user_id', user.id);
+    const syncError = await persistLinks(nextSessions);
     setUploading(false);
     setUploadProgress(0);
     if (syncError) {
@@ -250,6 +255,16 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
       return;
     }
     setSessions(nextSessions);
+
+    // Forma de onda para el perfil público (fase 2, 1 nov 2026), en segundo
+    // plano. Solo en pantallas grandes: decodificar 1 h de audio pide ~90 MB y
+    // en móviles puede tumbar la pestaña. Sin onda el set funciona igual.
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      const setUrl = urlData.publicUrl;
+      calcularOnda(file).then(onda => {
+        if (onda) supabase.from('set_ondas').upsert({ set_url: setUrl, user_id: user.id, ...onda }).then(() => {}, () => {});
+      });
+    }
 
     await supabase.from('feature_requests').insert({
       user_id: user.id,
@@ -296,8 +311,12 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
       toast.error('No se pudo eliminar de tu perfil. Inténtalo de nuevo.');
       return;
     }
-    // La ficha del set (título, portada, tracklist) se va con la sesión.
-    if (user) await supabase.from('dj_set_fichas').delete().eq('user_id', user.id).eq('set_url', session.url);
+    // La ficha del set (título, portada, tracklist), su onda y sus comentarios se van con la sesión.
+    if (user) {
+      await supabase.from('dj_set_fichas').delete().eq('user_id', user.id).eq('set_url', session.url);
+      if (session.type === 'file') await supabase.from('set_ondas').delete().eq('user_id', user.id).eq('set_url', session.url);
+      await supabase.from('set_comentarios').delete().eq('dj_user_id', user.id).eq('set_url', session.url);
+    }
     if (fichaAbierta === session.url) setFichaAbierta(null);
     recargarFichas();
     setSessions(next);
