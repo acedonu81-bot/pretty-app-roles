@@ -539,6 +539,48 @@ export type Database = {
         }
         Relationships: []
       }
+      dj_set_fichas: {
+        Row: {
+          bpm: number | null
+          created_at: string
+          etiquetas: string[]
+          id: string
+          mood: string | null
+          portada_url: string | null
+          set_url: string
+          titulo: string | null
+          tracklist: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bpm?: number | null
+          created_at?: string
+          etiquetas?: string[]
+          id?: string
+          mood?: string | null
+          portada_url?: string | null
+          set_url: string
+          titulo?: string | null
+          tracklist?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bpm?: number | null
+          created_at?: string
+          etiquetas?: string[]
+          id?: string
+          mood?: string | null
+          portada_url?: string | null
+          set_url?: string
+          titulo?: string | null
+          tracklist?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       edge_function_rate_limit_log: {
         Row: {
           client_ip: string
@@ -2465,6 +2507,7 @@ export type Database = {
       }
       concurso_sesion_publicada: { Args: { p_key: string }; Returns: boolean }
       concurso_votante_valido: { Args: { p_user: string }; Returns: boolean }
+      contar_seguidores: { Args: { p_user_id: string }; Returns: number }
       contratado_en_solicitud: {
         Args: { p_request_id: string }
         Returns: boolean

@@ -37,3 +37,4 @@ android/app/*.keystore
 .claude/worktrees/
 supabase/.temp/
 scratch/
+.superpowers/

@@ -7,7 +7,9 @@ import { toast } from 'sonner';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import CondicionesPublicas from '@/components/CondicionesPublicas';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
-import SessionAudioPlayer from '@/components/SessionAudioPlayer';
+import SetCard from '@/components/SetCard';
+import PestanasPerfilDJ, { PanelPerfilDJ, type PestanaDJ } from '@/components/PestanasPerfilDJ';
+import { useSetFichas } from '@/hooks/useSetFichas';
 import ProductionLink from '@/components/ProductionLink';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
@@ -371,6 +373,22 @@ const PublicProfile = () => {
       .finally(() => setLoading(false));
   }, [slug, isUUID]);
 
+  // Perfil de DJ tipo Hearthis (fase 1, 1 nov 2026): contadores y pestañas
+  // solo para DJs; el resto de roles se ve igual que antes. Las fichas de set
+  // se cargan para cualquier rol con sesiones (sin ficha, el set se ve igual).
+  const esDJ = sbProfile?.role === 'dj';
+  const { fichas: fichasSet } = useSetFichas(sbProfile?.user_id);
+  const [pestanaElegida, setPestanaElegida] = useState<PestanaDJ | null>(null);
+  const [seguidores, setSeguidores] = useState<number | null>(null);
+  useEffect(() => {
+    setSeguidores(null);
+    if (!esDJ || !sbProfile?.user_id) return;
+    let cancelado = false;
+    supabase.rpc('contar_seguidores', { p_user_id: sbProfile.user_id })
+      .then(({ data, error }) => { if (!cancelado && !error && typeof data === 'number') setSeguidores(data); });
+    return () => { cancelado = true; };
+  }, [esDJ, sbProfile?.user_id]);
+
   // Static profile fallback (demo profiles via name slug)
   const staticProfile = !isUUID
     ? profiles.find(p => toSlug(p.name) === slug || String(p.id) === slug)
@@ -513,6 +531,17 @@ const PublicProfile = () => {
   const fadeUp: Variants = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } };
   const stagger = { show: { transition: { staggerChildren: 0.1 } } };
   const responseBucketText = responseBucketLabel(sbProfile?.response_bucket ?? null);
+
+  const sesiones = (extraMedia.audio_session_urls ?? []).slice(0, 5);
+  const mixAparte = !!audioEmbed && !sesiones.includes(sbProfile?.audio_embed_url ?? '');
+  const numSets = sesiones.length + (mixAparte ? 1 : 0);
+  const pestanasDJ: PestanaDJ[] = [
+    ...(numSets > 0 || (extraMedia.production_urls?.length ?? 0) > 0 ? ['sets' as const] : []),
+    'sobre',
+    'resenas',
+    ...(publicPosts.length > 0 ? ['actividad' as const] : []),
+  ];
+  const pestana: PestanaDJ = pestanaElegida && pestanasDJ.includes(pestanaElegida) ? pestanaElegida : pestanasDJ[0];
 
   return (
     <>
@@ -818,6 +847,11 @@ const PublicProfile = () => {
         <div className="max-w-3xl mx-auto px-5 pb-24 pt-8">
           <div className="flex flex-col gap-8">
 
+          {esDJ && (
+            <PestanasPerfilDJ pestanas={pestanasDJ} activa={pestana} onCambiar={setPestanaElegida}
+              sets={numSets} seguidores={seguidores} resenas={seoReviews.length} />
+          )}
+
           {/* Tarjeta precio — sin CTA duplicado */}
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
             className="rounded-2xl p-5"
@@ -837,6 +871,12 @@ const PublicProfile = () => {
             </p>
           </motion.div>
 
+          <PanelPerfilDJ id="sobre" esDJ={esDJ} activa={pestana}>
+          {esDJ && !profile.description && !extraMedia.bio_video_url && (
+            <p className="text-sm rounded-2xl p-5" style={{ color: '#555', background: '#ffffff', border: '1px solid rgba(0,0,0,0.07)' }}>
+              {profile.name} todavía no ha escrito su presentación. Puedes escribirle para preguntarle por su estilo y su equipo.
+            </p>
+          )}
           {/* Video — mobile-first: show before bio for max impact */}
           {extraMedia.bio_video_url && (() => {
             const url = extraMedia.bio_video_url!;
@@ -1011,7 +1051,9 @@ const PublicProfile = () => {
               </button>
             </motion.div>
           )}
+          </PanelPerfilDJ>
 
+          <PanelPerfilDJ id="sets" esDJ={esDJ} activa={pestana}>
           {audioEmbed && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
@@ -1025,16 +1067,16 @@ const PublicProfile = () => {
             </motion.div>
           )}
 
-          {extraMedia.audio_session_urls && extraMedia.audio_session_urls.length > 0 && (
+          {sesiones.length > 0 && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
                 <Headphones size={14} style={{ color: '#D4AF37' }} />
-                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Sesiones</span>
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>{esDJ ? 'Sets' : 'Sesiones'}</span>
               </div>
               <div className="flex flex-col gap-3">
-                {extraMedia.audio_session_urls.slice(0, 5).map((url, i) => (
+                {sesiones.map((url, i) => (
                   <div key={i} className="w-full">
-                    <SessionAudioPlayer url={url} autor={profile.name} />
+                    <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} />
                   </div>
                 ))}
               </div>
@@ -1056,7 +1098,9 @@ const PublicProfile = () => {
               </div>
             </motion.div>
           )}
+          </PanelPerfilDJ>
 
+          <PanelPerfilDJ id="sobre" esDJ={esDJ} activa={pestana} continuacion>
           {/* bio_video already rendered above bio section */}
 
           {sbProfile?.portfolio_urls && sbProfile.portfolio_urls.length > 0 && (
@@ -1093,7 +1137,9 @@ const PublicProfile = () => {
               </div>
             </motion.div>
           )}
+          </PanelPerfilDJ>
 
+          <PanelPerfilDJ id="actividad" esDJ={esDJ} activa={pestana}>
           {publicPosts.length > 0 && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
@@ -1105,6 +1151,7 @@ const PublicProfile = () => {
               </div>
             </motion.div>
           )}
+          </PanelPerfilDJ>
 
           {/* Mismo umbral (3) que weeklyViews más abajo: un número bajo
               no debe leerse como señal negativa, y evita duplicar dos
@@ -1153,6 +1200,7 @@ const PublicProfile = () => {
           )}
 
           {/* Reviews */}
+          <PanelPerfilDJ id="resenas" esDJ={esDJ} activa={pestana}>
           {sbProfile && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <ReviewsSection
@@ -1162,6 +1210,13 @@ const PublicProfile = () => {
               />
             </motion.div>
           )}
+          {/* ReviewsSection no pinta nada sin reseñas: en la pestaña quedaría en blanco. */}
+          {esDJ && seoReviews.length === 0 && (
+            <p className="text-sm rounded-2xl p-5" style={{ color: '#555', background: '#ffffff', border: '1px solid rgba(0,0,0,0.07)' }}>
+              {profile.name} todavía no tiene reseñas. En XPEAK solo puede dejar reseña quien le ha contratado.
+            </p>
+          )}
+          </PanelPerfilDJ>
 
           {/* Garantías XPEAK — siempre visible */}
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>

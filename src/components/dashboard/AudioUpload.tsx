@@ -5,6 +5,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 import PresentarAlConcurso from '@/components/concurso/PresentarAlConcurso';
+import SetFichaEditor from '@/components/dashboard/SetFichaEditor';
+import { useSetFichas } from '@/hooks/useSetFichas';
+import { fichaTieneContenido } from '@/lib/setFicha';
 
 const GENRE_GROUPS: { label: string; genres: string[] }[] = [
   { label: 'House', genres: ['Tech House', 'Deep House', 'House', 'Afro House', 'Organic House', 'Funky House', 'Tribal House', 'Progressive House', 'Acid House', 'Chicago House', 'Latin House'] },
@@ -131,6 +134,8 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const profile = useProfile();
+  const { fichas, recargar: recargarFichas } = useSetFichas(user?.id);
+  const [fichaAbierta, setFichaAbierta] = useState<string | null>(null);
 
   useEffect(() => {
     if (profile.genres && profile.genres.length > 0) {
@@ -291,6 +296,10 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
       toast.error('No se pudo eliminar de tu perfil. Inténtalo de nuevo.');
       return;
     }
+    // La ficha del set (título, portada, tracklist) se va con la sesión.
+    if (user) await supabase.from('dj_set_fichas').delete().eq('user_id', user.id).eq('set_url', session.url);
+    if (fichaAbierta === session.url) setFichaAbierta(null);
+    recargarFichas();
     setSessions(next);
     toast.info('Sesión eliminada.');
   };
@@ -392,6 +401,18 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
                 <button onClick={() => removeSession(s)}><X size={14} className="text-muted-foreground hover:text-white" /></button>
               </div>
               <EmbedPlayer session={s} />
+              {user && (fichaAbierta === s.url ? (
+                <SetFichaEditor userId={user.id} setUrl={s.url} ficha={fichas[s.url]} sugerencias={selectedGenres}
+                  onGuardada={recargarFichas} onCerrar={() => setFichaAbierta(null)} />
+              ) : (
+                <button type="button" onClick={() => setFichaAbierta(s.url)}
+                  className="text-xs font-bold px-3 py-1.5 rounded-lg"
+                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
+                  {fichaTieneContenido(fichas[s.url])
+                    ? `Editar ficha: ${fichas[s.url].titulo || 'portada, etiquetas y tracklist'}`
+                    : 'Añadir título, portada, etiquetas y tracklist'}
+                </button>
+              ))}
             </div>
           ))}
         </div>

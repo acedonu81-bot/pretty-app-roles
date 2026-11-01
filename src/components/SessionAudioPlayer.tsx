@@ -20,7 +20,10 @@ const formatTime = (seconds: number) => {
 // (reportado por el usuario 2 oct 2026: "porque solo uno tiene un play").
 // Los controles reales (play/pausa, progreso, volumen) solo aparecen tras
 // pulsar, igual que el iframe diferido de las otras plataformas.
-const CustomAudioPlayer = ({ url, alto = 70, autor }: { url: string; alto?: number; autor?: string }) => {
+/** Petición de salto desde la tracklist; `n` cambia en cada clic para repetir el mismo minuto. */
+export interface SaltoAudio { segundos: number; n: number }
+
+const CustomAudioPlayer = ({ url, alto = 70, autor, titulo, saltarA }: { url: string; alto?: number; autor?: string; titulo?: string; saltarA?: SaltoAudio | null }) => {
   const { sesion, reproducir } = useReproductorConcurso();
   const enBarra = !!sesion && claveSesion(sesion) === url;
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -30,6 +33,21 @@ const CustomAudioPlayer = ({ url, alto = 70, autor }: { url: string; alto?: numb
   const [current, setCurrent] = useState(0);
   const [muted, setMuted] = useState(false);
   const [errored, setErrored] = useState(false);
+  // Salto pedido antes de que el <audio> exista: se aplica al cargar metadatos.
+  const saltoPendiente = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!saltarA) return;
+    const audio = audioRef.current;
+    if (audio && audio.readyState >= 1) {
+      audio.currentTime = saltarA.segundos;
+      setCurrent(saltarA.segundos);
+      audio.play().catch(() => {});
+    } else {
+      saltoPendiente.current = saltarA.segundos;
+      setCargado(true);
+    }
+  }, [saltarA]);
 
   const togglePlay = () => {
     const audio = audioRef.current;
@@ -48,7 +66,7 @@ const CustomAudioPlayer = ({ url, alto = 70, autor }: { url: string; alto?: numb
   // Anclar (17 oct 2026): la sesión pasa a la barra fija y sigue sonando al navegar.
   const anclar = () => {
     audioRef.current?.pause();
-    reproducir({ url, audioSrc: url, titulo: autor ? `Sesión de ${autor}` : 'Sesión de audio', subtitulo: 'Audio · sigue sonando mientras navegas' });
+    reproducir({ url, audioSrc: url, titulo: titulo ?? (autor ? `Sesión de ${autor}` : 'Sesión de audio'), subtitulo: 'Audio · sigue sonando mientras navegas' });
     setCargado(false);
   };
 
@@ -88,7 +106,7 @@ const CustomAudioPlayer = ({ url, alto = 70, autor }: { url: string; alto?: numb
           ))}
         </span>
         <span className="min-w-0">
-          <span className="block text-sm font-bold" style={{ color: '#111' }}>Escuchar sesión de audio</span>
+          <span className="block text-sm font-bold truncate" style={{ color: '#111' }}>{titulo ? `Escuchar ${titulo}` : 'Escuchar sesión de audio'}</span>
           <span className="block text-xs" style={{ color: '#6b7280' }}>Audio</span>
         </span>
         <style>{`
@@ -108,7 +126,15 @@ const CustomAudioPlayer = ({ url, alto = 70, autor }: { url: string; alto?: numb
         preload="metadata"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
-        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+        onLoadedMetadata={(e) => {
+          const audio = e.currentTarget;
+          setDuration(audio.duration);
+          if (saltoPendiente.current !== null) {
+            audio.currentTime = saltoPendiente.current;
+            setCurrent(saltoPendiente.current);
+            saltoPendiente.current = null;
+          }
+        }}
         onTimeUpdate={(e) => setCurrent(e.currentTarget.currentTime)}
         onEnded={() => setPlaying(false)}
         onError={() => setErrored(true)}
@@ -128,7 +154,7 @@ const CustomAudioPlayer = ({ url, alto = 70, autor }: { url: string; alto?: numb
         max={duration || 0}
         value={current}
         onChange={seek}
-        className="flex-1 h-1 rounded-full appearance-none cursor-pointer"
+        className="flex-1 min-w-0 h-1 rounded-full appearance-none cursor-pointer"
         style={{
           background: `linear-gradient(to right, #D4AF37 ${duration ? (current / duration) * 100 : 0}%, rgba(0,0,0,0.1) 0%)`,
           accentColor: '#D4AF37',
@@ -156,7 +182,7 @@ const CustomAudioPlayer = ({ url, alto = 70, autor }: { url: string; alto?: numb
 // `SessionAudio`). Reproduce las sesiones desde audio_session_urls /
 // audio_embed_url, que son casi siempre links externos de Mixcloud,
 // SoundCloud o HearThis, no archivos servidos directamente.
-const SessionAudioPlayer = ({ url, autor }: { url: string; autor?: string }) => {
+const SessionAudioPlayer = ({ url, autor, titulo, saltarA }: { url: string; autor?: string; titulo?: string; saltarA?: SaltoAudio | null }) => {
   const [embedSrc, setEmbedSrc] = useState<string | null>(null);
   const parsed = useMemo(() => parseStreamUrl(url), [url]);
 
@@ -175,10 +201,10 @@ const SessionAudioPlayer = ({ url, autor }: { url: string; autor?: string }) => 
     if (!embedSrc) return null;
     return (
       <EmbedDiferido src={embedSrc} alto={parsed.type === 'SoundCloud' ? 166 : 120} tipo={parsed.type}
-        titulo="Sesión de audio" autor={autor} className="rounded-xl" />
+        titulo={titulo ?? 'Sesión de audio'} autor={autor} className="rounded-xl" />
     );
   }
-  return <CustomAudioPlayer url={url} autor={autor} />;
+  return <CustomAudioPlayer url={url} autor={autor} titulo={titulo} saltarA={saltarA} />;
 };
 
 export default SessionAudioPlayer;
