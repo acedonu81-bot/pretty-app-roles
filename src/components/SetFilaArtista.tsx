@@ -9,6 +9,9 @@ import type { OndaSet } from '@/hooks/useSetOndas';
 import { parseStreamUrl, resolveSoundcloudShort } from '@/lib/streaming';
 import { etiquetaMood, formatTiempo, tituloPorDefecto, type SetFicha } from '@/lib/setFicha';
 import { fotoOptimizada } from '@/lib/imagen';
+import BotonCamara from '@/components/BotonCamara';
+import { supabase } from '@/integrations/supabase/client';
+import { subirImagenArtista } from '@/lib/imagenesArtista';
 
 // Fila de un set en el perfil de DJ, al estilo Hearthis (1 nov 2026): portada,
 // botón de play redondo, título, estilo, duración y la onda como barra de
@@ -22,7 +25,7 @@ import { fotoOptimizada } from '@/lib/imagen';
 
 const EVENTO_SUENA = 'xpeak-set-suena';
 
-const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto, djUserId, viewerId, onda, onIniciarSesion }: {
+const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto, djUserId, viewerId, onda, onIniciarSesion, onFichaCambiada }: {
   url: string;
   autor: string;
   ficha: SetFicha | null;
@@ -33,6 +36,8 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
   viewerId?: string;
   onda?: OndaSet | null;
   onIniciarSesion: () => void;
+  /** Tras cambiar carátula o fondo, para recargar las fichas. */
+  onFichaCambiada?: () => void;
 }) => {
   const parsed = useMemo(() => parseStreamUrl(url), [url]);
   const [esMovil, setEsMovil] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches);
@@ -128,6 +133,30 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
   const tracklist = ficha?.tracklist ?? [];
   const puedeSaltar = esArchivo || sc.listo;
 
+  // El propio DJ cambia carátula y fondo con la cámara, desde su perfil.
+  const editable = !!viewerId && viewerId === djUserId;
+  const [subiendo, setSubiendo] = useState<'portada' | 'fondo' | null>(null);
+  const cambiarImagen = async (tipo: 'portada' | 'fondo', file: File) => {
+    if (!djUserId) return;
+    setSubiendo(tipo);
+    const r = await subirImagenArtista(djUserId, file, tipo);
+    if ('error' in r) { setSubiendo(null); toast.error(r.error); return; }
+    // Upsert solo con esa columna: PostgREST actualiza las que van en el
+    // cuerpo, así que título, tracklist, etc. de la ficha no se tocan.
+    const { error } = await supabase.from('dj_set_fichas').upsert(
+      tipo === 'portada'
+        ? { user_id: djUserId, set_url: url, portada_url: r.url, updated_at: new Date().toISOString() }
+        : { user_id: djUserId, set_url: url, fondo_url: r.url, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id,set_url' },
+    );
+    setSubiendo(null);
+    if (error) { toast.error('La imagen se subió pero no se pudo guardar. Inténtalo de nuevo.'); return; }
+    toast.success(tipo === 'portada' ? 'Carátula actualizada.' : 'Fondo actualizado.');
+    onFichaCambiada?.();
+  };
+  const fondo = destacado ? (ficha?.fondo_url ?? ficha?.portada_url ?? null) : null;
+  const fondoEsCaratula = !!fondo && !ficha?.fondo_url;
+
   const oscuro = destacado;
   const col = oscuro
     ? { titulo: '#fff', sub: 'rgba(255,255,255,0.82)', chipBg: 'rgba(255,255,255,0.18)', chip: '#fff', acento: '#FFF1C1' }
@@ -142,6 +171,22 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
       style={destacado
         ? { background: 'linear-gradient(135deg,#7A5A0E 0%,#A9821F 45%,#C9A23A 100%)', boxShadow: '0 14px 40px rgba(139,106,0,0.28)' }
         : { borderBottom: '1px solid rgba(212,175,55,0.2)' }}>
+      {/* Fondo del destacado: el que suba el DJ o, si no, la carátula
+          desenfocada (como el Stage de Hearthis), con velo dorado oscuro. */}
+      {fondo && (
+        <>
+          <img src={fotoOptimizada(fondo, 1400)} alt="" aria-hidden="true"
+            className={`absolute inset-0 w-full h-full object-cover pointer-events-none ${fondoEsCaratula ? 'scale-125' : ''}`}
+            style={fondoEsCaratula ? { filter: 'blur(28px) saturate(1.2)' } : undefined} />
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: 'linear-gradient(135deg, rgba(74,52,8,0.82) 0%, rgba(122,90,14,0.62) 55%, rgba(169,130,31,0.45) 100%)' }} />
+        </>
+      )}
+      {destacado && editable && (
+        <BotonCamara etiqueta="Cambiar el fondo de este set" onArchivo={f => cambiarImagen('fondo', f)}
+          subiendo={subiendo === 'fondo'} className="bottom-3 right-3" />
+      )}
+      <div className="relative">
       {esArchivo && (
         <audio ref={audioRef} src={url} preload="none"
           onPlay={() => setSonandoArchivo(true)} onPause={() => setSonandoArchivo(false)} onEnded={() => setSonandoArchivo(false)}
@@ -154,6 +199,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
       )}
 
       <div className="flex gap-4 sm:gap-5">
+        <div className="relative flex-shrink-0 self-start">
         {ficha?.portada_url ? (
           <img src={fotoOptimizada(ficha.portada_url, 320)} alt={`Portada de ${titulo}`} loading="lazy"
             className={`${destacado ? 'w-20 h-20 sm:w-40 sm:h-40' : 'w-16 h-16 sm:w-32 sm:h-32'} rounded-xl object-cover flex-shrink-0`}
@@ -164,6 +210,11 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
             <ListMusic size={destacado ? 34 : 26} color="#fff" />
           </div>
         )}
+        {editable && (
+          <BotonCamara etiqueta="Cambiar la carátula de este set" onArchivo={f => cambiarImagen('portada', f)}
+            subiendo={subiendo === 'portada'} className="bottom-1.5 right-1.5" />
+        )}
+        </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-start gap-3">
@@ -202,6 +253,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
 
       {/* En móvil, a todo el ancho bajo la portada. */}
       {esMovil && renderCuerpo()}
+      </div>
     </article>
   );
 

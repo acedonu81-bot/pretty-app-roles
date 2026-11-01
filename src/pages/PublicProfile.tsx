@@ -385,7 +385,7 @@ const PublicProfile = () => {
   // solo para DJs; el resto de roles se ve igual que antes. Las fichas de set
   // se cargan para cualquier rol con sesiones (sin ficha, el set se ve igual).
   const esDJ = sbProfile?.role === 'dj';
-  const { fichas: fichasSet } = useSetFichas(sbProfile?.user_id);
+  const { fichas: fichasSet, recargar: recargarFichas } = useSetFichas(sbProfile?.user_id);
   const ondasSet = useSetOndas(esDJ ? sbProfile?.user_id : undefined);
   const { banner: bannerDJ, recargar: recargarBanner } = useDjBanner(esDJ ? sbProfile?.user_id : undefined);
   const [subiendoImagen, setSubiendoImagen] = useState<'banner' | 'foto' | null>(null);
@@ -1151,7 +1151,7 @@ const PublicProfile = () => {
                     {esDJ ? (
                       <SetFilaArtista url={url} autor={profile.name} ficha={fichasSet[url] ?? null} numero={i + 1}
                         destacado={i === 0} estiloPorDefecto={sbProfile?.genres?.[0] ?? null}
-                        djUserId={sbProfile?.user_id} viewerId={authUser?.id} onda={ondasSet[url]}
+                        djUserId={sbProfile?.user_id} viewerId={authUser?.id} onda={ondasSet[url]} onFichaCambiada={recargarFichas}
                         onIniciarSesion={() => navigate(`/auth?mode=register&redirect=${encodeURIComponent(window.location.pathname)}`)} />
                     ) : (
                       <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} />

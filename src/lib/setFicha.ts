@@ -13,6 +13,8 @@ export interface SetFicha {
   set_url: string;
   titulo: string | null;
   portada_url: string | null;
+  /** Fondo de la tarjeta cuando el set va destacado; sin él, la carátula desenfocada. */
+  fondo_url?: string | null;
   etiquetas: string[];
   bpm: number | null;
   mood: string | null;
@@ -120,4 +122,4 @@ export const tituloPorDefecto = (url: string, numero: number): string => {
 
 /** Una ficha sin nada relleno no se pinta: el set se ve como hasta ahora. */
 export const fichaTieneContenido = (f: SetFicha | null | undefined): f is SetFicha =>
-  !!f && !!(f.titulo || f.portada_url || f.etiquetas.length || f.bpm || f.mood || f.tracklist.length);
+  !!f && !!(f.titulo || f.portada_url || f.fondo_url || f.etiquetas.length || f.bpm || f.mood || f.tracklist.length);

@@ -11,7 +11,7 @@ export const useSetFichas = (userId: string | undefined) => {
     if (!userId) { setFichas({}); return; }
     let cancelado = false;
     supabase.from('dj_set_fichas')
-      .select('set_url, titulo, portada_url, etiquetas, bpm, mood, tracklist')
+      .select('set_url, titulo, portada_url, fondo_url, etiquetas, bpm, mood, tracklist')
       .eq('user_id', userId)
       .then(({ data, error }) => {
         // Si la consulta falla (red, tabla aún sin crear) los sets se ven

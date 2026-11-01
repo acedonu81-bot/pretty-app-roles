@@ -562,6 +562,7 @@ export type Database = {
           bpm: number | null
           created_at: string
           etiquetas: string[]
+          fondo_url: string | null
           id: string
           mood: string | null
           portada_url: string | null
@@ -575,6 +576,7 @@ export type Database = {
           bpm?: number | null
           created_at?: string
           etiquetas?: string[]
+          fondo_url?: string | null
           id?: string
           mood?: string | null
           portada_url?: string | null
@@ -588,6 +590,7 @@ export type Database = {
           bpm?: number | null
           created_at?: string
           etiquetas?: string[]
+          fondo_url?: string | null
           id?: string
           mood?: string | null
           portada_url?: string | null

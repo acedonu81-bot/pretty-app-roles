@@ -1,5 +1,6 @@
-import { useRef, type ReactNode } from 'react';
-import { BadgeCheck, Camera, MapPin } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { BadgeCheck, MapPin } from 'lucide-react';
+import BotonCamara from '@/components/BotonCamara';
 import { fotoOptimizada } from '@/lib/imagen';
 
 // Cabecera de artista del perfil de DJ, al estilo Hearthis (1 nov 2026):
@@ -7,24 +8,6 @@ import { fotoOptimizada } from '@/lib/imagen';
 // botones encima. Solo para DJs; el resto de roles mantiene su portada.
 // Banner: el que suba el DJ; si no, la portada de su primer set o su foto.
 // El velo es marrón dorado y no negro (sin fondos negros en páginas públicas).
-// Cámara redonda para cambiar banner o foto: solo la ve el propio DJ.
-const BotonCamara = ({ etiqueta, onArchivo, subiendo, className }: {
-  etiqueta: string; onArchivo: (f: File) => void; subiendo: boolean; className: string;
-}) => {
-  const input = useRef<HTMLInputElement>(null);
-  return (
-    <>
-      <button type="button" onClick={() => input.current?.click()} disabled={subiendo} aria-label={etiqueta} title={etiqueta}
-        className={`absolute z-10 inline-flex items-center justify-center rounded-full transition-transform hover:scale-105 disabled:opacity-60 ${className}`}
-        style={{ width: 40, height: 40, background: 'rgba(46,32,6,0.6)', border: '1.5px solid rgba(255,255,255,0.7)', color: '#fff', backdropFilter: 'blur(6px)' }}>
-        {subiendo ? <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" /> : <Camera size={18} />}
-      </button>
-      <input ref={input} type="file" accept="image/jpeg,image/png,image/webp" className="hidden"
-        onChange={e => { const f = e.target.files?.[0]; e.target.value = ''; if (f) onArchivo(f); }} />
-    </>
-  );
-};
-
 const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, acciones, onCambiarBanner, onCambiarFoto, subiendo = null }: {
   nombre: string;
   foto: string | null;
