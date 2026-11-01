@@ -14,63 +14,64 @@ const NOMBRES: Record<PestanaDJ, string> = {
   actividad: 'Actividad',
 };
 
-interface Props {
-  pestanas: PestanaDJ[];
-  activa: PestanaDJ;
-  onCambiar: (p: PestanaDJ) => void;
+export const ContadoresDJ = ({ sets, seguidores, resenas, onIr }: {
   sets: number;
   seguidores: number | null;
   resenas: number;
-}
-
-const PestanasPerfilDJ = ({ pestanas, activa, onCambiar, sets, seguidores, resenas }: Props) => {
+  onIr?: (p: PestanaDJ) => void;
+}) => {
   // Un contador a 0 no se enseña: un "0 seguidores" se lee como señal negativa.
   const contadores = [
-    { valor: sets, singular: 'set', plural: 'sets', destino: 'sets' as PestanaDJ },
-    { valor: seguidores ?? 0, singular: 'seguidor', plural: 'seguidores', destino: null },
-    { valor: resenas, singular: 'reseña', plural: 'reseñas', destino: 'resenas' as PestanaDJ },
+    { valor: sets, singular: 'Set', plural: 'Sets', destino: 'sets' as PestanaDJ },
+    { valor: seguidores ?? 0, singular: 'Seguidor', plural: 'Seguidores', destino: null },
+    { valor: resenas, singular: 'Reseña', plural: 'Reseñas', destino: 'resenas' as PestanaDJ },
   ].filter(c => c.valor > 0);
+  if (contadores.length === 0) return null;
 
   return (
-    <div>
-      {contadores.length > 0 && (
-        <div className="flex flex-wrap gap-x-6 gap-y-1 mb-4">
-          {contadores.map(c => {
-            const texto = (
-              <>
-                <span className="text-lg font-black tabular-nums" style={{ color: '#111' }}>{c.valor}</span>{' '}
-                <span className="text-sm font-semibold" style={{ color: '#555' }}>{c.valor === 1 ? c.singular : c.plural}</span>
-              </>
-            );
-            return c.destino && pestanas.includes(c.destino) ? (
-              <button key={c.plural} type="button" onClick={() => onCambiar(c.destino!)} className="hover:opacity-75">{texto}</button>
-            ) : (
-              <span key={c.plural}>{texto}</span>
-            );
-          })}
-        </div>
-      )}
-      <div role="tablist" aria-label="Secciones del perfil"
-        className="flex gap-1 overflow-x-auto overflow-y-hidden -mx-1 px-1" style={{ borderBottom: '1px solid rgba(212,175,55,0.3)', scrollbarWidth: 'none' }}>
-        {pestanas.map(p => {
-          const sel = p === activa;
-          return (
-            <button key={p} type="button" role="tab" id={`pestana-${p}`} aria-selected={sel} aria-controls={`panel-${p}`}
-              onClick={() => onCambiar(p)}
-              className="px-3 py-2.5 text-sm font-bold whitespace-nowrap transition-colors"
-              style={{
-                color: sel ? '#8B6A00' : '#666',
-                borderBottom: `2px solid ${sel ? '#D4AF37' : 'transparent'}`,
-                marginBottom: -1,
-              }}>
-              {NOMBRES[p]}
-            </button>
-          );
-        })}
-      </div>
+    <div className="flex gap-6 sm:gap-8">
+      {contadores.map(c => {
+        const texto = (
+          <>
+            <span className="block text-xl font-black tabular-nums leading-none" style={{ color: '#111' }}>{c.valor}</span>
+            <span className="block text-xs font-semibold mt-1" style={{ color: '#777' }}>{c.valor === 1 ? c.singular : c.plural}</span>
+          </>
+        );
+        return c.destino && onIr ? (
+          <button key={c.plural} type="button" onClick={() => onIr(c.destino!)} className="text-left hover:opacity-75">{texto}</button>
+        ) : (
+          <span key={c.plural}>{texto}</span>
+        );
+      })}
     </div>
   );
 };
+
+const PestanasPerfilDJ = ({ pestanas, activa, onCambiar }: {
+  pestanas: PestanaDJ[];
+  activa: PestanaDJ;
+  onCambiar: (p: PestanaDJ) => void;
+}) => (
+  <div role="tablist" aria-label="Secciones del perfil"
+    className="flex gap-1 overflow-x-auto overflow-y-hidden -mx-1 px-1"
+    style={{ borderBottom: '1px solid rgba(212,175,55,0.3)', scrollbarWidth: 'none' }}>
+    {pestanas.map(p => {
+      const sel = p === activa;
+      return (
+        <button key={p} type="button" role="tab" id={`pestana-${p}`} aria-selected={sel} aria-controls={`panel-${p}`}
+          onClick={() => onCambiar(p)}
+          className="px-3 sm:px-4 py-3 text-sm sm:text-base font-bold whitespace-nowrap transition-colors"
+          style={{
+            color: sel ? '#8B6A00' : '#666',
+            borderBottom: `2.5px solid ${sel ? '#D4AF37' : 'transparent'}`,
+            marginBottom: -1,
+          }}>
+          {NOMBRES[p]}
+        </button>
+      );
+    })}
+  </div>
+);
 
 /**
  * Envuelve las secciones de una pestaña. Para roles que no son DJ no hace

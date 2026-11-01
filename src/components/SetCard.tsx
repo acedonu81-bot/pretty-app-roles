@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronDown, ListMusic } from 'lucide-react';
 import SessionAudioPlayer, { type SaltoAudio } from '@/components/SessionAudioPlayer';
 import { parseStreamUrl } from '@/lib/streaming';
-import { etiquetaMood, fichaTieneContenido, formatTiempo, type SetFicha } from '@/lib/setFicha';
+import { etiquetaMood, fichaTieneContenido, formatTiempo, tituloPorDefecto, type SetFicha } from '@/lib/setFicha';
 import { fotoOptimizada } from '@/lib/imagen';
 
 // Tarjeta de un set en el perfil público (perfil de DJ tipo Hearthis, fase 1,
@@ -11,12 +11,21 @@ import { fotoOptimizada } from '@/lib/imagen';
 // tracklist; en archivos subidos a XPEAK cada minuto salta a ese punto. En
 // SoundCloud/Mixcloud/hearthis el iframe no deja saltar desde fuera, así que
 // ahí los minutos son solo informativos.
-const SetCard = ({ url, autor, ficha }: { url: string; autor?: string; ficha?: SetFicha | null }) => {
+// En el perfil de DJ (`artista`) el set va siempre como tarjeta con portada
+// y título, aunque el DJ no haya rellenado la ficha (opción B, estilo Hearthis).
+const SetCard = ({ url, autor, ficha: fichaBD, artista = false, numero = 1 }: {
+  url: string; autor?: string; ficha?: SetFicha | null; artista?: boolean; numero?: number;
+}) => {
   const [salto, setSalto] = useState<SaltoAudio | null>(null);
   const [tracklistAbierta, setTracklistAbierta] = useState(false);
 
-  if (!fichaTieneContenido(ficha)) return <SessionAudioPlayer url={url} autor={autor} />;
+  const tieneFicha = fichaTieneContenido(fichaBD);
+  if (!tieneFicha && !artista) return <SessionAudioPlayer url={url} autor={autor} />;
 
+  const ficha: SetFicha = tieneFicha
+    ? fichaBD
+    : { set_url: url, titulo: null, portada_url: null, etiquetas: [], bpm: null, mood: null, tracklist: [] };
+  const titulo = ficha.titulo || tituloPorDefecto(url, numero);
   const esArchivo = !parseStreamUrl(url);
   const mood = etiquetaMood(ficha.mood);
   const datos = [ficha.bpm ? `${ficha.bpm} BPM` : null, mood].filter(Boolean) as string[];
@@ -25,7 +34,7 @@ const SetCard = ({ url, autor, ficha }: { url: string; autor?: string; ficha?: S
     <article className="rounded-2xl p-3 sm:p-4" style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.22)' }}>
       <div className="flex items-center gap-3 mb-3">
         {ficha.portada_url ? (
-          <img src={fotoOptimizada(ficha.portada_url, 200)} alt={ficha.titulo ? `Portada de ${ficha.titulo}` : 'Portada del set'}
+          <img src={fotoOptimizada(ficha.portada_url, 200)} alt={`Portada de ${titulo}`}
             loading="lazy" className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover flex-shrink-0" />
         ) : (
           <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -34,9 +43,7 @@ const SetCard = ({ url, autor, ficha }: { url: string; autor?: string; ficha?: S
           </div>
         )}
         <div className="min-w-0">
-          {ficha.titulo && (
-            <h3 className="text-base font-black leading-tight line-clamp-2 break-words" style={{ color: '#111' }}>{ficha.titulo}</h3>
-          )}
+          <h3 className="text-base font-black leading-tight line-clamp-2 break-words" style={{ color: '#111' }}>{titulo}</h3>
           {datos.length > 0 && (
             <p className="text-xs font-semibold mt-0.5" style={{ color: '#8B6A00' }}>{datos.join(' · ')}</p>
           )}
@@ -51,7 +58,7 @@ const SetCard = ({ url, autor, ficha }: { url: string; autor?: string; ficha?: S
         </div>
       </div>
 
-      <SessionAudioPlayer url={url} autor={autor} titulo={ficha.titulo ?? undefined} saltarA={esArchivo ? salto : null} />
+      <SessionAudioPlayer url={url} autor={autor} titulo={titulo} saltarA={esArchivo ? salto : null} />
 
       {ficha.tracklist.length > 0 && (
         <div className="mt-3">

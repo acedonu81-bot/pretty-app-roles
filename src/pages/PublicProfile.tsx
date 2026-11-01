@@ -2,13 +2,14 @@ import { unidadTarifa } from '@/lib/constants';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, Disc3, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2, Building2, Moon, Navigation, Flag } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, UserPlus, Headphones, Disc3, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2, Building2, Moon, Navigation, Flag } from 'lucide-react';
 import { toast } from 'sonner';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import CondicionesPublicas from '@/components/CondicionesPublicas';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import SetCard from '@/components/SetCard';
-import PestanasPerfilDJ, { PanelPerfilDJ, type PestanaDJ } from '@/components/PestanasPerfilDJ';
+import PestanasPerfilDJ, { ContadoresDJ, PanelPerfilDJ, type PestanaDJ } from '@/components/PestanasPerfilDJ';
+import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
 import { useSetFichas } from '@/hooks/useSetFichas';
 import ProductionLink from '@/components/ProductionLink';
 import { profiles, toSlug } from '@/data/profiles';
@@ -33,7 +34,7 @@ import { clicRedSocial, logContactClick } from '@/lib/track';
 // Se reexporta para los tests que lo importan desde aquí.
 export { reviewQuestionStats } from '@/components/ReviewsSection';
 
-const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel: string; url: string }) => {
+const ShareProfileButton = ({ name, roleLabel, url, claro }: { name: string; roleLabel: string; url: string; claro?: boolean }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const shareText = `Mira el perfil de ${name} (${roleLabel}) en XPEAK`;
 
@@ -63,8 +64,10 @@ const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel:
   return (
     <div className="relative inline-block">
       <button type="button" onClick={handleShare} aria-label="Compartir perfil"
-        className="inline-flex items-center justify-center w-8 h-8 rounded-full transition-all hover:scale-105 active:scale-95"
-        style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
+        className={`inline-flex items-center justify-center rounded-full transition-all hover:scale-105 active:scale-95 ${claro ? 'w-9 h-9' : 'w-8 h-8'}`}
+        style={claro
+          ? { background: '#fff', border: '1.5px solid rgba(0,0,0,0.12)', color: '#555' }
+          : { background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
         <Share2 size={14} />
       </button>
       {menuOpen && (
@@ -676,6 +679,56 @@ const PublicProfile = () => {
           </div>
         </nav>
 
+        {esDJ ? (
+          <CabeceraArtistaDJ
+            nombre={profile.name}
+            foto={profile.photo || null}
+            zona={profile.zone || null}
+            estilos={sbProfile?.genres ?? []}
+            verificado={!!profile.isVerified}
+            precio={(profile as { price?: number }).price ? `Desde ${(profile as { price?: number }).price}€${unidadTarifa(profile.role, true)}` : null}
+            acciones={<>
+              {sbProfile && authUser?.id !== sbProfile.user_id && (authUser ? (
+                <FollowButton viewerId={authUser.id} followedUserId={sbProfile.user_id} claro />
+              ) : (
+                // Sin sesión FollowButton no se pinta: aquí sí, porque seguir es
+                // la acción principal de una cuenta de artista.
+                <button type="button"
+                  onClick={() => navigate(`/auth?mode=register&redirect=${encodeURIComponent(window.location.pathname)}`)}
+                  className="inline-flex items-center gap-1.5 text-sm font-black px-5 py-2 rounded-full transition-all hover:scale-105"
+                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                  <UserPlus size={15} /> Seguir
+                </button>
+              ))}
+              <ShareProfileButton name={profile.name} roleLabel={roleLabel[profile.role] ?? profile.role} url={profileUrl} claro />
+            </>}
+            contadores={<ContadoresDJ sets={numSets} seguidores={seguidores} resenas={seoReviews.length} onIr={setPestanaElegida} />}
+            llamadas={<>
+              <button
+                onClick={() => {
+                  if (authUser && sbProfile?.user_id) {
+                    navigate('/dashboard', { state: { view: 'messages', messageUserId: sbProfile.user_id, messageName: profile.name } });
+                  } else {
+                    handleContactClick();
+                  }
+                }}
+                className="flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-sm transition-all hover:scale-105 active:scale-95"
+                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 6px 20px rgba(212,175,55,0.35)' }}>
+                <MessageCircle size={16} /> Escríbele ahora
+              </button>
+              {sbProfile && (
+                <button onClick={handleAddToCart} disabled={inCart}
+                  className="flex items-center gap-2 px-5 py-3 rounded-2xl font-black text-sm transition-all hover:scale-105 active:scale-95 disabled:hover:scale-100"
+                  style={inCart
+                    ? { background: 'rgba(34,197,94,0.1)', border: '1.5px solid rgba(34,197,94,0.4)', color: '#16a34a' }
+                    : { background: '#fff', border: '1.5px solid rgba(0,0,0,0.12)', color: '#333' }}>
+                  {inCart ? <Check size={16} /> : <Plus size={16} />}
+                  {inCart ? 'En tu evento' : 'Añadir a mi evento'}
+                </button>
+              )}
+            </>}
+          />
+        ) : (<>
         {/* ═══════════ HERO full-width ═══════════ */}
         {/* min(80vw, 75vh), aquí y en el contenido: con minHeight 80vw y maxHeight 92vh, en horizontal
             (iPad 1024x768, escritorio) el mínimo superaba al máximo, ganaba el
@@ -842,18 +895,18 @@ const PublicProfile = () => {
             </motion.div>
           </motion.div>
         </div>
+        </>)}
 
         {/* ═══════════ CONTENIDO ═══════════ */}
         <div className="max-w-3xl mx-auto px-5 pb-24 pt-8">
           <div className="flex flex-col gap-8">
 
           {esDJ && (
-            <PestanasPerfilDJ pestanas={pestanasDJ} activa={pestana} onCambiar={setPestanaElegida}
-              sets={numSets} seguidores={seguidores} resenas={seoReviews.length} />
+            <PestanasPerfilDJ pestanas={pestanasDJ} activa={pestana} onCambiar={setPestanaElegida} />
           )}
 
-          {/* Tarjeta precio — sin CTA duplicado */}
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
+          {/* Tarjeta precio — sin CTA duplicado (en el DJ va en la cabecera de artista) */}
+          {!esDJ && <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
             className="rounded-2xl p-5"
             style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.07)' }}>
             <div>
@@ -869,7 +922,7 @@ const PublicProfile = () => {
             <p className="text-xs mt-1" style={{ color: '#333' }}>
               {profile.zone && `${profile.zone} · `}Contrato directo · Pago acordado con el profesional
             </p>
-          </motion.div>
+          </motion.div>}
 
           <PanelPerfilDJ id="sobre" esDJ={esDJ} activa={pestana}>
           {esDJ && !profile.description && !extraMedia.bio_video_url && (
@@ -1069,14 +1122,17 @@ const PublicProfile = () => {
 
           {sesiones.length > 0 && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
-              <div className="flex items-center gap-2 mb-4">
-                <Headphones size={14} style={{ color: '#D4AF37' }} />
-                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>{esDJ ? 'Sets' : 'Sesiones'}</span>
-              </div>
+              {/* En el perfil de DJ la pestaña ya se llama Sets: sin título repetido. */}
+              {!esDJ && (
+                <div className="flex items-center gap-2 mb-4">
+                  <Headphones size={14} style={{ color: '#D4AF37' }} />
+                  <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Sesiones</span>
+                </div>
+              )}
               <div className="flex flex-col gap-3">
                 {sesiones.map((url, i) => (
                   <div key={i} className="w-full">
-                    <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} />
+                    <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} artista={esDJ} numero={i + 1} />
                   </div>
                 ))}
               </div>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { fichaTieneContenido, formatTiempo, parseTiempo, parseTracklistTexto, tracklistDesdeBD } from './setFicha';
+import { fichaTieneContenido, formatTiempo, parseTiempo, parseTracklistTexto, tituloPorDefecto, tracklistDesdeBD } from './setFicha';
 
 describe('parseTiempo', () => {
   it('lee minutos y horas', () => {
@@ -51,6 +51,20 @@ describe('tracklistDesdeBD', () => {
     expect(tracklistDesdeBD([{ t: 60, artista: 'A', tema: 'B' }, { t: 'x' }, null])).toEqual([
       { t: 60, artista: 'A', tema: 'B' },
     ]);
+  });
+});
+
+describe('tituloPorDefecto', () => {
+  it('limpia el nombre del archivo subido', () => {
+    expect(tituloPorDefecto('https://x.supabase.co/storage/v1/object/public/audio-sessions/u/sessions/1789043913026-Sesion_techno_old_school._.._Jsus_.m4a', 1))
+      .toBe('Sesion techno old school Jsus');
+  });
+  it('usa el tramo del set en los enlaces', () => {
+    expect(tituloPorDefecto('https://soundcloud.com/dj-vizard/dj-vizard-live-sala-dlocos?in=x', 1)).toBe('Dj vizard live sala dlocos');
+  });
+  it('cae a "Set N" si no hay nada legible', () => {
+    expect(tituloPorDefecto('https://on.soundcloud.com/', 2)).toBe('Set 2');
+    expect(tituloPorDefecto('no es una url', 3)).toBe('Set 3');
   });
 });
 

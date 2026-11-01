@@ -93,6 +93,31 @@ export const tracklistDesdeBD = (valor: unknown): TemaTracklist[] => {
   );
 };
 
+/**
+ * Título que se enseña mientras el DJ no rellena el suyo: el nombre del
+ * archivo subido o el del enlace ("dj-vizard-live-sala-dlocos" pasa a
+ * "Dj vizard live sala dlocos"). Si no sale nada legible, "Set N".
+ */
+export const tituloPorDefecto = (url: string, numero: number): string => {
+  let base = '';
+  try {
+    const partes = new URL(url).pathname.split('/').filter(Boolean);
+    const esStorage = partes.includes('audio-sessions');
+    // En SoundCloud/Mixcloud/hearthis el set es el segundo tramo (usuario/set).
+    const tramo = esStorage ? partes[partes.length - 1] : partes[1] ?? '';
+    base = decodeURIComponent(tramo)
+      .replace(/^\d{10,}-/, '')
+      .replace(/\.(mp3|m4a|wav|aac|ogg)$/i, '')
+      .replace(/[._\-]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  } catch {
+    base = '';
+  }
+  if (!/[a-z0-9]/i.test(base)) return `Set ${numero}`;
+  return base.charAt(0).toUpperCase() + base.slice(1);
+};
+
 /** Una ficha sin nada relleno no se pinta: el set se ve como hasta ahora. */
 export const fichaTieneContenido = (f: SetFicha | null | undefined): f is SetFicha =>
   !!f && !!(f.titulo || f.portada_url || f.etiquetas.length || f.bpm || f.mood || f.tracklist.length);
