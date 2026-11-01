@@ -8,8 +8,12 @@ import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import CondicionesPublicas from '@/components/CondicionesPublicas';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import SetCard from '@/components/SetCard';
+import SetFilaArtista from '@/components/SetFilaArtista';
 import PestanasPerfilDJ, { ContadoresDJ, PanelPerfilDJ, type PestanaDJ } from '@/components/PestanasPerfilDJ';
 import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
+import LateralArtistaDJ from '@/components/LateralArtistaDJ';
+import { useDjBanner } from '@/hooks/useDjBanner';
+import { subirImagenArtista } from '@/lib/imagenesArtista';
 import { useSetFichas } from '@/hooks/useSetFichas';
 import { useSetOndas } from '@/hooks/useSetOndas';
 import ProductionLink from '@/components/ProductionLink';
@@ -383,6 +387,26 @@ const PublicProfile = () => {
   const esDJ = sbProfile?.role === 'dj';
   const { fichas: fichasSet } = useSetFichas(sbProfile?.user_id);
   const ondasSet = useSetOndas(esDJ ? sbProfile?.user_id : undefined);
+  const { banner: bannerDJ, recargar: recargarBanner } = useDjBanner(esDJ ? sbProfile?.user_id : undefined);
+  const [subiendoImagen, setSubiendoImagen] = useState<'banner' | 'foto' | null>(null);
+  const esMiPerfilDJ = esDJ && !!authUser && authUser.id === sbProfile?.user_id;
+
+  // Cámaras de la cabecera de artista: el DJ cambia banner y foto desde su perfil.
+  const cambiarImagenArtista = async (tipo: 'banner' | 'foto', file: File) => {
+    if (!sbProfile || !authUser) return;
+    setSubiendoImagen(tipo);
+    const r = await subirImagenArtista(authUser.id, file, tipo);
+    if ('error' in r) { setSubiendoImagen(null); toast.error(r.error); return; }
+    const { error } = tipo === 'banner'
+      ? await supabase.from('dj_banners').upsert({ user_id: authUser.id, banner_url: r.url, updated_at: new Date().toISOString() })
+      // Por id de perfil y no por user_id: hay usuarios con más de un perfil.
+      : await supabase.from('profiles').update({ photo_url: r.url }).eq('id', sbProfile.id);
+    setSubiendoImagen(null);
+    if (error) { toast.error('La imagen se subió pero no se pudo guardar. Inténtalo de nuevo.'); return; }
+    if (tipo === 'banner') recargarBanner();
+    else setSbProfile(prev => (prev ? { ...prev, photo_url: r.url } : prev));
+    toast.success(tipo === 'banner' ? 'Fondo del banner actualizado.' : 'Foto de perfil actualizada.');
+  };
   const [pestanaElegida, setPestanaElegida] = useState<PestanaDJ | null>(null);
   const [seguidores, setSeguidores] = useState<number | null>(null);
   useEffect(() => {
@@ -546,6 +570,7 @@ const PublicProfile = () => {
     'resenas',
     ...(publicPosts.length > 0 ? ['actividad' as const] : []),
   ];
+  const precioDJ = (profile as { price?: number }).price ? `Desde ${(profile as { price?: number }).price}€${unidadTarifa(profile.role, true)}` : null;
   const pestana: PestanaDJ = pestanaElegida && pestanasDJ.includes(pestanaElegida) ? pestanaElegida : pestanasDJ[0];
 
   return (
@@ -685,13 +710,16 @@ const PublicProfile = () => {
           <CabeceraArtistaDJ
             nombre={profile.name}
             foto={profile.photo || null}
+            banner={bannerDJ ?? sesiones.map(u => fichasSet[u]?.portada_url).find(Boolean) ?? (profile.photo || null)}
             zona={profile.zone || null}
             estilos={sbProfile?.genres ?? []}
             verificado={!!profile.isVerified}
-            precio={(profile as { price?: number }).price ? `Desde ${(profile as { price?: number }).price}€${unidadTarifa(profile.role, true)}` : null}
+            onCambiarBanner={esMiPerfilDJ ? f => cambiarImagenArtista('banner', f) : undefined}
+            onCambiarFoto={esMiPerfilDJ ? f => cambiarImagenArtista('foto', f) : undefined}
+            subiendo={subiendoImagen}
             acciones={<>
               {sbProfile && authUser?.id !== sbProfile.user_id && (authUser ? (
-                <FollowButton viewerId={authUser.id} followedUserId={sbProfile.user_id} claro />
+                <FollowButton viewerId={authUser.id} followedUserId={sbProfile.user_id} />
               ) : (
                 // Sin sesión FollowButton no se pinta: aquí sí, porque seguir es
                 // la acción principal de una cuenta de artista.
@@ -702,32 +730,7 @@ const PublicProfile = () => {
                   <UserPlus size={15} /> Seguir
                 </button>
               ))}
-              <ShareProfileButton name={profile.name} roleLabel={roleLabel[profile.role] ?? profile.role} url={profileUrl} claro />
-            </>}
-            contadores={<ContadoresDJ sets={numSets} seguidores={seguidores} resenas={seoReviews.length} onIr={setPestanaElegida} />}
-            llamadas={<>
-              <button
-                onClick={() => {
-                  if (authUser && sbProfile?.user_id) {
-                    navigate('/dashboard', { state: { view: 'messages', messageUserId: sbProfile.user_id, messageName: profile.name } });
-                  } else {
-                    handleContactClick();
-                  }
-                }}
-                className="flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-sm transition-all hover:scale-105 active:scale-95"
-                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 6px 20px rgba(212,175,55,0.35)' }}>
-                <MessageCircle size={16} /> Escríbele ahora
-              </button>
-              {sbProfile && (
-                <button onClick={handleAddToCart} disabled={inCart}
-                  className="flex items-center gap-2 px-5 py-3 rounded-2xl font-black text-sm transition-all hover:scale-105 active:scale-95 disabled:hover:scale-100"
-                  style={inCart
-                    ? { background: 'rgba(34,197,94,0.1)', border: '1.5px solid rgba(34,197,94,0.4)', color: '#16a34a' }
-                    : { background: '#fff', border: '1.5px solid rgba(0,0,0,0.12)', color: '#333' }}>
-                  {inCart ? <Check size={16} /> : <Plus size={16} />}
-                  {inCart ? 'En tu evento' : 'Añadir a mi evento'}
-                </button>
-              )}
+              <ShareProfileButton name={profile.name} roleLabel={roleLabel[profile.role] ?? profile.role} url={profileUrl} />
             </>}
           />
         ) : (<>
@@ -900,11 +903,22 @@ const PublicProfile = () => {
         </>)}
 
         {/* ═══════════ CONTENIDO ═══════════ */}
-        <div className="max-w-3xl mx-auto px-5 pb-24 pt-8">
+        {/* DJ: dos columnas como Hearthis (contenido + lateral con cifras y contratar). */}
+        <div className={esDJ ? 'max-w-6xl mx-auto px-4 sm:px-5 pb-24 pt-4 md:pt-6 md:grid md:grid-cols-[minmax(0,1fr)_18.5rem] md:gap-10' : 'max-w-3xl mx-auto px-5 pb-24 pt-8'}>
           <div className="flex flex-col gap-8">
 
           {esDJ && (
-            <PestanasPerfilDJ pestanas={pestanasDJ} activa={pestana} onCambiar={setPestanaElegida} />
+            <>
+              {/* En móvil no hay columna lateral: precio y cifras van aquí. */}
+              <div className="md:hidden flex flex-col gap-3">
+                <p className="text-sm" style={{ color: '#333' }}>
+                  <b className="text-lg font-black" style={{ color: '#111' }}>{precioDJ ?? 'Precio a consultar'}</b> · Contrato directo
+                </p>
+                <ContadoresDJ sets={numSets} seguidores={seguidores} resenas={seoReviews.length} onIr={setPestanaElegida} />
+              </div>
+              <PestanasPerfilDJ pestanas={pestanasDJ} activa={pestana} onCambiar={setPestanaElegida}
+                cuentas={{ sets: numSets, resenas: seoReviews.length, actividad: publicPosts.length }} />
+            </>
           )}
 
           {/* Tarjeta precio — sin CTA duplicado (en el DJ va en la cabecera de artista) */}
@@ -1134,9 +1148,14 @@ const PublicProfile = () => {
               <div className="flex flex-col gap-3">
                 {sesiones.map((url, i) => (
                   <div key={i} className="w-full">
-                    <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} artista={esDJ} numero={i + 1}
-                      djUserId={sbProfile?.user_id} viewerId={authUser?.id} onda={ondasSet[url]}
-                      onIniciarSesion={() => navigate(`/auth?mode=register&redirect=${encodeURIComponent(window.location.pathname)}`)} />
+                    {esDJ ? (
+                      <SetFilaArtista url={url} autor={profile.name} ficha={fichasSet[url] ?? null} numero={i + 1}
+                        destacado={i === 0} estiloPorDefecto={sbProfile?.genres?.[0] ?? null}
+                        djUserId={sbProfile?.user_id} viewerId={authUser?.id} onda={ondasSet[url]}
+                        onIniciarSesion={() => navigate(`/auth?mode=register&redirect=${encodeURIComponent(window.location.pathname)}`)} />
+                    ) : (
+                      <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} />
+                    )}
                   </div>
                 ))}
               </div>
@@ -1328,6 +1347,55 @@ const PublicProfile = () => {
           )}
 
           </div>
+
+          {esDJ && (
+            <div className="hidden md:block">
+              <div className="sticky top-24">
+                <LateralArtistaDJ
+                  seguidores={seguidores}
+                  sets={numSets}
+                  resenas={seoReviews.length}
+                  mediaResenas={seoReviews.length ? seoReviews.reduce((t, r) => t + r.rating, 0) / seoReviews.length : null}
+                  precio={precioDJ}
+                  zona={profile.zone || null}
+                  estilos={sbProfile?.genres ?? []}
+                  antiguedad={antiguedad}
+                  verificado={!!profile.isVerified}
+                  llamadas={<>
+                    <button
+                      onClick={() => {
+                        if (authUser && sbProfile?.user_id) {
+                          navigate('/dashboard', { state: { view: 'messages', messageUserId: sbProfile.user_id, messageName: profile.name } });
+                        } else {
+                          handleContactClick();
+                        }
+                      }}
+                      className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.02] active:scale-95"
+                      style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 6px 20px rgba(212,175,55,0.35)' }}>
+                      <MessageCircle size={16} /> Escríbele ahora
+                    </button>
+                    {sbProfile && (
+                      <button onClick={handleAddToCart} disabled={inCart}
+                        className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.02] active:scale-95 disabled:hover:scale-100"
+                        style={inCart
+                          ? { background: 'rgba(34,197,94,0.1)', border: '1.5px solid rgba(34,197,94,0.4)', color: '#16a34a' }
+                          : { background: '#fff', border: '1.5px solid rgba(0,0,0,0.12)', color: '#333' }}>
+                        {inCart ? <Check size={16} /> : <Plus size={16} />}
+                        {inCart ? 'En tu evento' : 'Añadir a mi evento'}
+                      </button>
+                    )}
+                  </>}
+                  extra={sbProfile?.instagram ? (
+                    <a href={instagramUrl(sbProfile.instagram)} target="_blank" rel="noopener noreferrer"
+                      onClick={() => clicRedSocial('instagram', 'perfil_publico', sbProfile.user_id)}
+                      className="inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#8B6A00' }}>
+                      <Instagram size={15} /> @{extractInstagramHandle(sbProfile.instagram)}
+                    </a>
+                  ) : null}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {showContact && profile && (

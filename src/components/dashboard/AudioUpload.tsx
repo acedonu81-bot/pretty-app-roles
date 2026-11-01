@@ -6,6 +6,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 import PresentarAlConcurso from '@/components/concurso/PresentarAlConcurso';
 import SetFichaEditor from '@/components/dashboard/SetFichaEditor';
+import BannerArtistaEditor from '@/components/dashboard/BannerArtistaEditor';
 import { useSetFichas } from '@/hooks/useSetFichas';
 import { fichaTieneContenido } from '@/lib/setFicha';
 import { calcularOnda } from '@/lib/ondaAudio';
@@ -336,6 +337,8 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
       <p className="text-xs text-muted-foreground mb-3">
         Sube un archivo (máx {MAX_FILE_MB}MB) o pega un link de SoundCloud, Mixcloud o hearthis.at
       </p>
+
+      {user && (profile.role === 'dj' || profile.roles?.includes('dj')) && <BannerArtistaEditor userId={user.id} />}
 
       {/* Genre selector */}
       <div className="mb-3">

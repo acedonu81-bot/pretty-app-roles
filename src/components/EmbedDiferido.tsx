@@ -19,8 +19,6 @@ interface Props {
   autor?: string;
   className?: string;
   style?: React.CSSProperties;
-  /** El iframe ya montado (o null al desmontarse): para hablar con el widget de SoundCloud. */
-  onIframe?: (el: HTMLIFrameElement | null) => void;
 }
 
 const conAutoplay = (src: string) =>
@@ -28,7 +26,7 @@ const conAutoplay = (src: string) =>
     ? `${src}${src.includes('?') ? '&' : '?'}auto_play=true`
     : src;
 
-export default function EmbedDiferido({ src, alto, tipo, titulo, autor, className, style, onIframe }: Props) {
+export default function EmbedDiferido({ src, alto, tipo, titulo, autor, className, style }: Props) {
   const [cargado, setCargado] = useState(false);
   const { sesion, reproducir } = useReproductorConcurso();
   const enBarra = !!sesion && claveSesion(sesion) === src;
@@ -42,7 +40,7 @@ export default function EmbedDiferido({ src, alto, tipo, titulo, autor, classNam
     };
     return (
       <div className="relative">
-        <iframe ref={onIframe} src={conAutoplay(src)} width="100%" height={alto} allow="autoplay; encrypted-media"
+        <iframe src={conAutoplay(src)} width="100%" height={alto} allow="autoplay; encrypted-media"
           title={titulo} className={className} style={{ border: 'none', ...style }} />
         <button type="button" onClick={anclar} aria-label="Anclar: seguir escuchando al navegar"
           title="Seguir escuchando mientras navegas"

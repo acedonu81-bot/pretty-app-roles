@@ -539,6 +539,24 @@ export type Database = {
         }
         Relationships: []
       }
+      dj_banners: {
+        Row: {
+          banner_url: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          banner_url: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          banner_url?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       dj_set_fichas: {
         Row: {
           bpm: number | null

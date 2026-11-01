@@ -23,10 +23,7 @@ const formatTime = (seconds: number) => {
 /** Petición de salto desde la tracklist; `n` cambia en cada clic para repetir el mismo minuto. */
 export interface SaltoAudio { segundos: number; n: number }
 
-/** Segundo actual y duración del archivo, para la onda con comentarios del set. */
-export type AlProgreso = (segundo: number, duracion: number) => void;
-
-const CustomAudioPlayer = ({ url, alto = 70, autor, titulo, saltarA, onProgreso }: { url: string; alto?: number; autor?: string; titulo?: string; saltarA?: SaltoAudio | null; onProgreso?: AlProgreso }) => {
+const CustomAudioPlayer = ({ url, alto = 70, autor, titulo, saltarA }: { url: string; alto?: number; autor?: string; titulo?: string; saltarA?: SaltoAudio | null }) => {
   const { sesion, reproducir } = useReproductorConcurso();
   const enBarra = !!sesion && claveSesion(sesion) === url;
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -138,7 +135,7 @@ const CustomAudioPlayer = ({ url, alto = 70, autor, titulo, saltarA, onProgreso 
             saltoPendiente.current = null;
           }
         }}
-        onTimeUpdate={(e) => { setCurrent(e.currentTarget.currentTime); onProgreso?.(e.currentTarget.currentTime, e.currentTarget.duration); }}
+        onTimeUpdate={(e) => setCurrent(e.currentTarget.currentTime)}
         onEnded={() => setPlaying(false)}
         onError={() => setErrored(true)}
       />
@@ -185,13 +182,7 @@ const CustomAudioPlayer = ({ url, alto = 70, autor, titulo, saltarA, onProgreso 
 // `SessionAudio`). Reproduce las sesiones desde audio_session_urls /
 // audio_embed_url, que son casi siempre links externos de Mixcloud,
 // SoundCloud o HearThis, no archivos servidos directamente.
-const SessionAudioPlayer = ({ url, autor, titulo, saltarA, onProgreso, onIframe }: {
-  url: string; autor?: string; titulo?: string; saltarA?: SaltoAudio | null;
-  /** Solo archivos subidos a XPEAK. */
-  onProgreso?: AlProgreso;
-  /** Solo enlaces embebidos (SoundCloud...): el iframe, para leer el segundo. */
-  onIframe?: (el: HTMLIFrameElement | null) => void;
-}) => {
+const SessionAudioPlayer = ({ url, autor, titulo, saltarA }: { url: string; autor?: string; titulo?: string; saltarA?: SaltoAudio | null }) => {
   const [embedSrc, setEmbedSrc] = useState<string | null>(null);
   const parsed = useMemo(() => parseStreamUrl(url), [url]);
 
@@ -210,10 +201,10 @@ const SessionAudioPlayer = ({ url, autor, titulo, saltarA, onProgreso, onIframe 
     if (!embedSrc) return null;
     return (
       <EmbedDiferido src={embedSrc} alto={parsed.type === 'SoundCloud' ? 166 : 120} tipo={parsed.type}
-        titulo={titulo ?? 'Sesión de audio'} autor={autor} className="rounded-xl" onIframe={onIframe} />
+        titulo={titulo ?? 'Sesión de audio'} autor={autor} className="rounded-xl" />
     );
   }
-  return <CustomAudioPlayer url={url} autor={autor} titulo={titulo} saltarA={saltarA} onProgreso={onProgreso} />;
+  return <CustomAudioPlayer url={url} autor={autor} titulo={titulo} saltarA={saltarA} />;
 };
 
 export default SessionAudioPlayer;

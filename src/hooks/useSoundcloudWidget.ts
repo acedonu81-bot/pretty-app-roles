@@ -56,5 +56,8 @@ export const useSoundcloudWidget = (iframe: HTMLIFrameElement | null) => {
     setPosicion(segundos);
   }, [enviar]);
 
-  return { listo, posicion, duracion, sonando, saltar };
+  const alternar = useCallback(() => enviar('toggle'), [enviar]);
+  const pausar = useCallback(() => enviar('pause'), [enviar]);
+
+  return { listo, posicion, duracion, sonando, saltar, alternar, pausar };
 };

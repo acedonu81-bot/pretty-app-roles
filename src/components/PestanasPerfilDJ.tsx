@@ -47,10 +47,12 @@ export const ContadoresDJ = ({ sets, seguidores, resenas, onIr }: {
   );
 };
 
-const PestanasPerfilDJ = ({ pestanas, activa, onCambiar }: {
+const PestanasPerfilDJ = ({ pestanas, activa, onCambiar, cuentas = {} }: {
   pestanas: PestanaDJ[];
   activa: PestanaDJ;
   onCambiar: (p: PestanaDJ) => void;
+  /** Número junto al nombre, como en Hearthis ("Sets 3"). Sin número si es 0. */
+  cuentas?: Partial<Record<PestanaDJ, number>>;
 }) => (
   <div role="tablist" aria-label="Secciones del perfil"
     className="flex gap-1 overflow-x-auto overflow-y-hidden -mx-1 px-1"
@@ -60,13 +62,19 @@ const PestanasPerfilDJ = ({ pestanas, activa, onCambiar }: {
       return (
         <button key={p} type="button" role="tab" id={`pestana-${p}`} aria-selected={sel} aria-controls={`panel-${p}`}
           onClick={() => onCambiar(p)}
-          className="px-3 sm:px-4 py-3 text-sm sm:text-base font-bold whitespace-nowrap transition-colors"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-3 text-base sm:text-lg font-bold whitespace-nowrap transition-colors"
           style={{
-            color: sel ? '#8B6A00' : '#666',
-            borderBottom: `2.5px solid ${sel ? '#D4AF37' : 'transparent'}`,
+            color: sel ? '#111' : '#777',
+            borderBottom: `3px solid ${sel ? '#D4AF37' : 'transparent'}`,
             marginBottom: -1,
           }}>
           {NOMBRES[p]}
+          {!!cuentas[p] && (
+            <span className="text-xs font-black px-2 py-0.5 rounded-full tabular-nums"
+              style={{ background: sel ? 'rgba(37,99,235,0.12)' : 'rgba(0,0,0,0.06)', color: sel ? '#1D4ED8' : '#666' }}>
+              {cuentas[p]}
+            </span>
+          )}
         </button>
       );
     })}
