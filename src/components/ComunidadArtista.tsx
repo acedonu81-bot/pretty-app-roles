@@ -4,8 +4,8 @@ import { fotoOptimizada } from '@/lib/imagen';
 import type { RepostHecho, Seguidor } from '@/hooks/useComunidadArtista';
 
 // Pestañas "Seguidores" y "Reposts" del perfil de DJ (2 nov 2026). Solo
-// salen con nombre los profesionales; los empresarios se cuentan sin nombre
-// ("y 3 organizadores"), por la decisión de no darles exposición pública.
+// salen con nombre los profesionales con oficio; empresarios y cuentas sin rol
+// se cuentan sin nombre ("y 3 personas más"): sin exposición pública.
 
 export const PanelSeguidores = ({ seguidores, total }: { seguidores: Seguidor[] | null; total: number }) => {
   if (!total) {
@@ -41,7 +41,11 @@ export const PanelSeguidores = ({ seguidores, total }: { seguidores: Seguidor[] 
       {sinNombre > 0 && (
         <p className="text-sm mt-4 flex items-center gap-2" style={{ color: '#555' }}>
           <Users size={15} style={{ color: '#2563EB' }} />
-          {seguidores.length ? 'Y ' : ''}{sinNombre} {sinNombre === 1 ? 'organizador de eventos' : 'organizadores de eventos'}
+          {/* Sin nombre van organizadores y cuentas que aún no han elegido
+              rol: "personas" vale para ambos sin afirmar lo que no sabemos. */}
+          {seguidores.length
+            ? `Y ${sinNombre} ${sinNombre === 1 ? 'persona más' : 'personas más'}`
+            : `${sinNombre} ${sinNombre === 1 ? 'persona' : 'personas'}`}
         </p>
       )}
     </div>
