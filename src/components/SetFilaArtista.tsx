@@ -6,7 +6,7 @@ import { claveSesion, useReproductorConcurso } from '@/components/concurso/Repro
 import { useSoundcloudWidget } from '@/hooks/useSoundcloudWidget';
 import { useSetComentarios } from '@/hooks/useSetComentarios';
 import type { OndaSet } from '@/hooks/useSetOndas';
-import { parseStreamUrl, resolveSoundcloudShort } from '@/lib/streaming';
+import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack, resolveSoundcloudShort } from '@/lib/streaming';
 import { etiquetaMood, formatTiempo, tituloPorDefecto, type SetFicha } from '@/lib/setFicha';
 import { fotoOptimizada } from '@/lib/imagen';
 import BotonCamara from '@/components/BotonCamara';
@@ -84,8 +84,16 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
   const sc = useSoundcloudWidget(esSoundcloud && scMontado ? iframe : null);
 
   useEffect(() => {
-    if (!parsed?.needsResolve || !parsed._soundcloudShort) return;
-    resolveSoundcloudShort(parsed._soundcloudShort).then(u => setEmbedSrc(u));
+    if (!parsed?.needsResolve) return;
+    // hearthis solo embebe con ID numérico: sin resolverlo la fila se quedaba
+    // sin reproductor (2 nov 2026, Vulcano 2 y 3).
+    if (parsed._soundcloudShort) resolveSoundcloudShort(parsed._soundcloudShort).then(u => setEmbedSrc(u));
+    else if (parsed._hearthisUser) {
+      (parsed._hearthisSlug
+        ? resolveHearthisTrack(parsed._hearthisUser, parsed._hearthisSlug)
+        : resolveHearthisProfile(parsed._hearthisUser)
+      ).then(u => setEmbedSrc(u));
+    }
   }, [parsed]);
 
   const sonando = esArchivo ? sonandoArchivo : sc.sonando;
@@ -220,9 +228,15 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
           </div>
         )}
         {ficha?.portada_url ? (
-          <img src={fotoOptimizada(ficha.portada_url, 320)} alt={`Portada de ${titulo}`} loading="lazy"
-            className={`${destacado ? 'w-20 h-20 sm:w-40 sm:h-40' : 'w-16 h-16 sm:w-32 sm:h-32'} rounded-xl object-cover flex-shrink-0`}
-            style={destacado ? { boxShadow: '0 8px 24px rgba(46,32,6,0.35)' } : undefined} />
+          // Carátulas que no son cuadradas (cartel vertical, etc.): entera y
+          // contenida sobre su copia desenfocada, en vez de recortada.
+          <div className={`${destacado ? 'w-20 h-20 sm:w-40 sm:h-40' : 'w-16 h-16 sm:w-32 sm:h-32'} rounded-xl overflow-hidden relative flex-shrink-0`}
+            style={destacado ? { boxShadow: '0 8px 24px rgba(46,32,6,0.35)' } : undefined}>
+            <img src={fotoOptimizada(ficha.portada_url, 320)} alt="" aria-hidden="true" loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover scale-125" style={{ filter: 'blur(14px)' }} />
+            <img src={fotoOptimizada(ficha.portada_url, 320)} alt={`Portada de ${titulo}`} loading="lazy"
+              className="absolute inset-0 w-full h-full object-contain" />
+          </div>
         ) : (
           <div className={`${destacado ? 'w-20 h-20 sm:w-40 sm:h-40' : 'w-16 h-16 sm:w-32 sm:h-32'} rounded-xl flex items-center justify-center flex-shrink-0`}
             style={{ background: destacado ? 'rgba(255,255,255,0.16)' : 'linear-gradient(135deg,#E3B54F,#B8941E)' }} aria-hidden="true">
