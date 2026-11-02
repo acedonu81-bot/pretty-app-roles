@@ -16,7 +16,7 @@ type ProfessionalRole =
   | 'profesional_pro';
 
 interface BlogScrollCTAProps {
-  role?: 'dj' | 'staff' | 'azafata' | 'fotografo' | 'bailarin' | 'makeup' | 'general' | 'empresario' | ProfessionalRole;
+  role?: 'dj' | 'staff' | 'azafata' | 'fotografo' | 'bailarin' | 'makeup' | 'peluqueria' | 'general' | 'empresario' | ProfessionalRole;
   storageKey?: string;
   articlePath?: string;
 }
@@ -63,6 +63,12 @@ const CONFIG = {
     sub: 'Recibe presupuestos de maquilladoras verificadas.',
     cta: 'Ver maquilladoras →',
     href: '/auth?mode=register&intent=contratar-makeup',
+  },
+  peluqueria: {
+    label: '¿Buscas peluquera a domicilio?',
+    sub: 'Recibe presupuestos de peluqueras verificadas.',
+    cta: 'Ver peluqueras →',
+    href: '/auth?mode=register&intent=contratar-peluqueria',
   },
   general: {
     label: '¿Buscas profesionales para tu evento?',
@@ -220,7 +226,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey, articlePat
           <a
             href={c.href}
             onClick={() => trackBlogCtaClick({ component: 'scroll', role, href: c.href, article_path: articlePath })}
-            className="inline-flex items-center px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all hover:scale-105 whitespace-nowrap"
+            className="inline-flex items-center px-3 sm:px-5 py-3.5 rounded-xl text-xs sm:text-sm font-black transition-all hover:scale-105 whitespace-nowrap"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 20px rgba(212,175,55,0.4)' }}
           >
             <span className="sm:hidden">Crear perfil →</span>
@@ -228,7 +234,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey, articlePat
           </a>
           <button
             onClick={() => { setDismissed(true); sessionStorage.setItem(key, '1'); }}
-            className="w-7 h-7 rounded-full flex items-center justify-center transition-all hover:opacity-70 flex-shrink-0"
+            className="w-11 h-11 rounded-full flex items-center justify-center transition-all hover:opacity-70 flex-shrink-0"
             style={{ background: 'rgba(0,0,0,0.06)', color: '#6b6b6b' }}
             aria-label="Cerrar"
           >

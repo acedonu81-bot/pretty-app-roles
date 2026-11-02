@@ -1,9 +1,12 @@
+import type { ReactNode } from 'react';
+
 interface BlogAnswerBoxProps {
   question: string;
-  answer: string;
+  answer?: string;
+  children?: ReactNode;
 }
 
-export default function BlogAnswerBox({ question, answer }: BlogAnswerBoxProps) {
+export default function BlogAnswerBox({ question, answer, children }: BlogAnswerBoxProps) {
   return (
     <div className="my-6 rounded-xl overflow-hidden"
       style={{ border: '1px solid rgba(212,175,55,0.3)', background: 'rgba(212,175,55,0.05)' }}>
@@ -13,7 +16,7 @@ export default function BlogAnswerBox({ question, answer }: BlogAnswerBoxProps) 
       </div>
       <div className="px-4 py-4">
         <p className="text-xs font-bold mb-2 xpeak-speakable-question" style={{ color: '#444' }}>{question}</p>
-        <p className="text-sm leading-relaxed font-medium xpeak-speakable-answer" style={{ color: '#111' }}>{answer}</p>
+        <p className="text-sm leading-relaxed font-medium xpeak-speakable-answer" style={{ color: '#111' }}>{children ?? answer}</p>
       </div>
     </div>
   );
