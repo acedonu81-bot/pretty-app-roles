@@ -51,6 +51,9 @@ const ConcursoFinalistas = () => {
         @media (prefers-reduced-motion: reduce) { .cf-rise, .cf-float, .cf-spin, .cf-glow { animation: none !important; } }
       `}</style>
 
+      {/* Aro fino dorado, fijo y sutil, en el borde del cuadro. */}
+      <span aria-hidden className="absolute inset-0 rounded-3xl pointer-events-none" style={{ boxShadow: 'inset 0 0 0 2px rgba(255,208,96,0.85)' }} />
+
       {/* Destellos de fondo */}
       <div aria-hidden className="cf-glow pointer-events-none absolute left-1/2 top-[34%] -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] rounded-full"
         style={{ background: 'radial-gradient(circle, rgba(255,224,138,0.55) 0%, rgba(255,224,138,0) 65%)' }} />
