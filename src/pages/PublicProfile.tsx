@@ -1,5 +1,5 @@
 import { unidadTarifa } from '@/lib/constants';
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, UserPlus, Headphones, Disc3, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2, Building2, Moon, Navigation, Flag } from 'lucide-react';
@@ -13,6 +13,7 @@ import PestanasPerfilDJ, { ContadoresDJ, PanelPerfilDJ, type PestanaDJ } from '@
 import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
 import LateralArtistaDJ from '@/components/LateralArtistaDJ';
 import { useDjBanner } from '@/hooks/useDjBanner';
+import { usePodioSets } from '@/hooks/usePodioSets';
 import { subirImagenArtista } from '@/lib/imagenesArtista';
 import { useSetFichas } from '@/hooks/useSetFichas';
 import { useSetOndas } from '@/hooks/useSetOndas';
@@ -389,6 +390,23 @@ const PublicProfile = () => {
   const ondasSet = useSetOndas(esDJ ? sbProfile?.user_id : undefined);
   const { banner: bannerDJ, recargar: recargarBanner } = useDjBanner(esDJ ? sbProfile?.user_id : undefined);
   const [subiendoImagen, setSubiendoImagen] = useState<'banner' | 'foto' | null>(null);
+  // Fase 3: escuchas de cada set y podio de los más escuchados (30 días).
+  const podio = usePodioSets();
+  const [escuchasSet, setEscuchasSet] = useState<Record<string, number>>({});
+  const [versionEscuchas, setVersionEscuchas] = useState(0);
+  const recargarEscuchas = useCallback(() => setVersionEscuchas(v => v + 1), []);
+  useEffect(() => {
+    if (!esDJ || !sbProfile?.user_id) { setEscuchasSet({}); return; }
+    let cancelado = false;
+    supabase.rpc('escuchas_sets_dj', { p_dj: sbProfile.user_id })
+      .then(({ data, error }) => {
+        if (cancelado || error || !data) return;
+        setEscuchasSet(Object.fromEntries(data.map(e => [e.set_url, e.escuchas])));
+      });
+    return () => { cancelado = true; };
+  }, [esDJ, sbProfile?.user_id, versionEscuchas]);
+  const puestoDe = (url: string) => (podio.find(p => p.set_url === url && p.dj_user_id === sbProfile?.user_id)?.puesto ?? null);
+  const mejorPuestoDJ = podio.filter(p => p.dj_user_id === sbProfile?.user_id).map(p => p.puesto).sort()[0] ?? null;
   const esMiPerfilDJ = esDJ && !!authUser && authUser.id === sbProfile?.user_id;
 
   // Cámaras de la cabecera de artista: el DJ cambia banner y foto desde su perfil.
@@ -717,6 +735,7 @@ const PublicProfile = () => {
             onCambiarBanner={esMiPerfilDJ ? f => cambiarImagenArtista('banner', f) : undefined}
             onCambiarFoto={esMiPerfilDJ ? f => cambiarImagenArtista('foto', f) : undefined}
             subiendo={subiendoImagen}
+            podio={mejorPuestoDJ}
             acciones={<>
               {sbProfile && authUser?.id !== sbProfile.user_id && (authUser ? (
                 <FollowButton viewerId={authUser.id} followedUserId={sbProfile.user_id} />
@@ -1152,6 +1171,7 @@ const PublicProfile = () => {
                       <SetFilaArtista url={url} autor={profile.name} ficha={fichasSet[url] ?? null} numero={i + 1}
                         destacado={i === 0} estiloPorDefecto={sbProfile?.genres?.[0] ?? null}
                         djUserId={sbProfile?.user_id} viewerId={authUser?.id} onda={ondasSet[url]} onFichaCambiada={recargarFichas}
+                        escuchas={escuchasSet[url] ?? 0} puesto={puestoDe(url)} onEscuchaRegistrada={recargarEscuchas}
                         onIniciarSesion={() => navigate(`/auth?mode=register&redirect=${encodeURIComponent(window.location.pathname)}`)} />
                     ) : (
                       <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} />

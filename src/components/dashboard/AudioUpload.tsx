@@ -34,6 +34,10 @@ const sanitizeFileName = (name: string): string =>
     .replace(/^_|_$/g, '');
 
 const MAX_SESSIONS_PRO = 15;
+// Plan Free: 3 sets (perfil de DJ, fase 3, 1 nov 2026; ampliable en los de
+// pago, por decidir). Quien ya tenía más los conserva, solo no puede añadir.
+// La BD lo impone también (trigger limite_sets_free).
+const MAX_SESSIONS_FREE = 3;
 const MAX_FILE_MB = 45;
 
 type SessionType = 'file' | 'soundcloud' | 'mixcloud' | 'hearthis';
@@ -138,6 +142,11 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
   const profile = useProfile();
   const { fichas, recargar: recargarFichas } = useSetFichas(user?.id);
   const [fichaAbierta, setFichaAbierta] = useState<string | null>(null);
+  const esFree = (profile.subscription_tier ?? 'free') === 'free';
+  const maxSesiones = esFree ? MAX_SESSIONS_FREE : MAX_SESSIONS_PRO;
+  const mensajeLimite = esFree
+    ? `En el plan Free puedes tener hasta ${MAX_SESSIONS_FREE} sets publicados. Quita uno para subir otro.`
+    : `Máximo ${MAX_SESSIONS_PRO} sesiones.`;
 
   useEffect(() => {
     if (profile.genres && profile.genres.length > 0) {
@@ -224,7 +233,7 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
     if (!file || !user) return;
     if (!file.type.includes('audio')) { toast.error('Solo archivos de audio (MP3, WAV, M4A)'); return; }
     if (file.size > MAX_FILE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_FILE_MB}MB por sesión`); return; }
-    if (sessions.length >= MAX_SESSIONS_PRO) { toast.error(`Máximo ${MAX_SESSIONS_PRO} sesiones permitidas.`); return; }
+    if (sessions.length >= maxSesiones) { toast.error(mensajeLimite); return; }
 
     setUploading(true);
     setUploadProgress(0);
@@ -285,8 +294,8 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
       toast.error('Pega un link de SoundCloud, Mixcloud o hearthis.at');
       return;
     }
-    if (sessions.length >= MAX_SESSIONS_PRO) {
-      toast.error(`Máximo ${MAX_SESSIONS_PRO} sesiones permitidas.`);
+    if (sessions.length >= maxSesiones) {
+      toast.error(mensajeLimite);
       return;
     }
     const name = url.split('/').filter(Boolean).pop() || url;
@@ -324,14 +333,14 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
     toast.info('Sesión eliminada.');
   };
 
-  const canAdd = sessions.length < MAX_SESSIONS_PRO;
+  const canAdd = sessions.length < maxSesiones;
 
   return (
     <div className="glass-panel p-4">
       <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
         <Music size={16} style={{ color: '#8A6D0F' }} /> Sesiones de Audio
         <span className="text-xs text-muted-foreground ml-auto">
-          {sessions.length}/{MAX_SESSIONS_PRO}
+          {sessions.length}/{maxSesiones}
         </span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
@@ -445,6 +454,12 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
           2026) un usuario dio varios clics "muertos" en "Subir archivo" sin
           saber por qué no pasaba nada. rightsAttentionPing lo resalta y
           dispara un toast explicando el motivo en vez de no hacer nada. */}
+      {sessionsLoaded && !canAdd && (
+        <p className="text-xs rounded-lg px-3 py-2 mb-3" style={{ background: 'rgba(37,99,235,0.07)', border: '1px solid rgba(37,99,235,0.2)', color: '#1D4ED8' }}>
+          {mensajeLimite}
+        </p>
+      )}
+
       {canAdd && (
         <label className={`flex items-start gap-2 mb-3 cursor-pointer group rounded-lg transition-all ${rightsAttentionPing ? 'animate-pulse' : ''}`}
           style={rightsAttentionPing ? { outline: '2px solid #D4AF37', outlineOffset: '4px' } : undefined}>

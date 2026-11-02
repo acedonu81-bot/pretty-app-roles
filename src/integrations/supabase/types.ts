@@ -2601,6 +2601,18 @@ export type Database = {
       concurso_sesion_publicada: { Args: { p_key: string }; Returns: boolean }
       concurso_votante_valido: { Args: { p_user: string }; Returns: boolean }
       contar_seguidores: { Args: { p_user_id: string }; Returns: number }
+      escuchas_sets_dj: {
+        Args: { p_dj: string }
+        Returns: { escuchas: number; set_url: string }[]
+      }
+      podio_sets: {
+        Args: Record<PropertyKey, never>
+        Returns: { dj_user_id: string; escuchas: number; foto: string | null; nombre: string | null; puesto: number; set_url: string }[]
+      }
+      registrar_escucha: {
+        Args: { p_dj: string; p_set_url: string; p_visitante: string }
+        Returns: boolean
+      }
       contratado_en_solicitud: {
         Args: { p_request_id: string }
         Returns: boolean

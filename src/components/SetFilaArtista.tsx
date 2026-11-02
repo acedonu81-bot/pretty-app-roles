@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronDown, ListMusic, Pause, Pin, Play } from 'lucide-react';
+import { ChevronDown, Headphones, ListMusic, Pause, Pin, Play } from 'lucide-react';
 import { toast } from 'sonner';
 import OndaComentarios from '@/components/OndaComentarios';
 import { claveSesion, useReproductorConcurso } from '@/components/concurso/ReproductorConcurso';
@@ -10,6 +10,8 @@ import { parseStreamUrl, resolveSoundcloudShort } from '@/lib/streaming';
 import { etiquetaMood, formatTiempo, tituloPorDefecto, type SetFicha } from '@/lib/setFicha';
 import { fotoOptimizada } from '@/lib/imagen';
 import BotonCamara from '@/components/BotonCamara';
+import Medalla from '@/components/Medalla';
+import { useContadorEscucha } from '@/hooks/useContadorEscucha';
 import { supabase } from '@/integrations/supabase/client';
 import { subirImagenArtista } from '@/lib/imagenesArtista';
 
@@ -25,7 +27,7 @@ import { subirImagenArtista } from '@/lib/imagenesArtista';
 
 const EVENTO_SUENA = 'xpeak-set-suena';
 
-const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto, djUserId, viewerId, onda, onIniciarSesion, onFichaCambiada }: {
+const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto, djUserId, viewerId, onda, onIniciarSesion, onFichaCambiada, escuchas = 0, puesto = null, onEscuchaRegistrada }: {
   url: string;
   autor: string;
   ficha: SetFicha | null;
@@ -38,6 +40,11 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
   onIniciarSesion: () => void;
   /** Tras cambiar carátula o fondo, para recargar las fichas. */
   onFichaCambiada?: () => void;
+  /** Escuchas totales del set (escuchas_sets_dj). */
+  escuchas?: number;
+  /** Puesto en el podio de los más escuchados (30 días), si lo tiene. */
+  puesto?: 1 | 2 | 3 | null;
+  onEscuchaRegistrada?: () => void;
 }) => {
   const parsed = useMemo(() => parseStreamUrl(url), [url]);
   const [esMovil, setEsMovil] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches);
@@ -78,6 +85,8 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
 
   const sonando = esArchivo ? sonandoArchivo : sc.sonando;
   const posicion = esArchivo ? t : sc.posicion;
+  // 5 minutos de reproducción real = una escucha (fase 3).
+  useContadorEscucha(djUserId, url, sonando, posicion, onEscuchaRegistrada);
   const duracion = esArchivo ? (dArchivo || onda?.duracion || 0) : sc.duracion;
 
   // Solo un set sonando a la vez en la página.
@@ -200,6 +209,11 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
 
       <div className="flex gap-4 sm:gap-5">
         <div className="relative flex-shrink-0 self-start">
+        {puesto && (
+          <div className="absolute -top-3 -left-3 z-20 pointer-events-none drop-shadow-md">
+            <Medalla puesto={puesto} tam={destacado ? 56 : 46} />
+          </div>
+        )}
         {ficha?.portada_url ? (
           <img src={fotoOptimizada(ficha.portada_url, 320)} alt={`Portada de ${titulo}`} loading="lazy"
             className={`${destacado ? 'w-20 h-20 sm:w-40 sm:h-40' : 'w-16 h-16 sm:w-32 sm:h-32'} rounded-xl object-cover flex-shrink-0`}
@@ -239,6 +253,12 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
               {duracion > 0 && (
                 <span className="text-xs sm:text-sm tabular-nums font-semibold" style={{ color: col.sub }}>
                   {posicion > 0 ? `${formatTiempo(posicion)} / ` : ''}{formatTiempo(duracion)}
+                </span>
+              )}
+              {escuchas > 0 && (
+                <span className="inline-flex items-center gap-1 text-xs sm:text-sm tabular-nums font-semibold" style={{ color: oscuro ? '#fff' : '#2563EB' }}
+                  title="Escuchas de 5 minutos o más">
+                  <Headphones size={14} /> {escuchas}
                 </span>
               )}
             </div>
@@ -325,6 +345,11 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
           )}
           {estilo && <span className="sm:hidden text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: col.chipBg, color: col.chip }}>{estilo}</span>}
           {duracion > 0 && <span className="sm:hidden text-xs tabular-nums" style={{ color: col.sub }}>{formatTiempo(duracion)}</span>}
+          {escuchas > 0 && (
+            <span className="sm:hidden inline-flex items-center gap-1 text-xs tabular-nums font-semibold" style={{ color: oscuro ? '#fff' : '#2563EB' }}>
+              <Headphones size={12} /> {escuchas}
+            </span>
+          )}
         </div>
 
         {tracklistAbierta && (

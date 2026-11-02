@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { BadgeCheck, MapPin } from 'lucide-react';
 import BotonCamara from '@/components/BotonCamara';
+import Medalla from '@/components/Medalla';
 import { fotoOptimizada } from '@/lib/imagen';
 
 // Cabecera de artista del perfil de DJ, al estilo Hearthis (1 nov 2026):
@@ -8,7 +9,7 @@ import { fotoOptimizada } from '@/lib/imagen';
 // botones encima. Solo para DJs; el resto de roles mantiene su portada.
 // Banner: el que suba el DJ; si no, la portada de su primer set o su foto.
 // El velo es marrón dorado y no negro (sin fondos negros en páginas públicas).
-const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, acciones, onCambiarBanner, onCambiarFoto, subiendo = null }: {
+const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, acciones, onCambiarBanner, onCambiarFoto, subiendo = null, podio = null }: {
   nombre: string;
   foto: string | null;
   /** Imagen del banner ya elegida (banner del DJ, portada o foto), o null. */
@@ -22,6 +23,8 @@ const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, ac
   onCambiarBanner?: (f: File) => void;
   onCambiarFoto?: (f: File) => void;
   subiendo?: 'banner' | 'foto' | null;
+  /** Mejor puesto de uno de sus sets en el podio de los más escuchados. */
+  podio?: 1 | 2 | 3 | null;
 }) => {
   const tieneFoto = !!foto && foto.trim().length > 5;
   const inicial = (nombre || 'X').trim().charAt(0).toUpperCase();
@@ -78,6 +81,13 @@ const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, ac
               {zona && (<><span aria-hidden="true">·</span><MapPin size={15} />{zona}</>)}
               {estilos.length > 0 && (<><span aria-hidden="true">·</span>{estilos.slice(0, 3).join(', ')}</>)}
             </p>
+            {podio && (
+              <p className="inline-flex items-center gap-2 mt-3 pl-1 pr-3 py-1 rounded-full text-sm font-black"
+                style={{ background: 'rgba(255,255,255,0.92)', color: '#7A5A0E' }}>
+                <Medalla puesto={podio} tam={22} />
+                Nº{podio} de los sets más escuchados
+              </p>
+            )}
             <div className="flex items-center gap-2 mt-4 flex-wrap">{acciones}</div>
           </div>
         </div>
