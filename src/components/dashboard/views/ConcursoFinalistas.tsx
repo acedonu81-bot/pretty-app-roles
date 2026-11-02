@@ -78,22 +78,8 @@ const ConcursoFinalistas = () => {
               <div key={p.user_id} className="cf-rise flex flex-col items-center min-w-0" style={{ animationDelay: `${i === 0 ? 0.55 : i === 1 ? 0.25 : 0.4}s` }}>
                 {oro && <Crown size={34} strokeWidth={2.4} className="cf-float mb-1" style={{ color: '#ffe08a', fill: '#ffc933', filter: 'drop-shadow(0 4px 10px rgba(255,180,0,0.7))' }} />}
                 <div className={`relative ${foto} shrink-0`}>
-                  {oro && (
-                    <>
-                      {/* Aro exterior: pista tenue fija y, encima, una "serpiente" dorada que da vueltas con cola que se apaga. */}
-                      <span aria-hidden className="absolute -inset-[13px] rounded-full pointer-events-none"
-                        style={{ boxShadow: 'inset 0 0 0 2px rgba(255,224,138,0.28)' }} />
-                      <span aria-hidden className="cf-spin absolute -inset-[13px] rounded-full pointer-events-none"
-                        style={{
-                          animationDuration: '2.8s',
-                          background: 'conic-gradient(from 0deg, rgba(255,201,51,0) 0deg, rgba(255,201,51,0) 190deg, rgba(255,157,28,0.55) 250deg, #ffc933 310deg, #fff2b0 350deg, #ffffff 360deg)',
-                          WebkitMask: 'radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4.5px))',
-                          mask: 'radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4.5px))',
-                          filter: 'drop-shadow(0 0 7px rgba(255,201,51,0.95))',
-                        }} />
-                    </>
-                  )}
-                  <span aria-hidden className="absolute -inset-[3px] rounded-full" style={{ background: `linear-gradient(145deg, ${color[0]}, ${color[1]} 55%, ${color[2]})`, opacity: 1 }} />
+                  {oro && <span aria-hidden className="cf-spin absolute -inset-[5px] rounded-full" style={{ background: `conic-gradient(${color[0]}, ${color[2]}, ${color[0]}, ${color[1]}, ${color[0]})` }} />}
+                  <span aria-hidden className="absolute -inset-[3px] rounded-full" style={{ background: `linear-gradient(145deg, ${color[0]}, ${color[1]} 55%, ${color[2]})`, opacity: oro ? 0 : 1 }} />
                   {p.photo_url
                     ? <img src={p.photo_url} alt={p.display_name ?? 'DJ'} loading="lazy" className="relative w-full h-full rounded-full object-cover" style={{ boxShadow: '0 8px 20px rgba(20,0,80,0.45)', border: '3px solid rgba(255,255,255,0.9)' }} />
                     : <span className="relative block w-full h-full rounded-full bg-white/25" />}
