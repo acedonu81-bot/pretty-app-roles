@@ -62,6 +62,10 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
   const esArchivo = !parsed;
   const esSoundcloud = parsed?.type === 'SoundCloud';
   const conPlayPropio = esArchivo || esSoundcloud;
+  // El reproductor de hearthis/mixcloud pinta su propia carátula (en escritorio):
+  // junto a la de XPEAK eran dos fotos por fila (2 nov 2026). Ahí se esconde la de XPEAK.
+  // En móvil el embed ya viene sin carátula, así que se deja la nuestra.
+  const sinCaratula = !conPlayPropio && !esMovil;
 
   const titulo = ficha?.titulo || tituloPorDefecto(url, numero);
   const estilo = ficha?.etiquetas[0] ?? estiloPorDefecto;
@@ -221,6 +225,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
       )}
 
       <div className="flex gap-4 sm:gap-5">
+        {!sinCaratula && (
         <div className="relative flex-shrink-0 self-start">
         {puesto && (
           <div className="absolute -top-3 -left-3 z-20 pointer-events-none drop-shadow-md">
@@ -248,9 +253,13 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
             subiendo={subiendo === 'portada'} className="bottom-1.5 right-1.5" />
         )}
         </div>
+        )}
 
         <div className="flex-1 min-w-0">
           <div className="flex items-start gap-3">
+            {sinCaratula && puesto && (
+              <div className="flex-shrink-0 pointer-events-none drop-shadow-md"><Medalla puesto={puesto} tam={40} /></div>
+            )}
             {conPlayPropio && !enBarra && (
               <button type="button" onClick={alternar} aria-label={sonando ? `Pausar ${titulo}` : `Escuchar ${titulo}`}
                 className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center flex-shrink-0 transition-transform hover:scale-105 active:scale-95"
