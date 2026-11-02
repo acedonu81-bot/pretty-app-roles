@@ -1,5 +1,5 @@
 import { ROLE_ES, unidadTarifa } from '@/lib/constants';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   X, MessageCircle, FileText, ShoppingBag, MapPin, Globe,
@@ -26,6 +26,15 @@ import FollowButton from '@/components/FollowButton';
 import ReviewsSection from '@/components/ReviewsSection';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 import { clicRedSocial } from '@/lib/track';
+import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
+import LateralArtistaDJ from '@/components/LateralArtistaDJ';
+import PestanasPerfilDJ, { ContadoresDJ, PanelPerfilDJ, type PestanaDJ } from '@/components/PestanasPerfilDJ';
+import SetFilaArtista from '@/components/SetFilaArtista';
+import { useSetFichas } from '@/hooks/useSetFichas';
+import { useSetOndas } from '@/hooks/useSetOndas';
+import { useDjBanner } from '@/hooks/useDjBanner';
+import { usePodioSets } from '@/hooks/usePodioSets';
+import { useAuth } from '@/hooks/useAuth';
 
 const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel: string; url: string }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -381,6 +390,47 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
     onClose();
   };
   const mediaLabel = isDJ ? 'Audio & Stream' : p.role === 'media' ? 'Portfolio' : 'Media';
+
+  // ── Perfil de DJ tipo Hearthis también dentro del panel (2 nov 2026): la
+  // ficha que se abre al pinchar un DJ en el dashboard seguía con la portada
+  // de siempre aunque /p/ ya tenía el diseño nuevo. Mismas piezas que
+  // PublicProfile.tsx; el resto de roles no cambia.
+  const { user: authUser } = useAuth();
+  const viewerId = authUser?.id;
+  const { fichas: fichasSet, recargar: recargarFichas } = useSetFichas(isDJ ? p.userId : undefined);
+  const ondasSet = useSetOndas(isDJ ? p.userId : undefined);
+  const { banner: bannerDJ } = useDjBanner(isDJ ? p.userId : undefined);
+  const podio = usePodioSets();
+  const [escuchasSet, setEscuchasSet] = useState<Record<string, number>>({});
+  const [versionEscuchas, setVersionEscuchas] = useState(0);
+  const recargarEscuchas = useCallback(() => setVersionEscuchas(v => v + 1), []);
+  const [seguidores, setSeguidores] = useState<number | null>(null);
+  const [numResenas, setNumResenas] = useState(0);
+  const [pestanaElegida, setPestanaElegida] = useState<PestanaDJ | null>(null);
+  useEffect(() => {
+    if (!isDJ || !p.userId) return;
+    let cancelado = false;
+    supabase.rpc('escuchas_sets_dj', { p_dj: p.userId })
+      .then(({ data }) => { if (!cancelado && data) setEscuchasSet(Object.fromEntries(data.map(e => [e.set_url, e.escuchas]))); });
+    return () => { cancelado = true; };
+  }, [isDJ, p.userId, versionEscuchas]);
+  useEffect(() => {
+    if (!isDJ || !p.userId) return;
+    let cancelado = false;
+    supabase.rpc('contar_seguidores', { p_user_id: p.userId })
+      .then(({ data }) => { if (!cancelado && typeof data === 'number') setSeguidores(data); });
+    supabase.from('reviews').select('id', { count: 'exact', head: true }).eq('reviewed_user_id', p.userId).eq('approved', true)
+      .then(({ count }) => { if (!cancelado) setNumResenas(count ?? 0); });
+    return () => { cancelado = true; };
+  }, [isDJ, p.userId]);
+  const sesiones = (full.audioSessionUrls ?? []).slice(0, 5);
+  const numSets = sesiones.length + (audioEmbed && !sesiones.includes(audioRawUrl ?? '') ? 1 : 0);
+  const pestanasDJ: PestanaDJ[] = [...(numSets > 0 ? ['sets' as const] : []), 'sobre', 'resenas'];
+  const pestana: PestanaDJ = pestanaElegida && pestanasDJ.includes(pestanaElegida) ? pestanaElegida : pestanasDJ[0];
+  const puestoDe = (url: string) => (podio.find(x => x.set_url === url && x.dj_user_id === p.userId)?.puesto ?? null);
+  const mejorPuestoDJ = podio.filter(x => x.dj_user_id === p.userId).map(x => x.puesto).sort()[0] ?? null;
+  const precioDJ = !priceHidden && price > 0 ? `Desde ${price}€${unidadTarifa(p.role, true)}` : null;
+  const irAlRegistro = () => { window.location.href = `/auth?mode=register&redirect=${encodeURIComponent(`/p/${p.userId}`)}`; };
   const hasLive = p.isLive && p.streamUrl && parseStreamUrl(p.streamUrl);
 
   return (
@@ -424,6 +474,26 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
             <X size={18} />
           </button>
 
+          {isDJ ? (
+            // Hueco arriba para Volver y la X, que van fijos encima.
+            <div style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 3.5rem)' }}>
+              <CabeceraArtistaDJ
+                nombre={p.name}
+                foto={p.photo && !imgError ? p.photo : null}
+                banner={bannerDJ ?? sesiones.map(u => fichasSet[u]?.portada_url).find(Boolean) ?? (p.photo || null)}
+                zona={p.zone || p.location || null}
+                estilos={genres ?? []}
+                verificado={verified}
+                podio={mejorPuestoDJ}
+                acciones={<>
+                  {p.userId && me.user_id && me.user_id !== p.userId && (
+                    <FollowButton viewerId={me.user_id} followedUserId={p.userId} />
+                  )}
+                  <ShareProfileButton name={p.name} roleLabel={cfg.label} url={`https://xpeak.es/p/${p.slug || toSlug(p.name)}`} />
+                </>}
+              />
+            </div>
+          ) : (<>
           {/* ════════ HERO — foto full-width ════════ */}
           <div className="relative" style={{ height: 'clamp(360px, 52vh, 520px)' }}>
             {p.photo && !imgError ? (
@@ -517,10 +587,25 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
               </div>
             </div>
           </div>
+          </>)}
 
           {/* ════════ CUERPO — scroll único ════════ */}
-          <div className="max-w-3xl mx-auto px-5 sm:px-8 py-7 space-y-6"
+          {/* DJ: dos columnas como Hearthis (contenido + lateral). */}
+          <div className={isDJ ? 'max-w-6xl mx-auto px-4 sm:px-5 py-6 md:grid md:grid-cols-[minmax(0,1fr)_18.5rem] md:gap-10' : 'max-w-3xl mx-auto px-5 sm:px-8 py-7'}
             style={{ paddingBottom: 'calc(96px + env(safe-area-inset-bottom))' }}>
+          <div className="space-y-6">
+
+            {isDJ && (
+              <>
+                <div className="md:hidden">
+                  <ContadoresDJ sets={numSets} seguidores={seguidores} resenas={numResenas} onIr={setPestanaElegida} />
+                </div>
+                <PestanasPerfilDJ pestanas={pestanasDJ} activa={pestana} onCambiar={setPestanaElegida}
+                  cuentas={{ sets: numSets, resenas: numResenas }} />
+              </>
+            )}
+
+            <PanelPerfilDJ id="sobre" esDJ={isDJ} activa={pestana}>
 
             {/* Bio */}
             {bio && (
@@ -645,6 +730,9 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
               </motion.div>
             )}
 
+            </PanelPerfilDJ>
+
+            <PanelPerfilDJ id="sets" esDJ={isDJ} activa={pestana}>
             {/* Audio embed */}
             {(audioEmbed || audioLoading || (audioRawUrl && !audioEmbed)) && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
@@ -689,15 +777,24 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                 varias guardadas. */}
             {full.audioSessionUrls && full.audioSessionUrls.length > 0 && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.11 }}
-                style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
-                <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>SESIONES</p>
+                style={isDJ ? undefined : { borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
+                {!isDJ && <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>SESIONES</p>}
                 <div className="flex flex-col gap-3">
-                  {full.audioSessionUrls.slice(0, 5).map((url, i) => (
+                  {full.audioSessionUrls.slice(0, 5).map((url, i) => isDJ ? (
+                    <SetFilaArtista key={url} url={url} autor={p.name} ficha={fichasSet[url] ?? null} numero={i + 1}
+                      destacado={i === 0} estiloPorDefecto={genres?.[0] ?? null}
+                      djUserId={p.userId} viewerId={viewerId} onda={ondasSet[url]} onFichaCambiada={recargarFichas}
+                      escuchas={escuchasSet[url] ?? 0} puesto={puestoDe(url)} onEscuchaRegistrada={recargarEscuchas}
+                      onIniciarSesion={irAlRegistro} />
+                  ) : (
                     <SessionAudioPlayer key={i} url={url} autor={p.name} />
                   ))}
                 </div>
               </motion.div>
             )}
+            </PanelPerfilDJ>
+
+            <PanelPerfilDJ id="sobre" esDJ={isDJ} activa={pestana} continuacion>
 
             {/* Clips de vídeo — mismo patrón que Sesiones: este modal (dashboard)
                 no consultaba video_session_urls, aunque el profesional tuviera
@@ -737,6 +834,8 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                 </div>
               </motion.div>
             )}
+
+            </PanelPerfilDJ>
 
             {/* Disponibilidad + solicitud directa — llevado aquí desde
                 PublicProfile.tsx (17 sep 2026): este modal, abierto al
@@ -785,6 +884,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
 
             {/* Reseñas: antes esta ficha no las enseñaba en ningún sitio (solo
                 la pública /p/), así que la nota de la tarjeta no llevaba a nada. */}
+            <PanelPerfilDJ id="resenas" esDJ={isDJ} activa={pestana}>
             {p.userId && (
               <div ref={resenasRef} style={{ scrollMarginTop: 16 }}>
                 <ReviewsSection
@@ -794,6 +894,12 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                 />
               </div>
             )}
+            {isDJ && numResenas === 0 && (
+              <p className="text-sm rounded-2xl p-5" style={{ color: '#555', background: '#ffffff', border: '1px solid rgba(0,0,0,0.07)' }}>
+                {p.name} todavía no tiene reseñas. En XPEAK solo puede dejar reseña quien le ha contratado.
+              </p>
+            )}
+            </PanelPerfilDJ>
 
             {/* Redes sociales — registrados. Hasta el 28 oct ponía me.userId
                 (no existe) y el bloque no salía nunca. Son escaparate, no
@@ -821,7 +927,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
             )}
 
             {/* Empty media hint si no hay nada */}
-            {!audioEmbed && !hasLive && (!full.portfolioUrls || full.portfolioUrls.length === 0) && (!full.videoSessionUrls || full.videoSessionUrls.length === 0) && (
+            {!isDJ && !audioEmbed && !hasLive && (!full.portfolioUrls || full.portfolioUrls.length === 0) && (!full.videoSessionUrls || full.videoSessionUrls.length === 0) && (
               <div className="rounded-xl p-8 text-center flex flex-col items-center gap-2"
                 style={{ borderTop: '1px solid rgba(0,0,0,0.06)', marginTop: 4 }}>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -836,6 +942,32 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
             <p className="text-center text-[0.75rem]" style={{ color: '#999', paddingTop: 6 }}>
               Contrato directo · Pago acordado entre las partes
             </p>
+          </div>
+
+          {isDJ && (
+            <div className="hidden md:block">
+              <div className="sticky top-20">
+                <LateralArtistaDJ
+                  seguidores={seguidores}
+                  sets={numSets}
+                  resenas={numResenas}
+                  mediaResenas={null}
+                  precio={precioDJ}
+                  zona={p.zone || p.location || null}
+                  estilos={genres ?? []}
+                  antiguedad={null}
+                  verificado={verified}
+                  llamadas={
+                    <button onClick={contact} disabled={!p.userId}
+                      className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-40"
+                      style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 6px 20px rgba(212,175,55,0.35)' }}>
+                      <MessageCircle size={16} /> Contactar a {p.name}
+                    </button>
+                  }
+                />
+              </div>
+            </div>
+          )}
           </div>
 
           {/* ════════ BARRA FIJA — único CTA de contacto ════════ */}
