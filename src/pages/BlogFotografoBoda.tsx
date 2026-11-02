@@ -70,7 +70,7 @@ export default function BlogFotografoBoda() {
         <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
-          <BlogTopCTA role="fotografo" articlePath="/blog/fotografo-boda" />
+          <BlogTopCTA href="/contratar-fotografo" label="Ver fotógrafos →" role="fotografo" articlePath="/blog/fotografo-boda" />
 
           <div className="mb-8 mt-6">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · España · XPEAK Blog</p>

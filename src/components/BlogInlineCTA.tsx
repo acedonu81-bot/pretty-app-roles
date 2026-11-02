@@ -5,6 +5,7 @@ interface BlogInlineCTAProps {
   orgLabel?: string;
   variant?: 'default' | 'upgrade';
   articlePath?: string;
+  text?: string;
 }
 
 const CONFIG = {
@@ -118,7 +119,7 @@ const CONFIG = {
   },
 };
 
-export default function BlogInlineCTA({ role = 'general', variant = 'default', articlePath = '' }: BlogInlineCTAProps) {
+export default function BlogInlineCTA({ role = 'general', variant = 'default', articlePath = '', text }: BlogInlineCTAProps) {
   const c = CONFIG[role as keyof typeof CONFIG] ?? CONFIG.general;
   const track = (sub: string, href: string) =>
     trackBlogCtaClick({ component: 'inline', role: `${role}_${sub}`, variant, href, article_path: articlePath });
@@ -160,7 +161,7 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default', a
           </p>
           <p className="text-sm font-bold" style={{ color: '#111' }}>{c.pro.label}</p>
           <p className="text-xs mt-0.5" style={{ color: '#333' }}>
-            {c.org.label}
+            {text ?? c.org.label}
           </p>
         </div>
         <div className="flex flex-col gap-2 flex-shrink-0">
