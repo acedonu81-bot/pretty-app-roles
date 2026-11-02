@@ -4,7 +4,7 @@ import { useFeedPosts } from './useFeedPosts';
 import { supabase } from '@/integrations/supabase/client';
 
 vi.mock('@/integrations/supabase/client', () => ({
-  supabase: { from: vi.fn() },
+  supabase: { from: vi.fn(), rpc: vi.fn(() => Promise.resolve({ data: [], error: null })) },
 }));
 
 function mockTables({ follows, posts, profiles }: { follows: { followed_user_id: string }[]; posts: any[]; profiles: any[] }) {
@@ -51,6 +51,23 @@ describe('useFeedPosts', () => {
 
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.posts).toEqual([]);
+  });
+
+  it('muestra mis reposts como "Tú" aunque no siga a nadie', async () => {
+    mockTables({ follows: [], posts: [], profiles: [] });
+    (supabase.rpc as any).mockResolvedValueOnce({ data: [{
+      reposter_id: 'viewer-1', reposter_nombre: 'DJ Yo', reposter_foto: null, reposter_rol: 'dj',
+      set_url: 'https://soundcloud.com/otro/set', dj_user_id: 'dj-2', dj_nombre: 'DJ Otro', created_at: '2026-11-02T10:00:00Z', mio: true,
+    }], error: null });
+
+    const { result } = renderHook(() => useFeedPosts('viewer-1'));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(result.current.posts).toHaveLength(1);
+    expect(result.current.posts[0]).toMatchObject({
+      post_type: 'repost', authorName: 'Tú', media_url: 'https://soundcloud.com/otro/set',
+      repostDe: { djUserId: 'dj-2', djNombre: 'DJ Otro', mio: true },
+    });
   });
 
   it('joins posts from followed profiles with their author info', async () => {

@@ -35,6 +35,9 @@ import { useSetOndas } from '@/hooks/useSetOndas';
 import { useDjBanner } from '@/hooks/useDjBanner';
 import { usePodioSets } from '@/hooks/usePodioSets';
 import { useAuth } from '@/hooks/useAuth';
+import { useRepostsDe, useRepostsSets, useResumenArtista, useSeguidores } from '@/hooks/useComunidadArtista';
+import { ListaReposts, PanelSeguidores } from '@/components/ComunidadArtista';
+import { enlacesDeSesiones } from '@/lib/enlacesArtista';
 
 const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel: string; url: string }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -404,6 +407,10 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
   const [escuchasSet, setEscuchasSet] = useState<Record<string, number>>({});
   const [versionEscuchas, setVersionEscuchas] = useState(0);
   const recargarEscuchas = useCallback(() => setVersionEscuchas(v => v + 1), []);
+  const resumenDJ = useResumenArtista(isDJ ? p.userId : undefined, versionEscuchas);
+  const { porUrl: repostsSet, alternar: alternarRepost } = useRepostsSets(isDJ ? p.userId : undefined, viewerId);
+  const listaSeguidores = useSeguidores(isDJ ? p.userId : undefined);
+  const repostsHechos = useRepostsDe(isDJ ? p.userId : undefined);
   const [seguidores, setSeguidores] = useState<number | null>(null);
   const [numResenas, setNumResenas] = useState(0);
   const [pestanaElegida, setPestanaElegida] = useState<PestanaDJ | null>(null);
@@ -425,7 +432,12 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
   }, [isDJ, p.userId]);
   const sesiones = (full.audioSessionUrls ?? []).slice(0, 5);
   const numSets = sesiones.length + (audioEmbed && !sesiones.includes(audioRawUrl ?? '') ? 1 : 0);
-  const pestanasDJ: PestanaDJ[] = [...(numSets > 0 ? ['sets' as const] : []), 'sobre', 'resenas'];
+  const pestanasDJ: PestanaDJ[] = [
+    ...(numSets > 0 ? ['sets' as const] : []),
+    ...(repostsHechos.length > 0 ? ['reposts' as const] : []),
+    'seguidores', 'sobre', 'resenas',
+  ];
+  const totalSeguidores = resumenDJ?.seguidores ?? seguidores ?? 0;
   const pestana: PestanaDJ = pestanaElegida && pestanasDJ.includes(pestanaElegida) ? pestanaElegida : pestanasDJ[0];
   const puestoDe = (url: string) => (podio.find(x => x.set_url === url && x.dj_user_id === p.userId)?.puesto ?? null);
   const mejorPuestoDJ = podio.filter(x => x.dj_user_id === p.userId).map(x => x.puesto).sort()[0] ?? null;
@@ -601,7 +613,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                   <ContadoresDJ sets={numSets} seguidores={seguidores} resenas={numResenas} onIr={setPestanaElegida} />
                 </div>
                 <PestanasPerfilDJ pestanas={pestanasDJ} activa={pestana} onCambiar={setPestanaElegida}
-                  cuentas={{ sets: numSets, resenas: numResenas }} />
+                  cuentas={{ sets: numSets, reposts: repostsHechos.length, seguidores: totalSeguidores, resenas: numResenas }} />
               </>
             )}
 
@@ -785,6 +797,8 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                       destacado={i === 0} estiloPorDefecto={genres?.[0] ?? null}
                       djUserId={p.userId} viewerId={viewerId} onda={ondasSet[url]} onFichaCambiada={recargarFichas}
                       escuchas={escuchasSet[url] ?? 0} puesto={puestoDe(url)} onEscuchaRegistrada={recargarEscuchas}
+                      reposts={repostsSet[url]?.reposts ?? 0} yoReposteo={!!repostsSet[url]?.yo}
+                      onRepost={() => viewerId ? alternarRepost(url) : irAlRegistro()}
                       onIniciarSesion={irAlRegistro} />
                   ) : (
                     <SessionAudioPlayer key={i} url={url} autor={p.name} />
@@ -793,6 +807,17 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
               </motion.div>
             )}
             </PanelPerfilDJ>
+
+            {isDJ && (
+              <>
+                <PanelPerfilDJ id="reposts" esDJ={isDJ} activa={pestana}>
+                  <ListaReposts nombre={p.name} reposts={repostsHechos} viewerId={viewerId} onIniciarSesion={irAlRegistro} />
+                </PanelPerfilDJ>
+                <PanelPerfilDJ id="seguidores" esDJ={isDJ} activa={pestana}>
+                  <PanelSeguidores seguidores={listaSeguidores} total={totalSeguidores} />
+                </PanelPerfilDJ>
+              </>
+            )}
 
             <PanelPerfilDJ id="sobre" esDJ={isDJ} activa={pestana} continuacion>
 
@@ -948,7 +973,13 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
             <div className="hidden md:block">
               <div className="sticky top-20">
                 <LateralArtistaDJ
-                  seguidores={seguidores}
+                  seguidores={totalSeguidores}
+                  siguiendo={resumenDJ?.siguiendo ?? 0}
+                  escuchasHoy={resumenDJ?.escuchas_hoy ?? 0}
+                  escuchasAyer={resumenDJ?.escuchas_ayer ?? 0}
+                  escuchasTotal={resumenDJ?.escuchas_total ?? 0}
+                  enlaces={enlacesDeSesiones([...(full.audioSessionUrls ?? []), audioRawUrl ?? ''])}
+                  onIrA={setPestanaElegida}
                   sets={numSets}
                   resenas={numResenas}
                   mediaResenas={null}

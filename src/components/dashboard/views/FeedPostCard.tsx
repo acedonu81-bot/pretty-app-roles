@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { Music, Image as ImageIcon, MessageSquareText, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Music, Image as ImageIcon, MessageSquareText, X, ChevronLeft, ChevronRight, Repeat2 } from 'lucide-react';
 import type { FeedPost } from '@/hooks/useFeedPosts';
 import type { FeedGroup } from '@/components/dashboard/views/FeedView';
 import LikeButton from '@/components/LikeButton';
@@ -82,6 +82,7 @@ const FeedPostCard = ({ group, viewerId }: { group: FeedGroup; viewerId: string 
   const photos = posts.filter(p => p.post_type === 'image' && p.media_url);
   const audios = posts.filter(p => p.post_type === 'audio' && p.media_url);
   const texts = posts.filter(p => p.post_type === 'text' || (!p.media_url && p.content));
+  const reposts = posts.filter(p => p.post_type === 'repost' && p.media_url && p.repostDe);
 
   // Ninguna foto del grid abría nada al pinchar — el "+N" de la 4ª miniatura
   // era puramente decorativo, sin onClick (reportado por el usuario el 5 oct
@@ -165,6 +166,18 @@ const FeedPostCard = ({ group, viewerId }: { group: FeedGroup; viewerId: string 
               <SessionAudioPlayer url={a.media_url!} />
             </div>
             <LikeButton viewerId={viewerId} contentKey={a.id} />
+          </div>
+        ))}
+
+        {/* Reposts (2 nov 2026): "X ha recomendado la sesión de Y". */}
+        {reposts.slice(0, 3).map(r => (
+          <div key={r.id} className="flex flex-col gap-2">
+            <p className="flex items-center gap-1.5 text-xs" style={{ color: HZ.ink, fontWeight: 700 }}>
+              <Repeat2 size={13} style={{ color: '#2563EB' }} />
+              {r.repostDe!.mio ? 'Has recomendado' : 'Ha recomendado'} la sesión de{' '}
+              <Link to={`/p/${r.repostDe!.djUserId}`} className="underline" style={{ color: '#2563EB' }}>{r.repostDe!.djNombre ?? 'un DJ'}</Link>
+            </p>
+            <SessionAudioPlayer url={r.media_url!} autor={r.repostDe!.djNombre ?? undefined} />
           </div>
         ))}
 

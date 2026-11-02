@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronDown, Headphones, ListMusic, Pause, Pin, Play } from 'lucide-react';
+import { ChevronDown, Headphones, ListMusic, Pause, Pin, Play, Repeat2 } from 'lucide-react';
 import { toast } from 'sonner';
 import OndaComentarios from '@/components/OndaComentarios';
 import { claveSesion, useReproductorConcurso } from '@/components/concurso/ReproductorConcurso';
@@ -27,7 +27,7 @@ import { subirImagenArtista } from '@/lib/imagenesArtista';
 
 const EVENTO_SUENA = 'xpeak-set-suena';
 
-const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto, djUserId, viewerId, onda, onIniciarSesion, onFichaCambiada, escuchas = 0, puesto = null, onEscuchaRegistrada }: {
+const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto, djUserId, viewerId, onda, onIniciarSesion, onFichaCambiada, escuchas = 0, puesto = null, onEscuchaRegistrada, reposts = 0, yoReposteo = false, onRepost }: {
   url: string;
   autor: string;
   ficha: SetFicha | null;
@@ -45,6 +45,11 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
   /** Puesto en el podio de los más escuchados (30 días), si lo tiene. */
   puesto?: 1 | 2 | 3 | null;
   onEscuchaRegistrada?: () => void;
+  /** Reposts del set y si quien mira ya lo ha recomendado. */
+  reposts?: number;
+  yoReposteo?: boolean;
+  /** Repostear o quitar el repost (sin sesión, lleva al registro). */
+  onRepost?: () => void;
 }) => {
   const parsed = useMemo(() => parseStreamUrl(url), [url]);
   const [esMovil, setEsMovil] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches);
@@ -330,6 +335,26 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
         )}
 
         <div className="flex items-center gap-4 mt-3 flex-wrap">
+          {/* Repost: recomendar el set a quien te sigue. En el propio set solo
+              se ve el número (nadie se repostea a sí mismo). */}
+          {(onRepost || reposts > 0) && (
+            editable || !onRepost ? (
+              reposts > 0 && (
+                <span className="flex items-center gap-1.5 text-xs font-bold tabular-nums" style={{ color: oscuro ? '#fff' : '#2563EB' }}>
+                  <Repeat2 size={14} /> {reposts} {reposts === 1 ? 'repost' : 'reposts'}
+                </span>
+              )
+            ) : (
+              <button type="button" onClick={onRepost} aria-pressed={yoReposteo}
+                title={yoReposteo ? 'Quitar el repost' : 'Recomendar este set a quien te sigue'}
+                className="flex items-center gap-1.5 text-xs font-bold tabular-nums px-2.5 py-1 rounded-full transition-colors"
+                style={yoReposteo
+                  ? { background: '#2563EB', color: '#fff' }
+                  : { background: oscuro ? 'rgba(255,255,255,0.16)' : 'rgba(37,99,235,0.08)', color: oscuro ? '#fff' : '#2563EB' }}>
+                <Repeat2 size={14} /> {yoReposteo ? 'Reposteado' : 'Repost'}{reposts > 0 ? ` · ${reposts}` : ''}
+              </button>
+            )
+          )}
           {tracklist.length > 0 && (
             <button type="button" onClick={() => setTracklistAbierta(a => !a)} aria-expanded={tracklistAbierta}
               className="flex items-center gap-1.5 text-xs font-bold" style={{ color: col.acento }}>

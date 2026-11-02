@@ -2170,6 +2170,12 @@ export type Database = {
         }
         Relationships: []
       }
+      set_reposts: {
+        Row: { created_at: string; dj_user_id: string; id: number; set_url: string; user_id: string }
+        Insert: { created_at?: string; dj_user_id: string; id?: never; set_url: string; user_id: string }
+        Update: { created_at?: string; dj_user_id?: string; id?: never; set_url?: string; user_id?: string }
+        Relationships: []
+      }
       set_silenciados: {
         Row: {
           autor_id: string
@@ -2601,6 +2607,26 @@ export type Database = {
       concurso_sesion_publicada: { Args: { p_key: string }; Returns: boolean }
       concurso_votante_valido: { Args: { p_user: string }; Returns: boolean }
       contar_seguidores: { Args: { p_user_id: string }; Returns: number }
+      resumen_artista: {
+        Args: { p_user: string }
+        Returns: { escuchas_ayer: number; escuchas_hoy: number; escuchas_total: number; seguidores: number; siguiendo: number }[]
+      }
+      reposts_sets_dj: {
+        Args: { p_dj: string }
+        Returns: { reposts: number; set_url: string; yo: boolean }[]
+      }
+      reposts_de: {
+        Args: { p_user: string }
+        Returns: { created_at: string; dj_foto: string | null; dj_nombre: string | null; dj_user_id: string; set_url: string }[]
+      }
+      reposts_feed: {
+        Args: Record<PropertyKey, never>
+        Returns: { created_at: string; dj_nombre: string | null; dj_user_id: string; mio: boolean; reposter_foto: string | null; reposter_id: string; reposter_nombre: string | null; reposter_rol: string | null; set_url: string }[]
+      }
+      seguidores_de: {
+        Args: { p_user: string }
+        Returns: { foto: string | null; nombre: string; rol: string; user_id: string }[]
+      }
       escuchas_sets_dj: {
         Args: { p_dj: string }
         Returns: { escuchas: number; set_url: string }[]

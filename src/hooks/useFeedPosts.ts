@@ -16,6 +16,8 @@ export interface FeedPost extends Post {
   // caso real 1 oct 2026: Amhara Sound mostraba "hace 1d" por haber tocado
   // otro campo del perfil, no por subir nada nuevo).
   dateIsApproximate: boolean;
+  /** post_type 'repost': sesión de otro DJ que el autor ha recomendado (2 nov 2026). */
+  repostDe?: { djUserId: string; djNombre: string | null; mio: boolean };
 }
 
 interface FeedState {
@@ -51,7 +53,26 @@ export const useFeedPosts = (viewerId: string | undefined): FeedState => {
         if (cancelled) return;
         const followedIds = (follows ?? []).map((f: { followed_user_id: string }) => f.followed_user_id);
         setFollowingCount(followedIds.length);
-        if (followedIds.length === 0) { setPosts([]); setLoading(false); return; }
+
+        // Reposts: los de la gente que sigo y los míos ("Has recomendado").
+        // Si la función aún no existe o falla, el feed sigue sin ellos.
+        const { data: rawReposts } = await supabase.rpc('reposts_feed').then(r => r, () => ({ data: null }));
+        if (cancelled) return;
+        const repostPosts: FeedPost[] = (rawReposts ?? []).map(r => ({
+          id: `repost-${r.reposter_id}-${r.set_url}`,
+          content: '',
+          post_type: 'repost',
+          media_url: r.set_url,
+          created_at: r.created_at,
+          dateIsApproximate: false,
+          authorUserId: r.reposter_id,
+          authorName: r.mio ? 'Tú' : (r.reposter_nombre ?? 'Profesional'),
+          authorPhoto: r.reposter_foto,
+          authorRole: r.reposter_rol ?? '',
+          repostDe: { djUserId: r.dj_user_id, djNombre: r.dj_nombre, mio: r.mio },
+        }));
+
+        if (followedIds.length === 0) { setPosts(repostPosts); setLoading(false); return; }
 
         const [{ data: rawPosts }, { data: profiles }] = await Promise.all([
           supabase.from('profile_posts' as any).select('id, user_id, content, post_type, media_url, created_at')
@@ -128,7 +149,7 @@ export const useFeedPosts = (viewerId: string | undefined): FeedState => {
             })
           );
 
-        const feedPosts = [...realPosts, ...audioPosts, ...portfolioPosts]
+        const feedPosts = [...realPosts, ...audioPosts, ...portfolioPosts, ...repostPosts]
           .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         setPosts(feedPosts);
         setLoading(false);

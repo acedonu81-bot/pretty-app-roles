@@ -14,6 +14,9 @@ import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
 import LateralArtistaDJ from '@/components/LateralArtistaDJ';
 import { useDjBanner } from '@/hooks/useDjBanner';
 import { usePodioSets } from '@/hooks/usePodioSets';
+import { useRepostsDe, useRepostsSets, useResumenArtista, useSeguidores } from '@/hooks/useComunidadArtista';
+import { ListaReposts, PanelSeguidores } from '@/components/ComunidadArtista';
+import { enlacesDeSesiones } from '@/lib/enlacesArtista';
 import { subirImagenArtista } from '@/lib/imagenesArtista';
 import { useSetFichas } from '@/hooks/useSetFichas';
 import { useSetOndas } from '@/hooks/useSetOndas';
@@ -395,6 +398,11 @@ const PublicProfile = () => {
   const [escuchasSet, setEscuchasSet] = useState<Record<string, number>>({});
   const [versionEscuchas, setVersionEscuchas] = useState(0);
   const recargarEscuchas = useCallback(() => setVersionEscuchas(v => v + 1), []);
+  // Comunidad (2 nov 2026): reposts, seguidores y cifras de la lateral.
+  const resumenDJ = useResumenArtista(esDJ ? sbProfile?.user_id : undefined, versionEscuchas);
+  const { porUrl: repostsSet, alternar: alternarRepost } = useRepostsSets(esDJ ? sbProfile?.user_id : undefined, authUser?.id);
+  const listaSeguidores = useSeguidores(esDJ ? sbProfile?.user_id : undefined);
+  const repostsHechos = useRepostsDe(esDJ ? sbProfile?.user_id : undefined);
   useEffect(() => {
     if (!esDJ || !sbProfile?.user_id) { setEscuchasSet({}); return; }
     let cancelado = false;
@@ -584,6 +592,8 @@ const PublicProfile = () => {
   const numSets = sesiones.length + (mixAparte ? 1 : 0);
   const pestanasDJ: PestanaDJ[] = [
     ...(numSets > 0 || (extraMedia.production_urls?.length ?? 0) > 0 ? ['sets' as const] : []),
+    ...(repostsHechos.length > 0 ? ['reposts' as const] : []),
+    'seguidores',
     'sobre',
     'resenas',
     ...(publicPosts.length > 0 ? ['actividad' as const] : []),
@@ -936,7 +946,7 @@ const PublicProfile = () => {
                 <ContadoresDJ sets={numSets} seguidores={seguidores} resenas={seoReviews.length} onIr={setPestanaElegida} />
               </div>
               <PestanasPerfilDJ pestanas={pestanasDJ} activa={pestana} onCambiar={setPestanaElegida}
-                cuentas={{ sets: numSets, resenas: seoReviews.length, actividad: publicPosts.length }} />
+                cuentas={{ sets: numSets, reposts: repostsHechos.length, seguidores: resumenDJ?.seguidores ?? seguidores ?? 0, resenas: seoReviews.length, actividad: publicPosts.length }} />
             </>
           )}
 
@@ -1172,6 +1182,8 @@ const PublicProfile = () => {
                         destacado={i === 0} estiloPorDefecto={sbProfile?.genres?.[0] ?? null}
                         djUserId={sbProfile?.user_id} viewerId={authUser?.id} onda={ondasSet[url]} onFichaCambiada={recargarFichas}
                         escuchas={escuchasSet[url] ?? 0} puesto={puestoDe(url)} onEscuchaRegistrada={recargarEscuchas}
+                        reposts={repostsSet[url]?.reposts ?? 0} yoReposteo={!!repostsSet[url]?.yo}
+                        onRepost={() => authUser ? alternarRepost(url) : navigate(`/auth?mode=register&redirect=${encodeURIComponent(window.location.pathname)}`)}
                         onIniciarSesion={() => navigate(`/auth?mode=register&redirect=${encodeURIComponent(window.location.pathname)}`)} />
                     ) : (
                       <SetCard url={url} autor={profile.name} ficha={fichasSet[url]} />
@@ -1198,6 +1210,18 @@ const PublicProfile = () => {
             </motion.div>
           )}
           </PanelPerfilDJ>
+
+          {esDJ && (
+            <>
+              <PanelPerfilDJ id="reposts" esDJ={esDJ} activa={pestana}>
+                <ListaReposts nombre={profile.name} reposts={repostsHechos} viewerId={authUser?.id}
+                  onIniciarSesion={() => navigate(`/auth?mode=register&redirect=${encodeURIComponent(window.location.pathname)}`)} />
+              </PanelPerfilDJ>
+              <PanelPerfilDJ id="seguidores" esDJ={esDJ} activa={pestana}>
+                <PanelSeguidores seguidores={listaSeguidores} total={resumenDJ?.seguidores ?? seguidores ?? 0} />
+              </PanelPerfilDJ>
+            </>
+          )}
 
           <PanelPerfilDJ id="sobre" esDJ={esDJ} activa={pestana} continuacion>
           {/* bio_video already rendered above bio section */}
@@ -1372,7 +1396,13 @@ const PublicProfile = () => {
             <div className="hidden md:block">
               <div className="sticky top-24">
                 <LateralArtistaDJ
-                  seguidores={seguidores}
+                  seguidores={resumenDJ?.seguidores ?? seguidores}
+                  siguiendo={resumenDJ?.siguiendo ?? 0}
+                  escuchasHoy={resumenDJ?.escuchas_hoy ?? 0}
+                  escuchasAyer={resumenDJ?.escuchas_ayer ?? 0}
+                  escuchasTotal={resumenDJ?.escuchas_total ?? 0}
+                  enlaces={enlacesDeSesiones([...(extraMedia.audio_session_urls ?? []), sbProfile?.audio_embed_url ?? ''])}
+                  onIrA={setPestanaElegida}
                   sets={numSets}
                   resenas={seoReviews.length}
                   mediaResenas={seoReviews.length ? seoReviews.reduce((t, r) => t + r.rating, 0) / seoReviews.length : null}

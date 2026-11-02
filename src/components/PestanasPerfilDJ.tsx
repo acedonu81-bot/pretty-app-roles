@@ -5,10 +5,12 @@ import type { ReactNode } from 'react';
 // pestañas sigue en el HTML para Google y los iframes ya cargados no se pierden
 // al cambiar de pestaña.
 
-export type PestanaDJ = 'sets' | 'sobre' | 'resenas' | 'actividad';
+export type PestanaDJ = 'sets' | 'reposts' | 'seguidores' | 'sobre' | 'resenas' | 'actividad';
 
 const NOMBRES: Record<PestanaDJ, string> = {
   sets: 'Sets',
+  reposts: 'Reposts',
+  seguidores: 'Seguidores',
   sobre: 'Sobre mí',
   resenas: 'Reseñas',
   actividad: 'Actividad',
