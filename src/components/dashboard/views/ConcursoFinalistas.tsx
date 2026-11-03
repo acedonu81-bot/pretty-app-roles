@@ -88,7 +88,9 @@ const ConcursoFinalistas = () => {
                     : <span className="relative block w-full h-full rounded-full bg-white/25" />}
                 </div>
                 <p className="mt-2 text-sm sm:text-lg leading-tight text-white text-center w-full truncate px-0.5" style={{ fontFamily: HZ.display, fontWeight: 800, textShadow: '0 2px 8px rgba(20,0,80,0.4)' }}>
-                  {p.display_name ?? 'DJ'}
+                  <Link to={`/p/${p.user_id}`} className="hover:underline underline-offset-4 decoration-2">
+                    {p.display_name ?? 'DJ'}
+                  </Link>
                 </p>
                 <p className="text-[0.7rem] sm:text-sm text-center" style={{ color: '#ffe9a6', fontFamily: HZ.body, fontWeight: 800 }}>
                   {Number(p.me_gusta)} me gusta
