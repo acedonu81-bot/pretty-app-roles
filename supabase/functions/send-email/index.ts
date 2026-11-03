@@ -2141,6 +2141,10 @@ async function sendMail(to: string, subject: string, html: string, replyTo?: str
   subject = clampSubject(subject);
   const smtpPass = Deno.env.get('SMTP_PASS');
   if (!smtpPass) throw new Error('SMTP_PASS not configured');
+  // Hostinger tarda a veces más de 10 s en aceptar la conexión (1-2 fallos al
+  // día frente a 50-200 envíos, desde el 13 oct). Un solo reintento con más
+  // margen recupera casi todos. Solo se reintenta si fue timeout.
+  const intentar = async (ms: number) => {
   const client = new SMTPClient({
     connection: {
       hostname: 'smtp.hostinger.com',
@@ -2152,7 +2156,9 @@ async function sendMail(to: string, subject: string, html: string, replyTo?: str
       },
     },
   });
-  const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP timeout')), 10000));
+  let timer: number | undefined;
+  const timeout = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('SMTP timeout')), ms); });
+  try {
   await Promise.race([
     client.send({
       from: FROM,
@@ -2175,6 +2181,19 @@ async function sendMail(to: string, subject: string, html: string, replyTo?: str
     }).then(() => client.close()),
     timeout,
   ]);
+  } catch (e) {
+    try { await client.close(); } catch (_) { /* conexión ya caída */ }
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+  };
+  try {
+    await intentar(12000);
+  } catch (e) {
+    if (e instanceof Error && e.message === 'SMTP timeout') await intentar(20000);
+    else throw e;
+  }
 }
 
 // Registro de fallos para "Salud del sistema" (panel admin). Solo cuenta lo
