@@ -86,6 +86,8 @@ import FuegosArtificiales from '@/components/FuegosArtificiales';
 import HalloweenPanel from '@/components/halloween/HalloweenPanel';
 import { movemberActivo } from '@/lib/movember';
 import { MovemberFranja } from '@/components/movember/Movember';
+import { dia25nActivo } from '@/lib/dia25n';
+import { Franja25N } from '@/components/dia25n/Dia25N';
 
 const PROFILE_VIEWS = new Set(['profile', 'ficha', 'stats']);
 
@@ -798,6 +800,7 @@ const Dashboard = () => {
             onBack={!ROOT_VIEWS.has(activeView) ? () => window.history.back() : undefined} />
           <HalloweenPanel isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange} />
           {movemberActivo() && <MovemberFranja />}
+          {dia25nActivo() && <Franja25N />}
           <NuevaOfertaBanner userId={user?.id} isEmpresario={profileRole === 'empresario'} oculto={activeView === 'flashbooking'} onVer={d => (d === 'solicitudes' ? goToSolicitudesFlashBooking() : goToOfertasFlashBooking())} />
           <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
           <PendingReviewsBanner onGoToReviews={goToPendingReviews} />

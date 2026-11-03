@@ -3,6 +3,8 @@ import { ALL_CITIES } from '@/lib/regions';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import { halloweenActivo } from '@/lib/halloween';
 import { movemberActivo } from '@/lib/movember';
+import { dia25nActivo } from '@/lib/dia25n';
+import { Cinta25N, Bloque25N, Lazo } from '@/components/dia25n/Dia25N';
 import { MovemberPastilla, MovemberCinta, Bigote } from '@/components/movember/Movember';
 import HalloweenHero, { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { resolverVistaDeBusqueda } from '@/pages/Dashboard';
@@ -515,6 +517,7 @@ const Landing = () => {
   const concursoEnCurso = concursoActivo();
   const halloween = halloweenActivo();
   const movember = movemberActivo();
+  const dia25n = dia25nActivo();
   const navigate = useNavigate();
   const [showParticular, setShowParticular] = useState(false);
   const { user, loading: authLoading } = useAuth();
@@ -697,6 +700,10 @@ const Landing = () => {
               <span className="relative inline-block">
                 <Bigote ancho={30} className="absolute left-1/2 -translate-x-1/2 -top-[10px] -rotate-6" />X
               </span>
+            ) : dia25n ? (
+              <span className="relative inline-block">
+                <Lazo ancho={16} className="absolute left-1/2 -translate-x-1/2 -top-[15px] rotate-6" />X
+              </span>
             ) : 'X'}<span className="text-gradient">PEAK</span>
           </button>
           <LandingMegaMenu onParticular={() => setShowParticular(true)} />
@@ -792,6 +799,7 @@ const Landing = () => {
             animación para pintarse — con opacity:0 hasta que Framer Motion
             hidrata, el navegador tarda de más en marcarlo como "pintado". */}
         {movember && !concursoEnCurso && <MovemberCinta />}
+        {dia25n && !concursoEnCurso && <Cinta25N />}
         <h1
             aria-label="Los mejores profesionales para tu evento en España: DJ, fotógrafo, camareros y staff verificados"
             className={`${concursoEnCurso ? 'sr-only' : 'text-3xl sm:text-5xl md:text-8xl font-black mb-3 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display'}`}
@@ -822,6 +830,7 @@ const Landing = () => {
           </p>
         )}
         {movember && <MovemberPastilla />}
+        {dia25n && <Bloque25N />}
         <div className="max-w-2xl mx-auto mb-5 text-left">
           <Suspense fallback={null}><ConcursoFeedBanner sinTexto /></Suspense>
         </div>

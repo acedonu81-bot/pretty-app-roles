@@ -13,6 +13,8 @@ import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import { halloweenActivo } from '@/lib/halloween';
 import { movemberActivo } from '@/lib/movember';
+import { dia25nActivo } from '@/lib/dia25n';
+import { Lazo } from '@/components/dia25n/Dia25N';
 import { Bigote } from '@/components/movember/Movember';
 import { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
@@ -364,9 +366,13 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                 <span className="relative inline-block">
                   <Bigote ancho={26} className="absolute left-1/2 -translate-x-1/2 -top-[9px] -rotate-6" />X
                 </span>
+              ) : dia25nActivo() ? (
+                <span className="relative inline-block">
+                  <Lazo ancho={14} className="absolute left-1/2 -translate-x-1/2 -top-[13px] rotate-6" />X
+                </span>
               ) : 'X'}<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
             </h2>
-            <p className="text-[0.75rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: halloweenActivo() ? '#E0650C' : movemberActivo() ? '#8B6A00' : 'rgba(10,9,8,0.35)' }}>{halloweenActivo() ? 'Semana de Halloween' : movemberActivo() ? 'Movember' : 'España · Directorio Profesional'}</p>
+            <p className="text-[0.75rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: halloweenActivo() ? '#E0650C' : dia25nActivo() ? '#5B2DA8' : movemberActivo() ? '#8B6A00' : 'rgba(10,9,8,0.35)' }}>{halloweenActivo() ? 'Semana de Halloween' : dia25nActivo() ? '25N · Contra la violencia de género' : movemberActivo() ? 'Movember' : 'España · Directorio Profesional'}</p>
           </a>
           {!forceExpanded && <SidebarCollapseToggle />}
         </div>
