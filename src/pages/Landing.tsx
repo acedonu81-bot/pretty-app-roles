@@ -3,7 +3,7 @@ import { ALL_CITIES } from '@/lib/regions';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import { halloweenActivo } from '@/lib/halloween';
 import { movemberActivo } from '@/lib/movember';
-import { MovemberPastilla, Bigote } from '@/components/movember/Movember';
+import { MovemberPastilla, MovemberCinta, Bigote } from '@/components/movember/Movember';
 import HalloweenHero, { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { resolverVistaDeBusqueda } from '@/pages/Dashboard';
 import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
@@ -695,7 +695,7 @@ const Landing = () => {
               </span>
             ) : movember ? (
               <span className="relative inline-block">
-                <Bigote ancho={26} borde className="absolute left-1/2 -translate-x-1/2 top-[58%]" />X
+                <Bigote ancho={30} className="absolute left-1/2 -translate-x-1/2 -top-[10px] -rotate-6" />X
               </span>
             ) : 'X'}<span className="text-gradient">PEAK</span>
           </button>
@@ -791,6 +791,7 @@ const Landing = () => {
         {/* Sin FadeIn: es el LCP de la portada, no puede depender de JS/
             animación para pintarse — con opacity:0 hasta que Framer Motion
             hidrata, el navegador tarda de más en marcarlo como "pintado". */}
+        {movember && !concursoEnCurso && <MovemberCinta />}
         <h1
             aria-label="Los mejores profesionales para tu evento en España: DJ, fotógrafo, camareros y staff verificados"
             className={`${concursoEnCurso ? 'sr-only' : 'text-3xl sm:text-5xl md:text-8xl font-black mb-3 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display'}`}

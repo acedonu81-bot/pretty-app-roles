@@ -362,7 +362,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                 </span>
               ) : movemberActivo() ? (
                 <span className="relative inline-block">
-                  <Bigote ancho={22} borde className="absolute left-1/2 -translate-x-1/2 top-[58%]" />X
+                  <Bigote ancho={26} className="absolute left-1/2 -translate-x-1/2 -top-[9px] -rotate-6" />X
                 </span>
               ) : 'X'}<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
             </h2>
