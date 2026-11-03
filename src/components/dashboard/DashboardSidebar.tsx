@@ -367,9 +367,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                   <Bigote ancho={26} className="absolute left-1/2 -translate-x-1/2 -top-[9px] -rotate-6" />X
                 </span>
               ) : dia25nActivo() ? (
-                <span className="relative inline-block">
-                  <Lazo ancho={14} className="absolute left-1/2 -translate-x-1/2 -top-[13px] rotate-6" />X
-                </span>
+                <><Lazo ancho={13} className="inline-block align-[-3px] mr-1.5" />X</>
               ) : 'X'}<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
             </h2>
             <p className="text-[0.75rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: halloweenActivo() ? '#E0650C' : dia25nActivo() ? '#5B2DA8' : movemberActivo() ? '#8B6A00' : 'rgba(10,9,8,0.35)' }}>{halloweenActivo() ? 'Semana de Halloween' : dia25nActivo() ? '25N · Contra la violencia de género' : movemberActivo() ? 'Movember' : 'España · Directorio Profesional'}</p>

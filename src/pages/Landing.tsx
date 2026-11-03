@@ -701,9 +701,7 @@ const Landing = () => {
                 <Bigote ancho={30} className="absolute left-1/2 -translate-x-1/2 -top-[10px] -rotate-6" />X
               </span>
             ) : dia25n ? (
-              <span className="relative inline-block">
-                <Lazo ancho={16} className="absolute left-1/2 -translate-x-1/2 -top-[15px] rotate-6" />X
-              </span>
+              <><Lazo ancho={13} className="inline-block align-[-3px] mr-1.5" />X</>
             ) : 'X'}<span className="text-gradient">PEAK</span>
           </button>
           <LandingMegaMenu onParticular={() => setShowParticular(true)} />

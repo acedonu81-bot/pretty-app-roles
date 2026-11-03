@@ -809,7 +809,7 @@ const Auth = () => {
               <div>
                 <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70 mb-8">
                   <h2 className="text-2xl font-black tracking-tight font-display text-left leading-none" style={{ color: '#111' }}>
-                    {halloweenActivo() ? <span className="relative inline-block"><SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X</span> : movemberActivo() ? <span className="relative inline-block"><Bigote ancho={30} className="absolute left-1/2 -translate-x-1/2 -top-[10px] -rotate-6" />X</span> : dia25nActivo() ? <span className="relative inline-block"><Lazo ancho={16} className="absolute left-1/2 -translate-x-1/2 -top-[15px] rotate-6" />X</span> : 'X'}<span className="text-gradient">PEAK</span>
+                    {halloweenActivo() ? <span className="relative inline-block"><SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X</span> : movemberActivo() ? <span className="relative inline-block"><Bigote ancho={30} className="absolute left-1/2 -translate-x-1/2 -top-[10px] -rotate-6" />X</span> : dia25nActivo() ? <><Lazo ancho={13} className="inline-block align-[-3px] mr-1.5" />X</> : 'X'}<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
 
@@ -872,7 +872,7 @@ const Auth = () => {
               <div className="flex flex-col items-center mb-5 md:hidden">
                 <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70">
                   <h2 className="text-2xl font-black tracking-tight font-display leading-none" style={{ color: '#111' }}>
-                    {halloweenActivo() ? <span className="relative inline-block"><SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X</span> : movemberActivo() ? <span className="relative inline-block"><Bigote ancho={30} className="absolute left-1/2 -translate-x-1/2 -top-[10px] -rotate-6" />X</span> : dia25nActivo() ? <span className="relative inline-block"><Lazo ancho={16} className="absolute left-1/2 -translate-x-1/2 -top-[15px] rotate-6" />X</span> : 'X'}<span className="text-gradient">PEAK</span>
+                    {halloweenActivo() ? <span className="relative inline-block"><SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X</span> : movemberActivo() ? <span className="relative inline-block"><Bigote ancho={30} className="absolute left-1/2 -translate-x-1/2 -top-[10px] -rotate-6" />X</span> : dia25nActivo() ? <><Lazo ancho={13} className="inline-block align-[-3px] mr-1.5" />X</> : 'X'}<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
                 {/* Mobile — tagline + bullets compactos (mismo contenido que el panel desktop) */}
