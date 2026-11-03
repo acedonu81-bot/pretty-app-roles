@@ -40,8 +40,11 @@ declare global {
 // /contratar-dj/madrid (19 oct 2026): página completa con todos los DJs, su
 // precio por hora y estilos, en vez de la plantilla común de 6 fichas. Google la
 // tenía en posición 25 con 24 apariciones en 3 meses: era casi igual que las
-// otras ~50 ciudades. Si funciona, se pasa a más ciudades.
-export const esPaginaCompleta = (categorySlug: string, ciudad: string) => categorySlug === 'dj' && ciudad === 'Madrid';
+// otras ~50 ciudades. Barcelona se añade el 3 nov 2026 (ya hay DJs reales allí);
+// el resto de ciudades siguen con la plantilla común. Si se añade otra, replicar
+// en scripts/prerender-content.mjs y scripts/prerender-meta.mjs.
+export const CIUDADES_PAGINA_COMPLETA = ['Madrid', 'Barcelona'];
+export const esPaginaCompleta = (categorySlug: string, ciudad: string) => categorySlug === 'dj' && CIUDADES_PAGINA_COMPLETA.includes(ciudad);
 
 function useCityProfessionals(ciudad: string, categorySlug: string) {
   const preloaded = typeof globalThis !== 'undefined' ? globalThis.__PRERENDER_PROFILES__ : undefined;
@@ -772,11 +775,13 @@ function faqsCompletas(ciudad: string, st: EstadPrecio | null) {
     },
     {
       q: `¿Los DJs se desplazan fuera de ${ciudad} capital?`,
-      a: `Muchos trabajan en toda la Comunidad: Alcalá de Henares, Torrejón, Getafe, Móstoles, Alcobendas… Pregunta si el desplazamiento va aparte, sobre todo si el evento es lejos o en una finca.`,
+      a: ciudad === 'Madrid'
+        ? `Muchos trabajan en toda la Comunidad: Alcalá de Henares, Torrejón, Getafe, Móstoles, Alcobendas… Pregunta si el desplazamiento va aparte, sobre todo si el evento es lejos o en una finca.`
+        : `Depende de cada DJ: algunos se mueven por los alrededores y otros solo por la ciudad. Pregunta si el desplazamiento va aparte, sobre todo si el evento es lejos o en una finca.`,
     },
     {
       q: `¿Cómo contrato un DJ en ${ciudad} con XPEAK?`,
-      a: `Pulsa «Pide DJ en ${ciudad}», di la fecha y la ciudad y confirma tu email. Se lo mandamos a varios DJs de ${ciudad} y, cuando uno dice que sí, habláis por el chat de XPEAK. Pedirlo no cuesta nada.`,
+      a: `Pulsa «Pide DJ en ${ciudad}», di la fecha y la ciudad y confirma tu email. Se lo mandamos a los DJs de ${ciudad} y, cuando uno dice que sí, habláis por el chat de XPEAK. Pedirlo no cuesta nada.`,
     },
   ];
 }
@@ -857,7 +862,7 @@ function BloquesCompletos({ ciudad, profs, st, onPedir }: { ciudad: string; prof
       {zonas.length > 0 && (
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
           <h2 className="text-xl sm:text-2xl font-black mb-3">Dónde trabajan nuestros DJs de {ciudad}</h2>
-          <p className="text-sm mb-5" style={{ color: '#4b5563' }}>Dónde tienen su base. Muchos se mueven por toda la Comunidad; pregúntales por el desplazamiento.</p>
+          <p className="text-sm mb-5" style={{ color: '#4b5563' }}>Dónde tienen su base. Pregúntales por el desplazamiento si el evento queda lejos.</p>
           <div className="flex flex-wrap gap-2">
             {zonas.map(([z, n]) => (
               <span key={z} className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ ...caja, color: '#374151' }}>
@@ -1007,7 +1012,7 @@ export default function CityLanding() {
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">{h1}</h1>
           <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: '#4b5563' }}>
             {completa
-              ? `Encuentra DJ en ${cityData.ciudad} para tu boda, cumpleaños, fiesta de empresa o evento privado. ${professionals.length ? `${professionals.length} DJs de la Comunidad de ${cityData.ciudad} ` : 'DJs de la zona '}con su precio por hora, estilos y fotos. Pides gratis y habláis por el chat de XPEAK.`
+              ? `Encuentra DJ en ${cityData.ciudad} para tu boda, cumpleaños, fiesta de empresa o evento privado. ${professionals.length ? `${professionals.length} ${professionals.length === 1 ? 'DJ' : 'DJs'} de ${cityData.ciudad} ` : 'DJs de la zona '}con su precio por hora, estilos y fotos. Pides gratis y habláis por el chat de XPEAK.`
               : catData.intro(cityData.ciudad, cityData.venues)}
           </p>
           {completa && (
@@ -1143,7 +1148,7 @@ export default function CityLanding() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {(completa ? [
               { step: '01', title: 'Pide DJ', body: `Di qué día es y en qué parte de ${cityData.ciudad}. Sin registro ni contraseña.` },
-              { step: '02', title: 'Confirma tu email', body: 'Te llega un correo con un botón. Al pulsarlo se lo mandamos a varios DJs de la zona.' },
+              { step: '02', title: 'Confirma tu email', body: 'Te llega un correo con un botón. Al pulsarlo se lo mandamos a los DJs de la zona.' },
               { step: '03', title: 'Habla con el DJ', body: 'Cuando uno dice que sí, te escribimos y habláis por el chat de XPEAK para cerrar precio y detalles.' },
             ] : [
               { step: '01', title: 'Crea tu cuenta', body: `Regístrate como sala, promotora u organizador en menos de 2 minutos. Sin tarjeta.` },

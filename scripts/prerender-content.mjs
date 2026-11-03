@@ -109,10 +109,10 @@ function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
   // Página completa (/contratar-dj/madrid, 19 oct 2026): todos los DJs, también
   // los de pueblos con city_ref Madrid, uno por cuenta. Mismo criterio que
   // esPaginaCompleta y useCityProfessionals en CityLanding.tsx.
-  if (categorySlug === 'dj' && ciudad === 'Madrid') {
+  if (categorySlug === 'dj' && ['Madrid', 'Barcelona'].includes(ciudad)) {
     const vistos = new Set();
     const todos = byRole
-      .filter(p => (p.zone && p.zone.toLowerCase().includes('madrid')) || p.city_ref === 'Madrid')
+      .filter(p => (p.zone && p.zone.toLowerCase().includes(ciudad.toLowerCase())) || p.city_ref === ciudad)
       .sort((a, b) => (b.is_primary === true) - (a.is_primary === true) || (b.score ?? 0) - (a.score ?? 0))
       .filter(p => !vistos.has(p.user_id) && vistos.add(p.user_id))
       .slice(0, 80);

@@ -112,10 +112,11 @@ const ROUTES = [
   },
   {
     path: '/contratar-dj/barcelona',
-    title: 'Contratar DJ en Barcelona | XPEAK | DJs verificados',
-    desc: 'Contrata DJs profesionales en Barcelona para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',
-    ogTitle: 'Contratar DJ en Barcelona | XPEAK',
-    ogDesc: 'Directorio de DJs verificados en Barcelona. Flash Booking, contratos digitales.',
+    // Mismo título y descripción que tituloCompleto/descCompleta de CityLanding.tsx (3 nov 2026).
+    title: 'DJ en Barcelona para bodas, fiestas y empresas: precios y disponibilidad | XPEAK',
+    desc: 'DJs en Barcelona con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.',
+    ogTitle: 'DJ en Barcelona para bodas, fiestas y empresas: precios y disponibilidad',
+    ogDesc: 'DJs en Barcelona con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.',
     ogType: 'website',
   },
   {
