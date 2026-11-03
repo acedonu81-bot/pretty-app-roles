@@ -126,7 +126,7 @@ const SobreNosotros = () => {
             <h2 className="text-lg font-black mb-4" style={{ color: '#111' }}>Qué ofrecemos</h2>
             <ul className="space-y-3">
               {[
-                ['Perfiles verificados', 'Bio, fotos, portfolio y tarifas públicas. Verificación manual por el equipo de XPEAK.'],
+                ['Perfiles verificados', 'Bio, fotos, portfolio y tarifas públicas. Verificación a mano por el equipo de XPEAK: comprobamos su Instagram y que corresponde a esa persona.'],
                 ['Directorio profesional', 'Búsqueda por especialidad, ciudad y disponibilidad. Acceso público.'],
                 ['Flash Booking', 'Sistema de contratación urgente. Cubre un evento en menos de 1 hora.'],
                 ['Contratos digitales', 'Generación automática de contratos con validez legal en España.'],

@@ -366,7 +366,7 @@ const FAQ_ITEMS = [
   { q: '¿Cómo funciona el Flash Booking?', a: 'Un organizador publica una necesidad urgente con la fecha, el lugar y el presupuesto. Los profesionales que pueden atenderla reciben la oferta y pueden responder; después, el organizador revisa las candidaturas y elige con quién contactar.' },
   { q: '¿Cómo contacto con profesionales para mi evento?', a: 'Crea una cuenta de organizador, busca por tipo de servicio y zona, compara la información de los perfiles y contacta directamente con los profesionales disponibles. Antes de reservar, confirma con ellos el precio, el alcance del servicio y las condiciones.' },
   { q: '¿En qué ciudades puedo encontrar profesionales?', a: 'XPEAK publica profesionales de distintas ciudades de España, incluidas Madrid, Barcelona, Valencia, Sevilla, Málaga e Ibiza. La disponibilidad depende del servicio y de cada perfil; consulta la ficha y confirma la fecha directamente con el profesional.' },
-  { q: '¿Qué significa que un perfil está verificado?', a: 'El equipo de XPEAK revisa manualmente los perfiles que solicitan la verificación y comprueba la información facilitada antes de activar esa indicación. La verificación no sustituye a que el organizador confirme referencias, disponibilidad, precio y condiciones para su evento.' },
+  { q: '¿Qué significa que un perfil está verificado?', a: 'El equipo de XPEAK comprueba a mano el Instagram del profesional y que esa cuenta corresponde de verdad a la persona del perfil antes de activar esa indicación. La verificación no sustituye a que el organizador confirme referencias, disponibilidad, precio y condiciones para su evento.' },
   { q: '¿Puedo cancelar mi suscripción?', a: 'Las condiciones dependen del plan contratado. Revisa el apartado «Plan» de tu perfil para consultar el ciclo de facturación, la fecha efectiva de cancelación y el acceso que conservarás; si necesitas ayuda, contacta con soporte antes de renovar.' },
 ];
 
@@ -420,11 +420,20 @@ const homeDataPromise: Promise<{ reviews: any[]; freshRoles: Record<string, stri
     ? Promise.resolve(null)
     : fetch('/home-data.json').then(r => { if (!r.ok) throw new Error('sin home-data'); return r.json(); }).catch(() => null);
 
+// "2026-10-17" -> "17 oct 2026". Fecha de la reserva real de la reseña.
+function fechaEvento(iso?: string | null): string | null {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+  const [a, m, d] = iso.split('-').map(Number);
+  return new Date(a, m - 1, d).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }).replace('.', '');
+}
+
 const communityReviewsPromise: Promise<{ data: any[] | null }> = homeDataPromise.then(h => h?.reviews
   ? { data: h.reviews }
   : supabase.from('reviews')
-      .select('id, reviewer_name, reviewer_role, reviewer_avatar, comment, rating, event_type')
-      .eq('approved', true).order('created_at', { ascending: false }).limit(30));
+      .select('id, reviewer_name, reviewer_role, reviewer_avatar, comment, rating, event_type, event_date')
+      // Solo reseñas con la fecha de su reserva real (3 nov 2026): sin fecha no
+      // se puede comprobar de qué trabajo hablan y no salen en la portada.
+      .eq('approved', true).not('event_date', 'is', null).order('created_at', { ascending: false }).limit(30));
 
 const freshRolesPromise: Promise<{ data: any[] | null }> = homeDataPromise.then(h => {
   if (h?.freshRoles) {
@@ -526,7 +535,7 @@ const Landing = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterDone, setNewsletterDone] = useState(false);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
-  const [communityReviews, setCommunityReviews] = useState<{ id: string; reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null }[]>([]);
+  const [communityReviews, setCommunityReviews] = useState<{ id: string; reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null; event_date?: string | null }[]>([]);
   // Testimonios: 3 al principio y "Ver más reseñas" suma 3 cada vez.
   const [reviewsVisible, setReviewsVisible] = useState(3);
   const [freshRoles, setFreshRoles] = useState<Set<string>>(new Set());
@@ -584,7 +593,7 @@ const Landing = () => {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    communityReviewsPromise.then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { id: string; reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null }[]); });
+    communityReviewsPromise.then(({ data }) => { if (data && data.length > 0) setCommunityReviews((data as { id: string; reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null; event_date?: string | null }[]).filter(r => !!r.event_date)); });
   }, []);
 
   useEffect(() => {
@@ -1129,6 +1138,7 @@ const Landing = () => {
               // referencia genérica "trabajo contratado en XPEAK" para que la
               // tarjeta nunca quede en el aire sin decir a qué se refiere.
               contexto: r.event_type?.trim() || 'trabajo contratado en XPEAK',
+              fecha: fechaEvento(r.event_date),
             })).map((t, i) => (
               <FadeIn key={t.id} delay={(i % 3) * 0.08}>
                 <div className="relative rounded-2xl flex flex-col gap-3.5 p-6 transition-transform hover:-translate-y-1"
@@ -1150,6 +1160,11 @@ const Landing = () => {
                   <p className="text-[0.75rem] font-bold uppercase tracking-wide" style={{ color: '#B8941E' }}>
                     Sobre: {t.contexto}
                   </p>
+                  {t.fecha && (
+                    <p className="text-[0.75rem] -mt-2" style={{ color: 'rgba(0,0,0,0.55)' }}>
+                      Reserva en XPEAK, evento del {t.fecha}
+                    </p>
+                  )}
                   <div className="flex items-center gap-2 mt-auto pt-3" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
                     <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
                       style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.3)' }}>
@@ -1182,7 +1197,7 @@ const Landing = () => {
       <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-16 md:pb-20">
         <FadeIn>
           <div className="text-center mb-10">
-            <p className="uppercase tracking-[0.3em] text-xs font-semibold mb-3" style={{ color: '#8b5cf6' }}>Precios reales</p>
+            <p className="uppercase tracking-[0.3em] text-xs font-semibold mb-3" style={{ color: '#8b5cf6' }}>Precios reales, con fuentes citadas</p>
             <h2 className="text-2xl md:text-4xl font-black tracking-tight font-display" style={{ color: '#111' }}>
               Antes de contratar, infórmate
             </h2>

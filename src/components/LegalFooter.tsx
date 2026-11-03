@@ -42,6 +42,9 @@ const LegalFooter = () => {
               <p className="text-xs leading-relaxed max-w-[200px]" style={{ color: '#4b5563' }}>
                 Conectamos profesionales de eventos con quienes los necesitan. España.
               </p>
+              <p className="text-xs leading-relaxed max-w-[220px] mt-2" style={{ color: '#4b5563' }}>
+                XPEAK lo opera Daniel, su fundador.
+              </p>
               <a href="mailto:info@xpeak.site" className="inline-block mt-3 text-xs font-bold transition-colors hover:opacity-80"
                 style={{ color: '#8B6A00' }}>
                 info@xpeak.site
