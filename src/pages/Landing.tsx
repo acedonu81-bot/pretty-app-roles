@@ -431,9 +431,9 @@ const communityReviewsPromise: Promise<{ data: any[] | null }> = homeDataPromise
   ? { data: h.reviews }
   : supabase.from('reviews')
       .select('id, reviewer_name, reviewer_role, reviewer_avatar, comment, rating, event_type, event_date')
-      // Solo reseñas con la fecha de su reserva real (3 nov 2026): sin fecha no
-      // se puede comprobar de qué trabajo hablan y no salen en la portada.
-      .eq('approved', true).not('event_date', 'is', null).order('created_at', { ascending: false }).limit(30));
+      // event_date = fecha de la reserva real en XPEAK; si no consta, la
+      // tarjeta sale sin esa línea (todas las aprobadas son reales, 3 nov 2026).
+      .eq('approved', true).order('created_at', { ascending: false }).limit(30));
 
 const freshRolesPromise: Promise<{ data: any[] | null }> = homeDataPromise.then(h => {
   if (h?.freshRoles) {
@@ -593,7 +593,7 @@ const Landing = () => {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    communityReviewsPromise.then(({ data }) => { if (data && data.length > 0) setCommunityReviews((data as { id: string; reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null; event_date?: string | null }[]).filter(r => !!r.event_date)); });
+    communityReviewsPromise.then(({ data }) => { if (data && data.length > 0) setCommunityReviews((data as { id: string; reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null; event_date?: string | null }[])); });
   }, []);
 
   useEffect(() => {

@@ -46,7 +46,7 @@ if (!url || !key || !fs.existsSync(DIST)) {
 try {
   const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const [reviews, recent, roles] = await Promise.all([
-    sbFetch(url, key, 'reviews?select=id,reviewer_name,reviewer_role,reviewer_avatar,comment,rating,event_type,event_date&approved=eq.true&event_date=not.is.null&order=created_at.desc&limit=30'),
+    sbFetch(url, key, 'reviews?select=id,reviewer_name,reviewer_role,reviewer_avatar,comment,rating,event_type,event_date&approved=eq.true&order=created_at.desc&limit=30'),
     sbFetch(url, key, `profiles?select=role,display_name,created_at&created_at=gte.${encodeURIComponent(since)}`),
     sbFetch(url, key, 'profiles?select=role&role=not.in.(empresario,pending)&limit=100000'),
   ]);
