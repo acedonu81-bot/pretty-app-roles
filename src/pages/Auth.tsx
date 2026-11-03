@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { halloweenActivo } from '@/lib/halloween';
+import { movemberActivo } from '@/lib/movember';
+import { Bigote } from '@/components/movember/Movember';
 import { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { sugerirCorreo } from '@/lib/emailErrata';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
@@ -805,7 +807,7 @@ const Auth = () => {
               <div>
                 <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70 mb-8">
                   <h2 className="text-2xl font-black tracking-tight font-display text-left leading-none" style={{ color: '#111' }}>
-                    {halloweenActivo() ? <span className="relative inline-block"><SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X</span> : 'X'}<span className="text-gradient">PEAK</span>
+                    {halloweenActivo() ? <span className="relative inline-block"><SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X</span> : movemberActivo() ? <span className="relative inline-block"><Bigote ancho={26} borde className="absolute left-1/2 -translate-x-1/2 top-[58%]" />X</span> : 'X'}<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
 
@@ -868,7 +870,7 @@ const Auth = () => {
               <div className="flex flex-col items-center mb-5 md:hidden">
                 <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70">
                   <h2 className="text-2xl font-black tracking-tight font-display leading-none" style={{ color: '#111' }}>
-                    {halloweenActivo() ? <span className="relative inline-block"><SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X</span> : 'X'}<span className="text-gradient">PEAK</span>
+                    {halloweenActivo() ? <span className="relative inline-block"><SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X</span> : movemberActivo() ? <span className="relative inline-block"><Bigote ancho={26} borde className="absolute left-1/2 -translate-x-1/2 top-[58%]" />X</span> : 'X'}<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
                 {/* Mobile — tagline + bullets compactos (mismo contenido que el panel desktop) */}

@@ -3,12 +3,14 @@ import BarraVolver from '@/components/BarraVolver';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { halloweenActivo } from "@/lib/halloween";
+import { movemberActivo } from "@/lib/movember";
 import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { XPeakToastProvider } from "@/lib/xpeak-toast";
 import { lazy, Suspense, useEffect } from "react";
 // Fuera del bundle principal (límite de 300 KB): solo se descarga durante Halloween.
 const GuirnaldaLuces = lazy(() => import("@/components/halloween/GuirnaldaLuces"));
+const MovemberHilo = lazy(() => import("@/components/movember/MovemberHilo"));
 const Landing = lazy(() => import("./pages/Landing"));
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
@@ -450,6 +452,7 @@ const App = () => (
         <BarraVolver />
         <RastreadorDeRutas />
         {halloweenActivo() && <Suspense fallback={null}><GuirnaldaLuces /></Suspense>}
+        {movemberActivo() && <Suspense fallback={null}><MovemberHilo /></Suspense>}
         {/* Un solo pixel visible durante la carga (no un color plano a pantalla
             completa) para que un "se queda pensando y luego en blanco" real se
             pueda distinguir de este fallback esperado durante los ms que tarda

@@ -13,6 +13,7 @@ import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import { halloweenActivo } from '@/lib/halloween';
 import { movemberActivo } from '@/lib/movember';
+import { Bigote } from '@/components/movember/Movember';
 import { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { useFeedAlert } from '@/hooks/useFeedAlert';
@@ -358,6 +359,10 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
               {halloweenActivo() ? (
                 <span className="relative inline-block">
                   <SombreroBruja className="absolute -top-[12px] -left-[3px] -rotate-12" />X
+                </span>
+              ) : movemberActivo() ? (
+                <span className="relative inline-block">
+                  <Bigote ancho={22} borde className="absolute left-1/2 -translate-x-1/2 top-[58%]" />X
                 </span>
               ) : 'X'}<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
             </h2>

@@ -3,7 +3,7 @@ import { ALL_CITIES } from '@/lib/regions';
 import { concursoActivo } from '@/lib/concursoMadrid';
 import { halloweenActivo } from '@/lib/halloween';
 import { movemberActivo } from '@/lib/movember';
-import { MovemberPastilla } from '@/components/movember/Movember';
+import { MovemberPastilla, Bigote } from '@/components/movember/Movember';
 import HalloweenHero, { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { resolverVistaDeBusqueda } from '@/pages/Dashboard';
 import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
@@ -692,6 +692,10 @@ const Landing = () => {
               // Halloween: sombrero de bruja pequeño sobre la X.
               <span className="relative inline-block">
                 <SombreroBruja className="absolute -top-[13px] -left-[3px] -rotate-12" />X
+              </span>
+            ) : movember ? (
+              <span className="relative inline-block">
+                <Bigote ancho={26} borde className="absolute left-1/2 -translate-x-1/2 top-[58%]" />X
               </span>
             ) : 'X'}<span className="text-gradient">PEAK</span>
           </button>
