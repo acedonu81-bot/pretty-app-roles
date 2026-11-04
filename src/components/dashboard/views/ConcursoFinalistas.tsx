@@ -39,15 +39,17 @@ const ConcursoFinalistas = () => {
         boxShadow: '10px 14px 30px rgba(74,60,200,0.4), inset -6px -6px 14px rgba(0,0,0,0.18), inset 6px 6px 14px rgba(255,255,255,0.25)',
       }}
     >
+      {/* Bucles con fin (unos 10 s): en infinito obligaban a repintar el panel sin
+          parar mientras estaba abierto (4 nov). */}
       <style>{`
         @keyframes cf-rise { from { opacity: 0; transform: translateY(34px) scale(.92); } to { opacity: 1; transform: none; } }
         @keyframes cf-float { 0%,100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-7px) rotate(6deg); } }
         @keyframes cf-spin { to { transform: rotate(360deg); } }
         @keyframes cf-glow { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
         .cf-rise { animation: cf-rise .7s cubic-bezier(.2,.9,.3,1.2) both; }
-        .cf-float { animation: cf-float 3.2s ease-in-out infinite; }
-        .cf-spin { animation: cf-spin 5s linear infinite; }
-        .cf-glow { animation: cf-glow 2.6s ease-in-out infinite; }
+        .cf-float { animation: cf-float 3.2s ease-in-out 3; }
+        .cf-spin { animation: cf-spin 5s linear 2; }
+        .cf-glow { animation: cf-glow 2.6s ease-in-out 4; }
         @media (prefers-reduced-motion: reduce) { .cf-rise, .cf-float, .cf-spin, .cf-glow { animation: none !important; } }
       `}</style>
 

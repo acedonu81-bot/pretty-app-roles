@@ -301,9 +301,9 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           {/* Outer glow rings — only when there are unread notifications */}
           {!readAll && notifications.length > 0 && <>
             <span className="absolute inset-0 rounded-full animate-ping"
-              style={{ background: 'rgba(212,175,55,0.15)', animationDuration: '1.8s' }} />
+              style={{ background: 'rgba(212,175,55,0.15)', animationDuration: '1.8s', animationIterationCount: 4 }} />
             <span className="absolute inset-[3px] rounded-full animate-ping"
-              style={{ background: 'rgba(212,175,55,0.1)', animationDuration: '1.8s', animationDelay: '0.3s' }} />
+              style={{ background: 'rgba(212,175,55,0.1)', animationDuration: '1.8s', animationDelay: '0.3s', animationIterationCount: 4 }} />
           </>}
 
           {/* Core orb */}
