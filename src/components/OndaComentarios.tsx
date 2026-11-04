@@ -114,7 +114,7 @@ const OndaComentarios = ({
   return (
     <div className="mt-2">
       {conPista && (
-        <div className={`relative ${enPista.length ? 'pt-9' : 'pt-2'}`} onMouseLeave={() => setMarcado(null)}>
+        <div className={`relative ${enPista.length ? 'pt-9' : 'pt-1'}`} onMouseLeave={() => setMarcado(null)}>
           {burbuja && (
             <div className="absolute top-0 z-10 max-w-[80%] flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs shadow-sm pointer-events-none"
               style={{
@@ -136,7 +136,7 @@ const OndaComentarios = ({
               if (e.key === 'ArrowLeft') onSaltar(Math.max(0, posicion - 10));
             }}
             className={`relative ${listo ? 'cursor-pointer' : ''}`}
-            style={{ height: barras.length ? 48 : 6 }}>
+            style={{ height: barras.length ? 34 : 6 }}>
             {barras.length ? (
               // Barras hacia arriba y su reflejo más tenue debajo, como en Hearthis.
               <div className="absolute inset-0 flex flex-col" aria-hidden="true">
@@ -184,7 +184,7 @@ const OndaComentarios = ({
       )}
 
       {/* Escribir */}
-      {!esDuenoSet && (
+      {!esDuenoSet && puedeComentar && (
         viewerId ? (
           <div className="mt-2">
             <div className="flex gap-2">
