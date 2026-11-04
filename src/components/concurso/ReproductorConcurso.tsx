@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Pause, Play, X } from 'lucide-react';
+import { ChevronDown, ChevronUp, Pause, Play, X } from 'lucide-react';
 
 // Reproductor de las sesiones del Concurso DJ que NO se corta al navegar
 // (17 oct 2026, petición del usuario: "seguir escuchando la sesión mientras
@@ -35,6 +35,9 @@ const CABECERA = 30;
 const srcSesion = (s: Sesion) => {
   if (!s.embedSrc) return urlIframe(s.url);
   let src = s.embedSrc.replace('auto_play=false', 'auto_play=true');
+  // Las sesiones de perfil traen visual=true (portada grande): en la barra de 166 px
+  // se ve enorme y recortada. Aquí siempre el reproductor clásico, con la onda.
+  if (/w\.soundcloud\.com\/player/.test(src)) src = src.replace('visual=true', 'visual=false') + (/show_artwork=/.test(src) ? '' : '&show_artwork=false');
   if (/w\.soundcloud\.com\/player/.test(src) && !/auto_play=/.test(src)) src += `${src.includes('?') ? '&' : '?'}auto_play=true`;
   // Mixcloud y HearThis arrancan solos con autoplay=1 (hay gesto del usuario).
   if (/mixcloud\.com|hearthis\.at/.test(src) && !/autoplay=/.test(src)) src += `${src.includes('?') ? '&' : '?'}autoplay=1`;
@@ -45,6 +48,7 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
   const [sesion, setSesion] = useState<Sesion | null>(null);
   const [sonando, setSonando] = useState(false);
   const [progreso, setProgreso] = useState(0);
+  const [minimizado, setMinimizado] = useState(false);
   const navigate = useNavigate();
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -54,7 +58,7 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
   const cerrar = useCallback(() => { setSesion(null); setSonando(false); setProgreso(0); }, []);
 
   useEffect(() => {
-    setSonando(!!sesion); setProgreso(0);
+    setSonando(!!sesion); setProgreso(0); setMinimizado(false);
   }, [sesion && claveSesion(sesion)]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Muchos enlaces del sitio son <a href> normales y recargan la página entera,
@@ -86,7 +90,7 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
   // asomando y la onda partida.
   const compacta = !sesion || !!sesion.audioSrc;
   const altoIframe = sesion?.alto ?? (/soundcloud\.com/.test(sesion?.embedSrc ?? sesion?.url ?? '') ? 166 : 120);
-  const altoBarra = compacta ? ALTO_BARRA : CABECERA + Math.min(altoIframe, 166);
+  const altoBarra = compacta ? ALTO_BARRA : minimizado ? CABECERA : CABECERA + Math.min(altoIframe, 166);
   useEffect(() => {
     const el = document.documentElement;
     el.toggleAttribute('data-reproductor', !!sesion);
@@ -141,13 +145,20 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
             <p className="min-w-0 flex-1 text-xs font-black truncate" style={{ color: '#111' }}>
               {sesion.titulo} <span className="hidden min-[440px]:inline" style={{ color: 'rgba(0,0,0,0.5)', fontWeight: 600 }}>· {sesion.subtitulo ?? 'sigue sonando mientras navegas'}</span>
             </p>
+            <button type="button" onClick={() => setMinimizado(m => !m)} aria-label={minimizado ? 'Mostrar el reproductor' : 'Minimizar el reproductor'}
+              className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center" style={{ color: '#555' }}>
+              {minimizado ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </button>
             <button type="button" onClick={cerrar} aria-label="Cerrar el reproductor"
               className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center" style={{ color: '#555' }}>
               <X size={16} />
             </button>
           </div>
           <iframe key={claveSesion(sesion)} title={sesion.titulo} src={srcSesion(sesion)} allow="autoplay; encrypted-media"
-            width="100%" height={altoBarra - CABECERA} style={{ border: 0, display: 'block' }} />
+            width="100%" height={Math.min(altoIframe, 166)}
+            // Minimizado: se saca de pantalla SIN desmontarlo ni ocultarlo (display:none o 1 px
+            // cortan el audio / el widget no dibuja), así sigue sonando.
+            style={minimizado ? { border: 0, position: 'fixed', left: -10000, bottom: 0, width: '100vw' } : { border: 0, display: 'block' }} />
         </div>
       )}
     </ReproductorCtx.Provider>
