@@ -240,20 +240,20 @@ const BentoCard = ({
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{ boxShadow: 'inset 0 0 60px rgba(212,175,55,0.1)' }} />
       {isFresh && (
-        <span className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black uppercase tracking-wide"
+        <span className="absolute top-2 right-2 md:top-3 md:right-3 z-10 flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] font-black uppercase tracking-wide"
           style={{ background: '#15803d', color: '#fff' }}>
-          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> Nuevo esta semana
+          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> Nuevo<span className="hidden md:inline">&nbsp;esta semana</span>
         </span>
       )}
       {/* Contenido */}
-      <div className={`relative z-10 h-full flex flex-col justify-end ${compact ? 'p-3' : 'p-5'}`}>
+      <div className={`relative z-10 h-full flex flex-col justify-end p-3 md:p-5`}>
         {children && (
-          <div className="mb-3">{children}</div>
+          <div className="mb-2 md:mb-3">{children}</div>
         )}
-        <h3 className={`${compact ? 'text-base' : 'text-xl'} font-bold text-gradient mb-1`}>{title}</h3>
-        <p className={compact ? 'text-xs' : 'text-sm'} style={{ color: 'rgba(255,255,255,0.85)' }}>{subtitle}</p>
-        <p className="text-xs font-bold mt-2 tracking-widest uppercase transition-transform duration-300 group-hover:translate-x-1" style={{ color: '#D4AF37' }}>
-          ¿Quién hay aquí? →
+        <h3 className="text-base leading-tight md:text-xl font-bold text-gradient mb-1">{title}</h3>
+        <p className="hidden md:block text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>{subtitle}</p>
+        <p className="text-xs font-bold mt-1 md:mt-2 tracking-widest uppercase transition-transform duration-300 group-hover:translate-x-1" style={{ color: '#D4AF37' }}>
+          <span className="md:hidden">Ver →</span><span className="hidden md:inline">¿Quién hay aquí? →</span>
         </p>
       </div>
     </motion.a>
