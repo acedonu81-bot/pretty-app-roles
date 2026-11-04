@@ -211,7 +211,7 @@ const faqStructured = {
           <WarmUpAcademyBanner variante="tira" origen="blog:cuanto-cobra-un-dj-en-espana" className="mb-10" />
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
-          <FichasRealesTira roles={['dj', 'disco-movil']} titulo="DJs que ya están en XPEAK" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
+          <FichasRealesTira roles={['dj', 'disco-movil']} titulo="Precio real de DJs en XPEAK" articlePath="/blog/cuanto-cobra-un-dj-en-espana" conPrecio verTodosHref="/contratar-dj" />
           <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
 
           {/* Por ciudad */}

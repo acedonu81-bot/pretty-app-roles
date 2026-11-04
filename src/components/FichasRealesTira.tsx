@@ -6,6 +6,7 @@ import { ROLE_ES, canonicalRole } from '@/lib/constants';
 import { compararDirectorio, completeness, COMPLETENESS_MAX } from '@/lib/dailyRotation';
 import { fotoOptimizada } from '@/lib/imagen';
 import { track, logEvent } from '@/lib/track';
+import { precioValido } from '@/lib/precioReal';
 
 // Fichas reales en /auth (Ficha XDS 70,6, aprobada 13 oct 2026). Quien llega
 // del anuncio de Instagram veía solo un formulario: la mitad se iba en menos
@@ -25,6 +26,10 @@ export interface FichaReal {
   portfolio_urls?: unknown;
   is_verified?: boolean | null;
   score?: number | null;
+  hourly_rate?: number | null;
+  is_seed?: boolean | null;
+  is_seed_profile?: boolean | null;
+  validation_status?: string | null;
 }
 
 const MAX_FICHAS = 8;
@@ -66,10 +71,10 @@ export function oficioCorto(role: string | null): string {
   return CORTA[c] ?? (ROLE_ES[c] ?? c).split(/\s+[/&]\s+/)[0];
 }
 
-async function fetchFichasReales(roles?: string[]): Promise<FichaReal[]> {
+async function fetchFichasReales(roles?: string[], conPrecio = false): Promise<FichaReal[]> {
   const { data, error } = await supabase
     .from('profiles')
-    .select('user_id, display_name, role, zone, photo_url, bio, audio_embed_url, audio_session_urls, portfolio_urls, is_verified, score')
+    .select('user_id, display_name, role, zone, photo_url, bio, audio_embed_url, audio_session_urls, portfolio_urls, is_verified, score, hourly_rate, is_seed, is_seed_profile, validation_status')
     .neq('role', 'empresario')
     .not('display_name', 'is', null)
     .not('photo_url', 'is', null)
@@ -78,8 +83,14 @@ async function fetchFichasReales(roles?: string[]): Promise<FichaReal[]> {
   if (error) throw error;
   const filas = (data ?? []) as FichaReal[];
   // En el blog solo los oficios del artículo (16 oct 2026).
+  // conPrecio (artículo del DJ, Ficha XDS 4 nov 2026): solo quien tiene una
+  // tarifa real publicada, que es lo que vino a buscar quien lee el precio.
+  // Mismos filtros que tarifas_publicas: ni semillas ni perfiles sin aprobar.
+  const conTarifa = conPrecio
+    ? filas.filter(p => precioValido(p.hourly_rate) && !p.is_seed && !p.is_seed_profile && p.validation_status === 'approved')
+    : filas;
   return roles?.length
-    ? elegirFichas(filas.filter(p => roles.includes(canonicalRole(p.role) ?? '')), new Date(), 3)
+    ? elegirFichas(conTarifa.filter(p => roles.includes(canonicalRole(p.role) ?? '')), new Date(), 3)
     : elegirFichas(filas);
 }
 
@@ -116,13 +127,13 @@ const FotoFicha = ({ src, alt }: { src: string; alt: string }) => {
 // origen 'blog' (16 oct 2026): la misma tira dentro de los artículos de precio,
 // filtrada a los oficios del artículo. Los eventos van a analytics_events como
 // cta_click con detalle 'blog_ficha' (los track('auth_*') solo valen en /auth).
-interface TiraProps { roles?: string[]; titulo?: string; articlePath?: string }
+interface TiraProps { roles?: string[]; titulo?: string; articlePath?: string; conPrecio?: boolean; verTodosHref?: string }
 
-const FichasRealesTira = ({ roles, titulo = 'Ya están en XPEAK', articlePath }: TiraProps = {}) => {
+const FichasRealesTira = ({ roles, titulo = 'Ya están en XPEAK', articlePath, conPrecio = false, verTodosHref = '/descubrir' }: TiraProps = {}) => {
   const enBlog = !!articlePath;
   const { data: fichas, isLoading } = useQuery({
-    queryKey: ['auth-fichas-reales', roles?.join(',') ?? 'todos'],
-    queryFn: () => fetchFichasReales(roles),
+    queryKey: ['auth-fichas-reales', roles?.join(',') ?? 'todos', conPrecio],
+    queryFn: () => fetchFichasReales(roles, conPrecio),
     staleTime: 10 * 60_000,
   });
   const ref = useRef<HTMLDivElement>(null);
@@ -167,11 +178,14 @@ const FichasRealesTira = ({ roles, titulo = 'Ya están en XPEAK', articlePath }:
                   <p className="text-[0.75rem] truncate" style={{ color: 'rgba(0,0,0,0.55)' }}>
                     {oficioCorto(p.role)}{p.zone ? ` · ${p.zone}` : ''}
                   </p>
+                  {conPrecio && precioValido(p.hourly_rate) && (
+                    <p className="text-xs font-black mt-0.5" style={{ color: '#8B6A00' }}>{Math.round(p.hourly_rate)} €/h</p>
+                  )}
                 </div>
               </Link>
             ))}
         {!isLoading && (
-          <Link to="/descubrir" onClick={() => (enBlog ? void logEvent('cta_click', articlePath, 'blog_fichas_ver_todos') : track('auth_fichas_ver_todos'))}
+          <Link to={verTodosHref} onClick={() => (enBlog ? void logEvent('cta_click', articlePath, 'blog_fichas_ver_todos') : track('auth_fichas_ver_todos'))}
             className="shrink-0 w-[110px] snap-start rounded-xl flex items-center justify-center text-xs font-black"
             style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.35)', color: '#8B6A00' }}>
             Ver todos →
