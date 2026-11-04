@@ -537,6 +537,9 @@ const PublicProfile = () => {
     toast.success(`${profile.name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
   };
   const profileUrl = `${BASE_URL}/p/${profileSlug}`;
+  // Instagram solo con sesión (4 nov 2026): a la vista de cualquiera era demasiado
+  // fácil contactar sin pasar por XPEAK. El JSON-LD "sameAs" no se toca (SEO).
+  const irARegistroInstagram = `/auth?mode=register&redirect=${encodeURIComponent(`/p/${profileSlug}`)}`;
   const cityShort = profile.zone ? profile.zone.split(',')[0].trim() : 'España';
   const priceStr = (profile as any).price > 0 ? ` Tarifa desde ${(profile as any).price}€/h.` : '';
   const availStr = (profile as any).isFlashActive ? ' Disponible ahora.' : '';
@@ -896,12 +899,20 @@ const PublicProfile = () => {
               {/* Instagram */}
               {sbProfile?.instagram && (
                 <div className="mb-4">
+                  {authUser ? (
                   <a href={instagramUrl(sbProfile.instagram)} target="_blank" rel="noopener noreferrer"
                     onClick={() => clicRedSocial('instagram', 'perfil_publico', sbProfile.user_id)}
                     className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
                     style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
                     <Instagram size={12} /> @{extractInstagramHandle(sbProfile.instagram)}
                   </a>
+                  ) : (
+                  <a href={irARegistroInstagram}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
+                    style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
+                    <Instagram size={12} /> Regístrate para ver su Instagram
+                  </a>
+                  )}
                 </div>
               )}
 
@@ -1446,11 +1457,18 @@ const PublicProfile = () => {
                     )}
                   </>}
                   extra={sbProfile?.instagram ? (
+                    authUser ? (
                     <a href={instagramUrl(sbProfile.instagram)} target="_blank" rel="noopener noreferrer"
                       onClick={() => clicRedSocial('instagram', 'perfil_publico', sbProfile.user_id)}
                       className="inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#8B6A00' }}>
                       <Instagram size={15} /> @{extractInstagramHandle(sbProfile.instagram)}
                     </a>
+                    ) : (
+                    <a href={irARegistroInstagram}
+                      className="inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#8B6A00' }}>
+                      <Instagram size={15} /> Regístrate para ver su Instagram
+                    </a>
+                    )
                   ) : null}
                 />
               </div>
