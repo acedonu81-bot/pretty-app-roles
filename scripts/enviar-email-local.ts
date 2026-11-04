@@ -16,9 +16,11 @@ const src = await Deno.readTextFile(new URL('../supabase/functions/send-email/in
 const cut = src.indexOf('\nserve(async');
 if (cut < 0) throw new Error('No encuentro serve() en send-email');
 const mod = src.slice(0, cut) + '\nexport { TEMPLATES, sendMail, UNSUB_PLACEHOLDER };\n';
-const tmp = await Deno.makeTempFile({ suffix: '.ts' });
+const tmp = await Deno.makeTempFile({ dir: new URL('../supabase/functions/send-email/', import.meta.url).pathname, prefix: 'tmp-preview-', suffix: '.ts' });
 await Deno.writeTextFile(tmp, mod);
 const { TEMPLATES, sendMail, UNSUB_PLACEHOLDER } = await import('file://' + tmp);
+
+await Deno.remove(tmp);
 
 const [type, json, flag] = Deno.args;
 const tpl = TEMPLATES[type];
