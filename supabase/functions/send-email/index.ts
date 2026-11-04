@@ -1251,6 +1251,28 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:20px 0 0">Un saludo,<br>El equipo de XPEAK</p>`),
   }),
 
+  // Respuesta a una empresa de catering que pidió información por correo desde
+  // Instagram (4 nov 2026, Lakook). Solo con clave de servicio, uno a uno.
+  captacion_catering: (d) => ({
+    subject: 'Información de XPEAK para vuestro catering',
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Información de XPEAK</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">Hola,</p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+        Os escribimos desde XPEAK, tal y como nos pedíais por Instagram.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+        XPEAK es un directorio de profesionales para eventos en España. Estamos creando la plataforma para dar visibilidad a servicios como el vuestro. Las empresas de catering tienen su propio perfil, con su cocina, su carta, su zona de trabajo y sus fotos, y organizadores y locales pueden encontraros y pediros presupuesto.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Podéis echar un vistazo sin registraros. Si os convence, el alta lleva un par de minutos, y si tenéis cualquier problema os ayudamos.
+      </p>
+      ${btn('Ver XPEAK →', 'https://xpeak.es')}
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:20px 0 0">Un saludo,<br>El equipo de XPEAK</p>`),
+  }),
+
   // Recordatorio del Concurso DJ (28 oct 2026) a los DJs que aún no han subido
   // sesión. Tres variantes según lo que les falte para poder inscribirse, porque
   // las bases piden residir en la Comunidad de Madrid y tener foto y bio:
