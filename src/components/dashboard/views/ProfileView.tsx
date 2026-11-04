@@ -1144,7 +1144,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   camarero:      ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala', 'Coctelería'],
                   catering:      ['Menú cerrado', 'Buffet', 'Cocina en directo', 'Opciones veganas', 'Personal incluido'],
                   'disco-movil': ['Equipo propio completo', 'Luces incluidas', 'DJ incluido', 'Microfonía inalámbrica', 'Necesita toma de corriente', 'Montaje en 1 hora', 'Hasta 200 invitados', 'Más de 300 invitados'],
-                  'food-truck':  ['Generador propio', 'Necesita toma de corriente', 'Hasta 100 comensales', 'Más de 200 comensales', 'Opciones veganas', 'Sin gluten', 'Registro sanitario al día'],
+                  'food-truck':  ['Hamburguesas', 'Pizza', 'Cocina mexicana', 'Cocina asiática', 'Cocina italiana', 'Brasas y BBQ', 'Postres y helados', 'Bebidas y cócteles', 'Vegano', 'Sin gluten', 'Halal', 'Generador propio', 'Necesita toma de corriente', 'Hasta 100 comensales', 'Más de 200 comensales', 'Registro sanitario al día'],
                   event_manager: ['Coordinación integral', 'Presupuesto detallado', 'Gestión de proveedores', 'On-site el día del evento', 'Experiencia en bodas', 'Experiencia en festivales'],
                 };
                 const presets = PRESETS[profile.role ?? ''] ?? [];

@@ -54,6 +54,24 @@ async function fetchActiveEmployerCount(): Promise<number> {
   return new Set(data.map((j: any) => j.employer_id)).size;
 }
 
+/* Food trucks (4 nov 2026): filtros de cocina y características sobre el texto que ya
+   escriben (especialidad, bio, etiquetas), sin columnas nuevas. Cada chip casa con
+   varios términos (burger/hamburguesa...). Varios chips se suman (todos a la vez). */
+const FOOD_TRUCK_FILTROS: { label: string; terms: string[] }[] = [
+  { label: 'Hamburguesas', terms: ['hamburgues', 'burger'] },
+  { label: 'Pizza', terms: ['pizza'] },
+  { label: 'Mexicana', terms: ['mexican', 'taco', 'burrito'] },
+  { label: 'Asiática', terms: ['asiatic', 'sushi', 'wok', 'thai', 'japones', 'bao'] },
+  { label: 'Italiana', terms: ['italian', 'pasta'] },
+  { label: 'Brasas y BBQ', terms: ['bbq', 'barbacoa', 'brasa', 'parrilla', 'ahumad'] },
+  { label: 'Postres', terms: ['postre', 'helado', 'creps', 'churro', 'dulce'] },
+  { label: 'Bebidas y cócteles', terms: ['coctel', 'cocktail', 'bebida', 'cerveza', 'cafe'] },
+  { label: 'Vegano', terms: ['vegano', 'vegana', 'vegetarian'] },
+  { label: 'Sin gluten', terms: ['sin gluten', 'celiac'] },
+  { label: 'Halal', terms: ['halal'] },
+  { label: 'Generador propio', terms: ['generador propio'] },
+];
+
 async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterRegion: string, experienceLevel?: 'only' | 'exclude'): Promise<Profile[]> {
   // Expandir los alias legacy: sin esto, el directorio de 'staff' del dashboard
   // se saltaba a los perfiles con role='camarero' (el rol retirado equivalente),
@@ -234,6 +252,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
   const [filterVerified, setFilterVerified] = useState(false);
   const [filterSeekingPartner, setFilterSeekingPartner] = useState(false);
   const [filterDanceRole, setFilterDanceRole] = useState<'' | 'lead' | 'follow'>('');
+  const [filterFood, setFilterFood] = useState<string[]>([]);
 
   const { data: realProfiles = [], isLoading: loadingProfiles, refetch: refetchProfiles } = useQuery({
     queryKey: ['directory-profiles', role, roles, filterRegion, experienceLevel],
@@ -263,6 +282,11 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     if (filterVerified && !p.isVerified) return false;
     if (filterSeekingPartner && !p.seekingDancePartner) return false;
     if (filterDanceRole && p.danceRole !== filterDanceRole && p.danceRole !== 'ambos') return false;
+    if (role === 'food-truck' && filterFood.length > 0) {
+      const texto = [p.name, p.specialty, p.description, p.badges];
+      const cumple = filterFood.every(l => (FOOD_TRUCK_FILTROS.find(f => f.label === l)?.terms ?? []).some(t => coincideBusqueda(texto, t)));
+      if (!cumple) return false;
+    }
     return true;
   });
 
@@ -505,8 +529,24 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
             </button>
           </>
         )}
-        {(filterRegion !== ALL_REGIONS_LABEL || filterFlash || filterVerified || filterSeekingPartner) && (
-          <button onClick={() => { setFilterRegion(ALL_REGIONS_LABEL); setPresetRegion(ALL_REGIONS_LABEL); setFilterFlash(false); setFilterVerified(false); setFilterSeekingPartner(false); setFilterDanceRole(''); }}
+        {role === 'food-truck' && FOOD_TRUCK_FILTROS.map(f => {
+          const on = filterFood.includes(f.label);
+          return (
+            <button key={f.label} type="button"
+              onClick={() => setFilterFood(v => on ? v.filter(x => x !== f.label) : [...v, f.label])}
+              aria-pressed={on}
+              className="px-2.5 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0"
+              style={{
+                background: on ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
+                border: `1px solid ${on ? 'rgba(212,175,55,0.35)' : 'rgba(0,0,0,0.08)'}`,
+                color: on ? '#8A6D0F' : '#555',
+              }}>
+              {f.label}
+            </button>
+          );
+        })}
+        {(filterRegion !== ALL_REGIONS_LABEL || filterFlash || filterVerified || filterSeekingPartner || filterFood.length > 0) && (
+          <button onClick={() => { setFilterRegion(ALL_REGIONS_LABEL); setPresetRegion(ALL_REGIONS_LABEL); setFilterFlash(false); setFilterVerified(false); setFilterSeekingPartner(false); setFilterDanceRole(''); setFilterFood([]); }}
             className="text-xs font-bold px-2.5 py-1 rounded-full transition-all hover:opacity-70 flex-shrink-0"
             style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.08)' }}>
             Limpiar ✕
