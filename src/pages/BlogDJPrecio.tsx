@@ -17,6 +17,25 @@ import ConcursoAuthBanner from '@/components/ConcursoAuthBanner';
 import { trackBlogCtaClick } from '@/lib/blogAnalytics';
 import CalculadoraPrecioDJ from '@/components/CalculadoraPrecioDJ';
 
+// DJs de la tira con precio: solo fotos buenas, elegidas a mano el 4 nov 2026
+// sobre el recorte real de la tira (fuera selfies, fotos sin persona, logos y
+// fotos oscuras). Si alguno cambia la foto, revisar. Rotan cada día.
+const DJS_FOTO_BUENA = [
+  'ad0ba7a8-5da2-4ae0-86e2-2a3937daec3f', // Amhara Sound
+  '2c8a5977-0516-4f01-97ad-a9d89f887644', // Andreww.madd
+  '21c61d8b-a892-41ff-82e8-1d5cfef83413', // deejayantuan
+  '869543a9-47a0-42c8-afc7-3f4bbf12c5bc', // DJ Angel La Esencia
+  '58af7119-09c3-47ab-a36a-046a31766389', // Dj Dafra
+  '7e2bcda5-13d6-48b1-bf0c-752e39f9e954', // Dj Karloss
+  '28240c0a-b094-42ee-ae9f-f0bdd2cddf3c', // Dj Manu
+  'd100e104-8a7a-481c-90e2-ba471bf28bc5', // DJ NaTX
+  '93d516b7-fbe6-4e16-a05a-63a048d239c3', // DJ Vizard
+  '9b737ebc-e2b6-478b-83dd-99c10ab06ef2', // Jsus
+  '1440f39d-bd72-46b8-8761-2b3b192a5875', // MarcosKillerDJ
+  'ac31aefe-ad0e-48c8-b964-890647162bec', // N.MARTIN
+  '9c94a53b-0532-45ac-af69-488329a5d73f', // Ruben Trias
+];
+
 const TABLE = [
   { perfil: 'DJ emergente / rookie', experiencia: '< 1 año', rango: '30€-60€/h', nota: 'Bodas pequeñas, cumpleaños' },
   { perfil: 'DJ semi-profesional', experiencia: '1-3 años', rango: '60€-120€/h', nota: 'Bares, salas pequeñas, eventos' },
@@ -211,7 +230,7 @@ const faqStructured = {
           <WarmUpAcademyBanner variante="tira" origen="blog:cuanto-cobra-un-dj-en-espana" className="mb-10" />
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
-          <FichasRealesTira roles={['dj', 'disco-movil']} titulo="Precio real de DJs en XPEAK" articlePath="/blog/cuanto-cobra-un-dj-en-espana" conPrecio verTodosHref="/contratar-dj" />
+          <FichasRealesTira roles={['dj', 'disco-movil']} titulo="Precio real de DJs en XPEAK" articlePath="/blog/cuanto-cobra-un-dj-en-espana" conPrecio verTodosHref="/contratar-dj" soloIds={DJS_FOTO_BUENA} />
           <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
 
           {/* Por ciudad */}

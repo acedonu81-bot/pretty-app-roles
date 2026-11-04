@@ -53,7 +53,11 @@ const MAX_MUSICA = 6;
 // blog (16 oct 2026) basta foto + bio (3): en camareros y azafatas casi nadie
 // tiene sesiones o portfolio y con el máximo la tira no salía nunca.
 export function elegirFichas(filas: FichaReal[], date = new Date(), minCompleteness = COMPLETENESS_MAX): FichaReal[] {
+  // Una persona puede tener varias filas en profiles (DJ y Disco Móvil, 4 nov
+  // 2026: Eloy salía dos veces): solo la primera.
+  const vistos = new Set<string>();
   const completos = filas
+    .filter(p => !vistos.has(p.user_id) && vistos.add(p.user_id))
     .filter(p => !EXCLUIDOS.has(p.user_id) && p.photo_url && p.display_name?.trim() && !SIN_OFICIO.has(p.role ?? '')
       && ROLE_ES[canonicalRole(p.role) ?? ''] && completeness(p) >= minCompleteness)
     .sort((a, b) => compararDirectorio(a, b, date));
@@ -71,17 +75,20 @@ export function oficioCorto(role: string | null): string {
   return CORTA[c] ?? (ROLE_ES[c] ?? c).split(/\s+[/&]\s+/)[0];
 }
 
-async function fetchFichasReales(roles?: string[], conPrecio = false): Promise<FichaReal[]> {
-  const { data, error } = await supabase
+async function fetchFichasReales(roles?: string[], conPrecio = false, soloIds?: string[]): Promise<FichaReal[]> {
+  let q = supabase
     .from('profiles')
     .select('user_id, display_name, role, zone, photo_url, bio, audio_embed_url, audio_session_urls, portfolio_urls, is_verified, score, hourly_rate, is_seed, is_seed_profile, validation_status')
     .neq('role', 'empresario')
     .not('display_name', 'is', null)
     .not('photo_url', 'is', null)
-    .or('is_public.is.null,is_public.eq.true')
-    .limit(300);
+    .or('is_public.is.null,is_public.eq.true');
+  // Con selección a mano se piden esos perfiles: con el límite de 300 alguno podía quedar fuera.
+  if (soloIds?.length) q = q.in('user_id', soloIds);
+  const { data, error } = await q.limit(300);
   if (error) throw error;
-  const filas = (data ?? []) as FichaReal[];
+  // soloIds: selección a mano (fotos buenas), el resto de filtros sigue igual.
+  const filas = ((data ?? []) as FichaReal[]).filter(p => !soloIds || soloIds.includes(p.user_id));
   // En el blog solo los oficios del artículo (16 oct 2026).
   // conPrecio (artículo del DJ, Ficha XDS 4 nov 2026): solo quien tiene una
   // tarifa real publicada, que es lo que vino a buscar quien lee el precio.
@@ -127,13 +134,13 @@ const FotoFicha = ({ src, alt }: { src: string; alt: string }) => {
 // origen 'blog' (16 oct 2026): la misma tira dentro de los artículos de precio,
 // filtrada a los oficios del artículo. Los eventos van a analytics_events como
 // cta_click con detalle 'blog_ficha' (los track('auth_*') solo valen en /auth).
-interface TiraProps { roles?: string[]; titulo?: string; articlePath?: string; conPrecio?: boolean; verTodosHref?: string }
+interface TiraProps { roles?: string[]; titulo?: string; articlePath?: string; conPrecio?: boolean; verTodosHref?: string; soloIds?: string[] }
 
-const FichasRealesTira = ({ roles, titulo = 'Ya están en XPEAK', articlePath, conPrecio = false, verTodosHref = '/descubrir' }: TiraProps = {}) => {
+const FichasRealesTira = ({ roles, titulo = 'Ya están en XPEAK', articlePath, conPrecio = false, verTodosHref = '/descubrir', soloIds }: TiraProps = {}) => {
   const enBlog = !!articlePath;
   const { data: fichas, isLoading } = useQuery({
-    queryKey: ['auth-fichas-reales', roles?.join(',') ?? 'todos', conPrecio],
-    queryFn: () => fetchFichasReales(roles, conPrecio),
+    queryKey: ['auth-fichas-reales', roles?.join(',') ?? 'todos', conPrecio, soloIds?.join(',') ?? ''],
+    queryFn: () => fetchFichasReales(roles, conPrecio, soloIds),
     staleTime: 10 * 60_000,
   });
   const ref = useRef<HTMLDivElement>(null);
