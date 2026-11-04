@@ -62,7 +62,7 @@ const OndaComentarios = ({
 }: Props) => {
   const c = oscuro
     ? { hecho: '#FFFFFF', resto: 'rgba(60,42,8,0.32)', acento: '#FFF1C1', texto: '#fff', suave: 'rgba(255,255,255,0.75)', campo: 'rgba(255,255,255,0.14)', borde: 'rgba(255,255,255,0.35)' }
-    : { hecho: '#C8962E', resto: '#DDCDA3', acento: '#8B6A00', texto: '#222', suave: '#666', campo: '#FFFDF7', borde: 'rgba(212,175,55,0.35)' };
+    : { hecho: '#B8941E', resto: '#E9E4D6', acento: '#8B6A00', texto: '#222', suave: '#666', campo: '#FFFDF7', borde: 'rgba(212,175,55,0.35)' };
   const [texto, setTexto] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState<string | null>(null);

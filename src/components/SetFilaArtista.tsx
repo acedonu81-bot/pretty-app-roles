@@ -183,7 +183,9 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
   const fondo = destacado ? (ficha?.fondo_url ?? ficha?.portada_url ?? null) : null;
   const fondoEsCaratula = !!fondo && !ficha?.fondo_url;
 
-  const oscuro = destacado;
+  // Solo hay modo oscuro si el destacado tiene imagen de fondo. Sin ella, tarjeta
+  // crema con filete dorado fino: el bloque dorado entero cansaba (4 nov 2026).
+  const oscuro = destacado && !!fondo;
   const col = oscuro
     ? { titulo: '#fff', sub: 'rgba(255,255,255,0.82)', chipBg: 'rgba(255,255,255,0.18)', chip: '#fff', acento: '#FFF1C1' }
     : { titulo: '#111', sub: '#666', chipBg: 'rgba(37,99,235,0.1)', chip: '#1D4ED8', acento: '#8B6A00' };
@@ -194,9 +196,11 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
 
   return (
     <article className={destacado ? 'rounded-2xl sm:rounded-2xl p-4 sm:p-3.5 relative overflow-hidden' : 'py-4 sm:py-2.5'}
-      style={destacado
-        ? { background: 'linear-gradient(135deg,#7A5A0E 0%,#A9821F 45%,#C9A23A 100%)', boxShadow: '0 14px 40px rgba(139,106,0,0.28)' }
-        : { borderBottom: '1px solid rgba(212,175,55,0.2)' }}>
+      style={oscuro
+        ? { background: 'linear-gradient(135deg,#5A4410 0%,#7A5F18 100%)', boxShadow: '0 10px 28px rgba(60,44,8,0.22)' }
+        : destacado
+          ? { background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.35)', boxShadow: '0 4px 18px rgba(139,106,0,0.07)' }
+          : { borderBottom: '1px solid rgba(212,175,55,0.2)' }}>
       {/* Fondo del destacado: el que suba el DJ o, si no, la carátula
           desenfocada (como el Stage de Hearthis), con velo dorado oscuro. */}
       {fondo && (
@@ -205,7 +209,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
             className={`absolute inset-0 w-full h-full object-cover pointer-events-none ${fondoEsCaratula ? 'scale-125' : ''}`}
             style={fondoEsCaratula ? { filter: 'blur(28px) saturate(1.2)' } : undefined} />
           <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(135deg, rgba(74,52,8,0.82) 0%, rgba(122,90,14,0.62) 55%, rgba(169,130,31,0.45) 100%)' }} />
+            style={{ background: 'linear-gradient(135deg, rgba(36,28,14,0.8) 0%, rgba(54,42,16,0.6) 55%, rgba(70,54,20,0.42) 100%)' }} />
         </>
       )}
       {destacado && editable && (
@@ -244,8 +248,10 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
           </div>
         ) : (
           <div className={`${destacado ? 'w-20 h-20 sm:w-24 sm:h-24' : 'w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem]'} rounded-xl flex items-center justify-center flex-shrink-0`}
-            style={{ background: destacado ? 'rgba(255,255,255,0.16)' : 'linear-gradient(135deg,#E3B54F,#B8941E)' }} aria-hidden="true">
-            <ListMusic size={destacado ? 34 : 26} color="#fff" />
+            style={oscuro
+              ? { background: 'rgba(255,255,255,0.16)' }
+              : { background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.3)' }} aria-hidden="true">
+            <ListMusic size={destacado ? 34 : 26} color={oscuro ? '#fff' : '#B8941E'} />
           </div>
         )}
         {editable && (
@@ -263,9 +269,9 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
             {conPlayPropio && !enBarra && (
               <button type="button" onClick={alternar} aria-label={sonando ? `Pausar ${titulo}` : `Escuchar ${titulo}`}
                 className="w-12 h-12 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-transform hover:scale-105 active:scale-95"
-                style={destacado
+                style={oscuro
                   ? { background: '#fff', color: '#7A5A0E', boxShadow: '0 6px 18px rgba(46,32,6,0.3)' }
-                  : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 6px 18px rgba(212,175,55,0.35)' }}>
+                  : { background: '#fff', color: '#8B6A00', border: '1.5px solid #D4AF37' }}>
                 {sonando ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" style={{ marginLeft: 3 }} />}
               </button>
             )}
@@ -346,7 +352,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
             ) : null}
             {/* SoundCloud aún sin cargar: barra vacía donde irá el progreso. */}
             {esSoundcloud && duracion === 0 && (
-              <div className="mt-4 h-1.5 rounded-full" style={{ background: oscuro ? 'rgba(255,255,255,0.3)' : '#E6D9B5' }} aria-hidden="true" />
+              <div className="mt-4 h-1.5 rounded-full" style={{ background: oscuro ? 'rgba(255,255,255,0.3)' : '#EDE8DA' }} aria-hidden="true" />
             )}
           </>
         ) : (
