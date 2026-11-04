@@ -548,7 +548,7 @@ const PublicProfile = () => {
   const antiguedadStr = antiguedad ? ` ${antiguedad}.` : '';
   // En DJs "specialty" es texto libre de equipo/rider (con erratas): no va al título.
   const pageTitle = sbProfile?.role === 'dj'
-    ? `Contratar DJ ${profile.name} en ${cityShort} | XPEAK`
+    ? `Contratar ${/^dj\b/i.test(profile.name.trim()) ? '' : 'DJ '}${profile.name} en ${cityShort} | XPEAK`
     : profile.specialty
     ? `Contratar ${profile.name} · ${profile.specialty} en ${cityShort} | XPEAK`
     : `${profile.name}: Profesional de eventos en ${cityShort} | XPEAK`;
