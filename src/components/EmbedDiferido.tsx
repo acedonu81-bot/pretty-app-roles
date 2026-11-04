@@ -26,6 +26,22 @@ const conAutoplay = (src: string) =>
     ? `${src}${src.includes('?') ? '&' : '?'}auto_play=true`
     : src;
 
+/** Página original del mix, para el enlace de respaldo si el reproductor no carga (DNS, bloqueadores). */
+export function enlaceOriginal(src: string): string | null {
+  try {
+    const u = new URL(src);
+    if (/mixcloud\.com$/.test(u.hostname)) {
+      const feed = u.searchParams.get('feed');
+      return feed?.startsWith('/') ? `https://www.mixcloud.com${feed}` : null;
+    }
+    if (u.hostname === 'w.soundcloud.com') {
+      const url = u.searchParams.get('url');
+      return url && /^https:\/\/(www\.)?soundcloud\.com\//.test(url) ? url : null;
+    }
+  } catch { /* src no es una URL válida */ }
+  return null;
+}
+
 export default function EmbedDiferido({ src, alto, tipo, titulo, autor, className, style }: Props) {
   const [cargado, setCargado] = useState(false);
   const { sesion, reproducir } = useReproductorConcurso();
@@ -48,6 +64,12 @@ export default function EmbedDiferido({ src, alto, tipo, titulo, autor, classNam
           style={{ background: 'rgba(255,253,247,0.96)', border: '1px solid rgba(212,175,55,0.6)', color: '#7a6216' }}>
           <Pin size={12} /> Anclar
         </button>
+        {enlaceOriginal(src) && (
+          <a href={enlaceOriginal(src)!} target="_blank" rel="noopener noreferrer"
+            className="block text-right text-[0.75rem] underline px-2 py-1" style={{ color: '#6b7280' }}>
+            ¿No carga? Abrir en {tipo ?? 'su web'}
+          </a>
+        )}
       </div>
     );
   }
