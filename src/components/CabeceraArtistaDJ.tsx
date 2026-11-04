@@ -34,7 +34,7 @@ const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, ac
 
   return (
     <header className="max-w-6xl mx-auto px-3 sm:px-5 pt-3 sm:pt-5">
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl min-h-[15rem] sm:min-h-[20rem] flex items-end"
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl min-h-[14rem] sm:min-h-[14.5rem] flex items-end"
         style={{ background: 'linear-gradient(120deg,#E3B54F 0%,#B8941E 55%,#8B6A00 100%)' }}>
         {banner && (
           <img src={fotoOptimizada(banner, 1600)} alt="" aria-hidden="true"
@@ -48,14 +48,14 @@ const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, ac
           background: 'linear-gradient(90deg, rgba(46,32,6,0.78) 0%, rgba(46,32,6,0.45) 45%, rgba(46,32,6,0.12) 100%), linear-gradient(0deg, rgba(46,32,6,0.55) 0%, rgba(46,32,6,0) 55%)',
         }} />
 
-        <div className="relative w-full flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-7 p-5 sm:p-8">
+        <div className="relative w-full flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 p-5 sm:p-6">
           <div className="relative flex-shrink-0 self-start sm:self-auto">
           {tieneFoto ? (
             <img src={fotoOptimizada(foto, 400)} alt={nombre} loading="eager" {...{ fetchpriority: 'high' }}
-              className="w-24 h-24 sm:w-44 sm:h-44 rounded-full object-cover flex-shrink-0"
+              className="w-24 h-24 sm:w-36 sm:h-36 rounded-full object-cover flex-shrink-0"
               style={{ border: '4px solid rgba(255,255,255,0.95)', boxShadow: '0 10px 30px rgba(46,32,6,0.45)', objectPosition: '50% 20%' }} />
           ) : (
-            <div className="w-24 h-24 sm:w-44 sm:h-44 rounded-full flex items-center justify-center flex-shrink-0 text-5xl font-black"
+            <div className="w-24 h-24 sm:w-36 sm:h-36 rounded-full flex items-center justify-center flex-shrink-0 text-5xl font-black"
               style={{ border: '4px solid rgba(255,255,255,0.95)', background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#fff' }}>
               {inicial}
             </div>
@@ -67,7 +67,7 @@ const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, ac
 
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="font-black tracking-tight break-words" style={{ fontSize: 'clamp(1.9rem, 6vw, 3.25rem)', lineHeight: 1.02, color: '#fff', letterSpacing: '-0.02em', textShadow: '0 2px 18px rgba(46,32,6,0.5)' }}>
+              <h1 className="font-black tracking-tight break-words" style={{ fontSize: 'clamp(1.9rem, 5vw, 2.75rem)', lineHeight: 1.02, color: '#fff', letterSpacing: '-0.02em', textShadow: '0 2px 18px rgba(46,32,6,0.5)' }}>
                 {nombre}
               </h1>
               {verificado && (
@@ -76,7 +76,7 @@ const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, ac
                 </span>
               )}
             </div>
-            <p className="text-sm sm:text-base font-semibold mt-2 flex items-center gap-1.5 flex-wrap" style={{ color: 'rgba(255,255,255,0.9)' }}>
+            <p className="text-sm sm:text-base font-semibold mt-1.5 flex items-center gap-1.5 flex-wrap" style={{ color: 'rgba(255,255,255,0.9)' }}>
               <span style={{ color: '#F3D77A' }}>DJ</span>
               {zona && (<><span aria-hidden="true">·</span><MapPin size={15} />{zona}</>)}
               {estilos.length > 0 && (<><span aria-hidden="true">·</span>{estilos.slice(0, 3).join(', ')}</>)}
@@ -88,7 +88,7 @@ const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, ac
                 Nº{podio} de los sets más escuchados
               </p>
             )}
-            <div className="flex items-center gap-2 mt-4 flex-wrap">{acciones}</div>
+            <div className="flex items-center gap-2 mt-3 flex-wrap">{acciones}</div>
           </div>
         </div>
       </div>

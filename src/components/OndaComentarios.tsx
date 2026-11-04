@@ -112,7 +112,7 @@ const OndaComentarios = ({
   const conPista = dur > 0;
 
   return (
-    <div className="mt-3">
+    <div className="mt-2">
       {conPista && (
         <div className={`relative ${enPista.length ? 'pt-9' : 'pt-2'}`} onMouseLeave={() => setMarcado(null)}>
           {burbuja && (
@@ -136,7 +136,7 @@ const OndaComentarios = ({
               if (e.key === 'ArrowLeft') onSaltar(Math.max(0, posicion - 10));
             }}
             className={`relative ${listo ? 'cursor-pointer' : ''}`}
-            style={{ height: barras.length ? 60 : 6 }}>
+            style={{ height: barras.length ? 48 : 6 }}>
             {barras.length ? (
               // Barras hacia arriba y su reflejo más tenue debajo, como en Hearthis.
               <div className="absolute inset-0 flex flex-col" aria-hidden="true">

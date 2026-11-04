@@ -193,7 +193,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
     : null;
 
   return (
-    <article className={destacado ? 'rounded-2xl sm:rounded-3xl p-4 sm:p-6 relative overflow-hidden' : 'py-5'}
+    <article className={destacado ? 'rounded-2xl sm:rounded-3xl p-4 sm:p-5 relative overflow-hidden' : 'py-4 sm:py-3'}
       style={destacado
         ? { background: 'linear-gradient(135deg,#7A5A0E 0%,#A9821F 45%,#C9A23A 100%)', boxShadow: '0 14px 40px rgba(139,106,0,0.28)' }
         : { borderBottom: '1px solid rgba(212,175,55,0.2)' }}>
@@ -235,7 +235,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
         {ficha?.portada_url ? (
           // Carátulas que no son cuadradas (cartel vertical, etc.): entera y
           // contenida sobre su copia desenfocada, en vez de recortada.
-          <div className={`${destacado ? 'w-20 h-20 sm:w-40 sm:h-40' : 'w-16 h-16 sm:w-32 sm:h-32'} rounded-xl overflow-hidden relative flex-shrink-0`}
+          <div className={`${destacado ? 'w-20 h-20 sm:w-32 sm:h-32' : 'w-16 h-16 sm:w-24 sm:h-24'} rounded-xl overflow-hidden relative flex-shrink-0`}
             style={destacado ? { boxShadow: '0 8px 24px rgba(46,32,6,0.35)' } : undefined}>
             <img src={fotoOptimizada(ficha.portada_url, 320)} alt="" aria-hidden="true" loading="lazy"
               className="absolute inset-0 w-full h-full object-cover scale-125" style={{ filter: 'blur(14px)' }} />
@@ -243,7 +243,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
               className="absolute inset-0 w-full h-full object-contain" />
           </div>
         ) : (
-          <div className={`${destacado ? 'w-20 h-20 sm:w-40 sm:h-40' : 'w-16 h-16 sm:w-32 sm:h-32'} rounded-xl flex items-center justify-center flex-shrink-0`}
+          <div className={`${destacado ? 'w-20 h-20 sm:w-32 sm:h-32' : 'w-16 h-16 sm:w-24 sm:h-24'} rounded-xl flex items-center justify-center flex-shrink-0`}
             style={{ background: destacado ? 'rgba(255,255,255,0.16)' : 'linear-gradient(135deg,#E3B54F,#B8941E)' }} aria-hidden="true">
             <ListMusic size={destacado ? 34 : 26} color="#fff" />
           </div>
@@ -262,7 +262,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
             )}
             {conPlayPropio && !enBarra && (
               <button type="button" onClick={alternar} aria-label={sonando ? `Pausar ${titulo}` : `Escuchar ${titulo}`}
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center flex-shrink-0 transition-transform hover:scale-105 active:scale-95"
+                className="w-12 h-12 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-transform hover:scale-105 active:scale-95"
                 style={destacado
                   ? { background: '#fff', color: '#7A5A0E', boxShadow: '0 6px 18px rgba(46,32,6,0.3)' }
                   : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 6px 18px rgba(212,175,55,0.35)' }}>
@@ -271,7 +271,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
             )}
             <div className="min-w-0 flex-1">
               <p className="text-xs sm:text-sm font-semibold truncate" style={{ color: col.sub }}>{autor}</p>
-              <h3 className="text-lg sm:text-2xl font-black leading-tight line-clamp-2 break-words" style={{ color: col.titulo }}>{titulo}</h3>
+              <h3 className="text-lg sm:text-xl font-black leading-tight line-clamp-2 break-words" style={{ color: col.titulo }}>{titulo}</h3>
               {datos.length > 0 && <p className="text-xs font-semibold mt-0.5" style={{ color: oscuro ? col.acento : '#2563EB' }}>{datos.join(' · ')}</p>}
             </div>
             <div className="hidden sm:flex flex-col items-end gap-1.5 flex-shrink-0">
@@ -357,7 +357,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
           )
         )}
 
-        <div className="flex items-center gap-4 mt-3 flex-wrap">
+        <div className="flex items-center gap-4 mt-2 flex-wrap">
           {/* Repost: recomendar el set a quien te sigue. En el propio set solo
               se ve el número (nadie se repostea a sí mismo). */}
           {(onRepost || reposts > 0) && (
