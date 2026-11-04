@@ -33,12 +33,24 @@ function buildNext14Days(today: Date) {
   return days;
 }
 
+const textoHace = (iso: string) => {
+  const dias = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+  if (dias <= 0) return 'hoy';
+  if (dias === 1) return 'ayer';
+  if (dias < 30) return `hace ${dias} días`;
+  const meses = Math.floor(dias / 30);
+  return meses === 1 ? 'hace 1 mes' : `hace ${meses} meses`;
+};
+
 const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: AvailabilityCalendarProps) => {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
   const [blocked, setBlocked] = useState<Set<string>>(new Set());
   const [showJump, setShowJump] = useState(false);
+  // Última vez que el profesional marcó una fecha (null = nunca ha marcado ninguna).
+  const [ultimaMarca, setUltimaMarca] = useState<string | null>(null);
+  const [cargado, setCargado] = useState(false);
   // El organizador solo necesita reservar una fecha cercana: un mes entero
   // casi todo verde no aporta información y ocupa mucho espacio. El
   // profesional (modo edit, gestiona bloqueos) sí necesita el mes completo.
@@ -48,10 +60,13 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
     if (!userId) return;
     supabase
       .from('availability')
-      .select('blocked_date')
+      .select('blocked_date, created_at')
       .eq('user_id', userId)
       .then(({ data }) => {
         setBlocked(new Set((data ?? []).map((r: any) => r.blocked_date)));
+        const marcas = (data ?? []).map((r: any) => r.created_at as string).filter(Boolean).sort();
+        setUltimaMarca(marcas.length ? marcas[marcas.length - 1] : null);
+        setCargado(true);
       });
   }, [userId]);
 
@@ -117,6 +132,13 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
               Ver mes completo
             </button>
           </div>
+          {mode === 'view-request' && cargado && (
+            <p className="text-[0.75rem] mt-2" style={{ color: '#6b6450' }}>
+              {ultimaMarca
+                ? `Última fecha marcada por el DJ: ${textoHace(ultimaMarca)}.`
+                : 'Este DJ aún no ha marcado fechas ocupadas: confírmale la fecha por mensaje.'}
+            </p>
+          )}
         </div>
       </div>
     );

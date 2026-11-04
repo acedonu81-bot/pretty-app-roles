@@ -129,6 +129,7 @@ interface SupabaseProfile {
   holiday_surcharge_pct?: number | null;
   payment_days_max?: number | null;
   travel_free_km?: number | null;
+  languages?: string[] | null;
   travel_fee?: number | null;
   excluded_services?: string[] | null;
   uniform_provided_by?: string | null;
@@ -263,7 +264,7 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, languages, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .eq('user_id', slug)
           // Un mismo user_id puede tener varios perfiles (varios roles, ej.
           // food-truck + empresario): .maybeSingle() con 2+ filas devuelve
@@ -280,7 +281,7 @@ const PublicProfile = () => {
             return { data: elegido, error };
           })
       : supabase.from('profiles')
-          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, languages, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -542,7 +543,10 @@ const PublicProfile = () => {
   const verifiedStr = '';
   const antiguedad = antiguedadEnXpeak(sbProfile?.created_at);
   const antiguedadStr = antiguedad ? ` ${antiguedad}.` : '';
-  const pageTitle = profile.specialty
+  // En DJs "specialty" es texto libre de equipo/rider (con erratas): no va al título.
+  const pageTitle = sbProfile?.role === 'dj'
+    ? `Contratar DJ ${profile.name} en ${cityShort} | XPEAK`
+    : profile.specialty
     ? `Contratar ${profile.name} · ${profile.specialty} en ${cityShort} | XPEAK`
     : `${profile.name}: Profesional de eventos en ${cityShort} | XPEAK`;
   const pageDesc = `Contrata a ${profile.name}${profile.specialty ? `, ${profile.specialty}` : ''} en ${cityShort}.${priceStr}${availStr}${verifiedStr}${antiguedadStr} ${profile.description ? profile.description.slice(0, 100) + (profile.description.length > 100 ? '…' : '') : 'Contacta directamente en XPEAK.'}`;
@@ -590,13 +594,16 @@ const PublicProfile = () => {
   const sesiones = (extraMedia.audio_session_urls ?? []).slice(0, 5);
   const mixAparte = !!audioEmbed && !sesiones.includes(sbProfile?.audio_embed_url ?? '');
   const numSets = sesiones.length + (mixAparte ? 1 : 0);
+  const totalSeguidoresDJ = resumenDJ?.seguidores ?? seguidores ?? 0;
   const pestanasDJ: PestanaDJ[] = [
     ...(numSets > 0 || (extraMedia.production_urls?.length ?? 0) > 0 ? ['sets' as const] : []),
     ...(repostsHechos.length > 0 ? ['reposts' as const] : []),
-    'seguidores',
     'sobre',
     'resenas',
     ...(publicPosts.length > 0 ? ['actividad' as const] : []),
+    // Seguidores al final y solo con 3 o más: "Todavía no le sigue nadie" como
+    // primera pestaña se lee como señal negativa (4 nov 2026).
+    ...(totalSeguidoresDJ >= 3 ? ['seguidores' as const] : []),
   ];
   const precioDJ = (profile as { price?: number }).price ? `Desde ${(profile as { price?: number }).price}€${unidadTarifa(profile.role, true)}` : null;
   const pestana: PestanaDJ = pestanaElegida && pestanasDJ.includes(pestanaElegida) ? pestanaElegida : pestanasDJ[0];
@@ -1402,7 +1409,10 @@ const PublicProfile = () => {
                   escuchasAyer={resumenDJ?.escuchas_ayer ?? 0}
                   escuchasTotal={resumenDJ?.escuchas_total ?? 0}
                   enlaces={enlacesDeSesiones([...(extraMedia.audio_session_urls ?? []), sbProfile?.audio_embed_url ?? ''])}
-                  onIrA={setPestanaElegida}
+                  onIrA={totalSeguidoresDJ >= 3 ? setPestanaElegida : undefined}
+                  idiomas={sbProfile?.languages ?? []}
+                  radioKm={sbProfile?.travel_free_km ?? null}
+                  respuesta={sbProfile?.response_bucket ? responseBucketText : null}
                   sets={numSets}
                   resenas={seoReviews.length}
                   mediaResenas={seoReviews.length ? seoReviews.reduce((t, r) => t + r.rating, 0) / seoReviews.length : null}

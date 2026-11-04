@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { BadgeCheck, Calendar, Disc3, Euro, ExternalLink, Headphones, MapPin, Star, UserCheck, Users } from 'lucide-react';
+import { BadgeCheck, Calendar, Car, Clock, Disc3, Euro, ExternalLink, Headphones, Languages, MapPin, Star, UserCheck, Users } from 'lucide-react';
 import type { EnlaceArtista } from '@/lib/enlacesArtista';
 
 // Columna lateral del perfil de DJ, como la de Hearthis (1-2 nov 2026):
@@ -29,6 +29,7 @@ const Fila = ({ icono, valor, texto, color = '#8B6A00', onClick }: { icono: Reac
 const LateralArtistaDJ = ({
   seguidores, siguiendo = 0, sets, resenas, mediaResenas, precio, zona, estilos, antiguedad, verificado,
   escuchasHoy = 0, escuchasAyer = 0, escuchasTotal = 0, enlaces = [], llamadas, extra, onIrA,
+  idiomas = [], radioKm = null, respuesta = null,
 }: {
   seguidores: number | null;
   siguiendo?: number;
@@ -50,11 +51,21 @@ const LateralArtistaDJ = ({
   extra?: ReactNode;
   /** Pulsar "Seguidores" abre esa pestaña. */
   onIrA?: (p: 'seguidores') => void;
+  idiomas?: string[];
+  /** Km de desplazamiento sin coste (travel_free_km). */
+  radioKm?: number | null;
+  /** Texto de tiempo de respuesta; solo si hay dato real. */
+  respuesta?: string | null;
 }) => (
   <aside className="flex flex-col gap-6">
     <div className="rounded-2xl p-5" style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.25)' }}>
-      <p className="text-2xl font-black" style={{ color: '#111' }}>{precio ?? 'Precio a consultar'}</p>
+      {precio
+        ? <p className="text-2xl font-black" style={{ color: '#111' }}>{precio}</p>
+        : <p className="text-sm font-semibold" style={{ color: '#555' }}>Precio a consultar</p>}
       <p className="text-xs mt-0.5" style={{ color: '#666' }}>Contrato directo · Pago acordado con el DJ</p>
+      {respuesta && (
+        <p className="text-xs mt-2 flex items-center gap-1.5 font-semibold" style={{ color: '#047857' }}><Clock size={13} /> {respuesta}</p>
+      )}
       <div className="flex flex-col gap-2 mt-4">{llamadas}</div>
     </div>
 
@@ -80,6 +91,8 @@ const LateralArtistaDJ = ({
       <ul>
         {verificado && <Fila icono={<BadgeCheck size={17} />} color="#059669" texto={<span className="font-semibold" style={{ color: '#047857' }}>Verificado por XPEAK</span>} />}
         {zona && <Fila icono={<MapPin size={17} />} texto={zona} />}
+        {idiomas.length > 0 && <Fila icono={<Languages size={17} />} texto={idiomas.join(', ')} />}
+        {!!radioKm && radioKm > 0 && <Fila icono={<Car size={17} />} texto={`Se desplaza hasta ${radioKm} km sin coste`} />}
         {antiguedad && <Fila icono={<Calendar size={17} />} texto={antiguedad.charAt(0).toUpperCase() + antiguedad.slice(1)} />}
       </ul>
       {estilos.length > 0 && (
