@@ -150,11 +150,11 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
           Barra", "Técnicos de Sonido"). Al ir el degradado en el mismo elemento
           que el texto, la zona oscura crece con él y siempre lo cubre. */}
       <div
-        className="absolute inset-x-0 bottom-0 p-3 pt-8 sm:p-4 sm:pt-10"
+        className="absolute inset-x-0 bottom-0 p-2.5 pt-6 sm:p-4 sm:pt-10"
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.45) 75%, transparent 100%)' }}
       >
-        <h3 className="text-sm sm:text-base font-semibold leading-tight text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.9)]">{item.nombre}</h3>
-        <p className="mt-0.5 text-[0.75rem] sm:text-xs leading-snug text-white/85 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.95)]">{item.gancho}</p>
+        <h3 className="text-[0.8125rem] sm:text-base font-semibold leading-tight text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.9)]">{item.nombre}</h3>
+        <p className="hidden sm:block mt-0.5 text-xs leading-snug text-white/85 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.95)]">{item.gancho}</p>
       </div>
       {/* Filo dorado: sutil en reposo, marcado y de 2px al pasar por encima. */}
       <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-[#D4AF37]/25 transition-all duration-300 group-hover:ring-2 group-hover:ring-[#D4AF37]" />
@@ -168,10 +168,10 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
         clavada mientras la tarjeta sube debajo. */}
     {item.nuevo && (
       <div
-        className="pointer-events-none absolute -right-2.5 top-3.5 z-10 rotate-[38deg] transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.015]"
+        className="pointer-events-none absolute -right-3 top-2.5 sm:-right-2.5 sm:top-3.5 z-10 rotate-[38deg] transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.015]"
         style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
       >
-        <div className="relative flex items-center px-4 py-1 text-xs font-bold text-white" style={{ background: '#c0392b' }}>
+        <div className="relative flex items-center px-3 py-0.5 sm:px-4 sm:py-1 text-[0.75rem] sm:text-xs font-bold text-white" style={{ background: '#c0392b' }}>
           Nueva
           {/* Puntas del lazo: triángulos en cada extremo, mismo rojo pero un
               punto más oscuro, para que lea como cinta con cola y no como un
