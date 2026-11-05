@@ -123,7 +123,7 @@ export default function BlogComoSerPromotorEventos() {
                   { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
                   { href: '/blog/promotores-de-eventos-que-hacen', cat: 'Staff', title: 'Promotores de eventos: qué hacen y cuánto cobran' },
                   { href: '/blog/como-trabajar-de-rrpp-discoteca', cat: 'Para RRPP', title: 'Cómo trabajar de RRPP en discoteca 2026' },
-                  { href: '/blog/como-conseguir-bolos-dj', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ 2026' },
+                  { href: '/blog/trabajo-de-dj-en-espana', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ 2026' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(5,150,105,0.1)', color: '#059669', border: '1px solid rgba(5,150,105,0.15)' }}>{link.cat}</span>

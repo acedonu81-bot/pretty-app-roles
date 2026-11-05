@@ -848,7 +848,7 @@ const App = () => (
             <Route path="/blog/dj-bodas-barcelona" element={<BlogDJBodaBarcelona />} />
             <Route path="/blog/dj-bodas-valencia" element={<BlogDJBodaValencia />} />
             <Route path="/blog/fotografo-comunion-madrid" element={<BlogFotografoComunionMadrid />} />
-            <Route path="/blog/como-conseguir-bolos-dj" element={<BlogConseguirBolosDJ />} />
+            <Route path="/blog/trabajo-de-dj-en-espana" element={<BlogConseguirBolosDJ />} />
             <Route path="/blog/darse-de-alta-como-dj-autonomo" element={<BlogDarseDeAltaDJ />} />
             <Route path="/blog/como-trabajar-de-camarero-eventos" element={<BlogTrabajarCamareroEventos />} />
             <Route path="/blog/como-empezar-dj-eventos-principiante" element={<BlogEmpezarDJPrincipiante />} />

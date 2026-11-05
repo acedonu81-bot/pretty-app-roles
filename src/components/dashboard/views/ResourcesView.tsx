@@ -41,7 +41,7 @@ type Guide = { title: string; desc: string; href: string };
 const GUIDES_BY_ROLE: Record<string, Guide[]> = {
   dj: [
     { title: 'Cómo empezar a pinchar en eventos', desc: 'Precios reales de DJs de XPEAK y primeros pasos.', href: '/blog/como-empezar-dj-eventos-principiante' },
-    { title: 'Cómo conseguir bolos como DJ', desc: 'De dónde salen los bolos y cómo encadenarlos.', href: '/blog/como-conseguir-bolos-dj' },
+    { title: 'Cómo conseguir bolos como DJ', desc: 'De dónde salen los bolos y cómo encadenarlos.', href: '/blog/trabajo-de-dj-en-espana' },
     { title: 'Cuánto cobra un DJ en España', desc: 'Tarifas reales por tipo de evento y zona.', href: '/blog/cuanto-cobra-un-dj-en-espana' },
     { title: 'Calculadora de tarifa DJ', desc: 'Calcula tu caché según horas, desplazamiento y equipo.', href: '/blog/calculadora-tarifa-dj' },
     { title: 'Qué debe incluir un contrato de DJ', desc: 'Las cláusulas que evitan el bolo que no te pagan.', href: '/blog/contrato-dj-que-debe-incluir' },

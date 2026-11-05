@@ -208,7 +208,7 @@ export default function BlogDarseDeAltaDJ() {
               <p className="text-sm mb-2 max-w-3xl" style={{ color: '#3d3d4e' }}>Mira dónde está tu tarifa frente a otros DJs de XPEAK y crea tu perfil con ella.</p>
               <BlogPrimerPaso rol="dj" articlePath={PATH} soloPro />
               <p className="text-sm mt-3 max-w-3xl" style={{ color: '#3d3d4e' }}>
-                Si aún estás buscando dónde conseguir tus primeros trabajos, empieza por <a href="/blog/como-conseguir-bolos-dj" style={{ color: '#2563EB', textDecoration: 'underline' }}>los tres mercados donde se contrata a un DJ</a>.
+                Si aún estás buscando dónde conseguir tus primeros trabajos, empieza por <a href="/blog/trabajo-de-dj-en-espana" style={{ color: '#2563EB', textDecoration: 'underline' }}>los tres mercados donde se contrata a un DJ</a>.
               </p>
             </section>
 
@@ -228,7 +228,7 @@ export default function BlogDarseDeAltaDJ() {
               <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="grid gap-2 sm:grid-cols-2">
                 {[
-                  { href: '/blog/como-conseguir-bolos-dj', cat: 'Guía', title: 'Cómo encontrar trabajo de DJ en España' },
+                  { href: '/blog/trabajo-de-dj-en-espana', cat: 'Guía', title: 'Cómo encontrar trabajo de DJ en España' },
                   { href: '/blog/contrato-dj-que-debe-incluir', cat: 'Guía', title: 'Contrato DJ: qué debe incluir 2026' },
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
                   { href: '/blog/como-empezar-dj-eventos-principiante', cat: 'DJ', title: 'DJ principiante: cómo empezar en eventos y cuánto cobrar' },

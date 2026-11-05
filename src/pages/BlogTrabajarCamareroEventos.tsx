@@ -119,7 +119,7 @@ export default function BlogTrabajarCamareroEventos() {
                 {[
                   { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
                   { href: '/blog/cuanto-cobra-un-camarero-de-eventos', cat: 'Staff', title: 'Cuánto cobra un camarero de eventos 2026' },
-                  { href: '/blog/como-conseguir-bolos-dj', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ 2026' },
+                  { href: '/blog/trabajo-de-dj-en-espana', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ 2026' },
                   { href: '/blog/cuantos-camareros-necesito-para-mi-boda', cat: 'Bodas', title: 'Cuántos camareros necesito para mi boda' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>

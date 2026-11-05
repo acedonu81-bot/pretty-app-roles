@@ -55,7 +55,7 @@ const g: GuiaTrabajar = {
   ],
   relacionados: [
     { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España 2026' },
-    { href: '/blog/como-conseguir-bolos-dj', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ' },
+    { href: '/blog/trabajo-de-dj-en-espana', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ' },
     { href: '/blog/calculadora-tarifa-dj', cat: 'DJ', title: 'Calculadora de tarifa DJ' },
     { href: '/blog/contrato-dj-que-debe-incluir', cat: 'DJ', title: 'Contrato DJ: qué debe incluir' },
   ],

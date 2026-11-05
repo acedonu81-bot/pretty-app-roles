@@ -123,7 +123,7 @@ export default function BlogMaquilladoraConseguirClientes() {
                   { href: '/blog/maquillaje-nupcial-precio-guia', cat: 'Maquillaje', title: 'Maquillaje nupcial: precios y cómo elegir tu maquilladora' },
                   { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
                   { href: '/blog/fotografo-como-conseguir-clientes', cat: 'Para Fotógrafos', title: 'Cómo conseguir clientes como fotógrafo 2026' },
-                  { href: '/blog/como-conseguir-bolos-dj', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ 2026' },
+                  { href: '/blog/trabajo-de-dj-en-espana', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ 2026' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.75rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(219,39,119,0.1)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.15)' }}>{link.cat}</span>

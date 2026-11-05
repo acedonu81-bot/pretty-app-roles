@@ -10,9 +10,8 @@ import BlogPrimerPaso from '@/components/BlogPrimerPaso';
 import CalculadoraBoloNeto from '@/components/CalculadoraBoloNeto';
 import { usePrecioReal } from '@/lib/precioReal';
 
-// La URL se queda con "bolos" para no mover nada, pero nadie busca así: la gente
-// escribe "trabajo de DJ" (Search Console, 5 nov 2026: 0 impresiones con "bolos").
-const PATH = '/blog/como-conseguir-bolos-dj';
+// La URL antigua (con "bolos") redirige con 301 a esta; nadie busca esa palabra (Search Console, 5 nov 2026: 0 impresiones).
+const PATH = '/blog/trabajo-de-dj-en-espana';
 const TITULO = 'Cómo encontrar trabajo de DJ en España: dónde se contrata de verdad';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: TITULO, description: 'Salas, eventos privados y promotoras: los tres mercados donde se contrata a un DJ en España, cómo entra uno en cada uno, cuánto te queda por trabajo y un plan de 30 días.', datePublished: '2026-06-02', dateModified: '2026-11-05', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: `https://xpeak.es${PATH}` };
@@ -187,7 +186,7 @@ export default function BlogConseguirBolosDJ() {
               <BlogPrimerPaso rol="dj" articlePath={PATH} soloPro />
             </section>
 
-            <WarmUpAcademyBanner variante="tira" paraDJs origen="blog:como-conseguir-bolos-dj" />
+            <WarmUpAcademyBanner variante="tira" paraDJs origen="blog:trabajo-de-dj-en-espana" />
 
             <section className="p-5 sm:p-6 rounded-2xl" style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.5)' }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#8B6A00' }}>Antes de tu primer bolo cobrado</p>

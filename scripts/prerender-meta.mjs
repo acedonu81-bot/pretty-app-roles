@@ -1156,7 +1156,7 @@ const ROUTES = [
     ogType: 'article',
   },
   {
-    path: '/blog/como-conseguir-bolos-dj',
+    path: '/blog/trabajo-de-dj-en-espana',
     title: 'Trabajo de DJ en España 2026: cómo encontrarlo | XPEAK',
     desc: 'Dónde buscar trabajo de DJ: salas, eventos privados y promotoras. Cómo se contrata en cada mercado, cuánto te queda por trabajo y un plan de 30 días.',
     ogTitle: 'Cómo encontrar trabajo de DJ en España (2026) | XPEAK',

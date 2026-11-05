@@ -194,7 +194,7 @@ export default function BlogCodigoBuenasPracticasDJ() {
                 {[
                   { href: '/blog/contrato-dj-que-debe-incluir', cat: 'DJ', title: 'Contrato para DJ: qué debe incluir 2026' },
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
-                  { href: '/blog/como-conseguir-bolos-dj', cat: 'DJ', title: 'Cómo conseguir bolos como DJ' },
+                  { href: '/blog/trabajo-de-dj-en-espana', cat: 'DJ', title: 'Cómo conseguir bolos como DJ' },
                   { href: '/blog/dj-para-bodas-vs-discoteca', cat: 'DJ', title: 'DJ bodas vs discoteca: diferencias 2026' },
                   { href: '/blog/10-errores-contratar-dj-boda', cat: 'Guía', title: '10 errores al contratar DJ para tu boda' },
                   { href: '/blog/calculadora-tarifa-dj', cat: 'DJ', title: 'Calculadora de tarifa DJ' },

@@ -103,7 +103,7 @@ export default function BlogFotografoConseguirClientes() {
                 {[
                   { href: '/blog/fotografos-eventos', cat: 'Hub Foto', title: 'Fotógrafos para eventos: guía completa 2026' },
                   { href: '/blog/videografo-bodas-precio', cat: 'Fotografía', title: 'Videógrafo bodas: precio y qué incluye 2026' },
-                  { href: '/blog/como-conseguir-bolos-dj', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ 2026' },
+                  { href: '/blog/trabajo-de-dj-en-espana', cat: 'Para DJs', title: 'Cómo conseguir bolos como DJ 2026' },
                   { href: '/blog/contrato-dj-que-debe-incluir', cat: 'Guía', title: 'Contrato para profesionales: qué debe incluir' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
