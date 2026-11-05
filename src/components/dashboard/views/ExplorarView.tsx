@@ -104,6 +104,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
       { id: 'mago', view: 'mago', nombre: 'Magos & Ilusionistas', gancho: 'Close-up, escenario y mentalismo' },
       { id: 'bailarin', view: 'bailarin', nombre: 'Bailarines & Danza', gancho: 'Shows, coreografías e instructores' },
       { id: 'animador', view: 'animador', nombre: 'Payasos & Animadores', gancho: 'Animación infantil y familiar' },
+      { id: 'navidad', view: 'navidad', nombre: 'Especial Navidad', gancho: 'Reyes Magos, Baltasar y Papá Noel' },
       { id: 'humorista', view: 'humorista', nombre: 'Humor & Monólogos', gancho: 'Cómicos y stand-up' },
     ],
   },

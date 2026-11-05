@@ -60,6 +60,7 @@ const FoodTruckView = lazy(() => import('@/components/dashboard/views/FoodTruckV
 const DiscoMovilView = lazy(() => import('@/components/dashboard/views/DiscoMovilView'));
 const TecnicoView = lazy(() => import('@/components/dashboard/views/TecnicoView'));
 const AlquilerView = lazy(() => import('@/components/dashboard/views/AlquilerView'));
+const NavidadView = lazy(() => import('@/components/dashboard/views/NavidadView'));
 const LimpiezaView = lazy(() => import('@/components/dashboard/views/LimpiezaView'));
 const ExplorarView = lazy(() => import('@/components/dashboard/views/ExplorarView'));
 const GrupoMusicalView = lazy(() => import('@/components/dashboard/views/GrupoMusicalView'));
@@ -308,6 +309,7 @@ const BUSQUEDA_POR_VISTA: Record<string, string[]> = {
   speaker: ['speaker', 'presentador', 'presentadora', 'maestro de ceremonias', 'ponente'],
   vestuario: ['vestuario', 'estilista', 'styling', 'moda'],
   'photo-booth': ['photo booth', 'photobooth', 'cabina de fotos', 'fotomaton'],
+  navidad: ['navidad', 'reyes magos', 'baltasar', 'papa noel', 'paje'],
   limpieza: ['limpieza', 'limpiar', 'limpiador', 'post evento', 'desinfeccion'],
   alquiler: ['alquiler', 'alquilar', 'equipo', 'altavoces', 'luces', 'controladora'],
   tecnico: ['tecnico', 'tecnica', 'sonido', 'iluminacion', 'montaje de escenario'],
@@ -638,7 +640,7 @@ const Dashboard = () => {
     'dj', 'staff', 'azafata', 'event_manager', 'makeup', 'peluqueria', 'media',
     'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering',
     'mago', 'bailarin', 'humorista', 'monologo', 'animador', 'speaker',
-    'photo-booth', 'food-truck', 'disco-movil', 'grupo-musical', 'tecnico', 'alquiler', 'limpieza', 'emergentes', 'local_eventos',
+    'photo-booth', 'food-truck', 'disco-movil', 'grupo-musical', 'tecnico', 'alquiler', 'limpieza', 'navidad', 'emergentes', 'local_eventos',
   ]);
 
   const handleSearch = (q: string) => {
@@ -693,6 +695,7 @@ const Dashboard = () => {
       case 'emergentes': return <EmergentesView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'tecnico':   return <TecnicoView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'alquiler':  return <AlquilerView  onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'navidad':   return <NavidadView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'limpieza':  return <LimpiezaView  onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'local_eventos': return <LocalEventosView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;

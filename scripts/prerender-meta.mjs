@@ -899,6 +899,14 @@ const ROUTES = [
     ogType: 'website',
   },
   {
+    path: '/directorio/navidad',
+    title: 'Contratar Reyes Magos, Baltasar y Papá Noel para eventos | XPEAK',
+    desc: 'Directorio de Reyes Magos, Baltasar, Papá Noel, pajes y personajes navideños para eventos de empresa, fiestas y colegios. Precio por actuación y contacto directo.',
+    ogTitle: 'Especial Navidad: Reyes Magos y Papá Noel | XPEAK',
+    ogDesc: 'Reyes Magos, Baltasar y Papá Noel para tu evento de Navidad. Contacto directo.',
+    ogType: 'website',
+  },
+  {
     path: '/directorio/limpieza',
     title: 'Servicios de limpieza para eventos y locales | XPEAK',
     desc: 'Directorio de servicios de limpieza para eventos: limpieza antes, durante y después de bodas, fiestas y eventos de empresa. Locales, salas y fincas. Contacto directo.',
@@ -1621,7 +1629,7 @@ const ROLE_LABELS = {
   animador: 'Animador/a', speaker: 'Speaker', vestuario: 'Estilista', ambassador: 'Brand ambassador',
   'grupo-musical': 'Grupo musical', event_manager: 'Coordinador/a de eventos',
   'photo-booth': 'Photo booth', 'food-truck': 'Food truck', 'disco-movil': 'Disco móvil', peluqueria: 'Peluquería', local_eventos: 'Local para eventos',
-  tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos', limpieza: 'Limpieza',
+  tecnico: 'Técnico de sonido', alquiler: 'Alquiler de equipos', limpieza: 'Limpieza', navidad: 'Especial Navidad',
 };
 
 // rol de perfil (BD) → slug de categoría en /contratar-{slug} — para enlazar

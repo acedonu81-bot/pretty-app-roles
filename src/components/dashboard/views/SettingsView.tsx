@@ -72,6 +72,7 @@ const ROLE_OPTIONS = [
   { value: 'tecnico',         label: 'Técnico de Sonido y Montaje' },
   { value: 'alquiler',        label: 'Alquiler de Equipos' },
   { value: 'limpieza',        label: 'Servicio de Limpieza' },
+  { value: 'navidad',         label: 'Especial Navidad' },
   { value: 'local_eventos',   label: 'Local para eventos' },
   { value: 'makeup',          label: 'Maquillaje' },
   { value: 'peluqueria',      label: 'Peluquería a Domicilio' },

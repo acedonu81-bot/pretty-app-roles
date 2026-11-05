@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, ClipboardList, Speaker, Truck, Disc3 } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, ClipboardList, Speaker, Truck, Disc3, TreePine } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -41,6 +41,7 @@ const ROLES = [
   { value: 'photo-booth',  label: 'Photo Booth',         desc: 'Cabinas de fotos y espejos 360',    icon: Camera,         color: '#f43f5e' },
   { value: 'tecnico',      label: 'Técnico de Sonido y Montaje', desc: 'Sonido, iluminación y montaje de escenario', icon: SlidersHorizontal, color: '#38bdf8' },
   { value: 'alquiler',     label: 'Alquiler de Equipos', desc: 'Empresas de sonido, luces, cabinas DJ, escenarios', icon: Speaker, color: '#0ea5e9' },
+  { value: 'navidad',      label: 'Especial Navidad', desc: 'Reyes Magos, Baltasar, Papá Noel y pajes', icon: TreePine, color: '#dc2626' },
   { value: 'limpieza',     label: 'Servicio de Limpieza', desc: 'Limpieza antes, durante y después de eventos', icon: Sparkles, color: '#14b8a6' },
   { value: 'local_eventos', label: 'Local / Sala para Eventos', desc: 'Alquiler de espacio para eventos privados', icon: Briefcase,     color: '#a3a3a3' },
 ];
@@ -216,6 +217,14 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
       ['Enseña tu material', 'Fotos reales del equipo, con marca y modelo'],
       ['Aclara qué incluye', 'Transporte, montaje, técnico o solo recogida'],
       ['Añade tus precios', 'Por día o por fin de semana, y la fianza'],
+    ],
+  },
+  navidad: {
+    title: 'Tu perfil de Especial Navidad está listo',
+    tips: [
+      ['Enseña tu personaje', 'Fotos con el vestuario completo: Rey Mago, Baltasar, Papá Noel, paje...'],
+      ['Aclara qué incluyes', 'Vestuario, tiempo de actuación, regalos y desplazamiento'],
+      ['Añade tus precios', 'Por actuación o por hora, y tus fechas libres de diciembre y enero'],
     ],
   },
   limpieza: {

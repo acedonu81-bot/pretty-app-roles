@@ -178,6 +178,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     { value: 'tecnico',       label: 'Técnico de Sonido y Montaje' },
     { value: 'alquiler',      label: 'Alquiler de Equipos (alquilas tu material)' },
     { value: 'limpieza',      label: 'Servicio de Limpieza' },
+    { value: 'navidad',       label: 'Especial Navidad' },
   ];
   const activeRoles = (selectedRoles ?? (profile.roles?.length ? profile.roles : (profile.role ? [profile.role] : [])))
     .filter(r => r && r !== 'pending');

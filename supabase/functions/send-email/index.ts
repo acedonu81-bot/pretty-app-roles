@@ -33,7 +33,7 @@ const ROL_ES: Record<string, string> = {
   event_manager: 'Encargada de Eventos', promotor: 'Promotor & RRPP',
   catering: 'Catering', makeup: 'Maquillaje', peluqueria: 'Peluquería',
   media: 'Media & Fotografía', 'grupo-musical': 'Grupo Musical', mago: 'Mago',
-  humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
+  humorista: 'Humorista', animador: 'Animador', navidad: 'Especial Navidad', bailarin: 'Bailarín',
   speaker: 'Speaker', vestuario: 'Estilismo', 'photo-booth': 'Photo Booth', 'food-truck': 'Food Truck', 'disco-movil': 'Disco Móvil',
   empresario: 'Organizador',
   tecnico: 'Técnico de Sonido y Montaje', alquiler: 'Alquiler de Equipos', local_eventos: 'Local para eventos',

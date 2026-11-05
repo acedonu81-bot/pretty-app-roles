@@ -52,7 +52,7 @@ const ROLE_GROUPS: { label: string; slugs: string[] }[] = [
   { label: 'Imagen & Media', slugs: ['fotografo', 'photo-booth', 'diseno-grafico'] },
   { label: 'Azafatas & RRPP', slugs: ['azafata', 'promotores', 'speaker', 'wedding-planner'] },
   { label: 'Belleza & Estética', slugs: ['maquillaje', 'vestuario'] },
-  { label: 'Entretenimiento', slugs: ['animador', 'mago', 'humorista', 'bailarin'] },
+  { label: 'Entretenimiento', slugs: ['animador', 'mago', 'humorista', 'bailarin', 'navidad'] },
   { label: 'Técnica & Producción', slugs: ['tecnico-sonido', 'alquiler-equipos'] },
   { label: 'Locales para eventos', slugs: ['locales-eventos'] },
 ];

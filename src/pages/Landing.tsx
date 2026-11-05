@@ -467,7 +467,7 @@ const CATEGORY_ROLES: Record<string, string[]> = {
   // alta: quedaba la última del bento y sin marca de "nuevo", como si estuviera
   // vacía, aunque al pulsarla lleva a /directorio/staff y sí hay gente.
   gastro: ['staff', 'camarero', 'catering', 'food-truck'],
-  animacion: ['animador', 'mago', 'humorista', 'bailarin'],
+  animacion: ['animador', 'mago', 'humorista', 'bailarin', 'navidad'],
   tecnica: ['tecnico', 'alquiler'],
   locales: ['local_eventos'],
 };

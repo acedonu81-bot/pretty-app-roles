@@ -131,6 +131,7 @@ const ROLE_CFG: Record<string, {
   camarero:  { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Sala & Barra',        tagline: 'El engranaje invisible del show', icon: Users },
   tecnico:   { color: '#38BDF8', glow: 'rgba(56,189,248,0.35)',   label: 'Técnico · Sonido y Montaje', tagline: 'Que todo suene como debe', icon: Music },
   alquiler:  { color: '#0EA5E9', glow: 'rgba(14,165,233,0.35)',   label: 'Alquiler de Equipos', tagline: 'El equipo que tu evento necesita', icon: Music },
+  navidad:   { color: '#DC2626', glow: 'rgba(220,38,38,0.35)',   label: 'Especial Navidad', tagline: 'La magia de la Navidad en tu evento', icon: Music },
   limpieza:  { color: '#14B8A6', glow: 'rgba(20,184,166,0.35)',   label: 'Servicio de Limpieza', tagline: 'El evento termina y todo queda impecable', icon: Music },
 };
 

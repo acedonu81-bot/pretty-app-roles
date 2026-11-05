@@ -150,6 +150,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                 { value: 'tecnico', label: 'Técnico de Sonido y Montaje' },
                 { value: 'alquiler', label: 'Alquiler de Equipos' },
                 { value: 'limpieza', label: 'Servicio de Limpieza' },
+                { value: 'navidad', label: 'Especial Navidad' },
                 { value: 'local_eventos', label: 'Locales para eventos' },
               ]}
               active={filterRole !== 'Todos'}

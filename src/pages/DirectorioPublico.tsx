@@ -253,6 +253,14 @@ export const ROLE_CONFIG: Record<string, {
     seoDesc: 'Alquiler de equipos para eventos en España: sonido, equipo de DJ, backline, luces, fotomatón, escenarios y mobiliario. Precio por día y contacto directo.',
     cta: 'Pedir disponibilidad',
   },
+  navidad: {
+    dbRole: 'navidad',
+    title: 'Especial Navidad: Reyes Magos, Baltasar y Papá Noel',
+    subtitle: 'Reyes Magos, Baltasar, Papá Noel, pajes y personajes navideños para cenas de empresa, fiestas, colegios y centros comerciales. Contacto directo con quien actúa.',
+    seoTitle: 'Contratar Reyes Magos, Baltasar y Papá Noel para eventos | XPEAK',
+    seoDesc: 'Directorio de Reyes Magos, Baltasar, Papá Noel y personajes navideños para eventos de empresa, fiestas y colegios. Precio por actuación y contacto directo.',
+    cta: 'Pedir disponibilidad',
+  },
   limpieza: {
     dbRole: 'limpieza',
     title: 'Servicios de limpieza para eventos',
@@ -307,6 +315,7 @@ export const ALL_ROLES = [
   { slug: 'tecnico-sonido', label: 'Técnicos de Sonido y Montaje' },
   { slug: 'alquiler-equipos', label: 'Alquiler de Equipos' },
   { slug: 'limpieza', label: 'Servicio de Limpieza' },
+  { slug: 'navidad', label: 'Especial Navidad' },
   { slug: 'locales-eventos', label: 'Locales para eventos' },
 ];
 
