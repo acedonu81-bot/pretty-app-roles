@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { logEvent } from '@/lib/track';
 
 /**
- * Calculadora "cuánto te queda de cada bolo" para DJs que buscan trabajo o se
+ * Calculadora "cuánto te queda de cada trabajo" para DJs que buscan trabajo o se
  * van a dar de alta. Todo se calcula en el navegador, sin guardar nada.
  * Supuestos a la vista del lector (no se esconde ninguno):
  *  - el IVA lo cobras y lo ingresas, no es tuyo;
@@ -62,15 +62,15 @@ export default function CalculadoraBoloNeto({ articlePath }: { articlePath: stri
   );
 
   return (
-    <section className="rounded-2xl p-5 sm:p-6" style={{ background: '#FBF3DD', border: '2px solid #D4AF37' }} aria-label="Calculadora de lo que te queda por bolo">
+    <section className="rounded-2xl p-5 sm:p-6" style={{ background: '#FBF3DD', border: '2px solid #D4AF37' }} aria-label="Calculadora de lo que te queda por trabajo">
       <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#8B6A00' }}>Calculadora</p>
-      <h3 className="text-lg sm:text-xl font-black mb-1" style={{ color: '#111' }}>¿Cuánto te queda de verdad de cada bolo?</h3>
+      <h3 className="text-lg sm:text-xl font-black mb-1" style={{ color: '#111' }}>¿Cuánto te queda de verdad de cada trabajo?</h3>
       <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>Cambia los números por los tuyos. Se calcula en tu navegador y no se guarda nada.</p>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mb-4">
-        {campo('cb-precio', 'Precio por bolo, sin IVA', precio, setPrecio, '€')}
-        {campo('cb-bolos', 'Bolos al mes', bolos, setBolos, 'bolos')}
-        {campo('cb-gbolo', 'Gastos por bolo (viaje, ayudante)', gastoBolo, setGastoBolo, '€')}
+        {campo('cb-precio', 'Precio por trabajo, sin IVA', precio, setPrecio, '€')}
+        {campo('cb-bolos', 'Trabajos al mes', bolos, setBolos, 'trabajos')}
+        {campo('cb-gbolo', 'Gastos por trabajo (viaje, ayudante)', gastoBolo, setGastoBolo, '€')}
         {campo('cb-gfijo', 'Gastos fijos al mes (equipo, seguro)', gastoFijo, setGastoFijo, '€')}
       </div>
 
@@ -91,7 +91,7 @@ export default function CalculadoraBoloNeto({ articlePath }: { articlePath: stri
         <div className="p-4 rounded-xl" style={{ background: '#fff', border: '1px solid rgba(122,98,22,0.25)' }}>
           <p className="text-xs font-bold mb-1" style={{ color: '#3d3d4e' }}>Facturas al mes (sin IVA)</p>
           <p className="text-2xl font-black" style={{ color: '#111' }}>{eur(facturado)}</p>
-          <p className="text-xs mt-1" style={{ color: '#3d3d4e' }}>El cliente verá {eur(p * 1.21)} por bolo con el IVA del 21 %, que no es tuyo.</p>
+          <p className="text-xs mt-1" style={{ color: '#3d3d4e' }}>El cliente verá {eur(p * 1.21)} por trabajo con el IVA del 21 %, que no es tuyo.</p>
         </div>
         <div className="p-4 rounded-xl" style={{ background: '#fff', border: '1px solid rgba(122,98,22,0.25)' }}>
           <p className="text-xs font-bold mb-1" style={{ color: '#3d3d4e' }}>Reserva para Hacienda (IRPF)</p>
@@ -101,7 +101,7 @@ export default function CalculadoraBoloNeto({ articlePath }: { articlePath: stri
         <div className="p-4 rounded-xl" style={{ background: '#ECFDF5', border: '2px solid #059669' }}>
           <p className="text-xs font-bold mb-1" style={{ color: '#065F46' }}>Te queda al mes</p>
           <p className="text-2xl font-black" style={{ color: '#065F46' }}>{rendimiento < 0 ? `-${eur(-rendimiento)}` : eur(neto)}</p>
-          <p className="text-xs mt-1" style={{ color: '#065F46' }}>{b > 0 && rendimiento > 0 ? `Unos ${eur(neto / b)} por bolo.` : 'Con estos números pierdes dinero.'}</p>
+          <p className="text-xs mt-1" style={{ color: '#065F46' }}>{b > 0 && rendimiento > 0 ? `Unos ${eur(neto / b)} por trabajo.` : 'Con estos números pierdes dinero.'}</p>
         </div>
       </div>
 
@@ -113,7 +113,7 @@ export default function CalculadoraBoloNeto({ articlePath }: { articlePath: stri
           <span className="text-sm" style={{ color: '#3d3d4e' }}>€ al mes</span>
         </div>
         <p className="text-sm" style={{ color: '#111' }}>
-          Con {b} {b === 1 ? 'bolo' : 'bolos'} al mes, tu bolo no puede bajar de <strong>{eur(minimo)}</strong> sin IVA.
+          Con {b} {b === 1 ? 'trabajo' : 'trabajos'} al mes, tu precio por trabajo no puede bajar de <strong>{eur(minimo)}</strong> sin IVA.
         </p>
       </div>
 

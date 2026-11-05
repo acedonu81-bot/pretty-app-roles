@@ -15,14 +15,14 @@ import { usePrecioReal } from '@/lib/precioReal';
 const PATH = '/blog/como-conseguir-bolos-dj';
 const TITULO = 'Cómo encontrar trabajo de DJ en España: dónde se contrata de verdad';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: TITULO, description: 'Salas, eventos privados y promotoras: los tres mercados donde se contrata a un DJ en España, cómo entra uno en cada uno, cuánto te queda por bolo y un plan de 30 días.', datePublished: '2026-06-02', dateModified: '2026-11-05', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: `https://xpeak.es${PATH}` };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: TITULO, description: 'Salas, eventos privados y promotoras: los tres mercados donde se contrata a un DJ en España, cómo entra uno en cada uno, cuánto te queda por trabajo y un plan de 30 días.', datePublished: '2026-06-02', dateModified: '2026-11-05', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: `https://xpeak.es${PATH}` };
 
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Dónde se busca trabajo de DJ en España?', acceptedAnswer: { '@type': 'Answer', text: 'Hay tres sitios distintos. En salas y bares, escribiendo al programador o al dueño del local con un mix y yendo en persona. En eventos privados (bodas, comuniones, cumpleaños, empresas), siendo fácil de encontrar en Google, Instagram o plataformas como XPEAK y estando en la lista de proveedores de wedding planners, fincas y catering. En promotoras y festivales, por recomendación y con público demostrable. Para un primer bolo pagado, los eventos privados suelen ser el camino más corto.' } },
+  { '@type': 'Question', name: '¿Dónde se busca trabajo de DJ en España?', acceptedAnswer: { '@type': 'Answer', text: 'Hay tres sitios distintos. En salas y bares, escribiendo al programador o al dueño del local con un mix y yendo en persona. En eventos privados (bodas, comuniones, cumpleaños, empresas), siendo fácil de encontrar en Google, Instagram o plataformas como XPEAK y estando en la lista de proveedores de wedding planners, fincas y catering. En promotoras y festivales, por recomendación y con público demostrable. Para un primer trabajo pagado, los eventos privados suelen ser el camino más corto.' } },
   { '@type': 'Question', name: '¿Necesito experiencia para empezar a trabajar de DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Para cumpleaños, comuniones y fiestas privadas pequeñas no hace falta un currículum largo, pero sí un escaparate: un mix de 30 a 45 minutos, un vídeo corto en una pista real y tu tarifa a la vista. Las salas valoran sobre todo que no la líes: puntualidad, ajustar el estilo a la noche y no vaciar la pista.' } },
-  { '@type': 'Question', name: '¿Cuánto tardo en conseguir mi primer bolo pagado?', acceptedAnswer: { '@type': 'Answer', text: 'No hay un plazo garantizado: depende de tu ciudad, del mercado que elijas y de lo preparado que tengas el escaparate. Lo que sí se puede decir es que con perfil, mix, vídeo y tarifa listos y contactando cada semana, los eventos privados pequeños suelen responder antes que las salas.' } },
+  { '@type': 'Question', name: '¿Cuánto tardo en conseguir mi primer trabajo pagado?', acceptedAnswer: { '@type': 'Answer', text: 'No hay un plazo garantizado: depende de tu ciudad, del mercado que elijas y de lo preparado que tengas el escaparate. Lo que sí se puede decir es que con perfil, mix, vídeo y tarifa listos y contactando cada semana, los eventos privados pequeños suelen responder antes que las salas.' } },
   { '@type': 'Question', name: '¿Tengo que ser autónomo para cobrar como DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Si cobras de forma habitual, sí: tienes que darte de alta en Hacienda y en la Seguridad Social y emitir factura. Las empresas y muchos organizadores no contratan sin factura. Tienes el paso a paso en nuestra guía de cómo darse de alta como DJ.' } },
-  { '@type': 'Question', name: '¿Cuánto cobra un DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del tipo de evento, las horas, el equipo y la ciudad, así que ninguna cifra única es fiable. En XPEAK cada DJ publica su tarifa en su perfil y en este artículo se muestra el rango real de los DJs que ya la han puesto. Antes de fijar la tuya, calcula cuánto te queda de cada bolo después de la cuota de autónomo y el IRPF.' } },
+  { '@type': 'Question', name: '¿Cuánto cobra un DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del tipo de evento, las horas, el equipo y la ciudad, así que ninguna cifra única es fiable. En XPEAK cada DJ publica su tarifa en su perfil y en este artículo se muestra el rango real de los DJs que ya la han puesto. Antes de fijar la tuya, calcula cuánto te queda de cada trabajo después de la cuota de autónomo y el IRPF.' } },
   { '@type': 'Question', name: '¿Sirve de algo tener perfil en una plataforma como XPEAK?', acceptedAnswer: { '@type': 'Answer', text: 'En XPEAK tu perfil reúne tus sets, fotos, reseñas y tarifa en un solo enlace, y quien organiza un evento puede encontrarte y pedirte presupuesto con contrato digital. No sustituye a moverte tú, pero te da un sitio fijo al que mandar a cualquiera que te pregunte.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Trabajo de DJ en España', item: `https://xpeak.es${PATH}` }] };
@@ -42,7 +42,7 @@ const MERCADOS = [
     entras: 'Te encuentran en Google, Instagram o una plataforma, o te recomienda un planner, una finca o un catering.',
     miran: 'Fotos y vídeo de eventos reales, reseñas, precio claro, que contestes rápido.',
     cobras: 'Señal al reservar y el resto el día del evento o con factura.',
-    nivel: 'El más corto para un primer bolo pagado. Aquí compites con confianza, no solo con precio.',
+    nivel: 'El más corto para un primer trabajo pagado. Aquí compites con confianza, no solo con precio.',
   },
   {
     nombre: 'Promotoras y festivales',
@@ -68,10 +68,10 @@ export default function BlogConseguirBolosDJ() {
     <>
       <Helmet>
         <title>Trabajo de DJ en España 2026: cómo encontrarlo | XPEAK</title>
-        <meta name="description" content="Dónde buscar trabajo de DJ: salas, eventos privados y promotoras. Cómo se contrata en cada mercado, cuánto te queda por bolo y un plan de 30 días." />
+        <meta name="description" content="Dónde buscar trabajo de DJ: salas, eventos privados y promotoras. Cómo se contrata en cada mercado, cuánto te queda por trabajo y un plan de 30 días." />
         <link rel="canonical" href={`https://xpeak.es${PATH}`} />
         <meta property="og:title" content="Cómo encontrar trabajo de DJ en España (2026) | XPEAK" />
-        <meta property="og:description" content="Los tres mercados donde se contrata a un DJ, qué mira cada uno, una calculadora de lo que te queda por bolo y un plan de 30 días." />
+        <meta property="og:description" content="Los tres mercados donde se contrata a un DJ, qué mira cada uno, una calculadora de lo que te queda por trabajo y un plan de 30 días." />
         <meta property="og:url" content={`https://xpeak.es${PATH}`} />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -124,7 +124,7 @@ export default function BlogConseguirBolosDJ() {
                 ))}
               </div>
               <p className="text-sm leading-relaxed mt-5 max-w-3xl" style={{ color: '#222' }}>
-                <strong>Mi recomendación si empiezas:</strong> los eventos privados primero. Decide una sola persona y está buscando activamente, así que es donde antes se cierra un primer bolo pagado. Las salas, en paralelo, para tocar y crecer. Las promotoras, cuando ya tengas con qué llamar a su puerta.
+                <strong>Mi recomendación si empiezas:</strong> los eventos privados primero. Decide una sola persona y está buscando activamente, así que es donde antes se cierra un primer trabajo pagado. Las salas, en paralelo, para tocar y crecer. Las promotoras, cuando ya tengas con qué llamar a su puerta.
               </p>
             </section>
 
@@ -167,7 +167,7 @@ export default function BlogConseguirBolosDJ() {
 
             <section>
               <h2 className="text-2xl font-black mb-2">Plan de 30 días</h2>
-              <p className="text-sm mb-5 max-w-3xl" style={{ color: '#3d3d4e' }}>No te prometo un bolo en un mes. Sí que al acabarlo sabrás qué mercado te responde y cuál no, que es lo que de verdad te ahorra meses.</p>
+              <p className="text-sm mb-5 max-w-3xl" style={{ color: '#3d3d4e' }}>No te prometo un trabajo en un mes. Sí que al acabarlo sabrás qué mercado te responde y cuál no, que es lo que de verdad te ahorra meses.</p>
               <ol className="space-y-3">
                 {SEMANAS.map((s) => (
                   <li key={s.n} className="flex gap-4 p-5 rounded-2xl" style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.45)' }}>

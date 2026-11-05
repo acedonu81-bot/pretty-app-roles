@@ -1158,7 +1158,7 @@ const ROUTES = [
   {
     path: '/blog/como-conseguir-bolos-dj',
     title: 'Trabajo de DJ en España 2026: cómo encontrarlo | XPEAK',
-    desc: 'Dónde buscar trabajo de DJ: salas, eventos privados y promotoras. Cómo se contrata en cada mercado, cuánto te queda por bolo y un plan de 30 días.',
+    desc: 'Dónde buscar trabajo de DJ: salas, eventos privados y promotoras. Cómo se contrata en cada mercado, cuánto te queda por trabajo y un plan de 30 días.',
     ogTitle: 'Cómo encontrar trabajo de DJ en España (2026) | XPEAK',
     ogDesc: 'Los tres mercados donde se contrata a un DJ, qué mira cada uno, una calculadora de lo que te queda por bolo y un plan de 30 días.',
     ogType: 'article',
@@ -1166,7 +1166,7 @@ const ROUTES = [
   {
     path: '/blog/darse-de-alta-como-dj-autonomo',
     title: 'Darse de alta como DJ autónomo 2026: paso a paso | XPEAK',
-    desc: 'Cómo darte de alta como DJ: Hacienda, Seguridad Social, tarifa plana de 80 €, IVA, retención de IRPF, qué lleva una factura y cuánto te queda por bolo.',
+    desc: 'Cómo darte de alta como DJ: Hacienda, Seguridad Social, tarifa plana de 80 €, IVA, retención de IRPF, qué lleva una factura y cuánto te queda por trabajo.',
     ogTitle: 'Cómo darse de alta como DJ en España (2026) | XPEAK',
     ogDesc: 'Paso a paso con Hacienda y Seguridad Social, tarifa plana, IVA, IRPF, facturas y una calculadora de lo que te queda por bolo.',
     ogType: 'article',

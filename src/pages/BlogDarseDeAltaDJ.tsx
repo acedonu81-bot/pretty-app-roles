@@ -11,7 +11,7 @@ import CalculadoraBoloNeto from '@/components/CalculadoraBoloNeto';
 const PATH = '/blog/darse-de-alta-como-dj-autonomo';
 const TITULO = 'Cómo darse de alta como DJ en España (2026): autónomo, IAE, IVA y facturas';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: TITULO, description: 'Paso a paso para darte de alta como DJ: Hacienda, Seguridad Social, tarifa plana de 80 euros, IVA, retención de IRPF, qué lleva una factura y cuánto te queda por bolo.', datePublished: '2026-11-05', dateModified: '2026-11-05', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: `https://xpeak.es${PATH}` };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: TITULO, description: 'Paso a paso para darte de alta como DJ: Hacienda, Seguridad Social, tarifa plana de 80 euros, IVA, retención de IRPF, qué lleva una factura y cuánto te queda por trabajo.', datePublished: '2026-11-05', dateModified: '2026-11-05', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: `https://xpeak.es${PATH}` };
 
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Es obligatorio ser autónomo para trabajar de DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Si cobras de forma habitual por pinchar, sí: hay que darse de alta en Hacienda (modelo 036 o 037) y en el Régimen de Autónomos de la Seguridad Social, y emitir factura por cada trabajo. Si es algo puntual y muy esporádico, la situación es distinta y conviene consultarlo con una gestoría antes de cobrar.' } },
@@ -19,7 +19,7 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
   { '@type': 'Question', name: '¿Qué IVA lleva la factura de un DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Lo habitual es el tipo general del 21 %. Hay casos en los que se aplica otro tipo, por ejemplo según quién contrate o el tipo de espectáculo, así que si facturas a una promotora o a una sala confírmalo con tu gestoría la primera vez.' } },
   { '@type': 'Question', name: '¿Tengo que aplicar retención de IRPF en mis facturas?', acceptedAnswer: { '@type': 'Answer', text: 'Cuando facturas a una empresa o a un profesional, normalmente sí: el 15 % con carácter general, y el 7 % durante el año de inicio de la actividad y los dos siguientes. Cuando facturas a un particular no se aplica retención. Las retenciones que te aplican se descuentan después de lo que debes a Hacienda.' } },
   { '@type': 'Question', name: '¿Cuándo hay que presentar los impuestos?', acceptedAnswer: { '@type': 'Answer', text: 'Cada trimestre, el IVA (modelo 303) y el pago fraccionado del IRPF (modelo 130), hasta el día 20 de abril, julio y octubre y hasta el 30 de enero para el cuarto trimestre. Comprueba siempre el calendario vigente en la Agencia Tributaria.' } },
-  { '@type': 'Question', name: '¿Cuándo me conviene darme de alta si todavía no tengo bolos?', acceptedAnswer: { '@type': 'Answer', text: 'Cuando tengas el primer trabajo cerrado o a punto de cerrarse. La tarifa plana de 12 meses corre desde la fecha de alta, y no se puede pedir con alta retroactiva, así que darte de alta meses antes de ingresar nada consume meses de tarifa sin ingresos.' } },
+  { '@type': 'Question', name: '¿Cuándo me conviene darme de alta si todavía no tengo ningún trabajo?', acceptedAnswer: { '@type': 'Answer', text: 'Cuando tengas el primer trabajo cerrado o a punto de cerrarse. La tarifa plana de 12 meses corre desde la fecha de alta, y no se puede pedir con alta retroactiva, así que darte de alta meses antes de ingresar nada consume meses de tarifa sin ingresos.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Darse de alta como DJ', item: `https://xpeak.es${PATH}` }] };
 
@@ -34,7 +34,7 @@ const PASOS = [
 const ERRORES = [
   ['Cobrar en mano de forma regular', 'Funciona hasta que contratas con una empresa, una finca o un evento con contrato: todos piden factura. Y si trabajas de forma habitual, te expone a problemas con Hacienda.'],
   ['Gastarte el IVA y el IRPF', 'El 21 % que cobras de IVA no es tuyo, y una parte de lo que ganas tampoco. Aparta ese dinero el mismo día que cobras, en otra cuenta si hace falta.'],
-  ['Darte de alta demasiado pronto', 'La tarifa plana de 12 meses empieza a contar el día del alta. Si te das de alta tres meses antes de tu primer bolo, has pagado tres meses sin ingresos.'],
+  ['Darte de alta demasiado pronto', 'La tarifa plana de 12 meses empieza a contar el día del alta. Si te das de alta tres meses antes de tu primer trabajo, has pagado tres meses sin ingresos.'],
   ['No mirar qué pasará cuando acabe la tarifa plana', 'Después cotizas según tus ingresos reales y la cuota mínima ronda los 200 euros al mes según las guías. Consulta la tabla vigente en la Seguridad Social para tus ingresos y calcula tus tarifas pensando en eso.'],
   ['Cerrar un bolo sin señal ni contrato', 'No es un tema fiscal, pero te protege del cliente que cancela dos días antes. Mira qué debe incluir un contrato de DJ antes de tu primera reserva.'],
 ];
@@ -54,10 +54,10 @@ export default function BlogDarseDeAltaDJ() {
     <>
       <Helmet>
         <title>Darse de alta como DJ autónomo 2026: paso a paso | XPEAK</title>
-        <meta name="description" content="Cómo darte de alta como DJ: Hacienda, Seguridad Social, tarifa plana de 80 €, IVA, retención de IRPF, qué lleva una factura y cuánto te queda por bolo." />
+        <meta name="description" content="Cómo darte de alta como DJ: Hacienda, Seguridad Social, tarifa plana de 80 €, IVA, retención de IRPF, qué lleva una factura y cuánto te queda por trabajo." />
         <link rel="canonical" href={`https://xpeak.es${PATH}`} />
         <meta property="og:title" content="Cómo darse de alta como DJ en España (2026) | XPEAK" />
-        <meta property="og:description" content="Paso a paso con Hacienda y Seguridad Social, tarifa plana, IVA, IRPF, facturas y una calculadora de lo que te queda por bolo." />
+        <meta property="og:description" content="Paso a paso con Hacienda y Seguridad Social, tarifa plana, IVA, IRPF, facturas y una calculadora de lo que te queda por trabajo." />
         <meta property="og:url" content={`https://xpeak.es${PATH}`} />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -85,7 +85,7 @@ export default function BlogDarseDeAltaDJ() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Para DJs · XPEAK Blog</p>
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight mb-5">Cómo darse de alta como DJ en España: autónomo, IAE, IVA y facturas</h1>
             <p className="text-base sm:text-lg leading-relaxed max-w-3xl" style={{ color: '#3d3d4e' }}>
-              Antes de cobrar tu primer bolo hay un trámite que casi nadie explica con claridad. No es difícil, pero hay un par de decisiones que te cuestan dinero si las tomas mal. Aquí va el recorrido entero, con las cifras de 2026 y las dudas que las guías no resuelven.
+              Antes de cobrar tu primer trabajo hay un trámite que casi nadie explica con claridad. No es difícil, pero hay un par de decisiones que te cuestan dinero si las tomas mal. Aquí va el recorrido entero, con las cifras de 2026 y las dudas que las guías no resuelven.
             </p>
             <time className="text-xs mt-4 block" style={{ color: '#666' }}>Actualizado el 5 de noviembre de 2026</time>
           </header>
@@ -99,7 +99,7 @@ export default function BlogDarseDeAltaDJ() {
                 <li><strong>IVA:</strong> lo habitual es el 21 %. Lo cobras al cliente y lo ingresas tú, no es tuyo.</li>
                 <li><strong>IRPF:</strong> si facturas a una empresa, retención del 15 %, o del 7 % el año de alta y los dos siguientes. A particulares, sin retención.</li>
                 <li><strong>Cada trimestre:</strong> modelo 303 (IVA) y modelo 130 (IRPF). Hasta el 20 de abril, julio y octubre, y el 30 de enero.</li>
-                <li><strong>El truco:</strong> date de alta cuando tengas el primer bolo cerrado, no antes. La tarifa plana corre desde el alta.</li>
+                <li><strong>El truco:</strong> date de alta cuando tengas el primer trabajo cerrado, no antes. La tarifa plana corre desde el alta.</li>
               </ul>
             </section>
 
@@ -144,7 +144,7 @@ export default function BlogDarseDeAltaDJ() {
             <section>
               <h2 className="text-2xl font-black mb-2">Una factura, con números</h2>
               <p className="text-sm sm:text-base leading-relaxed mb-5 max-w-3xl" style={{ color: '#222' }}>
-                Ejemplo ilustrativo: un bolo de {e(BASE)} más IVA del 21 %. Lo que acaba cobrando el DJ en el banco cambia según quién le contrata.
+                Ejemplo ilustrativo: una actuación de {e(BASE)} más IVA del 21 %. Lo que acaba cobrando el DJ en el banco cambia según quién le contrata.
               </p>
               <div className="overflow-x-auto rounded-2xl" style={{ border: '1px solid rgba(212,175,55,0.45)' }}>
                 <table className="w-full text-sm" style={{ borderCollapse: 'collapse' }}>
