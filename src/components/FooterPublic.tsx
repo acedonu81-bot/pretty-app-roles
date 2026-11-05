@@ -25,6 +25,7 @@ const FOOTER_LINKS = {
     { label: 'Contratar Food Truck', href: '/contratar-food-truck' },
     { label: 'Disco Móvil', href: '/contratar-disco-movil' },
     { label: 'Promotores', href: '/contratar-promotores' },
+    { label: 'Especial Navidad', href: '/navidad' },
   ],
   blog: [
     { label: 'Cuánto cobra un DJ', href: '/blog/cuanto-cobra-un-dj-en-espana' },

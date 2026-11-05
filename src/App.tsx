@@ -38,6 +38,7 @@ const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
 const CityLanding = lazy(() => import("./pages/CityLanding"));
 const OccasionLanding = lazy(() => import("./pages/OccasionLanding"));
 const Descubrir = lazy(() => import("./pages/Descubrir"));
+const NavidadLanding = lazy(() => import("./pages/NavidadLanding"));
 const CategoryLanding = lazy(() => import("./pages/CategoryLanding"));
 const BlogDJPrecio = lazy(() => import("./pages/BlogDJPrecio"));
 const BlogMejoresPlataformasContratarDJ = lazy(() => import("./pages/BlogMejoresPlataformasContratarDJ"));
@@ -465,6 +466,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={isNative ? <NativeRootRedirect /> : <Landing />} />
             <Route path="/descubrir" element={<Descubrir />} />
+            <Route path="/navidad" element={<NavidadLanding />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/privacidad" element={<Privacidad />} />

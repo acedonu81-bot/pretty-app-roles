@@ -219,11 +219,12 @@ function staticUrls(today, indexableCities, cityContentDates) {
 
   // Directorio público — páginas core de producto
   lines.push('\n  <!-- Directorio público -->');
-  const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','food-truck','disco-movil','wedding-planner','diseno-grafico','tecnico-sonido','alquiler-equipos','djs-emergentes','locales-eventos'];
+  const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','food-truck','disco-movil','wedding-planner','diseno-grafico','tecnico-sonido','alquiler-equipos','djs-emergentes','locales-eventos','navidad'];
   for (const s of dirSlugs) {
     lines.push(url(`https://xpeak.es/directorio/${s}`, directorioDate, 'daily', '0.9'));
   }
 
+  lines.push(url('https://xpeak.es/navidad', directorioDate, 'daily', '0.9'));
   lines.push(url('https://xpeak.es/socials', directorioDate, 'daily', '0.8'));
 
   // City landings — todas las capitales de provincia + grandes ciudades de España

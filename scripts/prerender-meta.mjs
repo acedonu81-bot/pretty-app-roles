@@ -396,6 +396,7 @@ const ROUTES = [
   // enlaces (detectado el 21 sep vía mail-tester al enlazarla desde un email)
   // la trataban como página inexistente aunque el contenido cargase bien en
   // el navegador.
+  { path: '/navidad', title: 'Especial Navidad: Reyes Magos, Papá Noel, DJs, sonido y luces para tu evento | XPEAK', desc: 'Todo para una cena de empresa o fiesta de Navidad en España: Reyes Magos, Baltasar y Papá Noel, DJs, alquiler de sonido e iluminación, catering, camareros, photo booth y más. Perfiles reales y contacto directo.', ogTitle: 'Especial Navidad: personal y servicios para tu evento | XPEAK', ogDesc: 'Reyes Magos, Papá Noel, DJs, sonido, luces y catering para tu cena de empresa o fiesta de Navidad.', ogType: 'website' },
   { path: '/descubrir', title: 'Descubre profesionales para tu evento | XPEAK', desc: 'Directorio de DJs, camareros, fotógrafos y más profesionales para eventos en España. Compara perfiles verificados y contrata desde un mismo carrito.', ogTitle: 'Descubre profesionales para tu evento | XPEAK', ogDesc: 'Directorio de profesionales para eventos en España: DJs, camareros, fotógrafos y más.', ogType: 'website' },
   // Página pública de baja de emails, enlazada desde el footer de TODOS los
   // correos del sistema (List-Unsubscribe). Mismo bug que /descubrir: sin
