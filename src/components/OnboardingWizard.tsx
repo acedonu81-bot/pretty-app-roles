@@ -223,6 +223,7 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
     title: 'Tu perfil de Especial Navidad está listo',
     tips: [
       ['Enseña tu personaje', 'Fotos con el vestuario completo: Rey Mago, Baltasar, Papá Noel, paje...'],
+      ['Indica tu altura', 'Marca tu tramo de altura en tus etiquetas: quien contrata Reyes Magos la pide siempre'],
       ['Aclara qué incluyes', 'Vestuario, tiempo de actuación, regalos y desplazamiento'],
       ['Añade tus precios', 'Por actuación o por hora, y tus fechas libres de diciembre y enero'],
     ],

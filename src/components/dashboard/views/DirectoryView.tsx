@@ -32,6 +32,11 @@ interface DirectoryViewProps {
   onNavigate?: (view: string) => void;
   onMessage?: (userId: string, name: string) => void;
   wideCards?: boolean;
+  // Separa el listado en bloques, uno debajo de otro, segun las etiquetas del
+  // perfil (genres). Un perfil sale en cada bloque cuyas etiquetas tenga; los
+  // que no encajan en ninguno van a 'otrosTitulo'. Los bloques vacios se ven.
+  secciones?: { titulo: string; tags: string[] }[];
+  otrosTitulo?: string;
   searchQuery?: string;
   onViewProfile?: (profile: Profile, seccion?: 'resenas') => void;
   // Emergentes: 'only' filtra solo perfiles marcados como emergente (para el
@@ -234,7 +239,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
     };});
 }
 
-const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile, experienceLevel }: DirectoryViewProps) => {
+const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wideCards, secciones, otrosTitulo, searchQuery, onViewProfile, experienceLevel }: DirectoryViewProps) => {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   // El botón de Flash Booking era estático: con una reserva u oferta nueva no
   // cambiaba y solo avisaban el globo del sidebar y la campana. Mismo
@@ -692,12 +697,39 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         </div>
       )}
 
+      {secciones ? (
+        <div className="space-y-8">
+          {(() => {
+            const tieneTag = (p: Profile, tags: string[]) => ((p.badges ?? []) as string[]).some(b => tags.includes(b));
+            const todas = secciones.flatMap(sec => sec.tags);
+            const bloques = secciones.map(sec => ({ titulo: sec.titulo, perfiles: filteredProfiles.filter(p => tieneTag(p, sec.tags)) }));
+            const otros = filteredProfiles.filter(p => !tieneTag(p, todas));
+            if (otros.length > 0) bloques.push({ titulo: otrosTitulo ?? 'Otros', perfiles: otros });
+            return bloques.map(b => (
+              <section key={b.titulo}>
+                <h2 className="mb-3 text-sm font-semibold" style={{ color: '#0a0908' }}>{b.titulo}</h2>
+                {b.perfiles.length > 0 ? (
+                  <div className={gridClass}>
+                    {b.perfiles.map(p => (
+                      <ProfileCard key={`${b.titulo}-${p.id}`} profile={p} showPortfolio={wideCards} onMessage={onMessage}
+                        onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs" style={{ color: 'rgba(10,9,8,0.55)' }}>Aún sin perfiles en esta categoría.</p>
+                )}
+              </section>
+            ));
+          })()}
+        </div>
+      ) : (
       <div className={gridClass}>
         {filteredProfiles.map(p => (
           <ProfileCard key={p.id} profile={p} showPortfolio={wideCards} onMessage={onMessage}
             onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
         ))}
       </div>
+      )}
 
       {role === 'dj' && (
         <div className="mt-6">
