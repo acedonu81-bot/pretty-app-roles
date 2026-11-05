@@ -30,7 +30,7 @@ const CONFIG: Record<RolPrimerPaso, {
   limpieza: { oficio: 'empresas de limpieza', roles: ['limpieza'], servicio: 'Limpieza', registro: '/auth?mode=register&role=limpieza', contratar: 'empresas de limpieza', ejemplo: '20' },
 };
 
-export default function BlogPrimerPaso({ rol, articlePath }: { rol: RolPrimerPaso; articlePath: string }) {
+export default function BlogPrimerPaso({ rol, articlePath, soloPro = false }: { rol: RolPrimerPaso; articlePath: string; soloPro?: boolean }) {
   const c = CONFIG[rol];
   const st = usePrecioReal(c.roles);
   const [pedir, setPedir] = useState(false);
@@ -68,8 +68,8 @@ export default function BlogPrimerPaso({ rol, articlePath }: { rol: RolPrimerPas
   }
 
   return (
-    <section className="my-5 grid gap-3 sm:grid-cols-2" aria-label="Primer paso">
-      <div className="p-4 rounded-2xl" style={{ background: '#FBF3DD', border: '2px solid #D4AF37' }}>
+    <section className={`my-5 grid gap-3 ${soloPro ? '' : 'sm:grid-cols-2'}`} aria-label="Primer paso">
+      {!soloPro && <div className="p-4 rounded-2xl" style={{ background: '#FBF3DD', border: '2px solid #D4AF37' }}>
         <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#8B6A00' }}>Voy a contratar</p>
         <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>
           Cuéntanos tu fecha y se lo mandamos a {c.contratar} de XPEAK. Sin crear cuenta.
@@ -80,7 +80,7 @@ export default function BlogPrimerPaso({ rol, articlePath }: { rol: RolPrimerPas
           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#1a1405' }}>
           <Send size={15} /> Pedir para mi fecha
         </button>
-      </div>
+      </div>}
 
       <div className="p-4 rounded-2xl" style={{ background: '#FFFFFF', border: '2px solid #D4AF37' }}>
         <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#8B6A00' }}>Soy profesional</p>

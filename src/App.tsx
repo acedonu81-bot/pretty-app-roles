@@ -325,6 +325,7 @@ const BlogDJBodaBarcelona = lazy(() => import("./pages/BlogDJBodaBarcelona"));
 const BlogDJBodaValencia = lazy(() => import("./pages/BlogDJBodaValencia"));
 const BlogFotografoComunionMadrid = lazy(() => import("./pages/BlogFotografoComunionMadrid"));
 const BlogConseguirBolosDJ = lazy(() => import("./pages/BlogConseguirBolosDJ"));
+const BlogDarseDeAltaDJ = lazy(() => import("./pages/BlogDarseDeAltaDJ"));
 const BlogTrabajarCamareroEventos = lazy(() => import("./pages/BlogTrabajarCamareroEventos"));
 const BlogEmpezarDJPrincipiante = lazy(() => import("./pages/BlogEmpezarDJPrincipiante"));
 const BlogTrabajarAzafataEventos = lazy(() => import("./pages/BlogTrabajarAzafataEventos"));
@@ -848,6 +849,7 @@ const App = () => (
             <Route path="/blog/dj-bodas-valencia" element={<BlogDJBodaValencia />} />
             <Route path="/blog/fotografo-comunion-madrid" element={<BlogFotografoComunionMadrid />} />
             <Route path="/blog/como-conseguir-bolos-dj" element={<BlogConseguirBolosDJ />} />
+            <Route path="/blog/darse-de-alta-como-dj-autonomo" element={<BlogDarseDeAltaDJ />} />
             <Route path="/blog/como-trabajar-de-camarero-eventos" element={<BlogTrabajarCamareroEventos />} />
             <Route path="/blog/como-empezar-dj-eventos-principiante" element={<BlogEmpezarDJPrincipiante />} />
             <Route path="/blog/como-trabajar-de-azafata-de-eventos" element={<BlogTrabajarAzafataEventos />} />
