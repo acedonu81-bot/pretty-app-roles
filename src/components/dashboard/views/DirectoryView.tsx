@@ -77,7 +77,7 @@ const FOOD_TRUCK_FILTROS: { label: string; terms: string[] }[] = [
   { label: 'Generador propio', terms: ['generador propio'] },
 ];
 
-async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterRegion: string, experienceLevel?: 'only' | 'exclude'): Promise<Profile[]> {
+export async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterRegion: string, experienceLevel?: 'only' | 'exclude'): Promise<Profile[]> {
   // Expandir los alias legacy: sin esto, el directorio de 'staff' del dashboard
   // se saltaba a los perfiles con role='camarero' (el rol retirado equivalente),
   // y lo mismo con makeup/peluqueria. Se veian 6 camareros de 7, faltando

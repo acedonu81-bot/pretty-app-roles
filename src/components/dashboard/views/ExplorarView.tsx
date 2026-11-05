@@ -117,7 +117,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
   },
 ];
 
-const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombre: string; gancho: string; nuevo?: boolean }; onNavigate?: (v: string) => void }) => (
+export const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombre: string; gancho: string; nuevo?: boolean }; onNavigate?: (v: string) => void }) => (
   <div className="group relative">
     <button
       type="button"
