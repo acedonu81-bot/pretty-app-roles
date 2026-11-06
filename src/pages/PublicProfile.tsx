@@ -811,7 +811,7 @@ const PublicProfile = () => {
 
             <motion.div variants={fadeUp}>
               {/* Role badge + seguir + compartir */}
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
                 <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                   style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
                   {roleLabel[profile.role] ?? profile.role}

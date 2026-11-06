@@ -170,7 +170,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         )}
 
         {/* Badges top-left — single most-relevant badge on mobile, full set on desktop */}
-        <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
+        <div className={`absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10 ${realProfileId && currentUser.user_id && currentUser.user_id !== realProfileId ? 'right-[6.5rem]' : 'right-2.5'}`}>
           {/* Mobile: only ONE badge, priority Disponible > Pro > Nuevo */}
           <span className="sm:hidden">
             {p.isFlashActive ? (

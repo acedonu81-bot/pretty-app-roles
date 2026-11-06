@@ -206,6 +206,13 @@ body.is-native-app .clay-btn-primary {
     overflow: visible !important;
     padding-bottom: 0.1em;
   }
+  /* Esto anulaba line-clamp en CUALQUIER texto con leading-snug/tight (6 nov
+     2026): el comentario de un comunicado se salia de su burbuja y pisaba el
+     "Me gusta" y el campo de escribir. Si pide limite de lineas, se recorta. */
+  :is(.leading-tight, .leading-none, .leading-snug):is(.line-clamp-1, .line-clamp-2, .line-clamp-3, .line-clamp-4, .line-clamp-5, .line-clamp-6, .truncate) {
+    overflow: hidden !important;
+    padding-bottom: 0 !important;
+  }
 
   /* Prevenir corte de descenders (g, y, j, p, q) en cualquier texto */
   * {

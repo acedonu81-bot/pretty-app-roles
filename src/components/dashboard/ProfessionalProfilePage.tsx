@@ -289,6 +289,19 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
   const [showContract, setShowContract] = useState(false);
   const [imgError, setImgError] = useState(false);
   const [isSmallPhoto, setIsSmallPhoto] = useState(false);
+  // Proporcion real de la foto + tamano de ventana: el hero es apaisado, y una
+  // foto cuadrada o vertical con object-cover pierde la cara. Si el recorte
+  // seria grande, se muestra entera (contain) sobre su propio fondo difuminado.
+  const [fotoRatio, setFotoRatio] = useState<number | null>(null);
+  const [ventana, setVentana] = useState(() => ({ w: typeof window !== 'undefined' ? window.innerWidth : 1200, h: typeof window !== 'undefined' ? window.innerHeight : 800 }));
+  useEffect(() => {
+    const f = () => setVentana({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener('resize', f);
+    return () => window.removeEventListener('resize', f);
+  }, []);
+  const heroAlto = Math.min(520, Math.max(360, ventana.h * 0.52));
+  const heroRatio = ventana.w / heroAlto;
+  const fotoEntera = isSmallPhoto || (fotoRatio !== null && fotoRatio < heroRatio * 0.85);
   const [tab, setTab] = useState<'overview' | 'media' | 'contact'>('overview');
   const scrollRef = useRef<HTMLDivElement>(null);
   const resenasRef = useRef<HTMLDivElement>(null);
@@ -521,12 +534,13 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{ filter: 'blur(28px) saturate(1.15)', transform: 'scale(1.15)' }} />
                 <img src={p.photo} alt={p.name}
-                  className={isSmallPhoto ? 'absolute inset-0 w-full h-full object-contain' : 'absolute inset-0 w-full h-full object-cover'}
-                  style={isSmallPhoto ? undefined : { objectPosition: '50% 30%' }}
+                  className={fotoEntera ? 'absolute inset-0 w-full h-full object-contain' : 'absolute inset-0 w-full h-full object-cover'}
+                  style={fotoEntera ? undefined : { objectPosition: '50% 30%' }}
                   ref={ajustarFotoCaptura}
                   onLoad={e => {
                     const img = e.currentTarget;
                     ajustarFotoCaptura(img);
+                    if (img.naturalWidth && img.naturalHeight) setFotoRatio(img.naturalWidth / img.naturalHeight);
                     // Por debajo de 600px de ancho real, ampliar a todo el hero
                     // destroza la imagen: se muestra contenida sobre el fondo.
                     if (img.naturalWidth && img.naturalWidth < 600) setIsSmallPhoto(true);
@@ -547,7 +561,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.92) 100%)' }} />
 
             {/* Role pill + compartir + LIVE */}
-            <div className="absolute top-5 left-5 flex items-center gap-1.5">
+            <div className="absolute left-5 flex flex-wrap items-center gap-1.5 pr-20" style={{ top: 'calc(env(safe-area-inset-top, 0px) + 4.5rem)' }}>
               <span className="text-xs font-black px-3 py-1 rounded-full"
                 style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
                 {cfg.label}
