@@ -660,7 +660,7 @@ const Landing = () => {
           DevTools). En dev (sin prerender) el navegador simplemente descubre
           el poster un poco más tarde vía el propio <video poster>, sin preload
           — no hay forma de adelantarlo sin HTML estático real. */}
-      <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, staff y catering para festivales, clubs, eventos privados y bodas en España. Profesionales verificados. Flash Booking." />
+      <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero y staff para eventos y bodas en España. Profesionales verificados y Flash Booking." />
       <link rel="canonical" href="https://xpeak.es/" />
       <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España" />
       <meta property="og:description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking." />
@@ -813,7 +813,7 @@ const Landing = () => {
             className={`${concursoEnCurso ? 'sr-only' : 'text-3xl sm:text-5xl md:text-8xl font-black mb-3 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display'}`}
             style={{ lineHeight: 1.1, paddingBottom: '0.15em', overflow: 'visible' }}
           >
-            <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
+            <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>{" "}
             <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient">para </span><RotatingWord /></span>
           </h1>
         {/* Subtítulo con las keywords del H1 en texto visible (no solo en el
@@ -1082,7 +1082,7 @@ const Landing = () => {
               Categorías
             </p>
             <h2 className="text-3xl md:text-5xl font-black tracking-tight font-display" style={{ color: '#111' }}>
-              Encuentra al <span className="text-gradient">profesional</span>
+              Encuentra al <span className="text-gradient">profesional</span> de tu evento
             </h2>
           </div>
         </FadeIn>

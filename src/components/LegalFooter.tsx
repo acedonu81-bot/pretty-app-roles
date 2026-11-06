@@ -70,7 +70,7 @@ const LegalFooter = () => {
               <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-4" style={{ color: '#4b5563' }}>Plataforma</p>
               <ul className="space-y-2.5 text-xs" style={{ color: '#374151' }}>
                 <li><Link to="/directorio/dj" className="inline-block py-1 hover:text-[#8B6A00] transition-colors">Ver profesionales</Link></li>
-                <li><Link to="/auth?mode=register&role=profesional" className="inline-block py-1 hover:text-[#8B6A00] transition-colors">Publicar mi perfil</Link></li>
+                <li><Link to="/auth?mode=register&role=profesional" rel="nofollow" className="inline-block py-1 hover:text-[#8B6A00] transition-colors">Publicar mi perfil</Link></li>
                 <li><Link to="/dashboard" className="inline-block py-1 hover:text-[#8B6A00] transition-colors">Mi dashboard</Link></li>
               </ul>
             </div>
