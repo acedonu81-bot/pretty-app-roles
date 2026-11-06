@@ -17,6 +17,7 @@ import { type Comunicado, type Interaccion, porcentajes } from '@/lib/comunicado
 interface Comentario {
   id: string; texto: string; created_at: string; anonimo: boolean; es_mio: boolean;
   autor_id: string | null; autor_nombre: string | null; autor_foto: string | null; autor_rol: string | null;
+  likes?: number; yo_like?: boolean;
 }
 
 type Res = Promise<{ data: unknown; error: { message: string; code?: string } | null }>;
@@ -97,6 +98,18 @@ export default function ComunicadoInteraccion({ c, inter, onCambio }: Props) {
     cargarComentarios();
   };
 
+  const likeComentario = async (k: Comentario) => {
+    if (!user?.id) return;
+    const yo = !k.yo_like;
+    const poner = (likes: number, yo_like: boolean) =>
+      setComentarios(cs => cs.map(x => x.id === k.id ? { ...x, likes, yo_like } : x));
+    poner(Math.max(0, (k.likes ?? 0) + (yo ? 1 : -1)), yo);
+    const { data, error } = await db.rpc('comunicado_comentario_like', { p_comentario: k.id });
+    if (error) { poner(k.likes ?? 0, !!k.yo_like); return; }
+    const r = (data as { likes: number; yo_like: boolean }[] | null)?.[0];
+    if (r) poner(r.likes, r.yo_like);
+  };
+
   const borrar = async (id: string) => {
     const { error } = await db.from('comunicado_comentarios').delete().eq('id', id);
     if (error) return;
@@ -175,6 +188,10 @@ export default function ComunicadoInteraccion({ c, inter, onCambio }: Props) {
                     )}
                   </div>
                   <p className="text-[0.82rem] leading-snug whitespace-pre-line break-words line-clamp-4" style={{ color: '#374151' }}>{k.texto}</p>
+                  <button type="button" onClick={() => likeComentario(k)} aria-pressed={!!k.yo_like} aria-label="Me gusta"
+                    className="mt-0.5 inline-flex items-center gap-1 text-[0.7rem] font-semibold" style={{ color: k.yo_like ? '#dc2626' : '#6b7280' }}>
+                    <Heart size={13} fill={k.yo_like ? '#dc2626' : 'none'} /> {k.likes ? k.likes : 'Me gusta'}
+                  </button>
                 </div>
               </div>
             ))}
