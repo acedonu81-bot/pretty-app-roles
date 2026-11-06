@@ -21,9 +21,12 @@ function useFotosMenciones(ids: string[]): Map<string, FotoMencion | null> {
     if (!faltan.length) return;
     let vivo = true;
     (async () => {
-      const rpc = supabase.rpc as unknown as (f: string, a: object) =>
-        Promise<{ data: { user_id: string; display_name: string; photo_url: string | null }[] | null }>;
-      const { data } = await rpc('comunicados_menciones_fotos', { p_ids: faltan });
+      type Fila = { user_id: string; display_name: string; photo_url: string | null };
+      const cliente = supabase as unknown as {
+        rpc: (f: string, a: object) => Promise<{ data: Fila[] | null }>;
+      };
+      let data: Fila[] | null = null;
+      try { ({ data } = await cliente.rpc('comunicados_menciones_fotos', { p_ids: faltan })); } catch { /* sin fotos: salen las iniciales */ }
       for (const id of faltan) cacheFotos.set(id, null);
       for (const r of data ?? []) cacheFotos.set(r.user_id, { display_name: r.display_name, photo_url: r.photo_url });
       if (vivo) refrescar(n => n + 1);
