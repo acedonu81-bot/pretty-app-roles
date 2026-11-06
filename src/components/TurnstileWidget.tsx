@@ -89,7 +89,8 @@ export default function TurnstileWidget({ onVerify, onExpire, onStall, onStallCl
 
   return (
     <div className="flex flex-col items-center gap-2 my-2">
-      <div id={containerId} className="flex justify-center" />
+      {/* Hueco reservado (el widget mide 65 px y se inserta tarde): evita CLS */}
+      <div id={containerId} className="flex justify-center items-center min-h-[65px] w-full" />
       {stalled && (
         <button
           type="button"
