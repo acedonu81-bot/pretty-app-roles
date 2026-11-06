@@ -5,7 +5,7 @@ import { ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import FooterPublic from '@/components/FooterPublic';
 import {
-  type Comunicado, esEnlaceInterno, idCortoDeSlug, slugNovedad, textoPlano, toSlugTexto, trocearCuerpo,
+  type Comunicado, esEnlaceInterno, idCortoDeSlug, slugNovedad, textoPlano, trocearCuerpo,
 } from '@/lib/comunicados';
 
 // Novedades públicas de XPEAK (6 nov 2026): solo los comunicados que el admin
@@ -27,7 +27,7 @@ function Cuerpo({ cuerpo }: { cuerpo: string }) {
     <div className="text-base leading-relaxed whitespace-pre-line" style={{ color: '#333' }}>
       {trocearCuerpo(cuerpo).map((t, i) => t.tipo === 'texto'
         ? <span key={i}>{t.valor}</span>
-        : <Link key={i} to={`/p/${toSlugTexto(t.nombre)}`} className="font-bold underline" style={{ color: '#8A6D0F' }}>{t.nombre}</Link>)}
+        : <Link key={i} to={`/p/${t.userId}`} className="font-bold underline" style={{ color: '#8A6D0F' }}>{t.nombre}</Link>)}
     </div>
   );
 }
@@ -139,7 +139,7 @@ export default function Novedades() {
           {lista.map(n => (
             <Link key={n.id} to={`/novedades/${slugNovedad(n.titulo, n.id)}`} className="group">
               <div className="aspect-[16/9] rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #FBF3DD 0%, #F3E2AE 100%)', border: '1px solid rgba(212,175,55,0.25)' }}>
-                {n.imagen_url && <img src={n.imagen_url} alt="" loading="lazy" className="w-full h-full object-cover" />}
+                {n.imagen_url && <img src={n.imagen_url} alt={n.titulo} loading="lazy" className="w-full h-full object-cover" />}
               </div>
               <p className="text-xs mt-2" style={{ color: '#6b7280' }}>{fechaLarga(n.created_at)}</p>
               <h2 className="font-bold leading-snug group-hover:underline" style={{ color: '#111' }}>{n.titulo}</h2>

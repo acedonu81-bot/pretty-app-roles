@@ -811,8 +811,9 @@ const Dashboard = () => {
           <MarketingConsentBanner />
           <RecentBusinessViewLine />
           <TodaysRequestsLine onNavigate={goToSolicitudesFlashBooking} />
-          {/* Comunicados XPEAK: solo en la portada del panel (Explorar y Feed). */}
-          {(activeView === 'explorar' || activeView === 'feed') && <ComunicadosCarrusel />}
+          {/* Comunicados XPEAK: en la portada del panel. Explorar y Feed, y 'empresario'
+              porque los organizadores aterrizan ahí (SIN_EXPLORAR) y nunca pasan por Explorar. */}
+          {(activeView === 'explorar' || activeView === 'feed' || activeView === 'empresario') && <ComunicadosCarrusel />}
           <div className={`p-3 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(var(--mobile-nav-space)+1.5rem)]' : 'pb-6'}`}
             ref={viewContentRef}>
             <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} /></div>}>

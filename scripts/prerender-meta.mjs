@@ -1917,7 +1917,9 @@ try {
         const plano = (n.cuerpo || '').replace(MENCION, '$1').replace(/\s+/g, ' ').trim();
         const desc = (plano || n.titulo).slice(0, 155);
         const html = escHtml(n.cuerpo || '').replace(/@\[([^\]\n]{1,80})\]\(([0-9a-f-]{36})\)/g,
-          (_m, nombre) => `<a href="https://xpeak.es/p/${toSlug(nombre)}">${nombre}</a>`).replace(/\n/g, '<br>');
+          // /p/<user_id> siempre resuelve (PublicProfile acepta UUID); un slug
+          // reconstruido a mano podía no coincidir y dejar un 404.
+          (_m, nombre, id) => `<a href="https://xpeak.es/p/${id}">${nombre}</a>`).replace(/\n/g, '<br>');
         const fecha = new Date(n.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         ROUTES.push({
           path: routePath,
