@@ -23,7 +23,13 @@ export default function ComunicadosCarrusel() {
   const pista = useRef<HTMLDivElement>(null);
 
   // Enlaces viejos (avisos de la campana ya enviados): /dashboard?view=explorar&comunicado=<id>
-  const idUrl = useMemo(() => new URLSearchParams(location.search).get('comunicado'), [location.search]);
+  // Solo si la URL NO es ya la del tablón: al pulsar Inicio desde un comunicado el carrusel se
+  // monta un instante con ?view=comunicados&comunicado=... aún en la URL y te devolvía al
+  // comunicado (6 nov 2026, "Inicio no hace nada").
+  const idUrl = useMemo(() => {
+    const p = new URLSearchParams(location.search);
+    return p.get('view') === 'comunicados' ? null : p.get('comunicado');
+  }, [location.search]);
   useEffect(() => {
     if (idUrl) navigate(`${RUTA_TABLON}&comunicado=${idUrl}`, { replace: true });
   }, [idUrl, navigate]);
