@@ -214,8 +214,17 @@ const Auth = () => {
   // que llegó al formulario de entrar (los "Unirse" del blog apuntaban a /auth)
   // y metió email+contraseña sin tener cuenta. Se le ofrece crearla ahí mismo.
   const [loginFailed, setLoginFailed] = useState(false);
+  // Alta con un correo que ya tiene cuenta: Supabase responde "éxito" sin mandar
+  // nada (identities vacío). Antes salía "¡Revisa tu email!" y el correo nunca
+  // llegaba: caso Agüero Magic, 6 nov 2026, repitió el alta dos veces.
+  const [correoYaExiste, setCorreoYaExiste] = useState(false);
   const [forgotCaptchaToken, setForgotCaptchaToken] = useState<string | null>(null);
   const [turnstileStalled, setTurnstileStalled] = useState(false);
+
+  // Al crear cuenta la contraseña se ve por defecto: se escribía a ciegas en el
+  // móvil, una errata dejaba la cuenta inaccesible y la persona acababa creando
+  // la cuenta otra vez (caso Agüero Magic, 6 nov 2026). El ojo permite ocultarla.
+  useEffect(() => { if (!isLogin) setShowPassword(true); }, [isLogin]);
 
   useEffect(() => {
     track('auth_view', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
@@ -697,6 +706,18 @@ const Auth = () => {
           throw error;
         }
 
+        // Correo ya registrado: no se creó nada ni se envió ningún enlace. Se
+        // lleva a entrar, con recuperar contraseña a un toque, y no se cuenta
+        // como alta.
+        if (signUpData?.user && Array.isArray(signUpData.user.identities) && signUpData.user.identities.length === 0) {
+          track('auth_correo_ya_existe', { role: roleParam || 'pending' });
+          isRegistering.current = false;
+          setFieldError(null);
+          setIsLogin(true); setLoginFailed(false); setShowForgot(false); setForgotSent(false);
+          setCorreoYaExiste(true);
+          return;
+        }
+
         setFieldError(null);
         track('auth_success', { mode: 'register', role: roleParam || 'pending' });
         // "sign_up" es el nombre estándar que GA4 reconoce automáticamente
@@ -1119,7 +1140,7 @@ const Auth = () => {
                   <input
                     type="email"
                     value={email}
-                    onChange={e => { setEmail(e.target.value); setCorreoSugerido(null); setLoginFailed(false); if (fieldError === 'email') setFieldError(null); }}
+                    onChange={e => { setEmail(e.target.value.trim()); setCorreoSugerido(null); setLoginFailed(false); setCorreoYaExiste(false); if (fieldError === 'email') setFieldError(null); }}
                     onBlur={() => {
                       if (isLogin) return;
                       logAuthFieldTouched('email');
@@ -1271,6 +1292,22 @@ const Auth = () => {
                     style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.35)', color: '#064e3b' }}>
                     <p className="font-bold">Email confirmado. Tu cuenta está activada.</p>
                     <p className="text-xs mt-1">Entra con el email y la contraseña que pusiste al registrarte. Si no la recuerdas, usa el enlace de recuperar contraseña: no vuelvas a crear la cuenta.</p>
+                  </div>
+                )}
+
+                {isLogin && correoYaExiste && !loginFailed && (
+                  <div className="rounded-xl p-4 text-sm" role="alert"
+                    style={{ background: 'rgba(212,175,55,0.10)', border: '1px solid rgba(212,175,55,0.45)', color: '#111' }}>
+                    <p className="font-bold mb-1">Ya tienes cuenta con este correo.</p>
+                    <p className="text-xs mb-3" style={{ color: 'rgba(0,0,0,0.65)' }}>
+                      No hace falta crearla otra vez y por eso no te hemos mandado ningún enlace. Entra con tu contraseña o, si no la recuerdas, pon una nueva y entras en un minuto.
+                    </p>
+                    <button type="button"
+                      onClick={() => { track('auth_ya_existe_recuperar', {}); setCorreoYaExiste(false); setForgotEmail(email); setShowForgot(true); }}
+                      className="w-full py-2.5 rounded-lg font-black text-sm"
+                      style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#111' }}>
+                      Ya tengo cuenta: poner contraseña nueva
+                    </button>
                   </div>
                 )}
 
