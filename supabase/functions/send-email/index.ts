@@ -1237,34 +1237,28 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     const enlace = `https://xpeak.es/auth?mode=login&olvide=1&e=${encodeURIComponent(String(d.email ?? ''))}`;
     const paso = (n: number, texto: string) => `
       <tr>
-        <td style="vertical-align:top;padding:0 12px 14px 0;width:34px">
-          <div style="width:30px;height:30px;border-radius:15px;background:#D4AF37;color:#0a0908;font-weight:900;font-size:15px;line-height:30px;text-align:center">${n}</div>
+        <td style="vertical-align:top;padding:0 12px 16px 0;width:38px">
+          <div style="width:32px;height:32px;border-radius:16px;background:#D4AF37;color:#0a0908;font-weight:900;font-size:16px;line-height:32px;text-align:center">${n}</div>
         </td>
-        <td style="vertical-align:top;padding:4px 0 14px 0;color:#1f2937;font-size:15px;line-height:1.6">${texto}</td>
+        <td style="vertical-align:top;padding:5px 0 16px 0;color:#1f2937;font-size:16px;line-height:1.5">${texto}</td>
       </tr>`;
     return {
-      subject: `${esc(d.name)}, tu cuenta de XPEAK ya está activa: así entras en 1 minuto`,
+      subject: `${esc(d.name)}, tu cuenta de XPEAK está lista`,
       to: d.email,
       replyTo: 'info@xpeak.site',
       html: base(`
-      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Tu cuenta ya está activa</h2>
-      <p style="color:#4b5563;font-size:15px;line-height:1.7;margin:0 0 6px">
-        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, bienvenido a XPEAK.
-      </p>
-      <p style="color:#4b5563;font-size:15px;line-height:1.7;margin:0 0 18px">
-        Tu correo está confirmado y tu cuenta ya existe: <strong>no tienes que crearla otra vez</strong>. Solo te falta entrar, y se hace en 3 pasos.
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Tu cuenta está lista</h2>
+      <p style="color:#4b5563;font-size:16px;line-height:1.6;margin:0 0 18px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, solo te falta poner tu contraseña para entrar. No crees la cuenta otra vez.
       </p>
       <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:0 0 6px">
-        ${paso(1, 'Pulsa el botón dorado de abajo, <strong>"Poner mi contraseña"</strong>. Se abre XPEAK con tu correo ya escrito.')}
-        ${paso(2, 'Pulsa <strong>"Enviar enlace"</strong>. Te llegará un segundo correo de XPEAK (mira también en spam). Ábrelo y pulsa el enlace.')}
-        ${paso(3, 'Escribe la contraseña que quieras (se ve mientras la escribes) y guarda. <strong>Ya estás dentro.</strong>')}
+        ${paso(1, 'Pulsa el botón de abajo.')}
+        ${paso(2, 'Pulsa <strong>"Enviar enlace"</strong>.')}
+        ${paso(3, 'Te llega otro correo de XPEAK (mira en spam). Pulsa su enlace, elige tu contraseña y ya estás dentro.')}
       </table>
-      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        <strong style="color:#0a0908">Importante:</strong> haz los pasos 1 y 2 en el mismo móvil y con el mismo navegador.
-      </p>
       ${btn('Poner mi contraseña →', enlace)}
-      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:20px 0 0">
-        Una vez dentro, XPEAK te preguntará a qué te dedicas: elige <strong>Mago</strong>, sube tu foto y pon tu tarifa para que los organizadores te encuentren.
+      <p style="color:#6B7280;font-size:13px;line-height:1.6;margin:16px 0 0">
+        Hazlo todo desde el mismo móvil.
       </p>`),
     };
   },
