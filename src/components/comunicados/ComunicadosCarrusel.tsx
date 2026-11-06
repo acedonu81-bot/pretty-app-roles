@@ -136,58 +136,96 @@ export default function ComunicadosCarrusel() {
     if (el) el.scrollBy({ left: dir * el.clientWidth * 0.85, behavior: 'smooth' });
   };
 
+  const Meta = ({ c }: { c: Comunicado }) => (
+    <div className="flex items-center gap-1.5 text-xs" style={{ color: '#6b7280' }}>
+      <span className="w-1.5 h-1.5 rounded-full" style={{ background: ORO }} />
+      <span className="font-semibold">{etiquetaCategoria(c.categoria)}</span>
+      <span>·</span>
+      <span>{timeAgo(c.created_at)}</span>
+    </div>
+  );
+  const Stats = ({ c }: { c: Comunicado }) => {
+    const i = inter[c.id];
+    const encuesta = (c.encuesta_opciones?.length ?? 0) >= 2;
+    if (!i?.likes && !i?.comentarios && !encuesta) return null;
+    return (
+      <div className="flex items-center gap-3 text-xs" style={{ color: '#6b7280' }}>
+        {!!i?.likes && <span className="inline-flex items-center gap-1"><Heart size={12} /> {i.likes}</span>}
+        {!!i?.comentarios && <span className="inline-flex items-center gap-1"><MessageCircle size={12} /> {i.comentarios}</span>}
+        {encuesta && <span className="inline-flex items-center gap-1"><BarChart3 size={12} /> {i?.mi_voto != null ? 'Has votado' : 'Encuesta'}</span>}
+      </div>
+    );
+  };
+  const Nuevo = ({ c }: { c: Comunicado }) => (leidos.has(c.id) ? null : (
+    <span className="absolute top-2.5 left-2.5 text-[0.65rem] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
+      style={{ background: ORO, color: '#1f2937' }}>Nuevo</span>
+  ));
+  // Los títulos NO van en h2/h3: la hoja global fuerza Syne 800 (ancha y enorme)
+  // en todos los h1-h4. Aquí son una tarjeta pequeña, van en Inter.
+  const titulo = (c: Comunicado, grande: boolean) => (
+    <p role="heading" aria-level={3} className={`${grande ? 'text-xl' : 'text-[0.95rem]'} font-semibold leading-snug ${grande ? 'line-clamp-3' : 'line-clamp-2'} group-hover:underline underline-offset-2`}
+      style={{ color: '#111827' }}>{c.titulo}</p>
+  );
+
   return (
     <section className="px-3 md:px-6 pt-4" aria-label="Comunicados XPEAK">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg md:text-xl font-extrabold" style={{ color: '#1f2937' }}>Comunicados XPEAK</h2>
+      <div className="mx-auto w-full max-w-6xl sm:px-4">
+      <div className="flex items-center justify-between mb-2.5">
+        <p role="heading" aria-level={2} className="inline-flex items-center gap-2 text-[0.8rem] font-bold uppercase tracking-wider" style={{ color: '#8B6A00' }}>
+          <Megaphone size={14} /> Comunicados XPEAK
+        </p>
         {lista.length > 1 && (
-          <div className="hidden md:flex gap-2">
+          <div className="hidden md:flex gap-1.5">
             {[-1, 1].map(d => (
               <button key={d} onClick={() => mover(d as 1 | -1)} aria-label={d < 0 ? 'Anteriores' : 'Siguientes'}
-                className="w-9 h-9 rounded-full flex items-center justify-center transition-colors hover:bg-black/5"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-black/5"
                 style={{ border: '1px solid rgba(0,0,0,0.12)', background: '#fff' }}>
-                {d < 0 ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+                {d < 0 ? <ChevronLeft size={15} /> : <ChevronRight size={15} />}
               </button>
             ))}
           </div>
         )}
       </div>
 
-      <div ref={pista} className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2">
-        {lista.map(c => (
-          <button key={c.id} onClick={() => abrir(c)}
-            className="snap-start shrink-0 text-left group w-[78%] sm:w-[46%] lg:w-[calc(25%-12px)]">
-            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden"
-              style={{ border: '1px solid rgba(212,175,55,0.25)' }}>
-              <Portada c={c} />
-              {!leidos.has(c.id) && (
-                <span className="absolute top-2 right-2 text-[0.7rem] font-extrabold px-2 py-0.5 rounded-full"
-                  style={{ background: ORO, color: '#1f2937' }}>Nuevo</span>
-              )}
-            </div>
-            <div className="flex items-center gap-1.5 mt-2 text-xs" style={{ color: '#6b7280' }}>
-              <span className="w-2 h-2 rounded-full" style={{ background: ORO }} />
-              <span className="font-semibold">{etiquetaCategoria(c.categoria)}</span>
-              <span>·</span>
-              <span>{timeAgo(c.created_at)}</span>
-            </div>
-            <h3 className="mt-1 font-bold leading-snug line-clamp-2 group-hover:underline underline-offset-2"
-              style={{ color: '#111827' }}>{c.titulo}</h3>
-            {(() => {
-              const i = inter[c.id];
-              const encuesta = (c.encuesta_opciones?.length ?? 0) >= 2;
-              if (!i?.likes && !i?.comentarios && !encuesta) return null;
-              return (
-                <div className="flex items-center gap-3 mt-1 text-xs" style={{ color: '#6b7280' }}>
-                  {!!i?.likes && <span className="inline-flex items-center gap-1"><Heart size={12} /> {i.likes}</span>}
-                  {!!i?.comentarios && <span className="inline-flex items-center gap-1"><MessageCircle size={12} /> {i.comentarios}</span>}
-                  {encuesta && <span className="inline-flex items-center gap-1"><BarChart3 size={12} /> {i?.mi_voto != null ? 'Has votado' : 'Encuesta'}</span>}
-                </div>
-              );
-            })()}
-          </button>
-        ))}
-      </div>
+      {lista.length === 1 ? (
+        // Uno solo: tarjeta horizontal, no una miniatura perdida en un hueco vacío.
+        (() => {
+          const c = lista[0];
+          const resumen = textoPlano(c.cuerpo);
+          return (
+            <button onClick={() => abrir(c)} className="group w-full text-left rounded-2xl p-3 md:p-4 grid md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] gap-4 md:gap-6 items-center transition-shadow hover:shadow-md"
+              style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
+              <div className="relative aspect-[3/2] rounded-xl overflow-hidden" style={{ background: '#FBF3DD' }}>
+                <Portada c={c} />
+                <Nuevo c={c} />
+              </div>
+              <div className="space-y-2 min-w-0">
+                <Meta c={c} />
+                {titulo(c, true)}
+                {resumen && <p className="text-sm leading-relaxed line-clamp-3" style={{ color: '#4b5563' }}>{resumen}</p>}
+                <Stats c={c} />
+                <span className="inline-flex items-center gap-1 text-sm font-bold pt-1" style={{ color: '#8B6A00' }}>
+                  {(c.encuesta_opciones?.length ?? 0) >= 2 ? 'Leer y votar' : 'Leer y comentar'} <ChevronRight size={15} />
+                </span>
+              </div>
+            </button>
+          );
+        })()
+      ) : (
+        <div ref={pista} className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2">
+          {lista.map(c => (
+            <button key={c.id} onClick={() => abrir(c)} className="group snap-start shrink-0 text-left w-[260px] sm:w-[290px] space-y-1.5">
+              <div className="relative aspect-[3/2] rounded-xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.25)', background: '#FBF3DD' }}>
+                <Portada c={c} />
+                <Nuevo c={c} />
+              </div>
+              <Meta c={c} />
+              {titulo(c, false)}
+              <Stats c={c} />
+            </button>
+          ))}
+        </div>
+      )}
 
       <Dialog open={!!abierto} onOpenChange={o => { if (!o) setAbierto(null); }}>
         <DialogContent className="max-w-xl p-0 overflow-y-auto max-h-[92vh]" style={{ background: '#FFFDF7' }}>
@@ -202,7 +240,9 @@ export default function ComunicadosCarrusel() {
                 <div className="text-xs" style={{ color: '#6b7280' }}>
                   {etiquetaCategoria(abierto.categoria)} · {timeAgo(abierto.created_at)}
                 </div>
-                <DialogTitle className="text-xl font-extrabold" style={{ color: '#111827' }}>{abierto.titulo}</DialogTitle>
+                <DialogTitle asChild>
+                  <p className="text-xl font-bold leading-snug" style={{ color: '#111827' }}>{abierto.titulo}</p>
+                </DialogTitle>
                 <DialogDescription className="sr-only">{textoPlano(abierto.cuerpo).slice(0, 140)}</DialogDescription>
                 {abierto.cuerpo.trim() && <CuerpoConMenciones cuerpo={abierto.cuerpo} />}
                 {abierto.cta_url && (
@@ -221,6 +261,7 @@ export default function ComunicadosCarrusel() {
           )}
         </DialogContent>
       </Dialog>
+      </div>
     </section>
   );
 }

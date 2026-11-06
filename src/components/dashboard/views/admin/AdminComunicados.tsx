@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AtSign, BarChart3, Globe, Image as ImageIcon, Loader2, Pencil, Pin, PinOff, Plus, Trash2, Video, X } from 'lucide-react';
+import { AtSign, BarChart3, ChevronDown, Eye, Globe, Image as ImageIcon, Loader2, Pencil, Pin, PinOff, Plus, Trash2, Video, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { timeAgo } from '@/lib/timeAgo';
@@ -68,6 +68,9 @@ export default function AdminComunicados() {
   const [lista, setLista] = useState<Comunicado[]>([]);
   const [lecturas, setLecturas] = useState<Record<string, number>>({});
   const [inter, setInter] = useState<Record<string, Interaccion>>({});
+  // Quién ha leído cada comunicado (se carga al desplegar, no antes).
+  const [lectoresAbierto, setLectoresAbierto] = useState<string | null>(null);
+  const [lectores, setLectores] = useState<Record<string, { nombre: string; rol: string; cuando: string }[]>>({});
 
   const cargar = useCallback(async () => {
     const [{ data }, { data: lect }] = await Promise.all([
@@ -189,6 +192,30 @@ export default function AdminComunicados() {
     if (error) { toast.error('No se pudo publicar: ' + error.message); return; }
     toast.success('Comunicado publicado');
     limpiar(); cargar();
+  };
+
+  const verLectores = async (c: Comunicado) => {
+    if (lectoresAbierto === c.id) { setLectoresAbierto(null); return; }
+    setLectoresAbierto(c.id);
+    const { data } = await db.from('comunicado_lecturas').select('user_id, leido_at')
+      .eq('comunicado_id', c.id).order('leido_at', { ascending: false }).limit(300);
+    const filas = (data ?? []) as { user_id: string; leido_at: string }[];
+    if (!filas.length) { setLectores(l => ({ ...l, [c.id]: [] })); return; }
+    const { data: perfiles } = await supabase.from('profiles').select('user_id, display_name, role')
+      .in('user_id', filas.map(f => f.user_id));
+    const porUsuario = new Map<string, { display_name: string | null; role: string }>();
+    for (const pr of perfiles ?? []) {
+      const previo = porUsuario.get(pr.user_id);
+      if (!previo || previo.role === 'pending') porUsuario.set(pr.user_id, { display_name: pr.display_name, role: pr.role });
+    }
+    setLectores(l => ({
+      ...l,
+      [c.id]: filas.map(f => ({
+        nombre: porUsuario.get(f.user_id)?.display_name || 'Sin nombre',
+        rol: porUsuario.get(f.user_id)?.role ?? '',
+        cuando: f.leido_at,
+      })),
+    }));
   };
 
   const alternarPublico = async (c: Comunicado) => {
@@ -474,9 +501,24 @@ export default function AdminComunicados() {
                     <Globe size={11} /> En la web
                   </a>
                 )}
-                <p className="text-xs mt-1 font-semibold" style={{ color: pct >= 20 ? '#059669' : '#8B6A00' }}>
-                  Leído por {leidos} de {c.destinatarios} ({pct} %)
-                </p>
+                <button type="button" onClick={() => verLectores(c)} aria-expanded={lectoresAbierto === c.id}
+                  className="mt-1.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold"
+                  style={{ background: pct >= 20 ? 'rgba(5,150,105,0.1)' : 'rgba(212,175,55,0.14)', color: pct >= 20 ? '#047857' : '#8B6A00' }}>
+                  <Eye size={13} /> {leidos} {leidos === 1 ? 'lector' : 'lectores'} de {c.destinatarios} · {pct} %
+                  <ChevronDown size={13} style={{ transform: lectoresAbierto === c.id ? 'rotate(180deg)' : undefined }} />
+                </button>
+                {lectoresAbierto === c.id && (
+                  <div className="mt-1.5 rounded-lg p-2 max-h-48 overflow-y-auto" style={{ background: '#FFFDF7', border: '1px solid rgba(0,0,0,0.08)' }}>
+                    {!lectores[c.id] && <p className="text-xs" style={{ color: '#6b7280' }}>Cargando...</p>}
+                    {lectores[c.id]?.length === 0 && <p className="text-xs" style={{ color: '#6b7280' }}>Todavía no lo ha abierto nadie.</p>}
+                    {lectores[c.id]?.map((l, i) => (
+                      <div key={i} className="flex items-center justify-between gap-2 py-0.5 text-xs" style={{ color: '#374151' }}>
+                        <span className="truncate font-semibold">{l.nombre}<span className="font-normal" style={{ color: '#9ca3af' }}> · {l.rol}</span></span>
+                        <span className="shrink-0" style={{ color: '#6b7280' }}>{timeAgo(l.cuando)}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {inter[c.id] && (
                   <p className="text-xs" style={{ color: '#4b5563' }}>
                     {inter[c.id].likes} me gusta · {inter[c.id].comentarios} comentarios
