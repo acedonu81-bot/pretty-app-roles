@@ -1270,27 +1270,27 @@ const Auth = () => {
                   <div className="rounded-xl p-4 text-sm" role="status"
                     style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.35)', color: '#064e3b' }}>
                     <p className="font-bold">Email confirmado. Tu cuenta está activada.</p>
-                    <p className="text-xs mt-1">Entra con tu email y contraseña para rellenar tus datos.</p>
+                    <p className="text-xs mt-1">Entra con el email y la contraseña que pusiste al registrarte. Si no la recuerdas, usa el enlace de recuperar contraseña: no vuelvas a crear la cuenta.</p>
                   </div>
                 )}
 
                 {isLogin && loginFailed && (
                   <div className="rounded-xl p-4 text-sm" role="alert"
                     style={{ background: 'rgba(212,175,55,0.10)', border: '1px solid rgba(212,175,55,0.45)', color: '#111' }}>
-                    <p className="font-bold mb-1">No hay ninguna cuenta con ese email y contraseña.</p>
+                    <p className="font-bold mb-1">Ese email y contraseña no coinciden.</p>
                     <p className="text-xs mb-3" style={{ color: 'rgba(0,0,0,0.65)' }}>
-                      ¿Es tu primera vez en XPEAK? Crea tu cuenta con estos mismos datos.
+                      Si ya te registraste, no crees la cuenta otra vez: la contraseña no cambiaría. Pon una nueva con el botón de abajo y entras en un minuto.
                     </p>
                     <button type="button"
-                      onClick={() => { track('auth_toggle_mode', { to: 'register', from: 'login_failed' }); setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
+                      onClick={() => { track('auth_login_failed_recuperar', {}); setLoginFailed(false); setForgotEmail(email); setShowForgot(true); }}
                       className="w-full py-2.5 rounded-lg font-black text-sm"
                       style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#111' }}>
-                      Crear cuenta con este email
+                      Ya tengo cuenta: poner contraseña nueva
                     </button>
                     <button type="button"
-                      onClick={() => { setLoginFailed(false); setForgotEmail(email); setShowForgot(true); }}
+                      onClick={() => { track('auth_toggle_mode', { to: 'register', from: 'login_failed' }); setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
                       className="w-full mt-2 text-xs font-bold" style={{ color: '#8B6A00' }}>
-                      Ya tengo cuenta: recuperar contraseña
+                      Es mi primera vez: crear cuenta
                     </button>
                   </div>
                 )}
