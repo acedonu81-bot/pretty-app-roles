@@ -41,7 +41,7 @@ export function CuerpoConMenciones({ cuerpo }: { cuerpo: string }) {
   );
 }
 
-function Portada({ c }: { c: Comunicado }) {
+export function Portada({ c }: { c: Pick<Comunicado, 'imagen_url' | 'video_url'> }) {
   if (c.imagen_url) {
     return <img src={c.imagen_url} alt="" loading="lazy" className="w-full h-full object-cover" />;
   }

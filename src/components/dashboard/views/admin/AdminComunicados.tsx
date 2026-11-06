@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { timeAgo } from '@/lib/timeAgo';
 import { CATEGORIAS_COMUNICADO, type Comunicado, type Interaccion, porcentajes, etiquetaCategoria, formatoMencion, slugNovedad } from '@/lib/comunicados';
-import { CuerpoConMenciones } from '@/components/comunicados/ComunicadosCarrusel';
+import { CuerpoConMenciones, Portada } from '@/components/comunicados/ComunicadosCarrusel';
 
 // Editor de comunicados del panel admin (6 nov 2026). Al publicar, un trigger
 // avisa en la campana a la categoría elegida, manda push solo si se marca y
@@ -387,11 +387,59 @@ export default function AdminComunicados() {
           La campana les llega a todos los de la categoría. El push solo a quien lo tiene activado. Los mencionados reciben su propio aviso.
         </p>
 
-        {(cuerpo.trim() || titulo.trim()) && (
-          <div className="rounded-xl p-3" style={{ background: '#fff', border: '1px dashed rgba(212,175,55,0.5)' }}>
-            <p className="text-[0.7rem] font-bold uppercase tracking-wide mb-1" style={{ color: '#8B6A00' }}>Vista previa</p>
-            <p className="font-bold mb-1">{titulo}</p>
-            <CuerpoConMenciones cuerpo={cuerpo} />
+        {(cuerpo.trim() || titulo.trim() || imagenUrl || videoUrl || conEncuesta) && (
+          <div className="rounded-xl p-3 space-y-3" style={{ background: '#fff', border: '1px dashed rgba(212,175,55,0.5)' }}>
+            <p className="text-[0.7rem] font-bold uppercase tracking-wide" style={{ color: '#8B6A00' }}>Vista previa</p>
+
+            <div>
+              <p className="text-xs mb-1.5" style={{ color: '#6b7280' }}>Así sale en el carrusel</p>
+              <div className="w-full max-w-[280px]">
+                <div className="relative aspect-[16/9] rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.25)' }}>
+                  <Portada c={{ imagen_url: imagenUrl, video_url: videoUrl }} />
+                  <span className="absolute top-2 right-2 text-[0.7rem] font-extrabold px-2 py-0.5 rounded-full"
+                    style={{ background: '#D4AF37', color: '#1f2937' }}>Nuevo</span>
+                </div>
+                <div className="flex items-center gap-1.5 mt-2 text-xs" style={{ color: '#6b7280' }}>
+                  <span className="w-2 h-2 rounded-full" style={{ background: '#D4AF37' }} />
+                  <span className="font-semibold">{etiquetaCategoria(categoria)}</span>
+                  <span>·</span><span>ahora mismo</span>
+                </div>
+                <p className="mt-1 font-bold leading-snug line-clamp-2" style={{ color: '#111827' }}>{titulo || 'Sin título'}</p>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs mb-1.5" style={{ color: '#6b7280' }}>Al abrirlo</p>
+              <div className="rounded-xl overflow-hidden" style={{ background: '#FFFDF7', border: '1px solid rgba(0,0,0,0.08)' }}>
+                {videoUrl
+                  ? <video src={videoUrl} controls playsInline poster={imagenUrl ?? undefined} className="w-full max-h-64 bg-black" />
+                  : imagenUrl
+                    ? <img src={imagenUrl} alt="" className="w-full max-h-64 object-contain bg-[#FBF3DD]" />
+                    : null}
+                <div className="p-4 space-y-3">
+                  <p className="text-lg font-extrabold" style={{ color: '#111827' }}>{titulo || 'Sin título'}</p>
+                  {cuerpo.trim() && <CuerpoConMenciones cuerpo={cuerpo} />}
+                  {ctaUrl.trim() && (
+                    <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-extrabold" style={{ background: '#D4AF37', color: '#1f2937' }}>
+                      {ctaTexto.trim() || 'Ver más'}
+                    </span>
+                  )}
+                  {conEncuesta && (
+                    <div className="rounded-xl p-3 space-y-2" style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.35)' }}>
+                      <p className="font-bold text-sm" style={{ color: '#111827' }}>{pregunta || 'Pregunta de la encuesta'}</p>
+                      {opciones.map((o, i) => (
+                        <div key={i} className="px-3 py-2 rounded-lg text-sm font-semibold" style={{ border: '1px solid rgba(212,175,55,0.45)', color: '#374151' }}>
+                          {o.trim() || `Opción ${i + 1}`}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-xs" style={{ color: '#6b7280' }}>
+                    {comentariosOn ? 'Con me gusta y comentarios.' : 'Sin comentarios (solo me gusta).'}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
