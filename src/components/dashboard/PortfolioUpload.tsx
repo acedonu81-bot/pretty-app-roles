@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { compressImage } from '@/lib/image';
+import { validarVideo, subirConProgreso, sincronizarSesionesVideo, esImagenAdmitida, MENSAJE_HEIC, MAX_VIDEO_MB, MAX_VIDEO_S } from '@/lib/videoUpload';
 import { toast } from 'sonner';
 
 const MAX_IMAGE_MB      = 15;
@@ -49,6 +50,7 @@ const EMPTY_CTA_DEFAULT = { title: 'Sube tu portfolio \u2014 es tu mejor tarjeta
 
 const PortfolioUpload = () => {
   const [uploading, setUploading] = useState(false);
+  const [pct, setPct] = useState<number | null>(null);
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [itemsLoaded, setItemsLoaded] = useState(false);
   const [rightsConfirmed, setRightsConfirmed] = useState(false);
@@ -60,18 +62,20 @@ const PortfolioUpload = () => {
   useEffect(() => {
     const load = async () => {
       if (!user) return;
-      const { data: files } = await supabase.storage
-        .from('audio-sessions')
-        .list(user.id + '/portfolio');
-      if (files && files.length > 0) {
-        const loaded = files.map(f => {
-          const path = `${user.id}/portfolio/${f.name}`;
-          const { data } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-          const isVideo = /\.(mp4|mov|webm)$/i.test(f.name);
-          return { name: f.name.replace(/^\d+-/, ''), url: data.publicUrl, storagePath: path, isVideo };
-        });
-        setItems(loaded);
-      }
+      const [{ data: fotos }, { data: vids }] = await Promise.all([
+        supabase.storage.from('audio-sessions').list(user.id + '/portfolio'),
+        supabase.storage.from('audio-sessions').list(user.id + '/video-sessions'),
+      ]);
+      const mk = (carpeta: string, f: { name: string }, isVideo: boolean): PortfolioItem => {
+        const path = `${user.id}/${carpeta}/${f.name}`;
+        const { data } = supabase.storage.from('audio-sessions').getPublicUrl(path);
+        return { name: f.name.replace(/^\d+-/, ''), url: data.publicUrl, storagePath: path, isVideo };
+      };
+      const loaded = [
+        ...(fotos ?? []).map(f => mk('portfolio', f, false)),
+        ...(vids ?? []).map(f => mk('video-sessions', f, true)),
+      ];
+      if (loaded.length > 0) setItems(loaded);
       setItemsLoaded(true);
     };
     load();
@@ -87,34 +91,47 @@ const PortfolioUpload = () => {
       return;
     }
 
-    // Se pueden elegir varias fotos de golpe: se suben una tras otra hasta
-    // llenar el hueco que queda y se avisa de lo que se ha dejado fuera.
+    // Se pueden elegir fotos y vídeos a la vez: las fotos van a portfolio_urls
+    // y los vídeos a video_session_urls (columnas distintas, no se pisan).
     const huecos = maxItems - items.length;
-    const aSubir: File[] = [];
-    let videos = 0, noImagen = 0, grandes = 0;
+    const fotos: File[] = [];
+    const videos: File[] = [];
+    let noValido = 0, grandes = 0, heic = 0;
     for (const file of files) {
-      if (file.type.startsWith('video/')) { videos++; continue; }
-      if (!file.type.startsWith('image/')) { noImagen++; continue; }
+      if (file.type.startsWith('video/') || /\.(mp4|mov|webm)$/i.test(file.name)) { videos.push(file); continue; }
+      if (/image\/hei[cf]/i.test(file.type) || /\.hei[cf]$/i.test(file.name)) { heic++; continue; }
+      if (!file.type.startsWith('image/')) { noValido++; continue; }
       if (file.size > MAX_IMAGE_MB * 1024 * 1024) { grandes++; continue; }
-      aSubir.push(file);
+      fotos.push(file);
     }
-    // Este portfolio solo sincroniza portfolio_urls (imágenes). Los vídeos
-    // tienen su propia sección ("Vídeo" en Mi Ficha, VideoSessionUpload en
-    // FichaView.tsx) que sí los guarda en el perfil público: aceptarlos aquí
-    // los subía a Storage sin persistirlos en ningún sitio visible.
-    if (videos) toast.error('Los vídeos se suben en la sección "Vídeo" de Mi Ficha, no aquí en Fotos.');
-    if (noImagen) toast.error('Solo imágenes (JPG, PNG, WEBP)');
-    if (grandes) toast.error(`Máximo ${MAX_IMAGE_MB}MB por imagen (${grandes} no se ${grandes === 1 ? 'subió' : 'subieron'})`);
-    if (aSubir.length > huecos) toast.error(`Solo caben ${huecos} más: se suben las ${huecos} primeras.`);
-    const lote = aSubir.slice(0, huecos);
+    if (heic) toast.error(MENSAJE_HEIC);
+    if (noValido) toast.error('Solo fotos (JPG, PNG, WEBP) o vídeos (MP4, MOV, WebM).');
+    if (grandes) toast.error(`Máximo ${MAX_IMAGE_MB}MB por foto (${grandes} no se ${grandes === 1 ? 'subió' : 'subieron'})`);
+    const lote = [...fotos, ...videos].slice(0, huecos);
+    if (fotos.length + videos.length > huecos) toast.error(`Solo caben ${huecos} más: se suben las ${huecos} primeras.`);
     if (lote.length === 0) return;
 
     setUploading(true);
     const subidas: PortfolioItem[] = [];
-    let fallos = 0;
+    let fallos = 0, hayVideo = false;
     for (const file of lote) {
+      const esVideo = videos.includes(file);
+      if (esVideo) {
+        const motivo = await validarVideo(file);
+        if (motivo) { toast.error(`${file.name}: ${motivo}`); fallos++; continue; }
+        setPct(0);
+        try {
+          const path = `${user.id}/video-sessions/${Date.now()}-${subidas.length}-${sanitize(file.name) || 'video.mp4'}`;
+          const url = await subirConProgreso(path, file, setPct);
+          subidas.push({ name: file.name, url, storagePath: path, isVideo: true });
+          hayVideo = true;
+        } catch (err: any) { toast.error(err.message); fallos++; }
+        setPct(null);
+        continue;
+      }
       // Compresión a 2560px calidad alta: mantiene calidad de portfolio sin pesar 15MB
       const toUpload = await compressImage(file, 2560, 0.9);
+      if (!esImagenAdmitida(toUpload)) { toast.error(MENSAJE_HEIC); fallos++; continue; }
       const safeName = sanitize(toUpload.name) || 'portfolio-item';
       const path = `${user.id}/portfolio/${Date.now()}-${subidas.length}-${safeName}`;
       const { error } = await supabase.storage.from('audio-sessions').upload(path, toUpload);
@@ -124,33 +141,40 @@ const PortfolioUpload = () => {
     }
     if (subidas.length === 0) {
       setUploading(false);
-      toast.error('Error al subir las fotos. Inténtalo de nuevo.');
+      toast.error('No se pudo subir nada. Revisa el formato y tu conexión e inténtalo de nuevo.');
       return;
     }
 
     const next = [...items, ...subidas];
-    // Sync public URLs to portfolio_urls column (images only). Los vídeos de
-    // este portfolio NO se sincronizan: video_session_urls la gestiona
-    // VideoSessionUpload (FichaView.tsx) y ambos componentes sobrescriben la
-    // columna entera en vez de hacer merge.
-    const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
-    const { error: syncError } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
+    let syncOk = true;
+    if (subidas.some(i => !i.isVideo)) {
+      const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
+      const { error } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
+      if (error) syncOk = false;
+    }
+    if (hayVideo && !(await sincronizarSesionesVideo(user.id))) syncOk = false;
     setUploading(false);
-    if (syncError) {
-      toast.error('Las fotos se subieron pero no se pudieron añadir a tu perfil. Inténtalo de nuevo.');
+    if (!syncOk) {
+      toast.error('Se subieron los archivos pero no se pudieron añadir a tu perfil. Inténtalo de nuevo.');
       return;
     }
     setItems(next);
-    if (fallos) toast.error(`${fallos} ${fallos === 1 ? 'foto no se pudo subir' : 'fotos no se pudieron subir'}.`);
-    toast.success(subidas.length === 1 ? 'Portfolio actualizado.' : `${subidas.length} fotos añadidas al portfolio.`);
+    if (fallos) toast.error(`${fallos} ${fallos === 1 ? 'archivo no se pudo subir' : 'archivos no se pudieron subir'}.`);
+    const soloFotos = subidas.every(i => !i.isVideo);
+    toast.success(subidas.length === 1 ? 'Añadido a tu perfil.' : soloFotos ? `${subidas.length} fotos añadidas al portfolio.` : `${subidas.length} archivos añadidos a tu perfil.`);
   };
 
   const remove = async (item: PortfolioItem) => {
     await supabase.storage.from('audio-sessions').remove([item.storagePath]);
     const next = items.filter(i => i.storagePath !== item.storagePath);
-    const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
-    const { error: syncError } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
-    if (syncError) {
+    let ok = true;
+    if (item.isVideo) ok = await sincronizarSesionesVideo(user.id);
+    else {
+      const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
+      const { error } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
+      ok = !error;
+    }
+    if (!ok) {
       toast.error('No se pudo eliminar de tu perfil. Inténtalo de nuevo.');
       return;
     }
@@ -161,11 +185,11 @@ const PortfolioUpload = () => {
   return (
     <div className="glass-panel p-4">
       <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
-        <Image size={16} style={{ color: '#8A6D0F' }} /> Portfolio
+        <Image size={16} style={{ color: '#8A6D0F' }} /> Fotos y vídeos
         <span className="text-xs text-muted-foreground ml-auto">{items.length}/{maxItems}</span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        Fotos hasta {MAX_IMAGE_MB}MB · hasta {MAX_ITEMS_PRO} elementos · para vídeos, ve a la sección "Vídeo"
+        Fotos (JPG, PNG, WEBP, hasta {MAX_IMAGE_MB}MB) y vídeos (MP4, MOV, hasta {MAX_VIDEO_S} s y {MAX_VIDEO_MB}MB) · hasta {MAX_ITEMS_PRO} elementos
       </p>
 
       {/* CTA: portfolio vacío — mensaje según el oficio */}
@@ -211,9 +235,10 @@ const PortfolioUpload = () => {
               )}
               <button
                 onClick={() => remove(item)}
-                className="absolute top-1 right-1 w-5 h-5 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                aria-label="Eliminar"
+                className="absolute top-1 right-1 w-8 h-8 rounded-full flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 transition-opacity"
                 style={{ background: 'rgba(0,0,0,0.7)' }}>
-                <X size={10} className="text-white" />
+                <X size={14} className="text-white" />
               </button>
             </div>
           ))}
@@ -243,15 +268,18 @@ const PortfolioUpload = () => {
           style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#8A6D0F', background: 'rgba(212,175,55,0.03)' }}>
           {items.length > 0 ? <Plus size={18} /> : <Upload size={18} />}
           <span className="text-sm font-bold">
-            {uploading ? 'Subiendo...' : items.length > 0 ? 'Añadir fotos' : 'Subir portfolio'}
+            {uploading ? (pct !== null ? `Subiendo vídeo… ${pct}%` : 'Subiendo…') : items.length > 0 ? 'Añadir fotos o vídeos' : 'Elegir fotos o vídeos'}
           </span>
         </button>
       )}
 
+      {items.length < maxItems && !rightsConfirmed && (
+        <p className="text-xs mt-2 text-center" style={{ color: '#444' }}>Marca la casilla de arriba para activar el botón.</p>
+      )}
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm"
         multiple
         onChange={handleUpload}
         className="hidden"

@@ -8,15 +8,14 @@ import { toast } from 'sonner';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 
-const MAX_VIDEO_SESSION_MB = 200;
-const MAX_BIO_VIDEO_MB = 200;
-const MAX_VIDEO_SESSION_S  = 60;
+import { MAX_VIDEO_MB, MAX_VIDEO_S, validarVideo, subirConProgreso, sincronizarSesionesVideo, sanitizeName } from '@/lib/videoUpload';
 
 interface VideoItem { name: string; url: string; path: string; }
 
 const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; userId: string }) => {
   const [items, setItems] = useState<VideoItem[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [pct, setPct] = useState(0);
   const [rightsConfirmed, setRightsConfirmed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -33,50 +32,29 @@ const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; user
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith('video/')) { toast.error('Solo MP4, MOV o WebM'); return; }
-    if (file.size > MAX_VIDEO_SESSION_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_VIDEO_SESSION_MB}MB por sesión`); return; }
-    if (items.length >= maxSessions) { toast.error(`Máximo ${maxSessions} sesiones de vídeo en tu plan`); return; }
-    try {
-      const url = URL.createObjectURL(file);
-      const v = document.createElement('video');
-      v.preload = 'metadata';
-      const dur: number = await new Promise((res, rej) => {
-        v.onloadedmetadata = () => { URL.revokeObjectURL(url); res(v.duration); };
-        v.onerror = () => { URL.revokeObjectURL(url); rej(); };
-        v.src = url;
-      });
-      if (dur > MAX_VIDEO_SESSION_S) { toast.error(`Máximo ${MAX_VIDEO_SESSION_S}s (duración: ${Math.round(dur)}s)`); return; }
-    } catch { toast.error('No se pudo verificar el vídeo'); return; }
-
-    setUploading(true);
-    const safe = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9._-]/g,'_');
-    const path = `${userId}/video-sessions/${Date.now()}-${safe}`;
-    const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
-    if (error) { toast.error('Error: ' + error.message); setUploading(false); return; }
-    await load();
-    // Sync video session URLs to profiles table
-    const { data: vids } = await supabase.storage.from('audio-sessions').list(`${userId}/video-sessions`);
-    if (vids) {
-      const urls = vids.map(f => {
-        const p2 = `${userId}/video-sessions/${f.name}`;
-        const { data: u } = supabase.storage.from('audio-sessions').getPublicUrl(p2);
-        return u.publicUrl;
-      });
-      supabase.from('profiles').update({ video_session_urls: urls } as any).eq('user_id', userId).then(() => {});
-    }
-    toast.success('Sesión de vídeo subida');
-    setUploading(false);
     if (inputRef.current) inputRef.current.value = '';
+    if (!file) return;
+    if (items.length >= maxSessions) { toast.error(`Máximo ${maxSessions} vídeos. Borra alguno para subir otro.`); return; }
+    const motivo = await validarVideo(file);
+    if (motivo) { toast.error(motivo); return; }
+    setUploading(true); setPct(0);
+    try {
+      await subirConProgreso(`${userId}/video-sessions/${Date.now()}-${sanitizeName(file.name) || 'video.mp4'}`, file, setPct);
+    } catch (err: any) { toast.error(err.message); setUploading(false); return; }
+    await load();
+    const ok = await sincronizarSesionesVideo(userId);
+    setUploading(false);
+    if (!ok) { toast.error('El vídeo se subió pero no se pudo añadir a tu ficha. Inténtalo de nuevo.'); return; }
+    toast.success('Vídeo subido y visible en tu ficha');
   };
 
   const remove = async (item: VideoItem) => {
     await supabase.storage.from('audio-sessions').remove([item.path]);
     const next = items.filter(i => i.path !== item.path);
     setItems(next);
-    const urls = next.map(i => i.url);
-    supabase.from('profiles').update({ video_session_urls: urls } as any).eq('user_id', userId).then(() => {});
-    toast.info('Sesión eliminada');
+    const ok = await sincronizarSesionesVideo(userId);
+    if (!ok) { toast.error('Se borró el vídeo pero tu ficha no se actualizó. Recarga e inténtalo de nuevo.'); return; }
+    toast.info('Vídeo eliminado');
   };
 
   return (
@@ -114,11 +92,20 @@ const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; user
       )}
       {items.length < maxSessions && (
         <button onClick={() => inputRef.current?.click()} disabled={uploading || !rightsConfirmed}
+          aria-describedby="video-ayuda"
           className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-dashed text-xs font-bold transition-all hover:scale-[1.01] disabled:opacity-50"
           style={{ borderColor: 'rgba(66,133,244,0.2)', color: '#4285F4', background: 'rgba(66,133,244,0.03)' }}>
           {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-          {uploading ? 'Subiendo...' : 'Subir sesión de vídeo'}
+          {uploading ? `Subiendo… ${pct}%` : 'Elegir vídeo de mi móvil'}
         </button>
+      )}
+      {items.length < maxSessions && !rightsConfirmed && (
+        <p id="video-ayuda" className="text-[0.75rem] mt-2 text-center" style={{ color: '#444' }}>Marca la casilla de arriba para activar el botón.</p>
+      )}
+      {uploading && (
+        <div className="mt-2 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.08)' }}>
+          <div className="h-full" style={{ width: `${pct}%`, background: '#4285F4', transition: 'width .2s' }} />
+        </div>
       )}
       <input ref={inputRef} type="file" accept="video/mp4,video/quicktime,video/webm" onChange={handleUpload} className="hidden" />
     </div>
@@ -147,7 +134,7 @@ const TABS: { id: Tab; label: string; icon: React.FC<any> }[] = [
   { id: 'posts',  label: 'Posts',    icon: Type      },
   { id: 'audio',  label: 'Audio',   icon: Music     },
   { id: 'video',  label: 'Vídeo',   icon: Video     },
-  { id: 'images', label: 'Fotos',   icon: ImageIcon },
+  { id: 'images', label: 'Fotos y vídeos', icon: ImageIcon },
 ];
 
 interface Props {
@@ -255,24 +242,26 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
     }
   };
 
-  // Grabar/subir vídeo desde la cámara del móvil → sube a Storage y lo guarda
-  // en bio_video_url (el que reproduce el feed tipo Instagram). Máx 60s / 200MB.
+  // Vídeo principal: grabar con la cámara o elegir de la galería → bio_video_url
+  // (el que reproduce el feed tipo Instagram). Máx 60 s / 150 MB.
   const bioVideoInputRef = useRef<HTMLInputElement>(null);
+  const bioVideoCamRef = useRef<HTMLInputElement>(null);
+  const [pctBio, setPctBio] = useState(0);
   const handleBioVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = '';
     if (!file || !user) return;
-    if (!file.type.startsWith('video/')) { toast.error('Sube un vídeo (MP4, MOV).'); return; }
-    if (file.size > MAX_BIO_VIDEO_MB * 1024 * 1024) { toast.error(`El vídeo no puede superar ${MAX_BIO_VIDEO_MB}MB.`); return; }
-    setSavingVideo(true);
+    const motivo = await validarVideo(file);
+    if (motivo) { toast.error(motivo); return; }
+    setSavingVideo(true); setPctBio(0);
     try {
-      const path = `${user.id}/bio-video/${Date.now()}.mp4`;
-      const { error } = await supabase.storage.from('audio-sessions').upload(path, file, { upsert: true });
-      if (error) { toast.error('Error al subir: ' + error.message); setSavingVideo(false); return; }
-      const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-      await saveVideoUrl(urlData.publicUrl);
+      const ext = /\.(mov|webm)$/i.test(file.name) ? file.name.split('.').pop()!.toLowerCase() : 'mp4';
+      const publicUrl = await subirConProgreso(`${user.id}/bio-video/${Date.now()}.${ext}`, file, setPctBio);
+      await saveVideoUrl(publicUrl);
+    } catch (err: any) {
+      toast.error(err.message);
     } finally {
       setSavingVideo(false);
-      if (bioVideoInputRef.current) bioVideoInputRef.current.value = '';
     }
   };
 
@@ -548,21 +537,29 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
             {/* Grabar/subir vídeo desde la cámara del móvil (destino: bio_video_url) */}
             {isOwn && (
               <>
-                <button type="button" onClick={() => bioVideoInputRef.current?.click()}
-                  disabled={savingVideo}
-                  className="w-full flex items-center justify-center gap-2 py-3 mb-3 rounded-xl text-sm font-black transition-all hover:scale-[1.01] disabled:opacity-50"
-                  style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                  {savingVideo ? <Loader2 size={15} className="animate-spin" /> : <Video size={15} />}
-                  {savingVideo ? 'Subiendo…' : 'Grabar o subir vídeo (60s)'}
-                </button>
-                <input
-                  ref={bioVideoInputRef}
-                  type="file"
-                  accept="video/mp4,video/quicktime,video/webm"
-                  capture="user"
-                  onChange={handleBioVideoUpload}
-                  className="hidden"
-                />
+                <div className="grid grid-cols-2 gap-2 mb-2">
+                  <button type="button" onClick={() => bioVideoInputRef.current?.click()}
+                    disabled={savingVideo}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black transition-all hover:scale-[1.01] disabled:opacity-50"
+                    style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                    {savingVideo ? <Loader2 size={15} className="animate-spin" /> : <Upload size={15} />}
+                    {savingVideo ? `Subiendo… ${pctBio}%` : 'Elegir de mi galería'}
+                  </button>
+                  <button type="button" onClick={() => bioVideoCamRef.current?.click()}
+                    disabled={savingVideo}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black transition-all hover:scale-[1.01] disabled:opacity-50"
+                    style={{ background: 'rgba(212,175,55,0.12)', border: '1.5px solid rgba(212,175,55,0.5)', color: '#5c4a12' }}>
+                    <Video size={15} /> Grabar ahora
+                  </button>
+                </div>
+                <p className="text-[0.75rem] mb-3 text-center" style={{ color: '#444' }}>MP4, MOV o WebM · máximo {MAX_VIDEO_S} segundos y {MAX_VIDEO_MB} MB</p>
+                {savingVideo && (
+                  <div className="mb-3 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.08)' }}>
+                    <div className="h-full" style={{ width: `${pctBio}%`, background: '#D4AF37', transition: 'width .2s' }} />
+                  </div>
+                )}
+                <input ref={bioVideoInputRef} type="file" accept="video/mp4,video/quicktime,video/webm" onChange={handleBioVideoUpload} className="hidden" />
+                <input ref={bioVideoCamRef} type="file" accept="video/*" capture="environment" onChange={handleBioVideoUpload} className="hidden" />
                 <p className="text-[0.75rem] text-muted-foreground mb-3 text-center">o pega un enlace ↓</p>
               </>
             )}
@@ -629,10 +626,10 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
           {isOwn && (
             <div className="glass-panel p-5" style={{ border: '1px solid rgba(66,133,244,0.15)' }}>
               <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
-                <Video size={14} style={{ color: BLUE }} /> Sesiones de Vídeo
+                <Video size={14} style={{ color: BLUE }} /> Más vídeos
               </h4>
               <p className="text-xs text-muted-foreground mb-3">
-                Sube clips de actuaciones (MP4/MOV, máx 200MB, 60s).
+                Más clips de tus actuaciones, hasta 10 (MP4/MOV, máx 150 MB y 60 s cada uno). Salen en tu ficha pública; el de arriba es el que sale en el feed.
               </p>
               <VideoSessionUpload maxSessions={10} userId={user!.id} />
             </div>

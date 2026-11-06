@@ -7,6 +7,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
+import { validarVideo, subirConProgreso, esImagenAdmitida, MENSAJE_HEIC, MAX_VIDEO_MB, MAX_VIDEO_S } from '@/lib/videoUpload';
+
+// Oficios que se contratan viéndolos: el asistente ofrece subir un vídeo (opcional).
+const ROLES_CON_VIDEO = ['mago', 'bailarin', 'humorista', 'speaker', 'animador'];
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { sanitizeInput } from '@/lib/contentFilter';
 import { logAsistente, resumenAsistente } from '@/lib/asistenteAlta';
@@ -309,6 +313,24 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   // produciendo perfiles vacíos en el directorio, así que "Guardar y
   // continuar" se bloquea hasta que los tres estén rellenos.
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [videoOk, setVideoOk] = useState(false);
+  const [videoPct, setVideoPct] = useState<number | null>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file || !user) return;
+    const motivo = await validarVideo(file);
+    if (motivo) { logAsistente('video_error motivo=validacion'); toast.error(motivo); return; }
+    setVideoPct(0);
+    try {
+      const ext = /\.(mov|webm)$/i.test(file.name) ? file.name.split('.').pop()!.toLowerCase() : 'mp4';
+      const url = await subirConProgreso(`${user.id}/bio-video/${Date.now()}.${ext}`, file, setVideoPct);
+      const ok = await profile.updateField({ bio_video_url: url } as any);
+      if (ok) { setVideoOk(true); logAsistente('video_ok'); }
+    } catch (err: any) { logAsistente('video_error motivo=subida'); toast.error(err.message); }
+    setVideoPct(null);
+  };
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [city, setCity] = useState('');
   // 'Otra ciudad' abre un campo libre: la lista fija dejaba fuera a quien no
@@ -385,6 +407,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     if (file.size > MAX_RAW_IMAGE_MB * 1024 * 1024) { logAsistente('foto_error motivo=tamano'); toast.error(`Máximo ${MAX_RAW_IMAGE_MB}MB`); return; }
     setUploadingPhoto(true);
     const compressed = await compressImage(file);
+    if (!esImagenAdmitida(compressed)) { logAsistente('foto_error motivo=heic'); toast.error(MENSAJE_HEIC); setUploadingPhoto(false); return; }
     const safeName = compressed.name.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
     const path = `${user.id}/photo-${Date.now()}-${safeName}`;
     const { error } = await supabase.storage.from('audio-sessions').upload(path, compressed);
@@ -690,6 +713,20 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       <p className="text-xs" style={{ color: '#333' }}>Los perfiles con foto reciben 3× más contactos</p>
                     </div>
                   </motion.button>
+
+                  {ROLES_CON_VIDEO.includes(selectedRole) && (
+                    <>
+                      <input ref={videoInputRef} type="file" accept="video/mp4,video/quicktime,video/webm" className="hidden" onChange={handleVideoUpload} />
+                      <button type="button" onClick={() => videoInputRef.current?.click()} disabled={videoPct !== null}
+                        className="w-full px-4 py-3 rounded-xl text-left"
+                        style={{ background: videoOk ? 'rgba(34,197,94,0.1)' : 'rgba(212,175,55,0.08)', border: `1.5px solid ${videoOk ? '#22c55e' : 'rgba(212,175,55,0.45)'}` }}>
+                        <p className="text-sm font-black" style={{ color: '#111' }}>
+                          {videoPct !== null ? `Subiendo vídeo… ${videoPct}%` : videoOk ? 'Vídeo subido ✓' : 'Sube un vídeo de tu show (opcional)'}
+                        </p>
+                        <p className="text-xs" style={{ color: '#333' }}>Lo eliges de tu móvil · máximo {MAX_VIDEO_S} s y {MAX_VIDEO_MB} MB. Puedes hacerlo luego.</p>
+                      </button>
+                    </>
+                  )}
 
                   <div className="px-1">
                     <p className="text-xs font-bold mb-1.5" style={{ color: '#222' }}>Tu ciudad</p>

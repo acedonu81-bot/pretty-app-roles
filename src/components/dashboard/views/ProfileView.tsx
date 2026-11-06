@@ -256,6 +256,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (!file || !user) return;
     if (!file.type.startsWith('image/')) { toast.error('Solo se permiten archivos de imagen.'); return; }
     const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (/hei[cf]/i.test(file.type)) { toast.error('Esa foto está en formato HEIC. Elige otra en JPG o PNG, o en el iPhone usa Ajustes > Cámara > Formatos > Más compatible.'); return; }
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) { toast.error('Formato no permitido. Usa JPG, PNG, WebP o GIF.'); return; }
     if (file.size > MAX_RAW_IMAGE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_RAW_IMAGE_MB}MB`); return; }
 

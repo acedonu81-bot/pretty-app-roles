@@ -17,7 +17,7 @@ vi.mock('sonner', () => ({ toast: { error: vi.fn(), success: vi.fn(), info: vi.f
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     storage: { from: () => ({
-      list: async () => ({ data: Array.from({ length: existentes.n }, (_, i) => ({ name: `${1700000000000 + i}-a.jpg` })) }),
+      list: async (carpeta: string) => ({ data: !carpeta.endsWith('/portfolio') ? [] : Array.from({ length: existentes.n }, (_, i) => ({ name: `${1700000000000 + i}-a.jpg` })) }),
       getPublicUrl: (p: string) => ({ data: { publicUrl: 'https://x/' + p } }),
       upload,
       remove: vi.fn(),
