@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AtSign, BarChart3, Globe, Image as ImageIcon, Loader2, Pin, PinOff, Plus, Trash2, Video, X } from 'lucide-react';
+import { AtSign, BarChart3, Globe, Image as ImageIcon, Loader2, Pencil, Pin, PinOff, Plus, Trash2, Video, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { timeAgo } from '@/lib/timeAgo';
@@ -52,6 +52,10 @@ export default function AdminComunicados() {
   const [pregunta, setPregunta] = useState('');
   const [opciones, setOpciones] = useState<string[]>(['', '']);
   const [diasEncuesta, setDiasEncuesta] = useState(0);
+  // Edición de un comunicado ya publicado. Categoría y push no se tocan (los avisos ya salieron).
+  const [editandoId, setEditandoId] = useState<string | null>(null);
+  const [votosEdit, setVotosEdit] = useState(0);
+  const formRef = useRef<HTMLDivElement>(null);
 
   const [buscarAbierto, setBuscarAbierto] = useState(false);
   const [q, setQ] = useState('');
@@ -121,6 +125,20 @@ export default function AdminComunicados() {
     setTitulo(''); setCuerpo(''); setCategoria('todos'); setPush(false); setFijado(false); setDias(30);
     setCtaTexto(''); setCtaUrl(''); setImagenUrl(null); setVideoUrl(null);
     setPublico(false); setComentariosOn(true); setConEncuesta(false); setPregunta(''); setOpciones(['', '']); setDiasEncuesta(0);
+    setEditandoId(null); setVotosEdit(0);
+  };
+
+  const editar = (c: Comunicado) => {
+    setEditandoId(c.id);
+    setTitulo(c.titulo); setCuerpo(c.cuerpo); setCategoria(c.categoria); setPush(false); setFijado(c.fijado);
+    setDias(0); setCtaTexto(c.cta_texto ?? ''); setCtaUrl(c.cta_url ?? '');
+    setImagenUrl(c.imagen_url); setVideoUrl(c.video_url);
+    setPublico(!!c.publico); setComentariosOn(c.comentarios_on !== false);
+    const hay = (c.encuesta_opciones?.length ?? 0) >= 2;
+    setConEncuesta(hay); setPregunta(c.encuesta_pregunta ?? ''); setOpciones(hay ? [...(c.encuesta_opciones as string[])] : ['', '']);
+    setDiasEncuesta(0);
+    setVotosEdit((inter[c.id]?.votos ?? []).reduce((a, b) => a + b, 0));
+    requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
 
   const publicar = async () => {
@@ -134,6 +152,25 @@ export default function AdminComunicados() {
       toast.error('La encuesta necesita pregunta y al menos 2 opciones'); return;
     }
     const destino = etiquetaCategoria(categoria);
+    if (editandoId) {
+      const bloqueada = votosEdit > 0;
+      setPublicando(true);
+      const cambios: Fila = {
+        titulo: titulo.trim(), cuerpo: cuerpo.trim(), fijado, imagen_url: imagenUrl, video_url: videoUrl,
+        cta_texto: ctaTexto.trim() || null, cta_url: ctaUrl.trim() || null, publico, comentarios_on: comentariosOn,
+        encuesta_pregunta: conEncuesta ? pregunta.trim() : null,
+        // Con votos ya emitidos las opciones no se tocan (se falsearía el resultado).
+        ...(bloqueada ? {} : { encuesta_opciones: conEncuesta ? opcionesLimpias : null }),
+        ...(diasEncuesta ? { encuesta_cierra_at: new Date(Date.now() + diasEncuesta * 86400000).toISOString() } : {}),
+        ...(dias ? { caduca_at: new Date(Date.now() + dias * 86400000).toISOString() } : {}),
+      };
+      const { error: errEdit } = await db.from('comunicados').update(cambios).eq('id', editandoId);
+      setPublicando(false);
+      if (errEdit) { toast.error('No se pudo guardar: ' + errEdit.message); return; }
+      toast.success('Cambios guardados');
+      limpiar(); cargar();
+      return;
+    }
     if (!window.confirm(`Se publica para "${destino}" y les llega a la campana${push ? ' y por push' : ''}${publico ? '. También sale en la web pública' : ''}. ¿Seguimos?`)) return;
     setPublicando(true);
     const caduca = new Date(Date.now() + dias * 86400000).toISOString();
@@ -168,8 +205,20 @@ export default function AdminComunicados() {
 
   return (
     <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6">
-      <div className="rounded-2xl p-5 space-y-4" style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.3)' }}>
-        <h3 className="text-lg font-extrabold" style={{ color: '#111827' }}>Nuevo comunicado</h3>
+      <div ref={formRef} className="rounded-2xl p-5 space-y-4" style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.3)' }}>
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="text-lg font-extrabold" style={{ color: '#111827' }}>{editandoId ? 'Editar comunicado' : 'Nuevo comunicado'}</h3>
+          {editandoId && (
+            <button type="button" onClick={limpiar} className="text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-black/5" style={{ color: '#6b7280' }}>
+              Cancelar edición
+            </button>
+          )}
+        </div>
+        {editandoId && (
+          <p className="text-xs rounded-lg px-3 py-2" style={{ background: 'rgba(212,175,55,0.1)', color: '#6b5200' }}>
+            Los avisos de la campana y el push ya salieron con el texto anterior; no se vuelven a enviar. Las menciones nuevas tampoco avisan.
+          </p>
+        )}
 
         <input value={titulo} onChange={e => setTitulo(e.target.value)} maxLength={120} placeholder="Título"
           className="w-full rounded-xl px-3 py-2.5 text-sm font-bold" style={estiloCampo} />
@@ -198,6 +247,13 @@ export default function AdminComunicados() {
               <input type="file" accept="video/mp4,video/webm,video/quicktime" className="hidden"
                 onChange={e => { const f = e.target.files?.[0]; if (f) subir(f, 'video'); e.target.value = ''; }} />
             </label>
+            <button type="button" onClick={() => setConEncuesta(v => !v)} aria-pressed={conEncuesta}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold"
+              style={conEncuesta
+                ? { background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.4)', color: '#8B6A00' }
+                : { background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.1)', color: '#374151' }}>
+              <BarChart3 size={13} /> Encuesta
+            </button>
           </div>
 
           {buscarAbierto && (
@@ -217,6 +273,41 @@ export default function AdminComunicados() {
               {q.trim().length >= 2 && !resultados.length && (
                 <p className="px-2 py-1.5 text-xs" style={{ color: '#6b7280' }}>Nadie con ese nombre</p>
               )}
+            </div>
+          )}
+
+          {conEncuesta && (
+            <div className="mt-2 rounded-xl p-3 space-y-2" style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.4)' }}>
+              <p className="text-xs font-bold flex items-center gap-1.5" style={{ color: '#8B6A00' }}><BarChart3 size={13} /> Encuesta</p>
+              {votosEdit > 0 && (
+                <p className="text-xs" style={{ color: '#6b5200' }}>Ya hay {votosEdit} {votosEdit === 1 ? 'voto' : 'votos'}: las opciones no se pueden cambiar, la pregunta y el cierre sí.</p>
+              )}
+              <input value={pregunta} onChange={e => setPregunta(e.target.value)} maxLength={200} placeholder="Pregunta"
+                className="w-full rounded-lg px-3 py-2 text-sm" style={estiloCampo} />
+              {opciones.map((o, i) => (
+                <div key={i} className="flex gap-2">
+                  <input value={o} maxLength={80} placeholder={`Opción ${i + 1}`} disabled={votosEdit > 0}
+                    onChange={e => setOpciones(os => os.map((x, j) => (j === i ? e.target.value : x)))}
+                    className="flex-1 rounded-lg px-3 py-2 text-sm disabled:opacity-60" style={estiloCampo} />
+                  {opciones.length > 2 && votosEdit === 0 && (
+                    <button type="button" onClick={() => setOpciones(os => os.filter((_, j) => j !== i))} aria-label="Quitar opción"
+                      className="p-2 rounded-lg hover:bg-black/5"><X size={14} /></button>
+                  )}
+                </div>
+              ))}
+              <div className="flex items-center justify-between gap-2">
+                {opciones.length < 6 && votosEdit === 0 ? (
+                  <button type="button" onClick={() => setOpciones(os => [...os, ''])}
+                    className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: '#8B6A00' }}>
+                    <Plus size={13} /> Otra opción
+                  </button>
+                ) : <span />}
+                <select value={diasEncuesta} onChange={e => setDiasEncuesta(Number(e.target.value))}
+                  className="rounded-lg px-2 py-1.5 text-xs" style={estiloCampo}>
+                  <option value={0}>{editandoId ? 'Cierre sin cambios' : 'Sin cierre'}</option>
+                  {[1, 3, 7, 14].map(d => <option key={d} value={d}>Cierra en {d} {d === 1 ? 'día' : 'días'}</option>)}
+                </select>
+              </div>
             </div>
           )}
         </div>
@@ -241,43 +332,6 @@ export default function AdminComunicados() {
         )}
 
 
-        <div className="rounded-xl p-3 space-y-2" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
-          <label className="inline-flex items-center gap-2 text-sm font-bold cursor-pointer" style={{ color: '#374151' }}>
-            <input type="checkbox" checked={conEncuesta} onChange={e => setConEncuesta(e.target.checked)} />
-            <BarChart3 size={14} /> Añadir encuesta
-          </label>
-          {conEncuesta && (
-            <>
-              <input value={pregunta} onChange={e => setPregunta(e.target.value)} maxLength={200} placeholder="Pregunta"
-                className="w-full rounded-lg px-3 py-2 text-sm" style={estiloCampo} />
-              {opciones.map((o, i) => (
-                <div key={i} className="flex gap-2">
-                  <input value={o} maxLength={80} placeholder={`Opción ${i + 1}`}
-                    onChange={e => setOpciones(os => os.map((x, j) => (j === i ? e.target.value : x)))}
-                    className="flex-1 rounded-lg px-3 py-2 text-sm" style={estiloCampo} />
-                  {opciones.length > 2 && (
-                    <button type="button" onClick={() => setOpciones(os => os.filter((_, j) => j !== i))} aria-label="Quitar opción"
-                      className="p-2 rounded-lg hover:bg-black/5"><X size={14} /></button>
-                  )}
-                </div>
-              ))}
-              <div className="flex items-center justify-between gap-2">
-                {opciones.length < 6 ? (
-                  <button type="button" onClick={() => setOpciones(os => [...os, ''])}
-                    className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: '#8B6A00' }}>
-                    <Plus size={13} /> Otra opción
-                  </button>
-                ) : <span />}
-                <select value={diasEncuesta} onChange={e => setDiasEncuesta(Number(e.target.value))}
-                  className="rounded-lg px-2 py-1.5 text-xs" style={estiloCampo}>
-                  <option value={0}>Sin cierre</option>
-                  {[1, 3, 7, 14].map(d => <option key={d} value={d}>Cierra en {d} {d === 1 ? 'día' : 'días'}</option>)}
-                </select>
-              </div>
-            </>
-          )}
-        </div>
-
         <div className="grid grid-cols-2 gap-2">
           <input value={ctaTexto} onChange={e => setCtaTexto(e.target.value)} maxLength={40} placeholder="Texto del botón (opcional)"
             className="rounded-xl px-3 py-2 text-sm" style={estiloCampo} />
@@ -291,8 +345,8 @@ export default function AdminComunicados() {
         <div className="grid grid-cols-2 gap-2">
           <label className="text-xs font-bold" style={{ color: '#374151' }}>
             Para quién
-            <select value={categoria} onChange={e => setCategoria(e.target.value)}
-              className="mt-1 w-full rounded-xl px-3 py-2 text-sm font-normal" style={estiloCampo}>
+            <select value={categoria} onChange={e => setCategoria(e.target.value)} disabled={!!editandoId}
+              className="mt-1 w-full rounded-xl px-3 py-2 text-sm font-normal disabled:opacity-60" style={estiloCampo}>
               {CATEGORIAS_COMUNICADO.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
             </select>
           </label>
@@ -300,14 +354,15 @@ export default function AdminComunicados() {
             Visible durante
             <select value={dias} onChange={e => setDias(Number(e.target.value))}
               className="mt-1 w-full rounded-xl px-3 py-2 text-sm font-normal" style={estiloCampo}>
-              {DIAS_CADUCA.map(d => <option key={d} value={d}>{d} días</option>)}
+              {editandoId && <option value={0}>Sin cambios</option>}
+              {DIAS_CADUCA.map(d => <option key={d} value={d}>{editandoId ? `Ampliar: ${d} días desde hoy` : `${d} días`}</option>)}
             </select>
           </label>
         </div>
 
         <div className="flex flex-wrap gap-4 text-sm" style={{ color: '#374151' }}>
           <label className="inline-flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={push} onChange={e => setPush(e.target.checked)} />
+            <input type="checkbox" checked={push} disabled={!!editandoId} onChange={e => setPush(e.target.checked)} />
             Avisar por push solo a esta categoría
           </label>
           <label className="inline-flex items-center gap-2 cursor-pointer">
@@ -343,7 +398,7 @@ export default function AdminComunicados() {
         <button onClick={publicar} disabled={publicando || !!subiendo}
           className="w-full py-3 rounded-xl text-sm font-extrabold disabled:opacity-50"
           style={{ background: '#D4AF37', color: '#1f2937' }}>
-          {publicando ? 'Publicando...' : 'Publicar'}
+          {publicando ? (editandoId ? 'Guardando...' : 'Publicando...') : (editandoId ? 'Guardar cambios' : 'Publicar')}
         </button>
       </div>
 
@@ -387,6 +442,10 @@ export default function AdminComunicados() {
                 )}
               </div>
               <div className="flex flex-col gap-1">
+                <button onClick={() => editar(c)} aria-label="Editar" title="Editar"
+                  className="p-1.5 rounded-lg hover:bg-black/5" style={{ color: editandoId === c.id ? '#8B6A00' : '#6b7280' }}>
+                  <Pencil size={15} />
+                </button>
                 <button onClick={() => alternarFijado(c)} aria-label={c.fijado ? 'Desfijar' : 'Fijar'}
                   className="p-1.5 rounded-lg hover:bg-black/5" style={{ color: c.fijado ? '#8B6A00' : '#9ca3af' }}>
                   {c.fijado ? <Pin size={15} /> : <PinOff size={15} />}
