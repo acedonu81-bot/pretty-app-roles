@@ -3,7 +3,7 @@ import { AtSign, BarChart3, Globe, Image as ImageIcon, Loader2, Pencil, Pin, Pin
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { timeAgo } from '@/lib/timeAgo';
-import { CATEGORIAS_COMUNICADO, type Comunicado, type Interaccion, porcentajes, etiquetaCategoria, formatoMencion, slugNovedad } from '@/lib/comunicados';
+import { CADUCA_NUNCA, CATEGORIAS_COMUNICADO, type Comunicado, esParaSiempre, type Interaccion, porcentajes, etiquetaCategoria, formatoMencion, slugNovedad } from '@/lib/comunicados';
 import { CuerpoConMenciones, Portada } from '@/components/comunicados/ComunicadosCarrusel';
 
 // Editor de comunicados del panel admin (6 nov 2026). Al publicar, un trigger
@@ -29,6 +29,8 @@ const db = supabase as unknown as {
 interface Mencionable { user_id: string; display_name: string; role: string; photo_url: string | null }
 
 const DIAS_CADUCA = [7, 15, 30, 60];
+const SIEMPRE = -1; // valor del selector para "Para siempre"
+const fechaCaduca = (dias: number) => (dias === SIEMPRE ? CADUCA_NUNCA : new Date(Date.now() + dias * 86400000).toISOString());
 const MAX_VIDEO_MB = 100;
 
 const estiloCampo = { background: '#fff', border: '1px solid rgba(0,0,0,0.12)', color: '#111827' };
@@ -162,7 +164,7 @@ export default function AdminComunicados() {
         // Con votos ya emitidos las opciones no se tocan (se falsearía el resultado).
         ...(bloqueada ? {} : { encuesta_opciones: conEncuesta ? opcionesLimpias : null }),
         ...(diasEncuesta ? { encuesta_cierra_at: new Date(Date.now() + diasEncuesta * 86400000).toISOString() } : {}),
-        ...(dias ? { caduca_at: new Date(Date.now() + dias * 86400000).toISOString() } : {}),
+        ...(dias ? { caduca_at: fechaCaduca(dias) } : {}),
       };
       const { error: errEdit } = await db.from('comunicados').update(cambios).eq('id', editandoId);
       setPublicando(false);
@@ -173,7 +175,7 @@ export default function AdminComunicados() {
     }
     if (!window.confirm(`Se publica para "${destino}" y les llega a la campana${push ? ' y por push' : ''}${publico ? '. También sale en la web pública' : ''}. ¿Seguimos?`)) return;
     setPublicando(true);
-    const caduca = new Date(Date.now() + dias * 86400000).toISOString();
+    const caduca = fechaCaduca(dias);
     const { error } = await db.from('comunicados').insert({
       titulo: titulo.trim(), cuerpo: cuerpo.trim(), categoria, push, fijado, caduca_at: caduca,
       imagen_url: imagenUrl, video_url: videoUrl,
@@ -356,6 +358,7 @@ export default function AdminComunicados() {
               className="mt-1 w-full rounded-xl px-3 py-2 text-sm font-normal" style={estiloCampo}>
               {editandoId && <option value={0}>Sin cambios</option>}
               {DIAS_CADUCA.map(d => <option key={d} value={d}>{editandoId ? `Ampliar: ${d} días desde hoy` : `${d} días`}</option>)}
+              <option value={SIEMPRE}>Para siempre</option>
             </select>
           </label>
         </div>
@@ -463,7 +466,7 @@ export default function AdminComunicados() {
               <div className="min-w-0 flex-1">
                 <p className="font-bold text-sm truncate">{c.titulo}</p>
                 <p className="text-xs" style={{ color: '#6b7280' }}>
-                  {etiquetaCategoria(c.categoria)} · {timeAgo(c.created_at)}{c.push ? ' · push' : ''}{c.encuesta_opciones?.length ? ' · encuesta' : ''}{caducado ? ' · caducado' : ''}
+                  {etiquetaCategoria(c.categoria)} · {timeAgo(c.created_at)}{c.push ? ' · push' : ''}{c.encuesta_opciones?.length ? ' · encuesta' : ''}{esParaSiempre(c.caduca_at) ? ' · para siempre' : ''}{caducado ? ' · caducado' : ''}
                 </p>
                 {c.publico && (
                   <a href={`/novedades/${slugNovedad(c.titulo, c.id)}`} target="_blank" rel="noreferrer"

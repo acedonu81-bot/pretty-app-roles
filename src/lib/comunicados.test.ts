@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { esEnlaceInterno, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, trocearCuerpo } from './comunicados';
+import { CADUCA_NUNCA, esEnlaceInterno, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, trocearCuerpo } from './comunicados';
 
 const ID = '0b8f3c1e-1234-4abc-9def-1234567890ab';
 
@@ -47,6 +47,11 @@ describe('comunicados', () => {
   it('porcentajes de encuesta', () => {
     expect(porcentajes([1, 3])).toEqual([25, 75]);
     expect(porcentajes([0, 0])).toEqual([0, 0]);
+  });
+
+  it('para siempre se reconoce y una fecha normal no', () => {
+    expect(esParaSiempre(CADUCA_NUNCA)).toBe(true);
+    expect(esParaSiempre('2026-12-06T10:00:00.000Z')).toBe(false);
   });
 
   it('distingue enlaces internos', () => {

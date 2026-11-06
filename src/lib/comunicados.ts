@@ -106,3 +106,7 @@ export function ordenarComunicados<T extends Pick<Comunicado, 'fijado' | 'create
 /** Enlace del botón: rutas internas se abren dentro de la app, el resto en pestaña nueva. */
 export const esEnlaceInterno = (url: string): boolean =>
   url.startsWith('/') && !url.startsWith('//');
+
+/** "Para siempre": caduca_at es NOT NULL, así que se guarda una fecha lejana. */
+export const CADUCA_NUNCA = '2100-01-01T00:00:00.000Z';
+export const esParaSiempre = (iso: string): boolean => new Date(iso).getUTCFullYear() >= 2099;
