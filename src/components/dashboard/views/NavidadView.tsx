@@ -9,6 +9,7 @@ const SECCIONES = [
   { titulo: 'Reyes Magos', tags: ['Rey Mago Melchor', 'Rey Mago Gaspar', 'Baltasar', 'Grupo de Reyes Magos completo', 'Cabalgata'] },
   { titulo: 'Papá Noel y Mamá Noel', tags: ['Papá Noel', 'Mamá Noel'] },
   { titulo: 'Pajes, carteros reales y elfos', tags: ['Paje real', 'Cartero real', 'Elfo'] },
+  { titulo: 'Pasacalles', tags: ['Pasacalles'] },
 ];
 
 // Lo que ya tenemos en XPEAK y sirve para una cena o fiesta de Navidad. Cada
