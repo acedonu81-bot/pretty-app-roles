@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { esEnlaceInterno, formatoMencion, ordenarComunicados, textoPlano, trocearCuerpo } from './comunicados';
+import { esEnlaceInterno, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, trocearCuerpo } from './comunicados';
 
 const ID = '0b8f3c1e-1234-4abc-9def-1234567890ab';
 
@@ -35,6 +35,18 @@ describe('comunicados', () => {
       { id: 'c', fijado: false, created_at: '2026-11-06' },
     ]);
     expect(r.map(x => x.id)).toEqual(['b', 'c', 'a']);
+  });
+
+  it('slug de novedad con id corto y vuelta atrás', () => {
+    const s = slugNovedad('¡Y el ganador del Concurso DJ es…!', ID);
+    expect(s).toBe('y-el-ganador-del-concurso-dj-es-0b8f3c1e');
+    expect(idCortoDeSlug(s)).toBe('0b8f3c1e');
+    expect(idCortoDeSlug('sin-id')).toBeNull();
+  });
+
+  it('porcentajes de encuesta', () => {
+    expect(porcentajes([1, 3])).toEqual([25, 75]);
+    expect(porcentajes([0, 0])).toEqual([0, 0]);
   });
 
   it('distingue enlaces internos', () => {

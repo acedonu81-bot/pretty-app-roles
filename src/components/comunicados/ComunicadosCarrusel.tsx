@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Megaphone, Play } from 'lucide-react';
+import { BarChart3, ChevronLeft, ChevronRight, Heart, Megaphone, MessageCircle, Play } from 'lucide-react';
+import ComunicadoInteraccion from './ComunicadoInteraccion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { timeAgo } from '@/lib/timeAgo';
 import {
-  type Comunicado, esEnlaceInterno, etiquetaCategoria, ordenarComunicados, textoPlano, trocearCuerpo,
+  type Comunicado, type Interaccion, esEnlaceInterno, etiquetaCategoria, ordenarComunicados, textoPlano, trocearCuerpo,
 } from '@/lib/comunicados';
 
 // Carrusel "Comunicados XPEAK" del panel (6 nov 2026), inspirado en "Últimas
@@ -16,6 +17,7 @@ import {
 
 // Tablas nuevas aún sin tipos generados.
 const db = supabase as unknown as {
+  rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown[] | null }>;
   from: (t: string) => {
     select: (c: string) => { order: (c: string, o: { ascending: boolean }) => { limit: (n: number) => Promise<{ data: unknown[] | null }> }; eq: (k: string, v: string) => Promise<{ data: unknown[] | null }> };
     upsert: (row: Record<string, unknown>, o: { onConflict: string; ignoreDuplicates: boolean }) => Promise<unknown>;
@@ -70,6 +72,7 @@ export default function ComunicadosCarrusel() {
   const [lista, setLista] = useState<Comunicado[]>([]);
   const [leidos, setLeidos] = useState<Set<string>>(new Set());
   const [abierto, setAbierto] = useState<Comunicado | null>(null);
+  const [inter, setInter] = useState<Record<string, Interaccion>>({});
   const pista = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -77,7 +80,7 @@ export default function ComunicadosCarrusel() {
     let vivo = true;
     (async () => {
       const [{ data }, { data: lect }] = await Promise.all([
-        db.from('comunicados').select('id, titulo, cuerpo, imagen_url, video_url, cta_texto, cta_url, categoria, push, fijado, caduca_at, destinatarios, created_at')
+        db.from('comunicados').select('id, titulo, cuerpo, imagen_url, video_url, cta_texto, cta_url, categoria, push, fijado, caduca_at, destinatarios, created_at, publico, comentarios_on, encuesta_pregunta, encuesta_opciones, encuesta_cierra_at')
           .order('created_at', { ascending: false }).limit(20),
         db.from('comunicado_lecturas').select('comunicado_id').eq('user_id', user.id),
       ]);
@@ -86,6 +89,14 @@ export default function ComunicadosCarrusel() {
       const ahora = Date.now();
       setLista(ordenarComunicados(((data ?? []) as Comunicado[]).filter(c => new Date(c.caduca_at).getTime() > ahora)));
       setLeidos(new Set(((lect ?? []) as { comunicado_id: string }[]).map(l => l.comunicado_id)));
+      const ids = ((data ?? []) as Comunicado[]).map(c => c.id);
+      if (ids.length) {
+        const { data: it } = await db.rpc('comunicados_interaccion', { p_ids: ids });
+        if (!vivo) return;
+        const m: Record<string, Interaccion> = {};
+        for (const x of (it ?? []) as Interaccion[]) m[x.comunicado_id] = x;
+        setInter(m);
+      }
     })();
     return () => { vivo = false; };
   }, [user?.id]);
@@ -104,7 +115,7 @@ export default function ComunicadosCarrusel() {
   // Banner: solo imagen y botón, sin texto. Se va directo al enlace.
   const abrir = useCallback((c: Comunicado) => {
     marcarLeido(c);
-    if (!c.cuerpo.trim() && !c.video_url && c.cta_url) { irA(c.cta_url); return; }
+    if (!c.cuerpo.trim() && !c.video_url && !c.encuesta_opciones?.length && c.cta_url) { irA(c.cta_url); return; }
     setAbierto(c);
   }, [marcarLeido, irA]);
 
@@ -162,12 +173,24 @@ export default function ComunicadosCarrusel() {
             </div>
             <h3 className="mt-1 font-bold leading-snug line-clamp-2 group-hover:underline underline-offset-2"
               style={{ color: '#111827' }}>{c.titulo}</h3>
+            {(() => {
+              const i = inter[c.id];
+              const encuesta = (c.encuesta_opciones?.length ?? 0) >= 2;
+              if (!i?.likes && !i?.comentarios && !encuesta) return null;
+              return (
+                <div className="flex items-center gap-3 mt-1 text-xs" style={{ color: '#6b7280' }}>
+                  {!!i?.likes && <span className="inline-flex items-center gap-1"><Heart size={12} /> {i.likes}</span>}
+                  {!!i?.comentarios && <span className="inline-flex items-center gap-1"><MessageCircle size={12} /> {i.comentarios}</span>}
+                  {encuesta && <span className="inline-flex items-center gap-1"><BarChart3 size={12} /> {i?.mi_voto != null ? 'Has votado' : 'Encuesta'}</span>}
+                </div>
+              );
+            })()}
           </button>
         ))}
       </div>
 
       <Dialog open={!!abierto} onOpenChange={o => { if (!o) setAbierto(null); }}>
-        <DialogContent className="max-w-xl p-0 overflow-hidden" style={{ background: '#FFFDF7' }}>
+        <DialogContent className="max-w-xl p-0 overflow-y-auto max-h-[92vh]" style={{ background: '#FFFDF7' }}>
           {abierto && (
             <>
               {abierto.video_url ? (
@@ -189,6 +212,10 @@ export default function ComunicadosCarrusel() {
                     {abierto.cta_texto || 'Ver más'} <ChevronRight size={15} />
                   </button>
                 )}
+                <div className="pt-3" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                  <ComunicadoInteraccion c={abierto} inter={inter[abierto.id]}
+                    onCambio={i => setInter(m => ({ ...m, [abierto.id]: i }))} />
+                </div>
               </div>
             </>
           )}

@@ -351,6 +351,7 @@ const BlogRRPPDiscoteca = lazy(() => import("./pages/BlogRRPPDiscoteca"));
 const DirectorioPublico = lazy(() => import("./pages/DirectorioPublico"));
 const Socials = lazy(() => import("./pages/Socials"));
 const SocialEvent = lazy(() => import("./pages/SocialEvent"));
+const Novedades = lazy(() => import("./pages/Novedades"));
 const BlogDJBodaBilbao = lazy(() => import("./pages/BlogDJBodaBilbao"));
 const BlogDJBodaMallorca = lazy(() => import("./pages/BlogDJBodaMallorca"));
 const BlogFotografoBoda = lazy(() => import("./pages/BlogFotografoBoda"));
@@ -878,6 +879,8 @@ const App = () => (
             )}
             <Route path="/socials" element={<Socials />} />
             <Route path="/socials/:slug" element={<SocialEvent />} />
+            <Route path="/novedades" element={<Novedades />} />
+            <Route path="/novedades/:slug" element={<Novedades />} />
             {!isNative && (
               <>
             <Route path="/blog/dj-bodas-sevilla" element={<BlogDJBodaSevilla />} />

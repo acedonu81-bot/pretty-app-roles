@@ -1892,6 +1892,77 @@ try {
   console.warn(`  ⚠ Prerender de eventos omitido: ${e.message}`);
 }
 
+
+// ─── Novedades públicas (comunicados con publico=true) → /novedades/{slug} ──
+// 6 nov 2026. Solo el texto del admin y las menciones (enlazadas a la ficha
+// del profesional). Los comentarios del panel nunca salen aquí. Un fallo no
+// aborta el build: son pocas páginas y no deben tumbar el resto del sitio.
+try {
+  const env = loadEnv();
+  const supabaseUrl = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
+  const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (supabaseUrl && anonKey) {
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/comunicados?select=id,titulo,cuerpo,imagen_url,created_at&publico=eq.true&order=created_at.desc&limit=200`,
+      { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
+    );
+    if (res.ok) {
+      const novedades = await res.json();
+      const MENCION = /@\[([^\]\n]{1,80})\]\(([0-9a-f-]{36})\)/g;
+      const slugNov = (t, id) => `${toSlug(t).slice(0, 70).replace(/-$/, '')}-${id.slice(0, 8)}`;
+      const lista = [];
+      for (const n of novedades) {
+        const routePath = `/novedades/${slugNov(n.titulo, n.id)}`;
+        if (existingPaths.has(routePath)) continue;
+        const plano = (n.cuerpo || '').replace(MENCION, '$1').replace(/\s+/g, ' ').trim();
+        const desc = (plano || n.titulo).slice(0, 155);
+        const html = escHtml(n.cuerpo || '').replace(/@\[([^\]\n]{1,80})\]\(([0-9a-f-]{36})\)/g,
+          (_m, nombre) => `<a href="https://xpeak.es/p/${toSlug(nombre)}">${nombre}</a>`).replace(/\n/g, '<br>');
+        const fecha = new Date(n.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+        ROUTES.push({
+          path: routePath,
+          title: `${n.titulo} | Novedades XPEAK`,
+          desc,
+          ogTitle: n.titulo,
+          ogDesc: desc,
+          ogType: 'article',
+          preloadImg: n.imagen_url || undefined,
+          jsonLd: {
+            '@context': 'https://schema.org', '@type': 'NewsArticle', headline: n.titulo, description: desc,
+            datePublished: n.created_at, url: `https://xpeak.es${routePath}`,
+            ...(n.imagen_url ? { image: [n.imagen_url] } : {}),
+            author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+            publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+          },
+          bodyHtml: `<div style="max-width:1024px;margin:0 auto;padding:48px 24px;color:#111">` +
+            `<p>Novedades XPEAK · ${escHtml(fecha)}</p><h1>${escHtml(n.titulo)}</h1>` +
+            (n.imagen_url && /^https:\/\//i.test(n.imagen_url) ? `<img src="${escHtml(n.imagen_url)}" alt="${escHtml(n.titulo)}" style="max-width:100%">` : '') +
+            (html ? `<p>${html}</p>` : '') +
+            `<p><a href="https://xpeak.es/novedades">Todas las novedades</a> · <a href="https://xpeak.es/descubrir">Profesionales para eventos</a></p></div>`,
+        });
+        existingPaths.add(routePath);
+        lista.push(`<li><a href="https://xpeak.es${routePath}">${escHtml(n.titulo)}</a></li>`);
+      }
+      if (lista.length && !existingPaths.has('/novedades')) {
+        ROUTES.push({
+          path: '/novedades',
+          title: 'Novedades de XPEAK: ganadores, profesionales y nuevos servicios para eventos',
+          desc: 'Lo último de XPEAK: ganadores de concursos, profesionales destacados y nuevos servicios para eventos en España.',
+          ogTitle: 'Novedades XPEAK', ogDesc: 'Ganadores, profesionales destacados y nuevos servicios para eventos.',
+          ogType: 'website',
+          bodyHtml: `<div style="max-width:1024px;margin:0 auto;padding:48px 24px;color:#111"><h1>Novedades XPEAK</h1><ul>${lista.join('')}</ul></div>`,
+        });
+        existingPaths.add('/novedades');
+      }
+      console.log(`  → ${lista.length} novedades públicas con página propia (/novedades/{slug})`);
+    } else {
+      console.warn(`  ⚠ No se pudieron cargar novedades (${res.status}): se omite /novedades`);
+    }
+  }
+} catch (e) {
+  console.warn(`  ⚠ Prerender de novedades omitido: ${e.message}`);
+}
+
 // ─── Main ──────────────────────────────────────────────────────────────────
 const shell = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
 let count = 0;

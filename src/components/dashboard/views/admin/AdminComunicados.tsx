@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AtSign, Image as ImageIcon, Loader2, Pin, PinOff, Trash2, Video, X } from 'lucide-react';
+import { AtSign, BarChart3, Globe, Image as ImageIcon, Loader2, Pin, PinOff, Plus, Trash2, Video, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { timeAgo } from '@/lib/timeAgo';
-import { CATEGORIAS_COMUNICADO, type Comunicado, etiquetaCategoria, formatoMencion } from '@/lib/comunicados';
+import { CATEGORIAS_COMUNICADO, type Comunicado, type Interaccion, porcentajes, etiquetaCategoria, formatoMencion, slugNovedad } from '@/lib/comunicados';
 import { CuerpoConMenciones } from '@/components/comunicados/ComunicadosCarrusel';
 
 // Editor de comunicados del panel admin (6 nov 2026). Al publicar, un trigger
@@ -46,6 +46,12 @@ export default function AdminComunicados() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [subiendo, setSubiendo] = useState<'imagen' | 'video' | null>(null);
   const [publicando, setPublicando] = useState(false);
+  const [publico, setPublico] = useState(false);
+  const [comentariosOn, setComentariosOn] = useState(true);
+  const [conEncuesta, setConEncuesta] = useState(false);
+  const [pregunta, setPregunta] = useState('');
+  const [opciones, setOpciones] = useState<string[]>(['', '']);
+  const [diasEncuesta, setDiasEncuesta] = useState(0);
 
   const [buscarAbierto, setBuscarAbierto] = useState(false);
   const [q, setQ] = useState('');
@@ -55,6 +61,7 @@ export default function AdminComunicados() {
 
   const [lista, setLista] = useState<Comunicado[]>([]);
   const [lecturas, setLecturas] = useState<Record<string, number>>({});
+  const [inter, setInter] = useState<Record<string, Interaccion>>({});
 
   const cargar = useCallback(async () => {
     const [{ data }, { data: lect }] = await Promise.all([
@@ -65,6 +72,13 @@ export default function AdminComunicados() {
     const cuenta: Record<string, number> = {};
     for (const l of (lect ?? []) as { comunicado_id: string }[]) cuenta[l.comunicado_id] = (cuenta[l.comunicado_id] ?? 0) + 1;
     setLecturas(cuenta);
+    const ids = ((data ?? []) as Comunicado[]).map(c => c.id);
+    if (ids.length) {
+      const { data: it } = await db.rpc('comunicados_interaccion', { p_ids: ids });
+      const m: Record<string, Interaccion> = {};
+      for (const x of (it ?? []) as Interaccion[]) m[x.comunicado_id] = x;
+      setInter(m);
+    }
   }, []);
   useEffect(() => { cargar(); }, [cargar]);
 
@@ -106,6 +120,7 @@ export default function AdminComunicados() {
   const limpiar = () => {
     setTitulo(''); setCuerpo(''); setCategoria('todos'); setPush(false); setFijado(false); setDias(30);
     setCtaTexto(''); setCtaUrl(''); setImagenUrl(null); setVideoUrl(null);
+    setPublico(false); setComentariosOn(true); setConEncuesta(false); setPregunta(''); setOpciones(['', '']); setDiasEncuesta(0);
   };
 
   const publicar = async () => {
@@ -114,14 +129,22 @@ export default function AdminComunicados() {
     if (ctaUrl.trim() && !/^(\/(?!\/)|https:\/\/)/.test(ctaUrl.trim())) {
       toast.error('El enlace del botón debe empezar por / o https://'); return;
     }
+    const opcionesLimpias = opciones.map(o => o.trim()).filter(Boolean);
+    if (conEncuesta && (!pregunta.trim() || opcionesLimpias.length < 2)) {
+      toast.error('La encuesta necesita pregunta y al menos 2 opciones'); return;
+    }
     const destino = etiquetaCategoria(categoria);
-    if (!window.confirm(`Se publica para "${destino}" y les llega a la campana${push ? ' y por push' : ''}. ¿Seguimos?`)) return;
+    if (!window.confirm(`Se publica para "${destino}" y les llega a la campana${push ? ' y por push' : ''}${publico ? '. También sale en la web pública' : ''}. ¿Seguimos?`)) return;
     setPublicando(true);
     const caduca = new Date(Date.now() + dias * 86400000).toISOString();
     const { error } = await db.from('comunicados').insert({
       titulo: titulo.trim(), cuerpo: cuerpo.trim(), categoria, push, fijado, caduca_at: caduca,
       imagen_url: imagenUrl, video_url: videoUrl,
       cta_texto: ctaTexto.trim() || null, cta_url: ctaUrl.trim() || null,
+      publico, comentarios_on: comentariosOn,
+      encuesta_pregunta: conEncuesta ? pregunta.trim() : null,
+      encuesta_opciones: conEncuesta ? opcionesLimpias : null,
+      encuesta_cierra_at: conEncuesta && diasEncuesta ? new Date(Date.now() + diasEncuesta * 86400000).toISOString() : null,
     });
     setPublicando(false);
     if (error) { toast.error('No se pudo publicar: ' + error.message); return; }
@@ -129,6 +152,10 @@ export default function AdminComunicados() {
     limpiar(); cargar();
   };
 
+  const alternarPublico = async (c: Comunicado) => {
+    await db.from('comunicados').update({ publico: !c.publico }).eq('id', c.id);
+    cargar();
+  };
   const alternarFijado = async (c: Comunicado) => {
     await db.from('comunicados').update({ fijado: !c.fijado }).eq('id', c.id);
     cargar();
@@ -213,6 +240,44 @@ export default function AdminComunicados() {
           </div>
         )}
 
+
+        <div className="rounded-xl p-3 space-y-2" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
+          <label className="inline-flex items-center gap-2 text-sm font-bold cursor-pointer" style={{ color: '#374151' }}>
+            <input type="checkbox" checked={conEncuesta} onChange={e => setConEncuesta(e.target.checked)} />
+            <BarChart3 size={14} /> Añadir encuesta
+          </label>
+          {conEncuesta && (
+            <>
+              <input value={pregunta} onChange={e => setPregunta(e.target.value)} maxLength={200} placeholder="Pregunta"
+                className="w-full rounded-lg px-3 py-2 text-sm" style={estiloCampo} />
+              {opciones.map((o, i) => (
+                <div key={i} className="flex gap-2">
+                  <input value={o} maxLength={80} placeholder={`Opción ${i + 1}`}
+                    onChange={e => setOpciones(os => os.map((x, j) => (j === i ? e.target.value : x)))}
+                    className="flex-1 rounded-lg px-3 py-2 text-sm" style={estiloCampo} />
+                  {opciones.length > 2 && (
+                    <button type="button" onClick={() => setOpciones(os => os.filter((_, j) => j !== i))} aria-label="Quitar opción"
+                      className="p-2 rounded-lg hover:bg-black/5"><X size={14} /></button>
+                  )}
+                </div>
+              ))}
+              <div className="flex items-center justify-between gap-2">
+                {opciones.length < 6 ? (
+                  <button type="button" onClick={() => setOpciones(os => [...os, ''])}
+                    className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: '#8B6A00' }}>
+                    <Plus size={13} /> Otra opción
+                  </button>
+                ) : <span />}
+                <select value={diasEncuesta} onChange={e => setDiasEncuesta(Number(e.target.value))}
+                  className="rounded-lg px-2 py-1.5 text-xs" style={estiloCampo}>
+                  <option value={0}>Sin cierre</option>
+                  {[1, 3, 7, 14].map(d => <option key={d} value={d}>Cierra en {d} {d === 1 ? 'día' : 'días'}</option>)}
+                </select>
+              </div>
+            </>
+          )}
+        </div>
+
         <div className="grid grid-cols-2 gap-2">
           <input value={ctaTexto} onChange={e => setCtaTexto(e.target.value)} maxLength={40} placeholder="Texto del botón (opcional)"
             className="rounded-xl px-3 py-2 text-sm" style={estiloCampo} />
@@ -249,7 +314,20 @@ export default function AdminComunicados() {
             <input type="checkbox" checked={fijado} onChange={e => setFijado(e.target.checked)} />
             Fijar el primero
           </label>
+          <label className="inline-flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={comentariosOn} onChange={e => setComentariosOn(e.target.checked)} />
+            Permitir comentarios
+          </label>
+          <label className="inline-flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={publico} onChange={e => setPublico(e.target.checked)} />
+            <Globe size={14} /> Publicar también en la web (SEO)
+          </label>
         </div>
+        {publico && (
+          <p className="text-xs rounded-lg px-3 py-2" style={{ background: 'rgba(37,99,235,0.06)', color: '#1e3a8a' }}>
+            Sale en xpeak.es/novedades con su propia página para Google (se genera en el rebuild diario). Solo el texto, la imagen y las menciones: los comentarios nunca salen en la web. Úsalo para lo que tenga sustancia: ganadores, nuevos servicios, historias.
+          </p>
+        )}
         <p className="text-xs" style={{ color: '#6b7280' }}>
           La campana les llega a todos los de la categoría. El push solo a quien lo tiene activado. Los mencionados reciben su propio aviso.
         </p>
@@ -282,16 +360,41 @@ export default function AdminComunicados() {
               <div className="min-w-0 flex-1">
                 <p className="font-bold text-sm truncate">{c.titulo}</p>
                 <p className="text-xs" style={{ color: '#6b7280' }}>
-                  {etiquetaCategoria(c.categoria)} · {timeAgo(c.created_at)}{c.push ? ' · push' : ''}{caducado ? ' · caducado' : ''}
+                  {etiquetaCategoria(c.categoria)} · {timeAgo(c.created_at)}{c.push ? ' · push' : ''}{c.encuesta_opciones?.length ? ' · encuesta' : ''}{caducado ? ' · caducado' : ''}
                 </p>
+                {c.publico && (
+                  <a href={`/novedades/${slugNovedad(c.titulo, c.id)}`} target="_blank" rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-semibold" style={{ color: '#2563EB' }}>
+                    <Globe size={11} /> En la web
+                  </a>
+                )}
                 <p className="text-xs mt-1 font-semibold" style={{ color: pct >= 20 ? '#059669' : '#8B6A00' }}>
                   Leído por {leidos} de {c.destinatarios} ({pct} %)
                 </p>
+                {inter[c.id] && (
+                  <p className="text-xs" style={{ color: '#4b5563' }}>
+                    {inter[c.id].likes} me gusta · {inter[c.id].comentarios} comentarios
+                  </p>
+                )}
+                {c.encuesta_opciones && inter[c.id]?.votos && (
+                  <div className="mt-1 space-y-0.5">
+                    {c.encuesta_opciones.map((o, i) => (
+                      <p key={i} className="text-xs" style={{ color: '#374151' }}>
+                        {o}: <b>{inter[c.id].votos![i] ?? 0}</b> ({porcentajes(inter[c.id].votos!)[i]} %)
+                      </p>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="flex flex-col gap-1">
                 <button onClick={() => alternarFijado(c)} aria-label={c.fijado ? 'Desfijar' : 'Fijar'}
                   className="p-1.5 rounded-lg hover:bg-black/5" style={{ color: c.fijado ? '#8B6A00' : '#9ca3af' }}>
                   {c.fijado ? <Pin size={15} /> : <PinOff size={15} />}
+                </button>
+                <button onClick={() => alternarPublico(c)} aria-label={c.publico ? 'Quitar de la web' : 'Publicar en la web'}
+                  title={c.publico ? 'Quitar de la web' : 'Publicar en la web'}
+                  className="p-1.5 rounded-lg hover:bg-black/5" style={{ color: c.publico ? '#2563EB' : '#9ca3af' }}>
+                  <Globe size={15} />
                 </button>
                 <button onClick={() => borrar(c)} aria-label="Borrar" className="p-1.5 rounded-lg hover:bg-black/5" style={{ color: '#dc2626' }}>
                   <Trash2 size={15} />

@@ -32,7 +32,42 @@ export interface Comunicado {
   caduca_at: string;
   destinatarios: number;
   created_at: string;
+  publico?: boolean;
+  comentarios_on?: boolean;
+  encuesta_pregunta?: string | null;
+  encuesta_opciones?: string[] | null;
+  encuesta_cierra_at?: string | null;
 }
+
+export interface Interaccion {
+  comunicado_id: string;
+  likes: number;
+  comentarios: number;
+  yo_like: boolean;
+  mi_voto: number | null;
+  votos: number[] | null;
+}
+
+// Mismo algoritmo que toSlug de src/data/profiles.ts y del prerender (no se
+// importa de ahí para no arrastrar los perfiles demo al bundle del panel).
+export const toSlugTexto = (s: string): string =>
+  s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+/** /novedades/<titulo>-<8 primeros del id>, igual que /socials/<slug>. */
+export const slugNovedad = (titulo: string, id: string): string =>
+  `${toSlugTexto(titulo).slice(0, 70).replace(/-$/, '')}-${id.slice(0, 8)}`;
+
+/** Los 8 caracteres de id al final del slug. */
+export const idCortoDeSlug = (slug: string): string | null => {
+  const m = /([0-9a-f]{8})$/.exec(slug);
+  return m ? m[1] : null;
+};
+
+export const porcentajes = (votos: number[]): number[] => {
+  const total = votos.reduce((a, b) => a + b, 0);
+  return votos.map(v => (total ? Math.round((v / total) * 100) : 0));
+};
 
 // Mención en el texto: @[Nombre visible](user_id). El editor la inserta al
 // elegir a alguien del buscador; al pintar se convierte en enlace a /p/<id>.

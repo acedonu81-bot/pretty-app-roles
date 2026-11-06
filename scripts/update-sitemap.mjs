@@ -384,6 +384,18 @@ async function fetchSocialEvents(supabaseUrl, anonKey) {
   return res.json();
 }
 
+// ─── Novedades públicas (comunicados con publico=true) ─────────────────────
+// 0 novedades es normal y un fallo no aborta: no son páginas críticas.
+async function fetchNovedades(supabaseUrl, anonKey) {
+  try {
+    const res = await fetch(`${supabaseUrl}/rest/v1/comunicados?select=id,titulo,created_at&publico=eq.true&order=created_at.desc&limit=200`,
+      { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
+    return res.ok ? await res.json() : [];
+  } catch {
+    return [];
+  }
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────
 async function main() {
   const env = loadEnv();
@@ -437,6 +449,8 @@ async function main() {
   console.log('📍 Fetching upcoming dance socials from Supabase...');
   const socialEvents = await fetchSocialEvents(supabaseUrl, anonKey);
   console.log(`✅ Found ${socialEvents.length} upcoming events`);
+  const novedades = await fetchNovedades(supabaseUrl, anonKey);
+  console.log(`✅ Found ${novedades.length} novedades públicas`);
 
   const profileLines = ['\n  <!-- Perfiles reales -->'];
   const usedSlugs = new Set();
@@ -464,12 +478,20 @@ async function main() {
     eventLines.push(url(`https://xpeak.es/socials/${slug}`, lastmod, 'weekly', '0.6'));
   }
 
+  const novedadLines = ['\n  <!-- Novedades públicas (comunicados) -->'];
+  if (novedades.length) novedadLines.push(url('https://xpeak.es/novedades', novedades[0].created_at.slice(0, 10), 'weekly', '0.6'));
+  for (const n of novedades) {
+    const slug = `${toSlug(n.titulo).slice(0, 70).replace(/-$/, '')}-${n.id.slice(0, 8)}`;
+    novedadLines.push(url(`https://xpeak.es/novedades/${slug}`, n.created_at.slice(0, 10), 'monthly', '0.55'));
+  }
+
   const sitemapBruto = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 ${staticUrls(TODAY, indexableCities, cityContentDates)}
 ${profileLines.join('\n')}
 ${eventLines.join('\n')}
+${novedadLines.join('\n')}
 
 </urlset>`;
 
