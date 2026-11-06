@@ -173,8 +173,11 @@ const Auth = () => {
   // confirmado ve este aviso con un botón para reenviar el enlace.
   const [sinConfirmar, setSinConfirmar] = useState(false);
   const [reenvio, setReenvio] = useState<'idle' | 'enviando' | 'enviado' | 'error'>('idle');
-  const [showForgot, setShowForgot] = useState(false);
-  const [forgotEmail, setForgotEmail] = useState('');
+  // ?olvide=1&e=correo abre directamente "poner contraseña nueva" con el correo
+  // escrito: es el botón del correo que se manda a quien tiene la cuenta
+  // confirmada pero no acierta la contraseña (caso Agüero Magic, 6 nov 2026).
+  const [showForgot, setShowForgot] = useState(() => searchParams.get('olvide') === '1');
+  const [forgotEmail, setForgotEmail] = useState(() => (searchParams.get('olvide') === '1' ? (searchParams.get('e') ?? '') : ''));
   const [forgotSent, setForgotSent] = useState(false);
   const [forgotLoading, setForgotLoading] = useState(false);
   // "Soy particular": quien pidió algo sin cuenta propia no tiene contraseña y
