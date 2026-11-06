@@ -182,7 +182,7 @@ export default function BlogConseguirBolosDJ() {
 
             <section>
               <h2 className="text-2xl font-black mb-2">Empieza por el escaparate</h2>
-              <p className="text-sm mb-2 max-w-3xl" style={{ color: '#3d3d4e' }}>Si tienes ya tarifa, mira dónde estás frente a otros DJs de XPEAK y crea tu perfil con ella.</p>
+              <p className="text-sm mb-2 max-w-3xl" style={{ color: '#3d3d4e' }}>Si tienes ya tarifa, mira dónde estás frente a otros DJs de XPEAK y crea tu perfil con ella. Los perfiles de XPEAK están abiertos a Google: hay DJs que ya aparecen cuando alguien busca su nombre, con su ciudad y su tarifa a la vista.</p>
               <BlogPrimerPaso rol="dj" articlePath={PATH} soloPro />
             </section>
 
