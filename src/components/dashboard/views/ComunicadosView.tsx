@@ -33,7 +33,7 @@ export default function ComunicadosView() {
   // ── Detalle ────────────────────────────────────────────────────────────
   if (id) {
     return (
-      <div className="mx-auto w-full max-w-3xl px-1 py-2 sm:px-2 space-y-4">
+      <div className={`mx-auto w-full px-1 py-2 sm:px-2 space-y-4 ${abierto && (abierto.video_url || abierto.imagen_url) ? 'max-w-3xl md:max-w-6xl' : 'max-w-3xl'}`}>
         <button onClick={() => navigate(TABLON)} className="inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#8B6A00' }}>
           <ArrowLeft size={16} /> Todos los comunicados
         </button>
@@ -48,13 +48,18 @@ export default function ComunicadosView() {
         )}
 
         {abierto && (
-          <article className="rounded-2xl overflow-hidden" style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
-            {abierto.video_url ? (
-              <video src={abierto.video_url} controls playsInline poster={abierto.imagen_url ?? undefined} className="w-full max-h-[70vh] bg-black" />
-            ) : abierto.imagen_url ? (
-              <img src={abierto.imagen_url} alt={abierto.titulo} className="w-full max-h-[70vh] object-contain" style={{ background: '#FBF3DD' }} />
-            ) : null}
-            <div className="p-5 sm:p-7 space-y-4">
+          <article className="rounded-2xl overflow-hidden md:flex md:items-stretch" style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
+            {/* Móvil: imagen arriba y texto debajo. Tablet y ordenador: imagen a la izquierda, texto a la derecha. */}
+            {(abierto.video_url || abierto.imagen_url) && (
+              <div className="md:w-5/12 md:shrink-0 flex items-start justify-center" style={{ background: abierto.video_url ? '#000' : '#FBF3DD' }}>
+                {abierto.video_url ? (
+                  <video src={abierto.video_url} controls playsInline poster={abierto.imagen_url ?? undefined} className="w-full max-h-[70vh] md:max-h-[85vh] bg-black" />
+                ) : (
+                  <img src={abierto.imagen_url!} alt={abierto.titulo} className="w-full max-h-[70vh] md:max-h-[85vh] object-contain" />
+                )}
+              </div>
+            )}
+            <div className="p-5 sm:p-7 space-y-4 md:flex-1 md:min-w-0">
               <MetaComunicado c={abierto} />
               <p role="heading" aria-level={1} className="text-2xl font-bold leading-[1.3]" style={{ color: '#111827' }}>{abierto.titulo}</p>
               {abierto.cuerpo.trim() && <CuerpoConMenciones cuerpo={abierto.cuerpo} grande />}

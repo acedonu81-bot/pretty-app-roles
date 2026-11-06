@@ -133,15 +133,21 @@ export default function Novedades() {
           <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         </Helmet>
         <Cabecera />
-        <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20 space-y-5">
-          <Link to="/novedades" className="text-sm font-bold" style={{ color: '#8A6D0F' }}>← Todas las novedades</Link>
-          <MetaComunicado c={n} />
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight" style={{ color: '#111' }}>{n.titulo}</h1>
+        <main className={`mx-auto px-4 sm:px-6 pt-8 pb-20 ${n.video_url || n.imagen_url ? 'max-w-3xl md:max-w-6xl md:grid md:grid-cols-[5fr_6fr] md:gap-10 md:items-start space-y-5 md:space-y-0' : 'max-w-3xl space-y-5'}`}>
+          {/* Móvil: imagen arriba y texto debajo. Tablet y ordenador: imagen a la izquierda, texto a la derecha. */}
+          {(n.video_url || n.imagen_url) && (
+            <div className="md:sticky md:top-20">
           {n.video_url ? (
             <video src={n.video_url} controls playsInline poster={n.imagen_url ?? undefined} className="w-full rounded-2xl bg-black max-h-[70vh]" />
           ) : n.imagen_url ? (
             <img src={n.imagen_url} alt={n.titulo} className="w-full rounded-2xl object-contain max-h-[70vh]" style={{ background: '#FBF3DD' }} />
           ) : null}
+            </div>
+          )}
+          <div className="space-y-5 min-w-0">
+          <Link to="/novedades" className="text-sm font-bold" style={{ color: '#8A6D0F' }}>← Todas las novedades</Link>
+          <MetaComunicado c={n} />
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight" style={{ color: '#111' }}>{n.titulo}</h1>
           {n.cuerpo.trim() && <CuerpoConMenciones cuerpo={n.cuerpo} grande />}
 
           {n.cta_url && (esEnlaceInterno(n.cta_url) ? (
@@ -178,6 +184,7 @@ export default function Novedades() {
             XPEAK es el directorio de profesionales para eventos en España.{' '}
             <Link to="/descubrir" className="font-bold underline" style={{ color: '#8A6D0F' }}>Busca DJs, camareros, fotógrafos y más</Link>.
           </p>
+          </div>
         </main>
         <FooterPublic />
       </div>
