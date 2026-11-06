@@ -48,7 +48,7 @@ export default function AdminComunicados() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [subiendo, setSubiendo] = useState<'imagen' | 'video' | null>(null);
   const [publicando, setPublicando] = useState(false);
-  const [publico, setPublico] = useState(false);
+  const [publico, setPublico] = useState(true);
   const [comentariosOn, setComentariosOn] = useState(true);
   const [conEncuesta, setConEncuesta] = useState(false);
   const [pregunta, setPregunta] = useState('');
@@ -129,7 +129,7 @@ export default function AdminComunicados() {
   const limpiar = () => {
     setTitulo(''); setCuerpo(''); setCategoria('todos'); setPush(false); setFijado(false); setDias(30);
     setCtaTexto(''); setCtaUrl(''); setImagenUrl(null); setVideoUrl(null);
-    setPublico(false); setComentariosOn(true); setConEncuesta(false); setPregunta(''); setOpciones(['', '']); setDiasEncuesta(0);
+    setPublico(true); setComentariosOn(true); setConEncuesta(false); setPregunta(''); setOpciones(['', '']); setDiasEncuesta(0);
     setEditandoId(null); setVotosEdit(0);
   };
 
@@ -176,7 +176,7 @@ export default function AdminComunicados() {
       limpiar(); cargar();
       return;
     }
-    if (!window.confirm(`Se publica para "${destino}" y les llega a la campana${push ? ' y por push' : ''}${publico ? '. También sale en la web pública' : ''}. ¿Seguimos?`)) return;
+    if (!window.confirm(`Se avisa a "${destino}" por la campana${push ? ' y por push' : ''}${publico ? '. Y lo verá cualquiera en la web, también sin cuenta' : '. Solo lo verán los miembros'}. ¿Seguimos?`)) return;
     setPublicando(true);
     const caduca = fechaCaduca(dias);
     const { error } = await db.from('comunicados').insert({
@@ -373,7 +373,7 @@ export default function AdminComunicados() {
 
         <div className="grid grid-cols-2 gap-2">
           <label className="text-xs font-bold" style={{ color: '#374151' }}>
-            Para quién
+            Avisar a (campana y push)
             <select value={categoria} onChange={e => setCategoria(e.target.value)} disabled={!!editandoId}
               className="mt-1 w-full rounded-xl px-3 py-2 text-sm font-normal disabled:opacity-60" style={estiloCampo}>
               {CATEGORIAS_COMUNICADO.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
@@ -405,16 +405,16 @@ export default function AdminComunicados() {
           </label>
           <label className="inline-flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={publico} onChange={e => setPublico(e.target.checked)} />
-            <Globe size={14} /> Publicar también en la web (SEO)
+            <Globe size={14} /> Visible para todo el mundo, también sin cuenta
           </label>
         </div>
         {publico && (
           <p className="text-xs rounded-lg px-3 py-2" style={{ background: 'rgba(37,99,235,0.06)', color: '#1e3a8a' }}>
-            Sale en xpeak.es/novedades con su propia página para Google (se genera en el rebuild diario). Solo el texto, la imagen y las menciones: los comentarios nunca salen en la web. Úsalo para lo que tenga sustancia: ganadores, nuevos servicios, historias.
+            Cualquiera lo ve en xpeak.es/novedades, con su propia página para Google (se genera en el rebuild diario), y los visitantes ven los contadores de me gusta, comentarios y votos. Para comentar, votar o dar me gusta hay que entrar con cuenta. Los comentarios nunca se enseñan fuera. Desmárcalo para avisos solo para miembros (cambios de normas, comisiones...).
           </p>
         )}
         <p className="text-xs" style={{ color: '#6b7280' }}>
-          La campana les llega a todos los de la categoría. El push solo a quien lo tiene activado. Los mencionados reciben su propio aviso.
+          La campana les llega a todos los de la categoría elegida. El push solo a quien lo tiene activado. Los mencionados reciben su propio aviso. Si es público, lo ve todo el mundo aunque no sea de esa categoría.
         </p>
 
         {(cuerpo.trim() || titulo.trim() || imagenUrl || videoUrl || conEncuesta) && (
