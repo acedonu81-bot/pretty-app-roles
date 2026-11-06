@@ -72,6 +72,7 @@ const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
 const OrganizadoresView = lazy(() => import('@/components/dashboard/views/OrganizadoresView'));
 const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
 const ResourcesView = lazy(() => import('@/components/dashboard/views/ResourcesView'));
+const ComunicadosView = lazy(() => import('@/components/dashboard/views/ComunicadosView'));
 const ResenasView = lazy(() => import('@/components/dashboard/views/ResenasView'));
 const LegalView = lazy(() => import('@/components/dashboard/views/LegalView').then(m => ({ default: m.LegalView })));
 const ProfessionalProfilePage = lazy(() => import('@/components/dashboard/ProfessionalProfilePage'));
@@ -727,6 +728,7 @@ const Dashboard = () => {
       case 'stats': return <StatsView />;
       case 'agency': return <AgencyView />;
       case 'resources': return <ResourcesView />;
+      case 'comunicados': return <ComunicadosView />;
       case 'resenas': return <ResenasView />;
       case 'admin': return (
         <AdminGuard>

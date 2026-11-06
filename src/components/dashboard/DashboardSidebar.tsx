@@ -1,6 +1,6 @@
 import {
   LayoutGrid, Home, Search, MessageSquare, Megaphone, Settings,
-  BarChart3, FileText, CalendarDays, Sparkles, Rss,
+  BarChart3, FileText, CalendarDays, Sparkles, Rss, Newspaper,
   ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield, ThumbsUp,
   type LucideIcon,
 } from 'lucide-react';
@@ -392,6 +392,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
             )}
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} iconAlert={msgBadge > 0} navId="messages" />
             <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" navId="feed" etiqueta={concursoActivo() ? 'Concurso DJ' : undefined} />
+            <NavItem icon={Newspaper} label="Comunicados" isActive={activeView === 'comunicados'} onClick={() => onViewChange('comunicados')} navId="comunicados" />
           </SidebarMenu>
         </div>
 
