@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, MessageCircle, Send, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Heart, MessageCircle, Send, Smile, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -47,6 +47,9 @@ export default function ComunicadoInteraccion({ c, inter, onCambio }: Props) {
   const [texto, setTexto] = useState('');
   const [anonimo, setAnonimo] = useState(true);
   const [enviando, setEnviando] = useState(false);
+  // Comentarios compactos: solo los 2 últimos y, al pedirlo, la lista entera con scroll propio.
+  const [verTodos, setVerTodos] = useState(false);
+  const [emojis, setEmojis] = useState(false);
 
   const cargarComentarios = useCallback(async () => {
     const { data } = await db.rpc('comunicado_comentarios_de', { p_id: c.id });
@@ -145,46 +148,59 @@ export default function ComunicadoInteraccion({ c, inter, onCambio }: Props) {
 
       {c.comentarios_on !== false && (
         <div className="space-y-3">
-          {comentarios.map(k => (
-            <div key={k.id} className="flex gap-2.5">
-              {k.autor_foto
-                ? <img src={k.autor_foto} alt="" className="w-8 h-8 rounded-full object-cover shrink-0" />
-                : <span className="w-8 h-8 rounded-full shrink-0" style={{ background: '#FBF3DD' }} />}
-              <div className="min-w-0 flex-1 rounded-xl px-3 py-2" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)' }}>
-                <div className="flex items-center gap-2 text-xs" style={{ color: '#6b7280' }}>
-                  {k.autor_id && k.autor_nombre
-                    ? <Link to={`/p/${k.autor_id}`} className="font-bold" style={{ color: '#111827' }}>{k.autor_nombre}</Link>
-                    : <span className="font-bold" style={{ color: '#111827' }}>{k.anonimo ? 'Un organizador' : 'Usuario de XPEAK'}</span>}
-                  {k.anonimo && k.autor_nombre && <span>(anónimo para el resto)</span>}
-                  <span>{timeAgo(k.created_at)}</span>
-                  {(k.es_mio || isAdmin) && (
-                    <button onClick={() => borrar(k.id)} aria-label="Borrar comentario" className="ml-auto p-0.5" style={{ color: '#9ca3af' }}>
-                      <Trash2 size={13} />
-                    </button>
-                  )}
+          {comentarios.length > 2 && (
+            <button type="button" onClick={() => setVerTodos(v => !v)}
+              className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: '#8B6A00' }}>
+              {verTodos ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              {verTodos ? 'Ocultar comentarios anteriores' : `Ver los ${comentarios.length} comentarios`}
+            </button>
+          )}
+          <div className={`space-y-2 ${verTodos ? 'max-h-80 overflow-y-auto pr-1' : ''}`}>
+            {(verTodos ? comentarios : comentarios.slice(-2)).map(k => (
+              <div key={k.id} className="flex gap-2">
+                {k.autor_foto
+                  ? <img src={k.autor_foto} alt="" className="w-6 h-6 rounded-full object-cover shrink-0 mt-0.5" />
+                  : <span className="w-6 h-6 rounded-full shrink-0 mt-0.5" style={{ background: '#FBF3DD' }} />}
+                <div className="min-w-0 flex-1 rounded-lg px-2.5 py-1.5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  <div className="flex items-center gap-1.5 text-[0.7rem]" style={{ color: '#6b7280' }}>
+                    {k.autor_id && k.autor_nombre
+                      ? <Link to={`/p/${k.autor_id}`} className="font-bold" style={{ color: '#111827' }}>{k.autor_nombre}</Link>
+                      : <span className="font-bold" style={{ color: '#111827' }}>{k.anonimo ? 'Un organizador' : 'Usuario de XPEAK'}</span>}
+                    {k.anonimo && k.autor_nombre && <span>(anónimo para el resto)</span>}
+                    <span>{timeAgo(k.created_at)}</span>
+                    {(k.es_mio || isAdmin) && (
+                      <button onClick={() => borrar(k.id)} aria-label="Borrar comentario" className="ml-auto p-0.5" style={{ color: '#9ca3af' }}>
+                        <Trash2 size={12} />
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-[0.82rem] leading-snug whitespace-pre-line break-words line-clamp-4" style={{ color: '#374151' }}>{k.texto}</p>
                 </div>
-                <p className="text-sm whitespace-pre-line break-words" style={{ color: '#374151' }}>{k.texto}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           <div className="space-y-2">
             <div className="flex gap-2">
-              <textarea value={texto} onChange={e => setTexto(e.target.value)} maxLength={500} rows={2}
+              <textarea value={texto} onChange={e => setTexto(e.target.value)} maxLength={500} rows={1}
                 placeholder="Escribe un comentario"
                 className="flex-1 rounded-xl px-3 py-2 text-sm resize-none"
                 style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.12)' }} />
+              <button type="button" onClick={() => setEmojis(v => !v)} aria-label="Emojis" aria-pressed={emojis}
+                className="self-end p-2 rounded-xl" style={{ background: emojis ? '#FBF3DD' : 'transparent', color: '#6b7280' }}>
+                <Smile size={18} />
+              </button>
               <button onClick={comentar} disabled={enviando || !texto.trim()} aria-label="Publicar comentario"
                 className="self-end p-2.5 rounded-xl disabled:opacity-40" style={{ background: ORO, color: '#1f2937' }}>
                 <Send size={16} />
               </button>
             </div>
-            <div className="flex flex-wrap gap-1" aria-label="Añadir emoji">
+            {emojis && <div className="flex flex-wrap gap-1" aria-label="Añadir emoji">
               {['👏', '🔥', '🎧', '❤️', '😂', '🙌', '👍', '🤔'].map(e => (
                 <button key={e} type="button" onClick={() => setTexto(t => (t + e).slice(0, 500))}
                   className="w-8 h-8 rounded-lg text-lg leading-none hover:bg-[#FBF3DD]" aria-label={`Añadir ${e}`}>{e}</button>
               ))}
-            </div>
+            </div>}
             {esOrganizador && (
               <div className="flex gap-3 text-xs" style={{ color: '#4b5563' }}>
                 <label className="inline-flex items-center gap-1.5 cursor-pointer">
