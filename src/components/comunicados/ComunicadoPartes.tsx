@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 import { BarChart3, Heart, Megaphone, MessageCircle, Play } from 'lucide-react';
 import { timeAgo } from '@/lib/timeAgo';
 import { type Comunicado, type Interaccion, etiquetaCategoria, trocearCuerpo } from '@/lib/comunicados';
@@ -7,17 +9,57 @@ import { type Comunicado, type Interaccion, etiquetaCategoria, trocearCuerpo } f
 
 export const ORO = '#D4AF37';
 
+interface FotoMencion { display_name: string; photo_url: string | null }
+const cacheFotos = new Map<string, FotoMencion | null>();
+
+/** Fotos de los mencionados (una sola consulta, con caché entre comunicados). */
+function useFotosMenciones(ids: string[]): Map<string, FotoMencion | null> {
+  const [, refrescar] = useState(0);
+  const clave = ids.join(',');
+  useEffect(() => {
+    const faltan = ids.filter(id => !cacheFotos.has(id));
+    if (!faltan.length) return;
+    let vivo = true;
+    (async () => {
+      const rpc = supabase.rpc as unknown as (f: string, a: object) =>
+        Promise<{ data: { user_id: string; display_name: string; photo_url: string | null }[] | null }>;
+      const { data } = await rpc('comunicados_menciones_fotos', { p_ids: faltan });
+      for (const id of faltan) cacheFotos.set(id, null);
+      for (const r of data ?? []) cacheFotos.set(r.user_id, { display_name: r.display_name, photo_url: r.photo_url });
+      if (vivo) refrescar(n => n + 1);
+    })();
+    return () => { vivo = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clave]);
+  return cacheFotos;
+}
+
+function Mencion({ userId, nombre, foto }: { userId: string; nombre: string; foto?: FotoMencion | null }) {
+  const url = foto?.photo_url;
+  return (
+    <Link to={`/p/${userId}`} title={nombre} aria-label={nombre}
+      className="inline-flex align-middle mx-1 rounded-full transition-transform hover:scale-110"
+      style={{ boxShadow: `0 0 0 2px ${ORO}` }}>
+      {url
+        ? <img src={url} alt={nombre} loading="lazy" className="w-8 h-8 rounded-full object-cover" />
+        : (
+          <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+            style={{ background: '#FBF3DD', color: '#8B6A00' }}>
+            {nombre.trim().charAt(0).toUpperCase()}
+          </span>
+        )}
+    </Link>
+  );
+}
+
 export function CuerpoConMenciones({ cuerpo, grande = false }: { cuerpo: string; grande?: boolean }) {
+  const trozos = trocearCuerpo(cuerpo);
+  const fotos = useFotosMenciones([...new Set(trozos.flatMap(t => t.tipo === 'mencion' ? [t.userId] : []))]);
   return (
     <p className={`${grande ? 'text-base' : 'text-sm'} leading-relaxed whitespace-pre-line`} style={{ color: '#374151' }}>
-      {trocearCuerpo(cuerpo).map((t, i) => t.tipo === 'texto'
+      {trozos.map((t, i) => t.tipo === 'texto'
         ? <span key={i}>{t.valor}</span>
-        : (
-          <Link key={i} to={`/p/${t.userId}`} className="font-bold underline underline-offset-2"
-            style={{ color: '#8B6A00', textDecorationColor: 'rgba(212,175,55,0.5)' }}>
-            {t.nombre}
-          </Link>
-        ))}
+        : <Mencion key={i} userId={t.userId} nombre={t.nombre} foto={fotos.get(t.userId)} />)}
     </p>
   );
 }
