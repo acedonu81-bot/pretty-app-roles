@@ -163,7 +163,7 @@ export default function ComunicadosCarrusel() {
   // Los títulos NO van en h2/h3: la hoja global fuerza Syne 800 (ancha y enorme)
   // en todos los h1-h4. Aquí son una tarjeta pequeña, van en Inter.
   const titulo = (c: Comunicado, grande: boolean) => (
-    <p role="heading" aria-level={3} className={`${grande ? 'text-xl' : 'text-[0.95rem]'} font-semibold leading-snug ${grande ? 'line-clamp-3' : 'line-clamp-2'} group-hover:underline underline-offset-2`}
+    <p role="heading" aria-level={3} className={`${grande ? 'text-base' : 'text-sm'} font-semibold leading-snug line-clamp-2 group-hover:underline underline-offset-2`}
       style={{ color: '#111827' }}>{c.titulo}</p>
   );
 
@@ -188,25 +188,27 @@ export default function ComunicadosCarrusel() {
       </div>
 
       {lista.length === 1 ? (
-        // Uno solo: tarjeta horizontal, no una miniatura perdida en un hueco vacío.
+        // Uno solo: fila compacta con la imagen en un recuadro pequeño.
         (() => {
           const c = lista[0];
           const resumen = textoPlano(c.cuerpo);
           return (
-            <button onClick={() => abrir(c)} className="group w-full text-left rounded-2xl p-3 md:p-4 grid md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] gap-4 md:gap-6 items-center transition-shadow hover:shadow-md"
+            <button onClick={() => abrir(c)} className="group w-full max-w-2xl text-left rounded-xl p-2.5 flex gap-3 items-center transition-shadow hover:shadow-md"
               style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
-              <div className="relative aspect-[3/2] rounded-xl overflow-hidden" style={{ background: '#FBF3DD' }}>
+              <div className="relative shrink-0 w-24 sm:w-32 aspect-[3/2] rounded-lg overflow-hidden" style={{ background: '#FBF3DD' }}>
                 <Portada c={c} />
-                <Nuevo c={c} />
+                {!leidos.has(c.id) && <span className="absolute top-1 left-1 w-2.5 h-2.5 rounded-full" style={{ background: ORO, boxShadow: '0 0 0 2px #fff' }} aria-label="Nuevo" />}
               </div>
-              <div className="space-y-2 min-w-0">
+              <div className="space-y-1 min-w-0 flex-1">
                 <Meta c={c} />
                 {titulo(c, true)}
-                {resumen && <p className="text-sm leading-relaxed line-clamp-3" style={{ color: '#4b5563' }}>{resumen}</p>}
-                <Stats c={c} />
-                <span className="inline-flex items-center gap-1 text-sm font-bold pt-1" style={{ color: '#8B6A00' }}>
-                  {(c.encuesta_opciones?.length ?? 0) >= 2 ? 'Leer y votar' : 'Leer y comentar'} <ChevronRight size={15} />
-                </span>
+                {resumen && <p className="text-[0.8rem] leading-snug line-clamp-2" style={{ color: '#4b5563' }}>{resumen}</p>}
+                <div className="flex items-center gap-3">
+                  <Stats c={c} />
+                  <span className="inline-flex items-center gap-0.5 text-xs font-bold" style={{ color: '#8B6A00' }}>
+                    {(c.encuesta_opciones?.length ?? 0) >= 2 ? 'Leer y votar' : 'Leer y comentar'} <ChevronRight size={13} />
+                  </span>
+                </div>
               </div>
             </button>
           );
@@ -214,7 +216,7 @@ export default function ComunicadosCarrusel() {
       ) : (
         <div ref={pista} className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2">
           {lista.map(c => (
-            <button key={c.id} onClick={() => abrir(c)} className="group snap-start shrink-0 text-left w-[260px] sm:w-[290px] space-y-1.5">
+            <button key={c.id} onClick={() => abrir(c)} className="group snap-start shrink-0 text-left w-[190px] sm:w-[210px] space-y-1">
               <div className="relative aspect-[3/2] rounded-xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.25)', background: '#FBF3DD' }}>
                 <Portada c={c} />
                 <Nuevo c={c} />
