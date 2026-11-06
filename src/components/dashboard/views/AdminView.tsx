@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion, Inbox } from 'lucide-react';
+import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion, Inbox, Megaphone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
@@ -21,10 +21,12 @@ import AdminConcursoVotantes from './admin/AdminConcursoVotantes';
 import AdminFeedbackWeb from './admin/AdminFeedbackWeb';
 import AdminAvisos from './admin/AdminAvisos';
 import AdminBandejaXpeak from './admin/AdminBandejaXpeak';
+import AdminComunicados from './admin/AdminComunicados';
 
 const TABS = [
   { id: 'activity', label: 'Actividad', icon: Activity },
   { id: 'xpeak', label: 'Mensajes XPEAK', icon: Inbox },
+  { id: 'comunicados', label: 'Comunicados', icon: Megaphone },
   { id: 'salud',    label: 'Salud',     icon: ShieldCheck },
   { id: 'analytics', label: 'Tráfico', icon: LineChart },
   { id: 'overview', label: 'General', icon: LayoutGrid },
@@ -135,6 +137,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
 
       {tab === 'activity' && <AdminActivity />}
       {tab === 'xpeak' && <AdminBandejaXpeak onSinLeer={setXpeakBadge} />}
+      {tab === 'comunicados' && <AdminComunicados />}
       {tab === 'salud' && <AdminSaludSistema />}
       {tab === 'analytics' && <AdminAnalytics />}
       {tab === 'overview' && (

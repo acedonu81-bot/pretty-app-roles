@@ -8,6 +8,7 @@ import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
 import NuevaOfertaBanner from '@/components/dashboard/NuevaOfertaBanner';
+import ComunicadosCarrusel from '@/components/comunicados/ComunicadosCarrusel';
 import PendingReviewsBanner from '@/components/dashboard/PendingReviewsBanner';
 import { marcarFlashVisto } from '@/hooks/useDashboardBadges';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
@@ -810,6 +811,8 @@ const Dashboard = () => {
           <MarketingConsentBanner />
           <RecentBusinessViewLine />
           <TodaysRequestsLine onNavigate={goToSolicitudesFlashBooking} />
+          {/* Comunicados XPEAK: solo en la portada del panel (Explorar y Feed). */}
+          {(activeView === 'explorar' || activeView === 'feed') && <ComunicadosCarrusel />}
           <div className={`p-3 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(var(--mobile-nav-space)+1.5rem)]' : 'pb-6'}`}
             ref={viewContentRef}>
             <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} /></div>}>
