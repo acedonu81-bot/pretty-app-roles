@@ -115,6 +115,7 @@ import { ventanaActiva } from '@/config/ventanasPrueba';
 
 const ConcursoFeedBanner = lazy(() => import('@/components/dashboard/views/ConcursoFeedBanner'));
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
+const NovedadesFranja = lazy(() => import('@/components/comunicados/NovedadesFranja'));
 const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
 
 /* ── Fade-in wrapper ── */
@@ -1192,6 +1193,9 @@ const Landing = () => {
         </section>
       )}
 
+
+      {/* ─ Novedades de la comunidad (tablón público; no pinta nada si no hay) ─ */}
+      <Suspense fallback={null}><NovedadesFranja /></Suspense>
 
       {/* ─ Guías destacadas (puente blog → directorio) ─ */}
       <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-16 md:pb-20">
