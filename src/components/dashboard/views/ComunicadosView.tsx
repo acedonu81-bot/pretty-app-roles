@@ -48,10 +48,10 @@ export default function ComunicadosView() {
         )}
 
         {abierto && (
-          <article className="rounded-2xl overflow-hidden md:flex md:items-stretch" style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
+          <article className="rounded-2xl overflow-hidden md:overflow-visible md:flex md:items-start" style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
             {/* Móvil: imagen arriba y texto debajo. Tablet y ordenador: imagen a la izquierda, texto a la derecha. */}
             {(abierto.video_url || abierto.imagen_url) && (
-              <div className="md:w-5/12 md:shrink-0 flex items-start justify-center" style={{ background: abierto.video_url ? '#000' : '#FBF3DD' }}>
+              <div className="md:w-5/12 md:shrink-0 md:sticky md:top-4 md:rounded-l-2xl overflow-hidden flex items-start justify-center" style={{ background: abierto.video_url ? '#000' : '#FBF3DD' }}>
                 {abierto.video_url ? (
                   <video src={abierto.video_url} controls playsInline poster={abierto.imagen_url ?? undefined} className="w-full max-h-[70vh] md:max-h-[85vh] bg-black" />
                 ) : (
@@ -62,7 +62,7 @@ export default function ComunicadosView() {
             <div className="p-5 sm:p-7 space-y-4 md:flex-1 md:min-w-0">
               <MetaComunicado c={abierto} />
               <p role="heading" aria-level={1} className="text-2xl font-bold leading-[1.3]" style={{ color: '#111827' }}>{abierto.titulo}</p>
-              {abierto.cuerpo.trim() && <CuerpoConMenciones cuerpo={abierto.cuerpo} grande />}
+              {abierto.cuerpo.trim() && <CuerpoConMenciones cuerpo={abierto.cuerpo} grande colapsable />}
               {abierto.cta_url && (
                 <button onClick={() => irA(abierto.cta_url!)}
                   className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-extrabold" style={{ background: ORO, color: '#1f2937' }}>

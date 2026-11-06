@@ -179,6 +179,12 @@ export default function ComunicadoInteraccion({ c, inter, onCambio }: Props) {
                 <Send size={16} />
               </button>
             </div>
+            <div className="flex flex-wrap gap-1" aria-label="Añadir emoji">
+              {['👏', '🔥', '🎧', '❤️', '😂', '🙌', '👍', '🤔'].map(e => (
+                <button key={e} type="button" onClick={() => setTexto(t => (t + e).slice(0, 500))}
+                  className="w-8 h-8 rounded-lg text-lg leading-none hover:bg-[#FBF3DD]" aria-label={`Añadir ${e}`}>{e}</button>
+              ))}
+            </div>
             {esOrganizador && (
               <div className="flex gap-3 text-xs" style={{ color: '#4b5563' }}>
                 <label className="inline-flex items-center gap-1.5 cursor-pointer">

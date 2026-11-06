@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { BarChart3, Heart, Megaphone, MessageCircle, Play } from 'lucide-react';
 import { timeAgo } from '@/lib/timeAgo';
-import { type Comunicado, type Interaccion, etiquetaCategoria, trocearCuerpo } from '@/lib/comunicados';
+import { type Comunicado, type Interaccion, etiquetaCategoria, textoPlano, trocearCuerpo } from '@/lib/comunicados';
 
 // Piezas compartidas por el carrusel de Inicio, el tablón y el detalle.
 
@@ -55,15 +55,28 @@ function Mencion({ userId, nombre, foto }: { userId: string; nombre: string; fot
   );
 }
 
-export function CuerpoConMenciones({ cuerpo, grande = false }: { cuerpo: string; grande?: boolean }) {
+export function CuerpoConMenciones({ cuerpo, grande = false, colapsable = false }: { cuerpo: string; grande?: boolean; colapsable?: boolean }) {
   const trozos = trocearCuerpo(cuerpo);
   const fotos = useFotosMenciones([...new Set(trozos.flatMap(t => t.tipo === 'mencion' ? [t.userId] : []))]);
+  const [abierto, setAbierto] = useState(false);
+  // Textos largos: se cortan a unas líneas con "Leer más", igual que en el resto de la app,
+  // para que la tarjeta no quede descuadrada junto a la imagen.
+  const largo = colapsable && textoPlano(cuerpo).length > 420;
+  const cortado = largo && !abierto;
   return (
-    <p className={`${grande ? 'text-base' : 'text-sm'} leading-relaxed whitespace-pre-line`} style={{ color: '#374151' }}>
-      {trozos.map((t, i) => t.tipo === 'texto'
-        ? <span key={i}>{t.valor}</span>
-        : <Mencion key={i} userId={t.userId} nombre={t.nombre} foto={fotos.get(t.userId)} />)}
-    </p>
+    <div>
+      <p className={`${grande ? 'text-base' : 'text-sm'} leading-relaxed whitespace-pre-line ${cortado ? 'line-clamp-[8]' : ''}`} style={{ color: '#374151' }}>
+        {trozos.map((t, i) => t.tipo === 'texto'
+          ? <span key={i}>{t.valor}</span>
+          : <Mencion key={i} userId={t.userId} nombre={t.nombre} foto={fotos.get(t.userId)} />)}
+      </p>
+      {largo && (
+        <button type="button" onClick={() => setAbierto(v => !v)}
+          className="mt-1.5 text-sm font-bold underline underline-offset-2" style={{ color: '#8B6A00' }}>
+          {abierto ? 'Leer menos' : 'Leer más'}
+        </button>
+      )}
+    </div>
   );
 }
 

@@ -148,7 +148,7 @@ export default function Novedades() {
           <Link to="/novedades" className="text-sm font-bold" style={{ color: '#8A6D0F' }}>← Todas las novedades</Link>
           <MetaComunicado c={n} />
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight" style={{ color: '#111' }}>{n.titulo}</h1>
-          {n.cuerpo.trim() && <CuerpoConMenciones cuerpo={n.cuerpo} grande />}
+          {n.cuerpo.trim() && <CuerpoConMenciones cuerpo={n.cuerpo} grande colapsable />}
 
           {n.cta_url && (esEnlaceInterno(n.cta_url) ? (
             <Link to={n.cta_url} className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-extrabold" style={{ background: ORO, color: '#1f2937' }}>
