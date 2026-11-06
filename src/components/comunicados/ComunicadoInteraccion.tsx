@@ -37,6 +37,24 @@ interface Props {
   onCambio: (i: Interaccion) => void;
 }
 
+// Texto de un comentario: si es largo se corta con "Leer más" (antes un
+// line-clamp sin botón dejaba el comentario a medias).
+function TextoComentario({ texto }: { texto: string }) {
+  const [abierto, setAbierto] = useState(false);
+  const largo = texto.length > 180 || texto.split('\n').length > 4;
+  return (
+    <div>
+      <p className={`text-[0.82rem] leading-snug whitespace-pre-line break-words ${largo && !abierto ? 'line-clamp-3' : ''}`} style={{ color: '#374151' }}>{texto}</p>
+      {largo && (
+        <button type="button" onClick={() => setAbierto(v => !v)}
+          className="text-[0.72rem] font-bold underline underline-offset-2" style={{ color: '#8B6A00' }}>
+          {abierto ? 'Leer menos' : 'Leer más'}
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function ComunicadoInteraccion({ c, inter, onCambio }: Props) {
   const { user } = useAuth();
   const { role, allProfiles } = useProfile();
@@ -187,7 +205,7 @@ export default function ComunicadoInteraccion({ c, inter, onCambio }: Props) {
                       </button>
                     )}
                   </div>
-                  <p className="text-[0.82rem] leading-snug whitespace-pre-line break-words line-clamp-4" style={{ color: '#374151' }}>{k.texto}</p>
+                  <TextoComentario texto={k.texto} />
                   <button type="button" onClick={() => likeComentario(k)} aria-pressed={!!k.yo_like} aria-label="Me gusta"
                     className="mt-0.5 inline-flex items-center gap-1 text-[0.7rem] font-semibold" style={{ color: k.yo_like ? '#dc2626' : '#6b7280' }}>
                     <Heart size={13} fill={k.yo_like ? '#dc2626' : 'none'} /> {k.likes ? k.likes : 'Me gusta'}
