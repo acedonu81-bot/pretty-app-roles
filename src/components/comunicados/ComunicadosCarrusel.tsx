@@ -7,7 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { timeAgo } from '@/lib/timeAgo';
 import {
-  type Comunicado, type Interaccion, esEnlaceInterno, etiquetaCategoria, ordenarComunicados, textoPlano, trocearCuerpo,
+  type Comunicado, type Interaccion, esEnlaceInterno, etiquetaCategoria, ordenarComunicados, resumenSinTitulo, textoPlano, trocearCuerpo,
 } from '@/lib/comunicados';
 
 // Carrusel "Comunicados XPEAK" del panel (6 nov 2026), inspirado en "Últimas
@@ -163,7 +163,7 @@ export default function ComunicadosCarrusel() {
   // Los títulos NO van en h2/h3: la hoja global fuerza Syne 800 (ancha y enorme)
   // en todos los h1-h4. Aquí son una tarjeta pequeña, van en Inter.
   const titulo = (c: Comunicado, grande: boolean) => (
-    <p role="heading" aria-level={3} className={`${grande ? 'text-base' : 'text-sm'} font-semibold leading-snug line-clamp-2 group-hover:underline underline-offset-2`}
+    <p role="heading" aria-level={3} className={`${grande ? 'text-base' : 'text-sm'} font-semibold leading-[1.35] line-clamp-2 group-hover:underline underline-offset-2`}
       style={{ color: '#111827' }}>{c.titulo}</p>
   );
 
@@ -191,7 +191,7 @@ export default function ComunicadosCarrusel() {
         // Uno solo: fila compacta con la imagen en un recuadro pequeño.
         (() => {
           const c = lista[0];
-          const resumen = textoPlano(c.cuerpo);
+          const resumen = resumenSinTitulo(c.cuerpo, c.titulo);
           return (
             <button onClick={() => abrir(c)} className="group w-full max-w-2xl text-left rounded-xl p-2.5 flex gap-3 items-center transition-shadow hover:shadow-md"
               style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
@@ -202,7 +202,7 @@ export default function ComunicadosCarrusel() {
               <div className="space-y-1 min-w-0 flex-1">
                 <Meta c={c} />
                 {titulo(c, true)}
-                {resumen && <p className="text-[0.8rem] leading-snug line-clamp-2" style={{ color: '#4b5563' }}>{resumen}</p>}
+                {resumen && <p className="text-[0.8rem] leading-[1.35] line-clamp-2" style={{ color: '#4b5563' }}>{resumen}</p>}
                 <div className="flex items-center gap-3">
                   <Stats c={c} />
                   <span className="inline-flex items-center gap-0.5 text-xs font-bold" style={{ color: '#8B6A00' }}>
@@ -243,7 +243,7 @@ export default function ComunicadosCarrusel() {
                   {etiquetaCategoria(abierto.categoria)} · {timeAgo(abierto.created_at)}
                 </div>
                 <DialogTitle asChild>
-                  <p className="text-xl font-bold leading-snug" style={{ color: '#111827' }}>{abierto.titulo}</p>
+                  <p className="text-xl font-bold leading-[1.35]" style={{ color: '#111827' }}>{abierto.titulo}</p>
                 </DialogTitle>
                 <DialogDescription className="sr-only">{textoPlano(abierto.cuerpo).slice(0, 140)}</DialogDescription>
                 {abierto.cuerpo.trim() && <CuerpoConMenciones cuerpo={abierto.cuerpo} />}

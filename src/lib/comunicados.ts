@@ -110,3 +110,10 @@ export const esEnlaceInterno = (url: string): boolean =>
 /** "Para siempre": caduca_at es NOT NULL, así que se guarda una fecha lejana. */
 export const CADUCA_NUNCA = '2100-01-01T00:00:00.000Z';
 export const esParaSiempre = (iso: string): boolean => new Date(iso).getUTCFullYear() >= 2099;
+
+/** Extracto para tarjetas: texto plano sin repetir el título si el cuerpo empieza por él. */
+export function resumenSinTitulo(cuerpo: string, titulo: string): string {
+  const plano = textoPlano(cuerpo);
+  const t = titulo.trim().toLowerCase();
+  return t && plano.toLowerCase().startsWith(t) ? plano.slice(t.length).trim() : plano;
+}

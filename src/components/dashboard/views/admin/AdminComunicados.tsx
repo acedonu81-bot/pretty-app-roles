@@ -434,7 +434,7 @@ export default function AdminComunicados() {
                   <span className="font-semibold">{etiquetaCategoria(categoria)}</span>
                   <span>·</span><span>ahora mismo</span>
                 </div>
-                <p className="mt-1 font-bold leading-snug line-clamp-2" style={{ color: '#111827' }}>{titulo || 'Sin título'}</p>
+                <p className="mt-1 font-bold leading-[1.35] line-clamp-2" style={{ color: '#111827' }}>{titulo || 'Sin título'}</p>
               </div>
             </div>
 

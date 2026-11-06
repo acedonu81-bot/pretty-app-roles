@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CADUCA_NUNCA, esEnlaceInterno, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, trocearCuerpo } from './comunicados';
+import { CADUCA_NUNCA, resumenSinTitulo, esEnlaceInterno, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, trocearCuerpo } from './comunicados';
 
 const ID = '0b8f3c1e-1234-4abc-9def-1234567890ab';
 
@@ -52,6 +52,11 @@ describe('comunicados', () => {
   it('para siempre se reconoce y una fecha normal no', () => {
     expect(esParaSiempre(CADUCA_NUNCA)).toBe(true);
     expect(esParaSiempre('2026-12-06T10:00:00.000Z')).toBe(false);
+  });
+
+  it('el extracto no repite el titulo', () => {
+    expect(resumenSinTitulo('EL CARIÑO EN LA MEZCLA Y si hablamos', 'El cariño en la mezcla')).toBe('Y si hablamos');
+    expect(resumenSinTitulo('Otro texto', 'Título')).toBe('Otro texto');
   });
 
   it('distingue enlaces internos', () => {
