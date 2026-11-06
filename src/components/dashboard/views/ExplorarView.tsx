@@ -167,6 +167,22 @@ export const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string
         0 o 1. Misma transición de hover que el botón (group-hover:-translate-y-1
         scale-[1.015]) para que se mueva junto a la tarjeta y no se quede
         clavada mientras la tarjeta sube debajo. */}
+    {/* Rama de pino de plastilina (render Higgsfield) que sobresale por la esquina
+        superior derecha, fuera del overflow-hidden del botón, para no tapar la
+        foto. Misma transición de hover que la tarjeta. */}
+    {item.id === 'navidad' && (
+      <img
+        src="/navidad-pino.webp"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        width={324}
+        height={520}
+        className="pointer-events-none absolute z-10 -right-4 -top-7 w-[30%] sm:-right-6 sm:-top-8 sm:w-[27%] rotate-[8deg] transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.015]"
+        style={{ filter: 'drop-shadow(0 6px 8px rgba(60,20,10,0.3))' }}
+      />
+    )}
     {item.nuevo && (
       <div
         className="pointer-events-none absolute -right-3 top-2.5 sm:-right-2.5 sm:top-3.5 z-10 rotate-[38deg] transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.015]"
