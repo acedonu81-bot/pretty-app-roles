@@ -243,10 +243,14 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
       .some(x => x.professional_user_id === user.id && !!x.hired_at);
   const tocoTarjetas = useRef(false);
   const focoAplicado = useRef(0);
+  // El temporizador se cancela al desmontar: si no, dispara tras cerrarse la pantalla
+  // (y en los tests, tras cerrarse el entorno: "document is not defined", 7 nov 2026).
+  const temporizadoresCentrar = useRef<number[]>([]);
+  useEffect(() => () => { temporizadoresCentrar.current.forEach(t => window.clearTimeout(t)); }, []);
   const centrar = (id: string) => {
-    window.setTimeout(() => {
+    temporizadoresCentrar.current.push(window.setTimeout(() => {
       document.getElementById(`oferta-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 80);
+    }, 80));
   };
   useEffect(() => {
     if (!foco || foco.n === focoAplicado.current) return;
