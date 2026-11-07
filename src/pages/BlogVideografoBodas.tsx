@@ -7,10 +7,10 @@ import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Videógrafo para bodas: precio y qué incluye el vídeo en España (2026)', description: 'Cuánto cuesta contratar un videógrafo para tu boda. Precios por tipo de vídeo, duración, ciudad y diferencias con el fotógrafo. Guía 2026.', datePublished: '2026-05-04',
-  dateModified: '2026-10-26', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/videografo-bodas-precio' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Videógrafo para bodas: precio y qué incluye el vídeo en España (2026)', description: 'Cuánto cuesta contratar un videógrafo para tu boda. Precios por paquete, ciudad y diferencias con el fotógrafo. Guía 2026.', datePublished: '2026-05-04',
+  dateModified: '2026-11-07', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/videografo-bodas-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Cuánto cobra un videógrafo de bodas en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un videógrafo de bodas en España varía entre 600€ y 3.000€ dependiendo del nivel de experiencia, ciudad y paquete. Un vídeo de highlights de 3-5 minutos cuesta entre 800€ y 1.500€ con un profesional de nivel medio. Los videógrafos más reconocidos con estilo cinematográfico pueden cobrar 2.500-4.000€.' } },
+  { '@type': 'Question', name: '¿Cuánto cobra un videógrafo de bodas en España?', acceptedAnswer: { '@type': 'Answer', text: 'Un videógrafo de bodas en España cobra entre 600€ y 4.000€ solo por el vídeo, según paquete, ciudad y experiencia. Un vídeo de highlights de 3-5 minutos cuesta entre 600€ y 1.200€, el pack estándar con la ceremonia completa entre 1.000€ y 1.800€, y el pack cinematográfico con drone y segundo cámara entre 2.000€ y 4.000€.' } },
   { '@type': 'Question', name: '¿Qué incluye el paquete de vídeo de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Lo habitual es: grabación el día de la boda (8-10h), edición y postproducción, vídeo de highlights (3-5 min), vídeo completo de la ceremonia y el banquete (30-90 min), entrega en archivo digital y enlace para compartir. Los paquetes premium añaden un segundo cámara, sesión previa (preboda) y película cinematográfica de autor.' } },
   { '@type': 'Question', name: '¿Es mejor contratar fotógrafo o videógrafo para la boda?', acceptedAnswer: { '@type': 'Answer', text: 'La foto captura momentos congelados para siempre; el vídeo conserva las emociones en movimiento: votos, risas, música. Si el presupuesto obliga a elegir, muchas parejas priorizan la fotografía. Pero si hay margen, el vídeo añade una dimensión emocional que las fotos no pueden dar. Idealmente, contratar ambos con estilo visual coherente.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación contratar el videógrafo de la boda?', acceptedAnswer: { '@type': 'Answer', text: 'Los mejores videógrafos de boda en España se reservan con 12-18 meses de antelación para fechas de temporada alta (mayo-octubre). Para bodas de invierno o entre semana, 6-8 meses suele ser suficiente. Confirmar siempre disponibilidad antes de cerrar la fecha de la boda.' } },
@@ -39,7 +39,7 @@ export default function BlogVideografoBodas() {
     <>
       <Helmet>
         <title>Videógrafo bodas: precio y qué incluye 2026 | XPEAK</title>
-        <meta name="description" content="¿Cuánto cuesta un videógrafo de boda en España? Precios por paquete, ciudad y tipo de vídeo. Diferencias con el fotógrafo y cuándo contratar." />
+        <meta name="description" content="Cuánto cobra un videógrafo de bodas en España: precios por paquete y ciudad, qué incluye cada vídeo y diferencias con el fotógrafo." />
         <link rel="canonical" href="https://xpeak.es/blog/videografo-bodas-precio" />
         <meta property="og:title" content="Videógrafo bodas: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de videógrafos de boda en España. Por paquete, ciudad y tipo de producción." />
@@ -63,8 +63,8 @@ export default function BlogVideografoBodas() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Videógrafo para bodas: precio y qué incluye el vídeo en España (2026)</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Las fotos congelan momentos, el vídeo conserva las emociones. Guía de precios reales de videógrafos de boda en España, qué incluye cada paquete y cómo elegir el estilo correcto.</p>
-            <time className="text-xs mt-3 block" style={{ color: '#666' }}>26 octubre 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Un videógrafo de boda en España cobra entre 600 y 4.000 € solo por el vídeo. Highlights de 3-5 minutos: 600-1.200 €. Pack estándar con la ceremonia completa: 1.000-1.800 €. Pack cinematográfico con drone y segundo cámara: 2.000-4.000 €. En Madrid y Barcelona los precios son más altos.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>7 noviembre 2026</time>
           </div>
           <div className="space-y-10">
             <section>
@@ -92,7 +92,7 @@ export default function BlogVideografoBodas() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { t: 'Fotógrafo de boda', puntos: ['Captura momentos congelados en alta resolución', 'Álbum físico y galería digital entregables', 'Edición disponible en 4-8 semanas', 'Precio medio: 1.000-2.500€', 'Prioridad si el presupuesto es limitado'], c: '#818cf8' },
-                  { t: 'Videógrafo de boda', puntos: ['Conserva emociones, música y voz en movimiento', 'Highlights + película larga entregables', 'Edición disponible en 6-12 semanas', 'Precio medio: 1.000-2.500€', 'Complemento ideal si hay presupuesto'], c: '#4F46E5' },
+                  { t: 'Videógrafo de boda', puntos: ['Conserva emociones, música y voz en movimiento', 'Highlights + película larga entregables', 'Edición disponible en 6-12 semanas', 'Precio: 600-4.000€ según paquete (ver tabla)', 'Complemento ideal si hay presupuesto'], c: '#4F46E5' },
                 ].map(d => (
                   <div key={d.t} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-xs font-bold mb-3" style={{ color: d.c }}>{d.t}</h3>
