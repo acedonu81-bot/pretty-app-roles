@@ -321,7 +321,7 @@ export default function BlogBodaLowCost() {
               {[
                 { href: '/blog/cuanto-cuesta-una-boda-en-espana', cat: 'Bodas', title: 'Cuánto cuesta una boda en España 2026: desglose completo' },
                 { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: '¿Cuánto cobra un DJ en España? Precios 2026' },
-                { href: '/blog/contratar-fotografo-de-bodas', cat: 'Foto', title: 'Contratar fotógrafo de bodas: guía y precios' },
+                { href: '/blog/fotografo-boda', cat: 'Foto', title: 'Contratar fotógrafo de bodas: guía y precios' },
                 { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
               ].map(link => (
                 <a key={link.href} href={link.href}

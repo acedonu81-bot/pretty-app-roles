@@ -3,7 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
-  { href: '/blog/contratar-fotografo-de-bodas', tag: 'Bodas', title: 'Contratar fotógrafo de bodas: guía y precios', desc: 'Precios reales por ciudad. Qué incluye y cómo elegir el fotógrafo perfecto.' },
+  { href: '/blog/fotografo-boda', tag: 'Bodas', title: 'Contratar fotógrafo de bodas: guía y precios', desc: 'Precios reales por ciudad. Qué incluye y cómo elegir el fotógrafo perfecto.' },
   { href: '/blog/fotografo-para-comunion-precio', tag: 'Comuniones', title: 'Fotógrafo para comunión: precio y guía 2026', desc: 'Precios por paquetes, qué incluye el reportaje y cuándo reservar.' },
   { href: '/blog/videografo-bodas-precio', tag: 'Vídeo', title: 'Videógrafo bodas: precio y qué incluye 2026', desc: 'Cuánto cuesta un videógrafo. Paquetes, diferencias con el fotógrafo y qué pedir.' },
   { href: '/blog/fotografia-eventos-nocturnos', tag: 'Noche', title: 'Fotografía eventos nocturnos: precios 2026', desc: 'Cuánto cobra un fotógrafo de discoteca o eventos nocturnos. Equipo y cómo elegirlo.' },

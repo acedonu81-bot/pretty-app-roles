@@ -6,7 +6,7 @@ const ARTICLES = [
   { href: '/blog/cuanto-cuesta-una-boda-en-espana', tag: 'Presupuesto', title: 'Cuánto cuesta una boda en España 2026', desc: 'Desglose por partidas: catering, DJ, fotógrafo, camareros, flores y más.' },
   { href: '/blog/musica-para-bodas-guia', tag: 'Música', title: 'Música para bodas: DJ, banda o playlist 2026', desc: 'Comparativa DJ vs banda en directo vs lista propia. Precios y cuándo elegir cada opción.' },
   { href: '/blog/dj-boda-civil-precio-canciones', tag: 'Música', title: 'DJ boda civil: precio y canciones 2026', desc: 'Cuánto cuesta el DJ y qué música poner en la entrada, firma, cóctel y pista.' },
-  { href: '/blog/contratar-fotografo-de-bodas', tag: 'Fotografía', title: 'Contratar fotógrafo de bodas: guía y precios', desc: 'Precios reales por ciudad. Qué incluye y cómo elegir el fotógrafo perfecto.' },
+  { href: '/blog/fotografo-boda', tag: 'Fotografía', title: 'Contratar fotógrafo de bodas: guía y precios', desc: 'Precios reales por ciudad. Qué incluye y cómo elegir el fotógrafo perfecto.' },
   { href: '/blog/videografo-bodas-precio', tag: 'Fotografía', title: 'Videógrafo bodas: precio y qué incluye 2026', desc: 'Cuánto cuesta un videógrafo. Precios por paquete y diferencias con el fotógrafo.' },
   { href: '/blog/maquillaje-nupcial-precio-guia', tag: 'Imagen', title: 'Maquillaje nupcial: precios y cómo elegir 2026', desc: 'Guía de precios de maquillaje para novias. Qué incluye y cómo no equivocarte.' },
   { href: '/blog/cuanto-cobra-un-camarero-de-eventos', tag: 'Camareros', title: 'Cuánto cobra un camarero de eventos 2026', desc: 'Precios reales para bodas, eventos de empresa y fiestas privadas.' },

@@ -2,6 +2,7 @@
   "routes": [
     { "src": "/contratar-animadores/(.+)", "status": 301, "headers": { "Location": "/contratar-animador/$1" } },
     { "src": "/contratar-payasos/(.+)", "status": 301, "headers": { "Location": "/contratar-payaso/$1" } },
+    { "src": "/blog/contratar-fotografo-de-bodas", "status": 301, "headers": { "Location": "/blog/fotografo-boda" } },
     { "src": "/blog/como-conseguir-bolos-dj", "status": 301, "headers": { "Location": "/blog/trabajo-de-dj-en-espana" } },
     { "src": "/directorio/emergentes", "status": 301, "headers": { "Location": "/directorio/djs-emergentes" } },
     { "src": "/directorio", "has": [{ "type": "query", "key": "categoria", "value": "camarero" }], "status": 301, "headers": { "Location": "/directorio/staff" } },

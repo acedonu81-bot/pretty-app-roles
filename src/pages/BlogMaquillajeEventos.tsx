@@ -196,7 +196,7 @@ const faqStructured = {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { href: '/blog/maquillaje-nupcial-precio-guia', tag: 'Maquillaje', title: 'Maquillaje nupcial: precios y guía 2026', desc: 'Guía específica de maquillaje para novias.' },
-                { href: '/blog/contratar-fotografo-de-bodas', tag: 'Fotografía', title: 'Fotógrafo de bodas: precio y guía 2026', desc: 'Cómo elegir el fotógrafo perfecto para tu boda.' },
+                { href: '/blog/fotografo-boda', tag: 'Fotografía', title: 'Fotógrafo de bodas: precio y guía 2026', desc: 'Cómo elegir el fotógrafo perfecto para tu boda.' },
                 { href: '/blog/cuanto-cuesta-una-boda-en-espana', tag: 'Bodas', title: '¿Cuánto cuesta una boda en España?', desc: 'Presupuesto completo por partidas para 2026.' },
               ].map(p => (
                 <a key={p.href} href={p.href}

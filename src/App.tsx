@@ -49,7 +49,6 @@ const BlogDJBodaVsDiscoteca = lazy(() => import("./pages/BlogDJBodaVsDiscoteca")
 const BlogCosteBoda = lazy(() => import("./pages/BlogCosteBoda"));
 const BlogBodaLowCost = lazy(() => import("./pages/BlogBodaLowCost"));
 const BlogIndex = lazy(() => import("./pages/BlogIndex"));
-const BlogFotografoBodas = lazy(() => import("./pages/BlogFotografoBodas"));
 const BlogStaffDiscoteca = lazy(() => import("./pages/BlogStaffDiscoteca"));
 const BlogCateringEmpresas = lazy(() => import("./pages/BlogCateringEmpresas"));
 const BlogFoodTruckPrecio = lazy(() => import("./pages/BlogFoodTruckPrecio"));
@@ -599,7 +598,6 @@ const App = () => (
             <Route path="/blog/dj-para-bodas-vs-discoteca" element={<BlogDJBodaVsDiscoteca />} />
             <Route path="/blog/cuanto-cuesta-una-boda-en-espana" element={<BlogCosteBoda />} />
             <Route path="/blog/boda-low-cost-checklist-completo" element={<BlogBodaLowCost />} />
-            <Route path="/blog/contratar-fotografo-de-bodas" element={<BlogFotografoBodas />} />
             <Route path="/blog/staff-de-discoteca-funciones-y-salario" element={<BlogStaffDiscoteca />} />
             <Route path="/blog/catering-para-eventos-de-empresa" element={<BlogCateringEmpresas />} />
             <Route path="/blog/cuanto-cuesta-un-food-truck-para-evento" element={<BlogFoodTruckPrecio />} />

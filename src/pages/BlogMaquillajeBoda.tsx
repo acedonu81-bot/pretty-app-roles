@@ -212,7 +212,7 @@ export default function BlogMaquillajeBoda() {
                 {[
                   { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
                   { href: '/blog/maquilladora-para-eventos-precio', cat: 'Maquillaje', title: 'Maquilladora para eventos: precios 2026' },
-                  { href: '/blog/contratar-fotografo-de-bodas', cat: 'Bodas', title: 'Contratar fotógrafo de bodas: guía y precios' },
+                  { href: '/blog/fotografo-boda', cat: 'Bodas', title: 'Contratar fotógrafo de bodas: guía y precios' },
                   { href: '/blog/cuanto-cuesta-una-boda-en-espana', cat: 'Bodas', title: 'Cuánto cuesta una boda en España 2026' },
                   { href: '/blog/personal-de-imagen-ferias-y-congresos', cat: 'Imagen', title: 'Personal de imagen para ferias y congresos' },
                 ].map(link => (

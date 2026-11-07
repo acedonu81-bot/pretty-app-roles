@@ -278,7 +278,7 @@ export default function BlogWeddingPlanner() {
                   { href: '/blog/cuanto-cuesta-una-boda-en-espana', title: 'Presupuesto completo de boda en España 2026', tag: 'Bodas' },
                   { href: '/blog/catering-boda-precio-por-persona', title: 'Catering de boda: precio por persona', tag: 'Catering' },
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', title: 'Cuánto cobra un DJ para bodas', tag: 'DJ' },
-                  { href: '/blog/contratar-fotografo-de-bodas', title: 'Cómo contratar fotógrafo de bodas', tag: 'Fotografía' },
+                  { href: '/blog/fotografo-boda', title: 'Cómo contratar fotógrafo de bodas', tag: 'Fotografía' },
                 ].map(a => (
                   <a key={a.href} href={a.href} className="p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)', display: 'block', textDecoration: 'none' }}>
                     <span className="text-[0.75rem] font-bold uppercase tracking-wider mb-1 block" style={{ color: '#6D28D9' }}>{a.tag}</span>

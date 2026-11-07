@@ -31,7 +31,7 @@ const FOOTER_LINKS = {
     { label: 'Cuánto cobra un DJ', href: '/blog/cuanto-cobra-un-dj-en-espana' },
     { label: 'Camareros para boda', href: '/blog/cuantos-camareros-necesito-para-mi-boda' },
     { label: 'Coste de una boda', href: '/blog/cuanto-cuesta-una-boda-en-espana' },
-    { label: 'Fotógrafo de bodas', href: '/blog/contratar-fotografo-de-bodas' },
+    { label: 'Fotógrafo de bodas', href: '/blog/fotografo-boda' },
     { label: 'DJ para cumpleaños', href: '/blog/dj-para-cumpleanos-precio' },
     { label: 'Ver todos los artículos', href: '/blog' },
   ],

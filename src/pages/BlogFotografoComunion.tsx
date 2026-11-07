@@ -150,7 +150,7 @@ export default function BlogFotografoComunion() {
                 {[
                   { href: '/blog/fotografos-eventos', cat: 'Hub Foto', title: 'Fotógrafos para eventos: guía completa 2026' },
                   { href: '/blog/comuniones-guia-completa', cat: 'Hub Comuniones', title: 'Comuniones en España: guía completa 2026' },
-                  { href: '/blog/contratar-fotografo-de-bodas', cat: 'Fotografía', title: 'Contratar fotógrafo de bodas: guía y precios' },
+                  { href: '/blog/fotografo-boda', cat: 'Fotografía', title: 'Contratar fotógrafo de bodas: guía y precios' },
                   { href: '/blog/videografo-bodas-precio', cat: 'Fotografía', title: 'Videógrafo bodas: precio y qué incluye 2026' },
                   { href: '/blog/cuanto-cuesta-una-comunion-en-espana', cat: 'Comuniones', title: 'Cuánto cuesta una comunión en España 2026' },
                   { href: '/blog/dj-para-comunion-precio', cat: 'DJ', title: 'DJ para comunión: precio y qué incluye 2026' },

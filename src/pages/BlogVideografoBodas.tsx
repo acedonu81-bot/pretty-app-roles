@@ -22,7 +22,7 @@ const PAQUETES = [
   { pack: 'Pack estándar', precio: '1.000-1.800€', incluye: 'Highlights + vídeo ceremonia completa' },
   { pack: 'Pack completo', precio: '1.500-2.500€', incluye: 'Día completo (10h), 2 cámaras, película corta' },
   { pack: 'Pack cinematográfico', precio: '2.000-4.000€', incluye: 'Drone, segunda cámara, preboda, película de autor' },
-  { pack: 'Foto + vídeo combinado', precio: '2.500-5.000€', incluye: 'Fotógrafo y videógrafo del mismo estudio' },
+  { pack: 'Foto + vídeo combinado', precio: '3.000-6.000€', incluye: 'Fotógrafo y videógrafo del mismo estudio' },
 ];
 
 const CIUDADES = [

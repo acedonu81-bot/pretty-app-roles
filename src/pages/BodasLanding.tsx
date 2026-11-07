@@ -97,7 +97,7 @@ const BLOG_POSTS = [
   { href: '/blog/cuantos-camareros-necesito-para-mi-boda', icon: UtensilsCrossed, title: 'Cuántos camareros necesito para mi boda', desc: 'Tabla de ratios por número de invitados y tipo de servicio.' },
   { href: '/blog/musica-en-vivo-para-bodas', icon: Music2, title: 'Música en vivo para bodas: precios 2026', desc: 'Solistas, bandas, jazz y cuartetos de cuerda. Cuándo elegir cada formato.' },
   { href: '/blog/maestro-de-ceremonias-boda-precio-guia', icon: Mic2, title: 'Maestro de ceremonias: precio y guía 2026', desc: 'Qué hace el MC, cuánto cobra y cómo elegirlo.' },
-  { href: '/blog/contratar-fotografo-de-bodas', icon: Camera, title: 'Cómo contratar un fotógrafo de boda en España', desc: 'Precios por ciudad, qué incluye y cómo elegir el profesional.' },
+  { href: '/blog/fotografo-boda', icon: Camera, title: 'Cómo contratar un fotógrafo de boda en España', desc: 'Precios por ciudad, qué incluye y cómo elegir el profesional.' },
 ];
 
 export default function BodasLanding() {

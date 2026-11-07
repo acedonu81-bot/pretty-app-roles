@@ -188,7 +188,7 @@ export default function BlogContratarPersonalEvento() {
                   { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
                   { href: '/blog/cuanto-cobra-un-camarero-de-eventos', title: 'Cuánto cobra un camarero de eventos' },
                   { href: '/blog/precio-azafatas-eventos-espana', title: 'Precio de azafatas para eventos en España' },
-                  { href: '/blog/contratar-fotografo-de-bodas', title: 'Cómo contratar un fotógrafo de bodas' },
+                  { href: '/blog/fotografo-boda', title: 'Cómo contratar un fotógrafo de bodas' },
                   { href: '/blog/como-organizar-evento-corporativo', title: 'Cómo organizar un evento corporativo' },
                 ].map(a => (
                   <a key={a.href} href={a.href} className="p-3 rounded-lg text-sm font-medium transition-all hover:scale-[1.01]" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)', color: '#222' }}>
