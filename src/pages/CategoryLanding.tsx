@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt, Mic, SlidersHorizontal, Speaker, Building2, Truck } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import CtaProfesional from '@/components/CtaProfesional';
+import DjNacionalBloques, { useDjsNacional } from '@/components/DjNacionalBloques';
 import { usePrecioReal, esPreguntaPrecio, respuestaPrecio, valorPrecio } from '@/lib/precioReal';
 import { ROLE_MAP } from '@/lib/rolesPorCategoria';
 import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
@@ -26,7 +27,7 @@ const BLOG_LINKS: Record<string, { href: string; title: string; desc: string }[]
     { href: '/blog/catering-para-eventos-de-empresa', title: 'Catering para eventos de empresa 2026', desc: 'Cuándo encaja un food truck y cuándo un catering con servicio de sala.' },
   ],
   fotografo: [
-    { href: '/blog/contratar-fotografo-de-bodas', title: 'Cómo contratar un fotógrafo de bodas 2026', desc: 'Precios por ciudad, qué incluye y cómo elegir el profesional.' },
+    { href: '/blog/fotografo-boda', title: 'Cómo contratar un fotógrafo de bodas 2026', desc: 'Precios por ciudad, qué incluye y cómo elegir el profesional.' },
     { href: '/blog/cuanto-cuesta-una-boda-en-espana', title: '¿Cuánto cuesta una boda en España?', desc: 'Guía completa de presupuesto por partidas incluyendo fotografía.' },
   ],
   staff: [
@@ -73,7 +74,7 @@ export const CATEGORY_DATA: Record<string, {
     h1: 'Contratar DJ para Boda y Eventos en España',
     tagline: 'DJs profesionales verificados para bodas, fiestas y eventos en toda España',
     desc: 'Contrata DJ para boda, fiesta privada o evento en España. DJ para bodas Madrid, Barcelona e Ibiza. Flash Booking en menos de 1h..',
-    intro: 'XPEAK es la plataforma de referencia para contratar DJ en Madrid, Barcelona, Ibiza, Valencia, Sevilla y toda España. DJ para bodas, fiestas privadas y eventos corporativos. Perfiles verificados, precio público y contratos digitales en minutos.',
+    intro: 'Contratar un DJ para una boda, un cumpleaños, una fiesta privada o un evento de empresa. En XPEAK ves cada DJ con sus fotos, estilos y precio por hora, y hablas con él por el chat antes de decidir. El contrato se firma en digital.',
     keyword: 'DJ',
     keywords: 'contratar dj madrid, contratar dj barcelona, contratar dj ibiza, contratar dj para boda, dj para fiestas madrid, precio dj madrid, dj eventos madrid, dj fiestas privadas barcelona, DJ boda España, contratar DJ profesional',
     precio: 'desde 40€/hora',
@@ -91,10 +92,15 @@ export const CATEGORY_DATA: Record<string, {
     ],
     roles: ['Tech House', 'Techno', 'Hard Techno', 'Comercial', 'House', 'Afro House', 'Melodic Techno', 'Deep House', 'Reggaeton', 'Flamenco Fusión'],
     faqs: [
-      { q: '¿Cuánto cuesta contratar un DJ en España?', a: 'Los precios varían entre 40€/hora para DJs emergentes y más de 400€/hora para residentes de clubs reconocidos. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar.' },
+      { q: '¿Cuánto cuesta contratar un DJ en España?', a: 'Depende de las horas, del equipo y de la experiencia. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar.' },
+      { q: '¿El equipo de sonido va incluido?', a: 'Depende del DJ. Muchos llevan su propio equipo (altavoces, mesa y luces básicas) y otros pinchan con el equipo del local. Pregúntalo antes de cerrar: es lo que más cambia el precio.' },
+      { q: '¿Con cuánta antelación tengo que reservar un DJ?', a: 'Para bodas y sábados de mayo a octubre, cuanto antes: los DJs más pedidos se llenan con meses. Para un cumpleaños o una fiesta entre semana suele bastar con una o dos semanas. Si es para ya, pídelo por XPEAK y se avisa al momento a los DJs de la zona.' },
+      { q: '¿Es mejor contratar un DJ directamente o a través de una agencia?', a: 'Una agencia suele elegir ella qué DJ va y gestiona la reserva a cambio de un margen sobre la tarifa. En XPEAK ves el perfil de cada DJ, sus fotos, estilos y tarifa por hora, y hablas con él por el chat antes de decidir. El contrato se cierra directamente entre las partes.' },
+      { q: '¿Cómo contrato un DJ con XPEAK?', a: 'Pulsa «Pide DJ para tu fecha», di la fecha y la ciudad y confirma tu email. Se lo mandamos a los DJs de tu zona y, cuando uno dice que sí, habláis por el chat de XPEAK. También puedes abrir el perfil de un DJ concreto y escribirle.' },
+      { q: '¿Los DJs se desplazan fuera de su ciudad?', a: 'Depende de cada DJ: algunos se mueven por los alrededores y otros solo por la ciudad. Pregunta si el desplazamiento va aparte, sobre todo si el evento es lejos o en una finca.' },
       { q: '¿Qué es el Flash Booking?', a: 'Flash Booking es el sistema de ofertas urgentes de XPEAK. Publicas una oferta con fecha, zona y presupuesto, y los DJs disponibles en tu ciudad responden en menos de 60 minutos. Ideal para sustituciones de última hora.' },
       { q: '¿Cómo se gestiona el pago?', a: 'El contrato se cierra directamente entre las partes, sin intermediarios en la transacción.' },
-      { q: '¿Los DJs están verificados?', a: 'Sí. Los perfiles en XPEAK son verificados manualmente. Incluyen experiencia, géneros, equipos, mezclas de muestra y referencias de venues.' },
+      { q: '¿Los DJs están verificados?', a: 'Verificamos el Instagram de cada profesional y que corresponde a esa persona. En cada perfil ves sus fotos, estilos, tarifa y mezclas de muestra cuando las ha subido.' },
     ],
     steps: [
       { title: 'Busca en el directorio', body: 'Filtra por ciudad, precio y disponibilidad. Sin registro ni tarjeta de crédito.' },
@@ -876,6 +882,11 @@ const ICON: Record<string, React.ReactNode> = {
   'locales-eventos': <Building2 size={20} />,
 };
 
+// /contratar-dj (8 nov 2026): mismo texto en prerender-meta.mjs.
+export const TITULO_DJ = 'Contratar DJ en España: precios reales y DJs verificados | XPEAK';
+export const TITULO_DJ_OG = 'Contratar DJ en España: precios reales y DJs verificados';
+export const DESC_DJ = 'Contratar DJ para boda, fiesta o evento de empresa en España. DJs con foto, estilos y precio por hora: pide DJ para tu fecha y habla con ellos por el chat.';
+
 export default function CategoryLanding() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -886,6 +897,11 @@ export default function CategoryLanding() {
   // Precio solo con tarifas reales de perfiles (26 oct 2026): el campo
   // `precio` y los importes de las FAQs de CATEGORY_DATA ya no se muestran.
   const st = usePrecioReal(ROLE_MAP[slug] ?? []);
+
+  const esDj = slug === 'dj';
+  const dj = useDjsNacional(esDj);
+  const nacionalDj = esDj && dj.loaded && dj.profs.length >= 5;
+  const cargandoDj = esDj && !dj.loaded;
 
   const faqs = (data?.faqs ?? []).map(f => esPreguntaPrecio(f.q) ? { ...f, a: respuestaPrecio(data!.keyword, 'España', st) } : f);
 
@@ -900,8 +916,9 @@ export default function CategoryLanding() {
     name: data.h1,
     provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     areaServed: { '@type': 'Country', name: 'España' },
-    description: data.desc,
+    description: esDj ? DESC_DJ : data.desc,
     url: `https://xpeak.es/contratar-${data.slug}`,
+    ...(esDj && st ? { offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: st.min, highPrice: st.max, offerCount: st.n, unitText: 'hora' } } : {}),
     serviceType: data.slug === 'alquiler-equipos' ? 'Alquiler de equipos para eventos' : `Contratación de ${data.keyword}`,
   };
 
@@ -927,12 +944,12 @@ export default function CategoryLanding() {
   return (
     <>
       <Helmet>
-        <title>{data.h1} | XPEAK | Directorio Profesional de Eventos</title>
-        <meta name="description" content={data.desc} />
+        <title>{esDj ? TITULO_DJ : `${data.h1} | XPEAK | Directorio Profesional de Eventos`}</title>
+        <meta name="description" content={esDj ? DESC_DJ : data.desc} />
         <meta name="keywords" content={data.keywords} />
         <link rel="canonical" href={`https://xpeak.es/contratar-${data.slug}`} />
-        <meta property="og:title" content={`${data.h1} | XPEAK`} />
-        <meta property="og:description" content={data.desc} />
+        <meta property="og:title" content={esDj ? TITULO_DJ_OG : `${data.h1} | XPEAK`} />
+        <meta property="og:description" content={esDj ? DESC_DJ : data.desc} />
         <meta property="og:url" content={`https://xpeak.es/contratar-${data.slug}`} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -1014,8 +1031,11 @@ export default function CategoryLanding() {
           </div>
         </section>
 
+        {/* DJ: bloques con datos reales (8 nov 2026) */}
+        {nacionalDj && <DjNacionalBloques profs={dj.profs} st={st} ciudades={data.cities} />}
+
         {/* Especialidades */}
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+        {!nacionalDj && !cargandoDj && <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
           <h2 className="text-xl sm:text-2xl font-black mb-2">{data.slug === 'alquiler-equipos' ? 'Equipo que se alquila' : 'Especialidades disponibles'}</h2>
           <p className="text-sm mb-6" style={{ color: '#4b5563' }}>
             {data.slug === 'dj'
@@ -1039,7 +1059,7 @@ export default function CategoryLanding() {
               </span>
             ))}
           </div>
-        </section>
+        </section>}
 
         {/* Escuela colaboradora: el único enlace público e indexable a Warm Up
             (el de la app vive en /dashboard, que Google no rastrea). */}
@@ -1050,7 +1070,7 @@ export default function CategoryLanding() {
         )}
 
         {/* Ciudades */}
-        {data.cities.length > 0 && (
+        {data.cities.length > 0 && !nacionalDj && !cargandoDj && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
             <h2 className="text-xl sm:text-2xl font-black mb-2">{data.slug === 'alquiler-equipos' ? 'Alquiler de equipos por ciudad' : <>Contratar {data.keyword} por ciudad</>}</h2>
             <p className="text-sm mb-6" style={{ color: '#4b5563' }}>

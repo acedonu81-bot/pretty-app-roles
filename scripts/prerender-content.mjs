@@ -332,6 +332,18 @@ for (const { routePath, file, routePattern, roleSlug: occRoleSlug } of routes) {
         preloadedProfiles = resolveProfilesForCity(allProfiles, cityInfo.ciudad, catSlug);
       }
     }
+    // /contratar-dj (8 nov 2026): la página nacional lista los DJs reales. Mismo
+    // criterio que useDjsNacional (components/DjNacionalBloques.tsx): rol dj, foto,
+    // una vez por cuenta, hasta 300, ordenados por perfil principal y score.
+    if (file === 'CategoryLanding.tsx' && routePath === '/contratar-dj') {
+      const vistos = new Set();
+      const djs = allProfiles
+        .filter(p => profileHasRole(p, ROLE_MAP.dj ?? ['dj']) && passesPhotoGate(p))
+        .sort((a, b) => (b.is_primary === true) - (a.is_primary === true) || (b.score ?? 0) - (a.score ?? 0))
+        .filter(p => !vistos.has(p.user_id) && vistos.add(p.user_id))
+        .slice(0, 300);
+      preloadedProfiles = { profs: djs.map(p => ({ ...mapProfile(p), ciudadRef: p.city_ref ?? null })), suggestions: [] };
+    }
     let preloadedDirectorio;
     if (file === 'DirectorioPublico.tsx') {
       const roleSlug = routePath.split('/').pop();

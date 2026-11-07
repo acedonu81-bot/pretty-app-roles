@@ -30,10 +30,11 @@ const ROUTES = [
   // Category landings
   {
     path: '/contratar-dj',
-    title: 'Contratar DJ para tu Evento | XPEAK | Directorio Profesional de Eventos',
-    desc: 'Contrata DJs verificados en toda España: Tech House, Techno, Comercial y más. Flash Booking en menos de 1h. Contratos automáticos.',
-    ogTitle: 'Contratar DJ para Eventos en España | XPEAK',
-    ogDesc: 'Directorio verificado de DJs profesionales. Flash Booking, contratos digitales. DJ para bodas, clubs y festivales.',
+    // Mismo título y descripción que TITULO_DJ/DESC_DJ de CategoryLanding.tsx (8 nov 2026).
+    title: 'Contratar DJ en España: precios reales y DJs verificados | XPEAK',
+    desc: 'Contratar DJ para boda, fiesta o evento de empresa en España. DJs con foto, estilos y precio por hora: pide DJ para tu fecha y habla con ellos por el chat.',
+    ogTitle: 'Contratar DJ en España: precios reales y DJs verificados',
+    ogDesc: 'Contratar DJ para boda, fiesta o evento de empresa en España. DJs con foto, estilos y precio por hora: pide DJ para tu fecha y habla con ellos por el chat.',
     ogType: 'website',
   },
   {

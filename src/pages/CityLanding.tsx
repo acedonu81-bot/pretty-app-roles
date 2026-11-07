@@ -23,7 +23,7 @@ const gateNoPhoto = <T extends { photo_url: string | null }>(rows: T[]): T[] =>
 // Señal de frescura para motores generativos, que penalizan contenido stale.
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 
-interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string; is_verified: boolean; precioHora?: number | null; estilos?: string[] | null; }
+export interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string; is_verified: boolean; precioHora?: number | null; estilos?: string[] | null; }
 
 
 // Durante el prerender de build (prerender-content.mjs), esta variable global
@@ -646,7 +646,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
   },
 };
 
-const ProfGrid = ({ profs, detalle = false }: { profs: Prof[]; detalle?: boolean }) => (
+export const ProfGrid = ({ profs, detalle = false }: { profs: Prof[]; detalle?: boolean }) => (
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
     {profs.map(p => (
       <a key={p.id}
@@ -743,7 +743,7 @@ export function precioPara(categorySlug: string, city: { precioMin: string; prec
   return `${r(min * factor[0])}€-${r(max * factor[1])}€`;
 }
 
-function contar(valores: string[]): [string, number][] {
+export function contar(valores: string[]): [string, number][] {
   const m = new Map<string, { nombre: string; n: number }>();
   for (const v of valores) {
     const k = v.trim().toLowerCase();
@@ -786,7 +786,7 @@ function faqsCompletas(ciudad: string, st: EstadPrecio | null) {
   ];
 }
 
-const TIPOS_EVENTO = [
+export const TIPOS_EVENTO = [
   { t: 'Bodas', d: 'Cuenta con 5 a 7 horas entre cóctel, banquete y baile. Pregunta si incluye micrófono para los discursos, luces para la pista y si prepara la lista de canciones contigo.' },
   { t: 'Cumpleaños y fiestas privadas', d: 'Suelen ser 3 o 4 horas. Dile qué música os gusta y cuánta gente viene: con eso sabe qué equipo llevar.' },
   { t: 'Empresas', d: 'Cenas de Navidad, inauguraciones y presentaciones. Pide factura y confirma con el local el horario de montaje.' },
