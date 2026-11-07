@@ -57,7 +57,11 @@ export function useComunicados(limite = 30) {
   const marcarLeido = useCallback((c: Pick<Comunicado, 'id'>) => {
     if (!user?.id || leidos.has(c.id)) return;
     setLeidos(s => new Set(s).add(c.id));
-    db.from('comunicado_lecturas').upsert({ comunicado_id: c.id, user_id: user.id }, { onConflict: 'comunicado_id,user_id', ignoreDuplicates: true });
+    // El constructor de supabase-js es perezoso: sin .then() la petición NO sale.
+    // Así estuvo 6-7 nov 2026: 0 lecturas guardadas aunque hubiera me gusta y comentarios.
+    void Promise.resolve(
+      db.from('comunicado_lecturas').upsert({ comunicado_id: c.id, user_id: user.id }, { onConflict: 'comunicado_id,user_id', ignoreDuplicates: true }),
+    ).catch(() => { /* si falla, se reintenta la próxima vez que lo abra */ });
   }, [user?.id, leidos]);
 
   return { lista, leidos, inter, setInter, marcarLeido, cargado };
