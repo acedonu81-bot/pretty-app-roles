@@ -917,7 +917,7 @@ export default function CityLanding() {
   const h1 = esAlquiler
     ? `${catData.label} en ${cityData.ciudad}`
     : `Contratar ${catData.keyword} en ${cityData.ciudad}`;
-  const titulo = completa ? `${tituloCompleto(cityData.ciudad)} | XPEAK` : `${h1} | XPEAK | Directorio Profesional de Eventos`;
+  const titulo = completa ? `${tituloCompleto(cityData.ciudad)} | XPEAK` : `${h1} | XPEAK`;
   const descripcion = completa ? descCompleta(cityData.ciudad) : catData.desc(cityData.ciudad);
 
   const structuredData = {

@@ -39,7 +39,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-staff',
-    title: 'Contratar Staff de Eventos | XPEAK | Directorio Profesional de Eventos',
+    title: 'Contratar Staff de Eventos | XPEAK',
     desc: 'Contrata staff profesional para tus eventos: hostesses, relaciones públicas, promotores y personal de sala. Flash Booking disponible.',
     ogTitle: 'Contratar Staff de Eventos en España | XPEAK',
     ogDesc: 'Directorio de staff profesional: hostesses, RRPP, camareros de sala. Flash Booking y contratos digitales.',
@@ -47,7 +47,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-fotografo',
-    title: 'Contratar Fotógrafo de Eventos | XPEAK | Directorio Profesional de Eventos',
+    title: 'Contratar Fotógrafo de Eventos | XPEAK',
     desc: 'Contrata fotógrafos y videógrafos especializados en eventos nocturnos, festivales y celebraciones. Perfiles verificados, entrega rápida.',
     ogTitle: 'Contratar Fotógrafo de Eventos en España | XPEAK',
     ogDesc: 'Fotógrafos y videógrafos verificados para clubs, festivales y eventos privados. Flash Booking disponible.',
@@ -55,7 +55,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-camareros',
-    title: 'Contratar Camareros para Eventos | XPEAK | Directorio Profesional de Eventos',
+    title: 'Contratar Camareros para Eventos | XPEAK',
     desc: 'Contrata camareros y personal de servicio para bodas, eventos corporativos y hostelería nocturna. Perfiles verificados, contratos automáticos.',
     ogTitle: 'Contratar Camareros para Eventos en España | XPEAK',
     ogDesc: 'Camareros y personal de hostelería verificados. Bodas, eventos corporativos y hostelería nocturna. Flash Booking disponible.',
@@ -63,7 +63,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-catering',
-    title: 'Contratar Catering para Eventos | XPEAK | Directorio Profesional de Eventos',
+    title: 'Contratar Catering para Eventos | XPEAK',
     desc: 'Contrata catering y personal de servicio para bodas, eventos corporativos y celebraciones privadas en España. Perfiles verificados.',
     ogTitle: 'Contratar Catering para Eventos en España | XPEAK',
     ogDesc: 'Catering profesional para bodas y eventos. Directorio verificado. Flash Booking disponible.',
@@ -71,7 +71,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-maquillaje',
-    title: 'Contratar Maquillador para Eventos | XPEAK | Directorio Profesional de Eventos',
+    title: 'Contratar Maquillador para Eventos | XPEAK',
     desc: 'Contrata maquilladores artísticos para eventos, shows y actuaciones en España. Perfiles verificados.',
     ogTitle: 'Contratar Maquillador para Eventos en España | XPEAK',
     ogDesc: 'Maquilladores para shows, clubs y eventos. Directorio verificado. Flash Booking disponible.',
@@ -79,7 +79,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-peluqueria',
-    title: 'Peluquería a Domicilio | XPEAK | Directorio Profesional de Eventos',
+    title: 'Peluquería a Domicilio | XPEAK',
     desc: 'Encuentra peluquera a domicilio cerca de ti en España. Corte, color, peinados de novia y recogidos, para eventos o para el día a día. Perfiles verificados.',
     ogTitle: 'Peluquería a Domicilio Cerca de Ti | XPEAK',
     ogDesc: 'Peluqueras y peluqueros a domicilio en toda España. Para bodas, eventos o el día a día. Directorio verificado.',
@@ -87,7 +87,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-promotores',
-    title: 'Contratar Promotores de Eventos | XPEAK | Directorio Profesional de Eventos',
+    title: 'Contratar Promotores de Eventos | XPEAK',
     desc: 'Contrata promotores, RRPP y coordinadores de acceso para clubs, festivales y eventos privados en España. Perfiles verificados.',
     ogTitle: 'Contratar Promotores de Eventos en España | XPEAK',
     ogDesc: 'Promotores y RRPP verificados para clubs y festivales. Flash Booking disponible.',
@@ -95,7 +95,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-vestuario',
-    title: 'Contratar Estilista de Eventos | XPEAK | Directorio Profesional de Eventos',
+    title: 'Contratar Estilista de Eventos | XPEAK',
     desc: 'Contrata diseñadores de vestuario, estilistas y técnicos de moda para shows, actuaciones y eventos en España. Perfiles verificados.',
     ogTitle: 'Contratar Estilista y Vestuario para Eventos | XPEAK',
     ogDesc: 'Estilistas y diseñadores de vestuario para shows y eventos. Directorio verificado. Flash Booking disponible.',
@@ -1471,7 +1471,7 @@ for (const [catSlug, cat] of Object.entries(CATEGORY_DATA)) {
   if (existingPaths.has(routePath)) continue;
   ROUTES.push({
     path: routePath,
-    title: `${cat.h1} | XPEAK | Directorio Profesional de Eventos`,
+    title: `${cat.h1} | XPEAK`,
     desc: cat.desc,
     ogTitle: `${cat.h1} en España | XPEAK`,
     ogDesc: `${cat.tagline} Directorio verificado. Flash Booking disponible.`,
@@ -1501,7 +1501,7 @@ for (const catSlug of routedCitySlugs) {
     const titular = catSlug === 'alquiler-equipos' ? `${cat.label} en ${cityName}` : `Contratar ${cat.keyword} en ${cityName}`;
     ROUTES.push({
       path: routePath,
-      title: `${titular} | XPEAK | Directorio Profesional de Eventos`,
+      title: `${titular} | XPEAK`,
       desc: desc.slice(0, 300),
       ogTitle: `${titular} | XPEAK`,
       ogDesc: desc.slice(0, 200),
@@ -1707,9 +1707,22 @@ try {
         const where = zone ? ` en ${zone}` : ' en España';
         const antiguedad = antiguedadEnXpeak(p.created_at);
         const antiguedadSuffix = antiguedad ? ` ${antiguedad}.` : '';
-        const bioSnippet = (p.bio ?? '').trim().slice(0, 150);
+        // La descripción entera cabe en ~158 caracteres (Google recorta a ~160):
+        // la bio usa solo lo que sobra tras el prefijo y el cierre, cortada en
+        // límite de palabra. Antes eran 150 de bio + ~80 de texto fijo (60 de las
+        // 95 fichas pasaban de 160, hasta 268).
+        const bioCompleta = (p.bio ?? '').trim();
+        const prefijoDesc = `${p.display_name} · ${roleLabel}${where}. `;
+        const cierreDesc = ` Contacta y contrata en XPEAK.${antiguedadSuffix}`;
+        const presupuestoBio = 158 - prefijoDesc.length - cierreDesc.length - 1;
+        let bioSnippet = '';
+        if (bioCompleta && presupuestoBio >= 30) {
+          bioSnippet = bioCompleta.length <= presupuestoBio
+            ? bioCompleta
+            : bioCompleta.slice(0, presupuestoBio).replace(/\s+\S*$/, '').replace(/[\s,.;:·-]+$/, '');
+        }
         const desc = bioSnippet
-          ? `${p.display_name} · ${roleLabel}${where}. ${bioSnippet}${p.bio.length > 150 ? '…' : ''} Contacta y contrata en XPEAK.${antiguedadSuffix}`
+          ? `${prefijoDesc}${bioSnippet}${bioSnippet.length < bioCompleta.length ? '…' : ''}${cierreDesc}`
           : `${p.display_name} · ${roleLabel}${where}. Perfil verificado en XPEAK: tarifas públicas, contacto directo y contrato digital.${antiguedadSuffix}`;
 
         // Enlaces internos reales hacia la categoría (y ciudad si hay zona

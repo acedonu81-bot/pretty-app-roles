@@ -944,7 +944,7 @@ export default function CategoryLanding() {
   return (
     <>
       <Helmet>
-        <title>{esDj ? TITULO_DJ : `${data.h1} | XPEAK | Directorio Profesional de Eventos`}</title>
+        <title>{esDj ? TITULO_DJ : `${data.h1} | XPEAK`}</title>
         <meta name="description" content={esDj ? DESC_DJ : data.desc} />
         <meta name="keywords" content={data.keywords} />
         <link rel="canonical" href={`https://xpeak.es/contratar-${data.slug}`} />
