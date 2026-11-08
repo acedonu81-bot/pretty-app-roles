@@ -107,7 +107,7 @@ export default function BlogEmailCapture({
         </p>
         <p className="text-xs mt-3">
           <a href="/auth?mode=register" className="underline font-bold" style={{ color: '#8B6A00' }}>
-            Crear perfil completo en XPEAK →
+            {variant === 'presupuestos' && intent !== 'ser-profesional' ? 'Crear cuenta en XPEAK →' : 'Crear perfil completo en XPEAK →'}
           </a>
         </p>
       </div>
