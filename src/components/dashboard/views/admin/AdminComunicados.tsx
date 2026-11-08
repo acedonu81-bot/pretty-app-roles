@@ -3,7 +3,7 @@ import { AtSign, BarChart3, ChevronDown, Eye, Globe, Image as ImageIcon, Loader2
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { timeAgo } from '@/lib/timeAgo';
-import { CADUCA_NUNCA, CATEGORIAS_COMUNICADO, type Comunicado, esParaSiempre, type Interaccion, porcentajes, etiquetaCategoria, formatoMencion, slugNovedad } from '@/lib/comunicados';
+import { CADUCA_NUNCA, CATEGORIAS_COMUNICADO, TIPOS_COMUNICADO, type TipoComunicado, tipoDe, type Comunicado, esParaSiempre, type Interaccion, porcentajes, etiquetaCategoria, formatoMencion, slugNovedad } from '@/lib/comunicados';
 import { CuerpoConMenciones, Portada } from '@/components/comunicados/ComunicadosCarrusel';
 
 // Editor de comunicados del panel admin (6 nov 2026). Al publicar, un trigger
@@ -39,9 +39,11 @@ export default function AdminComunicados() {
   const [titulo, setTitulo] = useState('');
   const [cuerpo, setCuerpo] = useState('');
   const [categoria, setCategoria] = useState('todos');
+  const [tipo, setTipo] = useState<TipoComunicado>('xpeak');
   const [push, setPush] = useState(false);
   const [fijado, setFijado] = useState(false);
-  const [dias, setDias] = useState(30);
+  // XPEAK y Noticias dejan historial en la línea temporal (para siempre); Comunidad caduca.
+  const [dias, setDias] = useState(-1);
   const [ctaTexto, setCtaTexto] = useState('');
   const [ctaUrl, setCtaUrl] = useState('');
   const [imagenUrl, setImagenUrl] = useState<string | null>(null);
@@ -127,7 +129,7 @@ export default function AdminComunicados() {
   };
 
   const limpiar = () => {
-    setTitulo(''); setCuerpo(''); setCategoria('todos'); setPush(false); setFijado(false); setDias(30);
+    setTitulo(''); setCuerpo(''); setCategoria('todos'); setTipo('xpeak'); setPush(false); setFijado(false); setDias(-1);
     setCtaTexto(''); setCtaUrl(''); setImagenUrl(null); setVideoUrl(null);
     setPublico(true); setComentariosOn(true); setConEncuesta(false); setPregunta(''); setOpciones(['', '']); setDiasEncuesta(0);
     setEditandoId(null); setVotosEdit(0);
@@ -135,7 +137,7 @@ export default function AdminComunicados() {
 
   const editar = (c: Comunicado) => {
     setEditandoId(c.id);
-    setTitulo(c.titulo); setCuerpo(c.cuerpo); setCategoria(c.categoria); setPush(false); setFijado(c.fijado);
+    setTitulo(c.titulo); setCuerpo(c.cuerpo); setCategoria(c.categoria); setTipo(tipoDe(c)); setPush(false); setFijado(c.fijado);
     setDias(0); setCtaTexto(c.cta_texto ?? ''); setCtaUrl(c.cta_url ?? '');
     setImagenUrl(c.imagen_url); setVideoUrl(c.video_url);
     setPublico(!!c.publico); setComentariosOn(c.comentarios_on !== false);
@@ -161,7 +163,7 @@ export default function AdminComunicados() {
       const bloqueada = votosEdit > 0;
       setPublicando(true);
       const cambios: Fila = {
-        titulo: titulo.trim(), cuerpo: cuerpo.trim(), fijado, imagen_url: imagenUrl, video_url: videoUrl,
+        titulo: titulo.trim(), cuerpo: cuerpo.trim(), tipo, fijado, imagen_url: imagenUrl, video_url: videoUrl,
         cta_texto: ctaTexto.trim() || null, cta_url: ctaUrl.trim() || null, publico, comentarios_on: comentariosOn,
         encuesta_pregunta: conEncuesta ? pregunta.trim() : null,
         // Con votos ya emitidos las opciones no se tocan (se falsearía el resultado).
@@ -180,7 +182,7 @@ export default function AdminComunicados() {
     setPublicando(true);
     const caduca = fechaCaduca(dias);
     const { error } = await db.from('comunicados').insert({
-      titulo: titulo.trim(), cuerpo: cuerpo.trim(), categoria, push, fijado, caduca_at: caduca,
+      titulo: titulo.trim(), cuerpo: cuerpo.trim(), categoria, tipo, push, fijado, caduca_at: caduca,
       imagen_url: imagenUrl, video_url: videoUrl,
       cta_texto: ctaTexto.trim() || null, cta_url: ctaUrl.trim() || null,
       publico, comentarios_on: comentariosOn,
@@ -370,6 +372,18 @@ export default function AdminComunicados() {
         <p className="text-xs" style={{ color: '#6b7280' }}>
           Para un banner: solo título, imagen y botón, sin texto. Al pulsarlo va directo al enlace.
         </p>
+
+        <label className="text-xs font-bold block" style={{ color: '#374151' }}>
+          Tipo (en qué filtro de Novedades sale)
+          <select value={tipo} onChange={e => {
+            const t = e.target.value as TipoComunicado;
+            setTipo(t);
+            if (!editandoId) setDias(t === 'comunidad' ? 30 : SIEMPRE);
+          }}
+            className="mt-1 w-full rounded-xl px-3 py-2 text-sm font-normal" style={estiloCampo}>
+            {TIPOS_COMUNICADO.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+          </select>
+        </label>
 
         <div className="grid grid-cols-2 gap-2">
           <label className="text-xs font-bold" style={{ color: '#374151' }}>

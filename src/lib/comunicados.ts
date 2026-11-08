@@ -18,6 +18,21 @@ export type CategoriaComunicado = typeof CATEGORIAS_COMUNICADO[number]['id'];
 export const etiquetaCategoria = (id: string): string =>
   CATEGORIAS_COMUNICADO.find(c => c.id === id)?.label ?? 'XPEAK';
 
+// Tipo de contenido de Novedades (8 nov 2026): una sola tabla, tres tipos.
+// "Siguiendo" es una vista del feed, no un tipo guardado aquí.
+export const TIPOS_COMUNICADO = [
+  { id: 'xpeak', label: 'XPEAK', color: '#8B6A00', punto: '#D4AF37' },
+  { id: 'noticia', label: 'Noticias', color: '#2563EB', punto: '#2563EB' },
+  { id: 'comunidad', label: 'Comunidad', color: '#059669', punto: '#059669' },
+] as const;
+export type TipoComunicado = typeof TIPOS_COMUNICADO[number]['id'];
+
+/** Los comunicados anteriores a la columna `tipo` son de XPEAK. */
+export const tipoDe = (c: { tipo?: string | null }): TipoComunicado =>
+  TIPOS_COMUNICADO.find(t => t.id === c.tipo)?.id ?? 'xpeak';
+
+export const infoTipo = (id: string) => TIPOS_COMUNICADO.find(t => t.id === id) ?? TIPOS_COMUNICADO[0];
+
 export interface Comunicado {
   id: string;
   titulo: string;
@@ -27,6 +42,8 @@ export interface Comunicado {
   cta_texto: string | null;
   cta_url: string | null;
   categoria: string;
+  /** xpeak | noticia | comunidad. Ausente en filas anteriores al 8 nov: cuenta como xpeak. */
+  tipo?: string;
   push: boolean;
   fijado: boolean;
   caduca_at: string;

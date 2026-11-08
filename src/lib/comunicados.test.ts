@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CADUCA_NUNCA, resumenSinTitulo, esEnlaceInterno, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, trocearCuerpo } from './comunicados';
+import { CADUCA_NUNCA, resumenSinTitulo, esEnlaceInterno, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, tipoDe, trocearCuerpo } from './comunicados';
 
 const ID = '0b8f3c1e-1234-4abc-9def-1234567890ab';
 
@@ -63,5 +63,13 @@ describe('comunicados', () => {
     expect(esEnlaceInterno('/dashboard?view=navidad')).toBe(true);
     expect(esEnlaceInterno('//evil.com')).toBe(false);
     expect(esEnlaceInterno('https://xpeak.es')).toBe(false);
+  });
+
+  it('los comunicados sin tipo o con tipo raro cuentan como de XPEAK', () => {
+    expect(tipoDe({})).toBe('xpeak');
+    expect(tipoDe({ tipo: null })).toBe('xpeak');
+    expect(tipoDe({ tipo: 'otra-cosa' })).toBe('xpeak');
+    expect(tipoDe({ tipo: 'noticia' })).toBe('noticia');
+    expect(tipoDe({ tipo: 'comunidad' })).toBe('comunidad');
   });
 });

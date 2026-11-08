@@ -19,7 +19,7 @@ const db = supabase as unknown as {
   };
 };
 
-const COLUMNAS = 'id, titulo, cuerpo, imagen_url, video_url, cta_texto, cta_url, categoria, push, fijado, caduca_at, destinatarios, created_at, publico, comentarios_on, encuesta_pregunta, encuesta_opciones, encuesta_cierra_at';
+const COLUMNAS = 'id, titulo, cuerpo, imagen_url, video_url, cta_texto, cta_url, categoria, tipo, push, fijado, caduca_at, destinatarios, created_at, publico, comentarios_on, encuesta_pregunta, encuesta_opciones, encuesta_cierra_at';
 
 export function useComunicados(limite = 30) {
   const { user } = useAuth();
