@@ -26,12 +26,14 @@ const CONFIG = {
     label: '¿Buscas DJ para tu evento?',
     sub: 'Recibe 3 presupuestos reales de DJs verificados.',
     cta: 'Solicitar presupuestos →',
+    ctaShort: 'Presupuestos →',
     href: '/auth?mode=register&intent=contratar-dj',
   },
   staff: {
     label: '¿Necesitas camareros o staff?',
     sub: 'Conecta con profesionales verificados para tu evento en 24h.',
     cta: 'Ver staff disponible →',
+    ctaShort: 'Ver staff →',
     href: '/auth?mode=register&intent=contratar-staff',
   },
   staff_pro: {
@@ -44,42 +46,49 @@ const CONFIG = {
     label: '¿Necesitas azafatas para tu evento?',
     sub: 'Recibe presupuestos de azafatas verificadas.',
     cta: 'Solicitar presupuestos →',
+    ctaShort: 'Presupuestos →',
     href: '/auth?mode=register&intent=contratar-azafata',
   },
   fotografo: {
     label: '¿Buscas fotógrafo para tu evento?',
     sub: 'Portfolios reales y tarifas públicas.',
     cta: 'Ver fotógrafos disponibles →',
+    ctaShort: 'Ver fotógrafos →',
     href: '/auth?mode=register&intent=contratar-fotografo',
   },
   bailarin: {
     label: '¿Buscas instructor o bailarín?',
     sub: 'Bailarines para eventos e instructores de salsa/bachata.',
     cta: 'Ver bailarines disponibles →',
+    ctaShort: 'Ver bailarines →',
     href: '/auth?mode=register&intent=contratar-bailarin',
   },
   makeup: {
     label: '¿Buscas maquilladora para tu evento?',
     sub: 'Recibe presupuestos de maquilladoras verificadas.',
     cta: 'Ver maquilladoras →',
+    ctaShort: 'Ver maquilladoras →',
     href: '/auth?mode=register&intent=contratar-makeup',
   },
   peluqueria: {
     label: '¿Buscas peluquera a domicilio?',
     sub: 'Recibe presupuestos de peluqueras verificadas.',
     cta: 'Ver peluqueras →',
+    ctaShort: 'Ver peluqueras →',
     href: '/auth?mode=register&intent=contratar-peluqueria',
   },
   general: {
     label: '¿Buscas profesionales para tu evento?',
     sub: 'Directorio verificado de DJs, staff y azafatas.',
     cta: 'Ver profesionales →',
+    ctaShort: 'Ver profesionales →',
     href: '/auth?mode=register',
   },
   empresario: {
     label: '¿Organizas eventos o bodas?',
     sub: 'Contrata DJ, camareros y fotógrafo con Flash Booking en menos de 1h.',
     cta: 'Ver profesionales disponibles →',
+    ctaShort: 'Ver profesionales →',
     href: '/auth?mode=register&role=empresario',
   },
   dj_pro: {
@@ -229,7 +238,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey, articlePat
             className="inline-flex items-center px-3 sm:px-5 py-3.5 rounded-xl text-xs sm:text-sm font-black transition-all hover:scale-105 whitespace-nowrap"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 20px rgba(212,175,55,0.4)' }}
           >
-            <span className="sm:hidden">Crear perfil →</span>
+            <span className="sm:hidden">{(c as { ctaShort?: string }).ctaShort ?? c.cta}</span>
             <span className="hidden sm:inline">{c.cta}</span>
           </a>
           <button
