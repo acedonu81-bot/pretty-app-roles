@@ -1233,6 +1233,14 @@ const Landing = () => {
             Ver todas las guías del blog →
           </a>
         </p>
+        {/* Enlazado interno a las páginas de ciudad completas (DJs y precios reales).
+            Solo Madrid y Barcelona: el resto usa plantilla común (ver CIUDADES_PAGINA_COMPLETA). */}
+        <p className="text-center text-sm" style={{ color: '#333' }}>
+          <span className="font-semibold">DJs por ciudad: </span>
+          <a href="/contratar-dj/madrid" className="inline-block py-3 px-2 font-bold underline decoration-dotted underline-offset-4">DJ en Madrid</a>
+          <span aria-hidden="true">·</span>
+          <a href="/contratar-dj/barcelona" className="inline-block py-3 px-2 font-bold underline decoration-dotted underline-offset-4">DJ en Barcelona</a>
+        </p>
       </section>
 
       {/* ─ FAQ ─ */}
