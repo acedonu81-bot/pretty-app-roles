@@ -21,7 +21,7 @@ interface Props {
   filtroInicial?: FiltroNovedades;
   /** Contenido del filtro "Siguiendo" (solo panel). Si no se pasa, el filtro no aparece. */
   siguiendo?: ReactNode;
-  siguiendoCount?: number;
+  siguiendoNuevo?: boolean;
   onFiltro?: (f: FiltroNovedades) => void;
 }
 
@@ -33,7 +33,7 @@ const fechaDia = (iso: string) => {
   };
 };
 
-export default function LineaTemporal({ lista, hrefDe, inter = {}, leidos, filtroInicial = 'todo', siguiendo, siguiendoCount = 0, onFiltro }: Props) {
+export default function LineaTemporal({ lista, hrefDe, inter = {}, leidos, filtroInicial = 'todo', siguiendo, siguiendoNuevo = false, onFiltro }: Props) {
   const [filtro, setFiltro] = useState<FiltroNovedades>(filtroInicial);
 
   const cuentas = useMemo(() => {
@@ -45,10 +45,10 @@ export default function LineaTemporal({ lista, hrefDe, inter = {}, leidos, filtr
   const visibles = filtro === 'todo' ? lista : lista.filter(c => tipoDe(c) === filtro);
   const cambiar = (f: FiltroNovedades) => { setFiltro(f); onFiltro?.(f); };
 
-  const chips: { id: FiltroNovedades; label: string; n: number }[] = [
+  const chips: { id: FiltroNovedades; label: string; n?: number }[] = [
     { id: 'todo', label: 'Todo', n: cuentas.todo },
     ...TIPOS_COMUNICADO.map(t => ({ id: t.id as FiltroNovedades, label: t.label, n: cuentas[t.id] })),
-    ...(siguiendo !== undefined ? [{ id: 'siguiendo' as FiltroNovedades, label: 'Siguiendo', n: siguiendoCount }] : []),
+    ...(siguiendo !== undefined ? [{ id: 'siguiendo' as FiltroNovedades, label: 'Siguiendo' }] : []),
   ];
 
   return (
@@ -61,7 +61,8 @@ export default function LineaTemporal({ lista, hrefDe, inter = {}, leidos, filtr
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold"
               style={{ background: activo ? ORO : '#fff', border: `1px solid ${activo ? ORO : 'rgba(212,175,55,0.3)'}`, color: activo ? '#1f2937' : '#222' }}>
               {ch.label}
-              <span className="text-[0.8rem] font-medium" style={{ color: activo ? '#1f2937' : '#4b5563' }}>{ch.n}</span>
+              {ch.n !== undefined && <span className="text-[0.8rem] font-medium" style={{ color: activo ? '#1f2937' : '#4b5563' }}>{ch.n}</span>}
+              {ch.id === 'siguiendo' && siguiendoNuevo && <span className="lt-punto-nuevo w-2 h-2 rounded-full" style={{ background: '#059669' }} aria-label="Hay novedades" />}
             </button>
           );
         })}

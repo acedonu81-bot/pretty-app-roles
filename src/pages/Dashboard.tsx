@@ -712,7 +712,7 @@ const Dashboard = () => {
       case 'legal-soporte': return <LegalView document="soporte" />;
       case 'empresario': return <EmpresarioView onMessage={handleMessage} />;
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;
-      case 'feed': return <FeedView onNavigate={handleViewChange} />;
+      case 'feed': return <ComunicadosView onNavigate={handleViewChange} filtroInicial="siguiendo" />;
       case 'calendar':   return <CalendarView />;
       case 'contracts':  return <ContractView />;
       case 'profile': return <><PerfilTabs active="profile" onNavigate={handleViewChange} esEmpresario={profileRole === 'empresario'} /><ProfileView onNavigate={nav} /></>;
@@ -728,7 +728,7 @@ const Dashboard = () => {
       case 'stats': return <StatsView />;
       case 'agency': return <AgencyView />;
       case 'resources': return <ResourcesView />;
-      case 'comunicados': return <ComunicadosView />;
+      case 'comunicados': return <ComunicadosView onNavigate={handleViewChange} />;
       case 'resenas': return <ResenasView />;
       case 'admin': return (
         <AdminGuard>
@@ -815,7 +815,7 @@ const Dashboard = () => {
           <TodaysRequestsLine onNavigate={goToSolicitudesFlashBooking} />
           {/* Comunicados XPEAK: en la portada del panel. Explorar y Feed, y 'empresario'
               porque los organizadores aterrizan ahí (SIN_EXPLORAR) y nunca pasan por Explorar. */}
-          {(activeView === 'explorar' || activeView === 'feed' || activeView === 'empresario') && <ComunicadosCarrusel />}
+          {(activeView === 'explorar' || activeView === 'empresario') && <ComunicadosCarrusel />}
           <div className={`p-3 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(var(--mobile-nav-space)+1.5rem)]' : 'pb-6'}`}
             ref={viewContentRef}>
             <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} /></div>}>

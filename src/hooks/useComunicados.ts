@@ -66,3 +66,26 @@ export function useComunicados(limite = 30) {
 
   return { lista, leidos, inter, setInter, marcarLeido, cargado };
 }
+
+/** ¿Hay algún comunicado vigente sin leer? Para el punto del menú "Novedades". */
+export function useNovedadesSinLeer(): boolean {
+  const { user } = useAuth();
+  const [hay, setHay] = useState(false);
+  useEffect(() => {
+    if (!user?.id) { setHay(false); return; }
+    let vivo = true;
+    (async () => {
+      const [{ data }, { data: lect }] = await Promise.all([
+        db.from('comunicados').select('id, caduca_at').order('created_at', { ascending: false }).limit(20),
+        db.from('comunicado_lecturas').select('comunicado_id').eq('user_id', user.id),
+      ]);
+      if (!vivo) return;
+      const leidos = new Set(((lect ?? []) as { comunicado_id: string }[]).map(l => l.comunicado_id));
+      const ahora = Date.now();
+      setHay(((data ?? []) as { id: string; caduca_at: string }[])
+        .some(c => new Date(c.caduca_at).getTime() > ahora && !leidos.has(c.id)));
+    })();
+    return () => { vivo = false; };
+  }, [user?.id]);
+  return hay;
+}

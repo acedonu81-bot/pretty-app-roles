@@ -19,6 +19,7 @@ import { Bigote } from '@/components/movember/Movember';
 import { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { useFeedAlert } from '@/hooks/useFeedAlert';
+import { useNovedadesSinLeer } from '@/hooks/useComunicados';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { toast } from 'sonner';
 import {
@@ -297,6 +298,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
   // contador fijo se convierte en ruido y deja de mirarse.
   const { hayNuevo } = useAdminActivityAlert(isAdmin);
   const { hayNuevo: hayNuevoFeed } = useFeedAlert(user?.id);
+  const hayNovedades = useNovedadesSinLeer();
   const { state, setOpen } = useSidebar();
   const collapsed = state === 'collapsed';
   const isAgency = subscription_tier === 'agency' || subscription_tier === 'elite';
@@ -391,8 +393,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
               <NavItem icon={Building2} label="Organizadores" isActive={activeView === 'organizadores'} onClick={() => onViewChange('organizadores')} navId="organizadores" />
             )}
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} iconAlert={msgBadge > 0} navId="messages" />
-            <NavItem icon={Rss} label="Feed" isActive={activeView === 'feed'} onClick={() => onViewChange('feed')} iconAlert={hayNuevoFeed} iconColor="#6B8FD4" navId="feed" etiqueta={concursoActivo() ? 'Concurso DJ' : undefined} />
-            <NavItem icon={Newspaper} label="Comunicados" isActive={activeView === 'comunicados'} onClick={() => onViewChange('comunicados')} navId="comunicados" />
+            <NavItem icon={Newspaper} label="Novedades" isActive={activeView === 'comunicados' || activeView === 'feed'} onClick={() => onViewChange('comunicados')} iconAlert={hayNuevoFeed || hayNovedades} navId="comunicados" etiqueta={concursoActivo() ? 'Concurso DJ' : undefined} />
           </SidebarMenu>
         </div>
 

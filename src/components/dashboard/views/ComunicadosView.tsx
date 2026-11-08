@@ -1,8 +1,10 @@
-import { useEffect, useMemo } from 'react';
+import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ChevronRight, Megaphone } from 'lucide-react';
 import { useComunicados } from '@/hooks/useComunicados';
-import LineaTemporal from '@/components/comunicados/LineaTemporal';
+import LineaTemporal, { type FiltroNovedades } from '@/components/comunicados/LineaTemporal';
+import { useAuth } from '@/hooks/useAuth';
+import { useFeedAlert } from '@/hooks/useFeedAlert';
 import ComunicadoInteraccion from '@/components/comunicados/ComunicadoInteraccion';
 import {
   CuerpoConMenciones, MetaComunicado, ORO, Portada, StatsComunicado, TituloComunicado,
@@ -16,7 +18,12 @@ import { type Comunicado, esEnlaceInterno } from '@/lib/comunicados';
 
 const TABLON = '/dashboard?view=comunicados';
 
-export default function ComunicadosView() {
+// "Siguiendo" es el antiguo Feed, ahora un filtro de esta página (8 nov 2026).
+const FeedView = lazy(() => import('./FeedView'));
+
+export default function ComunicadosView({ onNavigate, filtroInicial = 'todo' }: { onNavigate?: (view: string) => void; filtroInicial?: FiltroNovedades }) {
+  const { user } = useAuth();
+  const { hayNuevo: hayNuevoFeed } = useFeedAlert(user?.id);
   const navigate = useNavigate();
   const location = useLocation();
   const { lista, leidos, inter, setInter, marcarLeido, cargado } = useComunicados(60);
@@ -103,17 +110,15 @@ export default function ComunicadosView() {
         </div>
       )}
 
-      {cargado && !lista.length && (
-        <div className="rounded-2xl p-10 text-center" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
-          <Megaphone size={28} className="mx-auto mb-3" style={{ color: 'rgba(212,175,55,0.6)' }} />
-          <p className="font-semibold" style={{ color: '#111827' }}>No hay comunicados ahora mismo.</p>
-          <p className="text-sm mt-1" style={{ color: '#6b7280' }}>Cuando publiquemos algo nuevo lo verás aquí y en la campana.</p>
-        </div>
-      )}
-
-      {cargado && !!lista.length && (
-        <LineaTemporal lista={lista} inter={inter} leidos={leidos}
-          hrefDe={c => `${TABLON}&comunicado=${c.id}`} />
+      {cargado && (
+        <LineaTemporal lista={lista} inter={inter} leidos={leidos} filtroInicial={filtroInicial}
+          hrefDe={c => `${TABLON}&comunicado=${c.id}`}
+          siguiendoNuevo={hayNuevoFeed}
+          siguiendo={(
+            <Suspense fallback={<p className="text-sm animate-pulse p-6" style={{ color: '#6b7280' }}>Cargando…</p>}>
+              <FeedView onNavigate={onNavigate ?? (() => undefined)} />
+            </Suspense>
+          )} />
       )}
     </div>
   );
