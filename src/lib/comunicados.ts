@@ -98,20 +98,44 @@ const MENCION_RE = /@\[([^\]\n]{1,80})\]\(([0-9a-f-]{36})\)/g;
 
 export type TrozoTexto =
   | { tipo: 'texto'; valor: string }
-  | { tipo: 'mencion'; nombre: string; userId: string };
+  | { tipo: 'mencion'; nombre: string; userId: string }
+  | { tipo: 'enlace'; url: string; texto?: string };
+
+// Enlaces del texto (8 nov 2026, fuentes de las noticias): [texto](https://...) muestra
+// solo el texto; una URL suelta muestra su dominio. El punto o la coma final de la
+// frase no cuentan como parte de la URL.
+const ENLACE_RE = /\[([^\]\n]{1,120})\]\((https?:\/\/[^\s)]+)\)|https?:\/\/[^\s<>()]*[^\s<>().,;:!?'"]/g;
+
+function trocearEnlaces(texto: string): TrozoTexto[] {
+  const trozos: TrozoTexto[] = [];
+  let ultimo = 0;
+  for (const m of texto.matchAll(ENLACE_RE)) {
+    const i = m.index ?? 0;
+    if (i > ultimo) trozos.push({ tipo: 'texto', valor: texto.slice(ultimo, i) });
+    trozos.push(m[2] ? { tipo: 'enlace', url: m[2], texto: m[1] } : { tipo: 'enlace', url: m[0] });
+    ultimo = i + m[0].length;
+  }
+  if (ultimo < texto.length) trozos.push({ tipo: 'texto', valor: texto.slice(ultimo) });
+  return trozos;
+}
 
 export function trocearCuerpo(cuerpo: string): TrozoTexto[] {
   const trozos: TrozoTexto[] = [];
   let ultimo = 0;
   for (const m of cuerpo.matchAll(MENCION_RE)) {
     const i = m.index ?? 0;
-    if (i > ultimo) trozos.push({ tipo: 'texto', valor: cuerpo.slice(ultimo, i) });
+    if (i > ultimo) trozos.push(...trocearEnlaces(cuerpo.slice(ultimo, i)));
     trozos.push({ tipo: 'mencion', nombre: m[1], userId: m[2] });
     ultimo = i + m[0].length;
   }
-  if (ultimo < cuerpo.length) trozos.push({ tipo: 'texto', valor: cuerpo.slice(ultimo) });
+  if (ultimo < cuerpo.length) trozos.push(...trocearEnlaces(cuerpo.slice(ultimo)));
   return trozos;
 }
+
+/** Texto corto para mostrar un enlace: dominio sin www. */
+export const dominioDeUrl = (url: string): string => {
+  try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; }
+};
 
 /** Texto sin la marca de las menciones, para resúmenes de una línea. */
 export const textoPlano = (cuerpo: string): string =>

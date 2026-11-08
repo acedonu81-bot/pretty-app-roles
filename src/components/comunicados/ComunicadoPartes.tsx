@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { BarChart3, Heart, Megaphone, MessageCircle, Play } from 'lucide-react';
 import { timeAgo } from '@/lib/timeAgo';
-import { type Comunicado, type Interaccion, infoTipo, textoPlano, tipoDe, trocearCuerpo } from '@/lib/comunicados';
+import { type Comunicado, type Interaccion, dominioDeUrl, infoTipo, textoPlano, tipoDe, trocearCuerpo } from '@/lib/comunicados';
 
 // Piezas compartidas por el carrusel de Inicio, el tablón y el detalle.
 
@@ -66,9 +66,18 @@ export function CuerpoConMenciones({ cuerpo, grande = false, colapsable = false 
   return (
     <div>
       <p className={`${grande ? 'text-base' : 'text-sm'} leading-relaxed whitespace-pre-line ${cortado ? 'line-clamp-[8]' : ''}`} style={{ color: '#374151' }}>
-        {trozos.map((t, i) => t.tipo === 'texto'
-          ? <span key={i}>{t.valor}</span>
-          : <Mencion key={i} userId={t.userId} nombre={t.nombre} foto={fotos.get(t.userId)} />)}
+        {trozos.map((t, i) => {
+          if (t.tipo === 'texto') return <span key={i}>{t.valor}</span>;
+          if (t.tipo === 'enlace') {
+            return (
+              <a key={i} href={t.url} target="_blank" rel="noopener noreferrer" title={t.url}
+                className="font-semibold underline underline-offset-2" style={{ color: '#8B6A00' }}>
+                {t.texto ?? dominioDeUrl(t.url)}
+              </a>
+            );
+          }
+          return <Mencion key={i} userId={t.userId} nombre={t.nombre} foto={fotos.get(t.userId)} />;
+        })}
       </p>
       {largo && (
         <button type="button" onClick={() => setAbierto(v => !v)}
