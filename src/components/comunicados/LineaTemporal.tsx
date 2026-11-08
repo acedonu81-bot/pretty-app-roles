@@ -100,11 +100,16 @@ export default function LineaTemporal({ lista, hrefDe, inter = {}, leidos, filtr
                     </div>
                     <TituloComunicado className="text-lg line-clamp-2 group-hover:underline underline-offset-2">{c.titulo}</TituloComunicado>
                     {resumen && <p className="text-sm leading-[1.45] line-clamp-3" style={{ color: '#4b5563' }}>{resumen}</p>}
-                    {conMedia && (
+                    {conMedia && (c.imagen_url ? (
+                      // Imagen entera, sin recortar: esquemas y fichas llevan texto.
+                      <div className="flex justify-center rounded-xl overflow-hidden" style={{ background: '#FBF3DD' }}>
+                        <img src={c.imagen_url} alt={c.titulo} loading="lazy" className="max-h-[340px] w-auto max-w-full object-contain" />
+                      </div>
+                    ) : (
                       <div className="relative aspect-[16/7] rounded-xl overflow-hidden" style={{ background: '#FBF3DD' }}>
                         <Portada c={c} />
                       </div>
-                    )}
+                    ))}
                     <StatsComunicado c={c} i={inter[c.id]} />
                   </Link>
                 </article>

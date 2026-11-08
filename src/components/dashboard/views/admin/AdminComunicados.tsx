@@ -156,6 +156,10 @@ export default function AdminComunicados() {
       toast.error('El enlace del botón debe empezar por / o https://'); return;
     }
     const opcionesLimpias = opciones.map(o => o.trim()).filter(Boolean);
+    // Las noticias y novedades de XPEAK llevan siempre algo visual (8 nov 2026).
+    if (tipo !== 'comunidad' && !imagenUrl && !videoUrl) {
+      toast.error('Las noticias y novedades de XPEAK llevan siempre una imagen o vídeo: foto, esquema, ficha o portfolio'); return;
+    }
     if (conEncuesta && (!pregunta.trim() || opcionesLimpias.length < 2)) {
       toast.error('La encuesta necesita pregunta y al menos 2 opciones'); return;
     }
