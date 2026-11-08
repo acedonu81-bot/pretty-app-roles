@@ -3,7 +3,7 @@ import { AtSign, BarChart3, ChevronDown, Eye, Globe, Image as ImageIcon, Loader2
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { timeAgo } from '@/lib/timeAgo';
-import { CADUCA_NUNCA, CATEGORIAS_COMUNICADO, TIPOS_COMUNICADO, type TipoComunicado, tipoDe, type Comunicado, esParaSiempre, type Interaccion, porcentajes, etiquetaCategoria, formatoMencion, slugNovedad } from '@/lib/comunicados';
+import { CADUCA_NUNCA, CATEGORIAS_COMUNICADO, TIPOS_COMUNICADO, type TipoComunicado, tipoDe, type Comunicado, esParaSiempre, type Interaccion, porcentajes, etiquetaCategoria, etiquetaDestino, formatoMencion, slugNovedad } from '@/lib/comunicados';
 import { CuerpoConMenciones, Portada } from '@/components/comunicados/ComunicadosCarrusel';
 
 // Editor de comunicados del panel admin (6 nov 2026). Al publicar, un trigger
@@ -39,6 +39,7 @@ export default function AdminComunicados() {
   const [titulo, setTitulo] = useState('');
   const [cuerpo, setCuerpo] = useState('');
   const [categoria, setCategoria] = useState('todos');
+  const [extras, setExtras] = useState<string[]>([]);
   const [tipo, setTipo] = useState<TipoComunicado>('xpeak');
   const [push, setPush] = useState(false);
   const [fijado, setFijado] = useState(false);
@@ -129,7 +130,7 @@ export default function AdminComunicados() {
   };
 
   const limpiar = () => {
-    setTitulo(''); setCuerpo(''); setCategoria('todos'); setTipo('xpeak'); setPush(false); setFijado(false); setDias(-1);
+    setTitulo(''); setCuerpo(''); setCategoria('todos'); setExtras([]); setTipo('xpeak'); setPush(false); setFijado(false); setDias(-1);
     setCtaTexto(''); setCtaUrl(''); setImagenUrl(null); setVideoUrl(null);
     setPublico(true); setComentariosOn(true); setConEncuesta(false); setPregunta(''); setOpciones(['', '']); setDiasEncuesta(0);
     setEditandoId(null); setVotosEdit(0);
@@ -137,7 +138,7 @@ export default function AdminComunicados() {
 
   const editar = (c: Comunicado) => {
     setEditandoId(c.id);
-    setTitulo(c.titulo); setCuerpo(c.cuerpo); setCategoria(c.categoria); setTipo(tipoDe(c)); setPush(false); setFijado(c.fijado);
+    setTitulo(c.titulo); setCuerpo(c.cuerpo); setCategoria(c.categoria); setExtras(c.categorias_extra ?? []); setTipo(tipoDe(c)); setPush(false); setFijado(c.fijado);
     setDias(0); setCtaTexto(c.cta_texto ?? ''); setCtaUrl(c.cta_url ?? '');
     setImagenUrl(c.imagen_url); setVideoUrl(c.video_url);
     setPublico(!!c.publico); setComentariosOn(c.comentarios_on !== false);
@@ -158,7 +159,8 @@ export default function AdminComunicados() {
     if (conEncuesta && (!pregunta.trim() || opcionesLimpias.length < 2)) {
       toast.error('La encuesta necesita pregunta y al menos 2 opciones'); return;
     }
-    const destino = etiquetaCategoria(categoria);
+    const extrasValidas = categoria === 'todos' ? [] : extras.filter(e => e !== categoria);
+    const destino = etiquetaDestino({ categoria, categorias_extra: extrasValidas });
     if (editandoId) {
       const bloqueada = votosEdit > 0;
       setPublicando(true);
@@ -182,7 +184,7 @@ export default function AdminComunicados() {
     setPublicando(true);
     const caduca = fechaCaduca(dias);
     const { error } = await db.from('comunicados').insert({
-      titulo: titulo.trim(), cuerpo: cuerpo.trim(), categoria, tipo, push, fijado, caduca_at: caduca,
+      titulo: titulo.trim(), cuerpo: cuerpo.trim(), categoria, categorias_extra: extrasValidas, tipo, push, fijado, caduca_at: caduca,
       imagen_url: imagenUrl, video_url: videoUrl,
       cta_texto: ctaTexto.trim() || null, cta_url: ctaUrl.trim() || null,
       publico, comentarios_on: comentariosOn,
@@ -404,6 +406,25 @@ export default function AdminComunicados() {
           </label>
         </div>
 
+        {categoria !== 'todos' && (
+          <fieldset className="text-xs" disabled={!!editandoId}>
+            <legend className="font-bold mb-1" style={{ color: '#374151' }}>Avisar también a (opcional, sin duplicar el comunicado)</legend>
+            <div className="flex flex-wrap gap-1.5">
+              {CATEGORIAS_COMUNICADO.filter(c => c.id !== 'todos' && c.id !== categoria).map(c => {
+                const on = extras.includes(c.id);
+                return (
+                  <button key={c.id} type="button" aria-pressed={on}
+                    onClick={() => setExtras(on ? extras.filter(x => x !== c.id) : [...extras, c.id])}
+                    className="px-3 py-1.5 rounded-full text-xs font-semibold disabled:opacity-60"
+                    style={{ background: on ? '#D4AF37' : '#fff', border: `1px solid ${on ? '#D4AF37' : 'rgba(0,0,0,0.12)'}`, color: on ? '#1f2937' : '#374151' }}>
+                    {c.label}
+                  </button>
+                );
+              })}
+            </div>
+          </fieldset>
+        )}
+
         <div className="flex flex-wrap gap-4 text-sm" style={{ color: '#374151' }}>
           <label className="inline-flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={push} disabled={!!editandoId} onChange={e => setPush(e.target.checked)} />
@@ -507,7 +528,7 @@ export default function AdminComunicados() {
               <div className="min-w-0 flex-1">
                 <p className="font-bold text-sm truncate">{c.titulo}</p>
                 <p className="text-xs" style={{ color: '#6b7280' }}>
-                  {etiquetaCategoria(c.categoria)} · {timeAgo(c.created_at)}{c.push ? ' · push' : ''}{c.encuesta_opciones?.length ? ' · encuesta' : ''}{esParaSiempre(c.caduca_at) ? ' · para siempre' : ''}{caducado ? ' · caducado' : ''}
+                  {etiquetaDestino(c)} · {timeAgo(c.created_at)}{c.push ? ' · push' : ''}{c.encuesta_opciones?.length ? ' · encuesta' : ''}{esParaSiempre(c.caduca_at) ? ' · para siempre' : ''}{caducado ? ' · caducado' : ''}
                 </p>
                 {c.publico && (
                   <a href={`/novedades/${slugNovedad(c.titulo, c.id)}`} target="_blank" rel="noreferrer"

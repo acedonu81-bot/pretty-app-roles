@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CADUCA_NUNCA, resumenSinTitulo, esEnlaceInterno, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, tipoDe, trocearCuerpo } from './comunicados';
+import { CADUCA_NUNCA, resumenSinTitulo, esEnlaceInterno, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, tipoDe, trocearCuerpo, etiquetaDestino } from './comunicados';
 
 const ID = '0b8f3c1e-1234-4abc-9def-1234567890ab';
 
@@ -71,5 +71,10 @@ describe('comunicados', () => {
     expect(tipoDe({ tipo: 'otra-cosa' })).toBe('xpeak');
     expect(tipoDe({ tipo: 'noticia' })).toBe('noticia');
     expect(tipoDe({ tipo: 'comunidad' })).toBe('comunidad');
+  });
+
+  it('el destino junta la categoria principal y las extra', () => {
+    expect(etiquetaDestino({ categoria: 'sala' })).toBe('Sala, Catering, Locales & Limpieza');
+    expect(etiquetaDestino({ categoria: 'sala', categorias_extra: ['organizadores'] })).toBe('Sala, Catering, Locales & Limpieza + Organizadores');
   });
 });

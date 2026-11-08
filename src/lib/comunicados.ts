@@ -18,6 +18,10 @@ export type CategoriaComunicado = typeof CATEGORIAS_COMUNICADO[number]['id'];
 export const etiquetaCategoria = (id: string): string =>
   CATEGORIAS_COMUNICADO.find(c => c.id === id)?.label ?? 'XPEAK';
 
+/** "Música + Organizadores": la principal y las extra. */
+export const etiquetaDestino = (c: { categoria: string; categorias_extra?: string[] | null }): string =>
+  [c.categoria, ...(c.categorias_extra ?? [])].map(etiquetaCategoria).join(' + ');
+
 // Tipo de contenido de Novedades (8 nov 2026): una sola tabla, tres tipos.
 // "Siguiendo" es una vista del feed, no un tipo guardado aquí.
 export const TIPOS_COMUNICADO = [
@@ -42,6 +46,8 @@ export interface Comunicado {
   cta_texto: string | null;
   cta_url: string | null;
   categoria: string;
+  /** Otras categorias que tambien reciben el aviso (8 nov 2026). */
+  categorias_extra?: string[];
   /** xpeak | noticia | comunidad. Ausente en filas anteriores al 8 nov: cuenta como xpeak. */
   tipo?: string;
   push: boolean;
