@@ -694,7 +694,7 @@ html.app-instalada .clay-tab-alerta {
 .lt-fecha::after { content: ""; position: absolute; left: -26px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: #FFFDF7; border: 3px solid #D4AF37; }
 .lt-nuevo .lt-fecha::after { background: #059669; border-color: #059669; animation: lt-aro 2.4s ease-out 3; }
 .lt-dia { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4b5563; }
-.lt-num { font-family: 'Syne', 'Inter', sans-serif; font-weight: 800; font-size: 18px; color: #111; line-height: 1.2; }
+.lt-num { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: -0.01em; color: #111; line-height: 1.25; }
 .lt-rel { font-size: 12px; color: #4b5563; }
 .lt-tarjeta { display: grid; gap: 8px; min-width: 0; background: #fff; border: 1px solid rgba(212,175,55,0.3); border-radius: 16px; padding: 16px 18px; transition: box-shadow .15s; }
 .lt-tarjeta:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.07); }
@@ -705,7 +705,7 @@ html.app-instalada .clay-tab-alerta {
   .lt-item { grid-template-columns: 188px 1fr; gap: 0 34px; padding-left: 0; align-items: start; }
   .lt-fecha { display: block; text-align: right; padding: 16px 22px 0 0; }
   .lt-fecha::after { left: auto; right: -8px; top: 22px; }
-  .lt-num { font-size: 20px; }
+  .lt-num { font-size: 17px; }
 }
 @keyframes lt-aro { 0% { box-shadow: 0 0 0 0 rgba(5,150,105,.45); } 70%, 100% { box-shadow: 0 0 0 9px rgba(5,150,105,0); } }
 @keyframes lt-late { 0%, 100% { opacity: 1; } 50% { opacity: .72; } }

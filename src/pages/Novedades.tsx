@@ -205,7 +205,7 @@ export default function Novedades() {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-20 space-y-6">
         <div>
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight" style={{ color: '#111' }}>Novedades XPEAK</h1>
-          <p className="text-sm sm:text-base mt-1.5" style={{ color: '#4b5563' }}>Lo que pasa en la comunidad: ganadores, profesionales destacados, encuestas y avisos.</p>
+          <p className="text-sm sm:text-base mt-1.5" style={{ color: '#4b5563' }}>Lo último de XPEAK, del sector y de la comunidad, en un solo sitio.</p>
         </div>
 
         {!lista.length && <p>Pronto habrá novedades.</p>}
