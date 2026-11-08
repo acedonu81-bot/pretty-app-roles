@@ -712,3 +712,9 @@ html.app-instalada .clay-tab-alerta {
 @media (prefers-reduced-motion: reduce) {
   .lt-nuevo .lt-fecha::after, .lt-nuevo .lt-badge { animation: none; }
 }
+
+/* Etiqueta "Nuevo" del banner: 3 pulsos y se queda quieta. Un bucle infinito
+   ralentizó el Mac el 4 nov 2026. */
+.lt-tag-nuevo { animation: lt-banner 1.8s ease-in-out 3; }
+@keyframes lt-banner { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,175,55,.6); } 50% { transform: scale(1.08); box-shadow: 0 0 0 7px rgba(212,175,55,0); } }
+@media (prefers-reduced-motion: reduce) { .lt-tag-nuevo { animation: none; } }

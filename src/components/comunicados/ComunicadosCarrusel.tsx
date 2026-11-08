@@ -53,16 +53,16 @@ export default function ComunicadosCarrusel() {
   };
 
   const Nuevo = ({ c }: { c: Comunicado }) => (leidos.has(c.id) ? null : (
-    <span className="absolute top-2.5 left-2.5 text-[0.65rem] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
+    <span className="lt-tag-nuevo absolute top-2.5 left-2.5 text-[0.65rem] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
       style={{ background: ORO, color: '#1f2937' }}>Nuevo</span>
   ));
 
   return (
-    <section className="px-3 md:px-6 pt-4" aria-label="Comunicados XPEAK">
+    <section className="px-3 md:px-6 pt-4" aria-label="Novedades">
       <div className="mx-auto w-full max-w-6xl sm:px-4">
         <div className="flex items-center justify-between mb-2.5">
           <p role="heading" aria-level={2} className="inline-flex items-center gap-2 text-[0.8rem] font-bold uppercase tracking-wider" style={{ color: '#8B6A00' }}>
-            <Megaphone size={14} /> Comunicados XPEAK
+            <Megaphone size={14} /> Novedades
           </p>
           <div className="flex items-center gap-3">
             <Link to={RUTA_TABLON} className="inline-flex items-center gap-0.5 text-xs font-bold" style={{ color: '#8B6A00' }}>
@@ -92,7 +92,7 @@ export default function ComunicadosCarrusel() {
                 style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
                 <div className="relative shrink-0 w-24 sm:w-32 aspect-[3/2] rounded-lg overflow-hidden" style={{ background: '#FBF3DD' }}>
                   <Portada c={c} />
-                  {!leidos.has(c.id) && <span className="absolute top-1 left-1 w-2.5 h-2.5 rounded-full" style={{ background: ORO, boxShadow: '0 0 0 2px #fff' }} aria-label="Nuevo" />}
+                  {!leidos.has(c.id) && <span className="lt-tag-nuevo absolute top-1 left-1 w-2.5 h-2.5 rounded-full" style={{ background: ORO, boxShadow: '0 0 0 2px #fff' }} aria-label="Nuevo" />}
                 </div>
                 <div className="space-y-1 min-w-0 flex-1">
                   <MetaComunicado c={c} />
