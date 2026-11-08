@@ -5,6 +5,7 @@ import { ChevronRight, Heart, MessageCircle, Pin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import FooterPublic from '@/components/FooterPublic';
+import LineaTemporal from '@/components/comunicados/LineaTemporal';
 import {
   CuerpoConMenciones, MetaComunicado, ORO, Portada, StatsComunicado, TituloComunicado,
 } from '@/components/comunicados/ComunicadoPartes';
@@ -17,7 +18,7 @@ import {
 // el mundo". Los visitantes ven contadores (me gusta, comentarios, votos),
 // nunca el texto de los comentarios. Para interactuar hay que entrar.
 
-type Publico = Pick<Comunicado, 'id' | 'titulo' | 'cuerpo' | 'imagen_url' | 'video_url' | 'cta_texto' | 'cta_url' | 'categoria' | 'fijado'
+type Publico = Pick<Comunicado, 'id' | 'titulo' | 'cuerpo' | 'imagen_url' | 'video_url' | 'cta_texto' | 'cta_url' | 'categoria' | 'tipo' | 'fijado'
   | 'created_at' | 'comentarios_on' | 'encuesta_pregunta' | 'encuesta_opciones' | 'encuesta_cierra_at'>;
 interface Contadores { comunicado_id: string; likes: number; comentarios: number; votos: number[] | null }
 
@@ -73,7 +74,7 @@ export default function Novedades() {
 
   useEffect(() => {
     db.from('comunicados')
-      .select('id, titulo, cuerpo, imagen_url, video_url, cta_texto, cta_url, categoria, fijado, created_at, comentarios_on, encuesta_pregunta, encuesta_opciones, encuesta_cierra_at')
+      .select('id, titulo, cuerpo, imagen_url, video_url, cta_texto, cta_url, categoria, tipo, fijado, created_at, comentarios_on, encuesta_pregunta, encuesta_opciones, encuesta_cierra_at')
       .eq('publico', true).order('created_at', { ascending: false }).limit(200)
       .then(async ({ data }) => {
         const filas = ordenarComunicados((data ?? []) as Publico[]);
@@ -209,34 +210,11 @@ export default function Novedades() {
 
         {!lista.length && <p>Pronto habrá novedades.</p>}
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {lista.map((n, idx) => {
-            const grande = idx === 0 && lista.length > 1;
-            const resumen = resumenSinTitulo(n.cuerpo, n.titulo);
-            return (
-              <Link key={n.id} to={`/novedades/${slugNovedad(n.titulo, n.id)}`}
-                className={`group rounded-2xl overflow-hidden flex flex-col transition-shadow hover:shadow-lg ${grande ? 'lg:col-span-2' : ''}`}
-                style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
-                <div className="relative aspect-[16/9] w-full" style={{ background: '#FBF3DD' }}>
-                  <Portada c={n} />
-                  {n.fijado && (
-                    <span className="absolute top-3 left-3 inline-flex items-center gap-1 text-[0.65rem] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,253,247,0.95)', color: '#6b5200' }}>
-                      <Pin size={10} /> Fijado
-                    </span>
-                  )}
-                </div>
-                <div className="p-4 space-y-1.5 flex-1 flex flex-col">
-                  <MetaComunicado c={n} />
-                  <TituloComunicado className={`${grande ? 'text-xl' : 'text-base'} line-clamp-2 group-hover:underline underline-offset-2`}>{n.titulo}</TituloComunicado>
-                  {resumen && <p className="text-sm leading-[1.4] line-clamp-3" style={{ color: '#4b5563' }}>{resumen}</p>}
-                  <div className="pt-1 mt-auto">
-                    <StatsComunicado c={n} i={aInteraccion(cuentas[n.id])} />
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+        {!!lista.length && (
+          <LineaTemporal lista={lista as Comunicado[]}
+            inter={Object.fromEntries(lista.map(n => [n.id, aInteraccion(cuentas[n.id])]))}
+            hrefDe={n => `/novedades/${slugNovedad(n.titulo, n.id)}`} />
+        )}
 
         {!!lista.length && <Invitacion />}
       </main>

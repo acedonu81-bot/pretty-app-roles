@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { BarChart3, Heart, Megaphone, MessageCircle, Play } from 'lucide-react';
 import { timeAgo } from '@/lib/timeAgo';
-import { type Comunicado, type Interaccion, etiquetaCategoria, textoPlano, trocearCuerpo } from '@/lib/comunicados';
+import { type Comunicado, type Interaccion, infoTipo, textoPlano, tipoDe, trocearCuerpo } from '@/lib/comunicados';
 
 // Piezas compartidas por el carrusel de Inicio, el tablón y el detalle.
 
@@ -104,11 +104,12 @@ export function Portada({ c }: { c: Pick<Comunicado, 'imagen_url' | 'video_url'>
   );
 }
 
-export function MetaComunicado({ c }: { c: Pick<Comunicado, 'categoria' | 'created_at'> }) {
+export function MetaComunicado({ c }: { c: Pick<Comunicado, 'tipo' | 'created_at'> }) {
+  const t = infoTipo(tipoDe(c));
   return (
     <div className="flex items-center gap-1.5 text-xs" style={{ color: '#6b7280' }}>
-      <span className="w-1.5 h-1.5 rounded-full" style={{ background: ORO }} />
-      <span className="font-semibold">{etiquetaCategoria(c.categoria)}</span>
+      <span className="w-1.5 h-1.5 rounded-full" style={{ background: t.punto }} />
+      <span className="font-semibold" style={{ color: t.color }}>{t.label}</span>
       <span>·</span>
       <span>{timeAgo(c.created_at)}</span>
     </div>

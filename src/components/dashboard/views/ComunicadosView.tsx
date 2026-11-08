@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ChevronRight, Megaphone, Pin } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Megaphone } from 'lucide-react';
 import { useComunicados } from '@/hooks/useComunicados';
+import LineaTemporal from '@/components/comunicados/LineaTemporal';
 import ComunicadoInteraccion from '@/components/comunicados/ComunicadoInteraccion';
 import {
   CuerpoConMenciones, MetaComunicado, ORO, Portada, StatsComunicado, TituloComunicado,
 } from '@/components/comunicados/ComunicadoPartes';
-import { type Comunicado, esEnlaceInterno, resumenSinTitulo } from '@/lib/comunicados';
+import { type Comunicado, esEnlaceInterno } from '@/lib/comunicados';
 
 // Página del tablón de comunicados (6 nov 2026): panel grande con todos los
 // vigentes y, al pulsar uno, su propia página (como la del concurso), sin
@@ -91,9 +92,9 @@ export default function ComunicadosView() {
     <div className="mx-auto w-full max-w-6xl px-1 py-2 sm:px-2 space-y-5">
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold flex items-center gap-2.5" style={{ color: '#1f2937' }}>
-          <Megaphone size={26} style={{ color: '#8B6A00' }} /> Comunicados
+          <Megaphone size={26} style={{ color: '#8B6A00' }} /> Novedades
         </h1>
-        <p className="text-sm mt-1" style={{ color: '#6b7280' }}>Las novedades de XPEAK para ti: avisos, ganadores, encuestas y más.</p>
+        <p className="text-sm mt-1" style={{ color: '#6b7280' }}>Lo último de XPEAK, del sector y de la comunidad, en un solo sitio.</p>
       </div>
 
       {!cargado && (
@@ -110,42 +111,10 @@ export default function ComunicadosView() {
         </div>
       )}
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {lista.map((c, idx) => {
-          const grande = idx === 0 && lista.length > 1;
-          const resumen = resumenSinTitulo(c.cuerpo, c.titulo);
-          return (
-            <button key={c.id} onClick={() => abrir(c)}
-              className={`group text-left rounded-2xl overflow-hidden flex flex-col transition-shadow hover:shadow-lg ${grande ? 'lg:col-span-2' : ''}`}
-              style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
-              <div className="relative aspect-[16/9] w-full" style={{ background: '#FBF3DD' }}>
-                <Portada c={c} />
-                <div className="absolute top-3 left-3 flex gap-1.5">
-                  {!leidos.has(c.id) && (
-                    <span className="text-[0.65rem] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full" style={{ background: ORO, color: '#1f2937' }}>Nuevo</span>
-                  )}
-                  {c.fijado && (
-                    <span className="inline-flex items-center gap-1 text-[0.65rem] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,253,247,0.95)', color: '#6b5200' }}>
-                      <Pin size={10} /> Fijado
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="p-4 space-y-1.5 flex-1 flex flex-col">
-                <MetaComunicado c={c} />
-                <TituloComunicado className={`${grande ? 'text-xl' : 'text-base'} line-clamp-2 group-hover:underline underline-offset-2`}>{c.titulo}</TituloComunicado>
-                {resumen && <p className="text-sm leading-[1.4] line-clamp-3" style={{ color: '#4b5563' }}>{resumen}</p>}
-                <div className="flex items-center justify-between gap-3 pt-1 mt-auto">
-                  <StatsComunicado c={c} i={inter[c.id]} />
-                  <span className="inline-flex items-center gap-0.5 text-sm font-bold ml-auto" style={{ color: '#8B6A00' }}>
-                    {(c.encuesta_opciones?.length ?? 0) >= 2 ? 'Leer y votar' : 'Leer'} <ChevronRight size={15} />
-                  </span>
-                </div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
+      {cargado && !!lista.length && (
+        <LineaTemporal lista={lista} inter={inter} leidos={leidos}
+          hrefDe={c => `${TABLON}&comunicado=${c.id}`} />
+      )}
     </div>
   );
 }
