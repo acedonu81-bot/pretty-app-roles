@@ -82,7 +82,7 @@ function groupConsecutiveByAuthor(posts: FeedPost[]): FeedGroup[] {
 // va a la columna más baja en vez de apilarse todas en la primera columna
 // como hacía CSS `columns-N`, para que el feed crezca izquierda→derecha y de
 // arriba a abajo en cada columna, no solo de arriba a abajo en la primera.
-const FeedView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
+const FeedView = ({ onNavigate, incrustado = false }: { onNavigate: (view: string) => void; incrustado?: boolean }) => {
   const { user } = useAuth();
   const { posts, loading, followingCount } = useFeedPosts(user?.id);
   // Marcar como visto al cargar Y al salir: solo al salir dejaba el icono
@@ -103,7 +103,7 @@ const FeedView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
     return (
       <>
         {fonts}
-        <p className="text-sm animate-pulse p-6" style={{ color: HZ.inkSoft }}>Cargando feed…</p>
+        <p className={`text-sm animate-pulse ${incrustado ? 'py-6 text-center' : 'p-6'}`} style={{ color: HZ.inkSoft }}>Cargando feed…</p>
       </>
     );
   }
@@ -117,8 +117,8 @@ const FeedView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
     return (
       <>
         {fonts}
-        <div className="p-4 sm:p-6 pb-0 sm:pb-0"><ConcursoFeedBanner /></div>
-        <div className="flex flex-col items-center justify-center text-center px-6 py-16 gap-3">
+        <div className={incrustado ? 'pb-0' : 'p-4 sm:p-6 pb-0 sm:pb-0'}><ConcursoFeedBanner /></div>
+        <div className={`flex flex-col items-center justify-center text-center px-6 gap-3 ${incrustado ? 'py-10' : 'py-16'}`}>
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-1" style={{ background: HZ.blue, boxShadow: `0 8px 20px rgba(${BLUE_RGB},0.45)` }}>
             <Rss size={30} style={{ color: '#fff' }} strokeWidth={2.5} />
           </div>
@@ -141,7 +141,7 @@ const FeedView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
   return (
     <>
       {fonts}
-      <div className="p-4 sm:p-6" style={{ background: HZ.bg, minHeight: '100%' }}>
+      <div className={incrustado ? '' : 'p-4 sm:p-6'} style={incrustado ? undefined : { background: HZ.bg, minHeight: '100%' }}>
         <ConcursoFeedBanner />
         <div className="flex gap-4 items-start">
           {columnas.map((columna, i) => (

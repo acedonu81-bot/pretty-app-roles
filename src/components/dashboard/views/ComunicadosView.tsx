@@ -116,7 +116,12 @@ export default function ComunicadosView({ onNavigate, filtroInicial = 'todo' }: 
           siguiendoNuevo={hayNuevoFeed}
           siguiendo={(
             <Suspense fallback={<p className="text-sm animate-pulse p-6" style={{ color: '#6b7280' }}>Cargando…</p>}>
-              <FeedView onNavigate={onNavigate ?? (() => undefined)} />
+              <>
+                <p className="text-center text-sm mb-5" style={{ color: '#4b5563' }}>
+                  Fotos, sesiones y publicaciones de los profesionales que sigues.
+                </p>
+                <FeedView incrustado onNavigate={onNavigate ?? (() => undefined)} />
+              </>
             </Suspense>
           )} />
       )}
