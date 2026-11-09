@@ -17,6 +17,15 @@ const sb = supabase as unknown as {
 };
 type Perfil = { display_name: string | null; photo_url: string | null; zone: string | null; genres: string[] | null; is_verified: boolean | null };
 
+// El enlace lo escribe el DJ al inscribirse y la BD no lo valida: solo se pinta
+// si es https y de SoundCloud (evita javascript: y otros esquemas en el href).
+const enlaceSoundCloud = (u: string | null): string | null => {
+  try {
+    const p = new URL(u ?? '');
+    return p.protocol === 'https:' && (p.hostname === 'soundcloud.com' || p.hostname.endsWith('.soundcloud.com')) ? p.href : null;
+  } catch { return null; }
+};
+
 const boton = 'inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-black transition-transform hover:translate-x-0.5';
 
 const ConcursoGanador = () => {
@@ -35,7 +44,7 @@ const ConcursoGanador = () => {
         if (!cancelado) setPerfil(filas.find(f => !!f.photo_url) ?? filas[0] ?? null);
       });
     sb.rpc('concurso_participantes', { p_concurso: CONCURSO }).then(({ data }) => {
-      if (!cancelado) setSesion((data ?? []).find(f => f.user_id === GANADOR_CONCURSO_ID)?.soundcloud_url ?? null);
+      if (!cancelado) setSesion(enlaceSoundCloud((data ?? []).find(f => f.user_id === GANADOR_CONCURSO_ID)?.soundcloud_url ?? null));
     });
     return () => { cancelado = true; };
   }, [visible]);
