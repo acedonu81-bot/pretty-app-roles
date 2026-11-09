@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Trophy } from 'lucide-react';
 import { HZ, clay, clayButton } from '@/components/healthy-zone/clay';
-import { concursoActivo, concursoEnRevision, CIERRA_CONCURSO } from '@/lib/concursoMadrid';
+import { concursoActivo, concursoEnRevision, ganadorEnPanel, CIERRA_CONCURSO } from '@/lib/concursoMadrid';
 import ConcursoFinalistas from '@/components/dashboard/views/ConcursoFinalistas';
+import ConcursoGanador from '@/components/dashboard/views/ConcursoGanador';
 import { useEffect, useState } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import { halloweenActivo } from '@/lib/halloween';
@@ -64,6 +65,8 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
   // "Ver aspirantes" (la página con las sesiones, separada de las bases).
   const { role } = useProfile();
   const [cerrado, setCerrado] = useState(false);
+  // Del 9 al 17 nov el panel enseña al ganador en lugar de los finalistas.
+  if (!sinTexto && ganadorEnPanel()) return <ConcursoGanador enPanel />;
   if (!sinTexto && concursoEnRevision()) return <ConcursoFinalistas />;
   if (cerrado || !concursoActivo()) return null;
   const ultimoDia = CIERRA_CONCURSO.getTime() - Date.now() < MS_DIA;
