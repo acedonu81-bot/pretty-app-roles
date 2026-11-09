@@ -31,3 +31,14 @@ export const FIN_REVISION_CONCURSO = new Date('2026-11-10T00:00:00+01:00');
 export function concursoEnRevision(ahora: Date = new Date()): boolean {
   return ahora >= CIERRA_CONCURSO && ahora < FIN_REVISION_CONCURSO;
 }
+
+/** Ganador de la primera edición (anunciado el 9 nov 2026). Su cabecera de
+ *  artista se enseña arriba del todo de la portada hasta FIN_GANADOR_PORTADA y
+ *  luego se apaga sola; no se borra nada para reutilizarlo en la siguiente. */
+export const GANADOR_CONCURSO_ID = 'ab1f4291-68d7-40e7-bde4-9b652151f061';
+export const ANUNCIO_GANADOR = new Date('2026-11-09T00:00:00+01:00');
+export const FIN_GANADOR_PORTADA = new Date('2026-11-17T00:00:00+01:00');
+
+export function ganadorEnPortada(ahora: Date = new Date()): boolean {
+  return ahora >= ANUNCIO_GANADOR && ahora < FIN_GANADOR_PORTADA;
+}

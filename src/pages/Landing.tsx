@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
-import { concursoActivo } from '@/lib/concursoMadrid';
+import { concursoActivo, ganadorEnPortada } from '@/lib/concursoMadrid';
 import { halloweenActivo } from '@/lib/halloween';
 import { movemberActivo } from '@/lib/movember';
 import { dia25nActivo } from '@/lib/dia25n';
@@ -114,6 +114,7 @@ import GigWonPopup from '@/components/GigWonPopup';
 import { ventanaActiva } from '@/config/ventanasPrueba';
 
 const ConcursoFeedBanner = lazy(() => import('@/components/dashboard/views/ConcursoFeedBanner'));
+const ConcursoGanador = lazy(() => import('@/components/dashboard/views/ConcursoGanador'));
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
 const NovedadesFranja = lazy(() => import('@/components/comunicados/NovedadesFranja'));
 const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
@@ -524,7 +525,8 @@ const Landing = () => {
 
   // Durante el concurso el hero pierde el titular y el subtítulo para dar paso al
   // banner; al cerrar el plazo vuelven solos (se queda sr-only para SEO).
-  const concursoEnCurso = concursoActivo();
+  // El ganador ocupa el mismo sitio que el banner del concurso: primera cosa del hero.
+  const concursoEnCurso = concursoActivo() || ganadorEnPortada();
   const halloween = halloweenActivo();
   const movember = movemberActivo();
   const dia25n = dia25nActivo();
@@ -830,6 +832,7 @@ const Landing = () => {
             terminaba navegando a ciegas hasta /auth vía navbar/footer. */}
         {/* Concurso DJ Madrid (13 oct - 2 nov 2026): primera cosa del hero para verse
             sin scroll en móvil; se apaga solo al cerrar el plazo. */}
+        <Suspense fallback={null}><ConcursoGanador /></Suspense>
         {halloween && (
           <p className="max-w-2xl mx-auto mt-6 md:mt-0 mb-4 text-center text-2xl sm:text-4xl font-black tracking-tight font-display"
             style={{ color: '#fff', lineHeight: 1.15, textShadow: '0 3px 18px rgba(74,29,122,0.7)' }}>

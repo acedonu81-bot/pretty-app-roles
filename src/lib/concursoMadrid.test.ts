@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { estadoInscripcionMadrid, concursoActivo, concursoEnRevision } from './concursoMadrid';
+import { estadoInscripcionMadrid, concursoActivo, concursoEnRevision, ganadorEnPortada } from './concursoMadrid';
 
 const perfil = (p: Partial<{ photo_url: string | null; bio: string | null; region: string | null }>) =>
   ({ photo_url: 'https://x/foto.jpg', bio: 'DJ de bodas', region: 'Madrid', ...p });
@@ -42,5 +42,14 @@ describe('concursoEnRevision', () => {
     expect(concursoEnRevision(new Date('2026-11-03T00:00:00+01:00'))).toBe(true);
     expect(concursoEnRevision(new Date('2026-11-09T23:00:00+01:00'))).toBe(true);
     expect(concursoEnRevision(new Date('2026-11-10T00:00:00+01:00'))).toBe(false);
+  });
+});
+
+describe('ganadorEnPortada', () => {
+  it('se enseña desde el anuncio del 9 nov y se apaga solo el 17 nov', () => {
+    expect(ganadorEnPortada(new Date('2026-11-08T23:00:00+01:00'))).toBe(false);
+    expect(ganadorEnPortada(new Date('2026-11-09T10:00:00+01:00'))).toBe(true);
+    expect(ganadorEnPortada(new Date('2026-11-16T23:59:00+01:00'))).toBe(true);
+    expect(ganadorEnPortada(new Date('2026-11-17T00:00:00+01:00'))).toBe(false);
   });
 });

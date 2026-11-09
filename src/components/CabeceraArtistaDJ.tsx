@@ -9,7 +9,7 @@ import { fotoOptimizada } from '@/lib/imagen';
 // botones encima. Solo para DJs; el resto de roles mantiene su portada.
 // Banner: el que suba el DJ; si no, la portada de su primer set o su foto.
 // El velo es marrón dorado y no negro (sin fondos negros en páginas públicas).
-const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, acciones, onCambiarBanner, onCambiarFoto, subiendo = null, podio = null }: {
+const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, acciones, onCambiarBanner, onCambiarFoto, subiendo = null, podio = null, titulo: Titulo = 'h1' }: {
   nombre: string;
   foto: string | null;
   /** Imagen del banner ya elegida (banner del DJ, portada o foto), o null. */
@@ -25,6 +25,8 @@ const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, ac
   subiendo?: 'banner' | 'foto' | null;
   /** Mejor puesto de uno de sus sets en el podio de los más escuchados. */
   podio?: 1 | 2 | 3 | null;
+  /** h2 cuando la cabecera va dentro de otra página que ya tiene su h1 (portada). */
+  titulo?: 'h1' | 'h2';
 }) => {
   const tieneFoto = !!foto && foto.trim().length > 5;
   const inicial = (nombre || 'X').trim().charAt(0).toUpperCase();
@@ -67,9 +69,9 @@ const CabeceraArtistaDJ = ({ nombre, foto, banner, zona, estilos, verificado, ac
 
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="font-black tracking-tight break-words" style={{ fontSize: 'clamp(1.9rem, 5vw, 2.75rem)', lineHeight: 1.02, color: '#fff', letterSpacing: '-0.02em', textShadow: '0 2px 18px rgba(46,32,6,0.5)' }}>
+              <Titulo className="font-black tracking-tight break-words" style={{ fontSize: 'clamp(1.9rem, 5vw, 2.75rem)', lineHeight: 1.02, color: '#fff', letterSpacing: '-0.02em', textShadow: '0 2px 18px rgba(46,32,6,0.5)' }}>
                 {nombre}
-              </h1>
+              </Titulo>
               {verificado && (
                 <span className="inline-flex items-center justify-center rounded-full" style={{ background: '#059669', width: 30, height: 30 }}>
                   <BadgeCheck size={20} color="#fff" aria-label="Verificado por XPEAK" />
