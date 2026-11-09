@@ -4,10 +4,10 @@ import { ArrowRight, Headphones, Trophy } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
 import { useDjBanner } from '@/hooks/useDjBanner';
-import { GANADOR_CONCURSO_ID, ganadorEnPanel, ganadorEnPortada } from '@/lib/concursoMadrid';
+import { GANADOR_CONCURSO_ID, ganadorEnPanel } from '@/lib/concursoMadrid';
 
-// Ganador del Concurso DJ XPEAK Madrid 2026: un día arriba del todo de la
-// portada y una semana en el panel (enPanel; ver concursoMadrid.ts). Lee su perfil en vivo: si
+// Ganador del Concurso DJ XPEAK Madrid 2026 en el panel (Inicio y Feed), en
+// lugar del banner de finalistas (ver FIN_GANADOR_PANEL en concursoMadrid.ts). Lee su perfil en vivo: si
 // cambia banner, foto o nombre desde su panel, cambia aquí también. Mismo
 // recuadro que su perfil público, con el enlace a su sesión del concurso.
 const CONCURSO = 'dj-madrid-2026';
@@ -28,8 +28,8 @@ const enlaceSoundCloud = (u: string | null): string | null => {
 
 const boton = 'inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-black transition-transform hover:translate-x-0.5';
 
-const ConcursoGanador = ({ enPanel = false }: { enPanel?: boolean }) => {
-  const visible = enPanel ? ganadorEnPanel() : ganadorEnPortada();
+const ConcursoGanador = () => {
+  const visible = ganadorEnPanel();
   const [perfil, setPerfil] = useState<Perfil | null>(null);
   const [sesion, setSesion] = useState<string | null>(null);
   const { banner } = useDjBanner(visible ? GANADOR_CONCURSO_ID : undefined);
@@ -52,11 +52,11 @@ const ConcursoGanador = ({ enPanel = false }: { enPanel?: boolean }) => {
   if (!visible || !perfil?.display_name) return null;
 
   return (
-    <section className={enPanel ? 'mb-4' : 'max-w-3xl mx-auto mb-5'} aria-label="Ganador del Concurso DJ XPEAK Madrid">
-      <p className="inline-flex items-center gap-1.5 px-3 text-[0.75rem] uppercase tracking-[0.2em] font-black" style={{ color: enPanel ? '#8B6A00' : '#F3D77A' }}>
+    <section className="mb-4" aria-label="Ganador del Concurso DJ XPEAK Madrid">
+      <p className="inline-flex items-center gap-1.5 px-3 text-[0.75rem] uppercase tracking-[0.2em] font-black" style={{ color: '#8B6A00' }}>
         <Trophy size={13} strokeWidth={2.5} /> Ganador del Concurso DJ XPEAK Madrid
       </p>
-      <div className={enPanel ? '' : '-mx-3 sm:-mx-5'}>
+      <div>
         <CabeceraArtistaDJ
           titulo="h2"
           nombre={perfil.display_name}

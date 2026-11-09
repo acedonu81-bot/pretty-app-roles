@@ -66,7 +66,7 @@ const ConcursoFeedBanner = ({ sinTexto = false }: { sinTexto?: boolean }) => {
   const { role } = useProfile();
   const [cerrado, setCerrado] = useState(false);
   // Del 9 al 17 nov el panel enseña al ganador en lugar de los finalistas.
-  if (!sinTexto && ganadorEnPanel()) return <ConcursoGanador enPanel />;
+  if (!sinTexto && ganadorEnPanel()) return <ConcursoGanador />;
   if (!sinTexto && concursoEnRevision()) return <ConcursoFinalistas />;
   if (cerrado || !concursoActivo()) return null;
   const ultimoDia = CIERRA_CONCURSO.getTime() - Date.now() < MS_DIA;
