@@ -434,6 +434,12 @@ const Dashboard = () => {
   // junto con la vista ya resuelta — sin esto llegabas a la vista correcta
   // pero el campo de búsqueda aparecía vacío y perdías lo que habías escrito.
   const [searchQuery, setSearchQuery] = useState<string>(() => (location.state as { search?: string })?.search ?? '');
+  // Texto que se ve en el cuadro del buscador. Va aparte de searchQuery (el
+  // filtro que reciben los directorios): al escribir "m" el buscador salta al
+  // directorio de música y searchQuery se vacía a propósito para no filtrar
+  // con el nombre del oficio, pero el cuadro NO debe vaciarse — antes lo
+  // mostraba vacío y la letra tecleada desaparecía (reportado 9 nov 2026).
+  const [searchText, setSearchText] = useState<string>(() => (location.state as { search?: string })?.search ?? '');
   const [showWizard, setShowWizard] = useState(false);
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();
@@ -592,7 +598,7 @@ const Dashboard = () => {
     // ?view=flashbooking y cada recarga devolvía ahí aunque estuvieras en otra sección.
     if (location.search || location.state) navigate('/dashboard', { replace: true });
     if (isMobile) setSidebarOpen(false);
-    if (!keepSearch) setSearchQuery('');
+    if (!keepSearch) { setSearchQuery(''); setSearchText(''); }
   };
 
   const nav = (view: string) => handleViewChange(view);
@@ -652,6 +658,7 @@ const Dashboard = () => {
     // filtra por nombre/bio/zona, y un profesional real puede no tener la
     // palabra del oficio en ningún campo — "mago" acertaba la categoría y acto
     // seguido la vaciaba con su propio término (bug real, 12 sep 2026).
+    setSearchText(q);
     setSearchQuery(destino ? '' : q);
     if (destino) handleViewChange(destino, true);
   };
@@ -799,7 +806,7 @@ const Dashboard = () => {
           className="clay-fondo flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0 no-scrollbar"
           style={{ transition: 'width 300ms cubic-bezier(0.32,0.72,0,1)' }}
         >
-          <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} userId={user?.id} isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange}
+          <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchText} onHome={() => handleViewChange('dj')} userId={user?.id} isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange}
             // Las secundarias guardan una entrada en el historial (ver el
             // pushState de arriba): volver es deshacerla, igual que el gesto
             // o el botón atrás de Android.
