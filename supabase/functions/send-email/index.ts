@@ -1515,39 +1515,51 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>`),
   }),
 
-  // Concurso DJ XPEAK Madrid (24 oct 2026): único correo a quien votó, el día
-  // que se anuncia al ganador (9 nov). Solo habla del concurso, sin ofertas.
-  // Los dos botones de abajo son opcionales y llevan utm_content distinto para
-  // saber, por GA4, qué busca cada votante. Solo con la clave de servicio.
+  // Concurso DJ XPEAK Madrid (9 nov 2026): único correo a quien votó y a todos
+  // los DJs de la web, el día que se anuncia al ganador. Una sola plantilla con
+  // bloques según el destinatario: d.participante (se presentó), d.voto (votó), d.dj (tiene
+  // perfil de DJ), d.falta (qué le falta al perfil: 'foto', 'bio' o 'foto y bio',
+  // vacío si está completo). Los botones de "para qué has venido" son solo para
+  // quien no es DJ y llevan utm_content distinto para medirlos en GA4. Con la
+  // baja grande de base(). Solo con la clave de servicio, uno a uno.
   concurso_resultado_votantes: (d) => {
     const utm = (c: string) => `utm_source=email&utm_medium=email&utm_campaign=concurso_resultado&utm_content=${c}`;
     const otros = (d.finalistas as string[] | undefined)?.filter((f) => f && f !== d.ganador) ?? [];
+    const p = (t: string, extra = '') => `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px${extra}">${t}</p>`;
     return {
       subject: `Ya hay ganador del Concurso DJ XPEAK Madrid`,
       to: d.email,
       replyTo: 'info@xpeak.site',
       html: base(`
         <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Ya tenemos ganador</h2>
-        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
-          Hola${d.name ? ` <strong style="color:#0a0908">${esc(d.name)}</strong>` : ''}, votaste en el <strong>Concurso DJ XPEAK Madrid</strong> y queremos que seas de los primeros en saber cómo ha acabado.
-        </p>
-        <p style="color:#0a0908;font-size:16px;line-height:1.6;margin:0 0 10px;text-align:center;font-weight:800">
+        ${p(`Hola${d.name ? ` <strong style="color:#0a0908">${esc(d.name)}</strong>` : ''}, después de más de 350 personas votando y 10 DJs de Madrid presentando su sesión, el <strong>Concurso DJ XPEAK Madrid</strong> ya tiene ganador.`)}
+        <p style="color:#0a0908;font-size:18px;line-height:1.6;margin:14px 0 4px;text-align:center;font-weight:800">
           Ganador: ${esc(d.ganador)}
         </p>
-        ${otros.length ? `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px;text-align:center">Finalistas: ${otros.map(esc).join(' y ')}</p>` : ''}
-        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-          Gracias por tu voto. Los me gusta eligieron a los 3 finalistas y el jurado decidió entre ellos.
-        </p>
-        ${btn('Ver el resultado y escuchar las sesiones', 'https://xpeak.es/concurso-dj-madrid/aspirantes?' + utm('resultado'))}
+        ${otros.length ? p(`Finalistas: ${otros.map(esc).join(' y ')}`, ';text-align:center') : ''}
+        ${btn('Ver su perfil y escuchar su sesión', String(d.ganador_url) + '?' + utm('ganador'))}
+        <div style="height:14px"></div>
+        ${p('Los me gusta eligieron a los 3 finalistas y el jurado decidió entre ellos.')}
+        ${d.participante
+          ? p('Ha estado muy ajustado, pero había que elegir a uno. Gracias por dar la cara con tu sesión.')
+          : d.voto ? p('Gracias por tu voto: sin los votos no habría concurso.') : ''}
+        <p style="margin:0"><a href="https://xpeak.es/concurso-dj-madrid/aspirantes?${utm('resultado')}" style="color:#7a6216;font-size:14px;font-weight:700">Ver el resultado y escuchar todas las sesiones</a></p>
+
+        ${d.dj ? `
+        <div style="margin:26px 0 0;padding:20px;border:1.5px solid #D4AF37;border-radius:12px;background:#FFFDF7">
+          <p style="color:#0a0908;font-size:16px;font-weight:800;line-height:1.4;margin:0 0 8px">La próxima edición puede ser la tuya</p>
+          ${d.falta
+            ? p(`Para las próximas ediciones hace falta un perfil completo, y al tuyo todavía le falta: <strong style="color:#0a0908">${esc(d.falta)}</strong>. Son dos minutos y además te hace más visible a los organizadores que buscan DJ en XPEAK.`)
+            : p('Tu perfil ya está completo, así que estás listo para entrar cuando abramos la siguiente. Y mientras tanto, cuanto más cuidado esté, más te ven los organizadores que buscan DJ en XPEAK.')}
+          ${d.falta ? btn('Completar mi perfil', 'https://xpeak.es/dashboard?view=profile&' + utm('completar_perfil')) : ''}
+        </div>` : `
         <p style="color:#0a0908;font-size:15px;font-weight:700;line-height:1.6;margin:28px 0 6px;text-align:center">
           Si quieres, cuéntanos para qué has venido a XPEAK
         </p>
-        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 14px;text-align:center">
-          Es opcional y nos ayuda a mostrarte lo que te interesa. Si solo venías a votar, no hace falta que hagas nada.
-        </p>
+        ${p('Es opcional y nos ayuda a mostrarte lo que te interesa. Si solo venías a votar, no hace falta que hagas nada.', ';text-align:center')}
         <a href="https://xpeak.es/contratar-dj?${utm('contratar')}" style="display:block;text-align:center;background:#ffffff;color:#0a0908;border:2px solid #D4AF37;border-radius:10px;padding:13px;font-size:15px;font-weight:700;text-decoration:none;margin:0 0 10px">Busco un DJ para un evento</a>
-        <a href="https://xpeak.es/auth?${utm('soy_profesional')}" style="display:block;text-align:center;background:#ffffff;color:#0a0908;border:2px solid #D4AF37;border-radius:10px;padding:13px;font-size:15px;font-weight:700;text-decoration:none;margin:0">Soy DJ o artista</a>`,
-        'Gracias por tu voto: ya sabemos quién ha ganado el concurso.'),
+        <a href="https://xpeak.es/auth?${utm('soy_profesional')}" style="display:block;text-align:center;background:#ffffff;color:#0a0908;border:2px solid #D4AF37;border-radius:10px;padding:13px;font-size:15px;font-weight:700;text-decoration:none;margin:0">Soy DJ o artista</a>`}`,
+        'Ya sabemos quién ha ganado el concurso.'),
     };
   },
 
