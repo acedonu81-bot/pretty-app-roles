@@ -223,6 +223,31 @@ describe('resolverVistaDeBusqueda', () => {
     expect(resolverVistaDeBusqueda('zzznotfound bilbao')).toBeNull();
     expect(resolverVistaDeBusqueda('')).toBeNull();
   });
+
+  // 9 nov 2026: el buscador del panel navega mientras se teclea. Al escribir
+  // "Madrid", la "m" llevaba a Disco móvil y la "ma" a Maquillaje, y "Madrid"
+  // acababa filtrando peluqueras/maquilladoras.
+  it('1-2 letras solo cuentan si son exactas: "m" y "ma" no saltan de categoría', async () => {
+    const { resolverVistaDeBusqueda } = await import('./Dashboard');
+    expect(resolverVistaDeBusqueda('m')).toBeNull();
+    expect(resolverVistaDeBusqueda('ma')).toBeNull();
+    expect(resolverVistaDeBusqueda('a')).toBeNull();
+    expect(resolverVistaDeBusqueda('dj')).toBe('dj');
+  });
+
+  it('una ciudad no resuelve ningún oficio', async () => {
+    const { resolverVistaDeBusqueda } = await import('./Dashboard');
+    for (const ciudad of ['madrid', 'Madrid', 'mad', 'madr', 'valencia', 'sevilla', 'bilbao', 'zaragoza', 'malaga']) {
+      expect(resolverVistaDeBusqueda(ciudad)).toBeNull();
+    }
+  });
+
+  it('los oficios completos o con 3+ letras siguen resolviendo', async () => {
+    const { resolverVistaDeBusqueda } = await import('./Dashboard');
+    expect(resolverVistaDeBusqueda('pelu')).toBe('peluqueria');
+    expect(resolverVistaDeBusqueda('mag')).toBe('mago');
+    expect(resolverVistaDeBusqueda('mago')).toBe('mago');
+  });
 });
 
 /**

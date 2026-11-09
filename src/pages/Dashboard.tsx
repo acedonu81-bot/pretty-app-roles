@@ -331,6 +331,16 @@ export function resolverVistaDeBusqueda(q: string): string | null {
   // barra", "maestro de ceremonias") deben reconocerse aunque el usuario solo
   // escriba una de ellas ("barra", "ceremonias"), no solo el principio.
   const palabras = texto.split(/\s+/);
+  // Con 1-2 letras solo vale una coincidencia exacta ("dj"). El buscador del panel
+  // navega mientras se teclea: con prefijos, "m" llevaba a Disco móvil y "ma" a
+  // Maquillaje antes de terminar "Madrid", y el resto de la palabra se filtraba
+  // ahí dentro (9 nov 2026: "busco Madrid y salen las peluqueras").
+  if (texto.length < 3) {
+    for (const [vista, terminos] of Object.entries(BUSQUEDA_POR_VISTA)) {
+      if (terminos.some(t => t === texto || t.split(/\s+/).includes(texto))) return vista;
+    }
+    return null;
+  }
   for (const [vista, terminos] of Object.entries(BUSQUEDA_POR_VISTA)) {
     const matchea = terminos.some(t =>
       t.startsWith(texto) || texto.startsWith(t) ||
@@ -651,6 +661,7 @@ const Dashboard = () => {
     'photo-booth', 'food-truck', 'disco-movil', 'grupo-musical', 'tecnico', 'alquiler', 'limpieza', 'navidad', 'emergentes', 'local_eventos',
   ]);
 
+  const busquedaTimer = useRef<number>();
   const handleSearch = (q: string) => {
     const destino = resolverDestinoBusqueda(q, activeView, directoryViews);
     // Si el término resolvió un oficio y saltamos a su directorio (destino),
@@ -659,9 +670,17 @@ const Dashboard = () => {
     // palabra del oficio en ningún campo — "mago" acertaba la categoría y acto
     // seguido la vaciaba con su propio término (bug real, 12 sep 2026).
     setSearchText(q);
-    setSearchQuery(destino ? '' : q);
-    if (destino) handleViewChange(destino, true);
+    if (busquedaTimer.current) window.clearTimeout(busquedaTimer.current);
+    if (!destino) { setSearchQuery(q); return; }
+    // El salto a otro oficio espera a que se deje de teclear: mientras se escribe
+    // "Barcelona", "bar" coincide con "barra" (Staff) y arrastraba la búsqueda
+    // a esa categoría. Si se sigue escribiendo, este salto se cancela.
+    busquedaTimer.current = window.setTimeout(() => {
+      setSearchQuery('');
+      handleViewChange(destino, true);
+    }, 450);
   };
+  useEffect(() => () => { if (busquedaTimer.current) window.clearTimeout(busquedaTimer.current); }, []);
 
   const handleMessage = (userId: string, name: string) => {
     if (userId === user?.id) {

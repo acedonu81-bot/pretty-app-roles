@@ -139,7 +139,11 @@ export const dominioDeUrl = (url: string): string => {
 
 /** Texto sin la marca de las menciones, para resúmenes de una línea. */
 export const textoPlano = (cuerpo: string): string =>
-  cuerpo.replace(MENCION_RE, '$1').replace(/\s+/g, ' ').trim();
+  cuerpo
+    .replace(MENCION_RE, '$1')
+    .replace(/\[([^\]\n]{1,120})\]\(https?:\/\/[^\s)]+\)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
 
 export const formatoMencion = (nombre: string, userId: string): string =>
   `@[${nombre.replace(/[[\]\n]/g, '').trim()}](${userId})`;

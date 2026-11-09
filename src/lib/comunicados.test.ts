@@ -95,4 +95,8 @@ describe('comunicados', () => {
       { tipo: 'texto', valor: '. Fin' },
     ]);
   });
+
+  it('el texto plano deja solo el texto de los enlaces con formato', () => {
+    expect(textoPlano('Fuentes [BOE: RD 199/2010](https://www.boe.es/eli/es/rd/2010/02/26/199) fin')).toBe('Fuentes BOE: RD 199/2010 fin');
+  });
 });
