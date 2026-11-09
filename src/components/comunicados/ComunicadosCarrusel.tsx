@@ -111,7 +111,7 @@ export default function ComunicadosCarrusel() {
         ) : (
           <div ref={pista} className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2">
             {lista.map(c => (
-              <button key={c.id} onClick={() => abrir(c)} className="group snap-start shrink-0 text-left w-[190px] sm:w-[210px] space-y-1">
+              <button key={c.id} onClick={() => abrir(c)} className="group snap-start shrink-0 self-start text-left w-[190px] sm:w-[210px] space-y-1">
                 <div className="relative aspect-[3/2] rounded-xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.25)', background: '#FBF3DD' }}>
                   <Portada c={c} />
                   <Nuevo c={c} />
