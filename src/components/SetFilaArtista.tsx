@@ -12,6 +12,8 @@ import { fotoOptimizada } from '@/lib/imagen';
 import BotonCamara from '@/components/BotonCamara';
 import Medalla from '@/components/Medalla';
 import { useContadorEscucha } from '@/hooks/useContadorEscucha';
+import { useMixcloudWidget } from '@/hooks/useMixcloudWidget';
+import { useHearthisWidget } from '@/hooks/useHearthisWidget';
 import { supabase } from '@/integrations/supabase/client';
 import { subirImagenArtista } from '@/lib/imagenesArtista';
 
@@ -100,10 +102,17 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
     }
   }, [parsed]);
 
+  // ── Mixcloud / hearthis: su reproductor, escuchado por postMessage solo
+  // para contar escuchas (antes nunca sumaban, 10 nov 2026). ──
+  const [iframeExterno, setIframeExterno] = useState<HTMLIFrameElement | null>(null);
+  const mx = useMixcloudWidget(parsed?.type === 'Mixcloud' ? iframeExterno : null);
+  const ht = useHearthisWidget(parsed?.type === 'HearThis' ? iframeExterno : null);
+
   const sonando = esArchivo ? sonandoArchivo : sc.sonando;
   const posicion = esArchivo ? t : sc.posicion;
+  const externo = parsed?.type === 'Mixcloud' ? mx : parsed?.type === 'HearThis' ? ht : null;
   // 5 minutos de reproducción real = una escucha (fase 3).
-  useContadorEscucha(djUserId, url, sonando, posicion, onEscuchaRegistrada);
+  useContadorEscucha(djUserId, url, externo ? externo.sonando : sonando, externo ? externo.posicion : posicion, onEscuchaRegistrada);
   const duracion = esArchivo ? (dArchivo || onda?.duracion || 0) : sc.duracion;
 
   // Solo un set sonando a la vez en la página.
@@ -358,7 +367,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
         ) : (
           // Mixcloud / hearthis: su propio reproductor.
           embedSrc && (
-            <iframe src={embedSrc} title={titulo} allow="autoplay; encrypted-media" loading="lazy"
+            <iframe ref={setIframeExterno} src={embedSrc} title={titulo} allow="autoplay; encrypted-media" loading="lazy"
               className="w-full mt-3 rounded-lg" style={{ height: 120, border: 'none' }} />
           )
         )}
