@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { SEGUNDOS_ESCUCHA, idVisitante, navegadorNoCuenta, sumarEscuchado } from '@/lib/escuchas';
 
 /**
@@ -21,7 +20,11 @@ export const useContadorEscucha = (djUserId: string | undefined, setUrl: string,
     if (enviada.current || !djUserId || acumulado.current < SEGUNDOS_ESCUCHA) return;
     enviada.current = true;
     if (navegadorNoCuenta()) return;
-    supabase.rpc('registrar_escucha', { p_dj: djUserId, p_set_url: setUrl, p_visitante: idVisitante() })
+    // import() dinámico: la barra de abajo (en todas las páginas) usa este hook y,
+    // con el import estático, el cliente de Supabase entraba en el chunk principal
+    // y pasaba del límite de 300 KB (10 nov 2026, deploy parado por check-bundle-size).
+    import('@/integrations/supabase/client')
+      .then(({ supabase }) => supabase.rpc('registrar_escucha', { p_dj: djUserId, p_set_url: setUrl, p_visitante: idVisitante() }))
       .then(({ data }) => { if (data) onRegistrada?.(); }, () => {});
   }, [sonando, posicion, djUserId, setUrl, onRegistrada]);
 };

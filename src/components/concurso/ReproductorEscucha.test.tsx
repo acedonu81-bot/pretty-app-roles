@@ -15,6 +15,8 @@ const Anclar = ({ escucha }: { escucha?: { djUserId: string; setUrl: string } })
   return <button onClick={() => reproducir({ url: 'https://x/set.mp3', audioSrc: 'https://x/set.mp3', titulo: 'Set', escucha })}>anclar</button>;
 };
 
+const esperar = () => act(async () => { await new Promise(r => setTimeout(r, 50)); });
+
 const sonar = (segundos: number) => {
   const audio = document.querySelector('audio')!;
   fireEvent.play(audio);
@@ -27,20 +29,24 @@ const sonar = (segundos: number) => {
 describe('escuchas desde la barra de abajo', () => {
   beforeEach(() => rpc.mockClear());
 
-  it('registra la escucha a los 5 minutos de un set de DJ anclado', () => {
+  it('registra la escucha a los 5 minutos de un set de DJ anclado', async () => {
     render(<MemoryRouter><ReproductorConcursoProvider><Anclar escucha={{ djUserId: 'dj-1', setUrl: 'https://x/set.mp3' }} /></ReproductorConcursoProvider></MemoryRouter>);
     fireEvent.click(screen.getByText('anclar'));
+    await esperar(); // el contador va en un chunk lazy
     sonar(299);
+    await esperar();
     expect(rpc).not.toHaveBeenCalled();
     sonar(301);
+    await esperar();
     expect(rpc).toHaveBeenCalledTimes(1);
     expect(rpc).toHaveBeenCalledWith('registrar_escucha', expect.objectContaining({ p_dj: 'dj-1', p_set_url: 'https://x/set.mp3' }));
   });
 
-  it('sin DJ (sesiones del concurso) no registra nada', () => {
+  it('sin DJ (sesiones del concurso) no registra nada', async () => {
     render(<MemoryRouter><ReproductorConcursoProvider><Anclar /></ReproductorConcursoProvider></MemoryRouter>);
     fireEvent.click(screen.getByText('anclar'));
     sonar(400);
+    await esperar();
     expect(rpc).not.toHaveBeenCalled();
   });
 });

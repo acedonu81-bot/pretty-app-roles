@@ -1,8 +1,6 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { useSoundcloudWidget } from '@/hooks/useSoundcloudWidget';
-import { useMixcloudWidget } from '@/hooks/useMixcloudWidget';
-import { useHearthisWidget } from '@/hooks/useHearthisWidget';
-import { useContadorEscucha } from '@/hooks/useContadorEscucha';
+import { createContext, lazy, Suspense, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+
+const ContadorBarra = lazy(() => import('./ContadorBarra'));
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronUp, Pause, Play, X } from 'lucide-react';
 
@@ -61,18 +59,6 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
   // ── Escuchas desde la barra (10 nov 2026) ──
   const [iframe, setIframe] = useState<HTMLIFrameElement | null>(null);
   const [posAudio, setPosAudio] = useState(0);
-  const src = sesion && !sesion.audioSrc ? srcSesion(sesion) : '';
-  const contar = !!sesion?.escucha;
-  const sc = useSoundcloudWidget(contar && /w\.soundcloud\.com/.test(src) ? iframe : null);
-  const mx = useMixcloudWidget(contar && /mixcloud\.com/.test(src) ? iframe : null);
-  const ht = useHearthisWidget(contar && /hearthis\.at/.test(src) ? iframe : null);
-  const externo = /w\.soundcloud\.com/.test(src) ? sc : /mixcloud\.com/.test(src) ? mx : /hearthis\.at/.test(src) ? ht : null;
-  useContadorEscucha(
-    sesion?.escucha?.djUserId,
-    sesion?.escucha?.setUrl ?? '',
-    sesion?.audioSrc ? sonando : !!externo?.sonando,
-    sesion?.audioSrc ? posAudio : (externo?.posicion ?? 0),
-  );
 
   const reproducir = useCallback((s: Sesion) => {
     setSesion(prev => (prev && claveSesion(prev) === claveSesion(s) ? prev : s));
@@ -130,6 +116,12 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
   return (
     <ReproductorCtx.Provider value={valor}>
       {children}
+      {sesion?.escucha && (
+        <Suspense fallback={null}>
+          <ContadorBarra djUserId={sesion.escucha.djUserId} setUrl={sesion.escucha.setUrl}
+            src={sesion.audioSrc ? '' : srcSesion(sesion)} iframe={iframe} sonandoAudio={sonando} posAudio={posAudio} />
+        </Suspense>
+      )}
       {sesion && compacta && (
         <div role="region" aria-label="Reproductor de sesiones"
           className="fixed left-0 right-0 z-[60] flex items-center gap-3 px-3"
