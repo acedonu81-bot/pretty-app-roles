@@ -18,7 +18,9 @@ import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import { compararDirectorio } from '@/lib/dailyRotation';
-import { expandRole, canonicalRole, passesPhotoGate, DJ_GENRES } from '@/lib/constants';
+import { puestosPorDj, subirPodio, type Puesto } from '@/lib/podio';
+import MedallaTarjeta, { ANILLO_PODIO } from '@/components/MedallaTarjeta';
+import { expandRole, canonicalRole, passesPhotoGate, PHOTO_GATE_OR, DJ_GENRES } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
 import FollowButton from '@/components/FollowButton';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
@@ -435,8 +437,13 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
     // DREAMS, 12 sep 2026, salia listado en /magos siendo una empresa).
     .neq('role', 'empresario')
     .not('display_name', 'is', null)
+    // La foto se filtra AQUÍ, antes del límite (10 nov 2026). Antes se pedían
+    // los 60 de más score y la foto se miraba después: con 88 perfiles de DJ,
+    // 14 DJs con foto y score 0 (los recién llegados, como Dj Pele) no salían
+    // nunca en /directorio/dj. El límite queda holgado sobre el inventario.
+    .or(PHOTO_GATE_OR)
     .order('score', { ascending: false })
-    .limit(60) as any;
+    .limit(300) as any;
 
   // Emergentes: mismo criterio que DirectoryView.tsx (dashboard). 'only' aísla
   // el directorio público /directorio/emergentes, 'exclude' saca a los
@@ -558,8 +565,7 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
 // slug 'fotografo' — lo publicaban los breadcrumbs de PublicProfile) pintaba
 // en silencio el directorio de DJs con la URL equivocada. Se redirige al slug
 // real. Va en un componente aparte para no romper el orden de hooks.
-function PodioDirectorio() {
-  const podio = usePodioSets();
+function PodioDirectorio({ podio }: { podio: ReturnType<typeof usePodioSets> }) {
   if (!podio.length) return null;
   return <div className="mt-10"><PodioSets podio={podio} /></div>;
 }
@@ -654,14 +660,18 @@ function DirectorioPublicoContenido() {
     gcTime: 10 * 60_000,
   });
 
+  // DJs con un set en el podio de los más escuchados: arriba y con medalla.
+  const podio = usePodioSets();
+  const puestos = useMemo(() => (config.dbRole === 'dj' ? puestosPorDj(podio) : new Map<string, Puesto>()), [podio, config.dbRole]);
+
   const profiles = useMemo(
-    () => (ratings
+    () => subirPodio(ratings
       ? baseProfiles.map((p: any) => {
           const r = ratings[p.user_id];
           return r ? { ...p, avgRating: r.avg, reviewCount: r.count } : p;
         })
-      : baseProfiles),
-    [baseProfiles, ratings],
+      : baseProfiles, (p: any) => p.user_id, puestos),
+    [baseProfiles, ratings, puestos],
   );
 
   const canonical = `https://xpeak.es/directorio/${rol ?? 'dj'}`;
@@ -921,12 +931,14 @@ function DirectorioPublicoContenido() {
           )}
 
           {!fetchError && !loading && profiles.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ${puestos.size ? 'gap-y-7 pt-4' : ''}`}>
               {profiles.map((p, i) => (
-                <div key={p.user_id} className="rounded-2xl overflow-hidden flex flex-col bg-white"
+                <div key={p.user_id} className="relative flex flex-col">
+                {puestos.get(p.user_id) && <MedallaTarjeta puesto={puestos.get(p.user_id)!} />}
+                <div className="rounded-2xl overflow-hidden flex flex-col flex-1 bg-white"
                   style={{
                     border: '1px solid rgba(0,0,0,0.12)',
-                    boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
+                    boxShadow: puestos.get(p.user_id) ? ANILLO_PODIO[puestos.get(p.user_id)!] : '0 2px 12px rgba(0,0,0,0.1)',
                   }}>
 
                   {/* Foto — tall on mobile (3:4), wide on desktop (4:3) */}
@@ -1131,6 +1143,7 @@ function DirectorioPublicoContenido() {
                     </div>
                   </div>
                 </div>
+                </div>
               ))}
             </div>
           )}
@@ -1146,7 +1159,7 @@ function DirectorioPublicoContenido() {
           {/* Podio de los sets más escuchados (perfil de DJ, fase 3, 1 nov 2026).
               Debajo del listado y no arriba: llega después de cargar y, arriba,
               empujaría las tarjetas (el CLS que ya se arregló el 15 oct). */}
-          {config.dbRole === 'dj' && <PodioDirectorio />}
+          {config.dbRole === 'dj' && <PodioDirectorio podio={podio} />}
 
           {/* CTA profesional */}
           <div className="mt-16 p-6 rounded-2xl text-center" style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.08),rgba(249,115,22,0.06))', border: '1px solid rgba(212,175,55,0.2)' }}>

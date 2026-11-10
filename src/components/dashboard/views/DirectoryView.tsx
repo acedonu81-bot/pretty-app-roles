@@ -11,6 +11,9 @@ import { ROLE_ES, unidadTarifa } from '@/lib/constants';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { expandRole, PHOTO_GATE_OR } from '@/lib/constants';
 import { compararDirectorio } from '@/lib/dailyRotation';
+import { usePodioSets } from '@/hooks/usePodioSets';
+import { puestosPorDj, subirPodio, type Puesto } from '@/lib/podio';
+import MedallaTarjeta, { ANILLO_PODIO } from '@/components/MedallaTarjeta';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
 import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
@@ -277,7 +280,11 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     gcTime: 10 * 60_000,
   });
 
-  const filteredProfiles = realProfiles.filter(p => {
+  // DJs con un set en el podio de los más escuchados: arriba y con medalla (10 nov 2026).
+  const podio = usePodioSets();
+  const puestos = role === 'dj' ? puestosPorDj(podio) : new Map<string, Puesto>();
+
+  const filteredProfiles = subirPodio(realProfiles.filter(p => {
     if (searchQuery?.trim()) {
       // Incluye los estilos (badges) y no depende del orden ni de las tildes:
       // "house flamenco" encuentra a quien tiene "Flamenco House" (20 oct 2026).
@@ -293,7 +300,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
       if (!cumple) return false;
     }
     return true;
-  });
+  }), p => p.userId, puestos);
 
   // Se registra la búsqueda 900 ms después de la última tecla: sin esperar,
   // "camarero" generaría 8 eventos (uno por letra) y el informe de términos
@@ -377,9 +384,11 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     setLeadStatus('success');
   };
 
-  const gridClass = wideCards
+  const gridClass = (wideCards
     ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5'
-    : 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3';
+    : 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3')
+    // Hueco para la medalla, que cuelga por encima de la tarjeta.
+    + (puestos.size ? ' gap-y-7 pt-4' : '');
 
   // Gesto de pull-to-refresh: solo se arma cuando el scroll está en el tope
   // (pullStartY != null), evita disparar durante scroll normal hacia abajo.
@@ -724,10 +733,19 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         </div>
       ) : (
       <div className={gridClass}>
-        {filteredProfiles.map(p => (
-          <ProfileCard key={p.id} profile={p} showPortfolio={wideCards} onMessage={onMessage}
-            onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
-        ))}
+        {filteredProfiles.map(p => {
+          const puesto = p.userId ? puestos.get(p.userId) : undefined;
+          const tarjeta = (
+            <ProfileCard key={p.id} profile={p} showPortfolio={wideCards} onMessage={onMessage}
+              onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
+          );
+          return puesto ? (
+            <div key={p.id} className="relative rounded-2xl" style={{ boxShadow: ANILLO_PODIO[puesto] }}>
+              <MedallaTarjeta puesto={puesto} />
+              {tarjeta}
+            </div>
+          ) : tarjeta;
+        })}
       </div>
       )}
 
