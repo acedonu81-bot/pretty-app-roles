@@ -24,9 +24,9 @@ const MedallaTarjeta = ({ puesto }: { puesto: Puesto }) => {
       </div>
       <span className="-mt-2 px-2.5 py-0.5 rounded-full text-[0.68rem] font-black whitespace-nowrap"
         style={{
-          background: `linear-gradient(180deg, ${m.claro} 0%, ${m.medio} 100%)`,
-          color: puesto === 2 ? '#2B3138' : '#fff',
-          textShadow: puesto === 2 ? 'none' : `0 1px 1px ${m.borde}`,
+          // Letra oscura sobre el metal claro: el blanco sobre dorado no se leía.
+          background: `linear-gradient(180deg, ${m.luz} 0%, ${m.claro} 100%)`,
+          color: m.hundido,
           border: `1px solid ${m.borde}`,
           boxShadow: '0 3px 8px rgba(46,32,6,0.25)',
         }}>
