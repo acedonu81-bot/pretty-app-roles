@@ -25,7 +25,7 @@ const MedallaBrillante = ({ puesto, tam, id }: { puesto: 1 | 2 | 3; tam: number;
     <svg width={tam} height={tam} viewBox="0 0 72 72" role="img" aria-label={`Medalla de ${nombre}: puesto ${puesto}`}>
       <defs>
         <radialGradient id={`disco-${id}`} cx="35%" cy="28%" r="80%">
-          <stop offset="0" stopColor={m.luz} />
+          <stop offset="0" stopColor={m.claro} />
           <stop offset="0.35" stopColor={m.claro} />
           <stop offset="0.75" stopColor={m.medio} />
           <stop offset="1" stopColor={m.oscuro} />
@@ -39,7 +39,7 @@ const MedallaBrillante = ({ puesto, tam, id }: { puesto: 1 | 2 | 3; tam: number;
       <circle cx="36" cy="36" r="33" fill={`url(#aro-${id})`} />
       <circle cx="36" cy="36" r="27.5" fill={`url(#disco-${id})`} stroke={m.borde} strokeOpacity="0.45" strokeWidth="1" />
       {/* Reflejo */}
-      <ellipse cx="27" cy="22" rx="13" ry="6.5" fill="#fff" opacity="0.55" transform="rotate(-28 27 22)" />
+      <ellipse cx="27" cy="22" rx="11" ry="5" fill="#fff" opacity="0.28" transform="rotate(-28 27 22)" />
       {/* La plata es clara: número oscuro con luz debajo; oro y bronce, blanco con sombra. */}
       <text x="36" y="47.5" textAnchor="middle" fontSize="30" fontWeight="900" fill={puesto === 2 ? '#fff' : m.borde} opacity={puesto === 2 ? 0.9 : 0.55}
         style={{ fontFamily: 'inherit' }} transform="translate(0 1.5)">{puesto}</text>
