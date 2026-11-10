@@ -2,7 +2,6 @@ import { useState, useMemo } from 'react';
 import { apareceEnRol } from '@/lib/rolesVisibles';
 import { ALL_CITIES } from '@/lib/regions';
 import { useParams, Navigate, useSearchParams, useLocation } from 'react-router-dom';
-import PodioSets from '@/components/PodioSets';
 import { usePodioSets } from '@/hooks/usePodioSets';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
@@ -565,10 +564,6 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
 // slug 'fotografo' — lo publicaban los breadcrumbs de PublicProfile) pintaba
 // en silencio el directorio de DJs con la URL equivocada. Se redirige al slug
 // real. Va en un componente aparte para no romper el orden de hooks.
-function PodioDirectorio({ podio }: { podio: ReturnType<typeof usePodioSets> }) {
-  if (!podio.length) return null;
-  return <div className="mt-10"><PodioSets podio={podio} /></div>;
-}
 
 export default function DirectorioPublico() {
   const { rol } = useParams<{ rol: string }>();
@@ -1156,10 +1151,6 @@ function DirectorioPublicoContenido() {
             <GhostProfileCards role={config.dbRole} className="mt-6" />
           )}
 
-          {/* Podio de los sets más escuchados (perfil de DJ, fase 3, 1 nov 2026).
-              Debajo del listado y no arriba: llega después de cargar y, arriba,
-              empujaría las tarjetas (el CLS que ya se arregló el 15 oct). */}
-          {config.dbRole === 'dj' && <PodioDirectorio podio={podio} />}
 
           {/* CTA profesional */}
           <div className="mt-16 p-6 rounded-2xl text-center" style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.08),rgba(249,115,22,0.06))', border: '1px solid rgba(212,175,55,0.2)' }}>
