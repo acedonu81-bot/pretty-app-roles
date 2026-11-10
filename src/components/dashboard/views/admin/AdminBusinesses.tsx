@@ -49,11 +49,21 @@ const AdminBusinesses = () => {
       // cualquier profesional vía API directa). Este panel es admin-only
       // (AdminGuard en Dashboard.tsx), así que lee el email vía RPC dedicada
       // que comprueba el rol server-side antes de devolverlo.
-      const { data: emailRows } = await (supabase.rpc as any)('profile_emails_for_admin', { p_user_ids: ids });
+      // El teléfono igual: vive en profile_private_data (auditoría 10 nov 2026).
+      const [{ data: emailRows }, { data: phoneRows }] = await Promise.all([
+        (supabase.rpc as any)('profile_emails_for_admin', { p_user_ids: ids }),
+        (supabase.rpc as any)('profile_phones_for_admin', { p_user_ids: ids }),
+      ]);
       const emailByUserId = new Map(
         ((emailRows ?? []) as { user_id: string; email: string | null }[]).map(r => [r.user_id, r.email])
       );
-      businesses.forEach(b => { b.email = emailByUserId.get(b.user_id) ?? null; });
+      const phoneByUserId = new Map(
+        ((phoneRows ?? []) as { user_id: string; phone: string | null }[]).map(r => [r.user_id, r.phone])
+      );
+      businesses.forEach(b => {
+        b.email = emailByUserId.get(b.user_id) ?? null;
+        b.phone = phoneByUserId.get(b.user_id) ?? null;
+      });
       // event_requests va aparte: las ofertas publicadas desde Flash Booking
       // viven en su propia tabla y sin esto un organizador con una oferta viva
       // salía como "Inactivo" con 0 en todo (caso Burger Gourmet Fest, 10 sep).

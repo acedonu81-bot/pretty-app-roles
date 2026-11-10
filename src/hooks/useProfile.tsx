@@ -229,11 +229,20 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
 
     if (!rows || rows.length === 0) { setLoading(false); return; }
 
+    // El teléfono vive en profile_private_data (solo lo lee su dueño): en
+    // profiles se quedaba legible sin login por la API (auditoría 10 nov 2026).
+    const { data: privado } = await supabase
+      .from('profile_private_data' as any)
+      .select('phone')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
     // Find primary, fallback to first
     const primary = (rows.find((r: any) => r.is_primary) ?? rows[0]) as any;
     setProfileId(primary.id);
     setData({
       ...primary,
+      phone: (privado as { phone?: string | null } | null)?.phone ?? null,
       roles: (primary.roles?.length ? primary.roles : [primary.role]),
       // Fallback si la migración de privacidad aún no está aplicada.
       is_public: primary.is_public ?? true,
