@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { esLlamadaInterna, noAutorizado } from '../_shared/soloInterno.ts';
 import { isDemoAccount } from './isDemoAccount.ts';
 
 // Sin esto el aviso de "mañana tienes X" solo llegaba por email — en la app
@@ -19,6 +20,8 @@ const corsHeaders = {
 // Designed to be called daily via Supabase cron.
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  // Solo el cron (secreto interno) puede lanzar esto, ver _shared/soloInterno.ts.
+  if (!esLlamadaInterna(req)) return noAutorizado();
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
