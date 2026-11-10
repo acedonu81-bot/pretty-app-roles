@@ -155,10 +155,10 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
   const anclar = () => {
     if (esArchivo) {
       audioRef.current?.pause();
-      reproducir({ url, audioSrc: url, titulo, subtitulo: `${autor} · sigue sonando mientras navegas` });
+      reproducir({ url, audioSrc: url, titulo, subtitulo: `${autor} · sigue sonando mientras navegas`, escucha: djUserId ? { djUserId, setUrl: url } : undefined });
     } else if (embedSrc) {
       setScMontado(false);
-      reproducir({ url, embedSrc, titulo, subtitulo: `${autor} · sigue sonando mientras navegas` });
+      reproducir({ url, embedSrc, titulo, subtitulo: `${autor} · sigue sonando mientras navegas`, escucha: djUserId ? { djUserId, setUrl: url } : undefined });
     }
   };
 

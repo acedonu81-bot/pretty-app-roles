@@ -1,4 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useSoundcloudWidget } from '@/hooks/useSoundcloudWidget';
+import { useMixcloudWidget } from '@/hooks/useMixcloudWidget';
+import { useHearthisWidget } from '@/hooks/useHearthisWidget';
+import { useContadorEscucha } from '@/hooks/useContadorEscucha';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronUp, Pause, Play, X } from 'lucide-react';
 
@@ -16,7 +20,9 @@ import { ChevronDown, ChevronUp, Pause, Play, X } from 'lucide-react';
 // url = página de SoundCloud (concurso) o, con embedSrc, el iframe ya resuelto de
 // cualquier plataforma (sesiones de perfiles: SoundCloud, Mixcloud, HearThis).
 // audioSrc = archivo de audio directo (sesiones subidas a XPEAK): suena con un <audio> propio.
-export type Sesion = { url: string; titulo: string; subtitulo?: string; embedSrc?: string; audioSrc?: string; alto?: number };
+// escucha = de quién es el set (perfil de DJ). Con él, la barra también cuenta
+// escuchas de 5 minutos (10 nov 2026: antes solo contaban en la ficha del set).
+export type Sesion = { url: string; titulo: string; subtitulo?: string; embedSrc?: string; audioSrc?: string; alto?: number; escucha?: { djUserId: string; setUrl: string } };
 export const claveSesion = (s: Sesion) => s.audioSrc ?? s.embedSrc ?? s.url;
 interface Ctx { sesion: Sesion | null; sonando: boolean; reproducir: (s: Sesion) => void; cerrar: () => void }
 
@@ -51,6 +57,22 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
   const [minimizado, setMinimizado] = useState(false);
   const navigate = useNavigate();
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // ── Escuchas desde la barra (10 nov 2026) ──
+  const [iframe, setIframe] = useState<HTMLIFrameElement | null>(null);
+  const [posAudio, setPosAudio] = useState(0);
+  const src = sesion && !sesion.audioSrc ? srcSesion(sesion) : '';
+  const contar = !!sesion?.escucha;
+  const sc = useSoundcloudWidget(contar && /w\.soundcloud\.com/.test(src) ? iframe : null);
+  const mx = useMixcloudWidget(contar && /mixcloud\.com/.test(src) ? iframe : null);
+  const ht = useHearthisWidget(contar && /hearthis\.at/.test(src) ? iframe : null);
+  const externo = /w\.soundcloud\.com/.test(src) ? sc : /mixcloud\.com/.test(src) ? mx : /hearthis\.at/.test(src) ? ht : null;
+  useContadorEscucha(
+    sesion?.escucha?.djUserId,
+    sesion?.escucha?.setUrl ?? '',
+    sesion?.audioSrc ? sonando : !!externo?.sonando,
+    sesion?.audioSrc ? posAudio : (externo?.posicion ?? 0),
+  );
 
   const reproducir = useCallback((s: Sesion) => {
     setSesion(prev => (prev && claveSesion(prev) === claveSesion(s) ? prev : s));
@@ -131,7 +153,7 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
           </button>
           <audio key={sesion.audioSrc} ref={audioRef} src={sesion.audioSrc} autoPlay preload="metadata"
             onPlay={() => setSonando(true)} onPause={() => setSonando(false)}
-            onTimeUpdate={e => setProgreso(e.currentTarget.duration ? Math.round((e.currentTarget.currentTime / e.currentTarget.duration) * 1000) / 10 : 0)}
+            onTimeUpdate={e => { setPosAudio(e.currentTarget.currentTime); setProgreso(e.currentTarget.duration ? Math.round((e.currentTarget.currentTime / e.currentTarget.duration) * 1000) / 10 : 0); }}
             onEnded={() => { setSonando(false); setProgreso(0); }} />
         </div>
       )}
@@ -154,7 +176,7 @@ export function ReproductorConcursoProvider({ children }: { children: ReactNode 
               <X size={16} />
             </button>
           </div>
-          <iframe key={claveSesion(sesion)} title={sesion.titulo} src={srcSesion(sesion)} allow="autoplay; encrypted-media"
+          <iframe ref={setIframe} key={claveSesion(sesion)} title={sesion.titulo} src={srcSesion(sesion)} allow="autoplay; encrypted-media"
             width="100%" height={Math.min(altoIframe, 166)}
             // Minimizado: se saca de pantalla SIN desmontarlo ni ocultarlo (display:none o 1 px
             // cortan el audio / el widget no dibuja), así sigue sonando.

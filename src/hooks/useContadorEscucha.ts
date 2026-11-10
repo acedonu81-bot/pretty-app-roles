@@ -11,6 +11,9 @@ export const useContadorEscucha = (djUserId: string | undefined, setUrl: string,
   const anterior = useRef<number | null>(null);
   const enviada = useRef(false);
 
+  // La barra de abajo cambia de set sin desmontarse: cada set empieza de cero.
+  useEffect(() => { acumulado.current = 0; anterior.current = null; enviada.current = false; }, [setUrl, djUserId]);
+
   useEffect(() => {
     if (!sonando) { anterior.current = null; return; }
     acumulado.current = sumarEscuchado(acumulado.current, anterior.current, posicion);
