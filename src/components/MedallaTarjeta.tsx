@@ -15,23 +15,29 @@ export const ANILLO_PODIO: Record<Puesto, string> = {
   3: '0 0 0 3px #C9701F, 0 0 0 5px rgba(242,167,102,0.45), 0 12px 34px rgba(201,112,31,0.42)',
 };
 
+// 11 nov 2026: la medalla colgada de la esquina pisaba las etiquetas de la foto
+// (Nuevo, Disponible, Seguir). Ahora es una pestaña fina de una sola línea,
+// apoyada sobre el aro del podio, fuera de la foto. Hay que dejar ~38 px de
+// hueco encima de la tarjeta (gap-y / mt en la rejilla).
 const MedallaTarjeta = ({ puesto }: { puesto: Puesto }) => {
   const m = METAL_FUERTE[puesto];
   return (
-    <div className="absolute -top-5 -right-2 sm:-right-3 z-30 flex flex-col items-center pointer-events-none select-none origin-top-right scale-[0.85] sm:scale-100">
-      <div style={{ filter: 'drop-shadow(0 4px 8px rgba(46,32,6,0.3))' }}>
-        <Medalla puesto={puesto} tam={58} brillante />
-      </div>
-      <span className="-mt-2 px-2.5 py-0.5 rounded-full text-[0.68rem] font-black whitespace-nowrap"
+    <div className="absolute right-4 sm:right-5 z-30 pointer-events-none select-none"
+      style={{ bottom: 'calc(100% + 4px)' }}>
+      <div className="flex items-center gap-1.5 pl-1 pr-3 rounded-t-xl"
         style={{
-          // Letra oscura sobre el metal claro: el blanco sobre dorado no se leía.
           background: `linear-gradient(180deg, ${m.luz} 0%, ${m.claro} 100%)`,
-          color: m.hundido,
           border: `1px solid ${m.borde}`,
-          boxShadow: '0 3px 8px rgba(46,32,6,0.25)',
+          borderBottom: 'none',
+          boxShadow: '0 -3px 8px rgba(46,32,6,0.18)',
         }}>
-        {TEXTO[puesto]}
-      </span>
+        <div className="-my-0.5" style={{ filter: 'drop-shadow(0 2px 3px rgba(46,32,6,0.3))' }}>
+          <Medalla puesto={puesto} tam={30} brillante />
+        </div>
+        <span className="text-[0.68rem] font-black whitespace-nowrap" style={{ color: m.hundido }}>
+          {TEXTO[puesto]}
+        </span>
+      </div>
     </div>
   );
 };

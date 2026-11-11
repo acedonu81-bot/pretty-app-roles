@@ -764,7 +764,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
               onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
           );
           return puesto ? (
-            <div key={p.id} className="relative rounded-2xl" style={{ boxShadow: ANILLO_PODIO[puesto] }}>
+            <div key={p.id} className="relative rounded-2xl mt-10" style={{ boxShadow: ANILLO_PODIO[puesto] }}>
               <MedallaTarjeta puesto={puesto} />
               {tarjeta}
             </div>

@@ -951,7 +951,7 @@ function DirectorioPublicoContenido() {
           )}
 
           {!fetchError && !loading && profiles.length > 0 && (
-            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ${puestos.size ? 'gap-y-7 pt-4' : ''}`}>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ${puestos.size ? 'gap-y-12 pt-10' : ''}`}>
               {profiles.map((p, i) => (
                 <div key={p.user_id} className="relative flex flex-col">
                 {puestos.get(p.user_id) && <MedallaTarjeta puesto={puestos.get(p.user_id)!} />}
