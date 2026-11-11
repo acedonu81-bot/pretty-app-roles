@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Instagram, ArrowUpCircle, GraduationCap, FileEdit } from 'lucide-react';
+import { Instagram, ArrowUpCircle, GraduationCap, FileEdit, ArrowDownCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -62,6 +62,44 @@ const AdminEmergentes = () => {
     setProfiles(prev => prev.map(u => u.id === p.id ? { ...u, emergente_sub_nivel: nuevo, emergente_verified_at: new Date().toISOString() } : u));
   };
 
+  // Mover a Emergentes desde aquí (11 nov 2026): hasta ahora solo entraba quien
+  // se marcaba a sí mismo en Ajustes. El usuario escucha la sesión y decide.
+  const [busca, setBusca] = useState('');
+  const [candidatos, setCandidatos] = useState<{ id: string; user_id: string; display_name: string; zone: string | null }[]>([]);
+  useEffect(() => {
+    const q = busca.trim();
+    if (q.length < 2) { setCandidatos([]); return; }
+    const t = setTimeout(async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('id, user_id, display_name, zone')
+        .or('role.eq.dj,roles.cs.{dj}')
+        .neq('role', 'empresario')
+        .is('experience_level', null)
+        .ilike('display_name', `%${q}%`)
+        .limit(10);
+      setCandidatos((data ?? []) as typeof candidatos);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [busca]);
+
+  const moverAEmergentes = async (c: { id: string; display_name: string }) => {
+    if (!window.confirm(`¿Pasar a ${c.display_name || 'este perfil'} a DJs Emergentes? Sale del directorio de DJs y pierde el Flash Booking directo hasta que lo gradúes.`)) return;
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        experience_level: 'emergente',
+        emergente_sub_nivel: 'principiante',
+        emergente_verified_at: new Date().toISOString(),
+        emergente_verified_by: (await supabase.auth.getUser()).data.user?.id ?? null,
+      })
+      .eq('id', c.id);
+    if (error) { toast.error('Error al mover a Emergentes'); return; }
+    toast.success(`${c.display_name || 'Perfil'} pasa a DJs Emergentes`);
+    setBusca('');
+    fetchProfiles();
+  };
+
   const graduate = async (p: EmergenteProfile) => {
     if (!window.confirm(`¿Graduar a ${p.display_name || 'este perfil'} a profesional? Saldrá del directorio DJs Emergentes y entrará en el directorio normal.`)) return;
     const { error } = await supabase
@@ -86,6 +124,26 @@ const AdminEmergentes = () => {
         <p className="text-xs text-muted-foreground mt-1">
           Revisar Instagram y sesiones subidas antes de subir de nivel o graduar a profesional. El ascenso siempre es manual, nunca automático por años declarados.
         </p>
+        <div className="mt-3 relative max-w-sm">
+          <input value={busca} onChange={e => setBusca(e.target.value)}
+            placeholder="Buscar DJ para pasar a Emergentes"
+            className="w-full text-sm px-3 py-2 rounded-lg bg-white"
+            style={{ border: '1px solid rgba(0,0,0,0.12)' }} />
+          {candidatos.length > 0 && (
+            <ul className="absolute z-10 left-0 right-0 mt-1 rounded-lg bg-white overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.12)', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}>
+              {candidatos.map(c => (
+                <li key={c.id} className="flex items-center justify-between gap-2 px-3 py-2 text-sm" style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
+                  <span className="truncate" style={{ color: '#1a1a1a' }}>{c.display_name} <span className="text-muted-foreground">· {c.zone || 'Sin zona'}</span></span>
+                  <button onClick={() => moverAEmergentes(c)}
+                    className="flex-shrink-0 inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-md"
+                    style={{ background: 'rgba(255,188,0,0.12)', color: '#b45309' }}>
+                    <ArrowDownCircle size={12} /> Pasar a Emergentes
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
       {loading ? (
