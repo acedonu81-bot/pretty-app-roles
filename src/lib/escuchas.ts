@@ -28,11 +28,9 @@ export const idVisitante = (): string => {
   }
 };
 
-/** Navegadores del equipo (?interno=1) y desarrollo local: no cuentan. */
+/** Solo automatización y desarrollo local no cuentan; el equipo escucha como cualquiera. */
 export const navegadorNoCuenta = (): boolean => {
   try {
-    if (localStorage.getItem('xpeak_interno') === '1') return true;
-    if (new URLSearchParams(location.search).get('interno') === '1') return true;
     if (navigator.webdriver) return true;
     return /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
   } catch {
