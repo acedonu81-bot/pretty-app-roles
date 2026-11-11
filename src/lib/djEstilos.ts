@@ -9,18 +9,18 @@ export interface FamiliaEstilo { label: string; estilos: string[] }
 export const FAMILIAS_ESTILO: FamiliaEstilo[] = [
   { label: 'Comercial', estilos: ['Comercial', 'Hits actuales', 'Top 40', 'Pop Dance', 'Hit del momento', 'Todo tipo de música', 'Pop Rock'] },
   { label: 'Remember', estilos: ['Remember'] },
-  { label: 'House', estilos: ['House', 'Tech House', 'Deep House', 'Afro House', 'Organic House', 'Funky House', 'Tribal House', 'Progressive House', 'Latin House', 'Flamenco House'] },
+  { label: 'House', estilos: ['House', 'Tech House', 'Deep House', 'Afro House', 'Organic House', 'Funky House', 'Tribal House', 'Progressive House', 'Progressive', 'Latin House', 'Flamenco House'] },
   { label: 'Techno', estilos: ['Techno', 'Hard Techno', 'Melodic Techno', 'Techno Flamenco', 'Minimal', 'Industrial', 'Dub Techno'] },
   { label: 'Reggaetón y latino', estilos: ['Reggaetón', 'Dembow', 'Dancehall', 'Moombahton', 'Urban', 'Trap', 'Hip Hop', 'R&B', 'Afrobeats', 'Amapiano', 'Salsa', 'Bachata', 'Merengue'] },
   { label: 'Pachanga y verbenas', estilos: ['Pachanga', 'Fiestas de pueblo', 'Verbenas'] },
-  { label: 'Trance', estilos: ['Trance', 'Progressive Trance', 'Psytrance', 'Progressive'] },
+  { label: 'Trance', estilos: ['Trance', 'Progressive Trance', 'Psytrance'] },
   { label: 'EDM y electro', estilos: ['EDM', 'Electro', 'Synthwave', 'Breakbeat', 'Drum & Bass', 'Dubstep', 'Jungle', 'UK Garage'] },
   { label: 'Hardstyle y hardcore', estilos: ['Hardstyle', 'Hardcore'] },
   { label: 'Disco y funk', estilos: ['Disco', 'Nu-Disco', 'Funk'] },
   { label: 'Chill e indie', estilos: ['Chillout', 'Ambient', 'Downtempo', 'Indie'] },
 ];
 
-const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 
 export function familiaPorLabel(label: string | null | undefined): FamiliaEstilo | undefined {
   if (!label) return undefined;
@@ -35,7 +35,9 @@ export function encajaEnFamilia(genres: string[] | null | undefined, familia: Fa
   return genres.some(g => claves.has(norm(g)));
 }
 
-/** Grafías a pedir a la BD (overlaps es exacto): original, MAYÚSCULAS y minúsculas. */
+/** Grafías a pedir a la BD (overlaps es exacto): original, MAYÚSCULAS y
+ *  minúsculas, con y sin tildes ("Reggaeton" y "Reggaetón"). */
 export function grafiasFamilia(familia: FamiliaEstilo): string[] {
-  return Array.from(new Set(familia.estilos.flatMap(e => [e, e.toUpperCase(), e.toLowerCase()])));
+  const sinTilde = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return Array.from(new Set(familia.estilos.flatMap(e => [e, sinTilde(e)]).flatMap(e => [e, e.toUpperCase(), e.toLowerCase()])));
 }
