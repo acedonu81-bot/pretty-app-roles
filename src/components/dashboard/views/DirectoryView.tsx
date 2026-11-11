@@ -395,7 +395,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5'
     : 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3')
     // Hueco para la medalla, que cuelga por encima de la tarjeta.
-    + (puestos.size ? ' gap-y-7 pt-4' : '');
+    + (puestos.size ? ' gap-y-12 pt-10' : '');
 
   // Gesto de pull-to-refresh: solo se arma cuando el scroll está en el tope
   // (pullStartY != null), evita disparar durante scroll normal hacia abajo.
@@ -764,7 +764,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
               onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
           );
           return puesto ? (
-            <div key={p.id} className="relative rounded-2xl mt-10" style={{ boxShadow: ANILLO_PODIO[puesto] }}>
+            <div key={p.id} className="relative rounded-2xl flex flex-col [&>*:last-child]:flex-1" style={{ boxShadow: ANILLO_PODIO[puesto] }}>
               <MedallaTarjeta puesto={puesto} />
               {tarjeta}
             </div>
