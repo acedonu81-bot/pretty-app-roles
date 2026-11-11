@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
 import { apareceEnRol } from '@/lib/rolesVisibles';
 import { ALL_CITIES } from '@/lib/regions';
+import { FAMILIAS_ESTILO, familiaPorLabel, grafiasFamilia } from '@/lib/djEstilos';
 import { useParams, Navigate, useSearchParams, useLocation } from 'react-router-dom';
 import { usePodioSets } from '@/hooks/usePodioSets';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users, X } from 'lucide-react';
+import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
@@ -455,7 +456,12 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   // en la busqueda de su ciudad grande sin falsear su ficha.
   if (city !== 'Todas') q = q.or(`zone.ilike.%${city}%,city_ref.eq.${city}`);
 
-  if (genero) q = q.overlaps('genres', variantesGenero(genero));
+  // Una familia del filtro (House, Comercial...) pide todos sus estilos; un
+  // estilo suelto (chips de /contratar-dj) sigue pidiendo sus grafías.
+  if (genero) {
+    const fam = familiaPorLabel(genero);
+    q = q.overlaps('genres', fam ? grafiasFamilia(fam) : variantesGenero(genero));
+  }
 
   // El toggle "Perfil público en el directorio" (Ajustes) debe tener efecto
   // real aquí. Se aplica como filtro de consulta y no en la RLS: 20260822d
@@ -809,18 +815,37 @@ function DirectorioPublicoContenido() {
             </div>
           </div>
 
-          {genero && (
-            <div className="-mt-4 mb-8 flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold" style={{ color: '#333' }}>Estilo:</span>
-              <button onClick={quitarGenero} aria-label={`Quitar el filtro ${genero}`}
-                className="inline-flex items-center gap-1.5 px-3.5 min-h-[40px] rounded-lg text-xs font-bold transition-all hover:opacity-80"
-                style={{ background: 'rgba(212,175,55,0.12)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.45)' }}>
-                {genero} <X size={12} />
-              </button>
-              {!loading && !fetchError && profiles.length > 0 && (
-                <span className="text-xs" style={{ color: '#4b5563' }}>
-                  {profiles.length} {profiles.length === 1 ? 'DJ' : 'DJs'}
-                </span>
+          {/* Filtro estilo (solo DJs, 11 nov 2026): siempre visible bajo Ciudad. */}
+          {config.dbRole === 'dj' && (
+            <div className="relative -mt-5 mb-8">
+              <div className="flex overflow-x-auto no-scrollbar gap-2 pb-1">
+                <span className="text-xs font-bold self-center flex-shrink-0" style={{ color: '#333' }}>Estilo:</span>
+                {[{ label: 'Todos' }, ...FAMILIAS_ESTILO, ...(genero && !familiaPorLabel(genero) ? [{ label: genero }] : [])].map(f => {
+                  const on = f.label === 'Todos' ? !genero : (genero ?? '').toLowerCase() === f.label.toLowerCase();
+                  return (
+                    <button key={f.label} aria-pressed={on}
+                      onClick={() => {
+                        if (f.label === 'Todos') { quitarGenero(); return; }
+                        const next = new URLSearchParams(searchParams);
+                        next.set('genero', f.label);
+                        setSearchParams(next, { replace: true });
+                      }}
+                      className="px-3.5 min-h-[40px] inline-flex items-center rounded-lg text-xs font-medium transition-all whitespace-nowrap flex-shrink-0"
+                      style={on
+                        ? { background: 'rgba(212,175,55,0.12)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.45)' }
+                        : { background: '#ffffff', color: '#222', border: '1px solid rgba(0,0,0,0.1)' }
+                      }>{f.label}</button>
+                  );
+                })}
+              </div>
+              <div className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-1 w-10 flex items-center justify-end"
+                style={{ background: 'linear-gradient(to right, transparent, #FFFFFF 70%)' }}>
+                <ChevronRight size={16} style={{ color: '#D4AF37' }} />
+              </div>
+              {genero && !loading && !fetchError && profiles.length > 0 && (
+                <p className="text-xs mt-2" style={{ color: '#4b5563' }}>
+                  {profiles.length} {profiles.length === 1 ? 'DJ' : 'DJs'} de {genero}
+                </p>
               )}
             </div>
           )}

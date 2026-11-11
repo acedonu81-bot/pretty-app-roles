@@ -26,6 +26,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 import { coincideBusqueda } from '@/lib/busquedaTexto';
+import { FAMILIAS_ESTILO, familiaPorLabel, encajaEnFamilia } from '@/lib/djEstilos';
 
 interface DirectoryViewProps {
   role: string;
@@ -261,6 +262,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
   const [filterSeekingPartner, setFilterSeekingPartner] = useState(false);
   const [filterDanceRole, setFilterDanceRole] = useState<'' | 'lead' | 'follow'>('');
   const [filterFood, setFilterFood] = useState<string[]>([]);
+  // Estilo de música (solo DJs, 11 nov 2026): '' = todos.
+  const [filterEstilo, setFilterEstilo] = useState('');
 
   const { data: realProfiles = [], isLoading: loadingProfiles, refetch: refetchProfiles } = useQuery({
     queryKey: ['directory-profiles', role, roles, filterRegion, experienceLevel],
@@ -292,6 +295,10 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     }
     if (filterFlash && !p.isFlashActive) return false;
     if (filterVerified && !p.isVerified) return false;
+    if (role === 'dj' && filterEstilo) {
+      const fam = familiaPorLabel(filterEstilo);
+      if (fam && !encajaEnFamilia(p.badges, fam)) return false;
+    }
     if (filterSeekingPartner && !p.seekingDancePartner) return false;
     if (filterDanceRole && p.danceRole !== filterDanceRole && p.danceRole !== 'ambos') return false;
     if (role === 'food-truck' && filterFood.length > 0) {
@@ -487,6 +494,23 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           active={filterRegion !== ALL_REGIONS_LABEL}
           className="flex-shrink-0 min-w-[150px] sm:flex-1 sm:min-w-[130px] max-w-[220px]"
         />
+        {role === 'dj' && (
+          <NightlifeSelect
+            value={filterEstilo}
+            onChange={(v) => { setFilterEstilo(v); if (v) void logEvent('cta_click', location.pathname, `filtro_estilo ${v}`); }}
+            options={[
+              { value: '', label: 'Todos los estilos' },
+              // Solo familias con algún DJ en el listado actual: sin callejones vacíos.
+              ...FAMILIAS_ESTILO
+                .map(f => ({ f, n: realProfiles.filter(p => encajaEnFamilia(p.badges, f)).length }))
+                .filter(x => x.n > 0 || x.f.label === filterEstilo)
+                .map(({ f, n }) => ({ value: f.label, label: `${f.label} (${n})` })),
+            ]}
+            placeholder="Todos los estilos"
+            active={!!filterEstilo}
+            className="flex-shrink-0 min-w-[150px] sm:flex-1 sm:min-w-[130px] max-w-[220px]"
+          />
+        )}
         <button
           onClick={() => setFilterFlash(v => !v)}
           className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0"
@@ -559,8 +583,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
             </button>
           );
         })}
-        {(filterRegion !== ALL_REGIONS_LABEL || filterFlash || filterVerified || filterSeekingPartner || filterFood.length > 0) && (
-          <button onClick={() => { setFilterRegion(ALL_REGIONS_LABEL); setPresetRegion(ALL_REGIONS_LABEL); setFilterFlash(false); setFilterVerified(false); setFilterSeekingPartner(false); setFilterDanceRole(''); setFilterFood([]); }}
+        {(filterRegion !== ALL_REGIONS_LABEL || filterFlash || filterVerified || filterSeekingPartner || filterFood.length > 0 || filterEstilo) && (
+          <button onClick={() => { setFilterRegion(ALL_REGIONS_LABEL); setPresetRegion(ALL_REGIONS_LABEL); setFilterFlash(false); setFilterVerified(false); setFilterSeekingPartner(false); setFilterDanceRole(''); setFilterFood([]); setFilterEstilo(''); }}
             className="text-xs font-bold px-2.5 py-1 rounded-full transition-all hover:opacity-70 flex-shrink-0"
             style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.08)' }}>
             Limpiar ✕
