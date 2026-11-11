@@ -11,8 +11,8 @@ interface Props { onNavigate?: (view: string) => void; onMessage?: (userId: stri
 const EmergentesView = ({ onNavigate, onMessage, searchQuery, onViewProfile }: Props) => (
   <DirectoryView
     role="dj"
-    title="DJs Emergentes"
-    subtitle="DJs que se están iniciando. Contacta por mensaje para conocerlos, sin Flash Booking directo mientras suben de nivel."
+    title="Cantera XPEAK"
+    subtitle="DJs que empiezan y tienen proyección. XPEAK escucha sus sesiones y los sube al directorio de DJs cuando su nivel lo demuestra. Contacta por mensaje."
     onNavigate={onNavigate}
     onMessage={onMessage}
     searchQuery={searchQuery}

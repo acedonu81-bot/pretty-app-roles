@@ -725,10 +725,10 @@ const ROUTES = [
   },
   {
     path: '/directorio/djs-emergentes',
-    title: 'DJs emergentes para eventos: Directorio XPEAK',
-    desc: 'Directorio de DJs emergentes en España: talento que se está iniciando, revisado por el equipo de XPEAK a medida que sube de nivel.',
-    ogTitle: 'DJs emergentes | XPEAK',
-    ogDesc: 'DJs que se están iniciando en España. Contacta por mensaje para conocer su trabajo.',
+    title: 'Cantera XPEAK: DJs emergentes para eventos',
+    desc: 'Cantera XPEAK: DJs emergentes en España con proyección. El equipo de XPEAK escucha sus sesiones y los sube al directorio profesional cuando su nivel lo demuestra.',
+    ogTitle: 'Cantera XPEAK | DJs emergentes',
+    ogDesc: 'DJs que empiezan y tienen proyección, revisados por XPEAK. Contacta por mensaje para conocer su trabajo.',
     ogType: 'website',
   },
   {

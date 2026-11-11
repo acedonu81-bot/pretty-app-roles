@@ -877,7 +877,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
               onChange={v => setLocalExperienceLevel(v === 'emergente' ? 'emergente' : null)}
               options={[
                 { value: 'profesional', label: 'Profesional' },
-                { value: 'emergente', label: 'Estoy empezando (DJs Emergentes)' },
+                { value: 'emergente', label: 'Estoy empezando (Cantera XPEAK)' },
               ]}
               active
             />
@@ -890,7 +890,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                     placeholder="ej. 1.5" className="nightlife-input text-base sm:text-sm w-full sm:w-40" />
                 </div>
                 <p className="text-[0.75rem] text-muted-foreground mt-2 leading-snug">
-                  Aparecerás en el directorio <strong>DJs Emergentes</strong>, separado del de profesionales. Sube tus sesiones y añade tu Instagram: un admin las revisa y así vas subiendo de nivel dentro de DJs Emergentes, hasta graduarte a profesional. El ascenso siempre lo confirma una persona, nunca es automático por los años que declares.
+                  Aparecerás en el directorio <strong>Cantera XPEAK</strong>, separado del de profesionales. Sube tus sesiones y añade tu Instagram: un admin las revisa y así vas subiendo de nivel dentro de DJs Emergentes, hasta graduarte a profesional. El ascenso siempre lo confirma una persona, nunca es automático por los años que declares.
                 </p>
                 <p className="text-[0.75rem] text-muted-foreground mt-2 leading-snug">
                   ¿Crees que ya estás listo para pasar a DJ confirmado? Ten tu foto, tu bio, tu Instagram y al menos 2 sesiones subidas, y escríbenos desde el chat de soporte para que revisemos tu ficha.

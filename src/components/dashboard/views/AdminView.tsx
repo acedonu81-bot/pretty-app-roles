@@ -32,7 +32,7 @@ const TABS = [
   { id: 'overview', label: 'General', icon: LayoutGrid },
   { id: 'users', label: 'Usuarios', icon: Users },
   { id: 'empresarios', label: 'Empresarios', icon: Building2 },
-  { id: 'emergentes', label: 'DJs Emergentes', icon: Sparkles },
+  { id: 'emergentes', label: 'Cantera XPEAK', icon: Sparkles },
   { id: 'concurso', label: 'Concurso DJ', icon: Trophy },
   { id: 'content', label: 'Reseñas', icon: MessageSquare },
   { id: 'feedback', label: 'Feedback', icon: MessageCircleQuestion },

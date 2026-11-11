@@ -49,7 +49,7 @@ const DIRECTORY_ITEMS: { id: string; label: string }[] = [
   { id: 'grupo-musical', label: 'Grupos Musicales' },
   { id: 'disco-movil', label: 'Disco Móvil' },
   { id: 'dj', label: 'DJs, Artistas & Música en Vivo' },
-  { id: 'emergentes', label: 'DJs Emergentes' },
+  { id: 'emergentes', label: 'Cantera XPEAK' },
   { id: 'staff', label: 'Sala & Barra' },
   { id: 'azafata', label: 'Azafatas' },
   { id: 'event_manager', label: 'Encargadas de Eventos' },

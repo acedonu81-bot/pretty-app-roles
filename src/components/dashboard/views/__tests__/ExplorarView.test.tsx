@@ -20,14 +20,14 @@ import ExplorarView from '../ExplorarView';
 const ordenMusica = () =>
   screen.getAllByRole('button', { name: /^Ver / })
     .map(b => b.getAttribute('aria-label')!.replace('Ver ', ''))
-    .filter(n => ['DJs & Artistas', 'Grupos Musicales', 'DJs Emergentes', 'Disco Móvil'].includes(n));
+    .filter(n => ['DJs & Artistas', 'Grupos Musicales', 'Cantera XPEAK', 'Disco Móvil'].includes(n));
 
 describe('ExplorarView: orden por número de profesionales', () => {
   beforeEach(() => { filas = []; });
 
   it('sin datos, Disco Móvil (vacía) queda a la derecha del todo en Música', () => {
     render(<ExplorarView />);
-    expect(ordenMusica()).toEqual(['DJs & Artistas', 'Grupos Musicales', 'DJs Emergentes', 'Disco Móvil']);
+    expect(ordenMusica()).toEqual(['DJs & Artistas', 'Grupos Musicales', 'Cantera XPEAK', 'Disco Móvil']);
   });
 
   it('cuando Disco Móvil tiene más perfiles que el resto, pasa a la izquierda', async () => {
@@ -39,7 +39,7 @@ describe('ExplorarView: orden por número de profesionales', () => {
     render(<ExplorarView />);
     await waitFor(() => expect(ordenMusica()[0]).toBe('Disco Móvil'));
     // dj 1, grupo-musical 1 (como oficio secundario), emergentes 0
-    expect(ordenMusica()).toEqual(['Disco Móvil', 'DJs & Artistas', 'Grupos Musicales', 'DJs Emergentes']);
+    expect(ordenMusica()).toEqual(['Disco Móvil', 'DJs & Artistas', 'Grupos Musicales', 'Cantera XPEAK']);
   });
 
   it('nunca oculta una categoría aunque tenga 0 perfiles', async () => {

@@ -84,7 +84,7 @@ const AdminEmergentes = () => {
   }, [busca]);
 
   const moverAEmergentes = async (c: { id: string; display_name: string }) => {
-    if (!window.confirm(`¿Pasar a ${c.display_name || 'este perfil'} a DJs Emergentes? Sale del directorio de DJs y pierde el Flash Booking directo hasta que lo gradúes.`)) return;
+    if (!window.confirm(`¿Pasar a ${c.display_name || 'este perfil'} a la Cantera XPEAK? Sale del directorio de DJs y pierde el Flash Booking directo hasta que lo gradúes.`)) return;
     const { error } = await supabase
       .from('profiles')
       .update({
@@ -94,14 +94,14 @@ const AdminEmergentes = () => {
         emergente_verified_by: (await supabase.auth.getUser()).data.user?.id ?? null,
       })
       .eq('id', c.id);
-    if (error) { toast.error('Error al mover a Emergentes'); return; }
-    toast.success(`${c.display_name || 'Perfil'} pasa a DJs Emergentes`);
+    if (error) { toast.error('Error al pasar a la Cantera'); return; }
+    toast.success(`${c.display_name || 'Perfil'} pasa a la Cantera XPEAK`);
     setBusca('');
     fetchProfiles();
   };
 
   const graduate = async (p: EmergenteProfile) => {
-    if (!window.confirm(`¿Graduar a ${p.display_name || 'este perfil'} a profesional? Saldrá del directorio DJs Emergentes y entrará en el directorio normal.`)) return;
+    if (!window.confirm(`¿Graduar a ${p.display_name || 'este perfil'} a profesional? Saldrá de la Cantera XPEAK y entrará en el directorio normal.`)) return;
     const { error } = await supabase
       .from('profiles')
       .update({
@@ -119,14 +119,14 @@ const AdminEmergentes = () => {
     <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)' }}>
       <div className="px-6 py-4" style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
         <h2 className="text-base font-bold" style={{ color: '#1a1a1a' }}>
-          DJs Emergentes <span className="text-muted-foreground">({profiles.length})</span>
+          Cantera XPEAK <span className="text-muted-foreground">({profiles.length})</span>
         </h2>
         <p className="text-xs text-muted-foreground mt-1">
           Revisar Instagram y sesiones subidas antes de subir de nivel o graduar a profesional. El ascenso siempre es manual, nunca automático por años declarados.
         </p>
         <div className="mt-3 relative max-w-sm">
           <input value={busca} onChange={e => setBusca(e.target.value)}
-            placeholder="Buscar DJ para pasar a Emergentes"
+            placeholder="Buscar DJ para pasar a la Cantera"
             className="w-full text-sm px-3 py-2 rounded-lg bg-white"
             style={{ border: '1px solid rgba(0,0,0,0.12)' }} />
           {candidatos.length > 0 && (
@@ -137,7 +137,7 @@ const AdminEmergentes = () => {
                   <button onClick={() => moverAEmergentes(c)}
                     className="flex-shrink-0 inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-md"
                     style={{ background: 'rgba(255,188,0,0.12)', color: '#b45309' }}>
-                    <ArrowDownCircle size={12} /> Pasar a Emergentes
+                    <ArrowDownCircle size={12} /> Pasar a la Cantera
                   </button>
                 </li>
               ))}
@@ -149,7 +149,7 @@ const AdminEmergentes = () => {
       {loading ? (
         <p className="text-sm text-center py-12 animate-pulse text-muted-foreground">Cargando...</p>
       ) : profiles.length === 0 ? (
-        <p className="text-sm text-center py-12 text-muted-foreground">No hay perfiles en DJs Emergentes.</p>
+        <p className="text-sm text-center py-12 text-muted-foreground">No hay DJs en la Cantera XPEAK.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -196,7 +196,7 @@ const AdminEmergentes = () => {
                         style={{ background: 'rgba(59,130,246,0.1)', color: '#2563eb' }}>
                         <ArrowUpCircle size={13} />
                       </button>
-                      <button onClick={() => graduate(p)} title="Graduar a profesional (sale de DJs Emergentes)"
+                      <button onClick={() => graduate(p)} title="Graduar a profesional (sale de la Cantera)"
                         className="p-1.5 rounded-md transition-all hover:scale-110"
                         style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e' }}>
                         <GraduationCap size={13} />
