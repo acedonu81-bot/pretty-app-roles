@@ -16,6 +16,7 @@ import AdminDeletions from './admin/AdminDeletions';
 import AdminAnalytics from './admin/AdminAnalytics';
 import AdminConversations from './admin/AdminConversations';
 import AdminEmergentes from './admin/AdminEmergentes';
+import RotulosAdmin from './admin/RotulosAdmin';
 import AdminConcurso from './admin/AdminConcurso';
 import AdminConcursoVotantes from './admin/AdminConcursoVotantes';
 import AdminFeedbackWeb from './admin/AdminFeedbackWeb';
@@ -43,7 +44,12 @@ const TABS = [
 type TabId = typeof TABS[number]['id'];
 
 const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
-  const [tab, setTab] = useState<TabId>('activity');
+  // ?tab=<id> en la URL abre esa pestaña (11 nov 2026): los avisos de la
+  // campana (p. ej. sesión nueva de un DJ de la Cantera) llevan directo a ella.
+  const [tab, setTab] = useState<TabId>(() => {
+    const t = new URLSearchParams(window.location.search).get('tab');
+    return (TABS.some(x => x.id === t) ? t : 'activity') as TabId;
+  });
 
   // Badge de reseñas pendientes en la tab "Reseñas" (13 sep 2026): antes solo
   // se veían entrando a esa pestaña en concreto, así que si el admin no
@@ -60,6 +66,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       setXpeakBadge((data ?? []).reduce((s, c) => s + Number(c.sin_leer), 0));
     });
   }, []);
+  const panelRef = useRef<HTMLDivElement>(null);
   const instanceId = useRef(Math.random().toString(36).slice(2)).current;
 
   useEffect(() => {
@@ -85,7 +92,8 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
   }, [instanceId]);
 
   return (
-    <div className="animate-[fadeIn_0.4s_ease]">
+    <div ref={panelRef} className="animate-[fadeIn_0.4s_ease]">
+      <RotulosAdmin contenedor={panelRef} />
       {/* Fuera del sistema de pestañas a propósito: un alta o una baja hay que
           verlas entres por donde entres, no solo en la pestaña que toque.
           El alta va primero porque es la accionable: revisar rol y zona a

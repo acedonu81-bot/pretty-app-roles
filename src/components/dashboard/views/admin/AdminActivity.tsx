@@ -103,7 +103,7 @@ const EmailsTooltip = ({ userId }: { userId: string }) => {
       onMouseEnter={() => { setAbierto(true); cargar(); }}
       onMouseLeave={() => setAbierto(false)}
     >
-      <button type="button" className="inline-flex items-center justify-center w-4 h-4 rounded-full hover:opacity-70" style={{ color: '#999' }}>
+      <button type="button" title="Qué significa cada aviso" className="inline-flex items-center justify-center w-4 h-4 rounded-full hover:opacity-70" style={{ color: '#999' }}>
         <HelpCircle size={13} />
       </button>
       {abierto && (
@@ -391,6 +391,7 @@ const AdminActivity = () => {
                 }}
               >
                 <span
+                  title={e.etiqueta}
                   className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5"
                   style={{ background: e.fondo, color: e.color }}
                 >

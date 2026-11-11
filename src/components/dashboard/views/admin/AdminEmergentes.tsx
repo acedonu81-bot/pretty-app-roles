@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Instagram, ArrowUpCircle, GraduationCap, FileEdit, ArrowDownCircle } from 'lucide-react';
+import { Instagram, ArrowUpCircle, GraduationCap, Eye, ArrowDownCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -189,14 +189,14 @@ const AdminEmergentes = () => {
                       <a href={`/p/${p.user_id}`} target="_blank" rel="noopener noreferrer" title="Ver ficha pública"
                         className="p-1.5 rounded-md transition-all hover:scale-110 inline-flex"
                         style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>
-                        <FileEdit size={13} />
+                        <Eye size={13} />
                       </a>
                       <button onClick={() => promoteSubNivel(p)} disabled={p.emergente_sub_nivel === 'avanzado'}
-                        title="Subir sub-nivel" className="p-1.5 rounded-md transition-all hover:scale-110 disabled:opacity-30 disabled:hover:scale-100"
+                        title="Subir de nivel dentro de la Cantera (principiante, medio, avanzado)" className="p-1.5 rounded-md transition-all hover:scale-110 disabled:opacity-30 disabled:hover:scale-100"
                         style={{ background: 'rgba(59,130,246,0.1)', color: '#2563eb' }}>
                         <ArrowUpCircle size={13} />
                       </button>
-                      <button onClick={() => graduate(p)} title="Graduar a profesional (sale de la Cantera)"
+                      <button onClick={() => graduate(p)} title="Graduar: sale de la Cantera y pasa al directorio de DJs"
                         className="p-1.5 rounded-md transition-all hover:scale-110"
                         style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e' }}>
                         <GraduationCap size={13} />

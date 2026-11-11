@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
-import { CheckCircle, Mail, MessageSquare, FileEdit, TrendingUp, Search } from 'lucide-react';
+import { useState, useEffect, useMemo, Fragment } from 'react';
+import { CheckCircle, MessageSquare, Eye, TrendingUp, Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -19,11 +19,10 @@ interface DBProfile {
 }
 
 const ACTIONS = [
-  { icon: MessageSquare, label: 'Mensajes', hint: 'Recuerda contactar por el chat interno' },
-  { icon: Mail, label: 'Email', hint: 'Abre un correo a info@xpeak.site sobre este usuario' },
-  { icon: FileEdit, label: 'Ficha', hint: 'Ver su perfil público en una pestaña nueva' },
-  { icon: CheckCircle, label: 'Sello Dorado', hint: 'Marca el perfil como verificado' },
-  { icon: TrendingUp, label: 'Score +200', hint: 'Empuja el ranking del perfil' },
+  { icon: MessageSquare, label: 'Escribir como XPEAK', hint: 'Mandarle un mensaje desde la cuenta XPEAK (le llega al chat, nunca con tu nombre)' },
+  { icon: Eye, label: 'Ficha', hint: 'Ver su perfil público en una pestaña nueva' },
+  { icon: CheckCircle, label: 'Sello Dorado', hint: 'Poner el sello dorado de verificado en su perfil' },
+  { icon: TrendingUp, label: 'Score +200', hint: 'Subir su perfil en el directorio (+200 puntos de posición)' },
 ] as const;
 
 const AdminUserManagement = () => {
@@ -88,12 +87,23 @@ const AdminUserManagement = () => {
     }
   };
 
-  const contactUser = () => {
-    toast.info('Usa el sistema de mensajes interno para contactar usuarios.');
-  };
-
-  const contactEmail = (name: string) => {
-    window.open(`mailto:info@xpeak.site?subject=Contacto usuario: ${encodeURIComponent(name)}`);
+  // Escribir como XPEAK (11 nov 2026). Antes el botón solo enseñaba un aviso
+  // y el de email abría un correo a info@xpeak.site (a nosotros mismos).
+  // admin_xpeak_enviar manda con remitente XPEAK, nunca con el nombre del admin.
+  const [escribiendoA, setEscribiendoA] = useState<string | null>(null);
+  const [texto, setTexto] = useState('');
+  const [enviando, setEnviando] = useState(false);
+  const enviarComoXpeak = async (u: DBProfile) => {
+    const t = texto.trim();
+    if (!t) return;
+    setEnviando(true);
+    const { error: e } = await (supabase as unknown as {
+      rpc: (fn: string, args: Record<string, unknown>) => Promise<{ error: { message: string } | null }>;
+    }).rpc('admin_xpeak_enviar', { p_destinatario: u.user_id, p_texto: t });
+    setEnviando(false);
+    if (e) { toast.error('No se pudo enviar: ' + e.message); return; }
+    toast.success(`Mensaje enviado a ${u.display_name || 'el usuario'} como XPEAK`);
+    setTexto(''); setEscribiendoA(null);
   };
 
   const boostScore = async (user: DBProfile) => {
@@ -169,7 +179,8 @@ const AdminUserManagement = () => {
             </thead>
             <tbody>
               {filtered.map(u => (
-                <tr key={u.id} className="transition-colors hover:bg-black/[0.02]"
+                <Fragment key={u.id}>
+                <tr className="transition-colors hover:bg-black/[0.02]"
                   style={{
                     borderBottom: '1px solid rgba(0,0,0,0.04)',
                     background: u.validation_status === 'rejected' ? 'rgba(255,95,86,0.05)' : undefined,
@@ -213,23 +224,18 @@ const AdminUserManagement = () => {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1">
-                      <button onClick={contactUser} title={ACTIONS[0].hint}
+                      <button onClick={() => { setEscribiendoA(v => v === u.id ? null : u.id); setTexto(''); }} title={ACTIONS[0].hint}
                         className="p-1.5 rounded-md transition-all hover:scale-110"
                         style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
                         <MessageSquare size={13} />
                       </button>
-                      <button onClick={() => contactEmail(u.display_name)} title={ACTIONS[1].hint}
-                        className="p-1.5 rounded-md transition-all hover:scale-110"
-                        style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37' }}>
-                        <Mail size={13} />
-                      </button>
-                      <a href={`/p/${u.user_id}`} target="_blank" rel="noopener noreferrer" title={ACTIONS[2].hint}
+                      <a href={`/p/${u.user_id}`} target="_blank" rel="noopener noreferrer" title={ACTIONS[1].hint}
                         className="p-1.5 rounded-md transition-all hover:scale-110 inline-flex"
                         style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>
-                        <FileEdit size={13} />
+                        <Eye size={13} />
                       </a>
                       <button onClick={() => toggleVerify(u)} disabled={verifyingIds.has(u.id)}
-                        title={u.is_verified ? 'Quitar Sello Dorado' : ACTIONS[3].hint}
+                        title={u.is_verified ? 'Quitar el sello dorado de verificado' : ACTIONS[2].hint}
                         className="p-1.5 rounded-md transition-all hover:scale-110 disabled:opacity-40 disabled:pointer-events-none"
                         style={{
                           background: u.is_verified ? 'rgba(212,175,55,0.2)' : 'rgba(0,0,0,0.04)',
@@ -237,7 +243,7 @@ const AdminUserManagement = () => {
                         }}>
                         <CheckCircle size={13} />
                       </button>
-                      <button onClick={() => boostScore(u)} title={ACTIONS[4].hint}
+                      <button onClick={() => boostScore(u)} title={ACTIONS[3].hint}
                         className="p-1.5 rounded-md transition-all hover:scale-110"
                         style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e' }}>
                         <TrendingUp size={13} />
@@ -245,6 +251,34 @@ const AdminUserManagement = () => {
                     </div>
                   </td>
                 </tr>
+                {escribiendoA === u.id && (
+                  <tr style={{ background: 'rgba(212,175,55,0.04)' }}>
+                    <td colSpan={7} className="px-4 py-3">
+                      <p className="text-xs font-bold mb-1.5" style={{ color: '#8A6D0F' }}>
+                        Mensaje a {u.display_name || 'este usuario'} desde la cuenta XPEAK
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <textarea value={texto} onChange={e => setTexto(e.target.value)} rows={3} autoFocus
+                          className="flex-1 text-sm px-3 py-2 rounded-lg bg-white"
+                          style={{ border: '1px solid rgba(0,0,0,0.12)' }}
+                          placeholder="Lo verá en su chat como mensaje de XPEAK" />
+                        <div className="flex sm:flex-col gap-2">
+                          <button onClick={() => enviarComoXpeak(u)} disabled={enviando || !texto.trim()}
+                            className="text-xs font-bold px-4 py-2 rounded-lg disabled:opacity-40"
+                            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                            {enviando ? 'Enviando...' : 'Enviar'}
+                          </button>
+                          <button onClick={() => setEscribiendoA(null)}
+                            className="text-xs font-bold px-4 py-2 rounded-lg"
+                            style={{ background: 'rgba(0,0,0,0.04)', color: '#333' }}>
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+                </Fragment>
               ))}
             </tbody>
           </table>

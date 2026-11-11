@@ -408,7 +408,7 @@ export default function AdminAnalytics() {
             <div className="flex flex-col divide-y" style={{ borderColor: 'rgba(10,9,8,0.06)' }}>
               {quienOnline.map(q => (
                 <div key={q.session_id} className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
-                  <span className="flex-shrink-0 flex items-center justify-center rounded-full"
+                  <span title={q.display_name ? 'Usuario con cuenta' : 'Visitante sin cuenta'} className="flex-shrink-0 flex items-center justify-center rounded-full"
                     style={{ width: 30, height: 30, background: q.display_name ? 'rgba(212,175,55,0.12)' : 'rgba(10,9,8,0.05)' }}>
                     <UserIcon size={14} style={{ color: q.display_name ? GOLD : 'rgba(10,9,8,0.35)' }} />
                   </span>

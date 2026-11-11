@@ -153,7 +153,7 @@ const AdminSaludSistema = () => {
                 <li key={`${a.tipo}-${a.asunto}-${i}`}
                   className="flex items-start gap-3 px-3.5 py-3 rounded-xl"
                   style={{ background: e.fondo, border: `1px solid ${e.borde}` }}>
-                  <span className="flex-shrink-0 mt-0.5" style={{ color: e.color }}>
+                  <span title={a.severidad === 'critico' ? 'Crítico: arreglar ya' : a.severidad === 'alto' ? 'Urgente' : 'Para revisar'} className="flex-shrink-0 mt-0.5" style={{ color: e.color }}>
                     <Icon size={16} strokeWidth={2.5} />
                   </span>
                   <div className="flex-1 min-w-0">
