@@ -73,7 +73,12 @@ const AdminEstilosDJ = () => {
     setDjs(prev => prev.map(d => (d.id === dj.id ? { ...d, genres: nuevos } : d)));
   };
 
-  const sesion = (dj: DJ) => dj.audio_session_urls?.find(Boolean) ?? dj.audio_embed_url ?? null;
+  // La URL la escribe el DJ: solo se enlaza si es http(s), nunca javascript: u otros esquemas.
+  const urlSegura = (u: string | null | undefined) => {
+    if (!u) return null;
+    try { const x = new URL(u); return x.protocol === 'https:' || x.protocol === 'http:' ? x.href : null; } catch { return null; }
+  };
+  const sesion = (dj: DJ) => urlSegura(dj.audio_session_urls?.find(Boolean) ?? dj.audio_embed_url);
 
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)' }}>

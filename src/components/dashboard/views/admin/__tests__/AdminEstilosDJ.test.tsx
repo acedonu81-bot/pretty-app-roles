@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 const djs = [
   { id: 'a', user_id: 'ua', display_name: 'Sin Estilos', zone: 'Madrid', bio: '', genres: [], audio_embed_url: null, audio_session_urls: ['https://mixcloud.com/x'], experience_level: null },
+  { id: 'c', user_id: 'uc', display_name: 'Enlace Malo', zone: 'Madrid', bio: '', genres: [], audio_embed_url: 'javascript:alert(1)', audio_session_urls: null, experience_level: null },
   { id: 'b', user_id: 'ub', display_name: 'Con Estilos', zone: 'Madrid', bio: '', genres: ['Remember'], audio_embed_url: null, audio_session_urls: null, experience_level: null },
 ];
 const updates: unknown[] = [];
@@ -31,7 +32,9 @@ describe('AdminEstilosDJ', () => {
     render(<AdminEstilosDJ />);
     await screen.findByText('Sin Estilos');
     expect(screen.queryByText('Con Estilos')).toBeNull();
-    expect(screen.getByText(/1 sin ningún estilo de 2/)).toBeTruthy();
+    expect(screen.getByText(/2 sin ningún estilo de 3/)).toBeTruthy();
+    // una URL javascript: no se enlaza
+    expect(screen.getAllByText('Escuchar sesión')).toHaveLength(1);
     expect(screen.getByText('Escuchar sesión').closest('a')?.getAttribute('href')).toBe('https://mixcloud.com/x');
 
     fireEvent.click(screen.getAllByRole('button', { name: 'Remember' })[0]);
