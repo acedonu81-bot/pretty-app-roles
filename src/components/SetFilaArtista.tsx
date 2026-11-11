@@ -157,7 +157,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
       audioRef.current?.pause();
       reproducir({ url, audioSrc: url, titulo, subtitulo: `${autor} · sigue sonando mientras navegas`, escucha: djUserId ? { djUserId, setUrl: url } : undefined });
     } else if (embedSrc) {
-      setScMontado(false);
+      setScMontado(false); // Mixcloud/hearthis: al pasar a la barra, el iframe de la fila se desmonta (11 nov 2026)
       reproducir({ url, embedSrc, titulo, subtitulo: `${autor} · sigue sonando mientras navegas`, escucha: djUserId ? { djUserId, setUrl: url } : undefined });
     }
   };
@@ -400,7 +400,7 @@ const SetFilaArtista = ({ url, autor, ficha, numero, destacado, estiloPorDefecto
               <ChevronDown size={13} className="transition-transform" style={{ transform: tracklistAbierta ? 'rotate(180deg)' : undefined }} />
             </button>
           )}
-          {conPlayPropio && !enBarra && (esArchivo || embedSrc) && (
+          {!enBarra && (esArchivo || embedSrc) && (
             <button type="button" onClick={anclar} className="flex items-center gap-1.5 text-xs font-bold" style={{ color: col.acento }}
               title="Seguir escuchando mientras navegas">
               <Pin size={13} /> Escuchar mientras navego
