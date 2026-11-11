@@ -158,6 +158,17 @@ export function ordenarComunicados<T extends Pick<Comunicado, 'fijado' | 'create
 export const esEnlaceInterno = (url: string): boolean =>
   url.startsWith('/') && !url.startsWith('//');
 
+/** Dentro del panel, un botón que apunta a un directorio público
+ *  (/directorio/djs-emergentes) abre la vista del panel, no la página pública
+ *  con la cabecera de la web (11 nov 2026: el botón "Ver la Cantera XPEAK"
+ *  sacaba del panel). En /novedades, sin cuenta, el enlace se usa tal cual. */
+const VISTA_DE_DIRECTORIO: Record<string, string> = { 'djs-emergentes': 'emergentes', emergentes: 'emergentes' };
+export const enlaceEnPanel = (url: string): string => {
+  const m = url.match(/^\/directorio\/([a-z-]+)\/?(?:[?#].*)?$/);
+  if (!m) return url;
+  return `/dashboard?view=${VISTA_DE_DIRECTORIO[m[1]] ?? m[1]}`;
+};
+
 /** "Para siempre": caduca_at es NOT NULL, así que se guarda una fecha lejana. */
 export const CADUCA_NUNCA = '2100-01-01T00:00:00.000Z';
 export const esParaSiempre = (iso: string): boolean => new Date(iso).getUTCFullYear() >= 2099;

@@ -9,7 +9,7 @@ import ComunicadoInteraccion from '@/components/comunicados/ComunicadoInteraccio
 import {
   CuerpoConMenciones, MetaComunicado, ORO, Portada, StatsComunicado, TituloComunicado,
 } from '@/components/comunicados/ComunicadoPartes';
-import { type Comunicado, esEnlaceInterno } from '@/lib/comunicados';
+import { type Comunicado, esEnlaceInterno, enlaceEnPanel } from '@/lib/comunicados';
 
 // Página del tablón de comunicados (6 nov 2026): panel grande con todos los
 // vigentes y, al pulsar uno, su propia página (como la del concurso), sin
@@ -34,7 +34,7 @@ export default function ComunicadosView({ onNavigate, filtroInicial = 'todo' }: 
   useEffect(() => { window.scrollTo?.({ top: 0 }); }, [id]);
 
   const irA = (url: string) => {
-    if (esEnlaceInterno(url)) navigate(url);
+    if (esEnlaceInterno(url)) navigate(enlaceEnPanel(url));
     else window.open(url, '_blank', 'noopener,noreferrer');
   };
 

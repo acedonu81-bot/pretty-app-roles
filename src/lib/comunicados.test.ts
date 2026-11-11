@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CADUCA_NUNCA, resumenSinTitulo, esEnlaceInterno, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, tipoDe, trocearCuerpo, etiquetaDestino, dominioDeUrl } from './comunicados';
+import { CADUCA_NUNCA, resumenSinTitulo, esEnlaceInterno, enlaceEnPanel, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, tipoDe, trocearCuerpo, etiquetaDestino, dominioDeUrl } from './comunicados';
 
 const ID = '0b8f3c1e-1234-4abc-9def-1234567890ab';
 
@@ -98,5 +98,17 @@ describe('comunicados', () => {
 
   it('el texto plano deja solo el texto de los enlaces con formato', () => {
     expect(textoPlano('Fuentes [BOE: RD 199/2010](https://www.boe.es/eli/es/rd/2010/02/26/199) fin')).toBe('Fuentes BOE: RD 199/2010 fin');
+  });
+});
+
+describe('enlaceEnPanel', () => {
+  it('lleva los directorios públicos a la vista del panel', () => {
+    expect(enlaceEnPanel('/directorio/djs-emergentes')).toBe('/dashboard?view=emergentes');
+    expect(enlaceEnPanel('/directorio/dj')).toBe('/dashboard?view=dj');
+    expect(enlaceEnPanel('/directorio/dj?ciudad=madrid')).toBe('/dashboard?view=dj');
+  });
+  it('deja igual el resto de enlaces', () => {
+    expect(enlaceEnPanel('/contratar-food-truck')).toBe('/contratar-food-truck');
+    expect(enlaceEnPanel('/dashboard?view=navidad')).toBe('/dashboard?view=navidad');
   });
 });

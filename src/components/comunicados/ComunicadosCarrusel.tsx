@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Megaphone } from 'lucide-react';
 import { useComunicados } from '@/hooks/useComunicados';
-import { type Comunicado, esEnlaceInterno, resumenSinTitulo } from '@/lib/comunicados';
+import { type Comunicado, esEnlaceInterno, enlaceEnPanel, resumenSinTitulo } from '@/lib/comunicados';
 import { MetaComunicado, ORO, Portada, StatsComunicado, TituloComunicado } from './ComunicadoPartes';
 
 // Los componentes compartidos viven en ComunicadoPartes; se reexportan porque
@@ -38,7 +38,7 @@ export default function ComunicadosCarrusel() {
     marcarLeido(c);
     // Banner: solo imagen y botón, sin texto. Se va directo al enlace.
     if (!c.cuerpo.trim() && !c.video_url && !c.encuesta_opciones?.length && c.cta_url) {
-      if (esEnlaceInterno(c.cta_url)) navigate(c.cta_url);
+      if (esEnlaceInterno(c.cta_url)) navigate(enlaceEnPanel(c.cta_url));
       else window.open(c.cta_url, '_blank', 'noopener,noreferrer');
       return;
     }
