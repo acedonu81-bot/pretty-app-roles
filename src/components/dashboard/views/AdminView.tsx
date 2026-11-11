@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion, Inbox, Megaphone } from 'lucide-react';
+import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion, Inbox, Megaphone, Music } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
@@ -16,6 +16,7 @@ import AdminDeletions from './admin/AdminDeletions';
 import AdminAnalytics from './admin/AdminAnalytics';
 import AdminConversations from './admin/AdminConversations';
 import AdminEmergentes from './admin/AdminEmergentes';
+import AdminEstilosDJ from './admin/AdminEstilosDJ';
 import RotulosAdmin from './admin/RotulosAdmin';
 import AdminConcurso from './admin/AdminConcurso';
 import AdminConcursoVotantes from './admin/AdminConcursoVotantes';
@@ -34,6 +35,7 @@ const TABS = [
   { id: 'users', label: 'Usuarios', icon: Users },
   { id: 'empresarios', label: 'Empresarios', icon: Building2 },
   { id: 'emergentes', label: 'Cantera XPEAK', icon: Sparkles },
+  { id: 'estilos', label: 'Estilos DJ', icon: Music },
   { id: 'concurso', label: 'Concurso DJ', icon: Trophy },
   { id: 'content', label: 'Reseñas', icon: MessageSquare },
   { id: 'feedback', label: 'Feedback', icon: MessageCircleQuestion },
@@ -159,6 +161,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       {tab === 'deletions' && <AdminDeletions />}
       {tab === 'empresarios' && <AdminBusinesses />}
       {tab === 'emergentes' && <AdminEmergentes />}
+      {tab === 'estilos' && <AdminEstilosDJ />}
       {tab === 'concurso' && <><AdminConcurso /><AdminConcursoVotantes /></>}
       {tab === 'content' && <AdminReviews />}
       {tab === 'feedback' && <AdminFeedbackWeb />}
