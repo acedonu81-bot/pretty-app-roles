@@ -1,5 +1,5 @@
 import { fechaLegible, type SolicitudChat } from '@/lib/solicitudChat';
-import { lazy, Suspense, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { leerAcuerdo, estadoAcepto, REF_ACUERDO } from '@/lib/acuerdoChat';
 import AdjuntoChat from './AdjuntoChat';
 import AvatarChat from './AvatarChat';
@@ -22,6 +22,8 @@ interface Message {
 }
 
 // Dentro del chat la fecha ya la ponen los separadores: aquí solo la hora.
+const esTactil = typeof window !== 'undefined' && !!window.matchMedia?.('(pointer: coarse)').matches;
+
 const formatTime = (iso: string) =>
   new Date(iso).toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
 
@@ -91,7 +93,15 @@ const ChatWindow = ({
     else setFormAcepto({ inicial: null });
   };
   const acuerdosAceptados = new Set(messages.map(m => leerAcuerdo(m.content)).filter(a => a?.estado === 'aceptado').map(a => a!.ref));
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  // Caja de varias líneas que crece hasta ~5 (12 nov 2026: era un input de una
+  // línea y un mensaje largo no se veía entero en el móvil).
+  const ajustarAlto = (el: HTMLTextAreaElement | null) => {
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 128)}px`;
+  };
+  useEffect(() => { if (!input) ajustarAlto(inputRef.current); }, [input]);
   const [hoveredMsgId, setHoveredMsgId] = useState<string | null>(null);
   const [confirmDeleteMsgId, setConfirmDeleteMsgId] = useState<string | null>(null);
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
@@ -268,18 +278,22 @@ const ChatWindow = ({
                   <div className="flex-1 h-px" style={{ background: 'rgba(139,106,0,0.16)' }} />
                 </div>
               )}
+              {/* En el móvil no hay hover: tocar tu mensaje muestra la papelera
+                  (12 nov 2026). Antes estaba invisible pero se podía pulsar, y un
+                  toque junto a la burbuja abría "Eliminar mensaje" sin querer. */}
               <div className={`flex items-end gap-2 ${isMe ? 'justify-end' : 'justify-start'} group`}
                 onMouseEnter={() => setHoveredMsgId(msg.id)}
-                onMouseLeave={() => setHoveredMsgId(null)}>
+                onMouseLeave={() => setHoveredMsgId(null)}
+                onClick={() => { if (isMe) setHoveredMsgId(v => v === msg.id ? null : msg.id); }}>
                 {!isMe && (
                   <div className="mb-5"><AvatarChat name={activeOtherName} size={28} /></div>
                 )}
                 {isMe && onDeleteMessage && !msg.deleted_at && !msg.id.startsWith('tmp-') && (
-                  <button onClick={() => setConfirmDeleteMsgId(msg.id)}
+                  <button onClick={e => { e.stopPropagation(); setConfirmDeleteMsgId(msg.id); }}
                     aria-label="Eliminar mensaje"
                     title="Eliminar mensaje"
                     className="mb-1 p-1 rounded-lg transition-opacity hover:bg-black/5"
-                    style={{ opacity: hoveredMsgId === msg.id ? 1 : 0, color: '#333' }}>
+                    style={{ opacity: hoveredMsgId === msg.id ? 1 : 0, pointerEvents: hoveredMsgId === msg.id ? 'auto' : 'none', color: '#333' }}>
                     <Trash2 size={13} />
                   </button>
                 )}
@@ -412,7 +426,7 @@ const ChatWindow = ({
               onClose={() => setContrato(false)} onSaved={() => setContrato(false)} />
           </Suspense>
         )}
-        <div className="flex items-center gap-1">
+        <div className="flex items-end gap-1">
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
             aria-label="Enviar foto o vídeo" title="Enviar foto o vídeo"
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90 disabled:opacity-40"
@@ -435,14 +449,15 @@ const ChatWindow = ({
           )}
 
           <div className="flex-1 relative">
-            <input ref={inputRef} type="text" value={input}
-              onChange={e => setInput(e.target.value)}
+            <textarea ref={inputRef} rows={1} value={input}
+              onChange={e => { setInput(e.target.value); ajustarAlto(e.target); }}
               onKeyDown={e => {
-                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSend(); }
+                // En el móvil Intro hace salto de línea (como WhatsApp); se envía con el botón.
+                if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && !esTactil) { e.preventDefault(); onSend(); }
               }}
               placeholder="Escribe un mensaje"
               maxLength={1000}
-              className="w-full px-4 py-2 rounded-full text-base sm:text-sm outline-none transition-all"
+              className="block w-full px-4 py-2 rounded-[20px] text-base sm:text-sm outline-none transition-all resize-none leading-6"
               style={{ background: '#FFFFFF', border: '1px solid rgba(139,106,0,0.25)', color: '#2A2412' }}
               onFocus={e => (e.target.style.borderColor = '#B8941E')}
               onBlur={e => (e.target.style.borderColor = 'rgba(139,106,0,0.25)')}
