@@ -453,7 +453,7 @@ const Dashboard = () => {
   const [showWizard, setShowWizard] = useState(false);
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();
-  const { role: profileRole } = useProfile();
+  const { role: profileRole, loading: profileLoading } = useProfile();
 
   // Antes usábamos key={activeView} en el contenedor de la vista para
   // disparar la animación de entrada — pero eso fuerza a React a DESMONTAR
@@ -866,7 +866,9 @@ const Dashboard = () => {
         {!showWizard && <ConsejosPanel isMobile={isMobile} onNavigate={handleViewChange} onGoToReviews={goToPendingReviews} />}
         {activeView !== 'messages' && <div className="hidden sm:block"><SupportChat /></div>}
         {user && !showWizard && <FeedbackWebCard rol={profileRole} oculto={activeView === 'messages'} />}
-        {showWizard && (
+        {/* Hasta que el perfil no carga, useProfile devuelve role 'dj' por defecto: el
+            asistente lo copiaba como rol preseleccionado (y lo medía como "DJ paso 0"). */}
+        {showWizard && !profileLoading && (
           <OnboardingWizard
             onClose={() => { setShowWizard(false); askForPush('alta'); }}
             onNavigate={handleViewChange}
