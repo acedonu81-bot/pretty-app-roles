@@ -1968,7 +1968,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           ['Fecha', esc(d.fecha)],
           ['Ciudad', esc(d.ciudad)],
           ['Precio', `${esc(d.precio)} €`],
-          ...(d.evento ? [['Evento', esc(d.evento)]] : []),
+          ...(d.evento ? [['Evento', esc(d.evento)] as [string, string]] : []),
         ])}
       </div>
       ${btn('Ver la propuesta →', enlaceSeguro(d.action_url, 'https://xpeak.es/dashboard?view=messages'))}

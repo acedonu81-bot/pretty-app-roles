@@ -248,6 +248,26 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   };
 
   useEffect(() => { loadConversations(); }, [loadConversations]);
+  // Lista al día sin recargar (12 nov 2026): el directo solo escuchaba la
+  // conversación abierta, así que con la lista delante en el móvil un mensaje
+  // nuevo no aparecía. Cada mensaje crea un aviso para quien lo recibe (trigger
+  // de la BD), y "notifications" sí está en directo. Al volver a la pestaña o a
+  // la app también se recarga.
+  useEffect(() => {
+    if (!user?.id) return;
+    let espera: ReturnType<typeof setTimeout> | null = null;
+    const recargar = () => { if (espera) clearTimeout(espera); espera = setTimeout(() => { void loadConversations(); }, 400); };
+    const canal = supabase.channel(`mensajes-lista-${user.id}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` }, recargar)
+      .subscribe();
+    const alVolver = () => { if (document.visibilityState === 'visible') recargar(); };
+    document.addEventListener('visibilitychange', alVolver);
+    return () => {
+      if (espera) clearTimeout(espera);
+      document.removeEventListener('visibilitychange', alVolver);
+      void supabase.removeChannel(canal);
+    };
+  }, [user?.id, loadConversations]);
   useEffect(() => {
     if (initialUserId && initialName) openConversationWith(initialUserId, initialName);
   }, [initialUserId, initialName, openConversationWith]);
@@ -413,14 +433,16 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     : miRol === 'pending' ? '/dashboard?view=resenas' : '/dashboard?view=flashbooking&tab=solicitudes');
   useEffect(() => () => { if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current); }, []);
 
-  const sendMessage = async (overrideContent?: string, adjunto?: { tipo: 'foto' | 'video'; ruta: string }): Promise<boolean> => {
+  // Devuelve el id del mensaje guardado (o null). `aviso: 'propuesta'` cambia el
+  // correo genérico de "mensaje nuevo" por el de la propuesta de acuerdo.
+  const sendMessage = async (overrideContent?: string, adjunto?: { tipo: 'foto' | 'video'; ruta: string }, aviso: 'mensaje' | 'propuesta' = 'mensaje'): Promise<string | null> => {
     const text = typeof overrideContent === 'string' ? overrideContent : input.trim();
-    if (!text && !adjunto) return false;
-    if (!activeConvId || !user || sending) return false;
+    if (!text && !adjunto) return null;
+    if (!activeConvId || !user || sending) return null;
 
     if (text) {
       const { clean, reason } = sanitizeInput(text, 'default');
-      if (!clean) { toast.error(reason); return false; }
+      if (!clean) { toast.error(reason); return null; }
     }
 
     // Envío optimista (16 oct 2026): antes se esperaban seis viajes al
@@ -449,7 +471,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     if (error || !guardado) {
       setMessages(prev => prev.filter(m => m.id !== tmpId));
       if (typeof overrideContent !== 'string') setInput(prev => prev || text);
-      toast.error('Error al enviar el mensaje'); setSending(false); return false;
+      toast.error('Error al enviar el mensaje'); setSending(false); return null;
     }
     // El aviso en vivo (realtime) puede haber traído ya el guardado.
     setMessages(prev => prev.some(m => m.id === guardado.id)
@@ -469,6 +491,13 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       // otro. El del servidor solo frena 2 minutos entre avisos.
       // En segundo plano: el envío no espera a esta comprobación.
       const destinatario = activeOtherUserId;
+      // Propuesta de acuerdo (12 nov 2026): correo propio con las condiciones,
+      // sin el tope de la ráfaga. Antes las propuestas no se avisaban.
+      if (aviso === 'propuesta') {
+        supabase.functions.invoke('send-email', { body: { type: 'acuerdo_propuesto', data: { message_id: guardado.id } } })
+          .catch((err: unknown) => console.warn('[MessagesView] aviso de propuesta:', err));
+        return guardado.id;
+      }
       void (async () => {
         const { count: sinLeerMios } = await supabase.from('messages')
           .select('id', { count: 'exact', head: true })
@@ -483,7 +512,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         });
       })();
     }
-    return true;
+    return guardado.id;
   };
 
   // Fotos y vídeos (16 oct 2026). Bucket privado: se guarda la ruta y el chat
@@ -721,7 +750,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                   aceptandoRef.current = true;
                   try {
                     const cierra = abierto.pendientes.has(activeOtherUserId) && abierto.condiciones === cod;
-                    if (await sendMessage(mensajeAcepto(cod)) && !cierra) {
+                    if (await sendMessage(mensajeAcepto(cod), undefined, cierra ? 'mensaje' : 'propuesta') && !cierra) {
                       toast.success(`Has aceptado. Falta que ${activeOtherName || 'la otra parte'} acepte.`);
                     }
                   } finally { aceptandoRef.current = false; }
