@@ -46,7 +46,7 @@ export const FormCondiciones = ({ inicial, otroNombre, onEnviar, onCancelar, env
           onClick={() => onEnviar(codificarCondiciones({ fecha, ciudad, precio: String(precioNum), evento }))}
           className="px-5 py-2 rounded-full text-xs font-black disabled:opacity-40"
           style={{ background: '#059669', color: '#fff' }}>
-          ACEPTO
+          Enviar propuesta
         </button>
       </div>
     </div>
@@ -67,11 +67,15 @@ const diasHasta = (fechaIso: string) => {
   return Math.round((new Date(fechaIso + 'T00:00:00').getTime() - hoy.getTime()) / 86_400_000);
 };
 
-/** Tarjeta de un "Acepto" en el chat. Cerrado = estado de la reserva (estilo
- *  Wallapop): fecha y cuenta atrás, cancelar con confirmación, y "Valorar" cuando
- *  pasa el evento. */
-export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, pendienteActual, reserva, onProponerOtras, onContrato, onNuevoAcuerdo, onCancelar, onValorar }: {
+/** Tarjeta de un "Acepto" en el chat. El que abre la ronda es una propuesta
+ *  (12 nov 2026: antes salía "X acepta" y el cliente creía que ya estaba
+ *  cerrado o que había aceptado algo que no pidió); el que la cierra es la
+ *  aceptación. Cerrado = estado de la reserva (estilo Wallapop): fecha y cuenta
+ *  atrás, cancelar con confirmación, y "Valorar" cuando pasa el evento. */
+export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, aceptada = false, pendienteActual, reserva, onProponerOtras, onContrato, onNuevoAcuerdo, onCancelar, onValorar }: {
   resumen: string; isMe: boolean; otroNombre: string; cerrado: boolean; pendienteActual: boolean;
+  /** Propuesta que la otra parte ya aceptó. */
+  aceptada?: boolean;
   reserva?: ReservaAcuerdo | null;
   onProponerOtras?: (c: Condiciones | null) => void; onContrato?: (c: Condiciones | null) => void;
   onNuevoAcuerdo?: () => void; onCancelar?: (reservaId: string, motivo: string) => void; onValorar?: () => void;
@@ -87,7 +91,10 @@ export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, pendienteAct
   return (
     <div className="px-4 py-3 rounded-2xl text-sm max-w-[290px]"
       style={{ background: cancelado ? '#F3F4F6' : cerrado ? '#ECFDF5' : '#FBF3DD', border: `1px solid ${cancelado ? 'rgba(0,0,0,0.12)' : cerrado ? 'rgba(5,150,105,0.4)' : 'rgba(212,175,55,0.5)'}`, color: '#3d300a' }}>
-      <p className="font-black">{isMe ? 'Acepto' : `${quien} acepta`}</p>
+      <p className="font-black">
+        {cerrado ? (isMe ? 'Has aceptado la propuesta' : `${quien} ha aceptado`)
+          : (isMe ? 'Tu propuesta de acuerdo' : `Propuesta de ${quien}`)}
+      </p>
       {texto && <p className="text-xs mt-0.5 font-semibold">{texto}</p>}
       {cancelado ? (
         <p className="flex items-center gap-1 text-xs mt-1.5 font-bold" style={{ color: '#6B7280' }}>
@@ -143,12 +150,14 @@ export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, pendienteAct
             </button>
           )}
         </>
+      ) : aceptada ? (
+        <p className="text-xs mt-1 font-bold" style={{ color: '#059669' }}>Aceptada por {isMe ? quien : 'ti'}</p>
       ) : pendienteActual ? (
         isMe ? (
-          <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>Falta que {quien} acepte</p>
+          <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>Falta que {quien} la acepte</p>
         ) : (
           <>
-            <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>Pulsa ACEPTO para cerrar el acuerdo</p>
+            <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>Si te encaja, pulsa ACEPTO abajo y el acuerdo queda cerrado.</p>
             {onProponerOtras && (
               <button type="button" onClick={() => onProponerOtras(cond)} className="mt-1 text-xs font-bold underline" style={{ color: '#8B6A00' }}>
                 Proponer otras condiciones
@@ -157,7 +166,7 @@ export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, pendienteAct
           </>
         )
       ) : (
-        <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.45)' }}>Sustituido por otra propuesta</p>
+        <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.45)' }}>Sustituida por otra propuesta</p>
       )}
     </div>
   );

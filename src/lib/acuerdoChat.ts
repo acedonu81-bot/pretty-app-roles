@@ -26,7 +26,12 @@ export function vistaPrevia(contenido: string): string {
   const a = leerAcuerdo(contenido);
   if (!a) return contenido;
   if (a.estado === 'cancelado') return 'Acuerdo cancelado';
-  if (a.estado === 'aceptado' && a.ref === 'ACUERDO') return 'Acepto el acuerdo';
+  // El mismo mensaje sirve para proponer y para aceptar (lo distingue el orden),
+  // así que la lista muestra solo las condiciones (12 nov 2026).
+  if (a.estado === 'aceptado' && a.ref === 'ACUERDO') {
+    const texto = textoCondiciones(leerCondiciones(a.resumen));
+    return texto ? `Acuerdo: ${texto}` : 'Acuerdo';
+  }
   return a.estado === 'propuesto' ? `Propuesta de contrato ${a.ref}` : `Contrato ${a.ref} aceptado`;
 }
 
@@ -88,19 +93,25 @@ type MsgMin = { id: string; sender_id: string; content: string; deleted_at?: str
 
 /** Acuerdo abierto (quién ha aceptado y con qué condiciones) y mensajes que
  *  cerraron uno. Si alguien acepta con condiciones distintas, empieza de nuevo
- *  con él solo: es una contrapropuesta. */
-export function estadoAcepto(msgs: MsgMin[]): { pendientes: Set<string>; condiciones: string; cierres: Set<string> } {
+ *  con él solo: es una contrapropuesta.
+ *  `propuestas`: mensajes que abrieron una ronda (12 nov 2026: el primer
+ *  "Acepto" es en realidad una propuesta y se muestra así), y `aceptadas` las
+ *  que la otra parte aceptó. */
+export function estadoAcepto(msgs: MsgMin[]): { pendientes: Set<string>; condiciones: string; cierres: Set<string>; propuestas: Set<string>; aceptadas: Set<string> } {
   let pendientes = new Set<string>();
   let condiciones = '';
   const cierres = new Set<string>();
+  const propuestas = new Set<string>();
+  const aceptadas = new Set<string>();
+  let abierta = '';
   for (const m of msgs) {
     if (m.deleted_at) continue;
     const a = leerAcuerdo(m.content);
     if (a?.estado !== 'aceptado' || a.ref !== REF_ACUERDO) continue;
     if (pendientes.size > 0 && a.resumen !== condiciones) pendientes = new Set();
-    if (pendientes.size === 0) condiciones = a.resumen;
+    if (pendientes.size === 0) { condiciones = a.resumen; abierta = m.id; propuestas.add(m.id); }
     pendientes.add(m.sender_id);
-    if (pendientes.size >= 2) { cierres.add(m.id); pendientes = new Set(); condiciones = ''; }
+    if (pendientes.size >= 2) { cierres.add(m.id); aceptadas.add(abierta); pendientes = new Set(); condiciones = ''; }
   }
-  return { pendientes, condiciones, cierres };
+  return { pendientes, condiciones, cierres, propuestas, aceptadas };
 }

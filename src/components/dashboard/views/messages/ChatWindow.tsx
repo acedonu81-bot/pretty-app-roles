@@ -73,9 +73,11 @@ const ChatWindow = ({
   onSend, onPhotoUpload, onBack,
   onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, onAcepto, onAceptarAcuerdo, profesionalAcuerdo, reservasAcuerdo, onCancelarAcuerdo, onValorarAcuerdo,
 }: Props) => {
-  const { pendientes: aceptanAhora, condiciones: condicionesAbiertas, cierres: acuerdosCerrados } = estadoAcepto(messages);
+  const { pendientes: aceptanAhora, condiciones: condicionesAbiertas, cierres: acuerdosCerrados, aceptadas: propuestasAceptadas } = estadoAcepto(messages);
   const yaAcepte = aceptanAhora.has(userId);
-  // Pendiente del otro: ACEPTO acepta sus condiciones sin formulario.
+  // Pendiente del otro: ACEPTO acepta sus condiciones sin formulario. Si no hay
+  // nada pendiente, el botón es "Proponer" (12 nov 2026: los profesionales
+  // pulsaban ACEPTO para mandar presupuesto y el cliente no lo entendía).
   const otroEsperando = aceptanAhora.size > 0 && !yaAcepte && !!condicionesAbiertas;
   // Id del último "Acepto" del acuerdo abierto (para marcar cuál sigue vigente).
   const ultimoPendienteId = aceptanAhora.size > 0
@@ -310,6 +312,7 @@ const ChatWindow = ({
                   ) : acuerdo?.estado === 'aceptado' && acuerdo.ref === REF_ACUERDO ? (
                     <TarjetaAcepto resumen={acuerdo.resumen} isMe={isMe} otroNombre={activeOtherName}
                       cerrado={acuerdosCerrados.has(msg.id)}
+                      aceptada={propuestasAceptadas.has(msg.id)}
                       pendienteActual={msg.id === ultimoPendienteId}
                       onProponerOtras={onAcepto ? c => setFormAcepto({ inicial: c }) : undefined}
                       reserva={reservasAcuerdo?.[msg.id] ?? null}
@@ -439,12 +442,15 @@ const ChatWindow = ({
 
           {onAcepto && (
             <button type="button" onClick={pulsarAcepto} disabled={sending || yaAcepte || recienCerrado}
-              title={yaAcepte ? `Has aceptado. Falta ${activeOtherName || 'la otra parte'}` : 'Aceptar el acuerdo'}
+              title={recienCerrado ? 'Acuerdo cerrado' : yaAcepte ? `Propuesta enviada. Falta que ${activeOtherName || 'la otra parte'} la acepte`
+                : otroEsperando ? `Aceptar la propuesta de ${activeOtherName || 'la otra parte'}` : 'Proponer fecha, ciudad y precio'}
               className="flex-shrink-0 h-10 rounded-full px-3 text-xs font-black transition-all active:scale-95"
               style={yaAcepte || recienCerrado
                 ? { background: '#ECFDF5', border: '1px solid rgba(5,150,105,0.4)', color: '#059669' }
-                : { background: '#059669', color: '#fff' }}>
-              {recienCerrado ? 'Cerrado' : yaAcepte ? 'Aceptado' : 'ACEPTO'}
+                : otroEsperando ? { background: '#059669', color: '#fff' }
+                : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#2A2412' }}>
+              {recienCerrado ? 'Cerrado' : yaAcepte ? 'Enviada' : otroEsperando ? 'ACEPTO'
+                : <><span className="sm:hidden">Proponer</span><span className="hidden sm:inline">Proponer acuerdo</span></>}
             </button>
           )}
 

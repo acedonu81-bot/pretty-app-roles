@@ -751,7 +751,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                   try {
                     const cierra = abierto.pendientes.has(activeOtherUserId) && abierto.condiciones === cod;
                     if (await sendMessage(mensajeAcepto(cod), undefined, cierra ? 'mensaje' : 'propuesta') && !cierra) {
-                      toast.success(`Has aceptado. Falta que ${activeOtherName || 'la otra parte'} acepte.`);
+                      toast.success(`Propuesta enviada. Falta que ${activeOtherName || 'la otra parte'} la acepte.`);
                     }
                   } finally { aceptandoRef.current = false; }
                 } : undefined}

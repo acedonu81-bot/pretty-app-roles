@@ -432,7 +432,7 @@ const SolicitudesTab = ({ onMessage }: { onMessage?: (userId: string, name: stri
                           hasta que cerréis fecha, sitio y precio en el chat. */}
                       {s.status === 'disponible' ? (
                         <p className="text-[0.75rem] text-muted-foreground text-right max-w-xs">
-                          Cerrad fecha, sitio y precio en el chat. Cuando los dos pulséis ACEPTO, pasa a tu calendario.
+                          Proponed fecha, sitio y precio en el chat. Cuando el otro pulse ACEPTO, pasa a tu calendario.
                         </p>
                       ) : (
                       <div className="flex gap-2">

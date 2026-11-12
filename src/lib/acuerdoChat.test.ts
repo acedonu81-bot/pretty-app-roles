@@ -33,7 +33,16 @@ describe('Acepto en el chat', () => {
     const r = estadoAcepto([m('1', 'a', mensajeAcepto()), m('2', 'a', mensajeAcepto())]);
     expect(r.cierres.size).toBe(0);
   });
-  it('vista previa', () => { expect(vistaPrevia(mensajeAcepto())).toBe('Acepto el acuerdo'); });
+  it('vista previa', () => {
+    expect(vistaPrevia(mensajeAcepto())).toBe('Acuerdo');
+    expect(vistaPrevia(mensajeAcepto({ fecha: '2026-12-14', ciudad: 'Madrid', precio: '220', evento: '' }))).toBe('Acuerdo: 14/12/2026 · Madrid · 220 €');
+  });
+  it('marca qué mensaje propuso y si se aceptó', () => {
+    const r = estadoAcepto([m('1', 'a', mensajeAcepto()), m('2', 'b', mensajeAcepto()), m('3', 'a', mensajeAcepto())]);
+    expect([...r.propuestas]).toEqual(['1', '3']);
+    expect([...r.aceptadas]).toEqual(['1']);
+    expect([...r.cierres]).toEqual(['2']);
+  });
 });
 
 import { codificarCondiciones, leerCondiciones, textoCondiciones, fechaIso } from './acuerdoChat';
