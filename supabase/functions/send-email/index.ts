@@ -1552,6 +1552,12 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
             ? p(`Para las próximas ediciones hace falta un perfil completo, y al tuyo todavía le falta: <strong style="color:#0a0908">${esc(d.falta)}</strong>. Son dos minutos y además te hace más visible a los organizadores que buscan DJ en XPEAK.`)
             : p('Tu perfil ya está completo, así que estás listo para entrar cuando abramos la siguiente. Y mientras tanto, cuanto más cuidado esté, más te ven los organizadores que buscan DJ en XPEAK.')}
           ${d.falta ? btn('Completar mi perfil', 'https://xpeak.es/dashboard?view=profile&' + utm('completar_perfil')) : ''}
+        </div>` : d.sin_rol ? `
+        <div style="margin:26px 0 0;padding:20px;border:1.5px solid #D4AF37;border-radius:12px;background:#FFFDF7">
+          <p style="color:#0a0908;font-size:16px;font-weight:800;line-height:1.4;margin:0 0 8px">Tu cuenta está a medias</p>
+          ${p(`Entraste para votar y no llegaste a decirnos qué eres. Tienes hasta el <strong style="color:#0a0908">${esc(d.fecha)}</strong> para elegirlo: si eres DJ, artista o trabajas en eventos, te creamos tu perfil para que te contraten; si buscas a alguien para un evento, te dejamos la cuenta lista para contratar.`)}
+          ${p('Si no eliges nada, a partir de esa fecha tu cuenta quedará como cuenta para contratar, sin perfil público.')}
+          ${btn('Elegir qué soy', 'https://xpeak.es/dashboard?completar=1&' + utm('elegir_rol'))}
         </div>` : `
         <p style="color:#0a0908;font-size:15px;font-weight:700;line-height:1.6;margin:28px 0 6px;text-align:center">
           Si quieres, cuéntanos para qué has venido a XPEAK
@@ -1940,6 +1946,40 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#6B7280;font-size:11px;text-align:center;margin:0">
         Puedes desactivar estas notificaciones en Ajustes → Privacidad.
       </p>`),
+  }),
+
+  // 13b-propuesta. Propuesta de acuerdo en el chat (12 nov 2026). Antes iba como
+  // "te ha enviado un mensaje" o ni salía (tope de 6 h y una ráfaga de mensajes
+  // sin leer): de 3 propuestas reales a particulares, solo 1 se avisó y sin
+  // fecha ni precio. Todo lo que sale aquí lo pone el servidor desde el mensaje.
+  acuerdo_propuesto: (d) => ({
+    subject: `${esc(d.sender_name)} te propone un acuerdo para el ${esc(d.fecha)}`,
+    to: d.email,
+    html: base(`
+      <div style="text-align:center">
+        ${avatarCircle(esc(d.sender_name).charAt(0).toUpperCase())}
+        <h2 style="font-size:20px;font-weight:900;margin:0 0 8px;color:#0a0908"><span style="color:#D4AF37">${esc(d.sender_name)}</span> te propone un acuerdo</h2>
+        <p style="color:#6B7280;font-size:14px;line-height:1.7;margin:0 0 16px">
+          Estas son sus condiciones. Si te encajan, abre el chat y pulsa ACEPTO.
+        </p>
+      </div>
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:18px;margin:0 0 20px">
+        ${rows([
+          ['Fecha', esc(d.fecha)],
+          ['Ciudad', esc(d.ciudad)],
+          ['Precio', `${esc(d.precio)} €`],
+          ...(d.evento ? [['Evento', esc(d.evento)]] : []),
+        ])}
+      </div>
+      ${btn('Ver la propuesta →', enlaceSeguro(d.action_url, 'https://xpeak.es/dashboard?view=messages'))}
+      <p style="color:#6B7280;font-size:12px;line-height:1.6;text-align:center;margin:0 0 8px">
+        Aceptar no es pagar: queda por escrito en el chat y se guarda en tu calendario.
+        Si algo no te cuadra, contéstale o propón otras condiciones desde el mismo chat.
+      </p>
+      ${d.particular ? `<p style="color:#6B7280;font-size:12px;line-height:1.6;text-align:center;margin:0 0 8px">
+        Si el botón ya no funciona, entra en <a href="https://xpeak.es/auth?acceso=1&e=${encodeURIComponent(String(d.email ?? ''))}" style="color:#8B6A00">xpeak.es</a>
+        y te mandamos otro enlace a tu correo.
+      </p>` : ''}`),
   }),
 
   // 13b-bis. Acuerdo del chat cancelado por la otra parte
@@ -2393,7 +2433,7 @@ async function atender(req: Request): Promise<Response> {
       // navegador. Solo los envíos internos pueden seguir usándola.
       const PUBLIC_TYPES = ['contact_form', 'flash_booking', 'flash_booking_confirm', 'booking_received', 'lead_welcome', 'new_review_pending'];
       // Avisos lanzados desde el dashboard con sesion iniciada.
-      const LOGGED_TYPES = ['concurso_inscripcion', 'booking_status_update', 'contract_generated', 'bolo_new_confirmation', 'fast_responder_badge', 'flash_job_nuevo', 'new_message', 'acuerdo_cancelado', 'subscription_cancelled', 'verification_request'];
+      const LOGGED_TYPES = ['concurso_inscripcion', 'booking_status_update', 'contract_generated', 'bolo_new_confirmation', 'fast_responder_badge', 'flash_job_nuevo', 'new_message', 'acuerdo_propuesto', 'acuerdo_cancelado', 'subscription_cancelled', 'verification_request'];
       const ADMIN_TYPES = ['admin_approved', 'admin_rejected', 'concurso_aceptada'];
       const allowed = PUBLIC_TYPES.includes(type)
         || (callerRole === 'authenticated' && LOGGED_TYPES.includes(type))
@@ -2476,6 +2516,28 @@ async function atender(req: Request): Promise<Response> {
           .eq('professional_user_id', data.professional_user_id).gte('created_at', hace15min);
         if (!count) return prohibido('sin reserva reciente');
         delete data.email;
+      } else if (type === 'acuerdo_propuesto') {
+        // Solo quien escribió la propuesta, a la otra persona de esa
+        // conversación, y con las condiciones leídas del mensaje guardado.
+        const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        const msgId = String(data.message_id ?? '');
+        if (!callerId || !UUID.test(msgId)) return prohibido('sin propuesta');
+        const { data: msg } = await sb.from('messages').select('content, sender_id, conversation_id, deleted_at')
+          .eq('id', msgId).maybeSingle();
+        if (!msg || msg.sender_id !== callerId || msg.deleted_at) return prohibido('sin propuesta');
+        const m = /^\[\[acuerdo:aceptado\|ACUERDO\|f=(\d{1,2}\/\d{1,2}\/\d{4});c=([^;=\]|]{2,60});p=(\d{1,7}(?:[.,]\d{1,2})?)(?:;e=([^;=\]|]{1,60}))?\]\]$/.exec(String(msg.content ?? '').trim());
+        if (!m) return prohibido('sin condiciones');
+        const { data: conv } = await sb.from('conversations').select('participant_a, participant_b')
+          .eq('id', msg.conversation_id).maybeSingle();
+        const otro = conv ? (conv.participant_a === callerId ? conv.participant_b : conv.participant_b === callerId ? conv.participant_a : null) : null;
+        if (!otro) return prohibido('sin destinatario');
+        const { data: quien } = await sb.from('profiles').select('display_name').eq('user_id', callerId)
+          .order('is_primary', { ascending: false }).limit(1).maybeSingle();
+        for (const k of Object.keys(data)) delete data[k];
+        Object.assign(data, {
+          user_id: otro, message_id: msgId, sender_name: quien?.display_name?.trim() || 'Un profesional',
+          fecha: m[1], ciudad: m[2].trim(), precio: m[3], evento: m[4]?.trim() || '',
+        });
       } else if (type === 'acuerdo_cancelado') {
         // Solo a la otra parte de UN acuerdo del chat concreto que está cancelado,
         // y solo lo puede pedir una de las dos partes (16 oct 2026). Todo lo que
@@ -2527,7 +2589,7 @@ async function atender(req: Request): Promise<Response> {
       // directa en el chat, y debajo la entrada de respaldo. Solo para cuentas
       // creadas por el formulario del particular y con el remitente verificado
       // por el JWT (callerId), nunca por lo que mande el navegador.
-      if (type === 'new_message' && callerId && userData?.user?.email
+      if ((type === 'new_message' || type === 'acuerdo_propuesto') && callerId && userData?.user?.email
           && userData.user.user_metadata?.particular === 'true') {
         const nombre = String(data.sender_name ?? 'Profesional').replace(/[&#?=+%]/g, '').slice(0, 60);
         const destino = `https://xpeak.es/dashboard?view=messages&con=${callerId}&nombre=${encodeURIComponent(nombre)}`;
@@ -2603,6 +2665,19 @@ async function atender(req: Request): Promise<Response> {
         sent_at: new Date().toISOString(),
       });
       if (reservaResp) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+    }
+
+    // Propuesta de acuerdo: un email por mensaje (un doble clic no lo repite).
+    if (type === 'acuerdo_propuesto' && data?.message_id && data?.user_id) {
+      const dedupeProp = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+      const { error: reservaProp } = await dedupeProp.from('email_logs' as any).insert({
+        user_id: data.user_id,
+        type: `acuerdo_propuesto_${data.message_id}`,
+        sent_at: new Date().toISOString(),
+      });
+      if (reservaProp) {
         return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
     }
