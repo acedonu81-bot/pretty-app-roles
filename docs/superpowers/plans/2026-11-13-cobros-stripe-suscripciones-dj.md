@@ -238,6 +238,13 @@ Los planes se abren a todos los profesionales, pero cada rol está en uno de dos
 - Al subir un rol: aviso a sus profesionales 30 días antes de ocultar sus redes, y desde ese día entra en las campañas.
 - Revisión mensual junto al método de exigencias por rol.
 
+## Referidos (decidido 13 nov, por construir)
+
+- 10 % por cada amigo directo que pague un plan con el enlace del usuario, máximo 2 (20 %). Profesional o Premium, mensual o anual. Nunca en cadena.
+- Se reutiliza `referrals` (inviter_user_id, invitee_user_id) y `profiles.referral_code`. El sistema antiguo (6 meses de `priority_badge_until` al completar perfil) sigue igual.
+- En el webhook, cuando la suscripción de un invitado cambia de estado: contar los invitados del que invitó con suscripción viva (máx. 2) y poner en su suscripción el cupón `STRIPE_CUPON_REFERIDO10` o `STRIPE_CUPON_REFERIDO20` (duración forever) o quitarlo. Stripe lo aplica desde el siguiente cobro, así que no se suma al 15 % del primer año ni al Black Friday.
+- Pura y con tests: `descuentoReferidos(invitadosPagando: number): 0 | 10 | 20`.
+
 ## Fuera de este plan (cada una necesita su ficha XDS)
 
 - Lo que incluye cada plan (decidido 13 nov, por construir, ver memoria `project_xpeak_cobros_stripe_plan_13nov`): Instagram, TikTok y web solo visibles con plan de pago (SoundCloud visible para todos; en Esencial "Escríbele por XPEAK"; se ocultan, no se borran); avisos por WhatsApp solo de trabajo (solicitudes de particulares y ofertas de organizadores), nunca el teléfono del DJ; verificación ampliada solo para planes de pago; sorteo entre suscriptores (bases legales); concursos de DJs abiertos a todos los planes, Esencial incluido; límites: fotos 6 / 12 / 20 y sets 3 / 10 / ilimitados (Esencial / Profesional / Premium); al bajar de plan o cancelar se OCULTA (nunca se borra) todo lo que el nuevo plan no incluye y reaparece al volver a subir, preajustado antes de activar cobros; Premium: más visibilidad, prioridad en comunicados, ficha con vídeo de fondo, aparición una vez al mes en las redes de XPEAK.
