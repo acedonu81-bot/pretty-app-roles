@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { priceIdDe, planDesdePriceId, tierDesdeEstado, esProfesional, esMusica } from './stripePlanes';
+import { priceIdDe, planDesdePriceId, tierDesdeEstado, esProfesional, esMusica } from './stripePlanes.ts';
 import { subscriptionPlans, PRECIOS_ANUALES, PRECIOS_ANUALES_PRIMER_ANO } from '../../../src/lib/subscriptions';
 
 const env = {

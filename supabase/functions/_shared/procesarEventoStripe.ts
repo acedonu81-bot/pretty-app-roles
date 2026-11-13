@@ -1,0 +1,77 @@
+// Procesa un evento de Stripe sin tocar la red: la base de datos llega
+// inyectada (DbStripe) para poder probarlo con Vitest.
+import { planDesdePriceId, tierDesdeEstado, type PlanPago, type Ciclo } from './stripePlanes.ts';
+
+export interface EventoStripe {
+  id: string;
+  type: string;
+  created: number;
+  data: { object: any };
+}
+
+export interface FilaSuscripcion {
+  user_id: string;
+  stripe_customer_id: string;
+  stripe_subscription_id: string;
+  plan: PlanPago;
+  ciclo: Ciclo;
+  estado: string;
+  periodo_fin: string | null;
+  cancela_al_final: boolean;
+  stripe_evento_at: string;
+}
+
+export interface DbStripe {
+  registrarEvento(id: string, tipo: string): Promise<boolean>;
+  leerSuscripcion(userId: string): Promise<{ stripe_evento_at: string | null } | null>;
+  userIdDeCustomer(customerId: string): Promise<string | null>;
+  guardarSuscripcion(fila: FilaSuscripcion): Promise<void>;
+  ponerTierEnPerfiles(userId: string, tier: string): Promise<void>;
+}
+
+export type Resultado = 'procesado' | 'duplicado' | 'ignorado' | 'viejo';
+
+const TIPOS_SUSCRIPCION = [
+  'customer.subscription.created',
+  'customer.subscription.updated',
+  'customer.subscription.deleted',
+];
+
+export async function procesarEventoStripe(
+  evento: EventoStripe,
+  db: DbStripe,
+  env: Record<string, string | undefined>,
+): Promise<Resultado> {
+  if (!TIPOS_SUSCRIPCION.includes(evento.type)) return 'ignorado';
+
+  const s = evento.data.object;
+  const item = s.items?.data?.[0];
+  const plan = planDesdePriceId(item?.price?.id ?? '', env);
+  if (!plan) throw new Error(`Price desconocido: ${item?.price?.id}`);
+
+  const userId = s.metadata?.user_id || (await db.userIdDeCustomer(s.customer));
+  if (!userId) throw new Error(`Sin usuario para el cliente ${s.customer}`);
+
+  // Se registra después de validar: si falla, Stripe reintenta y se vuelve a procesar.
+  if (!(await db.registrarEvento(evento.id, evento.type))) return 'duplicado';
+
+  const eventoAt = new Date(evento.created * 1000).toISOString();
+  const previa = await db.leerSuscripcion(userId);
+  if (previa?.stripe_evento_at && previa.stripe_evento_at > eventoAt) return 'viejo';
+
+  const estado = evento.type === 'customer.subscription.deleted' ? 'canceled' : s.status;
+  const fin = item?.current_period_end ?? s.current_period_end;
+  await db.guardarSuscripcion({
+    user_id: userId,
+    stripe_customer_id: s.customer,
+    stripe_subscription_id: s.id,
+    plan: plan.plan,
+    ciclo: plan.ciclo,
+    estado,
+    periodo_fin: fin ? new Date(fin * 1000).toISOString() : null,
+    cancela_al_final: !!s.cancel_at_period_end,
+    stripe_evento_at: eventoAt,
+  });
+  await db.ponerTierEnPerfiles(userId, tierDesdeEstado(estado, plan.plan));
+  return 'procesado';
+}
