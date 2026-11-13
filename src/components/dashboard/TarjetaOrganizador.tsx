@@ -1,9 +1,10 @@
-import { Building2, MapPin, Handshake, MessageSquare } from 'lucide-react';
+import { Building2, MapPin, Handshake, Megaphone } from 'lucide-react';
 
 // Ficha corta de una empresa que ha elegido mostrarse a los profesionales
 // (29 oct 2026). La usan la sección "Organizadores" de los profesionales y la
 // vista previa del empresario, para que vea exactamente lo que se enseña.
-// Nunca lleva teléfono ni email: el contacto es por el chat de la app.
+// Nunca lleva teléfono ni email. 13 nov 2026: ya no lleva "Escribir por el chat" (mensaje
+// en frío al empresario); el botón lleva a sus ofertas activas.
 
 export interface Organizador {
   user_id: string;
@@ -12,19 +13,22 @@ export interface Organizador {
   ciudad: string | null;
   descripcion: string | null;
   contrataciones: number | string;
+  /** Ofertas abiertas ahora mismo. Ausente si la función de BD aún es la antigua. */
+  ofertas_activas?: number | string;
 }
 
 interface Props {
   org: Organizador;
-  /** Si se pasa, aparece el botón de escribir (solo en la vista del profesional). */
-  onEscribir?: (userId: string, nombre: string) => void;
+  /** Si se pasa, aparece "Ver ofertas" cuando hay ofertas activas (solo vista del profesional). */
+  onVerOfertas?: () => void;
 }
 
 export const textoContrataciones = (n: number) =>
   n === 0 ? 'Aún sin contrataciones en XPEAK' : `${n} ${n === 1 ? 'contratación' : 'contrataciones'} en XPEAK`;
 
-export default function TarjetaOrganizador({ org, onEscribir }: Props) {
+export default function TarjetaOrganizador({ org, onVerOfertas }: Props) {
   const n = Number(org.contrataciones);
+  const ofertas = Number(org.ofertas_activas ?? 0);
   return (
     <div className="rounded-2xl p-4 bg-white border flex flex-col gap-3" style={{ borderColor: 'rgba(0,0,0,0.08)' }}>
       <div className="flex items-center gap-3">
@@ -48,11 +52,11 @@ export default function TarjetaOrganizador({ org, onEscribir }: Props) {
       <p className="text-xs font-bold flex items-center gap-1.5" style={{ color: n > 0 ? '#047857' : '#6b7280' }}>
         <Handshake size={13} />{textoContrataciones(n)}
       </p>
-      {onEscribir && (
-        <button type="button" onClick={() => onEscribir(org.user_id, org.nombre)}
+      {onVerOfertas && ofertas > 0 && (
+        <button type="button" onClick={onVerOfertas}
           className="mt-auto flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold"
           style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
-          <MessageSquare size={13} /> Escribir por el chat
+          <Megaphone size={13} /> {ofertas === 1 ? 'Ver su oferta activa' : `Ver sus ${ofertas} ofertas activas`}
         </button>
       )}
     </div>

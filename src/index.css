@@ -436,6 +436,12 @@ body.is-native-app .clay-btn-primary {
   50%      { transform: scale(1.12); box-shadow: 0 0 0 9px rgba(22,163,74,0); }
 }
 
+/* Aviso informativo (azul): algo nuevo que mirar, sin urgencia. El verde es para lo que pide acción. */
+@keyframes avisoParpadeoAzul {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(37,99,235,0.7); }
+  50%      { transform: scale(1.12); box-shadow: 0 0 0 9px rgba(37,99,235,0); }
+}
+
 @keyframes adminAlertPulse {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.06); }

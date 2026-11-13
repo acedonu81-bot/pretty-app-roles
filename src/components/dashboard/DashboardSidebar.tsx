@@ -1,7 +1,7 @@
 import {
   LayoutGrid, Home, Search, MessageSquare, Megaphone, Settings,
   BarChart3, FileText, CalendarDays, Sparkles, Rss, Newspaper,
-  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield, ThumbsUp,
+  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Briefcase, Building2, Shield, ThumbsUp,
   type LucideIcon,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
@@ -20,6 +20,7 @@ import { SombreroBruja } from '@/components/halloween/HalloweenHero';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { useFeedAlert } from '@/hooks/useFeedAlert';
 import { useNovedadesSinLeer } from '@/hooks/useComunicados';
+import { useOrganizadoresNuevos } from '@/hooks/useOrganizadoresNuevos';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { toast } from 'sonner';
 import {
@@ -177,7 +178,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
   );
 };
 
-const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, iconColor, navId, etiqueta }: {
+const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, alertTono = 'green', iconColor, navId, etiqueta }: {
   icon: LucideIcon;
   label: string;
   isActive: boolean;
@@ -188,6 +189,8 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
    *  Se ve incluso con el sidebar colapsado a iconos, que es cuando el número
    *  del badge queda oculto. */
   iconAlert?: boolean;
+  /** Tono del aviso: verde = pide acción (ofertas, mensajes); azul = informativo (algo nuevo que mirar). */
+  alertTono?: 'green' | 'blue';
   /** Color fijo del icono en reposo (no activo, sin iconAlert) — para
    *  diferenciar visualmente un item concreto del resto del sidebar
    *  (ej. Feed en azul) sin afectar a los demás. iconAlert manda si ambos
@@ -216,16 +219,16 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
         <span className="absolute rounded-r-[3px] group-data-[collapsible=icon]:hidden" style={{ left: -14, top: '50%', transform: 'translateY(-50%)', width: 3, height: 16, background: 'linear-gradient(180deg,#D4AF37,#B8941E)' }} />
       )}
       <span
-        className={`flex-shrink-0 flex items-center justify-center rounded-full${iconAlert ? ' motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]' : ''}`}
+        className={`flex-shrink-0 flex items-center justify-center rounded-full${iconAlert ? (alertTono === 'blue' ? ' motion-safe:[animation:avisoParpadeoAzul_1.3s_ease-in-out_infinite]' : ' motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]') : ''}`}
         style={iconAlert
-          ? { width: 26, height: 26, margin: -4.5, color: '#fff', background: '#16a34a' }
+          ? { width: 26, height: 26, margin: -4.5, color: '#fff', background: alertTono === 'blue' ? '#2563EB' : '#16a34a' }
           : iconColor && !isActive
             ? { width: 24, height: 24, margin: -3.5, color: '#fff', background: iconColor }
             : { width: 17, height: 17, color: isActive ? '#B8941E' : 'rgba(10,9,8,0.55)' }}
       >
         <Icon size={iconAlert ? 15 : (iconColor && !isActive ? 14 : 17)} strokeWidth={iconColor && !isActive ? 2.5 : 2} />
       </span>
-      <span className="flex-1" style={iconAlert ? { color: '#166534', fontWeight: 800 } : undefined}>{label}</span>
+      <span className="flex-1" style={iconAlert ? { color: alertTono === 'blue' ? '#1d4ed8' : '#166534', fontWeight: 800 } : undefined}>{label}</span>
       {etiqueta && (
         <>
           <span className="flex-shrink-0 text-[0.75rem] font-black uppercase tracking-wide px-1.5 py-1 rounded-full leading-none group-data-[collapsible=icon]:hidden"
@@ -299,6 +302,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
   const { hayNuevo } = useAdminActivityAlert(isAdmin);
   const { hayNuevo: hayNuevoFeed } = useFeedAlert(user?.id);
   const hayNovedades = useNovedadesSinLeer();
+  const organizadoresNuevos = useOrganizadoresNuevos(user?.id, role !== 'empresario' && role !== 'pending');
   const { state, setOpen } = useSidebar();
   const collapsed = state === 'collapsed';
   const isAgency = subscription_tier === 'agency' || subscription_tier === 'elite';
@@ -390,7 +394,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
             <NavItem icon={Home} label="Inicio" isActive={activeView === homeView} onClick={() => onViewChange(homeView)} navId={homeView === 'profile' ? 'inicio' : homeView} />
             <NavItem icon={Megaphone} label="Flash Booking" isActive={activeView === 'flashbooking'} onClick={() => onViewChange('flashbooking')} iconAlert={flashTotal > 0} badge={flashTotal} badgeColor="green" navId="flashbooking" />
             {!isEmpresario && (
-              <NavItem icon={Building2} label="Organizadores" isActive={activeView === 'organizadores'} onClick={() => onViewChange('organizadores')} navId="organizadores" />
+              <NavItem icon={Briefcase} label="Organizadores" isActive={activeView === 'organizadores'} onClick={() => onViewChange('organizadores')} iconAlert={organizadoresNuevos > 0} alertTono="blue" badge={organizadoresNuevos} badgeColor="blue" navId="organizadores" />
             )}
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} iconAlert={msgBadge > 0} navId="messages" />
             <NavItem icon={Newspaper} label="Novedades" isActive={activeView === 'comunicados' || activeView === 'feed'} onClick={() => onViewChange('comunicados')} iconAlert={hayNuevoFeed || hayNovedades} navId="comunicados" etiqueta={concursoActivo() ? 'Concurso DJ' : undefined} />

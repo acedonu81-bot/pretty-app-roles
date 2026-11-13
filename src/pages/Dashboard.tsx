@@ -749,7 +749,7 @@ const Dashboard = () => {
       case 'mapa': return <MapaView />;
       case 'flashbooking':
       case 'flash': return <FlashBookingWallView onMessage={handleMessage} />;
-      case 'organizadores': return <OrganizadoresView onMessage={handleMessage} />;
+      case 'organizadores': return <OrganizadoresView onVerOfertas={goToOfertasFlashBooking} />;
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'agency': return <AgencyView />;

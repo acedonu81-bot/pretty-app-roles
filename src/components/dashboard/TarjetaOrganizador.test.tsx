@@ -28,12 +28,15 @@ describe('TarjetaOrganizador', () => {
     expect(screen.queryByText('Bodas y eventos de empresa')).toBeNull();
   });
 
-  it('el botón de escribir solo existe si se le pasa onEscribir y avisa con id y nombre', () => {
-    const { rerender } = render(<TarjetaOrganizador org={base} />);
+  it('"Ver ofertas" solo sale con ofertas activas y con onVerOfertas, y no hay botón de chat', () => {
+    const onVer = vi.fn();
+    const { rerender } = render(<TarjetaOrganizador org={{ ...base, ofertas_activas: 2 }} />);
+    expect(screen.queryByText('Ver sus 2 ofertas activas')).toBeNull();
+    rerender(<TarjetaOrganizador org={{ ...base, ofertas_activas: 0 }} onVerOfertas={onVer} />);
+    expect(screen.queryByRole('button')).toBeNull();
+    rerender(<TarjetaOrganizador org={{ ...base, ofertas_activas: 2 }} onVerOfertas={onVer} />);
+    fireEvent.click(screen.getByText('Ver sus 2 ofertas activas'));
+    expect(onVer).toHaveBeenCalledTimes(1);
     expect(screen.queryByText('Escribir por el chat')).toBeNull();
-    const onEscribir = vi.fn();
-    rerender(<TarjetaOrganizador org={base} onEscribir={onEscribir} />);
-    fireEvent.click(screen.getByText('Escribir por el chat'));
-    expect(onEscribir).toHaveBeenCalledWith('u1', 'Sala Norte');
   });
 });
