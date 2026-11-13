@@ -16,10 +16,10 @@
 - Solo web (escritorio y navegador del móvil). Si `isNative` (src/lib/capacitor.ts) es true: ni precios, ni botones de pago, ni enlaces a la web de pago.
 - Interruptor `COBROS_ACTIVOS` (secreto de Supabase y `VITE_COBROS_ACTIVOS`), por defecto `false`: con él apagado no se ven precios ni botones y `crear-checkout` responde 403 `{ error: 'cobros_apagados' }`. Nada de esto se lanza todavía (decisión 13 nov).
 - Planes a la venta: Profesional (`starter`) 6,99 €/mes y Premium (`business`) 14,99 €/mes. Agencia FUERA (no se vende ni se muestra; `agency` se queda en el código sin usar).
-- Anual = 10 % de descuento: 75,49 € / 161,89 € al año.
+- Anual: 15 % el primer año (71,30 € / 152,90 €) y 10 % en las renovaciones (75,49 € / 161,89 €). En Stripe: Price anual de 75,49 / 161,89 y cupón automático `ANUAL1` (-5,55 %, `duration: once`) aplicado en el Checkout anual para dejar el primer año en 71,30 / 152,90; comprobar el céntimo en modo test.
 - Los precios que ve el usuario son el total con IVA incluido (21 %). En Stripe, precios con `tax_behavior: 'inclusive'` y un Tax Rate manual del 21 % inclusivo. Si se decide cobrar "+IVA", solo cambian los importes de los Price en Stripe y la constante `IVA_INCLUIDO`; el código no cambia.
 - Nombres públicos: Esencial (free), Profesional (starter), Premium (business). Los ids del código no cambian.
-- Black Friday: código promocional `BLACKFRIDAY26`, -20 % real sobre el precio anual (Profesional 60,39 € el primer año, 5,03 €/mes; Premium 129,51 €, 10,79 €/mes), solo primer pago, válido hasta el 30 nov 2026 23:59 Europe/Madrid.
+- Black Friday: código promocional `BLACKFRIDAY26`, -20 % sobre el anual del primer año (Profesional 57,04 €, 4,75 €/mes; Premium 122,32 €, 10,19 €/mes); sustituye a `ANUAL1` en ese pago y su importe se fija con `amount_off` por producto para que cuadre al céntimo, solo primer pago, válido hasta el 30 nov 2026 23:59 Europe/Madrid.
 - Sin periodo de prueba en Stripe en esta fase (se ignora `trialDays`).
 - Copy: sin rayas (—/–), sin emojis, sin "gratis" ni "0 comisión" como gancho, sin "bolo".
 - Claves: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` y los 4 ids de Price como secretos de Supabase (`STRIPE_PRICE_STARTER_MENSUAL`, `..._ANUAL`, `STRIPE_PRICE_BUSINESS_MENSUAL`, `..._ANUAL`). Nunca en el frontend ni en el repo.
@@ -61,7 +61,7 @@
   - `planDesdePriceId(priceId: string, env): { plan: PlanPago; ciclo: Ciclo } | null`
   - `tierDesdeEstado(estado: string, plan: PlanPago): 'free' | PlanPago`
   - `esDj(perfil: { role: string | null; roles: string[] | null }): boolean`
-  - En `src/lib/subscriptions.ts`: `PRECIOS_ANUALES: Record<'starter'|'business', number>` = `{ starter: 75.49, business: 161.89 }`
+  - En `src/lib/subscriptions.ts`: `PRECIOS_ANUALES: Record<'starter'|'business', number>` = `{ starter: 75.49, business: 161.89 }` (renovación) y `PRECIOS_ANUALES_PRIMER_ANO` = `{ starter: 71.30, business: 152.90 }`
 
 El archivo de `_shared` no puede importar nada de Deno ni de npm (lo usan Vitest y Deno).
 
@@ -88,6 +88,7 @@ it('esDj', () => {
 it('precios web', () => {
   expect(subscriptionPlans.find(p => p.id === 'starter')!.monthlyPrice).toBe(6.99);
   expect(PRECIOS_ANUALES).toEqual({ starter: 75.49, business: 161.89 });
+  expect(PRECIOS_ANUALES_PRIMER_ANO).toEqual({ starter: 71.30, business: 152.90 });
 });
 ```
 
