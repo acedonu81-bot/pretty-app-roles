@@ -233,7 +233,8 @@ Los planes se abren a todos los profesionales, pero cada rol está en uno de dos
 | Ventajas | Comunes + musicales (sets, links de sesión, concursos DJ) | Comunes (redes, verificación ampliada, WhatsApp de trabajo, posición, comunicados, estadísticas, portafolio, vídeo de fondo) |
 
 - `decidirCheckout` cambia `esDj` por `esProfesional` (cualquier rol salvo empresario, particular, local_eventos, event_manager, organizador, pending).
-- Subir un rol a Activo: cuando tenga 3 o más conversaciones con clientes reales al mes durante 2 meses seguidos (sin admins, demo ni autocontratos). Tarjeta en el panel admin con la cifra de cada rol y el umbral; el cambio lo hace Daniel a mano, nunca automático.
+- Subir un rol a Activo, durante 2 meses seguidos, con cualquiera de las dos: (a) 3 o más conversaciones con clientes reales al mes; (b) 100 o más visitas a fichas del rol al mes (`profile_business_views`, sin Torrejón; afinar con GA4) y al menos 1 conversación real al mes. Sin admins, demo ni autocontratos.
+- Varios roles: un pago por persona cubre todos sus perfiles, máximo 3 perfiles por cuenta (si tiene más, elige cuáles). Cada perfil sigue el nivel de su rol para ocultar redes; las ventajas musicales solo en perfiles de música. Tarjeta en el panel admin con la cifra de cada rol y el umbral; el cambio lo hace Daniel a mano, nunca automático.
 - Al subir un rol: aviso a sus profesionales 30 días antes de ocultar sus redes, y desde ese día entra en las campañas.
 - Revisión mensual junto al método de exigencias por rol.
 
