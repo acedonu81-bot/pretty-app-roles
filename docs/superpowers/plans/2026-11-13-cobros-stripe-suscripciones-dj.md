@@ -220,6 +220,23 @@ Bloqueada hasta tener el NIF del alta. Contenido mínimo de las condiciones: qui
 - [ ] Primer pago real con la tarjeta de Daniel y devolverlo desde Stripe.
 - [ ] Commit y anotar en la memoria del proyecto.
 
+## Niveles de cobro por rol (decidido 13 nov, necesita ficha XDS antes de construir)
+
+Los planes se abren a todos los profesionales, pero cada rol está en uno de dos niveles. El nivel se guarda en una tabla `roles_cobro (role text pk, nivel text check (nivel in ('activo','disponible')), redes_bloqueadas boolean, cambiado_at timestamptz, cambiado_por uuid)`, editable solo por admin desde el panel.
+
+| | Activo | Disponible |
+|---|---|---|
+| Roles al empezar | dj, grupo-musical, disco-movil | todos los demás profesionales |
+| Puede contratar un plan | Sí | Sí, desde "Mi plan" |
+| Banners, Black Friday, correos y push de venta | Sí | No |
+| Instagram, TikTok y web ocultos en Esencial | Sí | No, siguen visibles gratis |
+| Ventajas | Comunes + musicales (sets, links de sesión, concursos DJ) | Comunes (redes, verificación ampliada, WhatsApp de trabajo, posición, comunicados, estadísticas, portafolio, vídeo de fondo) |
+
+- `decidirCheckout` cambia `esDj` por `esProfesional` (cualquier rol salvo empresario, particular, local_eventos, event_manager, organizador, pending).
+- Subir un rol a Activo: cuando tenga 3 o más conversaciones con clientes reales al mes durante 2 meses seguidos (sin admins, demo ni autocontratos). Tarjeta en el panel admin con la cifra de cada rol y el umbral; el cambio lo hace Daniel a mano, nunca automático.
+- Al subir un rol: aviso a sus profesionales 30 días antes de ocultar sus redes, y desde ese día entra en las campañas.
+- Revisión mensual junto al método de exigencias por rol.
+
 ## Fuera de este plan (cada una necesita su ficha XDS)
 
 - Lo que incluye cada plan (decidido 13 nov, por construir, ver memoria `project_xpeak_cobros_stripe_plan_13nov`): Instagram, TikTok y web solo visibles con plan de pago (SoundCloud visible para todos; en Esencial "Escríbele por XPEAK"; se ocultan, no se borran); avisos por WhatsApp solo de trabajo (solicitudes de particulares y ofertas de organizadores), nunca el teléfono del DJ; verificación ampliada solo para planes de pago; sorteo entre suscriptores (bases legales); concursos de DJs abiertos a todos los planes, Esencial incluido; al bajar de plan o cancelar se OCULTA (nunca se borra) todo lo que el nuevo plan no incluye y reaparece al volver a subir, preajustado antes de activar cobros; Premium: más visibilidad, prioridad en comunicados, ficha con vídeo de fondo.
