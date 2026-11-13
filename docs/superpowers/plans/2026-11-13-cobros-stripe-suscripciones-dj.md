@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** que un DJ pueda pagar un plan (Profesional, Premium o Agencia, mensual o anual) desde la web con Stripe, y que su perfil cambie de plan solo cuando Stripe confirma el pago.
+**Goal:** dejar preparado (apagado hasta que Daniel lo active) que un DJ pueda pagar un plan (Profesional o Premium, mensual o anual) desde la web con Stripe, y que su perfil cambie de plan solo cuando Stripe confirma el pago.
 
 **Architecture:** Stripe Checkout (página de pago alojada por Stripe) y portal de cliente de Stripe para cambiar de plan, ver facturas o darse de baja. Tres Edge Functions de Supabase: `crear-checkout` y `portal-cliente` (con sesión del usuario) y `stripe-webhook` (sin sesión, valida la firma de Stripe). El webhook es lo único que escribe el plan: guarda la suscripción en una tabla nueva `suscripciones` y copia el plan a `profiles.subscription_tier` de todos los perfiles del usuario con la clave de servicio (el trigger `protect_privileged_fields` ya impide que un usuario se lo cambie a sí mismo y deja pasar al service role). En la app nativa de iOS/Android no se vende nada.
 
@@ -14,14 +14,15 @@
 
 - Solo se cobra a perfiles con rol `dj` (en `role` o en `roles`). Empresarios y event managers no tienen plan.
 - Solo web (escritorio y navegador del móvil). Si `isNative` (src/lib/capacitor.ts) es true: ni precios, ni botones de pago, ni enlaces a la web de pago.
-- Precios mensuales: Profesional (`starter`) 6,99 €, Premium (`business`) 14,99 €, Agencia (`agency`) 44,99 €.
-- Anual = 10 % de descuento: 75,49 € / 161,89 € / 485,89 € al año.
+- Interruptor `COBROS_ACTIVOS` (secreto de Supabase y `VITE_COBROS_ACTIVOS`), por defecto `false`: con él apagado no se ven precios ni botones y `crear-checkout` responde 403 `{ error: 'cobros_apagados' }`. Nada de esto se lanza todavía (decisión 13 nov).
+- Planes a la venta: Profesional (`starter`) 6,99 €/mes y Premium (`business`) 14,99 €/mes. Agencia FUERA (no se vende ni se muestra; `agency` se queda en el código sin usar).
+- Anual = 10 % de descuento: 75,49 € / 161,89 € al año.
 - Los precios que ve el usuario son el total con IVA incluido (21 %). En Stripe, precios con `tax_behavior: 'inclusive'` y un Tax Rate manual del 21 % inclusivo. Si se decide cobrar "+IVA", solo cambian los importes de los Price en Stripe y la constante `IVA_INCLUIDO`; el código no cambia.
-- Nombres públicos: Esencial (free), Profesional (starter), Premium (business), Agencia (agency). Los ids del código no cambian.
-- Black Friday: código promocional `BLACKFRIDAY26`, -20 % solo en precios anuales, solo primer pago, válido hasta el 30 nov 2026 23:59 Europe/Madrid.
+- Nombres públicos: Esencial (free), Profesional (starter), Premium (business). Los ids del código no cambian.
+- Black Friday: código promocional `BLACKFRIDAY26`, -20 % real sobre el precio anual (Profesional 60,39 € el primer año, 5,03 €/mes; Premium 129,51 €, 10,79 €/mes), solo primer pago, válido hasta el 30 nov 2026 23:59 Europe/Madrid.
 - Sin periodo de prueba en Stripe en esta fase (se ignora `trialDays`).
 - Copy: sin rayas (—/–), sin emojis, sin "gratis" ni "0 comisión" como gancho, sin "bolo".
-- Claves: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` y los 6 ids de Price como secretos de Supabase (`STRIPE_PRICE_STARTER_MENSUAL`, `..._ANUAL`, `STRIPE_PRICE_BUSINESS_...`, `STRIPE_PRICE_AGENCY_...`). Nunca en el frontend ni en el repo.
+- Claves: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` y los 4 ids de Price como secretos de Supabase (`STRIPE_PRICE_STARTER_MENSUAL`, `..._ANUAL`, `STRIPE_PRICE_BUSINESS_MENSUAL`, `..._ANUAL`). Nunca en el frontend ni en el repo.
 - Despliegue solo cuando Daniel lo pida.
 
 ## Review Focus
@@ -38,10 +39,10 @@
 
 1. Alta de autónomo hecha (NIF disponible).
 2. Crear cuenta Stripe (modo test primero), verificar identidad e IBAN.
-3. En Stripe (test y luego live): 3 productos (Profesional, Premium, Agencia), 2 precios cada uno (mensual y anual, `tax_behavior` inclusive), Tax Rate "IVA 21 %" inclusivo, portal de cliente activado (cambio de plan entre los 6 precios, cancelación al final del periodo, facturas visibles), recibos y facturas por email activados, datos fiscales de la cuenta (nombre, NIF, dirección) para que salgan en la factura.
+3. En Stripe (test y luego live): 2 productos (Profesional, Premium), 2 precios cada uno (mensual y anual, `tax_behavior` inclusive), Tax Rate "IVA 21 %" inclusivo, portal de cliente activado (cambio de plan entre los 6 precios, cancelación al final del periodo, facturas visibles), recibos y facturas por email activados, datos fiscales de la cuenta (nombre, NIF, dirección) para que salgan en la factura.
 4. Webhook en Stripe apuntando a `https://<proyecto>.supabase.co/functions/v1/stripe-webhook` con los eventos `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`.
 5. Guardar los secretos de Supabase listados arriba.
-6. Crear el cupón -20 % (`duration: once`, `applies_to` los 3 productos) y el código `BLACKFRIDAY26` con `expires_at` 30 nov 2026 23:59 Madrid. La restricción "solo anual" se aplica en Task 3.
+6. Crear el cupón -20 % (`duration: once`, `applies_to` los 2 productos) y el código `BLACKFRIDAY26` con `expires_at` 30 nov 2026 23:59 Madrid. La restricción "solo anual" se aplica en Task 3.
 
 ---
 
@@ -54,13 +55,13 @@
 
 **Interfaces:**
 - Produces:
-  - `type PlanPago = 'starter' | 'business' | 'agency'`
+  - `type PlanPago = 'starter' | 'business'`
   - `type Ciclo = 'mensual' | 'anual'`
   - `priceIdDe(plan: PlanPago, ciclo: Ciclo, env: Record<string,string|undefined>): string` (lanza si falta el secreto)
   - `planDesdePriceId(priceId: string, env): { plan: PlanPago; ciclo: Ciclo } | null`
   - `tierDesdeEstado(estado: string, plan: PlanPago): 'free' | PlanPago`
   - `esDj(perfil: { role: string | null; roles: string[] | null }): boolean`
-  - En `src/lib/subscriptions.ts`: `PRECIOS_ANUALES: Record<'starter'|'business'|'agency', number>` = `{ starter: 75.49, business: 161.89, agency: 485.89 }`
+  - En `src/lib/subscriptions.ts`: `PRECIOS_ANUALES: Record<'starter'|'business', number>` = `{ starter: 75.49, business: 161.89 }`
 
 El archivo de `_shared` no puede importar nada de Deno ni de npm (lo usan Vitest y Deno).
 
@@ -68,14 +69,13 @@ El archivo de `_shared` no puede importar nada de Deno ni de npm (lo usan Vitest
 
 ```ts
 const env = { STRIPE_PRICE_STARTER_MENSUAL: 'p_sm', STRIPE_PRICE_STARTER_ANUAL: 'p_sa',
-  STRIPE_PRICE_BUSINESS_MENSUAL: 'p_bm', STRIPE_PRICE_BUSINESS_ANUAL: 'p_ba',
-  STRIPE_PRICE_AGENCY_MENSUAL: 'p_am', STRIPE_PRICE_AGENCY_ANUAL: 'p_aa' };
+  STRIPE_PRICE_BUSINESS_MENSUAL: 'p_bm', STRIPE_PRICE_BUSINESS_ANUAL: 'p_ba' };
 it('ida y vuelta price', () => {
   expect(priceIdDe('business', 'anual', env)).toBe('p_ba');
   expect(planDesdePriceId('p_sm', env)).toEqual({ plan: 'starter', ciclo: 'mensual' });
   expect(planDesdePriceId('desconocido', env)).toBeNull();
 });
-it('falta secreto', () => expect(() => priceIdDe('agency', 'mensual', {})).toThrow());
+it('falta secreto', () => expect(() => priceIdDe('business', 'mensual', {})).toThrow());
 it('estados', () => {
   for (const e of ['active', 'trialing', 'past_due']) expect(tierDesdeEstado(e, 'business')).toBe('business');
   for (const e of ['canceled', 'unpaid', 'incomplete', 'incomplete_expired', 'paused']) expect(tierDesdeEstado(e, 'business')).toBe('free');
@@ -87,7 +87,7 @@ it('esDj', () => {
 });
 it('precios web', () => {
   expect(subscriptionPlans.find(p => p.id === 'starter')!.monthlyPrice).toBe(6.99);
-  expect(PRECIOS_ANUALES).toEqual({ starter: 75.49, business: 161.89, agency: 485.89 });
+  expect(PRECIOS_ANUALES).toEqual({ starter: 75.49, business: 161.89 });
 });
 ```
 
@@ -108,7 +108,7 @@ it('precios web', () => {
 **Interfaces:**
 - Consumes: `planDesdePriceId`, `tierDesdeEstado` (Task 1).
 - Produces:
-  - Tabla `public.suscripciones` (una fila por usuario): `user_id uuid pk references auth.users on delete cascade`, `stripe_customer_id text unique not null`, `stripe_subscription_id text unique`, `plan text check (plan in ('starter','business','agency'))`, `ciclo text check (ciclo in ('mensual','anual'))`, `estado text`, `periodo_fin timestamptz`, `cancela_al_final boolean default false`, `stripe_evento_at timestamptz`, `updated_at timestamptz default now()`.
+  - Tabla `public.suscripciones` (una fila por usuario): `user_id uuid pk references auth.users on delete cascade`, `stripe_customer_id text unique not null`, `stripe_subscription_id text unique`, `plan text check (plan in ('starter','business'))`, `ciclo text check (ciclo in ('mensual','anual'))`, `estado text`, `periodo_fin timestamptz`, `cancela_al_final boolean default false`, `stripe_evento_at timestamptz`, `updated_at timestamptz default now()`.
   - RLS: `select` solo `auth.uid() = user_id`; admins vía `has_role(auth.uid(),'admin')`; ninguna política de insert/update/delete (solo service role). `GRANT SELECT ON public.suscripciones TO authenticated`.
   - Tabla `public.stripe_eventos (id text pk, tipo text, recibido_at timestamptz default now())`, RLS activada sin políticas.
   - `procesarEventoStripe(evento: EventoStripe, db: DbStripe, env): Promise<'procesado' | 'duplicado' | 'ignorado' | 'viejo'>`
@@ -156,7 +156,7 @@ Checkout Session: `mode: 'subscription'`, `customer` (reutiliza `stripe_customer
 
 - [ ] **Step 1: Tests que fallan**
   - perfil `empresario` → `{ tipo: 'error', codigo: 'no_dj' }`
-  - `plan: 'free'` → `plan_invalido`; `ciclo: 'semanal'` → `plan_invalido`
+  - `plan: 'free'` o `plan: 'agency'` → `plan_invalido`; `ciclo: 'semanal'` → `plan_invalido`
   - DJ sin suscripción → `checkout`; DJ con estado `canceled` → `checkout`
   - DJ con estado `active` o `past_due` → `portal`
 - [ ] **Step 2:** Ejecutar, FAIL.
@@ -178,7 +178,8 @@ Checkout Session: `mode: 'subscription'`, `customer` (reutiliza `stripe_customer
 
 Comportamiento de la vista:
 - No DJ: vista actual (lo incluido en la cuenta), sin precios.
-- DJ en web: plan actual con su nombre público; selector Mensual / Anual; 3 tarjetas con precio y "IVA incluido"; en anual "75,49 € al año" y el equivalente mensual; botón "Elegir Profesional" etc. que llama a `iniciarPago`. Si ya tiene plan de pago: botón "Gestionar mi plan" (`abrirPortal`) y, si `cancela_al_final`, aviso "Tu plan termina el {fecha}". Lee la fila de `suscripciones` del usuario.
+- Con `VITE_COBROS_ACTIVOS` distinto de `'true'`: vista actual, sin precios ni botones.
+- DJ en web: plan actual con su nombre público; selector Mensual / Anual; 2 tarjetas de pago (más Esencial) con precio y "IVA incluido"; en anual "75,49 € al año" y el equivalente mensual; botón "Elegir Profesional" etc. que llama a `iniciarPago`. Si ya tiene plan de pago: botón "Gestionar mi plan" (`abrirPortal`) y, si `cancela_al_final`, aviso "Tu plan termina el {fecha}". Lee la fila de `suscripciones` del usuario.
 - `?pago=ok` en la URL: aviso "Pago recibido. Tu plan se activa en unos segundos." y vuelve a leer el perfil a los 3 s y a los 8 s (el webhook puede tardar).
 - DJ en app nativa: solo el nombre del plan actual. Sin precios, sin botones, sin texto sobre dónde pagar.
 - Enlace a las condiciones de contratación (Task 5) debajo de las tarjetas.
@@ -218,6 +219,8 @@ Bloqueada hasta tener el NIF del alta. Contenido mínimo de las condiciones: qui
 - [ ] Commit y anotar en la memoria del proyecto.
 
 ## Fuera de este plan (cada una necesita su ficha XDS)
+
+- Lo que incluye cada plan (decidido 13 nov, por construir, ver memoria `project_xpeak_cobros_stripe_plan_13nov`): Instagram, TikTok y web solo visibles con plan de pago (SoundCloud visible para todos; en Esencial "Escríbele por XPEAK"; se ocultan, no se borran); avisos por WhatsApp solo de trabajo (solicitudes de particulares y ofertas de organizadores), nunca el teléfono del DJ; verificación ampliada solo para planes de pago; sorteo entre suscriptores (bases legales); Premium: más visibilidad, prioridad en comunicados, ficha con vídeo de fondo.
 
 - Qué desbloquea cada plan dentro de la app (hoy casi no hay funciones atadas a `subscription_tier`). Sin esto, pagar no cambia casi nada salvo el sello y el podio.
 - Cobro de 4,99 € al particular al cerrar un acuerdo (XDS 65,5).
