@@ -1,4 +1,4 @@
-import { Building2, MapPin, Handshake, Megaphone } from 'lucide-react';
+import { Building2, MapPin, Handshake, Megaphone, CalendarDays } from 'lucide-react';
 
 // Ficha corta de una empresa que ha elegido mostrarse a los profesionales
 // (29 oct 2026). La usan la sección "Organizadores" de los profesionales y la
@@ -15,6 +15,8 @@ export interface Organizador {
   contrataciones: number | string;
   /** Ofertas abiertas ahora mismo. Ausente si la función de BD aún es la antigua. */
   ofertas_activas?: number | string;
+  /** Fecha de alta (ISO). Ausente si la función de BD aún es la antigua. */
+  desde?: string | null;
 }
 
 interface Props {
@@ -25,6 +27,14 @@ interface Props {
 
 export const textoContrataciones = (n: number) =>
   n === 0 ? 'Aún sin contrataciones en XPEAK' : `${n} ${n === 1 ? 'contratación' : 'contrataciones'} en XPEAK`;
+
+/** "Se unió en noviembre 2026"; vacío si no hay fecha válida. */
+export const textoDesde = (iso?: string | null) => {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return `Se unió en ${d.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}`;
+};
 
 export default function TarjetaOrganizador({ org, onVerOfertas }: Props) {
   const n = Number(org.contrataciones);
@@ -49,9 +59,16 @@ export default function TarjetaOrganizador({ org, onVerOfertas }: Props) {
         </div>
       </div>
       {org.descripcion && <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{org.descripcion}</p>}
-      <p className="text-xs font-bold flex items-center gap-1.5" style={{ color: n > 0 ? '#047857' : '#6b7280' }}>
-        <Handshake size={13} />{textoContrataciones(n)}
-      </p>
+      {/* Sin "Aún sin contrataciones": con la plataforma nueva leía "aquí nadie contrata". */}
+      {n > 0 ? (
+        <p className="text-xs font-bold flex items-center gap-1.5" style={{ color: '#047857' }}>
+          <Handshake size={13} />{textoContrataciones(n)}
+        </p>
+      ) : textoDesde(org.desde) ? (
+        <p className="text-xs flex items-center gap-1.5" style={{ color: '#6b7280' }}>
+          <CalendarDays size={13} />{textoDesde(org.desde)}
+        </p>
+      ) : null}
       {onVerOfertas && ofertas > 0 && (
         <button type="button" onClick={onVerOfertas}
           className="mt-auto flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold"

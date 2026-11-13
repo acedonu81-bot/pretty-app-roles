@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import TarjetaOrganizador, { textoContrataciones } from './TarjetaOrganizador';
+import TarjetaOrganizador, { textoContrataciones, textoDesde } from './TarjetaOrganizador';
 
 const base = { user_id: 'u1', nombre: 'Sala Norte', logo: null, ciudad: 'Madrid', descripcion: 'Bodas y eventos de empresa', contrataciones: 3 };
 
@@ -38,5 +38,27 @@ describe('TarjetaOrganizador', () => {
     fireEvent.click(screen.getByText('Ver sus 2 ofertas activas'));
     expect(onVer).toHaveBeenCalledTimes(1);
     expect(screen.queryByText('Escribir por el chat')).toBeNull();
+  });
+
+  it('sin contrataciones no dice "Aún sin contrataciones": enseña desde cuándo está, o nada', () => {
+    const { rerender } = render(<TarjetaOrganizador org={{ ...base, contrataciones: 0, desde: '2026-11-12T20:29:37Z' }} />);
+    expect(screen.queryByText(/Aún sin contrataciones/)).toBeNull();
+    expect(screen.getByText('Se unió en noviembre de 2026')).toBeTruthy();
+    rerender(<TarjetaOrganizador org={{ ...base, contrataciones: 0 }} />);
+    expect(screen.queryByText(/Aún sin contrataciones/)).toBeNull();
+    expect(screen.queryByText(/Se unió/)).toBeNull();
+  });
+
+  it('con contrataciones las enseña y no pone la fecha', () => {
+    render(<TarjetaOrganizador org={{ ...base, desde: '2026-11-12T20:29:37Z' }} />);
+    expect(screen.getByText('3 contrataciones en XPEAK')).toBeTruthy();
+    expect(screen.queryByText(/Se unió/)).toBeNull();
+  });
+});
+
+describe('textoDesde', () => {
+  it('vacío si no hay fecha o es inválida', () => {
+    expect(textoDesde(null)).toBe('');
+    expect(textoDesde('xx')).toBe('');
   });
 });
