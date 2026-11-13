@@ -47,3 +47,18 @@ const MUSICA = ['dj', 'grupo-musical', 'disco-movil'];
 export function esMusica(role: string | null): boolean {
   return !!role && MUSICA.includes(role);
 }
+
+// Black Friday 2026: del viernes 27 nov 00:00 al domingo 30 nov 23:59, hora de Madrid (UTC+1).
+export const INICIO_BLACK_FRIDAY = new Date('2026-11-26T23:00:00Z');
+export const FIN_BLACK_FRIDAY = new Date('2026-11-30T23:00:00Z');
+
+// Cupón del primer año del plan anual: 15 % normal (ANUAL1) o 20 % más en Black Friday (BF).
+// Son cupones de importe fijo por plan, para que el total cuadre al céntimo.
+export function cuponDe(plan: PlanPago, ciclo: Ciclo, ahora: Date, env: Env): string | null {
+  if (ciclo !== 'anual') return null;
+  const bf = ahora >= INICIO_BLACK_FRIDAY && ahora < FIN_BLACK_FRIDAY;
+  const clave = `STRIPE_CUPON_${plan.toUpperCase()}_${bf ? 'BF' : 'ANUAL1'}`;
+  const id = env[clave];
+  if (!id) throw new Error(`Falta el secreto ${clave}`);
+  return id;
+}

@@ -45,3 +45,26 @@ describe('stripePlanes', () => {
     expect(PRECIOS_ANUALES_PRIMER_ANO).toEqual({ starter: 71.30, business: 152.90 });
   });
 });
+
+import { cuponDe, FIN_BLACK_FRIDAY } from './stripePlanes.ts';
+describe('cuponDe', () => {
+  const envC = { STRIPE_CUPON_STARTER_ANUAL1: 'c_sa1', STRIPE_CUPON_BUSINESS_ANUAL1: 'c_ba1', STRIPE_CUPON_STARTER_BF: 'c_sbf', STRIPE_CUPON_BUSINESS_BF: 'c_bbf' };
+  it('el mensual no lleva cupón', () => {
+    expect(cuponDe('starter', 'mensual', new Date('2026-11-28'), envC)).toBeNull();
+  });
+  it('el anual lleva el 15 % del primer año fuera del Black Friday', () => {
+    expect(cuponDe('business', 'anual', new Date('2026-12-05T10:00:00Z'), envC)).toBe('c_ba1');
+  });
+  it('el anual lleva el Black Friday hasta el 30 nov a las 23:59 de Madrid', () => {
+    expect(cuponDe('starter', 'anual', new Date('2026-11-27T09:00:00Z'), envC)).toBe('c_sbf');
+    expect(cuponDe('starter', 'anual', new Date('2026-11-30T22:58:00Z'), envC)).toBe('c_sbf');
+    expect(cuponDe('starter', 'anual', new Date('2026-11-30T23:00:00Z'), envC)).toBe('c_sa1');
+    expect(FIN_BLACK_FRIDAY.toISOString()).toBe('2026-11-30T23:00:00.000Z');
+  });
+  it('el Black Friday empieza el 27 nov', () => {
+    expect(cuponDe('starter', 'anual', new Date('2026-11-26T12:00:00Z'), envC)).toBe('c_sa1');
+  });
+  it('lanza si falta el cupón', () => {
+    expect(() => cuponDe('starter', 'anual', new Date('2026-12-05'), {})).toThrow();
+  });
+});
