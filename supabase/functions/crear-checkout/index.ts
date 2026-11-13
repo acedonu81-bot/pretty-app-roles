@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
   const db = admin();
   const [{ data: perfiles }, { data: suscripcion }] = await Promise.all([
     db.from('profiles').select('role, roles').eq('user_id', user.id),
-    db.from('suscripciones').select('estado, stripe_customer_id').eq('user_id', user.id).maybeSingle(),
+    db.from('suscripciones').select('estado, stripe_customer_id, stripe_subscription_id').eq('user_id', user.id).maybeSingle(),
   ]);
 
   const decision = decidirCheckout({
@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
     }
 
     const env = Deno.env.toObject();
-    const cupon = cuponDe(plan as PlanPago, ciclo as Ciclo, new Date(), env);
+    const cupon = cuponDe(plan as PlanPago, ciclo as Ciclo, new Date(), env, !!suscripcion?.stripe_subscription_id);
     const sesion = await stripe.checkout.sessions.create({
       mode: 'subscription',
       customer,
@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
     });
     return respuesta(req, { url: sesion.url });
   } catch (e) {
-    console.error('[crear-checkout]', user.id, e);
+    console.error('[crear-checkout]', user.id, e instanceof Stripe.errors.StripeError ? `${e.type}:${e.code}` : String(e));
     return respuesta(req, { error: 'stripe' }, 500);
   }
 });

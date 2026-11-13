@@ -68,3 +68,11 @@ describe('cuponDe', () => {
     expect(() => cuponDe('starter', 'anual', new Date('2026-12-05'), {})).toThrow();
   });
 });
+
+describe('cuponDe una sola vez', () => {
+  const envC = { STRIPE_CUPON_STARTER_ANUAL1: 'c_sa1', STRIPE_CUPON_STARTER_BF: 'c_sbf' };
+  it('quien ya tuvo un plan no repite el descuento del primer año', () => {
+    expect(cuponDe('starter', 'anual', new Date('2026-12-05T10:00:00Z'), envC, true)).toBeNull();
+    expect(cuponDe('starter', 'anual', new Date('2026-11-28T10:00:00Z'), envC, true)).toBeNull();
+  });
+});

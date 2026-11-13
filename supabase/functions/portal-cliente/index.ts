@@ -1,4 +1,6 @@
 // Portal de Stripe: cambiar de plan, ver facturas o darse de baja.
+// Sin el interruptor COBROS_ACTIVOS a propósito: quien ya paga tiene que poder
+// cancelar siempre, aunque se apaguen los cobros nuevos.
 import Stripe from 'npm:stripe@17';
 import { admin, respuesta, usuarioDe, cabeceras, URL_WEB } from '../_shared/cobrosHttp.ts';
 
@@ -14,7 +16,7 @@ Deno.serve(async (req) => {
     const s = await stripe.billingPortal.sessions.create({ customer: data.stripe_customer_id, return_url: `${URL_WEB}/dashboard` });
     return respuesta(req, { url: s.url });
   } catch (e) {
-    console.error('[portal-cliente]', user.id, e);
+    console.error('[portal-cliente]', user.id, e instanceof Stripe.errors.StripeError ? `${e.type}:${e.code}` : String(e));
     return respuesta(req, { error: 'stripe' }, 500);
   }
 });

@@ -54,8 +54,9 @@ export const FIN_BLACK_FRIDAY = new Date('2026-11-30T23:00:00Z');
 
 // Cupón del primer año del plan anual: 15 % normal (ANUAL1) o 20 % más en Black Friday (BF).
 // Son cupones de importe fijo por plan, para que el total cuadre al céntimo.
-export function cuponDe(plan: PlanPago, ciclo: Ciclo, ahora: Date, env: Env): string | null {
-  if (ciclo !== 'anual') return null;
+// yaTuvoPlan: el descuento del primer año es solo para la primera suscripción de la persona.
+export function cuponDe(plan: PlanPago, ciclo: Ciclo, ahora: Date, env: Env, yaTuvoPlan = false): string | null {
+  if (ciclo !== 'anual' || yaTuvoPlan) return null;
   const bf = ahora >= INICIO_BLACK_FRIDAY && ahora < FIN_BLACK_FRIDAY;
   const clave = `STRIPE_CUPON_${plan.toUpperCase()}_${bf ? 'BF' : 'ANUAL1'}`;
   const id = env[clave];
