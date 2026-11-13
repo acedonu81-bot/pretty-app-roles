@@ -179,6 +179,7 @@ Checkout Session: `mode: 'subscription'`, `customer` (reutiliza `stripe_customer
 
 Comportamiento de la vista:
 - No DJ: vista actual (lo incluido en la cuenta), sin precios.
+- Bajo cada botón de pago: "Sin permanencia. Cancela cuando quieras." Al cancelar, el plan sigue hasta `periodo_fin` y luego pasa a Esencial; no se borra nada, las redes se ocultan.
 - Con `VITE_COBROS_ACTIVOS` distinto de `'true'`: vista actual, sin precios ni botones.
 - DJ en web: plan actual con su nombre público; selector Mensual / Anual; 2 tarjetas de pago (más Esencial) con precio y "IVA incluido"; en anual "75,49 € al año" y el equivalente mensual; botón "Elegir Profesional" etc. que llama a `iniciarPago`. Si ya tiene plan de pago: botón "Gestionar mi plan" (`abrirPortal`) y, si `cancela_al_final`, aviso "Tu plan termina el {fecha}". Lee la fila de `suscripciones` del usuario.
 - `?pago=ok` en la URL: aviso "Pago recibido. Tu plan se activa en unos segundos." y vuelve a leer el perfil a los 3 s y a los 8 s (el webhook puede tardar).
@@ -221,7 +222,7 @@ Bloqueada hasta tener el NIF del alta. Contenido mínimo de las condiciones: qui
 
 ## Fuera de este plan (cada una necesita su ficha XDS)
 
-- Lo que incluye cada plan (decidido 13 nov, por construir, ver memoria `project_xpeak_cobros_stripe_plan_13nov`): Instagram, TikTok y web solo visibles con plan de pago (SoundCloud visible para todos; en Esencial "Escríbele por XPEAK"; se ocultan, no se borran); avisos por WhatsApp solo de trabajo (solicitudes de particulares y ofertas de organizadores), nunca el teléfono del DJ; verificación ampliada solo para planes de pago; sorteo entre suscriptores (bases legales); Premium: más visibilidad, prioridad en comunicados, ficha con vídeo de fondo.
+- Lo que incluye cada plan (decidido 13 nov, por construir, ver memoria `project_xpeak_cobros_stripe_plan_13nov`): Instagram, TikTok y web solo visibles con plan de pago (SoundCloud visible para todos; en Esencial "Escríbele por XPEAK"; se ocultan, no se borran); avisos por WhatsApp solo de trabajo (solicitudes de particulares y ofertas de organizadores), nunca el teléfono del DJ; verificación ampliada solo para planes de pago; sorteo entre suscriptores (bases legales); concursos de DJs abiertos a todos los planes, Esencial incluido; Premium: más visibilidad, prioridad en comunicados, ficha con vídeo de fondo.
 
 - Qué desbloquea cada plan dentro de la app (hoy casi no hay funciones atadas a `subscription_tier`). Sin esto, pagar no cambia casi nada salvo el sello y el podio.
 - Cobro de 4,99 € al particular al cerrar un acuerdo (XDS 65,5).
