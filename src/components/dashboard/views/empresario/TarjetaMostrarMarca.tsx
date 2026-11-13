@@ -66,11 +66,11 @@ export default function TarjetaMostrarMarca() {
         <div className="text-sm space-y-3" style={{ color: '#374151' }}>
           <div>
             <p className="font-bold" style={{ color: '#111' }}>Qué verán</p>
-            <p>Tu logo, el nombre de tu empresa, tu ciudad, una descripción corta y cuántas contrataciones has hecho en XPEAK.</p>
+            <p>Tu logo, el nombre de tu empresa, tu ciudad, una descripción corta, el mes en que te uniste a XPEAK, las ofertas que tengas abiertas y, si ya has contratado, cuántas contrataciones has hecho en XPEAK.</p>
           </div>
           <div>
             <p className="font-bold" style={{ color: '#111' }}>Qué no verán</p>
-            <p>Tu teléfono ni tu email. Para hablar contigo usarán el chat de XPEAK y tú decides si respondes.</p>
+            <p>Tu teléfono ni tu email. Solo pueden ver tus ofertas activas y apuntarse a ellas; tú decides a quién respondes.</p>
           </div>
           {faltan.length > 0 && (
             <p className="text-xs rounded-lg p-2.5" style={{ background: 'rgba(217,119,6,0.08)', color: '#92400e' }}>
@@ -87,6 +87,7 @@ export default function TarjetaMostrarMarca() {
             ciudad: zona,
             descripcion: profile.bio?.trim() ? profile.bio.trim().slice(0, 160) : null,
             contrataciones,
+            desde: profile.created_at ?? null,
           }} />
         </div>
       </div>

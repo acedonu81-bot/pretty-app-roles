@@ -1,5 +1,5 @@
 -- Organizadores (13 nov 2026, 2): la tarjeta deja de enseñar "Aún sin contrataciones" y, si no hay,
--- enseña "Se unió en <mes año>". Añade la columna desde (fecha de alta del perfil).
+-- enseña "Se unió en <mes año>". Añade la columna desde (mes de alta del perfil). El empresario lo ve en su vista previa.
 
 DROP FUNCTION IF EXISTS public.organizadores_visibles();
 
@@ -26,7 +26,7 @@ BEGIN
            WHERE er.client_user_id = p.user_id::text
              AND er.status = 'open'
              AND er.expires_at > now()),
-         p.created_at
+         date_trunc('month', p.created_at)  -- solo el mes, nunca la hora exacta
     FROM public.profiles p
    WHERE p.role::text = 'empresario'
      AND p.mostrar_organizador
