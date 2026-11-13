@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 
 // 31 oct 2026: la oferta nueva de un organizador solo avisaba dentro de Flash
@@ -16,11 +17,30 @@ interface Props {
   onVer: (destino: 'ofertas' | 'solicitudes') => void;
 }
 
+// Si el profesional ya ha visto el banner con este mismo número de avisos y han
+// pasado 24 h sin actuar, se apaga solo (el globo del menú sigue). Si llegan
+// avisos nuevos, vuelve a salir.
+const HORAS_VISIBLE_MS = 24 * 3600 * 1000;
+const claveBanner = (uid: string) => `xpeak_banner_oferta_${uid}`;
+function yaCaducado(uid: string | undefined, total: number): boolean {
+  if (!uid || total < 1) return false;
+  try {
+    const guardado = JSON.parse(localStorage.getItem(claveBanner(uid)) ?? 'null');
+    if (!guardado || guardado.total !== total) {
+      localStorage.setItem(claveBanner(uid), JSON.stringify({ total, desde: Date.now() }));
+      return false;
+    }
+    return Date.now() - guardado.desde > HORAS_VISIBLE_MS;
+  } catch { return false; }
+}
+
 const NuevaOfertaBanner = ({ userId, isEmpresario, oculto, onVer }: Props) => {
   const { demandaBadge, flashBadge } = useDashboardBadges(userId, isEmpresario);
   const total = demandaBadge + flashBadge;
+  const [caducado, setCaducado] = useState(false);
+  useEffect(() => { setCaducado(yaCaducado(userId, total)); }, [userId, total]);
 
-  if (isEmpresario || oculto || total < 1) return null;
+  if (isEmpresario || oculto || total < 1 || caducado) return null;
 
   return (
     <div

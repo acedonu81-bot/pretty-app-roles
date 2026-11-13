@@ -39,6 +39,14 @@ export async function marcarFlashVisto(uid: string): Promise<void> {
 // 'event_request' sin leer: se leen al abrir Flash Booking > Demanda.
 const EVENTO_OFERTAS_VISTAS = 'xpeak:ofertas-vistas';
 
+// 13 nov 2026: una oferta de hace un mes seguía anunciada como "Nueva oferta
+// disponible" (DJ.Garvil, 1 aviso del 13 oct sin leer). Las ofertas duran 24 h
+// por defecto, así que un aviso sin leer de hace más de unos días ya no es
+// "nueva". Misma ventana para las solicitudes directas sin contestar.
+const VENTANA_AVISO_MS = 3 * 24 * 3600 * 1000;
+const VENTANA_SOLICITUD_MS = 7 * 24 * 3600 * 1000;
+const desde = (ms: number) => new Date(Date.now() - ms).toISOString();
+
 /** Marca como leídas las ofertas nuevas y apaga los globos abiertos. */
 export async function marcarOfertasVistas(uid: string): Promise<void> {
   await supabase.from('notifications' as any)
@@ -124,7 +132,8 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
     // ofertas en las que ya le han elegido y falta que confirme.
     const { count } = await supabase.from('flash_bookings' as any)
       .select('id', { count: 'exact', head: true })
-      .eq('professional_user_id', uid).eq('status', 'pending');
+      .eq('professional_user_id', uid).eq('status', 'pending')
+      .gte('created_at', desde(VENTANA_SOLICITUD_MS));
     let porConfirmar = 0;
     try { porConfirmar = (await cargarPorConfirmar(uid)).length; } catch { /* sin esto no se rompe el globo */ }
     setFlashBadge((count ?? 0) + porConfirmar);
@@ -170,7 +179,8 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
         .select('id', { count: 'exact', head: true })
         .eq('user_id', userId)
         .eq('type', 'event_request')
-        .eq('is_read', false);
+        .eq('is_read', false)
+        .gte('created_at', desde(VENTANA_AVISO_MS));
       setDemandaBadge(count ?? 0);
     };
     cargar();

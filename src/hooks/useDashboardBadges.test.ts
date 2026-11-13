@@ -177,6 +177,12 @@ describe('useDashboardBadges', () => {
     expect(cadenaNotif.eq).toHaveBeenCalledWith('user_id', 'user-123');
     expect(cadenaNotif.eq).toHaveBeenCalledWith('type', 'event_request');
     expect(cadenaNotif.eq).toHaveBeenCalledWith('is_read', false);
+    // 13 nov 2026: un aviso de hace un mes no es "nueva oferta": solo cuentan los recientes.
+    const gte = (cadenaNotif.gte as ReturnType<typeof vi.fn>).mock.calls.find(c => c[0] === 'created_at');
+    expect(gte).toBeTruthy();
+    const hace = Date.now() - new Date(gte![1]).getTime();
+    expect(hace).toBeGreaterThan(2 * 24 * 3600 * 1000);
+    expect(hace).toBeLessThan(4 * 24 * 3600 * 1000);
   });
 
   it('el empresario no tiene demandaBadge (publica ofertas, no las recibe)', async () => {

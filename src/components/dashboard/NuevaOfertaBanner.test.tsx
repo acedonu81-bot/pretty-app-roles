@@ -8,7 +8,17 @@ vi.mock('@/hooks/useDashboardBadges', () => ({
 }));
 
 describe('NuevaOfertaBanner', () => {
-  beforeEach(() => { badges.demandaBadge = 0; badges.flashBadge = 0; });
+  beforeEach(() => { badges.demandaBadge = 0; badges.flashBadge = 0; localStorage.clear(); });
+
+  it('se apaga solo tras 24 h sin actuar y vuelve si llegan avisos nuevos', () => {
+    badges.demandaBadge = 1;
+    localStorage.setItem('xpeak_banner_oferta_u', JSON.stringify({ total: 1, desde: Date.now() - 25 * 3600 * 1000 }));
+    const { container, rerender } = render(<NuevaOfertaBanner userId="u" isEmpresario={false} onVer={() => {}} />);
+    expect(container).toBeEmptyDOMElement();
+    badges.demandaBadge = 2;
+    rerender(<NuevaOfertaBanner userId="u" isEmpresario={false} onVer={() => {}} />);
+    expect(screen.getByText('2 ofertas nuevas disponibles')).toBeInTheDocument();
+  });
 
   it('no sale sin ofertas nuevas', () => {
     const { container } = render(<NuevaOfertaBanner userId="u" isEmpresario={false} onVer={() => {}} />);
