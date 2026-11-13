@@ -28,6 +28,11 @@ describe('SubscriptionView', () => {
     expect(screen.getByText(/71,30/)).toBeTruthy();
   });
 
+  it('Premium incluye aparecer en las redes una vez al mes', () => {
+    render(<SubscriptionView />);
+    expect(screen.getByText('Apareces una vez al mes en las redes de XPEAK')).toBeTruthy();
+  });
+
   it('pide el pago del plan y ciclo elegidos', () => {
     render(<SubscriptionView />);
     fireEvent.click(screen.getByRole('button', { name: /Anual/ }));
