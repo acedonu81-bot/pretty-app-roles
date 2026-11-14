@@ -1248,6 +1248,29 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}`),
   }),
 
+  // Captación de locales medianos para Navidad (14 nov 2026). Correo
+  // personalizado uno a uno a bares y pubs con email público; solo con clave
+  // de servicio. Texto aprobado por Daniel el 14 nov.
+  captacion_local_navidad: (d) => {
+    const enlace = 'https://xpeak.es/auth?mode=register&role=empresario&utm_source=email&utm_medium=directo&utm_campaign=navidad_salas';
+    const p = (t: string, mb = 12) => `<p style="color:#4b5563;font-size:15px;line-height:1.7;margin:0 0 ${mb}px">${t}</p>`;
+    return {
+      subject: `${esc(d.name)}, ¿abrís en Nochevieja o en las fiestas de Navidad?`,
+      to: d.email,
+      replyTo: 'info@xpeak.site',
+      html: base(`
+      ${p(`Hola, equipo de <strong style="color:#0a0908">${esc(d.name)}</strong>:`)}
+      ${p('Si este año vais a montar algo en Navidad (Nochevieja, Reyes, una noche especial o las cenas de empresa que os pidan), un DJ cambia el ambiente y la caja de la noche.')}
+      ${p('En XPEAK publicáis la fecha, el horario y el estilo de música que buscáis, y os escriben DJs de Madrid disponibles esa noche. Veis su ficha, sus sesiones y sus reseñas, habláis con ellos dentro de la web y elegís vosotros.')}
+      ${p('Para el local no tiene ningún coste: ni por publicar ni por contratar a través de XPEAK. El precio de la actuación lo acordáis directamente con el DJ.')}
+      ${p('Publicar vuestra fecha lleva un par de minutos:', 18)}
+      ${btn('Publicar mi fecha →', enlace)}
+      ${p('Si preferís que lo publiquemos nosotros por vosotros, contestad a este correo con la fecha y lo que buscáis.', 18)}
+      ${p('Un saludo,<br><strong style="color:#0a0908">Equipo XPEAK</strong>', 18)}
+      <p style="color:#9ca3af;font-size:12px;line-height:1.6;margin:0">Os escribimos porque vuestro local aparece como bar con música en Google. Si no queréis recibir más correos de XPEAK, contestad con la palabra BAJA y no volveremos a escribiros.</p>`),
+    };
+  },
+
   // Cuenta confirmada pero la persona no consigue entrar (6 nov 2026, Agüero
   // Magic: contraseña mal escrita y alta repetida). Pasos numerados y un botón
   // que abre "poner contraseña nueva" con el correo ya escrito. Solo con clave
