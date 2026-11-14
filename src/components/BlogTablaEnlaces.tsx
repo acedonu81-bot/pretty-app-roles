@@ -30,6 +30,13 @@ function destinoPorSlug(path: string): string | null {
   if (/animador|payaso|comunion/.test(path)) return '/contratar-animadores';
   if (/tecnico-sonido|sonido/.test(path)) return '/contratar-tecnico-sonido';
   if (/catering/.test(path)) return '/contratar-catering';
+  if (/speaker|presentador/.test(path)) return '/contratar-speaker';
+  if (/humorista|monologo/.test(path)) return '/contratar-humorista';
+  if (/mago/.test(path)) return '/contratar-mago';
+  if (/bailarin|baile/.test(path)) return '/contratar-bailarin';
+  if (/food-truck/.test(path)) return '/contratar-food-truck';
+  if (/barman|bartender/.test(path)) return '/contratar-camareros';
+  if (/promotor/.test(path)) return '/contratar-promotores';
   if (/cuanto-cobra-un-dj|dj-/.test(path)) return '/contratar-dj';
   return null;
 }
