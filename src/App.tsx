@@ -7,6 +7,7 @@ import { movemberActivo } from "@/lib/movember";
 import { dia25nActivo } from "@/lib/dia25n";
 import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import BlogTablaEnlaces from "@/components/BlogTablaEnlaces";
 import { XPeakToastProvider } from "@/lib/xpeak-toast";
 import { lazy, Suspense, useEffect } from "react";
 // Fuera del bundle principal (límite de 300 KB): solo se descarga durante Halloween.
@@ -454,6 +455,7 @@ const App = () => (
         <InstallAppBar />
         <BarraVolver />
         <RastreadorDeRutas />
+        <BlogTablaEnlaces />
         {halloweenActivo() && <Suspense fallback={null}><GuirnaldaLuces /></Suspense>}
         {(movemberActivo() || dia25nActivo()) && <Suspense fallback={null}><MovemberHilo /></Suspense>}
         {/* Un solo pixel visible durante la carga (no un color plano a pantalla
