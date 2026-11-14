@@ -238,6 +238,12 @@ Los planes se abren a todos los profesionales, pero cada rol está en uno de dos
 - Al subir un rol: aviso a sus profesionales 30 días antes de ocultar sus redes, y desde ese día entra en las campañas.
 - Revisión mensual junto al método de exigencias por rol.
 
+## Precio de fundador (decidido 14 nov)
+
+- Los 100 primeros suscriptores, o quien se suscriba antes del 31 mar 2027 (lo que llegue antes), mantienen su precio mientras sigan suscritos sin interrupción. Si se dan de baja y vuelven, pagan el precio vigente.
+- En Stripe no hace falta código: al subir la cuota se crea un Price nuevo para las altas y las suscripciones existentes conservan el suyo. Guardar `fundador boolean` en `suscripciones` (true si al crearse había menos de 100 filas con suscripción o fecha < 2027-04-01) para no subirles nunca por error.
+- Criterio para subir la cuota: 3 meses seguidos con ≥2 contactos/mes de media por DJ de pago y bajas <5 %/mes. Aviso de 30 días.
+
 ## Referidos (decidido 13 nov, por construir)
 
 - 10 % por cada amigo directo que pague un plan con el enlace del usuario, máximo 2 (20 %). Profesional o Premium, mensual o anual. Nunca en cadena.
