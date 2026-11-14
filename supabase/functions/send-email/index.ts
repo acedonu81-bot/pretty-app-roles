@@ -370,6 +370,25 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       'Los organizadores ya pueden encontrarte en XPEAK'),
   }),
 
+  // 1a2a3. Ficha de DJ activada a mano (14 nov 2026, caso DJ Kevin): su cuenta
+  // quedó en pending tras registrarse, se le asigna rol DJ y se le avisa.
+  // Solo con clave de servicio (no está en PUBLIC/LOGGED/ADMIN_TYPES).
+  ficha_dj_activada: (d) => ({
+    subject: `${esc(d.name)}, tu ficha de DJ ya está activada en XPEAK`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hola, ${esc(d.name)}</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Tu ficha de <strong style="color:#D4AF37">DJ</strong> ya está activada. Apareces en el directorio de DJs de XPEAK y los organizadores que buscan DJ en ${esc(d.zone)} pueden encontrarte y escribirte.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Para recibir más contactos, añade tus géneros, algún set o mix y fotos de tus eventos.
+      </p>
+      ${btn('Ver mi ficha →', 'https://xpeak.es/dashboard')}
+      <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      'Los organizadores ya pueden encontrarte en XPEAK'),
+  }),
+
   // 1a2b. Foto subida pero no válida (textura/producto/imagen borrosa en vez
   // de una foto real) — caso puntual, sin cron asociado. Distinto de
   // profile_incomplete_reminder porque ahí SÍ hay una imagen en photo_url, el
