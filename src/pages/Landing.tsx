@@ -651,7 +651,7 @@ const Landing = () => {
   return (
     <>
     <Helmet>
-      <title>XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España</title>
+      <title>XPEAK | Contratar DJs, Staff y Profesionales de Eventos</title>
       {/* El preload real vive en index.html generado por prerender-meta.mjs
           (solo ruta '/') — un <link rel="preload"> aquí, vía react-helmet-async,
           no llega al navegador hasta después de montar React, perdiendo la
@@ -662,7 +662,7 @@ const Landing = () => {
           — no hay forma de adelantarlo sin HTML estático real. */}
       <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero y staff para eventos y bodas en España. Profesionales verificados y Flash Booking." />
       <link rel="canonical" href="https://xpeak.es/" />
-      <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España" />
+      <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales de Eventos" />
       <meta property="og:description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking." />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://xpeak.es/" />

@@ -21,9 +21,9 @@ const ROUTES = [
   // Landing
   {
     path: '/',
-    title: 'XPEAK | Profesionales para Eventos en España',
+    title: 'XPEAK | Contratar DJs, Staff y Profesionales de Eventos',
     desc: 'Encuentra y contrata DJ, fotógrafo, camarero y staff para eventos y bodas en España. Profesionales verificados y Flash Booking.',
-    ogTitle: 'XPEAK | Contratar DJs, Staff y Profesionales para Eventos',
+    ogTitle: 'XPEAK | Contratar DJs, Staff y Profesionales de Eventos',
     ogDesc: 'Contrata DJs, fotógrafos, staff de sala y profesionales verificados para tus eventos en España. Flash Booking en menos de 1h.',
     ogType: 'website',
   },
