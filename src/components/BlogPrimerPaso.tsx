@@ -96,7 +96,7 @@ export default function BlogPrimerPaso({ rol, articlePath, soloPro = false }: { 
           <span className="text-sm" style={{ color: '#374151' }}>€/hora</span>
         </div>
         {lectura && <p className="text-sm mb-3" style={{ color: '#374151' }}>{lectura}</p>}
-        <a href={c.registro} onClick={() => medir('crea_perfil')}
+        <a href={`${c.registro}&${'utm_source=blog&utm_medium=cta'}&utm_campaign=registro-${rol}-primer-paso&utm_content=${hayValor ? 'con_tarifa' : 'sin_tarifa'}&utm_term=${encodeURIComponent(articlePath.replace('/blog/', ''))}`} onClick={() => medir('crea_perfil')}
           className="inline-block px-4 py-2.5 rounded-xl text-sm font-black transition-all hover:scale-105"
           style={hayValor
             ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#1a1405' }
