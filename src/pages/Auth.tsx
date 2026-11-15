@@ -21,7 +21,6 @@ import { isInAppBrowser as detectInAppBrowser, openInExternalBrowser } from '@/l
 import { useMedirPermanencia } from '@/hooks/useMedirPermanencia';
 import FichasRealesTira from '@/components/FichasRealesTira';
 import CiudadBuscador from '@/components/CiudadBuscador';
-import ConcursoAuthBanner from '@/components/ConcursoAuthBanner';
 
 const ParticularRequestModal = lazy(() => import('@/components/ParticularRequestModal'));
 import { REGISTRO_PENDIENTE_META } from '@/components/CookieBanner';
@@ -345,15 +344,6 @@ const Auth = () => {
 
   // Botón del banner del concurso: pasa a registro (si estaba en login) y sube al
   // formulario sin salir de /auth.
-  const participarConcurso = () => {
-    track('auth_concurso_click', { mode: isLogin ? 'login' : 'register' });
-    // Tras el asistente de bienvenida vuelve a la inscripción del concurso (el
-    // asistente ya lee esta clave) en vez de dejarle en su ficha.
-    try { sessionStorage.setItem('xpeak_volver_a', '/concurso-dj-madrid#inscripcion'); } catch { /* sin almacenamiento */ }
-    setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false);
-    window.setTimeout(() => document.getElementById('auth-formulario')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
-  };
-
   const handleOpenInBrowser = () => {
     track('inapp_escape_click');
     openInExternalBrowser();
@@ -865,7 +855,6 @@ const Auth = () => {
                     <span className="text-sm font-medium" style={{ color: '#222' }}>Contratos digitales incluidos</span>
                   </div>
                 </div>
-                <ConcursoAuthBanner variante="panel" onParticipar={participarConcurso} />
               </div>
 
               {/* Social proof bottom */}
@@ -945,8 +934,6 @@ const Auth = () => {
                   );
                 })}
               </div>
-
-              <div className="md:hidden"><ConcursoAuthBanner variante="compacto" onParticipar={participarConcurso} /></div>
 
               {/* Heading */}
               <div className="mb-6">
