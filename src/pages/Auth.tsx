@@ -243,6 +243,10 @@ const Auth = () => {
   // cuenta") fallaba por captcha. Cambiar la key vuelve a montar el widget.
   const [captchaKey, setCaptchaKey] = useState(0);
   const renewCaptcha = () => { setCaptchaToken(null); setCaptchaKey(k => k + 1); };
+  // Turnstile caduca y se renueva solo cada pocos minutos: registrar el captcha
+  // solo la primera vez por visita. Antes cada renovación contaba como actividad
+  // y una pestaña de /auth abierta aparecía "online" para siempre (16 nov 2026).
+  const captchaLogged = useRef(false);
   // Login fallido con credenciales inválidas: casi siempre es alguien nuevo
   // que llegó al formulario de entrar (los "Unirse" del blog apuntaban a /auth)
   // y metió email+contraseña sin tener cuenta. Se le ofrece crearla ahí mismo.
@@ -1298,7 +1302,7 @@ const Auth = () => {
                 {!inAppSignup && (
                   <TurnstileWidget
                     key={captchaKey}
-                    onVerify={token => { if (!captchaToken) track('auth_captcha_ok'); setCaptchaToken(token); setTurnstileStalled(false); }}
+                    onVerify={token => { if (!captchaLogged.current) { captchaLogged.current = true; track('auth_captcha_ok'); } setCaptchaToken(token); setTurnstileStalled(false); }}
                     onExpire={() => setCaptchaToken(null)}
                     onStall={() => { track('auth_captcha_atascado', { inapp: isInAppBrowser }); setTurnstileStalled(true); }}
                     onStallCleared={() => setTurnstileStalled(false)}
