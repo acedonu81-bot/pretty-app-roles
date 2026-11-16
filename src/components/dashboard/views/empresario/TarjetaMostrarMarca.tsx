@@ -8,7 +8,8 @@ import TarjetaOrganizador from '@/components/dashboard/TarjetaOrganizador';
 
 // Invitación visible para que una empresa elija mostrarse a los profesionales
 // (29 oct 2026). Antes solo existía "Perfil público en el directorio" en Ajustes,
-// que para un empresario no hacía nada. Es opcional y empieza apagada.
+// que para un empresario no hacía nada. Desde el 16 nov las cuentas nuevas
+// empiezan encendidas y pueden apagarla.
 
 export default function TarjetaMostrarMarca() {
   const profile = useProfile();
@@ -45,7 +46,7 @@ export default function TarjetaMostrarMarca() {
         <div className="min-w-0">
           <p className="text-base font-extrabold" style={{ color: '#1f2937' }}>Muestra tu empresa a los profesionales</p>
           <p className="text-sm" style={{ color: '#4b5563' }}>
-            Es opcional. Si lo activas, tu empresa sale en la sección Organizadores que ven los profesionales de XPEAK. Puedes quitarla cuando quieras.
+            Tu empresa sale en la sección Organizadores que ven los profesionales de XPEAK, para que te encuentren y te escriban. Si prefieres no aparecer, puedes quitarla cuando quieras.
           </p>
         </div>
         <button type="button" onClick={cambiar} disabled={guardando} aria-pressed={activo}
