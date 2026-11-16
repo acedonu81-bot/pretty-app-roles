@@ -15,7 +15,7 @@ const Anclar = ({ escucha }: { escucha?: { djUserId: string; setUrl: string } })
   return <button onClick={() => reproducir({ url: 'https://x/set.mp3', audioSrc: 'https://x/set.mp3', titulo: 'Set', escucha })}>anclar</button>;
 };
 
-const esperar = () => act(async () => { await new Promise(r => setTimeout(r, 50)); });
+const esperar = (ms = 50) => act(async () => { await new Promise(r => setTimeout(r, ms)); });
 
 const sonar = (segundos: number) => {
   const audio = document.querySelector('audio')!;
@@ -32,7 +32,9 @@ describe('escuchas desde la barra de abajo', () => {
   it('registra la escucha a los 5 minutos de un set de DJ anclado', async () => {
     render(<MemoryRouter><ReproductorConcursoProvider><Anclar escucha={{ djUserId: 'dj-1', setUrl: 'https://x/set.mp3' }} /></ReproductorConcursoProvider></MemoryRouter>);
     fireEvent.click(screen.getByText('anclar'));
-    await esperar(); // el contador va en un chunk lazy
+    // El contador va en un chunk lazy: con la máquina cargada (suite completa) 50 ms no
+    // bastan y los timeUpdate se pierden; esta espera inicial es la que hace intermitente el test.
+    await esperar(500);
     sonar(299);
     await esperar();
     expect(rpc).not.toHaveBeenCalled();
