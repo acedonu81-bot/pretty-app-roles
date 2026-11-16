@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import FeedbackSeccion from '@/components/FeedbackSeccion';
 import { useProfile } from '@/hooks/useProfile';
 import ConcursoFeedBanner from '@/components/dashboard/views/ConcursoFeedBanner';
+import MovimientoReciente from '@/components/dashboard/views/MovimientoReciente';
 import { supabase } from '@/integrations/supabase/client';
 import { expandRole, PHOTO_GATE_OR } from '@/lib/constants';
 interface Props {
@@ -248,6 +249,7 @@ const ExplorarView = ({ onNavigate }: Props) => {
       </p>
     </header>
 
+    <MovimientoReciente />
     <ConcursoFeedBanner />
 
     {/* Una única rejilla continua en vez de una por familia: con grupos de 2
