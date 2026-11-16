@@ -278,10 +278,6 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
     const { data: perfiles } = await admin.from('profiles')
       .select('user_id, display_name, role, roles, zone, region, city_ref, is_seed, is_seed_profile, genres')
       .eq('validation_status', 'approved')
-      // Sin foto el directorio no publica el perfil (PHOTO_GATE_OR, 16 sep): la
-      // solicitud tampoco debe llegarle. 16 nov 2026: le llegó a Eva (catering)
-      // y un cliente podía contratar a quien nadie veía en el directorio.
-      .not('photo_url', 'is', null)
       .or(roles.map(r => `role.eq.${r}`).join(','));
     const vistos = new Set<string>();
     const candidatos = ((perfiles ?? []) as Perfil[]).filter(p => {
