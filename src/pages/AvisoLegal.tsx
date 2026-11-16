@@ -26,6 +26,7 @@ const AvisoLegal = () => (
 
       <Section title="1. Datos identificativos del titular">
         <p><span className="font-bold text-[#111]">Denominación:</span> XPEAK</p>
+        <p><span className="font-bold text-[#111]">Titular:</span> Daniel Acedo Núñez</p>
         <p><span className="font-bold text-[#111]">NIF/CIF:</span> 53022503M</p>
         <p><span className="font-bold text-[#111]">Domicilio:</span> España</p>
         <p><span className="font-bold text-[#111]">Email:</span> info@xpeak.site</p>
