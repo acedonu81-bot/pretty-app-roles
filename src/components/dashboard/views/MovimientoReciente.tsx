@@ -47,7 +47,7 @@ const MovimientoReciente = () => {
           return (
             <li key={`${f.creado}-${i}`} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
               style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.35)', color: '#0a0908' }}>
-              <span className="h-2 w-2 flex-shrink-0 rounded-full" style={{ background: '#059669' }} />
+              <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full motion-safe:[animation:ofertaParpadeo_1.3s_ease-in-out_infinite]" style={{ background: '#16a34a' }} />
               <span className="min-w-0 flex-1 truncate">
                 {texto}{f.lugar ? ` en ${f.lugar}` : ''}
               </span>
