@@ -129,7 +129,7 @@ const CLAVE_GOOGLE_DESDE_LOGIN = 'xpeak_google_desde_login';
 const googleDesdeLogin = () => { try { return sessionStorage.getItem(CLAVE_GOOGLE_DESDE_LOGIN) === '1'; } catch { return false; } };
 const limpiarGoogleDesdeLogin = () => { try { sessionStorage.removeItem(CLAVE_GOOGLE_DESDE_LOGIN); } catch { /* sin efecto */ } };
 const esAltaNuevaDesdeLogin = (u: { created_at: string; app_metadata?: { provider?: string } }) =>
-  googleDesdeLogin() && u.app_metadata?.provider === 'google' && Date.now() - new Date(u.created_at).getTime() < 10 * 60_000;
+  googleDesdeLogin() && u.app_metadata?.provider === 'google' && Date.now() - new Date(u.created_at).getTime() < 3 * 60_000;
 
 /** Adónde lleva el enlace de confirmación del correo: de vuelta a /auth ya confirmado
  * y, al entrar, al asistente de datos obligatorios (21 oct 2026). */
@@ -170,7 +170,22 @@ const Auth = () => {
   // Al volver del enlace de confirmación el correo llega en ?e= y se deja escrito:
   // solo falta la contraseña (16 nov 2026, caso Monterosso: confirmó y entró con
   // OTRO Gmail por Google, quedaron dos cuentas).
-  const [email, setEmail] = useState(() => (searchParams.get('confirmado') === '1' ? (searchParams.get('e') ?? '') : ''));
+  const [email, setEmail] = useState(() => {
+    if (searchParams.get('confirmado') !== '1') return '';
+    const e = (searchParams.get('e') ?? '').trim();
+    // Solo se precarga el campo: se valida forma y longitud, y no se da por "cuenta confirmada".
+    return e.length <= 254 && /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/.test(e) ? e : '';
+  });
+  // El correo no debe quedarse en la URL (historial, Referer, analítica): se quita al leerlo.
+  useEffect(() => {
+    if (!searchParams.has('e') || searchParams.get('confirmado') !== '1') return;
+    try {
+      const u = new URL(window.location.href);
+      u.searchParams.delete('e');
+      window.history.replaceState(window.history.state, '', u.pathname + u.search + u.hash);
+    } catch { /* sin efecto */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // Errata de dominio al crear cuenta ("otlook.com"): se avisa al salir del campo.
   const [correoSugerido, setCorreoSugerido] = useState<string | null>(null);
   const [password, setPassword] = useState('');
@@ -268,6 +283,7 @@ const Auth = () => {
     // alguien (enlace de email, vuelta de OAuth a una sección concreta).
     const goAfterLogin = async (_userId: string) => {
       loggedInNavigated.current = true;
+      limpiarGoogleDesdeLogin();
       if (redirectParam !== '/descubrir') { navigate(redirectParam, { replace: true }); return; }
       navigate('/dashboard', { replace: true, state: { view: VISTA_TRAS_LOGIN } });
     };
@@ -401,7 +417,7 @@ const Auth = () => {
     setGoogleNuevoBusy(true);
     limpiarGoogleDesdeLogin();
     track('auth_google_cuenta_nueva_rechazada');
-    try { await supabase.functions.invoke('delete-account'); } catch { /* si falla, queda vacía y la limpia el admin */ }
+    try { await supabase.functions.invoke('delete-account', { body: { solo_si_nueva: true } }); } catch { /* si falla, queda vacía y la limpia el admin */ }
     await supabase.auth.signOut().catch(() => {});
     setGoogleNuevo(null);
     setGoogleNuevoBusy(false);
@@ -1339,7 +1355,7 @@ const Auth = () => {
                   <div className="rounded-xl p-4 text-sm" role="status"
                     style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.35)', color: '#064e3b' }}>
                     <p className="font-bold">Email confirmado. Tu cuenta ya está activada.</p>
-                    <p className="text-xs mt-1">Entra con la contraseña que pusiste al registrarte{email ? <> (<strong>{email}</strong>)</> : ''}. No uses Google: crearía otra cuenta distinta y vacía. Si no recuerdas la contraseña, usa «¿Olvidaste tu contraseña?».</p>
+                    <p className="text-xs mt-1">Entra con la contraseña que pusiste al registrarte. No uses Google: crearía otra cuenta distinta y vacía. Si no recuerdas la contraseña, usa «¿Olvidaste tu contraseña?».</p>
                   </div>
                 )}
 
