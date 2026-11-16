@@ -646,6 +646,14 @@ const ROUTES = [
     ogDesc: 'Información legal de XPEAK.',
     ogType: 'website',
   },
+  {
+    path: '/condiciones-suscripcion',
+    title: 'Condiciones de suscripción | XPEAK',
+    desc: 'Condiciones de contratación de los planes de pago de XPEAK: precios con IVA, renovación, cancelación y desistimiento.',
+    ogTitle: 'Condiciones de suscripción | XPEAK',
+    ogDesc: 'Condiciones de los planes de pago de XPEAK.',
+    ogType: 'website',
+  },
 
   // ── Local SEO — /dj-madrid, /camareros-barcelona, etc. ────────────────────
   // DJs por ciudad

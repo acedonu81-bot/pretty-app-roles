@@ -36,6 +36,7 @@ const SobreNosotros = lazy(() => import("./pages/SobreNosotros"));
 const AutorDaniel = lazy(() => import("./pages/AutorDaniel"));
 const Soporte = lazy(() => import("./pages/Soporte"));
 const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
+const CondicionesSuscripcion = lazy(() => import("./pages/CondicionesSuscripcion"));
 const CityLanding = lazy(() => import("./pages/CityLanding"));
 const OccasionLanding = lazy(() => import("./pages/OccasionLanding"));
 const Descubrir = lazy(() => import("./pages/Descubrir"));
@@ -490,6 +491,7 @@ const App = () => (
             )}
             <Route path="/soporte" element={<Soporte />} />
             <Route path="/aviso-legal" element={<AvisoLegal />} />
+            <Route path="/condiciones-suscripcion" element={<CondicionesSuscripcion />} />
             {/* Category landings */}
             {!isNative && (
               <>
