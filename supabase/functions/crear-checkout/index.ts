@@ -52,6 +52,11 @@ Deno.serve(async (req) => {
       ...(cupon ? { discounts: [{ coupon: cupon }] } : {}),
       locale: 'es',
       consent_collection: { terms_of_service: 'required' },
+      custom_text: {
+        terms_of_service_acceptance: {
+          message: `Acepto las [condiciones de suscripción](${URL_WEB}/condiciones-suscripcion) y pido que el servicio empiece ya. Sé que, una vez prestado por completo, pierdo el derecho de desistimiento de 14 días.`,
+        },
+      },
       billing_address_collection: 'required',
       tax_id_collection: { enabled: true },
       customer_update: { address: 'auto', name: 'auto' },
