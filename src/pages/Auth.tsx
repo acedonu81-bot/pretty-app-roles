@@ -121,10 +121,20 @@ const AceptacionLegal = ({ accion }: { accion: string }) => (
 
 const CLAVE_REDIRECT_GOOGLE = 'xpeak_redirect_google';
 
+/** Marca que el Google se pulsó desde "Entrar" (no desde "Crear cuenta"). Si Google
+ * devuelve una cuenta que acaba de nacer, la persona probablemente eligió otro Gmail
+ * distinto al de su alta: antes se le creaba una cuenta vacía sin avisar (caso
+ * Monterosso, 16 nov 2026). Ahora se le pregunta antes de seguir. */
+const CLAVE_GOOGLE_DESDE_LOGIN = 'xpeak_google_desde_login';
+const googleDesdeLogin = () => { try { return sessionStorage.getItem(CLAVE_GOOGLE_DESDE_LOGIN) === '1'; } catch { return false; } };
+const limpiarGoogleDesdeLogin = () => { try { sessionStorage.removeItem(CLAVE_GOOGLE_DESDE_LOGIN); } catch { /* sin efecto */ } };
+const esAltaNuevaDesdeLogin = (u: { created_at: string; app_metadata?: { provider?: string } }) =>
+  googleDesdeLogin() && u.app_metadata?.provider === 'google' && Date.now() - new Date(u.created_at).getTime() < 10 * 60_000;
+
 /** Adónde lleva el enlace de confirmación del correo: de vuelta a /auth ya confirmado
  * y, al entrar, al asistente de datos obligatorios (21 oct 2026). */
-const enlaceConfirmacion = (site: string) =>
-  `${site}/auth?confirmado=1&mode=login&redirect=${encodeURIComponent('/dashboard?completar=1')}`;
+const enlaceConfirmacion = (site: string, correo?: string) =>
+  `${site}/auth?confirmado=1&mode=login&redirect=${encodeURIComponent('/dashboard?completar=1')}${correo ? `&e=${encodeURIComponent(correo)}` : ''}`;
 function leerRedirectGoogle(): string | null {
   try {
     const v = sessionStorage.getItem(CLAVE_REDIRECT_GOOGLE);
@@ -157,7 +167,10 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(
     modeParam === 'login' || (modeParam !== 'register' && !searchParams.has('fbclid')),
   );
-  const [email, setEmail] = useState('');
+  // Al volver del enlace de confirmación el correo llega en ?e= y se deja escrito:
+  // solo falta la contraseña (16 nov 2026, caso Monterosso: confirmó y entró con
+  // OTRO Gmail por Google, quedaron dos cuentas).
+  const [email, setEmail] = useState(() => (searchParams.get('confirmado') === '1' ? (searchParams.get('e') ?? '') : ''));
   // Errata de dominio al crear cuenta ("otlook.com"): se avisa al salir del campo.
   const [correoSugerido, setCorreoSugerido] = useState<string | null>(null);
   const [password, setPassword] = useState('');
@@ -189,6 +202,9 @@ const Auth = () => {
   const [accesoLoading, setAccesoLoading] = useState(false);
   const [accesoCaptcha, setAccesoCaptcha] = useState<string | null>(null);
   const [googleLoading, setGoogleLoading] = useState(false);
+  // Correo de Google recién creado desde "Entrar": hay que confirmar si era lo que quería.
+  const [googleNuevo, setGoogleNuevo] = useState<string | null>(null);
+  const [googleNuevoBusy, setGoogleNuevoBusy] = useState(false);
   const [showRecovery, setShowRecovery] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [recoveryLoading, setRecoveryLoading] = useState(false);
@@ -256,8 +272,20 @@ const Auth = () => {
       navigate('/dashboard', { replace: true, state: { view: VISTA_TRAS_LOGIN } });
     };
 
+    // Cuenta de Google que acaba de nacer tras pulsar Google en "Entrar": no se entra
+    // hasta que la persona confirme que ese es el correo que quiere.
+    const entrarOPreguntar = (user: { id: string; email?: string; created_at: string; app_metadata?: { provider?: string } }) => {
+      if (esAltaNuevaDesdeLogin(user)) {
+        setGoogleNuevo(user.email ?? '');
+        setOauthCallbackPending(false);
+        track('auth_google_cuenta_nueva_aviso');
+        return;
+      }
+      goAfterLogin(user.id);
+    };
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session && !isRegistering.current) goAfterLogin(session.user.id);
+      if (session && !isRegistering.current) entrarOPreguntar(session.user);
       else if (oauthCallbackPending) setOauthCallbackPending(false);
     });
 
@@ -305,7 +333,7 @@ const Auth = () => {
         if (event === 'SIGNED_IN') {
           const createdAt = new Date(session.user.created_at).getTime();
           const lastSignIn = session.user.last_sign_in_at ? new Date(session.user.last_sign_in_at).getTime() : createdAt;
-          if (Math.abs(lastSignIn - createdAt) < 10_000) {
+          if (Math.abs(lastSignIn - createdAt) < 10_000 && !esAltaNuevaDesdeLogin(session.user)) {
             const role = (session.user.user_metadata as any)?.role || 'pending';
             track('auth_success', { mode: 'register', role });
             track('sign_up', { method: 'google', role });
@@ -313,7 +341,7 @@ const Auth = () => {
             logSignup(role);
           }
         }
-        goAfterLogin(session.user.id);
+        entrarOPreguntar(session.user);
       } else if (oauthCallbackPending) {
         // El code_verifier no coincidía (p.ej. doble clic previo) o el código
         // ya expiró — no dejar al usuario colgado en la pantalla de carga.
@@ -355,10 +383,40 @@ const Auth = () => {
       .catch(() => authAlert('Copia el enlace de la barra de arriba y ábrelo en Chrome o Safari'));
   };
 
+  // "Sí, es mi primera vez": la cuenta se queda y se cuenta como alta.
+  const confirmarGoogleNuevo = () => {
+    limpiarGoogleDesdeLogin();
+    track('auth_google_cuenta_nueva_confirmada');
+    track('auth_success', { mode: 'register', role: 'pending' });
+    track('sign_up', { method: 'google', role: 'pending' });
+    trackLead('registro', { role: 'pending' });
+    logSignup('pending');
+    setGoogleNuevo(null);
+    if (redirectParam !== '/descubrir') { navigate(redirectParam, { replace: true }); return; }
+    navigate('/dashboard', { replace: true, state: { view: VISTA_TRAS_LOGIN } });
+  };
+
+  // "No, uso otro correo": se borra la cuenta vacía que se acaba de crear y se sale.
+  const rechazarGoogleNuevo = async () => {
+    setGoogleNuevoBusy(true);
+    limpiarGoogleDesdeLogin();
+    track('auth_google_cuenta_nueva_rechazada');
+    try { await supabase.functions.invoke('delete-account'); } catch { /* si falla, queda vacía y la limpia el admin */ }
+    await supabase.auth.signOut().catch(() => {});
+    setGoogleNuevo(null);
+    setGoogleNuevoBusy(false);
+    setGoogleLoading(false);
+    toast.message('Entra con el correo y la contraseña de tu registro, o con el Google que usaste.');
+  };
+
   const handleGoogleSignIn = async () => {
     const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
     track('auth_google_click', { mode: isLogin ? 'login' : 'register' });
     setGoogleLoading(true);
+    try {
+      if (isLogin) sessionStorage.setItem(CLAVE_GOOGLE_DESDE_LOGIN, '1');
+      else sessionStorage.removeItem(CLAVE_GOOGLE_DESDE_LOGIN);
+    } catch { /* sin almacenamiento */ }
 
     // En la app nativa, Google bloquea el login OAuth dentro de la WebView de
     // Capacitor y lo fuerza a Safari — que no vuelve solo a la app porque
@@ -551,7 +609,7 @@ const Auth = () => {
     const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
     const { error } = await supabase.auth.resend({
       type: 'signup', email,
-      options: { emailRedirectTo: enlaceConfirmacion(SITE_URL), captchaToken: captchaToken ?? undefined },
+      options: { emailRedirectTo: enlaceConfirmacion(SITE_URL, email), captchaToken: captchaToken ?? undefined },
     });
     renewCaptcha();
     setReenvio(error ? 'error' : 'enviado');
@@ -690,7 +748,7 @@ const Auth = () => {
               data: signUpMeta,
               // Al pulsar el enlace del correo vuelve aquí ya confirmado y, si el
               // navegador es el mismo, entra directo a rellenar los datos obligatorios.
-              emailRedirectTo: enlaceConfirmacion(SITE_URL),
+              emailRedirectTo: enlaceConfirmacion(SITE_URL, email),
               captchaToken,
             },
           });
@@ -1044,7 +1102,7 @@ const Auth = () => {
               {!isLogin && <FichasRealesTira />}
 
               {/* === GOOGLE — primary CTA (oculto en webviews: OAuth bloqueado) === */}
-              {!isInAppBrowser && (
+              {!isInAppBrowser && !confirmadoParam && (
               <button
                 type="button"
                 disabled={googleLoading}
@@ -1076,7 +1134,7 @@ const Auth = () => {
                 <div className="-mt-2.5 mb-4"><AceptacionLegal accion="Al continuar con Google" /></div>
               )}
 
-              {!isInAppBrowser && (
+              {!isInAppBrowser && !confirmadoParam && (
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.1)' }} />
                 <span className="text-xs" style={{ color: 'rgba(0,0,0,0.5)' }}>o con email</span>
@@ -1280,8 +1338,8 @@ const Auth = () => {
                 {isLogin && confirmadoParam && !sinConfirmar && (
                   <div className="rounded-xl p-4 text-sm" role="status"
                     style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.35)', color: '#064e3b' }}>
-                    <p className="font-bold">Email confirmado. Tu cuenta está activada.</p>
-                    <p className="text-xs mt-1">Entra con el email y la contraseña que pusiste al registrarte. Si no la recuerdas, usa el enlace de recuperar contraseña: no vuelvas a crear la cuenta.</p>
+                    <p className="font-bold">Email confirmado. Tu cuenta ya está activada.</p>
+                    <p className="text-xs mt-1">Entra con la contraseña que pusiste al registrarte{email ? <> (<strong>{email}</strong>)</> : ''}. No uses Google: crearía otra cuenta distinta y vacía. Si no recuerdas la contraseña, usa «¿Olvidaste tu contraseña?».</p>
                   </div>
                 )}
 
@@ -1510,6 +1568,32 @@ const Auth = () => {
           </p>
         </div>
       </div>
+
+      {googleNuevo !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: 'rgba(0,0,0,0.9)' }}>
+          <div className="w-full max-w-sm rounded-2xl p-8 text-center"
+            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 24px 64px rgba(0,0,0,0.3)' }}>
+            <h2 className="text-xl font-black mb-2" style={{ color: '#111' }}>Este Google no tenía cuenta</h2>
+            <p className="text-sm leading-relaxed mb-2" style={{ color: '#222' }}>
+              Con este correo todavía no hay ninguna cuenta en XPEAK:
+            </p>
+            <p className="text-sm font-black mb-4" style={{ color: '#8B6A00' }}>{googleNuevo}</p>
+            <p className="text-xs leading-relaxed mb-6" style={{ color: '#333' }}>
+              Si ya te habías registrado con otro correo, no sigas aquí: te saldría una cuenta nueva y vacía. Vuelve y entra con ese correo.
+            </p>
+            <button onClick={rechazarGoogleNuevo} disabled={googleNuevoBusy}
+              className="w-full py-3 rounded-xl font-black text-sm mb-2 disabled:opacity-60"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              {googleNuevoBusy ? 'Un momento…' : 'Ya tengo cuenta con otro correo'}
+            </button>
+            <button onClick={confirmarGoogleNuevo} disabled={googleNuevoBusy}
+              className="w-full py-3 rounded-xl font-bold text-sm disabled:opacity-60"
+              style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.15)', color: '#111' }}>
+              Es mi primera vez: crear cuenta con este Google
+            </button>
+          </div>
+        </div>
+      )}
 
       {showWelcome && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: 'rgba(0,0,0,0.9)' }}>
