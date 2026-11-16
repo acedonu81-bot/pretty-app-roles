@@ -455,6 +455,27 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       'Sube tu foto para que los clientes puedan encontrarte'),
   }),
 
+  // 1a2e. Registro con Google que no se completó (16 nov 2026): una persona
+  // entró con Google, el aviso "Este Google no tenía cuenta" la confundió y su
+  // cuenta se borró. Ese aviso ya no existe. Envío puntual con la clave de
+  // servicio (no está en PUBLIC/LOGGED/ADMIN_TYPES).
+  registro_google_reintento: (d) => ({
+    subject: `${esc(d.name)}, tu registro en XPEAK no se llegó a completar`,
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Tu registro no se completó</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 10px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hace un rato intentaste crear tu cuenta en XPEAK con Google y se quedó a medias: nuestra pantalla de entrada pudo confundirte y la cuenta no llegó a crearse.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Ya está arreglado. Entra otra vez con Google y tu cuenta se crea al momento, sin más preguntas.
+      </p>
+      ${btn('Crear mi cuenta →', 'https://xpeak.es/auth?mode=register')}
+      <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      'Entra otra vez con Google y tu cuenta se crea al momento'),
+  }),
+
   // 1a3. Recordatorio de trabajo mañana — cron diario (bolo-reminder-24h),
   // dedupe vía email_logs (una fila por evento, no por usuario). Type name
   // conserva "bolo" por compatibilidad con la función ya desplegada; el
