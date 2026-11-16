@@ -30,6 +30,25 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Sesión inválida' }), { status: 401, headers: cors });
     }
 
+    // Modo "cuenta vacía recién creada" (aviso de Google en /auth): el servidor no se fía
+    // del cliente y solo borra si la cuenta nació hace menos de 3 minutos y nunca ha
+    // tenido actividad propia (sin mensajes, reseñas ni favoritos).
+    let body: { solo_si_nueva?: boolean } = {};
+    try { body = await req.json(); } catch { /* sin cuerpo: borrado normal desde Ajustes */ }
+    if (body?.solo_si_nueva) {
+      const creada = new Date(userData.user.created_at).getTime();
+      if (Date.now() - creada > 3 * 60_000) {
+        return new Response(JSON.stringify({ error: 'La cuenta no es nueva' }), { status: 403, headers: cors });
+      }
+      const uid = userData.user.id;
+      for (const [tabla, col] of [['messages', 'sender_id'], ['reviews', 'reviewer_id'], ['favorites', 'user_id']] as const) {
+        const { count, error: errCuenta } = await admin.from(tabla).select('*', { count: 'exact', head: true }).eq(col, uid);
+        if (errCuenta || (count ?? 0) > 0) {
+          return new Response(JSON.stringify({ error: 'La cuenta ya tiene actividad' }), { status: 403, headers: cors });
+        }
+      }
+    }
+
     const { error: deleteError } = await admin.auth.admin.deleteUser(userData.user.id);
     if (deleteError) throw deleteError;
 

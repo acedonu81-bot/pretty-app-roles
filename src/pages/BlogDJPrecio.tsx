@@ -13,7 +13,6 @@ import BlogAuthor from '@/components/BlogAuthor';
 import WarmUpAcademyBanner, { urlWarmUp, clicWarmUp } from '@/components/WarmUpAcademyBanner';
 import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 import BlogPrimerPaso from '@/components/BlogPrimerPaso';
-import ConcursoAuthBanner from '@/components/ConcursoAuthBanner';
 import { trackBlogCtaClick } from '@/lib/blogAnalytics';
 import CalculadoraPrecioDJ from '@/components/CalculadoraPrecioDJ';
 
@@ -126,7 +125,7 @@ const faqStructured = {
         {/* Nav */}
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
-          <a href="/auth?mode=register"
+          <a href="/auth?mode=register&utm_source=blog&utm_medium=cta&utm_campaign=registro-dj-precio&utm_content=cabecera_unirse"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             Unirse
@@ -137,16 +136,11 @@ const faqStructured = {
         <article className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
             {/* 16 oct 2026: el botón de arriba era solo para quien contrata y no
                 destacaba; el del camarero (pro, dorado) convierte mejor. Aquí
-                van los dos públicos y, hasta el 2 nov, el concurso de Madrid. */}
+                van los dos públicos. */}
             <BlogPrimerPaso rol="dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
-            <ConcursoAuthBanner variante="compacto" onParticipar={() => {
-              trackBlogCtaClick({ component: 'top', role: 'concurso', href: '/auth?mode=register&role=dj', article_path: '/blog/cuanto-cobra-un-dj-en-espana' });
-              try { sessionStorage.setItem('xpeak_volver_a', '/concurso-dj-madrid#inscripcion'); } catch { /* sin almacenamiento */ }
-              window.location.assign('/auth?mode=register&role=dj');
-            }} />
             <p className="text-xs mb-2" style={{ color: '#3d3d4e' }}>
               ¿Buscas DJ para tu evento?{' '}
-              <a href="/contratar-dj" className="font-bold underline" style={{ color: '#8B6A00' }}
+              <a href="/contratar-dj?utm_source=blog&utm_medium=cta&utm_campaign=contratar-dj-precio&utm_content=arriba_ver_djs" className="font-bold underline" style={{ color: '#8B6A00' }}
                 onClick={() => trackBlogCtaClick({ component: 'top', role: 'dj_org', href: '/contratar-dj', article_path: '/blog/cuanto-cobra-un-dj-en-espana' })}>
                 Ver DJs disponibles →
               </a>
@@ -340,7 +334,7 @@ const faqStructured = {
                   </span>
                 ))}
               </div>
-              <a href="/auth?mode=register&role=dj"
+              <a href="/auth?mode=register&role=dj&utm_source=blog&utm_medium=cta&utm_campaign=registro-dj-precio&utm_content=final_crear_perfil_dj"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105 hover:shadow-lg"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 <Zap size={15} /> Crear mi perfil DJ
@@ -356,7 +350,7 @@ const faqStructured = {
                   Directorio con tarifas públicas · Flash Booking para esta noche
                 </p>
               </div>
-              <a href="/contratar-dj"
+              <a href="/contratar-dj?utm_source=blog&utm_medium=cta&utm_campaign=contratar-dj-precio&utm_content=final_ver_djs"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
                 style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)', whiteSpace: 'nowrap' }}>
                 Ver DJs disponibles →

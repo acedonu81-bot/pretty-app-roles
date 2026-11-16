@@ -370,6 +370,25 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       'Los organizadores ya pueden encontrarte en XPEAK'),
   }),
 
+  // 1a2a3. Ficha de DJ activada a mano (14 nov 2026, caso DJ Kevin): su cuenta
+  // quedó en pending tras registrarse, se le asigna rol DJ y se le avisa.
+  // Solo con clave de servicio (no está en PUBLIC/LOGGED/ADMIN_TYPES).
+  ficha_dj_activada: (d) => ({
+    subject: `${esc(d.name)}, tu ficha de DJ ya está activada en XPEAK`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hola, ${esc(d.name)}</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Tu ficha de <strong style="color:#D4AF37">DJ</strong> ya está activada. Apareces en el directorio de DJs de XPEAK y los organizadores que buscan DJ en ${esc(d.zone)} pueden encontrarte y escribirte.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Para recibir más contactos, añade tus géneros, algún set o mix y fotos de tus eventos.
+      </p>
+      ${btn('Ver mi ficha →', 'https://xpeak.es/dashboard')}
+      <p style="color:#6B7280;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      'Los organizadores ya pueden encontrarte en XPEAK'),
+  }),
+
   // 1a2b. Foto subida pero no válida (textura/producto/imagen borrosa en vez
   // de una foto real) — caso puntual, sin cron asociado. Distinto de
   // profile_incomplete_reminder porque ahí SÍ hay una imagen en photo_url, el
@@ -1228,6 +1247,29 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>
       ${btn('Entrar en XPEAK →', 'https://xpeak.es/dashboard')}`),
   }),
+
+  // Captación de locales medianos para Navidad (14 nov 2026). Correo
+  // personalizado uno a uno a bares y pubs con email público; solo con clave
+  // de servicio. Texto aprobado por Daniel el 14 nov.
+  captacion_local_navidad: (d) => {
+    const enlace = 'https://xpeak.es/auth?mode=register&role=empresario&utm_source=email&utm_medium=directo&utm_campaign=navidad_salas';
+    const p = (t: string, mb = 12) => `<p style="color:#4b5563;font-size:15px;line-height:1.7;margin:0 0 ${mb}px">${t}</p>`;
+    return {
+      subject: `${esc(d.name)}, ¿abrís en Nochevieja o en las fiestas de Navidad?`,
+      to: d.email,
+      replyTo: 'info@xpeak.site',
+      html: base(`
+      ${p(`Hola, equipo de <strong style="color:#0a0908">${esc(d.name)}</strong>:`)}
+      ${p('Si este año vais a montar algo en Navidad (Nochevieja, Reyes, una noche especial o las cenas de empresa que os pidan), un DJ cambia el ambiente y la caja de la noche.')}
+      ${p('En XPEAK publicáis la fecha, el horario y el estilo de música que buscáis, y os escriben DJs de Madrid disponibles esa noche. Veis su ficha, sus sesiones y sus reseñas, habláis con ellos dentro de la web y elegís vosotros.')}
+      ${p('Para el local no tiene ningún coste: ni por publicar ni por contratar a través de XPEAK. El precio de la actuación lo acordáis directamente con el DJ.')}
+      ${p('Publicar vuestra fecha lleva un par de minutos:', 18)}
+      ${btn('Publicar mi fecha →', enlace)}
+      ${p('Si preferís que lo publiquemos nosotros por vosotros, contestad a este correo con la fecha y lo que buscáis.', 18)}
+      ${p('Un saludo,<br><strong style="color:#0a0908">Equipo XPEAK</strong>', 18)}
+      <p style="color:#9ca3af;font-size:12px;line-height:1.6;margin:0">Os escribimos porque vuestro local aparece como bar con música en Google. Si no queréis recibir más correos de XPEAK, contestad con la palabra BAJA y no volveremos a escribiros.</p>`),
+    };
+  },
 
   // Cuenta confirmada pero la persona no consigue entrar (6 nov 2026, Agüero
   // Magic: contraseña mal escrita y alta repetida). Pasos numerados y un botón

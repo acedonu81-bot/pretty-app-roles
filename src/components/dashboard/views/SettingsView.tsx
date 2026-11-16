@@ -1155,7 +1155,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
       <Section title="Privacidad" icon={<Shield size={15} />}>
         {isEmpresario && (
           <ToggleRow label="Mostrar mi empresa a los profesionales"
-            desc="Opcional. Si lo activas, los profesionales ven tu logo, ciudad, descripción y tus contrataciones en XPEAK, nunca tu teléfono ni email."
+            desc="Los profesionales ven tu logo, ciudad, descripción y tus contrataciones en XPEAK, nunca tu teléfono ni email. Desactívalo si prefieres no aparecer."
             checked={!!profile.mostrar_organizador}
             onChange={async () => {
               const next = !profile.mostrar_organizador;

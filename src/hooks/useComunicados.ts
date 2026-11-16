@@ -19,7 +19,9 @@ const db = supabase as unknown as {
   };
 };
 
-const COLUMNAS = 'id, titulo, cuerpo, imagen_url, video_url, cta_texto, cta_url, categoria, tipo, push, fijado, caduca_at, destinatarios, created_at, publico, comentarios_on, encuesta_pregunta, encuesta_opciones, encuesta_cierra_at';
+const LEIDO_EVENT = 'xpeak:comunicado-leido';
+
+const COLUMNAS ='id, titulo, cuerpo, imagen_url, video_url, cta_texto, cta_url, categoria, tipo, push, fijado, caduca_at, destinatarios, created_at, publico, comentarios_on, encuesta_pregunta, encuesta_opciones, encuesta_cierra_at';
 
 export function useComunicados(limite = 30) {
   const { user } = useAuth();
@@ -61,7 +63,8 @@ export function useComunicados(limite = 30) {
     // Así estuvo 6-7 nov 2026: 0 lecturas guardadas aunque hubiera me gusta y comentarios.
     void Promise.resolve(
       db.from('comunicado_lecturas').upsert({ comunicado_id: c.id, user_id: user.id }, { onConflict: 'comunicado_id,user_id', ignoreDuplicates: true }),
-    ).catch(() => { /* si falla, se reintenta la próxima vez que lo abra */ });
+    ).then(() => { window.dispatchEvent(new Event(LEIDO_EVENT)); })
+      .catch(() => { /* si falla, se reintenta la próxima vez que lo abra */ });
   }, [user?.id, leidos]);
 
   return { lista, leidos, inter, setInter, marcarLeido, cargado };
@@ -74,7 +77,7 @@ export function useNovedadesSinLeer(): boolean {
   useEffect(() => {
     if (!user?.id) { setHay(false); return; }
     let vivo = true;
-    (async () => {
+    const comprobar = async () => {
       const [{ data }, { data: lect }] = await Promise.all([
         db.from('comunicados').select('id, caduca_at').order('created_at', { ascending: false }).limit(20),
         db.from('comunicado_lecturas').select('comunicado_id').eq('user_id', user.id),
@@ -84,8 +87,11 @@ export function useNovedadesSinLeer(): boolean {
       const ahora = Date.now();
       setHay(((data ?? []) as { id: string; caduca_at: string }[])
         .some(c => new Date(c.caduca_at).getTime() > ahora && !leidos.has(c.id)));
-    })();
-    return () => { vivo = false; };
+    };
+    void comprobar();
+    // Al abrir un comunicado, el punto del menú se apaga sin recargar.
+    window.addEventListener(LEIDO_EVENT, comprobar);
+    return () => { vivo = false; window.removeEventListener(LEIDO_EVENT, comprobar); };
   }, [user?.id]);
   return hay;
 }

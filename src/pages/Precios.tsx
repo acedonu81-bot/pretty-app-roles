@@ -101,6 +101,9 @@ export default function Precios() {
           <div className="text-center mb-12">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Precios</p>
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">Precios</h1>
+            <p className="text-sm max-w-xl mx-auto mb-2" style={{ color: '#374151' }}>
+              Precios de XPEAK para profesionales y empresarios de eventos: qué incluye cada plan, cuánto cuesta y cómo se cobra. Contratos digitales incluidos.
+            </p>
             <p className="text-sm max-w-md mx-auto" style={{ color: '#374151' }}>
               Sin tarjeta de crédito, sin permanencia.
             </p>
