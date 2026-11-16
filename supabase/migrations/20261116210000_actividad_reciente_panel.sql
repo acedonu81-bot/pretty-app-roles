@@ -9,7 +9,9 @@ RETURNS TABLE(tipo text, servicio text, lugar text, creado timestamptz)
 LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path TO 'public'
 AS $function$
 BEGIN
-  IF auth.uid() IS NULL THEN RAISE EXCEPTION 'Solo con sesión'; END IF;
+  IF auth.uid() IS NULL OR COALESCE((auth.jwt()->>'is_anonymous')::boolean, false) THEN
+    RAISE EXCEPTION 'Solo con sesión';
+  END IF;
   RETURN QUERY
   SELECT x.tipo, x.servicio, x.lugar, x.creado
     FROM (
@@ -22,7 +24,9 @@ BEGIN
              min(fb.created_at) AS creado
         FROM public.flash_bookings fb
        WHERE fb.source = 'particular'
-         AND fb.es_autorregistro = false
+         AND COALESCE(fb.es_autorregistro, false) = false
+         AND fb.oculta_admin_at IS NULL
+         AND fb.created_by IS DISTINCT FROM fb.professional_user_id
          AND fb.professional_user_id IS NOT NULL
          AND fb.created_at > now() - interval '14 days'
          AND NOT EXISTS (SELECT 1 FROM public.user_roles ur
@@ -35,6 +39,8 @@ BEGIN
              er.created_at
         FROM public.event_requests er
        WHERE er.created_at > now() - interval '14 days'
+         AND er.status = 'open'
+         AND (er.expires_at IS NULL OR er.expires_at > now())
          AND NOT EXISTS (SELECT 1 FROM public.user_roles ur
                           WHERE ur.user_id::text = er.client_user_id AND ur.role::text = 'admin')
     ) x
