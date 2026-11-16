@@ -15,7 +15,10 @@ BEGIN
     FROM (
       SELECT 'solicitud'::text AS tipo,
              min(fb.professional_role) AS servicio,
-             NULLIF(trim(fb.event_location), '') AS lugar,
+             -- El campo es texto libre: solo la primera parte (la ciudad), sin
+             -- nada que lleve números (direcciones, portales) y con tope de largo.
+             CASE WHEN fb.event_location ~ '[0-9]' THEN NULL
+                  ELSE NULLIF(left(trim(split_part(fb.event_location, ',', 1)), 40), '') END AS lugar,
              min(fb.created_at) AS creado
         FROM public.flash_bookings fb
        WHERE fb.source = 'particular'
