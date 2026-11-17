@@ -14,6 +14,7 @@ const ROLES_CON_VIDEO = ['mago', 'bailarin', 'humorista', 'speaker', 'animador']
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { sanitizeInput } from '@/lib/contentFilter';
 import { logAsistente, resumenAsistente } from '@/lib/asistenteAlta';
+import { normalizarInstagram, esUsuarioInstagram } from '@/lib/instagramUsuario';
 
 // Ciudades principales — lista corta a propósito para elegir en segundos
 // dentro del wizard. Quien necesite un barrio/ciudad más específico lo
@@ -349,6 +350,33 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   // un perfil sin Instagram sigue siendo publicable, solo pierde la señal de
   // confianza extra que ya usa el banner del dashboard (instagramOnlyMissing).
   const [instagram, setInstagram] = useState('');
+  const instagramNormalizado = normalizarInstagram(instagram);
+  const instagramInvalido = instagram.trim() !== '' && !esUsuarioInstagram(instagramNormalizado);
+  // Guardado al momento (17 nov 2026): Instagram y bio solo se guardaban al pulsar
+  // "Guardar y continuar", que está bloqueado sin foto. De 38 altas con oficio y
+  // sin foto, 0 tenían Instagram: quien lo escribía y se iba sin foto lo perdía
+  // y no quedaba ninguna vía para escribirle. Ciudad NO se guarda aquí: con foto
+  // y ciudad reales WizardGate (Dashboard) cierra el asistente de golpe.
+  const instagramGuardado = useRef('');
+  const bioGuardada = useRef('');
+  const guardarInstagram = async () => {
+    if (!instagramNormalizado || instagramInvalido || instagramNormalizado === instagramGuardado.current) return;
+    if (!sanitizeInput(instagramNormalizado, 'default').clean) return;
+    instagramGuardado.current = instagramNormalizado;
+    setInstagram(instagramNormalizado);
+    const ok = await profile.updateField({ instagram: instagramNormalizado });
+    if (ok) logAsistente('instagram_ok');
+    else instagramGuardado.current = '';
+  };
+  const guardarBio = async () => {
+    const texto = bio.trim();
+    if (texto.length < 40 || texto === bioGuardada.current || tieneFraseGenerica(texto)) return;
+    if (!sanitizeInput(texto, 'bio').clean) return;
+    bioGuardada.current = texto;
+    const ok = await profile.updateField({ bio: texto });
+    if (ok) logAsistente('bio_ok');
+    else bioGuardada.current = '';
+  };
   // No todos los roles pueden fijar un precio de antemano (Wedding Planner,
   // Magos, artistas con caché por evento) — "a consultar" es una respuesta
   // válida, no un campo vacío por descuido.
@@ -433,7 +461,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
       const { clean, reason } = sanitizeInput(bio.trim(), 'bio');
       if (!clean) { toast.error(reason); return; }
     }
-    const cleanInstagram = instagram.trim().replace(/^@/, '');
+    const cleanInstagram = esUsuarioInstagram(instagramNormalizado) ? instagramNormalizado : '';
     if (cleanInstagram) {
       const { clean, reason } = sanitizeInput(cleanInstagram, 'default');
       if (!clean) { toast.error(reason); return; }
@@ -674,6 +702,36 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
 
                 <div className="flex flex-col gap-3 mb-5">
                   <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                  {/* Instagram arriba y guardado al momento (17 nov 2026): ver
+                      guardarInstagram. Acepta @usuario o el enlace pegado. */}
+                  <div className="px-1">
+                    <p className="text-xs font-bold mb-1.5" style={{ color: '#222' }}>Tu Instagram <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
+                    <div className="relative">
+                      <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
+                      <input
+                        id="asistente-instagram"
+                        type="text"
+                        value={instagram}
+                        onChange={(e) => setInstagram(e.target.value)}
+                        onBlur={guardarInstagram}
+                        placeholder="tu_usuario o el enlace de tu perfil"
+                        maxLength={120}
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck={false}
+                        className="w-full pl-9 pr-4 py-3 rounded-xl text-xs font-semibold outline-none"
+                        style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
+                      />
+                    </div>
+                    {instagramInvalido ? (
+                      <p className="text-[0.75rem] mt-1 font-semibold" style={{ color: '#dc2626' }}>
+                        Solo el usuario, sin espacios (por ejemplo tu_usuario), o pega el enlace de tu perfil
+                      </p>
+                    ) : (
+                      <p className="text-xs mt-1" style={{ color: '#333' }}>Da confianza a quien te contrate</p>
+                    )}
+                  </div>
+
                   {/* Sin foto, este botón se distingue del resto de campos
                       (opcionales, estilo dorado tenue de abajo) porque es el
                       único paso que de verdad bloquea "Guardar y continuar"
@@ -775,28 +833,12 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </div>
 
                   <div className="px-1">
-                    <p className="text-xs font-bold mb-1.5" style={{ color: '#222' }}>Tu Instagram <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
-                    <div className="relative">
-                      <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
-                      <input
-                        type="text"
-                        value={instagram}
-                        onChange={(e) => setInstagram(e.target.value)}
-                        placeholder="tu_usuario (sin @)"
-                        maxLength={60}
-                        className="w-full pl-9 pr-4 py-3 rounded-xl text-xs font-semibold outline-none"
-                        style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
-                      />
-                    </div>
-                    <p className="text-xs mt-1" style={{ color: '#333' }}>Da confianza a quien te contrate</p>
-                  </div>
-
-                  <div className="px-1">
                     <p className="text-xs font-bold mb-1.5" style={{ color: '#222' }}>Cuéntanos sobre ti <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
                     <textarea
                       id="asistente-bio"
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
+                      onBlur={guardarBio}
                       placeholder="Tu experiencia, estilo y qué te hace diferente. Evita solo 'contáctame por DM': cuenta algo real de tu trabajo."
                       rows={3}
                       maxLength={600}
