@@ -345,11 +345,12 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   // 10 perfiles publicados tenían bio vacía — la ficha se lee como anuncio
   // suelto ("INFO AL DM") en vez de perfil profesional curado. Mismo patrón
   // que foto/ciudad/tarifa: bloquea canContinue hasta un mínimo de 40 chars.
-  const [bio, setBio] = useState('');
+  const [bio, setBio] = useState(profile.bio ?? '');
   // Opcional, no bloquea canContinue — a diferencia de foto/ciudad/tarifa/bio,
   // un perfil sin Instagram sigue siendo publicable, solo pierde la señal de
   // confianza extra que ya usa el banner del dashboard (instagramOnlyMissing).
-  const [instagram, setInstagram] = useState('');
+  // Parte de lo ya guardado: si vuelve al asistente tras irse sin foto, no ve el campo vacío.
+  const [instagram, setInstagram] = useState(profile.instagram ?? '');
   const instagramNormalizado = normalizarInstagram(instagram);
   const instagramInvalido = instagram.trim() !== '' && !esUsuarioInstagram(instagramNormalizado);
   // Guardado al momento (17 nov 2026): Instagram y bio solo se guardaban al pulsar
@@ -357,8 +358,8 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   // sin foto, 0 tenían Instagram: quien lo escribía y se iba sin foto lo perdía
   // y no quedaba ninguna vía para escribirle. Ciudad NO se guarda aquí: con foto
   // y ciudad reales WizardGate (Dashboard) cierra el asistente de golpe.
-  const instagramGuardado = useRef('');
-  const bioGuardada = useRef('');
+  const instagramGuardado = useRef(profile.instagram ?? '');
+  const bioGuardada = useRef((profile.bio ?? '').trim());
   const guardarInstagram = async () => {
     if (!instagramNormalizado || instagramInvalido || instagramNormalizado === instagramGuardado.current) return;
     if (!sanitizeInput(instagramNormalizado, 'default').clean) return;
@@ -714,7 +715,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                         value={instagram}
                         onChange={(e) => setInstagram(e.target.value)}
                         onBlur={guardarInstagram}
-                        placeholder="tu_usuario o el enlace de tu perfil"
+                        placeholder="tu_usuario o enlace"
                         maxLength={120}
                         autoCapitalize="none"
                         autoCorrect="off"
