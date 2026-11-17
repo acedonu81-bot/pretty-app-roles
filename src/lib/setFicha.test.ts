@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import { fichaTieneContenido, formatTiempo, parseTiempo, parseTracklistTexto, tituloPorDefecto, tracklistDesdeBD } from './setFicha';
 

@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from 'vitest';
 import { FAMILIAS_ESTILO, familiaPorLabel, encajaEnFamilia, grafiasFamilia } from './djEstilos';
 

@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import { CADUCA_NUNCA, resumenSinTitulo, esEnlaceInterno, enlaceEnPanel, esParaSiempre, formatoMencion, idCortoDeSlug, ordenarComunicados, porcentajes, slugNovedad, textoPlano, tipoDe, trocearCuerpo, etiquetaDestino, dominioDeUrl } from './comunicados';
 

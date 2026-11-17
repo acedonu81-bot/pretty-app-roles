@@ -6,7 +6,9 @@ import { configure } from "@testing-library/react";
 // bloqueaba el despliegue (30 oct 2026). Solo alarga la espera máxima.
 configure({ asyncUtilTimeout: 5000 });
 
-Object.defineProperty(window, "matchMedia", {
+// Los archivos de lógica pura corren sin navegador (`@vitest-environment node`,
+// 17 nov 2026): arrancan mucho más rápido y ahí no existe window.
+if (typeof window !== "undefined") Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query: string) => ({
     matches: false,
