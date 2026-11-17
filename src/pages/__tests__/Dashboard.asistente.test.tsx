@@ -73,9 +73,10 @@ vi.mock('@/components/dashboard/OnboardingTour', () => ({ default: () => null })
 vi.mock('@/components/dashboard/ConsejosPanel', () => ({ default: () => null }));
 vi.mock('@/components/dashboard/SupportChat', () => ({ default: () => null }));
 vi.mock('@/components/AmbientBackground', () => ({ default: () => null }));
-vi.mock('@/components/dashboard/views/ProfileView', () => ({ default: () => null }));
-vi.mock('@/components/dashboard/views/DJView', () => ({ default: () => null }));
-vi.mock('@/components/dashboard/views/EmpresarioView', () => ({ default: () => null }));
+vi.mock('@/components/dashboard/views/ProfileView', () => ({ default: () => <div data-testid="vista-profile" /> }));
+vi.mock('@/components/dashboard/views/DJView', () => ({ default: () => <div data-testid="vista-dj" /> }));
+vi.mock('@/components/dashboard/views/EmpresarioView', () => ({ default: () => <div data-testid="vista-empresario" /> }));
+vi.mock('@/components/dashboard/views/ExplorarView', () => ({ default: () => <div data-testid="vista-explorar" /> }));
 vi.mock('@/components/dashboard/views/StaffView', () => ({ default: () => null }));
 
 // Las dos piezas que sí se observan.
@@ -116,5 +117,51 @@ describe('Dashboard: asistente de alta', () => {
     montar();
     await waitFor(() => expect(screen.getByTestId('rol-en-dashboard')).toBeTruthy());
     expect(screen.queryByTestId('asistente-alta')).toBeNull();
+  });
+});
+
+// Mismo origen que lo anterior: el cuerpo de Dashboard leía useProfile() fuera
+// del provider y veía SIEMPRE el rol por defecto ('dj'), desde el primer commit
+// (27 mar 2026). Todo lo que depende del rol en el panel (vista inicial, avisos
+// de empresario, perfil de los sin oficio, rol en analítica) trabajaba con 'dj'.
+describe('Dashboard: el panel conoce el rol real', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    localStorage.setItem('xpeak_onboarded_u1', '1'); // sin asistente de por medio
+    window.history.replaceState({}, '', '/dashboard');
+  });
+
+  const rolVisto = () => screen.getByTestId('rol-en-dashboard').textContent;
+
+  it('un empresario sin vista guardada aterriza en su panel', async () => {
+    datos.fila = perfilNuevo({ role: 'empresario' });
+    montar();
+    await waitFor(() => expect(rolVisto()).toBe('empresario'), { timeout: 3000 });
+    expect(await screen.findByTestId('vista-empresario')).toBeTruthy();
+    expect(screen.queryByTestId('vista-explorar')).toBeNull();
+  });
+
+  it('quien no ha elegido oficio (pending) aterriza en su perfil, no en explorar', async () => {
+    datos.fila = perfilNuevo({ role: 'pending' });
+    montar();
+    await waitFor(() => expect(rolVisto()).toBe('pending'), { timeout: 3000 });
+    expect(await screen.findByTestId('vista-profile')).toBeTruthy();
+    expect(screen.queryByTestId('vista-explorar')).toBeNull();
+  });
+
+  it('un DJ sin vista guardada sigue aterrizando en explorar', async () => {
+    datos.fila = perfilNuevo({ role: 'dj', roles: ['dj'] });
+    montar();
+    await waitFor(() => expect(rolVisto()).toBe('dj'), { timeout: 3000 });
+    expect(await screen.findByTestId('vista-explorar')).toBeTruthy();
+  });
+
+  it('la vista guardada gana al rol', async () => {
+    localStorage.setItem('xpeak_view', 'dj');
+    datos.fila = perfilNuevo({ role: 'empresario' });
+    montar();
+    await waitFor(() => expect(rolVisto()).toBe('empresario'), { timeout: 3000 });
+    expect(await screen.findByTestId('vista-dj')).toBeTruthy();
+    expect(screen.queryByTestId('vista-empresario')).toBeNull();
   });
 });
