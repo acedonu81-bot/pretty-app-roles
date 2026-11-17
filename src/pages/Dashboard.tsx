@@ -227,6 +227,18 @@ const WizardGate = ({ showWizard, setShowWizard }: { showWizard: boolean; setSho
   return null;
 };
 
+// Monta el asistente solo cuando el perfil ya cargó: hasta entonces useProfile
+// da role 'dj' por defecto y el asistente lo copiaba como oficio elegido.
+// Tiene que vivir DENTRO de <ProfileProvider>: leer `loading` en el cuerpo de
+// Dashboard, que está por encima, devuelve siempre el valor por defecto del
+// contexto (loading: true) y el asistente no se abría nunca (12-17 nov 2026,
+// InusualDJ se quedó en 'pending').
+const WizardMount = ({ onClose, onNavigate }: { onClose: () => void; onNavigate: (view: string) => void }) => {
+  const { loading } = useProfile();
+  if (loading) return null;
+  return <OnboardingWizard onClose={onClose} onNavigate={onNavigate} />;
+};
+
 // Rol del perfil → vista del dashboard (su propio listado). Un rol no listado
 // usa su propio slug como vista.
 const ROLE_TO_VIEW: Record<string, string> = {
@@ -453,7 +465,7 @@ const Dashboard = () => {
   const [showWizard, setShowWizard] = useState(false);
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();
-  const { role: profileRole, loading: profileLoading } = useProfile();
+  const { role: profileRole } = useProfile();
 
   // Antes usábamos key={activeView} en el contenedor de la vista para
   // disparar la animación de entrada — pero eso fuerza a React a DESMONTAR
@@ -866,10 +878,8 @@ const Dashboard = () => {
         {!showWizard && <ConsejosPanel isMobile={isMobile} onNavigate={handleViewChange} onGoToReviews={goToPendingReviews} />}
         {activeView !== 'messages' && <div className="hidden sm:block"><SupportChat /></div>}
         {user && !showWizard && <FeedbackWebCard rol={profileRole} oculto={activeView === 'messages'} />}
-        {/* Hasta que el perfil no carga, useProfile devuelve role 'dj' por defecto: el
-            asistente lo copiaba como rol preseleccionado (y lo medía como "DJ paso 0"). */}
-        {showWizard && !profileLoading && (
-          <OnboardingWizard
+        {showWizard && (
+          <WizardMount
             onClose={() => { setShowWizard(false); askForPush('alta'); }}
             onNavigate={handleViewChange}
           />
