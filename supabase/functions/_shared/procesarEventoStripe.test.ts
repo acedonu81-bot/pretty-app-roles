@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from 'vitest';
 import { procesarEventoStripe, type DbStripe, type FilaSuscripcion, type EventoStripe } from './procesarEventoStripe';
 
