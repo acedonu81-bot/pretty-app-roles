@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import { puestosPorDj, subirPodio } from '@/lib/podio';
 import { leerMensajeMixcloud } from '@/hooks/useMixcloudWidget';

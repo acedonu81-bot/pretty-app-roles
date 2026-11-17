@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from 'vitest';
 import { alternarEstilo, VARIADA, ESTILOS_MUSICA } from './musicaSolicitud';
 
