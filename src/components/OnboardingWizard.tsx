@@ -15,6 +15,7 @@ import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { sanitizeInput } from '@/lib/contentFilter';
 import { logAsistente, resumenAsistente } from '@/lib/asistenteAlta';
 import { normalizarInstagram, esUsuarioInstagram } from '@/lib/instagramUsuario';
+import { ciudadInicial } from '@/lib/ciudadAsistente';
 
 // Ciudades principales — lista corta a propósito para elegir en segundos
 // dentro del wizard. Quien necesite un barrio/ciudad más específico lo
@@ -333,11 +334,14 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     setVideoPct(null);
   };
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
-  const [city, setCity] = useState('');
+  // Parte de la ciudad que dio al registrarse con correo (profiles.zone), para no
+  // volver a pedirla ni bloquear el botón por ella (17 nov 2026).
+  const ciudadGuardada = ciudadInicial(profile.zone, WIZARD_CITIES);
+  const [city, setCity] = useState(ciudadGuardada.city);
   // 'Otra ciudad' abre un campo libre: la lista fija dejaba fuera a quien no
   // vive en una de las 19 ciudades listadas (p.ej. Benidorm) y ademas le
   // bloqueaba el boton de continuar. La BD normaliza el texto al guardarlo.
-  const [customCity, setCustomCity] = useState('');
+  const [customCity, setCustomCity] = useState(ciudadGuardada.customCity);
   const isOtherCity = city === 'Otra ciudad';
   const effectiveCity = isOtherCity ? customCity.trim() : city;
   const [hourlyRate, setHourlyRate] = useState('');

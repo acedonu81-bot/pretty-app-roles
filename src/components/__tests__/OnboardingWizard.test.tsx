@@ -5,12 +5,12 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 // preguntar el oficio que ya se eligió al registrarse y se puede dejar para
 // después desde el primer paso (antes tapaba todo el panel sin salida).
 
-const estado = { role: 'pending', loading: false };
+const estado = { role: 'pending', loading: false, zone: 'España' };
 const updateField = vi.fn(async (_campos: Record<string, unknown>) => true);
 
 vi.mock('@/hooks/useAuth', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }));
 vi.mock('@/hooks/useProfile', () => ({
-  useProfile: () => ({ role: estado.role, loading: estado.loading, updateField, photo_url: null }),
+  useProfile: () => ({ role: estado.role, loading: estado.loading, zone: estado.zone, updateField, photo_url: null }),
 }));
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: { storage: { from: () => ({ upload: vi.fn(), getPublicUrl: () => ({ data: { publicUrl: '' } }) }) }, from: () => ({}) },
@@ -28,7 +28,7 @@ const montar = (onClose = vi.fn()) => {
 describe('OnboardingWizard', () => {
   beforeEach(() => {
     updateField.mockClear();
-    estado.role = 'pending'; estado.loading = false;
+    estado.role = 'pending'; estado.loading = false; estado.zone = 'España';
     localStorage.clear();
     window.history.replaceState({}, '', '/dashboard');
   });
@@ -100,6 +100,30 @@ describe('OnboardingWizard', () => {
     fireEvent.change(campo, { target: { value: real } });
     fireEvent.blur(campo);
     await waitFor(() => expect(updateField).toHaveBeenCalledWith({ bio: real }));
+  });
+
+  // 17 nov 2026: el registro con correo ya pide la ciudad y el asistente la
+  // volvía a pedir, bloqueando el botón.
+  it('sin ciudad guardada pide la ciudad', async () => {
+    estado.role = 'dj';
+    montar();
+    await screen.findByText(/Foto y ciudad para aparecer/, {}, { timeout: 3000 });
+    expect(screen.getByText('Elige tu ciudad')).toBeTruthy();
+  });
+
+  it('con la ciudad del registro ya elegida no la vuelve a pedir', async () => {
+    estado.role = 'dj'; estado.zone = 'Madrid';
+    montar();
+    await screen.findByText(/Foto y ciudad para aparecer/, {}, { timeout: 3000 });
+    expect(screen.queryByText('Elige tu ciudad')).toBeNull();
+  });
+
+  it('una ciudad que no está en la lista llega en el campo libre de "Otra ciudad"', async () => {
+    estado.role = 'dj'; estado.zone = 'Pueblo de Prueba';
+    montar();
+    await screen.findByText(/Foto y ciudad para aparecer/, {}, { timeout: 3000 });
+    const libre = screen.getByPlaceholderText('Escribe tu ciudad') as HTMLInputElement;
+    expect(libre.value).toBe('Pueblo de Prueba');
   });
 
   it('mientras el perfil carga no salta', () => {
