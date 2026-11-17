@@ -416,7 +416,7 @@ export function resolverVistaInicial(opts: {
   return 'profile';
 }
 
-const Dashboard = () => {
+const DashboardPanel = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState<string>(() => resolverVistaInicial({
@@ -465,7 +465,7 @@ const Dashboard = () => {
   const [showWizard, setShowWizard] = useState(false);
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();
-  const { role: profileRole } = useProfile();
+  const { role: profileRole, loading: profileLoading } = useProfile();
 
   // Antes usábamos key={activeView} en el contenedor de la vista para
   // disparar la animación de entrada — pero eso fuerza a React a DESMONTAR
@@ -517,7 +517,9 @@ const Dashboard = () => {
     // inicial —'dj'—, así que un grupo musical, una azafata o cualquiera que no
     // terminase el wizard aterrizaba en el directorio de DJs y parecía que el
     // sistema le había asignado ese rol.
-    if (!profileRole) return;
+    // Hasta que el perfil carga, useProfile da el rol por defecto ('dj'): si se
+    // aplicara ya, la vista inicial se fijaría con un rol que no es el suyo.
+    if (profileLoading || !profileRole) return;
     if (viewAdjusted.current) {
       // Pulsar una notificación de la campana (navigate('/dashboard?view=...'))
       // estando ya dentro del panel no cambiaba de sección: este efecto salía
@@ -540,7 +542,7 @@ const Dashboard = () => {
     }));
     viewAdjusted.current = true;
     urlAplicada.current = location.key;
-  }, [profileRole, location]);
+  }, [profileRole, profileLoading, location]);
 
   // Al abrir Flash Booking, el empresario ve las respuestas recibidas: el globo
   // se apaga (antes se quedaba encendido para siempre, 13 oct 2026).
@@ -791,7 +793,7 @@ const Dashboard = () => {
   if (!user) return null;
 
   return (
-    <ProfileProvider>
+    <>
     <Helmet>
       <title>Dashboard | XPEAK</title>
       <meta name="robots" content="noindex, nofollow" />
@@ -906,8 +908,19 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
     </div>
-    </ProfileProvider>
+    </>
   );
 };
+
+// El provider va POR ENCIMA del panel: el cuerpo de DashboardPanel lee
+// useProfile() (rol para la vista inicial, avisos de empresario, rol en
+// analítica). Pintado dentro de su propio JSX, como estuvo hasta el 17 nov
+// 2026, esas lecturas recibían el valor por defecto del contexto ('dj',
+// loading: true) en vez del perfil real.
+const Dashboard = () => (
+  <ProfileProvider>
+    <DashboardPanel />
+  </ProfileProvider>
+);
 
 export default Dashboard;
