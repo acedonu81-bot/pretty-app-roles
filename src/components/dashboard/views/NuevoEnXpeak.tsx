@@ -61,7 +61,7 @@ const NuevoEnXpeak = () => {
     <section className="relative mb-6" aria-label="Profesionales destacados y nuevos en XPEAK"
       onMouseEnter={() => setPausado(true)} onMouseLeave={() => setPausado(false)}
       onFocus={() => setPausado(true)} onBlur={() => setPausado(false)}>
-      <Link to={`/p/${p.user_id}`} key={p.user_id}
+      <Link to={`/p/${p.user_id}?v=${esPremium ? 'inicio_premium' : 'inicio_nuevo'}`} key={p.user_id}
         className="group relative block overflow-hidden rounded-2xl motion-safe:[animation:nuevoFundido_.45s_ease-out]"
         style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.45)', boxShadow: '0 8px 26px -14px rgba(139,106,0,0.45)' }}>
         <div aria-hidden="true" className={`absolute inset-y-0 right-0 w-[55%] bg-cover bg-center sm:w-[40%] ${portada ? 'opacity-35 sm:opacity-90' : ''}`}

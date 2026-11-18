@@ -1,3 +1,4 @@
+import { fuenteVisita } from '@/lib/fuenteVisita';
 import { useLimitesPlan } from '@/hooks/useLimitesPlan';
 import { setsVisibles, portafolioVisible } from '@/lib/limitesPlan';
 import { unidadTarifa } from '@/lib/constants';
@@ -304,7 +305,7 @@ const PublicProfile = () => {
         if (isUUID && data?.display_name) {
           const canonical = toSlug(data.display_name);
           if (canonical && canonical !== slug) {
-            navigate(`/p/${canonical}`, { replace: true });
+            navigate(`/p/${canonical}${window.location.search}`, { replace: true });
             return;
           }
         }
@@ -339,11 +340,23 @@ const PublicProfile = () => {
               const zone = (viewerProfile as { role?: string; zone?: string } | null)?.role === 'empresario'
                 ? (viewerProfile as { zone?: string }).zone ?? null
                 : null;
+              // Origen de la visita (solo una etiqueta: buscador, redes, Inicio...).
+              // Si la columna aún no existe, se reintenta sin ella para no perder la visita.
+              // react-router guarda en history.state.idx la posición: 0 = página de entrada.
+              const idx = (window.history.state as { idx?: number } | null)?.idx;
+              const fuente = fuenteVisita({ search: window.location.search, referrer: document.referrer, hostActual: window.location.hostname, enEntrada: !(typeof idx === 'number' && idx > 0) });
               supabase.from('profile_business_views').insert({
                 viewed_user_id: data.user_id,
                 viewer_zone: zone,
-              }).then(({ error }) => {
-                if (error) console.error('[PublicProfile] profile_business_views insert error:', error);
+                fuente,
+              } as any).then(({ error }) => {
+                if (!error) return;
+                supabase.from('profile_business_views').insert({
+                  viewed_user_id: data.user_id,
+                  viewer_zone: zone,
+                }).then(({ error: error2 }) => {
+                  if (error2) console.error('[PublicProfile] profile_business_views insert error:', error2);
+                });
               });
             });
           }

@@ -103,6 +103,9 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
 };
 import { useProfile } from '@/hooks/useProfile';
 import { nombrePlan } from '@/lib/ventajasPlan';
+import { useMiPlan } from '@/hooks/useMiPlan';
+import { accesoEstadisticas, inicioMesMadrid } from '@/lib/estadisticasPlan';
+import EstadisticasPremium from '@/components/dashboard/views/EstadisticasPremium';
 import { useAuth } from '@/hooks/useAuth';
 import { useScarcitySignal } from '@/hooks/useScarcitySignal';
 import { timeAgo } from '@/lib/timeAgo';
@@ -110,7 +113,7 @@ import { useMarketRateInsight } from '@/hooks/useMarketRateInsight';
 import { supabase } from '@/integrations/supabase/client';
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
-const StatsView = () => {
+const StatsView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   const profile = useProfile();
   const { user } = useAuth();
   const scarcity = useScarcitySignal(user?.id);
@@ -122,10 +125,26 @@ const StatsView = () => {
   const [monthlyMessages, setMonthlyMessages] = useState<number[]>(Array(12).fill(0));
   const [monthlyConvs, setMonthlyConvs]       = useState<number[]>(Array(12).fill(0));
   const [loading, setLoading]                 = useState(true);
+  const [visitasMes, setVisitasMes]           = useState(0);
+
+  // Plan real (plan de pago, fundador o lanzamiento) según la BD. undefined = cargando.
+  const plan = useMiPlan(profile.id);
+  const acceso = accesoEstadisticas(plan);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || plan === undefined) return;
     const load = async () => {
+      // Esencial: solo las visitas de este mes (hora de Madrid); el resto no se pide.
+      if (!acceso.basicas) {
+        const desde = inicioMesMadrid();
+        const { count } = await supabase.from('profile_business_views')
+          .select('id', { count: 'exact', head: true })
+          .eq('viewed_user_id', user.id)
+          .gte('created_at', desde);
+        setVisitasMes(count ?? 0);
+        setLoading(false);
+        return;
+      }
       // ── 1. Basic stats ──────────────────────────────
       // "Visitas al perfil" viene de profile_business_views (visitas reales
       // registradas), NO de profiles.score: ese campo es el ranking interno
@@ -207,7 +226,7 @@ const StatsView = () => {
       setLoading(false);
     };
     load();
-  }, [user]);
+  }, [user, plan]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const contactRate = stats.views > 0 ? Math.round((stats.conversations / stats.views) * 100) : 0;
   const animViews    = useCountUp(stats.views);
@@ -224,6 +243,53 @@ const StatsView = () => {
   const bestMonthIdx  = monthlyMessages.indexOf(Math.max(...monthlyMessages));
   const yearTotalMsgs = monthlyMessages.reduce((a, b) => a + b, 0);
   const yearTotalConvs = monthlyConvs.reduce((a, b) => a + b, 0);
+
+  // Esencial: solo las visitas del mes; el resto, difuminado y sin datos reales detrás.
+  if (plan !== undefined && !acceso.basicas) {
+    const bloqueadas = ['Mensajes recibidos', 'Solicitudes Flash', 'Tasa de contacto'];
+    return (
+      <div className="animate-[fadeIn_0.4s_ease]">
+        <div className="mb-5">
+          <h2 className="text-2xl font-bold mb-1">Mis <span className="text-gradient">Estadísticas</span></h2>
+          <p className="text-sm text-muted-foreground">Métricas de rendimiento de tu perfil en el directorio.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="glass-panel p-4 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-xl" style={{ background: '#4285F4', opacity: 0.6 }} />
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Visitas este mes</span>
+              <Eye size={14} style={{ color: '#4285F4' }} />
+            </div>
+            <div className="text-2xl font-bold mb-1">{loading ? '—' : visitasMes}</div>
+            <span className="text-xs font-semibold text-muted-foreground">visitas a tu ficha pública</span>
+          </div>
+          {bloqueadas.map(l => (
+            <div key={l} className="glass-panel p-4 relative overflow-hidden select-none" aria-hidden="true">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{l}</span>
+              </div>
+              <div className="text-2xl font-bold mb-1" style={{ filter: 'blur(7px)' }}>000</div>
+              <span className="text-xs font-semibold text-muted-foreground" style={{ filter: 'blur(4px)' }}>disponible en Profesional</span>
+            </div>
+          ))}
+        </div>
+        <div className="glass-panel p-6 text-center">
+          <h3 className="text-base font-bold mb-2">Mejora a Profesional para ver quién te busca</h3>
+          <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto">
+            Con el plan Profesional ves tus mensajes, solicitudes Flash, tasa de contacto, tu actividad semanal y el resumen del año.
+            Con Premium, además, de dónde llegan tus visitas, la gráfica día a día y exportar a Excel.
+          </p>
+          {onNavigate && (
+            <button type="button" onClick={() => onNavigate('subscription')}
+              className="px-5 py-2.5 rounded-xl text-sm font-bold"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#111' }}>
+              Ver planes
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -427,6 +493,28 @@ const StatsView = () => {
           </p>
         </div>
       </div>
+
+      {/* ── Estadísticas avanzadas (Premium) o invitación (Profesional) ── */}
+      {acceso.avanzadas ? (
+        <EstadisticasPremium
+          anio={currentYear}
+          totales={{ visitas: stats.views, mensajes: stats.messages, solicitudes: stats.bookings, conversaciones: stats.conversations }}
+          mensajesMes={monthlyMessages}
+          conversacionesMes={monthlyConvs}
+        />
+      ) : plan !== undefined && (
+        <div className="glass-panel p-5 mb-6">
+          <h3 className="text-sm font-bold mb-1">Con Premium, aún más</h3>
+          <p className="text-sm text-muted-foreground mb-3">
+            De dónde llegan tus visitas (buscadores, redes, Inicio de XPEAK), la gráfica de visitas día a día y exportar tus estadísticas a Excel.
+          </p>
+          {onNavigate && (
+            <button type="button" onClick={() => onNavigate('subscription')} className="text-sm font-bold underline" style={{ color: '#8B6A00' }}>
+              Ver el plan Premium
+            </button>
+          )}
+        </div>
+      )}
 
       {/* ── Plan ── */}
       <div className="glass-panel p-5">

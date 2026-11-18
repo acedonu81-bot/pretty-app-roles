@@ -767,7 +767,7 @@ const DashboardPanel = () => {
       case 'flash': return <FlashBookingWallView onMessage={handleMessage} />;
       case 'organizadores': return <OrganizadoresView onVerOfertas={goToOfertasFlashBooking} />;
       case 'topweekend': return <TopWeekendView />;
-      case 'stats': return <StatsView />;
+      case 'stats': return <StatsView onNavigate={nav} />;
       case 'agency': return <AgencyView />;
       case 'resources': return <ResourcesView />;
       case 'comunicados': return <ComunicadosView onNavigate={handleViewChange} />;
