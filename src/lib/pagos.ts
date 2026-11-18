@@ -19,9 +19,9 @@ async function abrir(funcion: string, cuerpo?: Record<string, string>) {
 export const iniciarPago = (plan: PlanPago, ciclo: Ciclo) => abrir('crear-checkout', { plan, ciclo });
 export const abrirPortal = () => abrir('portal-cliente');
 
-export interface MiSuscripcion { estado: string | null; periodo_fin: string | null; cancela_al_final: boolean }
+export interface MiSuscripcion { estado: string | null; periodo_fin: string | null; cancela_al_final: boolean; plan: PlanPago | null; ciclo: Ciclo | null }
 
 export async function leerMiSuscripcion(): Promise<MiSuscripcion | null> {
-  const { data } = await (supabase as any).from('suscripciones').select('estado, periodo_fin, cancela_al_final').maybeSingle();
+  const { data } = await (supabase as any).from('suscripciones').select('estado, periodo_fin, cancela_al_final, plan, ciclo').maybeSingle();
   return data ?? null;
 }

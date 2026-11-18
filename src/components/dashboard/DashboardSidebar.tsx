@@ -1,9 +1,10 @@
 import {
   LayoutGrid, Home, Search, MessageSquare, Megaphone, Settings,
   BarChart3, FileText, CalendarDays, Sparkles, Rss, Newspaper,
-  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Briefcase, Building2, Shield, ThumbsUp,
+  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Briefcase, Building2, Shield, ThumbsUp, Crown,
   type LucideIcon,
 } from 'lucide-react';
+import { cobrosActivos } from '@/lib/pagos';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
@@ -528,6 +529,12 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
             <NavItem icon={User} label="Mi Perfil" isActive={activeView === 'profile' || activeView === 'ficha'} onClick={() => onViewChange('profile')} navId="profile" />
             {isAgency && (
               <NavItem icon={Building2} label="Panel Agencia" isActive={activeView === 'agency'} onClick={() => onViewChange('agency')} />
+            )}
+            {/* Entrada propia a los planes: antes solo se llegaba por enlaces sueltos
+                ("Ver planes") y un profesional no encontraba dónde contratar.
+                Solo con los cobros encendidos y para profesionales. */}
+            {cobrosActivos() && !isEmpresario && role !== 'particular' && role !== 'pending' && (
+              <NavItem icon={Crown} label="Mi plan" isActive={activeView === 'subscription'} onClick={() => onViewChange('subscription')} navId="subscription" />
             )}
             <NavItem icon={BarChart3} label="Estadísticas" isActive={activeView === 'stats'} onClick={() => onViewChange('stats')} navId="stats" />
           </SidebarMenu>

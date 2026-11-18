@@ -108,3 +108,16 @@ export function listaVentajas(plan: Plan, o: Oficios): string[] {
   }
   return out;
 }
+
+// Ventajas decididas que aún NO existen: se enseñan con la etiqueta "Próximamente"
+// (18 nov 2026, decisión de Daniel). Al construirlas, pasan a listaVentajas.
+export function proximamente(plan: Plan, o: Oficios): string[] {
+  const out: string[] = [];
+  if (plan === 'starter') {
+    out.push('Avisos por WhatsApp de trabajo: solicitudes de particulares y ofertas de organizadores');
+    if (o.flash) out.push('Flash Booking con adelanto');
+  } else if (plan === 'business') {
+    if (o.flash) out.push('Flash Booking con el mayor adelanto');
+  }
+  return out;
+}
