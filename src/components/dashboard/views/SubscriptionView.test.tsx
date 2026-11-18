@@ -43,11 +43,10 @@ describe('SubscriptionView', () => {
     perfil.role = 'mago'; perfil.roles = ['mago'];
     render(<SubscriptionView />);
     expect(screen.queryByText(/sets/i)).toBeNull();
-    expect(screen.queryByText(/link de sesión|links de sesión/i)).toBeNull();
     expect(screen.queryByText('Ficha con vídeo de fondo')).toBeNull();
     expect(screen.queryByText(/Concursos de DJs/)).toBeNull();
     expect(screen.getByText('Sales destacado en el Inicio de XPEAK')).toBeTruthy();
-    expect(screen.getByText('Portafolio de 20 fotos')).toBeTruthy();
+    expect(screen.getByText('Portafolio de 20 fotos y vídeos')).toBeTruthy();
   });
 
   it('pide el pago del plan y ciclo elegidos', () => {

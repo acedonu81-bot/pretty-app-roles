@@ -19,9 +19,8 @@ export const nombrePlan = (tier: string | null | undefined) => NOMBRE_PLAN[planD
 export type Estadisticas = 'ninguna' | 'basicas' | 'avanzadas';
 
 export type Ventajas = {
-  fotos: number;
-  sets: number;            // Infinity = ilimitados
-  linksSesion: number;     // Infinity = ilimitados
+  fotos: number;           // portafolio: fotos y vídeos juntos
+  sets: number;            // Infinity = ilimitados (archivos y enlaces cuentan igual)
   redesVisibles: boolean;  // Instagram, TikTok y web en la ficha pública
   estadisticas: Estadisticas;
   exportarEstadisticas: boolean;
@@ -39,21 +38,21 @@ export type Ventajas = {
 
 const VENTAJAS: Record<Plan, Ventajas> = {
   free: {
-    fotos: 6, sets: 3, linksSesion: 1, redesVisibles: false,
+    fotos: 6, sets: 3, redesVisibles: false,
     estadisticas: 'ninguna', exportarEstadisticas: false, videoFondo: false,
     destacadoInicio: false, posicionDestacada: false, avisosWhatsapp: false,
     verificacionAmpliada: false, flashAdelanto: 'ninguno', prioridadComunicados: false,
     redesXpeakMensual: false, soportePrioritario: false, sorteos: false,
   },
   starter: {
-    fotos: 12, sets: 10, linksSesion: 3, redesVisibles: true,
+    fotos: 12, sets: 10, redesVisibles: true,
     estadisticas: 'basicas', exportarEstadisticas: false, videoFondo: false,
     destacadoInicio: false, posicionDestacada: false, avisosWhatsapp: true,
     verificacionAmpliada: true, flashAdelanto: 'adelanto', prioridadComunicados: false,
     redesXpeakMensual: false, soportePrioritario: false, sorteos: true,
   },
   business: {
-    fotos: 20, sets: Infinity, linksSesion: Infinity, redesVisibles: true,
+    fotos: 20, sets: Infinity, redesVisibles: true,
     estadisticas: 'avanzadas', exportarEstadisticas: true, videoFondo: true,
     destacadoInicio: true, posicionDestacada: true, avisosWhatsapp: true,
     verificacionAmpliada: true, flashAdelanto: 'mayor', prioridadComunicados: true,

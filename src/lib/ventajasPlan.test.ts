@@ -17,7 +17,6 @@ describe('ventajasPlan', () => {
   it('límites decididos el 13 nov', () => {
     expect([ventajasDe('free').fotos, ventajasDe('starter').fotos, ventajasDe('business').fotos]).toEqual([6, 12, 20]);
     expect([ventajasDe('free').sets, ventajasDe('starter').sets, ventajasDe('business').sets]).toEqual([3, 10, Infinity]);
-    expect([ventajasDe('free').linksSesion, ventajasDe('starter').linksSesion, ventajasDe('business').linksSesion]).toEqual([1, 3, Infinity]);
   });
 
   it('redes ocultas solo en Esencial; vídeo, Inicio y exportar solo en Premium', () => {

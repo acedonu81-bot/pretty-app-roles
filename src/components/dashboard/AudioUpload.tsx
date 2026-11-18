@@ -1,4 +1,5 @@
-import { ventajasDe, nombrePlan } from '@/lib/ventajasPlan';
+import { ventajasDe } from '@/lib/ventajasPlan';
+import { useLimitesPlan } from '@/hooks/useLimitesPlan';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Upload, Music, X, Plus, Link } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -140,8 +141,9 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
   const profile = useProfile();
   const { fichas, recargar: recargarFichas } = useSetFichas(user?.id);
   const [fichaAbierta, setFichaAbierta] = useState<string | null>(null);
-  const maxSesiones = ventajasDe(profile.subscription_tier).sets;
-  const mensajeLimite = `En el plan ${nombrePlan(profile.subscription_tier)} puedes tener hasta ${maxSesiones} sets publicados. Quita uno para subir otro o mejora tu plan.`;
+  const limites = useLimitesPlan(profile.id);
+  const maxSesiones = limites?.sets ?? ventajasDe(profile.subscription_tier).sets;
+  const mensajeLimite = `Tu plan permite hasta ${maxSesiones} sets publicados. Quita uno para subir otro o mejora tu plan.`;
 
   useEffect(() => {
     if (profile.genres && profile.genres.length > 0) {

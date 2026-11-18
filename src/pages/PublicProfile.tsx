@@ -1,3 +1,5 @@
+import { useLimitesPlan } from '@/hooks/useLimitesPlan';
+import { setsVisibles, portafolioVisible } from '@/lib/limitesPlan';
 import { unidadTarifa } from '@/lib/constants';
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -451,6 +453,9 @@ const PublicProfile = () => {
     : null;
 
   // Loading state (only for UUID profiles)
+  // Sets y portafolio que enseña la ficha según el plan (18 nov 2026).
+  const limites = useLimitesPlan(sbProfile?.id);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: '#FFFDF7' }}>
@@ -594,7 +599,10 @@ const PublicProfile = () => {
   const stagger = { show: { transition: { staggerChildren: 0.1 } } };
   const responseBucketText = responseBucketLabel(sbProfile?.response_bucket ?? null);
 
-  const sesiones = (extraMedia.audio_session_urls ?? []).slice(0, 5);
+  const sesiones = setsVisibles(extraMedia.audio_session_urls ?? [], limites, 5);
+  const portafolio = limites
+    ? portafolioVisible(sbProfile?.portfolio_urls ?? [], extraMedia.video_session_urls ?? [], limites)
+    : { fotos: (sbProfile?.portfolio_urls ?? []).slice(0, 9), videos: (extraMedia.video_session_urls ?? []).slice(0, 3) };
   const mixAparte = !!audioEmbed && !sesiones.includes(sbProfile?.audio_embed_url ?? '');
   const numSets = sesiones.length + (mixAparte ? 1 : 0);
   const totalSeguidoresDJ = resumenDJ?.seguidores ?? seguidores ?? 0;
@@ -1244,13 +1252,13 @@ const PublicProfile = () => {
           <PanelPerfilDJ id="sobre" esDJ={esDJ} activa={pestana} continuacion>
           {/* bio_video already rendered above bio section */}
 
-          {sbProfile?.portfolio_urls && sbProfile.portfolio_urls.length > 0 && (
+          {portafolio.fotos.length > 0 && sbProfile && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Portfolio</span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {sbProfile.portfolio_urls.slice(0, 9).map((url, i) => (
+                {portafolio.fotos.map((url, i) => (
                   <div key={i} className="aspect-square rounded-2xl overflow-hidden group cursor-pointer"
                     onClick={() => window.open(url, '_blank', 'noopener')}>
                     <img src={fotoOptimizada(url, 600)} alt={`${sbProfile.display_name} ${i + 1}`}
@@ -1262,14 +1270,14 @@ const PublicProfile = () => {
             </motion.div>
           )}
 
-          {extraMedia.video_session_urls && extraMedia.video_session_urls.length > 0 && (
+          {portafolio.videos.length > 0 && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <div className="flex items-center gap-2 mb-4">
                 <Video size={14} style={{ color: '#D4AF37' }} />
                 <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#8B6A00' }}>Clips</span>
               </div>
               <div className="flex flex-col gap-4">
-                {extraMedia.video_session_urls.slice(0, 3).map((url, i) => (
+                {portafolio.videos.map((url, i) => (
                   <video key={i} ref={el => { clipVideoRefs.current[i] = el; }} src={url} controls preload="metadata"
                     onPlay={() => pauseOtherClips(i)}
                     className="w-full rounded-2xl mx-auto"

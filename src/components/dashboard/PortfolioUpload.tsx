@@ -1,3 +1,4 @@
+import { useLimitesPlan } from '@/hooks/useLimitesPlan';
 import { useState, useRef, useEffect } from 'react';
 import { Upload, Image, X, Plus, Video } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,7 +9,8 @@ import { validarVideo, subirConProgreso, sincronizarSesionesVideo, esImagenAdmit
 import { toast } from 'sonner';
 
 const MAX_IMAGE_MB      = 15;
-const MAX_ITEMS_PRO = 12;
+// Antes del lanzamiento y mientras carga el límite real: 12, como hasta ahora.
+const MAX_ITEMS_POR_DEFECTO = 12;
 
 interface PortfolioItem {
   name: string;
@@ -57,7 +59,8 @@ const PortfolioUpload = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const profile = useProfile();
-  const maxItems = MAX_ITEMS_PRO;
+  const limites = useLimitesPlan(profile.id);
+  const maxItems = limites?.portafolio ?? MAX_ITEMS_POR_DEFECTO;
 
   useEffect(() => {
     const load = async () => {
@@ -87,7 +90,7 @@ const PortfolioUpload = () => {
     if (files.length === 0 || !user) return;
 
     if (items.length >= maxItems) {
-      toast.error(`Máximo ${maxItems} elementos en tu plan.`);
+      toast.error(`Tu plan permite hasta ${maxItems} fotos y vídeos. Quita uno o mejora tu plan.`);
       return;
     }
 
@@ -189,7 +192,7 @@ const PortfolioUpload = () => {
         <span className="text-xs text-muted-foreground ml-auto">{items.length}/{maxItems}</span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        Fotos (JPG, PNG, WEBP, hasta {MAX_IMAGE_MB}MB) y vídeos (MP4, MOV, hasta {MAX_VIDEO_S} s y {MAX_VIDEO_MB}MB) · hasta {MAX_ITEMS_PRO} elementos
+        Fotos (JPG, PNG, WEBP, hasta {MAX_IMAGE_MB}MB) y vídeos (MP4, MOV, hasta {MAX_VIDEO_S} s y {MAX_VIDEO_MB}MB) · hasta {maxItems} elementos en tu plan
       </p>
 
       {/* CTA: portfolio vacío — mensaje según el oficio */}

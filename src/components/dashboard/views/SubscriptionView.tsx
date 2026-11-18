@@ -16,16 +16,16 @@ const V = { free: ventajasDe('free'), starter: ventajasDe('starter'), business: 
 // para DJ, grupos y disco móvil, dj solo para DJ (el vídeo de fondo solo existe en su ficha).
 const VENTAJAS: Record<'free' | PlanPago, { comun: string[]; musica: string[]; dj?: string[] }> = {
   free: {
-    comun: ['Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas', 'Ofertas Flash Booking', `Portafolio de ${V.free.fotos} fotos`],
-    musica: [`Hasta ${V.free.sets} sets en tu perfil`, `${V.free.linksSesion} link de sesión`, 'Concursos de DJs de XPEAK'],
+    comun: ['Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas', 'Ofertas Flash Booking', `Portafolio de ${V.free.fotos} fotos y vídeos`],
+    musica: [`Hasta ${V.free.sets} sets en tu perfil`, 'Concursos de DJs de XPEAK'],
   },
   starter: {
-    comun: ['Avisos por WhatsApp de trabajo', 'Tu Instagram, TikTok y web visibles', 'Verificación ampliada', 'Estadísticas de visitas y mensajes', `Portafolio de ${V.starter.fotos} fotos`, 'Sorteos entre suscriptores'],
-    musica: [`Hasta ${V.starter.sets} sets en tu perfil`, `Hasta ${V.starter.linksSesion} links de sesión`],
+    comun: ['Avisos por WhatsApp de trabajo', 'Tu Instagram, TikTok y web visibles', 'Verificación ampliada', 'Estadísticas de visitas y mensajes', `Portafolio de ${V.starter.fotos} fotos y vídeos`, 'Sorteos entre suscriptores'],
+    musica: [`Hasta ${V.starter.sets} sets en tu perfil`],
   },
   business: {
-    comun: ['Todo lo de Profesional', 'Posición destacada y aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Prioridad en los comunicados', 'Apareces una vez al mes en las redes de XPEAK', 'Estadísticas avanzadas', `Portafolio de ${V.business.fotos} fotos`],
-    musica: ['Sets ilimitados', 'Links de sesión ilimitados'],
+    comun: ['Todo lo de Profesional', 'Posición destacada y aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Prioridad en los comunicados', 'Apareces una vez al mes en las redes de XPEAK', 'Estadísticas avanzadas', `Portafolio de ${V.business.fotos} fotos y vídeos`],
+    musica: ['Sets ilimitados'],
     dj: ['Ficha con vídeo de fondo'],
   },
 };
