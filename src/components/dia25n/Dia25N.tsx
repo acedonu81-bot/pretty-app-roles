@@ -58,9 +58,10 @@ export const Franja25N = () => {
     <div className="relative mx-3 md:mx-6 mt-3 flex items-center gap-3 rounded-xl pl-4 pr-10 py-2.5"
       style={{ background: FONDO, border: `1px solid ${BORDE}` }}>
       <Lazo ancho={30} className="shrink-0" />
-      <p className="text-sm sm:text-base font-bold" style={{ color: '#3B1F72' }}>
-        <span className="font-extrabold" style={{ color: MORADO }}>25N.</span> {AYUDA}
-      </p>
+      <div className="leading-snug">
+        <p className="text-sm sm:text-base font-extrabold font-display" style={{ color: MORADO }}>{TITULO}</p>
+        <p className="text-xs sm:text-sm font-bold mt-0.5" style={{ color: '#3B1F72' }}>{AYUDA}</p>
+      </div>
       <button onClick={cerrar} aria-label="Cerrar" className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-black/5">
         <X className="w-4 h-4" style={{ color: MORADO }} />
       </button>
