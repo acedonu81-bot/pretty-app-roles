@@ -51,7 +51,9 @@ export async function leerAcceso(t: string): Promise<DatosAcceso | null> {
 // profesional (p); la respuesta se elige en xpeak.es/responder con un POST, así
 // que un antivirus que abra el enlace no contesta por el cliente. Clave propia:
 // una firma de acceso no vale como respuesta ni al revés.
-const CADUCA_RESPUESTA_MS = 30 * 24 * 3600_000;
+// Mismo plazo que el enlace de acceso: el botón no debe dar más tiempo de
+// entrada que el propio correo.
+const CADUCA_RESPUESTA_MS = CADUCA_MS;
 const claveRespuesta = async () => {
   const base = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!base) throw new Error('Sin clave para firmar');

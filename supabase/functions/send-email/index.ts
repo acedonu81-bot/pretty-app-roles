@@ -2690,6 +2690,13 @@ async function atender(req: Request): Promise<Response> {
     // solicitante. El payload trae requester_contact (email de quien contacta),
     // que NO debe usarse como destino. Resolvemos data.email desde el user_id
     // del destinatario real (professional_user_id o user_id).
+    // Los datos del correo al particular (botones, mensaje, ficha del profesional)
+    // los pone SOLO el servidor más abajo. Si llegaran del navegador, cualquier
+    // usuario con sesión podría mandar un correo con la marca de XPEAK y el texto
+    // que quisiera (revisión de seguridad, 18 nov 2026).
+    if (type === 'new_message' && data) {
+      for (const k of ['respuesta_t', 'mensaje', 'pro_foto', 'pro_oficio', 'pro_zona', 'particular']) delete data[k];
+    }
     const targetUserId = data?.professional_user_id ?? data?.user_id;
     if (targetUserId && !data?.email) {
       const adminClient = createClient(

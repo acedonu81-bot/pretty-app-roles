@@ -48,15 +48,17 @@ serve(async (req) => {
       .eq('conversation_id', conv.id).eq('sender_id', d.u).in('content', [TEXTOS.si, TEXTOS.no])
       .limit(1).maybeSingle();
     const nombre = pro.display_name || 'El profesional';
-    const chat = await firmarAcceso(d.u,
+    // El enlace de entrada al chat solo se da cuando ya hay respuesta (una
+    // persona ha pulsado el botón), nunca por abrir la página.
+    const enlaceChat = () => firmarAcceso(d.u,
       `/dashboard?view=messages&con=${d.p}&nombre=${encodeURIComponent(nombre.replace(/[&#?=+%]/g, '').slice(0, 60))}`);
     const ya = previa ? (previa.content === TEXTOS.si ? 'si' : 'no') : null;
 
     if (accion === 'ver') {
-      return json({ ok: true, nombre, foto: pro.photo_url, oficio: pro.specialty, zona: pro.zone, ya, chat });
+      return json({ ok: true, nombre, foto: pro.photo_url, oficio: pro.specialty, zona: pro.zone, ya, chat: ya ? await enlaceChat() : null });
     }
     if (accion !== 'responder' || (r !== 'si' && r !== 'no')) return json({ error: 'Respuesta no válida' }, 400);
-    if (ya) return json({ ok: true, nombre, ya, chat });
+    if (ya) return json({ ok: true, nombre, ya, chat: await enlaceChat() });
 
     const { error: e } = await admin.from('messages').insert({ conversation_id: conv.id, sender_id: d.u, content: TEXTOS[r as 'si' | 'no'] });
     if (e) { console.error('[particular-responder] insert', e); return json({ error: 'No se pudo enviar' }, 500); }
@@ -73,7 +75,7 @@ serve(async (req) => {
       body: JSON.stringify({ type: 'new_message', data: { user_id: d.p, sender_name: remitente } }),
     }).catch(err => console.warn('[particular-responder] aviso', err));
 
-    return json({ ok: true, nombre, ya: r, chat });
+    return json({ ok: true, nombre, ya: r, chat: await enlaceChat() });
   } catch (err) {
     console.error('[particular-responder]', err);
     return json({ error: 'Error' }, 500);
