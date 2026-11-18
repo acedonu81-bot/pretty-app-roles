@@ -5,8 +5,7 @@
 // Solo figura lo que EXISTE y funciona. Ventajas decididas pero aún sin construir
 // (no se anuncian hasta que existan; al construirlas, se añaden aquí y a "Mi plan"):
 //   avisos por WhatsApp de trabajo, verificación ampliada, sorteos entre suscriptores,
-//   prioridad en comunicados, posición destacada + aro dorado en el directorio,
-//   sello Premium, Flash con adelanto, soporte prioritario, vídeo de fondo.
+//   prioridad en comunicados, sello Premium, Flash con adelanto, soporte prioritario, vídeo de fondo.
 //
 // Los nombres internos siguen siendo free / starter / business; los públicos son
 // Esencial / Profesional / Premium. Agencia está fuera: los tiers antiguos
@@ -34,6 +33,7 @@ export type Ventajas = {
   exportarEstadisticas: boolean;
   bannerCabecera: boolean;   // banner propio en la cabecera de artista (solo DJ)
   destacadoInicio: boolean;  // sale en la tarjeta del Inicio del panel
+  posicionDestacada: boolean; // por delante en el directorio, con aro dorado y etiqueta Destacado
   redesXpeakMensual: boolean; // aparece una vez al mes en las redes de XPEAK (manual)
 };
 
@@ -41,17 +41,17 @@ const VENTAJAS: Record<Plan, Ventajas> = {
   free: {
     fotos: 6, sets: 3, redesVisibles: false,
     estadisticas: 'ninguna', exportarEstadisticas: false, bannerCabecera: false,
-    destacadoInicio: false, redesXpeakMensual: false,
+    destacadoInicio: false, posicionDestacada: false, redesXpeakMensual: false,
   },
   starter: {
     fotos: 12, sets: 10, redesVisibles: true,
     estadisticas: 'basicas', exportarEstadisticas: false, bannerCabecera: false,
-    destacadoInicio: false, redesXpeakMensual: false,
+    destacadoInicio: false, posicionDestacada: false, redesXpeakMensual: false,
   },
   business: {
     fotos: 20, sets: Infinity, redesVisibles: true,
     estadisticas: 'avanzadas', exportarEstadisticas: true, bannerCabecera: true,
-    destacadoInicio: true, redesXpeakMensual: true,
+    destacadoInicio: true, posicionDestacada: true, redesXpeakMensual: true,
   },
 };
 
@@ -100,7 +100,7 @@ export function listaVentajas(plan: Plan, o: Oficios): string[] {
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
   } else {
-    out.push('Todo lo de Profesional', 'Sales destacado en el Inicio de XPEAK', 'Apareces una vez al mes en las redes de XPEAK');
+    out.push('Todo lo de Profesional', 'Posición destacada en el directorio, con aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Apareces una vez al mes en las redes de XPEAK');
     out.push('Estadísticas avanzadas: visitas día a día, de dónde llegan y exportar');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push('Sets ilimitados');

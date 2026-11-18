@@ -67,12 +67,19 @@ describe('qué ve cada oficio', () => {
 
   it('nunca se anuncia lo que aún no existe', () => {
     const todo = ['free', 'starter', 'business'].flatMap(p => lista(['dj'], p as 'free')).join('|');
-    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|aro dorado|Posición destacada|vídeo de fondo|Soporte|Sello|adelanto|Concursos|y web/i);
+    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|Soporte|Sello|adelanto|Concursos|y web/i);
   });
 
   it('no usa rayas largas ni "gratis"', () => {
     const todo = ['free', 'starter', 'business'].flatMap(p => lista(['dj'], p as 'free')).join('|');
     expect(todo).not.toMatch(/[—–]|gratis/i);
+  });
+
+  it('Premium anuncia la posición destacada y los demás planes no', () => {
+    expect(lista(['dj'], 'business')).toContain('Posición destacada en el directorio, con aro dorado');
+    expect(lista(['dj'], 'starter').join('|')).not.toMatch(/Posición destacada/);
+    expect(ventajasDe('business').posicionDestacada).toBe(true);
+    expect(ventajasDe('starter').posicionDestacada).toBe(false);
   });
 
   it('cada plan incluye lo del anterior en el texto', () => {
