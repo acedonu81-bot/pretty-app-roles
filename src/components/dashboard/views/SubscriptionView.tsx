@@ -20,7 +20,7 @@ const VENTAJAS: Record<'free' | PlanPago, { comun: string[]; musica: string[] }>
     musica: ['Hasta 10 sets en tu perfil', 'Hasta 3 links de sesión'],
   },
   business: {
-    comun: ['Todo lo de Profesional', 'Posición destacada y aro dorado', 'Prioridad en los comunicados', 'Apareces una vez al mes en las redes de XPEAK', 'Ficha con vídeo de fondo', 'Estadísticas avanzadas', 'Portafolio de 20 fotos'],
+    comun: ['Todo lo de Profesional', 'Posición destacada y aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Prioridad en los comunicados', 'Apareces una vez al mes en las redes de XPEAK', 'Ficha con vídeo de fondo', 'Estadísticas avanzadas', 'Portafolio de 20 fotos'],
     musica: ['Sets ilimitados', 'Links de sesión ilimitados'],
   },
 };

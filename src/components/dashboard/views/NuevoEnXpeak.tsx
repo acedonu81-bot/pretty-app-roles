@@ -4,17 +4,19 @@ import { ArrowRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { ROLE_ES } from '@/lib/constants';
 import { fotoOptimizada } from '@/lib/imagen';
-import { etiquetaAlta, imagenSegura, siguienteIndice, type NuevoProfesional } from '@/lib/nuevosEnXpeak';
+import { etiquetaAlta, imagenSegura, siguienteIndice, combinarDestacados, type Destacado, type NuevoProfesional } from '@/lib/nuevosEnXpeak';
 
 // 16 nov 2026: tarjeta compacta en el Inicio con los profesionales que acaban
 // de entrar (últimos 7 días, hasta 5) y tienen el perfil completo. Los datos
 // vienen de nuevos_profesionales_panel, que ya filtra calidad y privacidad.
 // Sin nadie nuevo no se pinta nada. Rota con fundido suave; se pausa con el
 // ratón o el foco, y con "reducir movimiento" solo se cambia con los puntos.
+// 18 nov 2026: delante salen los profesionales Premium (premium_profesionales_panel),
+// rotulados como Premium: es posición de pago y tiene que verse (Reglamento UE 2019/1150).
 const CADA_MS = 7000;
 
 const NuevoEnXpeak = () => {
-  const [lista, setLista] = useState<NuevoProfesional[]>([]);
+  const [lista, setLista] = useState<Destacado[]>([]);
   const [i, setI] = useState(0);
   const [pausado, setPausado] = useState(false);
   const [ahora, setAhora] = useState(() => Date.now());
@@ -23,9 +25,15 @@ const NuevoEnXpeak = () => {
     let vivo = true;
     (async () => {
       try {
-        const { data } = await (supabase.rpc as any)('nuevos_profesionales_panel');
-        if (!vivo || !Array.isArray(data)) return;
-        setLista((data as NuevoProfesional[]).filter(f => f?.user_id && f?.display_name));
+        const leer = async (fn: string) => {
+          try {
+            const { data } = await (supabase.rpc as any)(fn);
+            return Array.isArray(data) ? (data as NuevoProfesional[]) : [];
+          } catch { return []; }
+        };
+        const [premium, nuevos] = await Promise.all([leer('premium_profesionales_panel'), leer('nuevos_profesionales_panel')]);
+        if (!vivo) return;
+        setLista(combinarDestacados(premium, nuevos));
         setAhora(Date.now());
       } catch { /* sin datos no se muestra */ }
     })();
@@ -46,10 +54,11 @@ const NuevoEnXpeak = () => {
   const zona = p.zone && p.zone.trim() && p.zone.trim() !== 'España' ? p.zone.trim() : null;
   const portada = imagenSegura(p.portada_url);
   const foto = imagenSegura(p.photo_url);
-  const alta = etiquetaAlta(p.creado, ahora);
+  const esPremium = p.tipo === 'premium';
+  const alta = esPremium ? '' : etiquetaAlta(p.creado, ahora);
 
   return (
-    <section className="relative mb-6" aria-label="Nuevo en XPEAK"
+    <section className="relative mb-6" aria-label="Profesionales destacados y nuevos en XPEAK"
       onMouseEnter={() => setPausado(true)} onMouseLeave={() => setPausado(false)}
       onFocus={() => setPausado(true)} onBlur={() => setPausado(false)}>
       <Link to={`/p/${p.user_id}`} key={p.user_id}
@@ -74,7 +83,7 @@ const NuevoEnXpeak = () => {
           )}
           <div className="min-w-0 flex-1 pr-10 sm:pr-0">
             <p className="truncate text-[0.68rem] font-black uppercase tracking-[0.2em] sm:text-[0.72rem]" style={{ color: '#8B6A00' }}>
-              Nuevo en XPEAK{alta ? ` · ${alta}` : ''}
+              {esPremium ? 'Profesional Premium' : `Nuevo en XPEAK${alta ? ` · ${alta}` : ''}`}
             </p>
             <p className="mt-0.5 truncate font-display text-lg font-black leading-tight sm:text-xl" style={{ color: '#0a0908', letterSpacing: '-0.01em' }}>
               {p.display_name}
@@ -89,7 +98,7 @@ const NuevoEnXpeak = () => {
         </div>
       </Link>
       {n > 1 && (
-        <div className="absolute bottom-2 right-3 flex items-center rounded-full px-1" role="group" aria-label="Elegir profesional nuevo"
+        <div className="absolute bottom-2 right-3 flex items-center rounded-full px-1" role="group" aria-label="Elegir profesional"
           style={{ background: 'rgba(255,253,247,0.9)', boxShadow: '0 1px 6px rgba(139,106,0,0.18)' }}>
           {lista.map((f, k) => (
             <button key={f.user_id} type="button" onClick={() => setI(k)}

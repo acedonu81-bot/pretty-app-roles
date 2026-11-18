@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest';
-import { etiquetaAlta, siguienteIndice, imagenSegura } from './nuevosEnXpeak';
+import { etiquetaAlta, siguienteIndice, imagenSegura, combinarDestacados } from './nuevosEnXpeak';
 
 // 16 nov 2026 22:50 en Madrid (UTC+1) = 21:50 UTC
 const AHORA = Date.UTC(2026, 10, 16, 21, 50);
@@ -47,5 +47,18 @@ describe('imagenSegura', () => {
     expect(imagenSegura('https://x.com/a").jpg')).toBeNull();
     expect(imagenSegura("https://x.com/a'b.jpg")).toBeNull();
     expect(imagenSegura('https://x.com/a(b).jpg')).toBeNull();
+  });
+});
+
+describe('combinarDestacados', () => {
+  const f = (id: string) => ({ user_id: id, display_name: 'N' + id, role: 'dj', zone: null, photo_url: null, portada_url: null, creado: '2026-11-18T10:00:00Z' });
+  it('pone primero los Premium y luego los nuevos', () => {
+    expect(combinarDestacados([f('a')], [f('b')]).map(x => [x.user_id, x.tipo])).toEqual([['a', 'premium'], ['b', 'nuevo']]);
+  });
+  it('quien es Premium y nuevo sale una vez, como Premium', () => {
+    expect(combinarDestacados([f('a')], [f('a'), f('b')]).map(x => x.tipo)).toEqual(['premium', 'nuevo']);
+  });
+  it('sin Premium queda igual que antes', () => {
+    expect(combinarDestacados([], [f('b')]).map(x => x.tipo)).toEqual(['nuevo']);
   });
 });

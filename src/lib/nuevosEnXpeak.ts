@@ -40,3 +40,20 @@ export function imagenSegura(u: string | null | undefined): string | null {
   if (!u || !/^https:\/\//.test(u) || /["'()\s\\]/.test(u)) return null;
   return u;
 }
+
+// 18 nov 2026: los Premium salen en la misma tarjeta, delante y rotulados
+// como Premium. Si alguien es Premium y además nuevo, sale una sola vez, como Premium.
+export type Destacado = NuevoProfesional & { tipo: 'premium' | 'nuevo' };
+
+export function combinarDestacados(premium: NuevoProfesional[], nuevos: NuevoProfesional[]): Destacado[] {
+  const vistos = new Set<string>();
+  const out: Destacado[] = [];
+  for (const [lista, tipo] of [[premium, 'premium'], [nuevos, 'nuevo']] as const) {
+    for (const p of lista) {
+      if (!p?.user_id || !p?.display_name || vistos.has(p.user_id)) continue;
+      vistos.add(p.user_id);
+      out.push({ ...p, tipo });
+    }
+  }
+  return out;
+}
