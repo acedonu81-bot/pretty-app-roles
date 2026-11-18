@@ -405,6 +405,7 @@ const ROUTES = [
   { path: '/baja-emails', title: 'Baja de emails | XPEAK', desc: 'Cancela la suscripción a los correos de XPEAK.', ogTitle: 'Baja de emails | XPEAK', ogDesc: 'Cancela la suscripción a los correos de XPEAK.', ogType: 'website' },
   { path: '/solicitud-confirmada', title: 'Solicitud confirmada | XPEAK', desc: 'Confirma tu solicitud a los profesionales de XPEAK.', ogTitle: 'Solicitud confirmada | XPEAK', ogDesc: 'Confirma tu solicitud a los profesionales de XPEAK.', ogType: 'website' },
   { path: '/acceso', title: 'Entrar a mis conversaciones | XPEAK', desc: 'Entra a tus conversaciones con los profesionales de XPEAK.', ogTitle: 'Entrar a mis conversaciones | XPEAK', ogDesc: 'Entra a tus conversaciones con los profesionales de XPEAK.', ogType: 'website' },
+  { path: '/responder', title: 'Responder | XPEAK', desc: 'Responde al profesional que ha contestado a tu solicitud en XPEAK.', ogTitle: 'Responder | XPEAK', ogDesc: 'Responde al profesional que ha contestado a tu solicitud en XPEAK.', ogType: 'website' },
 
   // Precios
   { path: '/precios', title: 'Precios XPEAK: Para profesionales y empresarios de eventos', desc: 'Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos.', ogTitle: 'Precios XPEAK: Para profesionales y empresarios de eventos', ogDesc: 'Precios de XPEAK para profesionales y empresarios de eventos. Contratos digitales automáticos.', ogType: 'website' },
