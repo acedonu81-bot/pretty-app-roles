@@ -20,7 +20,7 @@ export interface FilaSuscripcion {
   cancela_al_final: boolean;
   stripe_evento_at: string;
   // Huella de la tarjeta (Stripe): para que un amigo con la misma tarjeta no cuente como referido.
-  tarjeta_huella: string | null;
+  tarjeta_huella?: string;
 }
 
 export interface DbStripe {
@@ -32,7 +32,7 @@ export interface DbStripe {
 }
 
 // Huella de la tarjeta con la que se cobra: la de la suscripción o, si no tiene, la
-// predeterminada del cliente. Siempre se escribe (también null) para que no quede vieja.
+// predeterminada del cliente. Si no se puede saber, no se toca la guardada (no se borra con null).
 export function huellaTarjeta(s: any): string | null {
   const pm = (typeof s.default_payment_method === 'object' && s.default_payment_method)
     || (typeof s.customer === 'object' && s.customer?.invoice_settings?.default_payment_method);
@@ -88,7 +88,7 @@ export async function procesarEventoStripe(
     periodo_fin: fin ? new Date(fin * 1000).toISOString() : null,
     cancela_al_final: !!s.cancel_at_period_end,
     stripe_evento_at: eventoAt,
-    tarjeta_huella: huellaTarjeta(s),
+    ...(huellaTarjeta(s) ? { tarjeta_huella: huellaTarjeta(s)! } : {}),
   });
   await db.ponerTierEnPerfiles(userId, tierDesdeEstado(estado, plan.plan));
   return 'procesado';

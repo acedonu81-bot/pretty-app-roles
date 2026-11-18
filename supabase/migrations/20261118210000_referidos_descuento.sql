@@ -60,9 +60,11 @@ AS $$
   LEFT JOIN public.suscripciones yo ON yo.user_id = p_padrino
   WHERE r.inviter_user_id = p_padrino
     AND s.estado IN ('active', 'trialing', 'past_due')
-    -- Sin huella conocida del amigo NO cuenta (si no, saltarse la comprobación sería fácil).
+    -- Para APLICAR el descuento hacen falta las dos huellas y que sean distintas:
+    -- si alguna no se conoce, no se puede comprobar y no cuenta.
     AND s.tarjeta_huella IS NOT NULL
-    AND (yo.tarjeta_huella IS NULL OR s.tarjeta_huella <> yo.tarjeta_huella);
+    AND yo.tarjeta_huella IS NOT NULL
+    AND s.tarjeta_huella <> yo.tarjeta_huella;
 $$;
 REVOKE ALL ON FUNCTION public.amigos_que_pagan(uuid) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.amigos_que_pagan(uuid) TO service_role;
@@ -74,7 +76,17 @@ LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public
 AS $$
   SELECT
     (SELECT count(*)::int FROM public.referrals WHERE inviter_user_id = auth.uid()),
-    public.amigos_que_pagan(auth.uid());
+    -- Solo informativo (quien está en Esencial aún no tiene huella): amigos que pagan
+    -- con tarjeta conocida y distinta de la suya si la suya se conoce. El descuento
+    -- real lo decide amigos_que_pagan() en el webhook.
+    (SELECT count(*)::int
+       FROM public.referrals r
+       JOIN public.suscripciones s ON s.user_id = r.invitee_user_id
+       LEFT JOIN public.suscripciones yo ON yo.user_id = auth.uid()
+      WHERE r.inviter_user_id = auth.uid()
+        AND s.estado IN ('active', 'trialing', 'past_due')
+        AND s.tarjeta_huella IS NOT NULL
+        AND (yo.tarjeta_huella IS NULL OR s.tarjeta_huella <> yo.tarjeta_huella));
 $$;
 REVOKE ALL ON FUNCTION public.mis_referidos() FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.mis_referidos() TO authenticated;

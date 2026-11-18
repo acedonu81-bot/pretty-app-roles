@@ -63,10 +63,10 @@ describe('procesarEventoStripe', () => {
     expect(t.perfiles[0].tier).toBe('business');
   });
 
-  it('sin huella de tarjeta guarda null (no se queda la vieja)', async () => {
+  it('sin huella de tarjeta no borra la que ya hubiera (no manda el campo)', async () => {
     const t = dbFalsa();
     await procesarEventoStripe(sub('evt_n', 100, 'active'), t.db, env);
-    expect(t.filas.get('u1')!.tarjeta_huella).toBeNull();
+    expect('tarjeta_huella' in t.filas.get('u1')!).toBe(false);
   });
 
   it('usa la tarjeta predeterminada del cliente si la suscripción no tiene', async () => {
