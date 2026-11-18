@@ -63,6 +63,12 @@ describe('procesarEventoStripe', () => {
     expect(t.perfiles[0].tier).toBe('business');
   });
 
+  it('guarda la huella de la tarjeta si Stripe la da', async () => {
+    const t = dbFalsa();
+    await procesarEventoStripe(sub('evt_h', 100, 'active', { default_payment_method: { card: { fingerprint: 'fp_1' } } }), t.db, env);
+    expect(t.filas.get('u1')!.tarjeta_huella).toBe('fp_1');
+  });
+
   it('descarta un evento más viejo que el último guardado', async () => {
     const t = dbFalsa();
     await procesarEventoStripe(sub('evt_2', 200, 'canceled'), t.db, env);

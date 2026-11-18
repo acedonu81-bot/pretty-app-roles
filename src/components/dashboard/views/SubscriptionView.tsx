@@ -1,5 +1,6 @@
 import { listaVentajas, proximamente, oficiosDe, planDe, CUENTA_XPEAK_ID } from '@/lib/ventajasPlan';
 import { useNavigate } from 'react-router-dom';
+import TarjetaReferidos from '@/components/dashboard/TarjetaReferidos';
 import { useEffect, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { CheckCircle, Clock, Lock } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
@@ -231,6 +232,11 @@ const SubscriptionView = () => {
           <p className="text-center text-xs mt-8" style={{ color: '#6b5a1e' }}>
             Al pagar aceptas las <a href="/condiciones-suscripcion" className="underline">condiciones de contratación</a>.
           </p>
+        </div>
+      )}
+      {venta && (
+        <div className="max-w-2xl mx-auto mt-12">
+          <TarjetaReferidos suscrito={tier !== 'free'} />
         </div>
       )}
     </div>

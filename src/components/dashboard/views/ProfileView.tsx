@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
+import TarjetaReferidos from '@/components/dashboard/TarjetaReferidos';
+import { cobrosActivos } from '@/lib/pagos';
 import { Trash2, Camera, Star, Radio, ChevronDown, X, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Music, Shirt, Sparkles, Copy, Check, Share2 } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { toast } from 'sonner';
@@ -537,8 +539,12 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             </div>
           )}
 
-          {/* — Invita y gana prioridad — */}
-          {user && profile.role !== 'empresario' && (
+          {/* — Invita y paga menos (con cobros) — */}
+          {user && profile.role !== 'empresario' && cobrosActivos() && (
+            <TarjetaReferidos suscrito={profile.subscription_tier === 'starter' || profile.subscription_tier === 'business'} />
+          )}
+          {/* — Invita y gana prioridad (sin cobros: sistema antiguo hasta el lanzamiento) — */}
+          {user && profile.role !== 'empresario' && !cobrosActivos() && (
             <div className="glass-panel p-4" style={referralIsNew ? { border: '1px solid rgba(37,99,235,0.35)', boxShadow: '0 0 0 1px rgba(37,99,235,0.08)' } : undefined}>
               <div className="flex items-center gap-2 mb-1">
                 <Star size={13} style={{ color: '#2563eb' }} />

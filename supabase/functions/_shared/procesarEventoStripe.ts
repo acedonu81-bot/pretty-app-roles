@@ -19,6 +19,8 @@ export interface FilaSuscripcion {
   periodo_fin: string | null;
   cancela_al_final: boolean;
   stripe_evento_at: string;
+  // Huella de la tarjeta (Stripe): para que un amigo con la misma tarjeta no cuente como referido.
+  tarjeta_huella?: string;
 }
 
 export interface DbStripe {
@@ -76,6 +78,7 @@ export async function procesarEventoStripe(
     periodo_fin: fin ? new Date(fin * 1000).toISOString() : null,
     cancela_al_final: !!s.cancel_at_period_end,
     stripe_evento_at: eventoAt,
+    ...(typeof s.default_payment_method?.card?.fingerprint === 'string' ? { tarjeta_huella: s.default_payment_method.card.fingerprint } : {}),
   });
   await db.ponerTierEnPerfiles(userId, tierDesdeEstado(estado, plan.plan));
   return 'procesado';

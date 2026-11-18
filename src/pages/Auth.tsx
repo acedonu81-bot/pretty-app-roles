@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { guardarRefPendiente } from '@/lib/referidos';
 import { halloweenActivo } from '@/lib/halloween';
 import { movemberActivo } from '@/lib/movember';
 import { dia25nActivo } from '@/lib/dia25n';
@@ -157,6 +158,7 @@ const Auth = () => {
   const [redirectGoogle] = useState(leerRedirectGoogle);
   const redirectParam = searchParams.get('redirect') ?? redirectGoogle ?? '/descubrir';
   const refParam = searchParams.get('ref') ?? '';
+  useEffect(() => { if (refParam) guardarRefPendiente(refParam); }, [refParam]);
   const confirmadoParam = searchParams.get('confirmado') === '1';
   const content = ROLE_CONTENT[roleParam] ?? DEFAULT_CONTENT;
 
@@ -758,6 +760,8 @@ const Auth = () => {
           // Aceptación por la frase junto al botón (ver ACEPTACION_LEGAL):
           // queda en raw_user_meta_data como prueba de cuándo aceptó.
           terms_accepted_at: new Date().toISOString(),
+          // Código de invitación: si confirma el correo en otro dispositivo, se recupera de aquí.
+          ...(refParam ? { ref: refParam } : {}),
         };
         const { data: signUpData, error } = inAppSignup
           ? await signUpInApp(email, password, signUpMeta, honeypot)
@@ -808,19 +812,7 @@ const Auth = () => {
           (window as any).ttq.track('CompleteRegistration');
         }
 
-        if (refParam && signUpData.user) {
-          supabase.from('profiles').select('user_id').eq('referral_code', refParam).maybeSingle()
-            .then(({ data: inviter }) => {
-              if (inviter?.user_id && inviter.user_id !== signUpData.user!.id) {
-                supabase.from('referrals').insert({
-                  inviter_user_id: inviter.user_id,
-                  invitee_user_id: signUpData.user!.id,
-                } as any).then(({ error: refError }) => {
-                  if (refError) console.warn('[referral] insert failed:', refError.message);
-                });
-              }
-            });
-        }
+        // El padrino (?ref=) se apunta al iniciar sesión, desde el panel (registrarPadrinoPendiente).
 
         // El email de bienvenida y el aviso al admin de cada alta se mandan
         // desde el trigger handle_new_user en la base de datos, no desde

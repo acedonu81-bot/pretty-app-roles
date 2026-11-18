@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
+import { registrarPadrinoPendiente } from '@/lib/referidos';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { AnimatePresence } from 'framer-motion';
@@ -466,6 +467,8 @@ const DashboardPanel = () => {
   const [showWizard, setShowWizard] = useState(false);
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();
+  // Apunta al padrino del enlace de invitación (?ref=) una vez, ya con sesión.
+  useEffect(() => { if (user) registrarPadrinoPendiente(user).catch(() => {}); }, [user?.id]);
   const { role: profileRole, loading: profileLoading } = useProfile();
 
   // Antes usábamos key={activeView} en el contenedor de la vista para
