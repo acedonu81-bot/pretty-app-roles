@@ -1,3 +1,4 @@
+import { TerminosEconomicas, TerminosLimitacion } from '@/components/legal/TextosCobros';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import AmbientBackground from '@/components/AmbientBackground';
@@ -36,9 +37,8 @@ const Terminos = () => {
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>3. Condiciones económicas del Servicio</h2>
-            <p>El acceso y uso actual de XPEAK no requiere el pago de ninguna cuota o suscripción, tanto para profesionales como para empresarios/organizadores. No existe actualmente ningún sistema de pago, pasarela de cobro ni procesador de tarjetas integrado en XPEAK.</p>
-            <p className="mt-2">XPEAK se reserva el derecho de introducir en el futuro servicios, funcionalidades o modelos de cobro (incluyendo, entre otros, suscripciones o comisiones sobre transacciones). En tal caso, se actualizarán estos Términos y se informará a los usuarios con antelación suficiente antes de su entrada en vigor, conforme a la sección 13 (Modificaciones).</p>
-          </section>
+            <TerminosEconomicas />
+            </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>4. Responsabilidad</h2>
@@ -105,7 +105,7 @@ const Terminos = () => {
             <ul className="list-disc list-inside space-y-2" style={{ color: '#222' }}>
               <li>XPEAK <strong style={{ color: '#111' }}>no garantiza</strong> la disponibilidad, idoneidad, calidad ni legalidad de los servicios ofrecidos por los profesionales registrados.</li>
               <li>XPEAK <strong style={{ color: '#111' }}>no es responsable</strong> de los daños directos, indirectos, incidentales, especiales o consecuentes derivados del uso de la Plataforma o de los servicios contratados entre usuarios.</li>
-              <li>Dado que el acceso a la Plataforma es gratuito (sección 3), la responsabilidad de XPEAK frente a cualquier usuario, por cualquier concepto derivado del uso del servicio, se limita a lo estrictamente exigido por la legislación española aplicable.</li>
+              <li><TerminosLimitacion /></li>
               <li>XPEAK no responde por incumplimientos, cancelaciones, accidentes, daños materiales o personales ocurridos durante la prestación del servicio entre profesional y cliente. Dicha responsabilidad recae exclusivamente sobre las partes contratantes.</li>
               <li><strong style={{ color: '#111' }}>Alquiler de equipos:</strong> cuando un usuario alquila material a otro (sonido, iluminación, equipo de DJ, escenarios, mobiliario u otros), las condiciones del alquiler (precio, fianza, plazos, transporte, montaje, estado de entrega y devolución, seguro) se pactan directamente entre las partes. XPEAK no custodia fianzas ni pagos, no inspecciona el material y no responde de averías, daños, pérdidas o robos del equipo, ni de los perjuicios que causen en el evento. Recomendamos dejar por escrito el estado del material al entregarlo y al devolverlo.</li>
               <li>XPEAK no garantiza que la Plataforma esté libre de interrupciones, errores o virus, aunque aplica medidas razonables de seguridad.</li>

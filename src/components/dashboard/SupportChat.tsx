@@ -10,6 +10,12 @@ import {
 import { useIsMobile } from '@/hooks/use-mobile';
 import { logEvent } from '@/lib/track';
 import { abrirFeedback } from '@/components/FeedbackWebCard';
+import { cobrosActivos } from '@/lib/pagos';
+import { ventajasDe } from '@/lib/ventajasPlan';
+import { subscriptionPlans } from '@/lib/subscriptions';
+
+const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+const PLAN_MENSUAL = { starter: subscriptionPlans.find(p => p.id === 'starter')!.monthlyPrice, business: subscriptionPlans.find(p => p.id === 'business')!.monthlyPrice };
 
 // Uso del bot (26 oct 2026): antes no se guardaba nada. 'abre' = abre el panel,
 // 'kb' = respondió la base local, 'ia' = respondió chat-ai, 'sin' = no hubo
@@ -182,7 +188,9 @@ const KB: KBEntry[] = [
   {
     id: 'subscription',
     patterns: [/suscripci|precio.*plan|plan.*precio|cuánto.*cuesta|cuanto.*cuesta|gratis.*qué incluye|free.*plan|starter|business.*plan|elite.*plan|agency.*plan|diferencia.*planes/i],
-    answer: 'Tu plan incluye:\n\n• Perfil activo y visible en el directorio europeo\n• Flash Booking, contratación en tiempo real\n• Mensajería directa con clientes y profesionales\n• Calendario y gestión de disponibilidad\n• Generación de contratos legales en PDF\n• Estadísticas de visitas a tu perfil\n\nSin tarjeta de crédito · Sin contratos.',
+    answer: cobrosActivos()
+      ? `XPEAK tiene tres planes para profesionales:\n\n• **Esencial**: perfil en el directorio, verificación, mensajes y reseñas y portafolio de ${ventajasDe('free').fotos} fotos y vídeos.\n• **Profesional** (${euros(PLAN_MENSUAL.starter)} al mes, IVA incluido): tus redes visibles, estadísticas de visitas y mensajes y portafolio de ${ventajasDe('starter').fotos}.\n• **Premium** (${euros(PLAN_MENSUAL.business)} al mes, IVA incluido): posición destacada en el directorio, destacado en el Inicio, estadísticas avanzadas con exportar y portafolio de ${ventajasDe('business').fotos}.\n\nTambién puedes pagar por años con descuento. Lo ves y lo cambias en **Mi plan**. Sin permanencia.`
+      : 'Tu plan incluye:\n\n• Perfil activo y visible en el directorio europeo\n• Flash Booking, contratación en tiempo real\n• Mensajería directa con clientes y profesionales\n• Calendario y gestión de disponibilidad\n• Generación de contratos legales en PDF\n• Estadísticas de visitas a tu perfil\n\nSin tarjeta de crédito · Sin contratos.',
     followUps: ['¿Cómo completo mi perfil?', '¿Cómo consigo más bookings?'],
   },
 
@@ -190,7 +198,9 @@ const KB: KBEntry[] = [
   {
     id: 'billing',
     patterns: [/cancelar.*plan|cancelar.*suscripci|reembolso|devoluci|cobro.*incorrecto|método de pago|tarjeta.*pago|cambiar.*tarjeta|factura.*suscripci|stripe/i],
-    answer: 'No se requiere tarjeta de crédito. No hay suscripciones ni cargos periódicos.\n\nSi tienes alguna duda sobre pagos o cobros, escríbenos a **info@xpeak.site**: lo aclaramos enseguida.',
+    answer: cobrosActivos()
+      ? 'Puedes cancelar tu plan cuando quieras desde **Mi plan**, en *Gestionar mi plan*: sigue activo hasta el último día que ya has pagado, sin devolución del periodo en curso. Desde ahí también cambias la tarjeta y descargas tus facturas.\n\nDentro de los 14 días desde que contratas puedes desistir; si el servicio ya había empezado, se descuenta la parte disfrutada (lo detallan las Condiciones de suscripción).\n\nPara cualquier duda de cobros, escríbenos a **info@xpeak.site**.'
+      : 'No se requiere tarjeta de crédito. No hay suscripciones ni cargos periódicos.\n\nSi tienes alguna duda sobre pagos o cobros, escríbenos a **info@xpeak.site**: lo aclaramos enseguida.',
     followUps: ['¿Qué incluye la plataforma?', '¿Cómo contacto con soporte?'],
   },
 

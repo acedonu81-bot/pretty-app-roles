@@ -1,3 +1,4 @@
+import { PrivacidadDatosPago, PrivacidadFinalidadPago, PrivacidadBasePago, PrivacidadConservacionPago, PrivacidadDestinatarioStripe } from '@/components/legal/TextosCobros';
 import { Link } from 'react-router-dom';
 
 // Contenido extraído literal de src/pages/Privacidad.tsx (sin Helmet,
@@ -19,6 +20,7 @@ export function PrivacidadContent() {
           <li><strong style={{ color: '#222' }}>Datos Profesionales:</strong> Categoría u oficio (DJ, camarero, fotógrafo/vídeo, maquillaje, peluquería, azafata, promotor, catering, mago, humorista, animador, bailarín, speaker, estilista/vestuario, técnico de sonido y montaje, entre otros), experiencia, tarifas y zona de trabajo en España.</li>
           <li><strong style={{ color: '#222' }}>Contenido Multimedia:</strong> Audios de sesiones (vía SoundCloud/Mixcloud), fotografías de perfil y de trabajos realizados.</li>
           <li><strong style={{ color: '#222' }}>Datos de Ubicación:</strong> Localización aproximada para filtrar eventos y profesionales cercanos en España.</li>
+          <PrivacidadDatosPago />
         </ul>
       </section>
 
@@ -29,17 +31,18 @@ export function PrivacidadContent() {
           <li>Gestionar la conexión entre profesionales del sector de eventos y empresarios/organizadores.</li>
           <li>Mostrar tu perfil profesional en el directorio público correspondiente a tu oficio.</li>
           <li>Enviar notificaciones sobre solicitudes de contratación de última hora ("Flash Booking") y mensajes recibidos.</li>
+          <PrivacidadFinalidadPago />
         </ul>
       </section>
 
       <section>
         <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>4. Base Legal</h2>
-        <p>La base legal para el tratamiento de tus datos es el consentimiento explícito al registrarte y la ejecución de un contrato (aceptación de los Términos y Condiciones) al utilizar los servicios de la plataforma.</p>
+        <p>La base legal para el tratamiento de tus datos es el consentimiento explícito al registrarte y la ejecución de un contrato (aceptación de los Términos y Condiciones) al utilizar los servicios de la plataforma.<PrivacidadBasePago /></p>
       </section>
 
       <section>
         <h2 className="text-base font-bold mb-2" style={{ color: '#8B6A00' }}>5. Conservación de los Datos</h2>
-        <p>Los datos y archivos multimedia se conservarán mientras se mantenga la relación con la plataforma o hasta que el usuario solicite su supresión.</p>
+        <p>Los datos y archivos multimedia se conservarán mientras se mantenga la relación con la plataforma o hasta que el usuario solicite su supresión.<PrivacidadConservacionPago /></p>
       </section>
 
       <section>
@@ -52,6 +55,7 @@ export function PrivacidadContent() {
           <li><strong style={{ color: '#222' }}>Microsoft Ireland Operations Ltd. (Microsoft Clarity):</strong> grabación anónima de la navegación (clics, desplazamiento, movimientos del ratón) y mapas de calor para mejorar la usabilidad, con el texto de formularios enmascarado. Solo si aceptas la categoría "Analítica" en el banner de cookies.</li>
           <li><strong style={{ color: '#222' }}>Cloudflare, Inc. (Turnstile):</strong> verificación antibots en el acceso y el registro; trata la dirección IP y datos técnicos del navegador con finalidad de seguridad (interés legítimo, art. 6.1.f RGPD). Transferencia a EE. UU. amparada por el Marco de Privacidad de Datos UE-EE. UU.</li>
           <li><strong style={{ color: '#222' }}>Vercel Inc. (alojamiento web):</strong> sirve la web y registra datos técnicos de conexión (IP, navegador) en sus registros de servidor. Transferencia a EE. UU. amparada por el Marco de Privacidad de Datos UE-EE. UU. y cláusulas contractuales tipo.</li>
+          <PrivacidadDestinatarioStripe />
           <li><strong style={{ color: '#222' }}>Hostinger International Ltd. (correo electrónico):</strong> envío de los emails transaccionales de la plataforma (avisos de reservas, mensajes, recordatorios) desde servidores en la Unión Europea.</li>
           <li><strong style={{ color: '#222' }}>Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
         </ul>

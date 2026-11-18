@@ -1,8 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import { CheckCircle, X } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import { cobrosActivos } from '@/lib/pagos';
+import { listaVentajas } from '@/lib/ventajasPlan';
+import { subscriptionPlans, PRECIOS_ANUALES } from '@/lib/subscriptions';
 
-const PLANES = [
+type PlanPublico = {
+  nombre: string; precio: string; periodo: string; target: string; color: string; border: string;
+  badge?: string; incluye: string[]; noIncluye: string[]; cta: string; href: string; gold?: boolean;
+};
+
+const PLANES_ANTES: PlanPublico[] = [
   {
     nombre: 'Profesional',
     precio: '0€',
@@ -48,10 +56,87 @@ const PLANES = [
   },
 ];
 
-const FAQ = [
+const FAQ_ANTES = [
   { q: '¿Cuándo habrá planes de pago?', a: 'Estamos desarrollando funcionalidades premium opcionales: badge de verificación prioritaria y analytics avanzados.' },
   { q: '¿Qué incluye el contrato digital?', a: 'El contrato generado por XPEAK incluye: datos fiscales de ambas partes, descripción del servicio, fecha, precio acordado, IRPF calculado automáticamente si el profesional es autónomo, y cláusulas de cancelación estándar del sector. Disponible en PDF listo para firma.' },
 ];
+
+// ── Versión con cobros activados (18 nov 2026) ───────────────────────────────
+// Se enseña solo con VITE_COBROS_ACTIVOS encendido, para que la web no diga a la vez
+// "para siempre 0 €" y planes de pago. Las ventajas salen de ventajasPlan.ts (la misma
+// fuente que "Mi plan") y los precios de subscriptions.ts: no se repiten a mano.
+const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+const precioMes = (id: 'starter' | 'business') => subscriptionPlans.find(p => p.id === id)!.monthlyPrice;
+// Página general: no depende del oficio (lo propio de música, DJ o Flash va en la nota de abajo).
+const GENERAL = { profesional: true, musica: false, banner: false, flash: false };
+
+const PLANES_DEFINITIVOS: PlanPublico[] = [
+  {
+    nombre: 'Esencial',
+    precio: '0 €',
+    periodo: 'sin cuota',
+    target: 'Todos los profesionales',
+    color: '#FFFDF7',
+    border: 'rgba(122,98,22,0.16)',
+    incluye: [...listaVentajas('free', GENERAL), 'Contrato digital automático', 'Calendario de disponibilidad'],
+    noIncluye: ['Tus redes visibles en la ficha', 'Estadísticas completas'],
+    cta: 'Crear perfil',
+    href: '/auth?mode=register&role=profesional',
+  },
+  {
+    nombre: 'Profesional',
+    precio: euros(precioMes('starter')),
+    periodo: `/mes, IVA incluido · o ${euros(PRECIOS_ANUALES.starter)} al año`,
+    target: 'Más visibilidad',
+    color: '#FFFDF7',
+    border: 'rgba(212,175,55,0.35)',
+    incluye: listaVentajas('starter', GENERAL),
+    noIncluye: [],
+    cta: 'Crear perfil y elegir plan',
+    href: '/auth?mode=register&role=profesional',
+  },
+  {
+    nombre: 'Premium',
+    precio: euros(precioMes('business')),
+    periodo: `/mes, IVA incluido · o ${euros(PRECIOS_ANUALES.business)} al año`,
+    target: 'Máxima visibilidad',
+    color: 'rgba(212,175,55,0.04)',
+    border: 'rgba(212,175,55,0.25)',
+    incluye: listaVentajas('business', GENERAL),
+    noIncluye: [],
+    cta: 'Crear perfil y elegir plan',
+    href: '/auth?mode=register&role=profesional',
+    gold: true,
+  },
+  {
+    nombre: 'Organizadores',
+    precio: '0 €',
+    periodo: 'sin cuota',
+    target: 'Salas, promotoras, organizadores',
+    color: '#FFFDF7',
+    border: 'rgba(122,98,22,0.16)',
+    incluye: [
+      'Acceso al directorio completo',
+      'Flash Booking sin límite',
+      'Contratos digitales automáticos',
+      'Mensajería con profesionales',
+      'Historial de contrataciones',
+    ],
+    noIncluye: ['Gestión de pagos integrada (próx.)'],
+    cta: 'Unirse',
+    href: '/auth?mode=register&role=empresario',
+  },
+];
+
+const NOTA_PLANES = 'Precios con IVA incluido y sin permanencia. Las ofertas Flash Booking llegan a los oficios que las reciben; los sets (3, 10 o ilimitados) son para música, y el banner de cabecera, para DJ con Premium.';
+
+const FAQ_DEFINITIVAS = [
+  { q: '¿Cuánto cuestan los planes?', a: `Esencial no tiene cuota. Profesional cuesta ${euros(precioMes('starter'))} al mes y Premium ${euros(precioMes('business'))} al mes, con IVA incluido. Si pagas por años, ${euros(PRECIOS_ANUALES.starter)} y ${euros(PRECIOS_ANUALES.business)} al año. Sin permanencia.` },
+  { q: '¿Puedo cancelar cuando quiera?', a: 'Sí. Desde Mi plan, en Gestionar mi plan. Tu plan sigue activo hasta el último día que ya has pagado, y después vuelves a Esencial.' },
+  { q: '¿Qué pasa con mis datos si bajo de plan?', a: 'No se borra nada. Lo que tu plan no incluye (tus redes, las fotos o sets que pasen del límite, el banner) se oculta y vuelve a verse si subes de plan otra vez.' },
+  FAQ_ANTES[1],
+];
+
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -62,18 +147,23 @@ const breadcrumb = {
   ],
 };
 
-const faqStructured = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-};
 
 export default function Precios() {
+  // Se decide al pintar (no al cargar el archivo) para que dependa solo del interruptor de cobros.
+  const LANZADO = cobrosActivos();
+  const PLANES = LANZADO ? PLANES_DEFINITIVOS : PLANES_ANTES;
+  const FAQ = LANZADO ? FAQ_DEFINITIVAS : FAQ_ANTES;
+  const faqStructured = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  };
+
   return (
     <>
       <Helmet>
         <title>Precios XPEAK: Para profesionales y empresarios de eventos</title>
-        <meta name="description" content="Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos." />
+        <meta name="description" content={LANZADO ? "Precios de XPEAK: Esencial sin cuota, Profesional y Premium con IVA incluido y sin permanencia, y acceso sin cuota para organizadores. Contratos digitales incluidos." : "Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos."} />
         <link rel="canonical" href="https://xpeak.es/precios" />
         <meta property="og:title" content="Precios XPEAK" />
         <meta property="og:description" content="Precios de XPEAK para profesionales y empresarios de eventos. Contratos digitales automáticos." />
@@ -105,11 +195,11 @@ export default function Precios() {
               Precios de XPEAK para profesionales y empresarios de eventos: qué incluye cada plan, cuánto cuesta y cómo se cobra. Contratos digitales incluidos.
             </p>
             <p className="text-sm max-w-md mx-auto" style={{ color: '#374151' }}>
-              Sin tarjeta de crédito, sin permanencia.
+              {LANZADO ? 'Sin permanencia. Cancela cuando quieras.' : 'Sin tarjeta de crédito, sin permanencia.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 ${LANZADO ? 'lg:grid-cols-4' : ''} gap-6 mb-${LANZADO ? '6' : '16'}`}>
             {PLANES.map(plan => (
               <div key={plan.nombre} className="relative p-6 rounded-2xl"
                 style={{ background: plan.color, border: `1px solid ${plan.border}` }}>
@@ -121,8 +211,8 @@ export default function Precios() {
                 )}
                 <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1" style={{ color: '#374151' }}>{plan.target}</p>
                 <p className="text-lg font-black mb-1">{plan.nombre}</p>
-                <div className="flex items-baseline gap-1 mb-5">
-                  <span className="text-4xl font-black" style={{ color: plan.gold ? '#8B6A00' : '#111' }}>{plan.precio}</span>
+                <div className="flex flex-wrap items-baseline gap-x-1 mb-5">
+                  <span className="text-4xl font-black whitespace-nowrap" style={{ color: plan.gold ? '#8B6A00' : '#111' }}>{plan.precio}</span>
                   <span className="text-xs" style={{ color: '#374151' }}>{plan.periodo}</span>
                 </div>
 
@@ -151,6 +241,8 @@ export default function Precios() {
               </div>
             ))}
           </div>
+
+          {LANZADO && <p className="text-xs text-center max-w-2xl mx-auto mb-16" style={{ color: '#6b7280' }}>{NOTA_PLANES}</p>}
 
           <div className="mb-16">
             <h2 className="text-xl font-black text-center mb-8">Preguntas frecuentes sobre precios</h2>
