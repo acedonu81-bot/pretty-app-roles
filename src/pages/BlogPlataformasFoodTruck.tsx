@@ -20,7 +20,7 @@ const PLATFORMS = [
   {
     name: 'Foodtruckya',
     coste: 'Planes de suscripción para destacar en el buscador',
-    contacto: 'Directo con el food truck, sin comisión por reserva',
+    contacto: 'Directo con el food truck, por el chat de XPEAK',
     cobertura: 'Especializada solo en food trucks y proveedores del sector',
     destacado: false,
   },
@@ -46,7 +46,7 @@ const FAQ = [
   { q: '¿Qué diferencia hay con Foodtruckya?', a: 'Foodtruckya es una plataforma especializada solo en food trucks, con planes de pago para destacar en su buscador. XPEAK no cobra por visibilidad y además te pone delante de organizadores que buscan otros proveedores para el mismo evento (DJ, staff, fotografía), no solo comida.' },
   { q: '¿Y con Bodas.net?', a: 'En Bodas.net (y su versión para proveedores, Bodas.com) el alta es gratuita, pero pagas para desbloquear el contacto de cada pareja interesada, con paquetes de créditos desde 20€. En XPEAK el contacto es directo desde el primer momento, sin coste por lead.' },
   { q: '¿Necesito tener muchos seguidores en Instagram para que me contraten?', a: 'No. En XPEAK te encuentran por ciudad, tipo de menú y presupuesto, no por número de seguidores. Un perfil completo con fotos reales y precio claro compite igual de bien que uno con mucha audiencia en redes.' },
-  { q: '¿Puedo aparecer en varias plataformas a la vez?', a: 'Sí, no son excluyentes. Muchos food trucks combinan XPEAK (gratis, sin comisión) con Instagram y alguna plataforma especializada para maximizar cuántos organizadores les encuentran.' },
+  { q: '¿Puedo aparecer en varias plataformas a la vez?', a: 'Sí, no son excluyentes. Muchos food trucks combinan XPEAK con Instagram y alguna plataforma especializada para maximizar cuántos organizadores les encuentran.' },
 ];
 
 export default function BlogPlataformasFoodTruck() {
@@ -156,7 +156,7 @@ export default function BlogPlataformasFoodTruck() {
 
           <BlogAnswerBox
             question="¿Dónde publico mi food truck para conseguir eventos en 2026?"
-            answer="XPEAK no cobra cuota de visibilidad ni comisión por evento cerrado: publicas tu perfil, tarifa y zona de trabajo gratis, dentro de la categoría Catering. Foodtruckya es especializada en food trucks pero tiene planes de pago para destacar. Bodas.net/Bodas.com es gratis para el alta pero cobra por desbloquear cada contacto de pareja interesada."
+            answer="En XPEAK publicas tu perfil, tarifa y zona de trabajo dentro de la categoría Catering. Foodtruckya es especializada en food trucks pero tiene planes de pago para destacar. Bodas.net/Bodas.com es gratis para el alta pero cobra por desbloquear cada contacto de pareja interesada."
           />
 
           <h2 className="text-xl font-black mb-4">Comparativa: coste y cobertura</h2>
@@ -232,10 +232,10 @@ export default function BlogPlataformasFoodTruck() {
                 </span>
               </div>
               <h2 className="text-xl font-black mb-2 leading-snug">
-                Sin cuota de visibilidad, sin comisión
+                Tu food truck con tarifa pública
               </h2>
               <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                A diferencia de otras plataformas, en XPEAK no pagas para aparecer ni por cada contacto. Perfil con tarifa pública, dentro de Catering, visible también para organizadores que buscan otros proveedores para el mismo evento.
+                En XPEAK tienes un perfil con tarifa pública, dentro de Catering, visible también para organizadores que buscan otros proveedores para el mismo evento.
               </p>
               <div className="flex flex-wrap gap-3 mb-5">
                 {['Sin cuota de visibilidad', 'Sin pago por lead', 'Contacto directo'].map(f => (

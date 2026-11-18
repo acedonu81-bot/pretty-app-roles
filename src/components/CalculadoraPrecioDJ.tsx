@@ -112,9 +112,9 @@ export default function CalculadoraPrecioDJ({ articlePath }: { articlePath: stri
         onClick={() => { medir('pedir', evento.id, horas); setPedir(true); }}
         className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-black text-base transition-all hover:scale-[1.02] animate-pulse"
         style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-        <Zap size={17} /> Pide DJ con este presupuesto, gratis
+        <Zap size={17} /> Pide DJ con este presupuesto
       </button>
-      <p className="text-xs text-center mt-2" style={{ color: '#555' }}>Sin registrarte y sin comisión. Te contestan DJs de tu zona.</p>
+      <p className="text-xs text-center mt-2" style={{ color: '#555' }}>Sin registrarte. Te contestan DJs de tu zona.</p>
 
       {pedir && (
         <Suspense fallback={null}>

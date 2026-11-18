@@ -37,7 +37,7 @@ const HalloweenPanel = ({ isEmpresario, onViewChange }: { isEmpresario: boolean;
       </p>
       <p className="text-sm mt-1 max-w-xl" style={{ color: 'rgba(255,255,255,0.85)' }}>
         {isEmpresario
-          ? 'DJs, animadores y staff para tu noche de Halloween, sin comisión.'
+          ? 'DJs, animadores y staff para tu noche de Halloween.'
           : 'En Halloween se contrata a última hora. Ten tu foto, tus precios y tu música al día.'}
       </p>
       <button type="button" onClick={() => onViewChange(isEmpresario ? 'dj' : 'profile')}

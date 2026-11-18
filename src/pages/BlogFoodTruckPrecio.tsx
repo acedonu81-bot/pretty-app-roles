@@ -289,7 +289,7 @@ export default function BlogFoodTruckPrecio() {
                 Da de alta tu food truck en XPEAK dentro de la categoría Catering. Perfil con precio público, zona de trabajo y contacto directo con quien organiza el evento, sin intermediarios.
               </p>
               <div className="flex flex-wrap gap-3 mb-5">
-                {['Tarifas públicas', 'Sin comisión por contacto', 'Contratos automáticos'].map(f => (
+                {['Tarifas públicas', 'Contratos automáticos'].map(f => (
                   <span key={f} className="flex items-center gap-1.5 text-xs font-bold"
                     style={{ color: 'rgba(212,175,55,0.8)' }}>
                     <Star size={10} style={{ color: '#D4AF37' }} /> {f}

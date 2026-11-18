@@ -41,7 +41,7 @@ export default function BlogCalculadoraTarifaDJ() {
     mainEntity: [
       { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en España?', acceptedAnswer: { '@type': 'Answer', text: `Con las tarifas de los DJs de XPEAK (${TARIFAS.fecha}), una boda de 6 horas sale entre ${6 * TARIFAS.p25}€ y ${6 * TARIFAS.p75}€, y lo más habitual son unos ${6 * TARIFAS.mediana}€. El desplazamiento, el IVA y las luces extra van aparte.` } },
       { '@type': 'Question', name: '¿De qué depende el precio de un DJ?', acceptedAnswer: { '@type': 'Answer', text: `Sobre todo de las horas de música y de la tarifa por hora del DJ. La mitad de los DJs de XPEAK cobra entre ${TARIFAS.p25}€ y ${TARIFAS.p75}€ la hora. Luego suman el desplazamiento y el equipo extra, como luces o un segundo equipo de sonido.` } },
-      { '@type': 'Question', name: '¿La calculadora da un precio real?', acceptedAnswer: { '@type': 'Answer', text: `Es una estimación con las tarifas por hora que han puesto ${TARIFAS.djs} DJs de XPEAK (${TARIFAS.fecha}). Para un precio cerrado, pide DJ gratis desde la calculadora y te contestan DJs de tu zona con su presupuesto.` } },
+      { '@type': 'Question', name: '¿La calculadora da un precio real?', acceptedAnswer: { '@type': 'Answer', text: `Es una estimación con las tarifas por hora que han puesto ${TARIFAS.djs} DJs de XPEAK (${TARIFAS.fecha}). Para un precio cerrado, pide DJ desde la calculadora y te contestan DJs de tu zona con su presupuesto.` } },
     ],
   };
 
@@ -85,7 +85,7 @@ export default function BlogCalculadoraTarifaDJ() {
             <section>
               <h2 className="text-base font-black mb-3">¿Cómo consigo presupuestos reales?</h2>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
-                La calculadora da una estimación. Para un presupuesto cerrado, pide DJ gratis desde el botón de arriba: sin registrarte, sin comisión, y te contestan DJs de tu zona.
+                La calculadora da una estimación. Para un presupuesto cerrado, pide DJ desde el botón de arriba: sin registrarte, y te contestan DJs de tu zona.
               </p>
             </section>
 

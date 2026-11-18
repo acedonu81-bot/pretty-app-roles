@@ -755,7 +755,7 @@ export function contar(valores: string[]): [string, number][] {
 }
 
 const tituloCompleto = (ciudad: string) => `DJ en ${ciudad} para bodas, fiestas y empresas: precios y disponibilidad`;
-const descCompleta = (ciudad: string) => `DJs en ${ciudad} con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.`;
+const descCompleta = (ciudad: string) => `DJs en ${ciudad} con su precio por hora, estilos y fotos. Pide presupuesto para tu boda, cumpleaños, fiesta de empresa o evento privado.`;
 
 function faqsCompletas(ciudad: string, st: EstadPrecio | null) {
   return [
@@ -1012,7 +1012,7 @@ export default function CityLanding() {
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">{h1}</h1>
           <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: '#4b5563' }}>
             {completa
-              ? `Encuentra DJ en ${cityData.ciudad} para tu boda, cumpleaños, fiesta de empresa o evento privado. ${professionals.length ? `${professionals.length} ${professionals.length === 1 ? 'DJ' : 'DJs'} de ${cityData.ciudad} ` : 'DJs de la zona '}con su precio por hora, estilos y fotos. Pides gratis y habláis por el chat de XPEAK.`
+              ? `Encuentra DJ en ${cityData.ciudad} para tu boda, cumpleaños, fiesta de empresa o evento privado. ${professionals.length ? `${professionals.length} ${professionals.length === 1 ? 'DJ' : 'DJs'} de ${cityData.ciudad} ` : 'DJs de la zona '}con su precio por hora, estilos y fotos. Pides presupuesto y habláis por el chat de XPEAK.`
               : catData.intro(cityData.ciudad, cityData.venues)}
           </p>
           {completa && (
@@ -1197,7 +1197,7 @@ export default function CityLanding() {
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {catData.keyword} en {cityData.ciudad}?</h2>
             <p className="text-sm mb-6" style={{ color: '#5b6472' }}>
               {completa
-                ? `Pedirlo es gratis. Te contestan DJs de ${cityData.ciudad} y habláis por el chat de XPEAK.`
+                ? `Te contestan DJs de ${cityData.ciudad} y habláis por el chat de XPEAK.`
                 : ['promotores', 'azafata', 'peluqueria'].includes(categorySlug)
                 ? 'Únete: contratos automáticos, Flash Booking para necesidades urgentes.'
                 : 'Únete: contratos automáticos, Flash Booking en menos de 1h.'}

@@ -106,18 +106,18 @@ const ROUTES = [
     path: '/contratar-dj/madrid',
     // Mismo título y descripción que tituloCompleto/descCompleta de CityLanding.tsx (19 oct 2026).
     title: 'DJ en Madrid para bodas, fiestas y empresas: precios y disponibilidad | XPEAK',
-    desc: 'DJs en Madrid con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.',
+    desc: 'DJs en Madrid con su precio por hora, estilos y fotos. Pide presupuesto para tu boda, cumpleaños, fiesta de empresa o evento privado.',
     ogTitle: 'DJ en Madrid para bodas, fiestas y empresas: precios y disponibilidad',
-    ogDesc: 'DJs en Madrid con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.',
+    ogDesc: 'DJs en Madrid con su precio por hora, estilos y fotos. Pide presupuesto para tu boda, cumpleaños, fiesta de empresa o evento privado.',
     ogType: 'website',
   },
   {
     path: '/contratar-dj/barcelona',
     // Mismo título y descripción que tituloCompleto/descCompleta de CityLanding.tsx (3 nov 2026).
     title: 'DJ en Barcelona para bodas, fiestas y empresas: precios y disponibilidad | XPEAK',
-    desc: 'DJs en Barcelona con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.',
+    desc: 'DJs en Barcelona con su precio por hora, estilos y fotos. Pide presupuesto para tu boda, cumpleaños, fiesta de empresa o evento privado.',
     ogTitle: 'DJ en Barcelona para bodas, fiestas y empresas: precios y disponibilidad',
-    ogDesc: 'DJs en Barcelona con su precio por hora, estilos y fotos. Pide presupuesto gratis para tu boda, cumpleaños, fiesta de empresa o evento privado.',
+    ogDesc: 'DJs en Barcelona con su precio por hora, estilos y fotos. Pide presupuesto para tu boda, cumpleaños, fiesta de empresa o evento privado.',
     ogType: 'website',
   },
   {
