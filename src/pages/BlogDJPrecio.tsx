@@ -223,9 +223,10 @@ const faqStructured = {
             </table>
           </div>
 
-          <BlogDJEquipoPrecio />
+          {/* Justo después de "a más experiencia, más cobras": aquí encaja mejorar la técnica */}
+          <WarmUpAcademyBanner variante="tira" paraDJs origen="blog:cuanto-cobra-un-dj-en-espana" className="mb-10" />
 
-          <WarmUpAcademyBanner variante="tira" origen="blog:cuanto-cobra-un-dj-en-espana" className="mb-10" />
+          <BlogDJEquipoPrecio />
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
           <FichasRealesTira roles={['dj', 'disco-movil']} titulo="Precio real de DJs en XPEAK" articlePath="/blog/cuanto-cobra-un-dj-en-espana" conPrecio verTodosHref="/contratar-dj" soloIds={DJS_FOTO_BUENA} />

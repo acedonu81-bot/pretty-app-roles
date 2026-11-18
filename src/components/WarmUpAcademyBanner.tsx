@@ -88,8 +88,8 @@ const WarmUpAcademyBanner = ({ origen, variante = 'grande', paraDJs = false, cla
           </span>
           <span className="block text-sm sm:text-[0.95rem] font-semibold leading-snug" style={{ color: '#fff' }}>
             {paraDJs
-              ? 'Mejora tu técnica y consigue más bolos: cursos de DJ y producción en Madrid.'
-              : 'Escuela de DJ y producción musical en Madrid, con profesionales en activo.'}
+              ? 'Mejora tu técnica: cursos de DJ y producción en Madrid, con profesionales en activo.'
+              : 'Mejora tu técnica: escuela de DJ y producción musical en Madrid, con profesionales en activo.'}
           </span>
         </span>
         <span
@@ -153,7 +153,7 @@ const WarmUpAcademyBanner = ({ origen, variante = 'grande', paraDJs = false, cla
             className={`leading-none uppercase max-w-xl ${compacta ? 'text-2xl sm:text-3xl' : 'text-[1.9rem] sm:text-5xl'}`}
             style={{ fontFamily: 'Antonio, Syne, sans-serif', fontWeight: 700, color: '#fff' }}
           >
-            Detrás de un buen DJ hay horas de cabina
+            Mejora tu técnica
           </p>
           <p className={`leading-relaxed max-w-lg ${compacta ? 'text-sm' : 'text-sm sm:text-base'}`} style={{ color: '#D5E6E2' }}>
             Warm Up Academy forma DJs y productores en Madrid, con profesionales en activo.
