@@ -1,3 +1,4 @@
+import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 
@@ -20,7 +21,7 @@ beforeEach(() => {
 
 describe('SubscriptionView', () => {
   it('enseña los planes con IVA incluido a un DJ en la web', () => {
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     expect(screen.getByText('Profesional')).toBeTruthy();
     expect(screen.getByText(/6,99/)).toBeTruthy();
     expect(screen.getAllByText(/IVA incluido/).length).toBeGreaterThan(0);
@@ -29,19 +30,19 @@ describe('SubscriptionView', () => {
   });
 
   it('Premium incluye aparecer en las redes una vez al mes', () => {
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     expect(screen.getByText('Apareces una vez al mes en las redes de XPEAK')).toBeTruthy();
   });
 
   it('un DJ ve sus ventajas de música y el banner de cabecera', () => {
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     expect(screen.getByText('Sets ilimitados')).toBeTruthy();
     expect(screen.getByText('Banner propio en tu cabecera de artista')).toBeTruthy();
   });
 
   it('un mago no ve ventajas de música ni de DJ, sí las comunes', () => {
     perfil.role = 'mago'; perfil.roles = ['mago'];
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     expect(screen.queryByText(/sets/i)).toBeNull();
     expect(screen.queryByText(/Banner propio/)).toBeNull();
     expect(screen.queryByText('Ofertas Flash Booking')).toBeNull();
@@ -51,7 +52,7 @@ describe('SubscriptionView', () => {
   });
 
   it('pide el pago del plan y ciclo elegidos', () => {
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     fireEvent.click(screen.getByRole('button', { name: /Anual/ }));
     fireEvent.click(screen.getByRole('button', { name: 'Elegir Premium' }));
     expect(iniciarPago).toHaveBeenCalledWith('business', 'anual');
@@ -59,33 +60,33 @@ describe('SubscriptionView', () => {
 
   it('a quien ya paga le ofrece gestionar su plan', () => {
     perfil.subscription_tier = 'business';
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     expect(screen.getByRole('button', { name: 'Gestionar mi plan' })).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Elegir Premium' })).toBeNull();
   });
 
   it('en la app nativa no enseña precios ni botones de pago', () => {
     nativo.isNative = true;
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     expect(screen.queryByText(/€/)).toBeNull();
     expect(screen.queryByRole('button', { name: /Elegir/ })).toBeNull();
   });
 
   it('con los cobros apagados no enseña precios', () => {
     vi.stubEnv('VITE_COBROS_ACTIVOS', 'false');
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     expect(screen.queryByText(/€/)).toBeNull();
   });
 
   it('a un organizador no le enseña precios', () => {
     perfil.role = 'empresario'; perfil.roles = ['empresario'];
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     expect(screen.queryByText(/€/)).toBeNull();
   });
 
   it('a otros roles profesionales también les deja contratar', () => {
     perfil.role = 'mago'; perfil.roles = ['mago'];
-    render(<SubscriptionView />);
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
     expect(screen.getByRole('button', { name: 'Elegir Profesional' })).toBeTruthy();
   });
 });

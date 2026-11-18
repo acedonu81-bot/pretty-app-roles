@@ -1,4 +1,5 @@
-import { listaVentajas, proximamente, oficiosDe, planDe } from '@/lib/ventajasPlan';
+import { listaVentajas, proximamente, oficiosDe, planDe, CUENTA_XPEAK_ID } from '@/lib/ventajasPlan';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { CheckCircle, Clock, Lock } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
@@ -85,6 +86,7 @@ const Tarjeta = ({ retraso, destacada, estilo, children }: { retraso: number; de
 
 const SubscriptionView = () => {
   const { role, roles, subscription_tier, refresh } = useProfile();
+  const navigate = useNavigate();
   const [ciclo, setCiclo] = useState<Ciclo>('mensual');
   const [sus, setSus] = useState<MiSuscripcion | null>(null);
   const tier = subscription_tier ?? 'free';
@@ -153,6 +155,13 @@ const SubscriptionView = () => {
               Gestionar mi plan
             </button>
             <p className="text-xs text-center" style={{ color: '#6b6454' }}>Cambiar de plan, pasar a anual, cambiar la tarjeta, ver facturas o cancelar.</p>
+            {p === 'business' && (
+              <button type="button" onClick={() => navigate(`/dashboard?view=messages&con=${CUENTA_XPEAK_ID}&nombre=${encodeURIComponent('Equipo XPEAK')}`)}
+                className="rounded-xl py-3 font-bold transition-all duration-150 hover:brightness-105"
+                style={{ border: '1.5px solid #D4AF37', background: '#FFFDF7', boxShadow: '0 4px 10px -6px rgba(120,90,0,.4)' }}>
+                Escribir al equipo de XPEAK (soporte prioritario)
+              </button>
+            )}
           </div>
         );
       })()}

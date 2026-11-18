@@ -39,7 +39,7 @@ describe('/precios', () => {
 
   it('no anuncia lo que no existe ni usa rayas largas o "gratis"', () => {
     const t = pagina('true');
-    expect(t).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|Soporte prioritario|adelanto/i);
+    expect(t).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|adelanto/i);
     expect(t).not.toMatch(/[—–]/);
     expect(t).not.toMatch(/gratis/i);
   });

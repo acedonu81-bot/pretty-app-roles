@@ -4,14 +4,18 @@
 //
 // Solo figura lo que EXISTE y funciona. Ventajas decididas pero aún sin construir
 // (no se anuncian hasta que existan; al construirlas, se añaden aquí y a "Mi plan"):
-//   avisos por WhatsApp de trabajo, verificación ampliada, sorteos entre suscriptores,
-//   prioridad en comunicados, sello Premium, Flash con adelanto, soporte prioritario, vídeo de fondo.
+//   avisos por WhatsApp de trabajo y Flash con adelanto (salen como "Próximamente",
+//   ver proximamente()), verificación ampliada y sorteos (manuales), referidos.
+// DESCARTADOS (18 nov 2026, Daniel): ficha con vídeo de fondo y links de sesión.
 //
 // Los nombres internos siguen siendo free / starter / business; los públicos son
 // Esencial / Profesional / Premium. Agencia está fuera: los tiers antiguos
 // (premium, agency, elite) se tratan como Premium para no quitar nada a nadie.
 
 export type Plan = 'free' | 'starter' | 'business';
+
+// Cuenta oficial "XPEAK EVENTOS": el soporte prioritario de Premium es escribirle directamente.
+export const CUENTA_XPEAK_ID = 'b8c47c26-33bd-41d7-a869-ba6fa2d22667';
 
 export const NOMBRE_PLAN: Record<Plan, string> = { free: 'Esencial', starter: 'Profesional', business: 'Premium' };
 
@@ -105,6 +109,7 @@ export function listaVentajas(plan: Plan, o: Oficios): string[] {
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push('Sets ilimitados');
     if (o.banner) out.push('Banner propio en tu cabecera de artista');
+    out.push('Soporte prioritario: escribe directamente al equipo de XPEAK');
   }
   return out;
 }

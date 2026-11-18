@@ -67,7 +67,7 @@ describe('qué ve cada oficio', () => {
 
   it('nunca se anuncia lo que aún no existe', () => {
     const todo = ['free', 'starter', 'business'].flatMap(p => lista(['dj'], p as 'free')).join('|');
-    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|Soporte|Sello|adelanto|Concursos|y web/i);
+    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|Sello|adelanto|Concursos|y web/i);
   });
 
   it('no usa rayas largas ni "gratis"', () => {
