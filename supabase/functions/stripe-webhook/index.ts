@@ -94,7 +94,7 @@ Deno.serve(async (req) => {
     return new Response('Firma no válida', { status: 400 });
   }
   try {
-    const resultado = await procesarEventoStripe(evento as any, db, env, id => stripe.subscriptions.retrieve(id, { expand: ['default_payment_method'] }));
+    const resultado = await procesarEventoStripe(evento as any, db, env, id => stripe.subscriptions.retrieve(id, { expand: ['default_payment_method', 'customer.invoice_settings.default_payment_method'] }));
     if (resultado === 'procesado') await recalcularReferidos((evento as any).data.object);
     return Response.json({ resultado });
   } catch (e) {

@@ -60,7 +60,9 @@ AS $$
   LEFT JOIN public.suscripciones yo ON yo.user_id = p_padrino
   WHERE r.inviter_user_id = p_padrino
     AND s.estado IN ('active', 'trialing', 'past_due')
-    AND (s.tarjeta_huella IS NULL OR yo.tarjeta_huella IS NULL OR s.tarjeta_huella <> yo.tarjeta_huella);
+    -- Sin huella conocida del amigo NO cuenta (si no, saltarse la comprobación sería fácil).
+    AND s.tarjeta_huella IS NOT NULL
+    AND (yo.tarjeta_huella IS NULL OR s.tarjeta_huella <> yo.tarjeta_huella);
 $$;
 REVOKE ALL ON FUNCTION public.amigos_que_pagan(uuid) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.amigos_que_pagan(uuid) TO service_role;

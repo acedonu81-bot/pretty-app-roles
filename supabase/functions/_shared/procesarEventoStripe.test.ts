@@ -63,6 +63,18 @@ describe('procesarEventoStripe', () => {
     expect(t.perfiles[0].tier).toBe('business');
   });
 
+  it('sin huella de tarjeta guarda null (no se queda la vieja)', async () => {
+    const t = dbFalsa();
+    await procesarEventoStripe(sub('evt_n', 100, 'active'), t.db, env);
+    expect(t.filas.get('u1')!.tarjeta_huella).toBeNull();
+  });
+
+  it('usa la tarjeta predeterminada del cliente si la suscripción no tiene', async () => {
+    const t = dbFalsa();
+    await procesarEventoStripe(sub('evt_c', 100, 'active', { customer: { id: 'cus_1', invoice_settings: { default_payment_method: { card: { fingerprint: 'fp_c' } } } } }), t.db, env);
+    expect(t.filas.get('u1')).toMatchObject({ tarjeta_huella: 'fp_c', stripe_customer_id: 'cus_1' });
+  });
+
   it('guarda la huella de la tarjeta si Stripe la da', async () => {
     const t = dbFalsa();
     await procesarEventoStripe(sub('evt_h', 100, 'active', { default_payment_method: { card: { fingerprint: 'fp_1' } } }), t.db, env);

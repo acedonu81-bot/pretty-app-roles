@@ -20,7 +20,7 @@ export interface FilaSuscripcion {
   cancela_al_final: boolean;
   stripe_evento_at: string;
   // Huella de la tarjeta (Stripe): para que un amigo con la misma tarjeta no cuente como referido.
-  tarjeta_huella?: string;
+  tarjeta_huella: string | null;
 }
 
 export interface DbStripe {
@@ -29,6 +29,15 @@ export interface DbStripe {
   userIdDeCustomer(customerId: string): Promise<string | null>;
   guardarSuscripcion(fila: FilaSuscripcion): Promise<void>;
   ponerTierEnPerfiles(userId: string, tier: string): Promise<void>;
+}
+
+// Huella de la tarjeta con la que se cobra: la de la suscripción o, si no tiene, la
+// predeterminada del cliente. Siempre se escribe (también null) para que no quede vieja.
+export function huellaTarjeta(s: any): string | null {
+  const pm = (typeof s.default_payment_method === 'object' && s.default_payment_method)
+    || (typeof s.customer === 'object' && s.customer?.invoice_settings?.default_payment_method);
+  const f = pm && typeof pm === 'object' ? pm.card?.fingerprint : null;
+  return typeof f === 'string' ? f : null;
 }
 
 export type Resultado = 'procesado' | 'duplicado' | 'ignorado' | 'viejo';
@@ -56,7 +65,8 @@ export async function procesarEventoStripe(
   const plan = planDesdePriceId(item?.price?.id ?? '', env);
   if (!plan) throw new Error(`Price desconocido: ${item?.price?.id}`);
 
-  const userId = s.metadata?.user_id || (await db.userIdDeCustomer(s.customer));
+  const customerId = typeof s.customer === 'object' ? s.customer?.id : s.customer;
+  const userId = s.metadata?.user_id || (await db.userIdDeCustomer(customerId));
   if (!userId) throw new Error(`Sin usuario para el cliente ${s.customer}`);
 
   // Se registra después de validar: si falla, Stripe reintenta y se vuelve a procesar.
@@ -70,7 +80,7 @@ export async function procesarEventoStripe(
   const fin = item?.current_period_end ?? s.current_period_end;
   await db.guardarSuscripcion({
     user_id: userId,
-    stripe_customer_id: s.customer,
+    stripe_customer_id: customerId,
     stripe_subscription_id: s.id,
     plan: plan.plan,
     ciclo: plan.ciclo,
@@ -78,7 +88,7 @@ export async function procesarEventoStripe(
     periodo_fin: fin ? new Date(fin * 1000).toISOString() : null,
     cancela_al_final: !!s.cancel_at_period_end,
     stripe_evento_at: eventoAt,
-    ...(typeof s.default_payment_method?.card?.fingerprint === 'string' ? { tarjeta_huella: s.default_payment_method.card.fingerprint } : {}),
+    tarjeta_huella: huellaTarjeta(s),
   });
   await db.ponerTierEnPerfiles(userId, tierDesdeEstado(estado, plan.plan));
   return 'procesado';
