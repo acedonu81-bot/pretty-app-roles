@@ -108,24 +108,6 @@ const PLANES_DEFINITIVOS: PlanPublico[] = [
     href: '/auth?mode=register&role=profesional',
     gold: true,
   },
-  {
-    nombre: 'Organizadores',
-    precio: '0 €',
-    periodo: 'sin cuota',
-    target: 'Salas, promotoras, organizadores',
-    color: '#FFFDF7',
-    border: 'rgba(122,98,22,0.16)',
-    incluye: [
-      'Acceso al directorio completo',
-      'Flash Booking sin límite',
-      'Contratos digitales automáticos',
-      'Mensajería con profesionales',
-      'Historial de contrataciones',
-    ],
-    noIncluye: ['Gestión de pagos integrada (próx.)'],
-    cta: 'Unirse',
-    href: '/auth?mode=register&role=empresario',
-  },
 ];
 
 const NOTA_PLANES = 'Precios con IVA incluido y sin permanencia. Las ofertas Flash Booking llegan a los oficios que las reciben; los sets (3, 10 o ilimitados) son para música, y el banner de cabecera, para DJ con Premium.';
@@ -163,7 +145,7 @@ export default function Precios() {
     <>
       <Helmet>
         <title>Precios XPEAK: Para profesionales y empresarios de eventos</title>
-        <meta name="description" content={LANZADO ? "Precios de XPEAK: Esencial sin cuota, Profesional y Premium con IVA incluido y sin permanencia, y acceso sin cuota para organizadores. Contratos digitales incluidos." : "Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos."} />
+        <meta name="description" content={LANZADO ? "Planes de XPEAK para profesionales de eventos: Esencial sin cuota, Profesional y Premium con IVA incluido y sin permanencia. Contratos digitales incluidos." : "Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos."} />
         <link rel="canonical" href="https://xpeak.es/precios" />
         <meta property="og:title" content="Precios XPEAK" />
         <meta property="og:description" content="Precios de XPEAK para profesionales y empresarios de eventos. Contratos digitales automáticos." />
@@ -192,14 +174,16 @@ export default function Precios() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#8B6A00' }}>Precios</p>
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">Precios</h1>
             <p className="text-sm max-w-xl mx-auto mb-2" style={{ color: '#374151' }}>
-              Precios de XPEAK para profesionales y empresarios de eventos: qué incluye cada plan, cuánto cuesta y cómo se cobra. Contratos digitales incluidos.
+              {LANZADO
+                ? 'Planes de XPEAK para profesionales de eventos: qué incluye cada uno, cuánto cuesta y cómo se cobra. Contratos digitales incluidos.'
+                : 'Precios de XPEAK para profesionales y empresarios de eventos: qué incluye cada plan, cuánto cuesta y cómo se cobra. Contratos digitales incluidos.'}
             </p>
             <p className="text-sm max-w-md mx-auto" style={{ color: '#374151' }}>
               {LANZADO ? 'Sin permanencia. Cancela cuando quieras.' : 'Sin tarjeta de crédito, sin permanencia.'}
             </p>
           </div>
 
-          <div className={`grid grid-cols-1 sm:grid-cols-2 ${LANZADO ? 'lg:grid-cols-4' : ''} gap-6 mb-${LANZADO ? '6' : '16'}`}>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 ${LANZADO ? 'lg:grid-cols-3' : ''} gap-6 mb-${LANZADO ? '6' : '16'}`}>
             {PLANES.map(plan => (
               <div key={plan.nombre} className="relative p-6 rounded-2xl"
                 style={{ background: plan.color, border: `1px solid ${plan.border}` }}>

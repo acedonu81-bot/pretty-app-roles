@@ -23,11 +23,12 @@ describe('/precios', () => {
     expect(t).not.toMatch(/6,99|14,99/);
   });
 
-  it('con los cobros activados enseña Esencial, Profesional, Premium y Organizadores con sus precios', () => {
+  it('con los cobros activados enseña Esencial, Profesional y Premium con sus precios, y ninguna tarjeta de organizadores', () => {
     const t = pagina('true');
-    for (const x of ['Esencial', 'Profesional', 'Premium', 'Organizadores', '6,99', '14,99', '75,49', '161,89', 'IVA incluido']) expect(t).toContain(x);
+    for (const x of ['Esencial', 'Profesional', 'Premium', '6,99', '14,99', '75,49', '161,89', 'IVA incluido']) expect(t).toContain(x);
     expect(t).not.toMatch(/para siempre/);
     expect(t).not.toMatch(/¿Cuándo habrá planes de pago\?/);
+    expect(t).not.toMatch(/Organizadores|Salas, promotoras/);
   });
 
   it('Premium anuncia la posición destacada y Profesional no', () => {
