@@ -53,6 +53,10 @@ interface ProfileData {
   genres: string[] | null;
   category: string | null;
   tiktok: string | null;
+  /** Estado de las redes según el plan (18 nov 2026). */
+  redes_visibles?: boolean;
+  redes_fundador_hasta?: string | null;
+  redes_lanzado?: boolean;
   bio_video_url: string | null;
   bg_music_url: string | null;
   portfolio_urls: string[] | null;
@@ -239,9 +243,25 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
 
     // Find primary, fallback to first
     const primary = (rows.find((r: any) => r.is_primary) ?? rows[0]) as any;
+
+    // Instagram y TikTok reales viven en redes_profesional (solo los lee su
+    // dueño): en profiles queda la copia publicada, que en Esencial va vacía
+    // tras el lanzamiento (18 nov 2026). El dueño edita siempre su valor real.
+    const [{ data: redes }, { data: estadoRedes }] = await Promise.all([
+      supabase.from('redes_profesional' as any).select('instagram, tiktok').eq('profile_id', primary.id).maybeSingle(),
+      (supabase.rpc as any)('mis_redes_estado', { p_profile: primary.id }),
+    ]);
+    const r = redes as { instagram?: string | null; tiktok?: string | null } | null;
+    const est = (Array.isArray(estadoRedes) ? estadoRedes[0] : null) as { visibles?: boolean; fundador_hasta?: string | null; lanzado?: boolean } | null;
+
     setProfileId(primary.id);
     setData({
       ...primary,
+      instagram: r ? (r.instagram ?? null) : (primary.instagram ?? null),
+      tiktok: r ? (r.tiktok ?? null) : (primary.tiktok ?? null),
+      redes_visibles: est?.visibles ?? true,
+      redes_fundador_hasta: est?.fundador_hasta ?? null,
+      redes_lanzado: est?.lanzado ?? false,
       phone: (privado as { phone?: string | null } | null)?.phone ?? null,
       roles: (primary.roles?.length ? primary.roles : [primary.role]),
       // Fallback si la migración de privacidad aún no está aplicada.
@@ -273,14 +293,31 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       toast.error('Tu perfil aún se está cargando. Espera unos segundos y vuelve a intentarlo.');
       return false;
     }
-    const { error } = await supabase
-      .from('profiles')
-      .update(fields as any)
-      .eq('id', profileId);
-    if (error) {
-      console.error('[useProfile] updateField error:', error);
-      toast.error('Error al guardar: ' + error.message);
-      return false;
+    // Las redes van a redes_profesional; la BD publica en profiles lo que toque.
+    const { instagram, tiktok, ...resto } = fields as Partial<ProfileData> & Record<string, unknown>;
+    const redes: Record<string, unknown> = {};
+    if ('instagram' in fields) redes.instagram = instagram ?? null;
+    if ('tiktok' in fields) redes.tiktok = tiktok ?? null;
+    if (Object.keys(redes).length) {
+      const { error: errRedes } = await supabase
+        .from('redes_profesional' as any)
+        .upsert({ profile_id: profileId, user_id: user.id, ...redes } as any, { onConflict: 'profile_id' });
+      if (errRedes) {
+        console.error('[useProfile] redes error:', errRedes);
+        toast.error('Error al guardar tus redes: ' + errRedes.message);
+        return false;
+      }
+    }
+    if (Object.keys(resto).length) {
+      const { error } = await supabase
+        .from('profiles')
+        .update(resto as any)
+        .eq('id', profileId);
+      if (error) {
+        console.error('[useProfile] updateField error:', error);
+        toast.error('Error al guardar: ' + error.message);
+        return false;
+      }
     }
     setData(prev => ({ ...prev, ...fields }));
     return true;

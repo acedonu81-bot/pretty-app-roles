@@ -12,7 +12,9 @@ const MUSICA = ['dj', 'grupo-musical', 'disco-movil'];
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 
 const V = { free: ventajasDe('free'), starter: ventajasDe('starter'), business: ventajasDe('business') };
-const VENTAJAS: Record<'free' | PlanPago, { comun: string[]; musica: string[] }> = {
+// Cada oficio ve solo lo que le aplica (18 nov 2026): comun para todos, musica
+// para DJ, grupos y disco móvil, dj solo para DJ (el vídeo de fondo solo existe en su ficha).
+const VENTAJAS: Record<'free' | PlanPago, { comun: string[]; musica: string[]; dj?: string[] }> = {
   free: {
     comun: ['Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas', 'Ofertas Flash Booking', `Portafolio de ${V.free.fotos} fotos`],
     musica: [`Hasta ${V.free.sets} sets en tu perfil`, `${V.free.linksSesion} link de sesión`, 'Concursos de DJs de XPEAK'],
@@ -22,8 +24,9 @@ const VENTAJAS: Record<'free' | PlanPago, { comun: string[]; musica: string[] }>
     musica: [`Hasta ${V.starter.sets} sets en tu perfil`, `Hasta ${V.starter.linksSesion} links de sesión`],
   },
   business: {
-    comun: ['Todo lo de Profesional', 'Posición destacada y aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Prioridad en los comunicados', 'Apareces una vez al mes en las redes de XPEAK', 'Ficha con vídeo de fondo', 'Estadísticas avanzadas', `Portafolio de ${V.business.fotos} fotos`],
+    comun: ['Todo lo de Profesional', 'Posición destacada y aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Prioridad en los comunicados', 'Apareces una vez al mes en las redes de XPEAK', 'Estadísticas avanzadas', `Portafolio de ${V.business.fotos} fotos`],
     musica: ['Sets ilimitados', 'Links de sesión ilimitados'],
+    dj: ['Ficha con vídeo de fondo'],
   },
 };
 
@@ -49,7 +52,8 @@ const SubscriptionView = () => {
   const profesional = todos.some(r => !NO_PROFESIONALES.includes(r));
   const musica = todos.some(r => MUSICA.includes(r));
   const venta = profesional && !isNative && cobrosActivos();
-  const ventajas = (p: 'free' | PlanPago) => [...VENTAJAS[p].comun, ...(musica ? VENTAJAS[p].musica : [])];
+  const esDj = todos.includes('dj');
+  const ventajas = (p: 'free' | PlanPago) => [...VENTAJAS[p].comun, ...(musica ? VENTAJAS[p].musica : []), ...(esDj ? VENTAJAS[p].dj ?? [] : [])];
 
   useEffect(() => {
     if (!venta) return;

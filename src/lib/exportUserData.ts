@@ -8,7 +8,7 @@ export const exportUserDataZip = async (user: User) => {
   if (!user) return;
   toast.info('Recopilando datos…');
   try {
-    const [profileRes, favRes, bookingsRes, convsRes] = await Promise.all([
+    const [profileRes, favRes, bookingsRes, convsRes, redesRes] = await Promise.all([
       // my_profile() en vez de select('*'): profiles.email está bloqueado
       // para 'authenticated' en general (SEC-06) — esta RPC sí puede
       // devolver la fila propia completa porque comprueba el dueño server-side.
@@ -19,9 +19,13 @@ export const exportUserDataZip = async (user: User) => {
       // este export para cualquier profesional (el caso de uso principal).
       supabase.from('flash_bookings').select('*').or(`created_by.eq.${user.id},professional_user_id.eq.${user.id}`),
       supabase.from('conversations').select('*').or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`),
+      // Instagram y TikTok reales (en profiles solo está la copia publicada).
+      supabase.from('redes_profesional' as any).select('profile_id, instagram, tiktok').eq('user_id', user.id),
     ]);
 
-    const p = profileRes.data as Record<string, unknown> | null ?? {};
+    const p = { ...((profileRes.data as Record<string, unknown> | null) ?? {}) };
+    const redesPropias = ((redesRes.data ?? []) as unknown as Array<{ profile_id: string; instagram: string | null; tiktok: string | null }>).find(r => r.profile_id === p.id);
+    if (redesPropias) { p.instagram = redesPropias.instagram; p.tiktok = redesPropias.tiktok; }
     const isEmpresarioAccount = p.role === 'empresario';
     const today = new Date().toISOString().slice(0, 10);
     const displayName = (p.display_name as string) ?? '';

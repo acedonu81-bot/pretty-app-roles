@@ -48,7 +48,7 @@ serve(async (req) => {
 
   const { data: profiles, error: profilesError } = await admin
     .from('profiles')
-    .select('user_id, display_name, role, photo_url, bio, zone, specialty, instagram, audio_embed_url, audio_session_urls, portfolio_urls, hourly_rate')
+    .select('id, user_id, display_name, role, photo_url, bio, zone, specialty, instagram, audio_embed_url, audio_session_urls, portfolio_urls, hourly_rate')
     .eq('is_seed', false)
     .neq('role', 'empresario')
     .neq('role', 'pending');
@@ -60,6 +60,14 @@ serve(async (req) => {
 
   if (!profiles || profiles.length === 0) {
     return new Response(JSON.stringify({ sent: 0, message: 'No profiles to check' }), { headers: corsHeaders });
+  }
+
+  // Instagram real: tras el lanzamiento, en profiles queda vacío para Esencial
+  // aunque lo tenga puesto (18 nov 2026). Se lee de redes_profesional.
+  const { data: redesReales } = await admin.from('redes_profesional').select('profile_id, instagram');
+  const igReal = new Map((redesReales ?? []).map((r: { profile_id: string; instagram: string | null }) => [r.profile_id, r.instagram]));
+  for (const p of profiles as Array<Record<string, unknown>>) {
+    if (igReal.has(p.id as string)) p.instagram = igReal.get(p.id as string) ?? null;
   }
 
   const { data: empresarioRows } = await admin

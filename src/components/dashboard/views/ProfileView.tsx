@@ -1205,6 +1205,25 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 onChange={e => setInstagram(e.target.value)}
                 placeholder="tu_usuario (sin @)"
                 className="nightlife-input mt-1 text-base" />
+              {profile.role !== 'empresario' && profile.redes_lanzado && (() => {
+                const fin = profile.redes_fundador_hasta ? new Date(profile.redes_fundador_hasta) : null;
+                const finTxt = fin ? fin.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid' }) : '';
+                const fundadorVigente = !!fin && fin.getTime() > Date.now() && (profile.subscription_tier ?? 'free') === 'free';
+                if (fundadorVigente) return (
+                  <p className="mt-2 text-xs" style={{ color: '#8B6A00' }}>
+                    Como profesional fundador, tu Instagram y tu TikTok se ven en tu ficha hasta el {finTxt}. Después, con el plan Profesional.
+                  </p>
+                );
+                if (profile.redes_visibles === false) return (
+                  <p className="mt-2 text-xs" style={{ color: '#6b6454' }}>
+                    Con el plan Esencial tus redes no se muestran en tu ficha; las guardamos y vuelven a verse en cuanto mejores a Profesional.{' '}
+                    {onNavigate && (
+                      <button type="button" onClick={() => onNavigate('subscription')} className="font-bold underline" style={{ color: '#8B6A00' }}>Ver planes</button>
+                    )}
+                  </p>
+                );
+                return null;
+              })()}
             </div>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Enlace de reseña de Google</label>
