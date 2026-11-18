@@ -2,7 +2,7 @@
 import Stripe from 'npm:stripe@17';
 import { decidirCheckout } from '../_shared/decidirCheckout.ts';
 import { priceIdDe, cuponDe, type PlanPago, type Ciclo } from '../_shared/stripePlanes.ts';
-import { admin, respuesta, usuarioDe, cabeceras, URL_WEB } from '../_shared/cobrosHttp.ts';
+import { admin, respuesta, usuarioDe, cabeceras, URL_WEB, webDe, vueltaMiPlan } from '../_shared/cobrosHttp.ts';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') ?? '');
 
@@ -29,7 +29,7 @@ Deno.serve(async (req) => {
 
   try {
     if (decision.tipo === 'portal') {
-      const s = await stripe.billingPortal.sessions.create({ customer: suscripcion!.stripe_customer_id, return_url: `${URL_WEB}/dashboard` });
+      const s = await stripe.billingPortal.sessions.create({ customer: suscripcion!.stripe_customer_id, return_url: vueltaMiPlan(webDe(req)) });
       return respuesta(req, { url: s.url });
     }
 
@@ -45,6 +45,9 @@ Deno.serve(async (req) => {
     const cupon = cuponDe(plan as PlanPago, ciclo as Ciclo, new Date(), env, !!suscripcion?.stripe_subscription_id);
     const sesion = await stripe.checkout.sessions.create({
       mode: 'subscription',
+      // Solo tarjeta (18 nov 2026): condiciones y cobros recurrentes probados con tarjeta;
+      // Klarna, Amazon Pay o Satispay salían por los métodos dinámicos del panel.
+      payment_method_types: ['card'],
       customer,
       client_reference_id: user.id,
       subscription_data: { metadata: { user_id: user.id } },
@@ -60,8 +63,8 @@ Deno.serve(async (req) => {
       billing_address_collection: 'required',
       tax_id_collection: { enabled: true },
       customer_update: { address: 'auto', name: 'auto' },
-      success_url: `${URL_WEB}/dashboard?pago=ok`,
-      cancel_url: `${URL_WEB}/dashboard?pago=cancelado`,
+      success_url: vueltaMiPlan(webDe(req), 'ok'),
+      cancel_url: vueltaMiPlan(webDe(req), 'cancelado'),
     });
     return respuesta(req, { url: sesion.url });
   } catch (e) {

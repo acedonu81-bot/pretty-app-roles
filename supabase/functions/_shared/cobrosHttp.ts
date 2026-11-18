@@ -27,3 +27,15 @@ export async function usuarioDe(req: Request) {
 }
 
 export const URL_WEB = 'https://xpeak.es';
+
+// Web a la que vuelve el cliente desde Stripe: la misma desde la que pidió el pago
+// (xpeak.es o la web local de pruebas). Antes volvía siempre a xpeak.es y en pruebas
+// locales caía en el login de producción (18 nov 2026).
+export function webDe(req: Request): string {
+  const origen = req.headers.get('Origin') ?? '';
+  return ORIGENES.includes(origen) ? origen.replace('://www.', '://') : URL_WEB;
+}
+
+// Al volver de Stripe se abre "Mi plan", no la portada: ahí se ve "Pago recibido".
+export const vueltaMiPlan = (web: string, pago?: 'ok' | 'cancelado') =>
+  `${web}/dashboard?view=subscription${pago ? `&pago=${pago}` : ''}`;
