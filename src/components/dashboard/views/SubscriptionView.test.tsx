@@ -33,17 +33,18 @@ describe('SubscriptionView', () => {
     expect(screen.getByText('Apareces una vez al mes en las redes de XPEAK')).toBeTruthy();
   });
 
-  it('un DJ ve sus ventajas de música y el vídeo de fondo', () => {
+  it('un DJ ve sus ventajas de música y el banner de cabecera', () => {
     render(<SubscriptionView />);
     expect(screen.getByText('Sets ilimitados')).toBeTruthy();
-    expect(screen.getByText('Ficha con vídeo de fondo')).toBeTruthy();
+    expect(screen.getByText('Banner propio en tu cabecera de artista')).toBeTruthy();
   });
 
   it('un mago no ve ventajas de música ni de DJ, sí las comunes', () => {
     perfil.role = 'mago'; perfil.roles = ['mago'];
     render(<SubscriptionView />);
     expect(screen.queryByText(/sets/i)).toBeNull();
-    expect(screen.queryByText('Ficha con vídeo de fondo')).toBeNull();
+    expect(screen.queryByText(/Banner propio/)).toBeNull();
+    expect(screen.queryByText('Ofertas Flash Booking')).toBeNull();
     expect(screen.queryByText(/Concursos de DJs/)).toBeNull();
     expect(screen.getByText('Sales destacado en el Inicio de XPEAK')).toBeTruthy();
     expect(screen.getByText('Portafolio de 20 fotos y vídeos')).toBeTruthy();

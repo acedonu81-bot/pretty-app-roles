@@ -3,21 +3,28 @@ import { ImagePlus } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useDjBanner } from '@/hooks/useDjBanner';
+import { useProfile } from '@/hooks/useProfile';
+import { useMiPlan } from '@/hooks/useMiPlan';
 
 const MAX_MB = 8;
 
 // Banner de la cabecera de artista del perfil público del DJ (estilo
 // Hearthis, 1 nov 2026). Sin banner, la cabecera usa la portada del primer
 // set o la foto de perfil desenfocada.
+// 18 nov 2026: es una ventaja de Premium. Con Esencial o Profesional se puede ver y
+// quitar el que ya hubiera, pero no subir otro; la BD lo impone también (banner_permitido).
 const BannerArtistaEditor = ({ userId }: { userId: string }) => {
   const { banner, recargar } = useDjBanner(userId);
+  const perfil = useProfile();
+  const plan = useMiPlan(perfil.id);
+  const permitido = plan === 'business' || plan === 'pre';
   const [subiendo, setSubiendo] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
   const subir = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     e.target.value = '';
-    if (!file) return;
+    if (!file || !permitido) return;
     if (!/^image\/(jpeg|png|webp)$/.test(file.type)) { toast.error('El banner tiene que ser JPG, PNG o WebP.'); return; }
     if (file.size > MAX_MB * 1024 * 1024) { toast.error(`El banner no puede pasar de ${MAX_MB} MB.`); return; }
     setSubiendo(true);
@@ -38,6 +45,27 @@ const BannerArtistaEditor = ({ userId }: { userId: string }) => {
     if (error) { toast.error('No se pudo quitar el banner.'); return; }
     recargar();
   };
+
+  // Mientras se conoce el plan no se enseña nada, para no parpadear.
+  if (plan === undefined) return null;
+
+  if (!permitido) {
+    return (
+      <div className="mb-4 rounded-xl p-4" style={{ background: 'rgba(212,175,55,0.06)', border: '1px dashed rgba(212,175,55,0.5)' }}>
+        <p className="text-sm font-bold mb-1" style={{ color: '#8A6D0F' }}>Banner de tu perfil de artista</p>
+        <p className="text-xs text-muted-foreground">
+          Poner tu propio banner en la cabecera de tu ficha es una ventaja del plan Premium.
+          {banner ? ' El que tienes sigue guardado, pero los demás no lo ven hasta que tengas Premium.' : ''} Puedes verlo en Mi plan.
+        </p>
+        {banner && (
+          <div className="mt-3">
+            <img src={banner} alt="Tu banner guardado" className="w-full rounded-lg object-cover opacity-60" style={{ aspectRatio: '16 / 5' }} />
+            <button type="button" onClick={quitar} className="text-xs font-semibold mt-1" style={{ color: '#8A6D0F' }}>Quitar banner</button>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="mb-4">

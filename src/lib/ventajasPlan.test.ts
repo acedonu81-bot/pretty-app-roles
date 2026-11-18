@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest';
-import { planDe, nombrePlan, ventajasDe } from './ventajasPlan';
+import { planDe, nombrePlan, ventajasDe, oficiosDe, listaVentajas } from './ventajasPlan';
 
 describe('ventajasPlan', () => {
   it('normaliza los tiers antiguos sin quitar nada a nadie', () => {
@@ -19,11 +19,11 @@ describe('ventajasPlan', () => {
     expect([ventajasDe('free').sets, ventajasDe('starter').sets, ventajasDe('business').sets]).toEqual([3, 10, Infinity]);
   });
 
-  it('redes ocultas solo en Esencial; vídeo, Inicio y exportar solo en Premium', () => {
+  it('redes ocultas solo en Esencial; banner, Inicio y exportar solo en Premium', () => {
     expect(ventajasDe('free').redesVisibles).toBe(false);
     expect(ventajasDe('starter').redesVisibles).toBe(true);
-    expect(ventajasDe('starter').videoFondo).toBe(false);
-    expect(ventajasDe('business').videoFondo).toBe(true);
+    expect(ventajasDe('starter').bannerCabecera).toBe(false);
+    expect(ventajasDe('business').bannerCabecera).toBe(true);
     expect(ventajasDe('starter').destacadoInicio).toBe(false);
     expect(ventajasDe('business').exportarEstadisticas).toBe(true);
   });
@@ -37,5 +37,52 @@ describe('ventajasPlan', () => {
         if (v === true) expect(sig).toBe(true);
       }
     }
+  });
+});
+
+describe('qué ve cada oficio', () => {
+  const lista = (roles: string[], plan: 'free' | 'starter' | 'business') => listaVentajas(plan, oficiosDe(roles));
+
+  it('un DJ ve sets y banner; un mago no', () => {
+    expect(lista(['dj'], 'free')).toContain('Hasta 3 sets en tu perfil');
+    expect(lista(['dj'], 'business')).toContain('Sets ilimitados');
+    expect(lista(['dj'], 'business')).toContain('Banner propio en tu cabecera de artista');
+    for (const p of ['free', 'starter', 'business'] as const) {
+      expect(lista(['mago'], p).join('|')).not.toMatch(/sets|Banner/i);
+    }
+  });
+
+  it('un grupo musical ve sets pero no banner (el banner es de la ficha del DJ)', () => {
+    expect(lista(['grupo-musical'], 'starter')).toContain('Hasta 10 sets en tu perfil');
+    expect(lista(['grupo-musical'], 'business').join('|')).not.toMatch(/Banner/);
+  });
+
+  it('solo los oficios del formulario de ofertas ven "Ofertas Flash Booking"', () => {
+    expect(lista(['dj'], 'free')).toContain('Ofertas Flash Booking');
+    expect(lista(['camarero'], 'free')).toContain('Ofertas Flash Booking');
+    for (const r of ['mago', 'bailarin', 'humorista', 'speaker', 'limpieza', 'azafata']) {
+      expect(lista([r], 'free')).not.toContain('Ofertas Flash Booking');
+    }
+  });
+
+  it('nunca se anuncia lo que aún no existe', () => {
+    const todo = ['free', 'starter', 'business'].flatMap(p => lista(['dj'], p as 'free')).join('|');
+    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|aro dorado|Posición destacada|vídeo de fondo|Soporte|Sello|adelanto|Concursos|y web/i);
+  });
+
+  it('no usa rayas largas ni "gratis"', () => {
+    const todo = ['free', 'starter', 'business'].flatMap(p => lista(['dj'], p as 'free')).join('|');
+    expect(todo).not.toMatch(/[—–]|gratis/i);
+  });
+
+  it('cada plan incluye lo del anterior en el texto', () => {
+    expect(lista(['dj'], 'starter')[0]).toBe('Todo lo de Esencial');
+    expect(lista(['dj'], 'business')[0]).toBe('Todo lo de Profesional');
+  });
+
+  it('empresarios y particulares no son profesionales (no ven planes)', () => {
+    expect(oficiosDe(['empresario']).profesional).toBe(false);
+    expect(oficiosDe(['particular', 'pending']).profesional).toBe(false);
+    expect(oficiosDe(['empresario', 'dj']).profesional).toBe(true);
   });
 });

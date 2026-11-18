@@ -1,4 +1,4 @@
-import { ventajasDe } from '@/lib/ventajasPlan';
+import { listaVentajas, oficiosDe, planDe } from '@/lib/ventajasPlan';
 import { useEffect, useState } from 'react';
 import { CheckCircle } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
@@ -6,29 +6,7 @@ import { isNative } from '@/lib/capacitor';
 import { iniciarPago, abrirPortal, leerMiSuscripcion, cobrosActivos, type Ciclo, type MiSuscripcion, type PlanPago } from '@/lib/pagos';
 import { subscriptionPlans, PRECIOS_ANUALES, PRECIOS_ANUALES_PRIMER_ANO } from '@/lib/subscriptions';
 
-const NO_PROFESIONALES = ['empresario', 'particular', 'local_eventos', 'event_manager', 'organizador', 'pending'];
-const MUSICA = ['dj', 'grupo-musical', 'disco-movil'];
-
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
-
-const V = { free: ventajasDe('free'), starter: ventajasDe('starter'), business: ventajasDe('business') };
-// Cada oficio ve solo lo que le aplica (18 nov 2026): comun para todos, musica
-// para DJ, grupos y disco móvil, dj solo para DJ (el vídeo de fondo solo existe en su ficha).
-const VENTAJAS: Record<'free' | PlanPago, { comun: string[]; musica: string[]; dj?: string[] }> = {
-  free: {
-    comun: ['Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas', 'Ofertas Flash Booking', `Portafolio de ${V.free.fotos} fotos y vídeos`],
-    musica: [`Hasta ${V.free.sets} sets en tu perfil`, 'Concursos de DJs de XPEAK'],
-  },
-  starter: {
-    comun: ['Avisos por WhatsApp de trabajo', 'Tu Instagram, TikTok y web visibles', 'Verificación ampliada', 'Estadísticas de visitas y mensajes', `Portafolio de ${V.starter.fotos} fotos y vídeos`, 'Sorteos entre suscriptores'],
-    musica: [`Hasta ${V.starter.sets} sets en tu perfil`],
-  },
-  business: {
-    comun: ['Todo lo de Profesional', 'Posición destacada y aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Prioridad en los comunicados', 'Apareces una vez al mes en las redes de XPEAK', 'Estadísticas avanzadas', `Portafolio de ${V.business.fotos} fotos y vídeos`],
-    musica: ['Sets ilimitados'],
-    dj: ['Ficha con vídeo de fondo'],
-  },
-};
 
 const NOMBRE: Record<string, string> = { free: 'Esencial', starter: 'Profesional', business: 'Premium', agency: 'Premium' };
 
@@ -49,11 +27,10 @@ const SubscriptionView = () => {
   const [sus, setSus] = useState<MiSuscripcion | null>(null);
   const tier = subscription_tier ?? 'free';
   const todos = [role, ...(roles ?? [])].filter(Boolean) as string[];
-  const profesional = todos.some(r => !NO_PROFESIONALES.includes(r));
-  const musica = todos.some(r => MUSICA.includes(r));
+  const oficios = oficiosDe(todos);
+  const profesional = oficios.profesional;
   const venta = profesional && !isNative && cobrosActivos();
-  const esDj = todos.includes('dj');
-  const ventajas = (p: 'free' | PlanPago) => [...VENTAJAS[p].comun, ...(musica ? VENTAJAS[p].musica : []), ...(esDj ? VENTAJAS[p].dj ?? [] : [])];
+  const ventajas = (p: 'free' | PlanPago) => listaVentajas(planDe(p), oficios);
 
   useEffect(() => {
     if (!venta) return;
