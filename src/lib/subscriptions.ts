@@ -14,7 +14,12 @@ export interface SubscriptionPlan {
 }
 
 export const TRIAL_DAYS = 15;
-export const ANNUAL_DISCOUNT = 0.30;
+export const ANNUAL_DISCOUNT = 0.10;
+// Precios con IVA incluido (decisión 13 nov 2026).
+export const IVA_INCLUIDO = true;
+// Anual: 15 % el primer año y 10 % en las renovaciones.
+export const PRECIOS_ANUALES: Record<'starter' | 'business', number> = { starter: 75.49, business: 161.89 };
+export const PRECIOS_ANUALES_PRIMER_ANO: Record<'starter' | 'business', number> = { starter: 71.30, business: 152.90 };
 export const BIRTHDAY_DISCOUNT = 0.40;
 
 // Streaming (Amazon IVS)
@@ -72,7 +77,7 @@ export const STREAMING_PACK_ELIGIBLE_PLANS = ['starter', 'business', 'agency'] a
 export const subscriptionPlans: SubscriptionPlan[] = [
   {
     id: 'free',
-    name: 'Gratis',
+    name: 'Esencial',
     monthlyPrice: 0,
     defaultPeriod: 'Gratis',
     features: [
@@ -88,8 +93,8 @@ export const subscriptionPlans: SubscriptionPlan[] = [
   },
   {
     id: 'starter',
-    name: 'Starter',
-    monthlyPrice: 4.99,
+    name: 'Profesional',
+    monthlyPrice: 6.99,
     defaultPeriod: '/mes',
     badge: 'NUEVO',
     features: [
@@ -105,7 +110,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
   },
   {
     id: 'business',
-    name: 'Business',
+    name: 'Premium',
     monthlyPrice: 14.99,
     defaultPeriod: '/mes',
     features: [

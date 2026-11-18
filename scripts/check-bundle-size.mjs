@@ -13,7 +13,9 @@ import { join } from 'node:path';
 const DIST = join(process.cwd(), 'dist', 'assets');
 // 310 desde el 27 oct 2026: el chunk principal (index) lleva las ~350 rutas de
 // blog y cada artículo nuevo suma ~100 bytes; llegó a 300,1 KB sin ninguna librería nueva.
-const LIMIT_KB = 310;
+// 315 desde el 16 nov 2026: mismo crecimiento orgánico (Inicio, Mi plan, blogs); el chunk
+// quedó en 310,1 KB sin librería pesada nueva (verificado: sigue en 317 kB de Vite, sin dependencias nuevas).
+const LIMIT_KB = 315;
 
 // Chunks ya auditados: son pesados porque la librería lo es, pero se cargan
 // vía import() dinámico (verificado con grep antes de añadirlos aquí), así

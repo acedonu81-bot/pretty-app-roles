@@ -46,6 +46,7 @@ const MonologoView = lazy(() => import('@/components/dashboard/views/MonologoVie
 const AnimadorView = lazy(() => import('@/components/dashboard/views/AnimadorView'));
 const SpeakerView = lazy(() => import('@/components/dashboard/views/SpeakerView'));
 const SettingsView = lazy(() => import('@/components/dashboard/views/SettingsView'));
+const SubscriptionView = lazy(() => import('@/components/dashboard/views/SubscriptionView'));
 const MessagesView = lazy(() => import('@/components/dashboard/views/MessagesView'));
 const FeedView = lazy(() => import('@/components/dashboard/views/FeedView'));
 const CalendarView = lazy(() => import('@/components/dashboard/views/CalendarView'));
@@ -741,6 +742,7 @@ const DashboardPanel = () => {
       case 'limpieza':  return <LimpiezaView  onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'local_eventos': return <LocalEventosView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;
+      case 'subscription': return <SubscriptionView />;
       // Páginas legales/soporte como pantallas internas: mismo texto que las
       // rutas web /privacidad, /terminos, etc. (que se mantienen intactas),
       // aquí dentro del shell del dashboard para quien navega sin salir de
