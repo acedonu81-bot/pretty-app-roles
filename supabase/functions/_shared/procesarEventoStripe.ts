@@ -41,10 +41,15 @@ export async function procesarEventoStripe(
   evento: EventoStripe,
   db: DbStripe,
   env: Record<string, string | undefined>,
+  // Estado ACTUAL de la suscripción en Stripe. Stripe fecha sus avisos al segundo y puede
+  // entregar "created" (incompleta) después de "updated" (activa) en el primer pago; con el
+  // estado leído al procesar, el orden de llegada ya no importa (18 nov 2026, prueba real).
+  leerActual?: (subscriptionId: string) => Promise<any>,
 ): Promise<Resultado> {
   if (!TIPOS_SUSCRIPCION.includes(evento.type)) return 'ignorado';
 
-  const s = evento.data.object;
+  const payload = evento.data.object;
+  const s = leerActual && evento.type !== 'customer.subscription.deleted' ? await leerActual(payload.id) : payload;
   const item = s.items?.data?.[0];
   const plan = planDesdePriceId(item?.price?.id ?? '', env);
   if (!plan) throw new Error(`Price desconocido: ${item?.price?.id}`);

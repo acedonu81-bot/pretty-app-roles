@@ -53,6 +53,16 @@ describe('procesarEventoStripe', () => {
     expect(t.guardados()).toBe(1);
   });
 
+  it('usa el estado actual de Stripe aunque "created" llegue después de "updated"', async () => {
+    const t = dbFalsa();
+    const actual = async () => ({ ...sub('x', 0, 'active').data.object });
+    // mismo segundo; llega primero la activa y luego la incompleta (orden cambiado)
+    await procesarEventoStripe(sub('evt_u', 100, 'active'), t.db, env, actual);
+    await procesarEventoStripe({ ...sub('evt_c', 100, 'incomplete'), type: 'customer.subscription.created' }, t.db, env, actual);
+    expect(t.filas.get('u1')!.estado).toBe('active');
+    expect(t.perfiles[0].tier).toBe('business');
+  });
+
   it('descarta un evento más viejo que el último guardado', async () => {
     const t = dbFalsa();
     await procesarEventoStripe(sub('evt_2', 200, 'canceled'), t.db, env);

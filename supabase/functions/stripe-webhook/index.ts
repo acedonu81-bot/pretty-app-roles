@@ -46,7 +46,7 @@ Deno.serve(async (req) => {
     return new Response('Firma no válida', { status: 400 });
   }
   try {
-    const resultado = await procesarEventoStripe(evento as any, db, Deno.env.toObject());
+    const resultado = await procesarEventoStripe(evento as any, db, Deno.env.toObject(), id => stripe.subscriptions.retrieve(id));
     return Response.json({ resultado });
   } catch (e) {
     console.error('[stripe-webhook]', evento.id, e);
