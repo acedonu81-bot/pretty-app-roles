@@ -35,3 +35,11 @@ describe('CondicionesSuscripcion', () => {
     expect(texto).not.toMatch(/gratis/i);
   });
 });
+
+describe('CondicionesSuscripcion: orden del directorio', () => {
+  it('explica la posición destacada y que está rotulada', () => {
+    pintar();
+    expect(screen.getByText(/aro dorado y la etiqueta "Destacado"/)).toBeTruthy();
+    expect(screen.getByText(/rota cada día/)).toBeTruthy();
+  });
+});

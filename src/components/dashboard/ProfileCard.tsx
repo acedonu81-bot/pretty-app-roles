@@ -14,6 +14,8 @@ import { isNative } from '@/lib/capacitor';
 import { fotoOptimizada } from '@/lib/imagen';
 import FollowButton from '@/components/FollowButton';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
+import { esDestacado } from '@/lib/dailyRotation';
+import { ANILLO_DESTACADO, EtiquetaDestacado } from '@/components/Destacado';
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -99,6 +101,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   // consolidado que se da de alta hoy es "nuevo en la plataforma" pero no
   // "nuevo en el sector", así que el propio grupo decide si lo activa.
   const showNewBadge = p.showNewBadge ?? false;
+  // Posición destacada de Premium (18 nov 2026): solo perfiles reales de la BD; los de
+  // demostración de data/profiles.ts llevan tiers de ejemplo y no deben llevar aro.
+  const destacado = !!realProfileId && esDestacado({ subscription_tier: p.subscriptionTier, photo_url: p.photo });
 
   // Locales para eventos: aforo + precio orientativo (precio/evento si lo
   // declaran, si no precio/hora) — el copy SEO público promete que "cada
@@ -126,10 +131,10 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       className={`rounded-2xl overflow-x-hidden flex flex-col transition-all duration-200 hover:scale-[1.01]${isNative ? ' clay-card' : ''}`}
       style={{
         background: '#ffffff',
-        border: '1px solid rgba(0,0,0,0.08)',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+        border: destacado ? '1px solid rgba(212,175,55,0.6)' : '1px solid rgba(0,0,0,0.08)',
+        boxShadow: destacado ? ANILLO_DESTACADO : '0 1px 3px rgba(0,0,0,0.06)',
       }}
-      whileHover={{ boxShadow: '0 8px 28px rgba(0,0,0,0.12)' }}
+      whileHover={{ boxShadow: destacado ? ANILLO_DESTACADO : '0 8px 28px rgba(0,0,0,0.12)' }}
     >
       {/* ── FOTO HERO ── */}
       {/* Cuadrado en desktop, no apaisado: con pb-62% solo cabía una franja de
@@ -168,6 +173,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             <FollowButton viewerId={currentUser.user_id} followedUserId={realProfileId} compact />
           </div>
         )}
+
+        {destacado && <EtiquetaDestacado className="absolute top-12 right-2.5 z-10" />}
 
         {/* Badges top-left — single most-relevant badge on mobile, full set on desktop */}
         <div className={`absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10 ${realProfileId && currentUser.user_id && currentUser.user_id !== realProfileId ? 'right-[6.5rem]' : 'right-2.5'}`}>

@@ -17,7 +17,8 @@ import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
-import { compararDirectorio } from '@/lib/dailyRotation';
+import { compararDirectorio, esDestacado } from '@/lib/dailyRotation';
+import { ANILLO_DESTACADO, EtiquetaDestacado } from '@/components/Destacado';
 import { puestosPorDj, subirPodio, type Puesto } from '@/lib/podio';
 import MedallaTarjeta, { ANILLO_PODIO } from '@/components/MedallaTarjeta';
 import { expandRole, canonicalRole, passesPhotoGate, PHOTO_GATE_OR, DJ_GENRES } from '@/lib/constants';
@@ -429,7 +430,7 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   const orFilter = dbRoles.map(r => `role.eq.${r}`).join(',') + ',' + dbRoles.map(r => `roles.cs.{${r}}`).join(',');
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, experience_level, show_new_badge')
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, subscription_tier, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, experience_level, show_new_badge')
     .or(orFilter)
     // Un empresario que tenga esta categoria en su array `roles` (segundo
     // oficio marcado por error o dato legacy) hace match por roles.cs — se
@@ -520,7 +521,7 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
   // columna `role` en vez de reintroducir el ORDER BY en BD.
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, roles, genres, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, city_ref')
+    .select('user_id, display_name, role, roles, genres, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, subscription_tier, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, city_ref')
     .not('display_name', 'is', null)
     .limit(1000) as any;
 
@@ -958,7 +959,7 @@ function DirectorioPublicoContenido() {
                 <div className="rounded-2xl overflow-hidden flex flex-col flex-1 bg-white"
                   style={{
                     border: '1px solid rgba(0,0,0,0.12)',
-                    boxShadow: puestos.get(p.user_id) ? ANILLO_PODIO[puestos.get(p.user_id)!] : '0 2px 12px rgba(0,0,0,0.1)',
+                    boxShadow: puestos.get(p.user_id) ? ANILLO_PODIO[puestos.get(p.user_id)!] : esDestacado(p as any) ? ANILLO_DESTACADO : '0 2px 12px rgba(0,0,0,0.1)',
                   }}>
 
                   {/* Foto — tall on mobile (3:4), wide on desktop (4:3) */}
@@ -987,6 +988,7 @@ function DirectorioPublicoContenido() {
                       )}
                       <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 45%)' }} />
                     </div>
+                    {esDestacado(p as any) && <EtiquetaDestacado className="absolute bottom-2.5 left-2.5 z-10" />}
                     {/* Badges */}
                     <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
                       {(p as any).is_seed && (

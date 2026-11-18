@@ -1,3 +1,5 @@
+import { planDe } from '@/lib/ventajasPlan';
+
 // Máximo de completeness() (más abajo): hasMedia(4) + photo(2) + bio(1).
 export const COMPLETENESS_MAX = 7;
 
@@ -41,6 +43,7 @@ export function hashDaily(id: string, date = new Date()): number {
 }
 
 interface PerfilOrden {
+  subscription_tier?: string | null;
   user_id?: string | null;
   id?: string | null;
   photo_url?: string | null;
@@ -61,6 +64,15 @@ export function completeness(p: PerfilOrden): number {
   return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
 }
 
+// Perfil Premium con foto: es el único que sube por plan (18 nov 2026, ventaja
+// "Posición destacada" de Premium). Es la MISMA función que decide el aro dorado y
+// la etiqueta "Destacado" de la tarjeta, para que lo que se ve y lo que se ordena
+// no puedan diferir. Quien no trae subscription_tier (home, Top Weekend...) no
+// sube: esas listas no son resultados del directorio y no llevan posición de pago.
+export function esDestacado(p: Pick<PerfilOrden, 'subscription_tier' | 'photo_url'>): boolean {
+  return planDe(p.subscription_tier) === 'business' && !!p.photo_url;
+}
+
 // Orden único del directorio (DirectoryView, /directorio y /descubrir).
 //
 // 12 oct 2026: "verificado" iba ANTES que completeness y la rotación, así que
@@ -75,6 +87,10 @@ export function compararDirectorio(a: PerfilOrden, b: PerfilOrden, date = new Da
   // cuanto sube una.
   const foto = Number(!!b.photo_url) - Number(!!a.photo_url);
   if (foto) return foto;
+  // Premium con foto: por delante del resto (rotulado "Destacado" en la tarjeta).
+  // Dentro del grupo siguen las reglas de abajo, así que también rotan cada día.
+  const dest = Number(esDestacado(b)) - Number(esDestacado(a));
+  if (dest) return dest;
   // Insignia de prioridad vigente (solo la trae DirectoryView).
   const prioridad = (p: PerfilOrden) => Number(!!p.priority_badge_until && new Date(p.priority_badge_until) > date);
   const prio = prioridad(b) - prioridad(a);

@@ -77,7 +77,12 @@ const CondicionesSuscripcion = () => (
         <p>La suscripción da acceso a ventajas de visibilidad y herramientas dentro de XPEAK. No garantiza contrataciones ni un número de contactos: XPEAK es un intermediario tecnológico y los contratos se celebran entre empresarios y profesionales, como indica el Aviso Legal.</p>
       </Section>
 
-      <Section title="10. Contacto y reclamaciones">
+      <Section title="10. Cómo se ordena el directorio y la posición destacada">
+        <p>El directorio de XPEAK ordena los perfiles así: primero los que tienen foto (y, entre los DJ, los de sets más escuchados del podio); entre ellos, los perfiles del plan Premium, que se muestran con un aro dorado y la etiqueta "Destacado" para que se vea que es una posición incluida en ese plan; después, los perfiles con insignia de prioridad por invitar a amigos; y a continuación el resto, de más a menos completos.</p>
+        <p>Dentro de cada grupo el orden rota cada día, de forma que ningún perfil se queda siempre en la misma posición. La valoración de los clientes no se compra ni se altera con ningún plan.</p>
+      </Section>
+
+      <Section title="11. Contacto y reclamaciones">
         <p>Para cualquier duda o reclamación: info@xpeak.site. Resolvemos lo antes posible. El consumidor también puede acudir a los servicios de consumo de su comunidad autónoma.</p>
       </Section>
 
