@@ -947,7 +947,7 @@ const Auth = () => {
                     ))}
                   </div>
                   <p className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
-                    <strong style={{ color: '#111' }}>DJs, fotógrafos y staff</strong> ya consiguen bolos aquí
+                    <strong style={{ color: '#111' }}>DJs, fotógrafos y staff</strong> ya consiguen trabajo aquí
                   </p>
                 </div>
               </div>
@@ -1014,16 +1014,14 @@ const Auth = () => {
               </div>
 
               {/* Heading */}
-              <div className="mb-6">
-                <h3 className="text-lg font-black mb-1 leading-normal pb-0.5" style={{ color: '#111' }}>
-                  {isLogin ? 'Accede a XPEAK' : 'Crear cuenta'}
-                </h3>
-                {!isLogin && (
-                  <p className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
-                    Solo 30 segundos · Sin tarjeta de crédito
-                  </p>
-                )}
-              </div>
+              {/* Sin título "Crear cuenta"/"Accede a XPEAK": repetía la pestaña
+                  activa de arriba (auditoría 18 nov 2026). Una línea dice las dos
+                  formas de entrar, porque mucha gente no veía la del correo. */}
+              <p className="mb-5 text-sm" style={{ color: 'rgba(0,0,0,0.65)' }}>
+                {isLogin
+                  ? (isInAppBrowser || confirmadoParam ? 'Entra con tu correo y tu contraseña.' : 'Entra con Google o con tu correo y contraseña.')
+                  : 'Solo 30 segundos · Sin tarjeta de crédito'}
+              </p>
 
               {/* Quien llega del anuncio de Instagram cae directo en el formulario
                   sin haber visto nada de XPEAK. /descubrir se ve sin cuenta y
@@ -1118,9 +1116,6 @@ const Auth = () => {
                 </div>
               )}
 
-              {/* Fichas reales con un poco de scroll (ver FichasRealesTira). */}
-              {!isLogin && <FichasRealesTira />}
-
               {/* === GOOGLE — primary CTA (oculto en webviews: OAuth bloqueado) === */}
               {!isInAppBrowser && !confirmadoParam && (
               <button
@@ -1145,20 +1140,26 @@ const Auth = () => {
                       <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
                       <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                     </svg>
-                    {isLogin ? 'Iniciar sesión con Google' : 'Continuar con Google'}
+                    {isLogin ? 'Entrar con Google' : 'Continuar con Google'}
                   </>
                 )}
               </button>
               )}
-              {!isInAppBrowser && !isLogin && (
+              {!isInAppBrowser && !confirmadoParam && !isLogin && (
                 <div className="-mt-2.5 mb-4"><AceptacionLegal accion="Al continuar con Google" /></div>
               )}
 
               {!isInAppBrowser && !confirmadoParam && (
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.1)' }} />
-                <span className="text-xs" style={{ color: 'rgba(0,0,0,0.5)' }}>o con email</span>
-                <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.1)' }} />
+              // Antes "o con email" en 12 px gris al 50 %: la gente no lo veía y
+              // creía que solo se podía con Google (18 nov 2026).
+              <div className="flex items-center gap-3 my-5" role="separator" aria-label="O con tu correo">
+                <div className="flex-1 h-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.45)' }} />
+                <span className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-black"
+                  style={{ background: '#FBF3DD', border: '1px solid rgba(212,175,55,0.55)', color: '#5c4a12' }}>
+                  <Mail size={14} strokeWidth={2.4} />
+                  {isLogin ? 'O entra con tu correo' : 'O regístrate con tu correo'}
+                </span>
+                <div className="flex-1 h-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.45)' }} />
               </div>
               )}
 
@@ -1251,10 +1252,18 @@ const Auth = () => {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                    className="absolute right-1 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-muted-foreground hover:text-white transition-colors">
+                    className="absolute right-1 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
+
+                {isLogin && !showForgot && (
+                  <button type="button" onClick={() => { setForgotEmail(email); setShowForgot(true); }}
+                    className="-mt-1 block ml-auto py-1.5 text-sm font-bold transition-opacity hover:opacity-80"
+                    style={{ color: '#8B6A00' }}>
+                    ¿Olvidaste tu contraseña?
+                  </button>
+                )}
 
                 {/* Password strength */}
                 {passwordStrength && (
@@ -1327,14 +1336,6 @@ const Auth = () => {
                       {googleLoading ? 'Conectando…' : 'Continuar con Google'}
                     </button>
                   </div>
-                )}
-
-                {/* Gancho de fricción — la duda de último momento antes de enviar.
-                    Solo en registro: en login no hay nada que "decidir". */}
-                {!isLogin && (
-                  <p className="text-center text-xs font-bold" style={{ color: '#8B6A00' }}>
-                    Menos de 1 minuto para crear tu perfil
-                  </p>
                 )}
 
                 {isLogin && sinConfirmar && (
@@ -1447,7 +1448,7 @@ const Auth = () => {
                       : !captchaToken && !inAppSignup
                         ? 'Verificando seguridad…'
                         : isLogin
-                          ? 'Iniciar Sesión'
+                          ? 'Entrar'
                           : roleParam === 'empresario'
                             ? 'Empezar a contratar →'
                             : 'Publicar mi perfil →'}
@@ -1505,17 +1506,6 @@ const Auth = () => {
                 </div>
               )}
 
-              {/* Forgot password */}
-              {isLogin && !showForgot && (
-                <button
-                  type="button"
-                  onClick={() => setShowForgot(true)}
-                  className="block w-full mt-1 py-3 text-sm text-center transition-opacity hover:opacity-80"
-                  style={{ color: 'rgba(0,0,0,0.65)' }}>
-                  ¿Olvidaste tu contraseña?
-                </button>
-              )}
-
               {showForgot && (
                 <div className="mt-4 p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                   {forgotSent ? (
@@ -1551,32 +1541,25 @@ const Auth = () => {
                 </div>
               )}
 
-              {/* Toggle login / registro */}
-              <div className="mt-5 pt-5 flex items-center justify-center gap-1.5" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
-                <span className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
-                  {isLogin ? '¿Nuevo en XPEAK?' : '¿Ya tienes cuenta?'}
-                </span>
-                <button
-                  onClick={() => { track('auth_toggle_mode', { to: isLogin ? 'register' : 'login' }); setIsLogin(!isLogin); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
-                  className="py-2.5 px-1 text-sm font-bold transition-opacity hover:opacity-80"
-                  style={{ color: '#8B6A00' }}>
-                  {isLogin ? 'Crear cuenta →' : 'Inicia sesión →'}
-                </button>
-              </div>
+              {/* Fichas reales: antes iban encima de Google y empujaban Google y
+                  el correo fuera de la primera pantalla del móvil. El enlace
+                  "¿Ya tienes cuenta? Inicia sesión" que había aquí repetía las
+                  pestañas de arriba y se quitó (18 nov 2026). */}
+              {!isLogin && <div className="mt-6"><FichasRealesTira /></div>}
 
               {/* Trust signals */}
-              <div className="mt-4 flex items-center justify-center gap-4">
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5">
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck size={13} style={{ color: 'rgba(0,0,0,0.5)' }} />
-                  <span className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>Datos seguros</span>
+                  <span className="text-xs whitespace-nowrap" style={{ color: 'rgba(0,0,0,0.6)' }}>Datos seguros</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Zap size={13} style={{ color: 'rgba(0,0,0,0.5)' }} />
-                  <span className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>Sin spam</span>
+                  <span className="text-xs whitespace-nowrap" style={{ color: 'rgba(0,0,0,0.6)' }}>Sin spam</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Users size={13} style={{ color: 'rgba(0,0,0,0.5)' }} />
-                  <span className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>Comunidad verificada</span>
+                  <span className="text-xs whitespace-nowrap" style={{ color: 'rgba(0,0,0,0.6)' }}>Comunidad verificada</span>
                 </div>
               </div>
 
