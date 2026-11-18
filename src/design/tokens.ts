@@ -196,12 +196,12 @@ export const TIER_ORDER = ['free', 'starter', 'business', 'premium', 'agency', '
 export type Tier = typeof TIER_ORDER[number];
 
 export const tierMeta: Record<Tier, { label: string; order: number; color: string; bg: string; border: string }> = {
-  free:     { label: 'Free',     order: 0, color: '#8E8EA0', bg: 'rgba(255,255,255,0.04)',    border: 'rgba(142,142,160,0.20)' },
-  starter:  { label: 'Starter',  order: 1, color: '#A8C5DA', bg: 'rgba(168,197,218,0.08)',  border: 'rgba(168,197,218,0.20)' },
-  business: { label: 'Business', order: 2, color: '#D4AF37', bg: 'rgba(212,175,55,0.10)',   border: 'rgba(212,175,55,0.22)' },
-  premium:  { label: 'Business', order: 2, color: '#D4AF37', bg: 'rgba(212,175,55,0.10)',   border: 'rgba(212,175,55,0.22)' },
-  agency:   { label: 'Agencia',  order: 3, color: '#D4AF37', bg: 'rgba(212,175,55,0.15)',   border: 'rgba(212,175,55,0.30)' },
-  elite:    { label: 'Agencia',  order: 3, color: '#D4AF37', bg: 'rgba(212,175,55,0.15)',   border: 'rgba(212,175,55,0.30)' },
+  free:     { label: 'Esencial', order: 0, color: '#8E8EA0', bg: 'rgba(255,255,255,0.04)',    border: 'rgba(142,142,160,0.20)' },
+  starter:  { label: 'Profesional', order: 1, color: '#A8C5DA', bg: 'rgba(168,197,218,0.08)',  border: 'rgba(168,197,218,0.20)' },
+  business: { label: 'Premium', order: 2, color: '#D4AF37', bg: 'rgba(212,175,55,0.10)',   border: 'rgba(212,175,55,0.22)' },
+  premium:  { label: 'Premium', order: 2, color: '#D4AF37', bg: 'rgba(212,175,55,0.10)',   border: 'rgba(212,175,55,0.22)' },
+  agency:   { label: 'Premium',  order: 3, color: '#D4AF37', bg: 'rgba(212,175,55,0.15)',   border: 'rgba(212,175,55,0.30)' },
+  elite:    { label: 'Premium',  order: 3, color: '#D4AF37', bg: 'rgba(212,175,55,0.15)',   border: 'rgba(212,175,55,0.30)' },
 };
 
 // ─── Role Metadata ────────────────────────────────────────────────────────────

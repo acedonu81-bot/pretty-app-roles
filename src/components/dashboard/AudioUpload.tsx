@@ -1,3 +1,4 @@
+import { ventajasDe, nombrePlan } from '@/lib/ventajasPlan';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Upload, Music, X, Plus, Link } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,11 +34,8 @@ const sanitizeFileName = (name: string): string =>
     .replace(/_+/g, '_')
     .replace(/^_|_$/g, '');
 
-const MAX_SESSIONS_PRO = 15;
-// Plan Free: 3 sets (perfil de DJ, fase 3, 1 nov 2026; ampliable en los de
-// pago, por decidir). Quien ya tenía más los conserva, solo no puede añadir.
-// La BD lo impone también (trigger limite_sets_free).
-const MAX_SESSIONS_FREE = 3;
+// Sets por plan desde ventajasPlan (Esencial 3, Profesional 10, Premium ilimitados).
+// Quien ya tenía más los conserva, solo no puede añadir. La BD lo impone también.
 const MAX_FILE_MB = 45;
 
 type SessionType = 'file' | 'soundcloud' | 'mixcloud' | 'hearthis';
@@ -142,11 +140,8 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
   const profile = useProfile();
   const { fichas, recargar: recargarFichas } = useSetFichas(user?.id);
   const [fichaAbierta, setFichaAbierta] = useState<string | null>(null);
-  const esFree = (profile.subscription_tier ?? 'free') === 'free';
-  const maxSesiones = esFree ? MAX_SESSIONS_FREE : MAX_SESSIONS_PRO;
-  const mensajeLimite = esFree
-    ? `En el plan Free puedes tener hasta ${MAX_SESSIONS_FREE} sets publicados. Quita uno para subir otro.`
-    : `Máximo ${MAX_SESSIONS_PRO} sesiones.`;
+  const maxSesiones = ventajasDe(profile.subscription_tier).sets;
+  const mensajeLimite = `En el plan ${nombrePlan(profile.subscription_tier)} puedes tener hasta ${maxSesiones} sets publicados. Quita uno para subir otro o mejora tu plan.`;
 
   useEffect(() => {
     if (profile.genres && profile.genres.length > 0) {
@@ -340,7 +335,7 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
       <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
         <Music size={16} style={{ color: '#8A6D0F' }} /> Sesiones de Audio
         <span className="text-xs text-muted-foreground ml-auto">
-          {sessions.length}/{maxSesiones}
+          {Number.isFinite(maxSesiones) ? `${sessions.length}/${maxSesiones}` : sessions.length}
         </span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">

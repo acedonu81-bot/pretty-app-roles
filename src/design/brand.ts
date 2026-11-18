@@ -132,16 +132,16 @@ export const NAV_LABELS: Record<string, string> = {
 // ─── Subscription Tier Labels ─────────────────────────────────────────────────
 
 export const TIER_LABELS: Record<string, string> = {
-  free:     'Free',
-  starter:  'Starter',
-  business: 'Business',
-  premium:  'Business',   // legacy alias
-  agency:   'Agencia',
-  elite:    'Agencia',    // legacy alias
+  free:     'Esencial',
+  starter:  'Profesional',
+  business: 'Premium',
+  premium:  'Premium',    // legacy alias
+  agency:   'Premium',    // Agencia fuera (13 nov 2026)
+  elite:    'Premium',    // legacy alias
 };
 
 /** Returns the display label for any tier string, including aliases */
-export const tierLabel = (tier: string): string => TIER_LABELS[tier] ?? 'Free';
+export const tierLabel = (tier: string): string => TIER_LABELS[tier] ?? 'Esencial';
 
 // ─── Geo ──────────────────────────────────────────────────────────────────────
 

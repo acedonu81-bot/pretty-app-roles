@@ -1,3 +1,4 @@
+import { ventajasDe } from '@/lib/ventajasPlan';
 import { useEffect, useState } from 'react';
 import { CheckCircle } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
@@ -10,17 +11,18 @@ const MUSICA = ['dj', 'grupo-musical', 'disco-movil'];
 
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 
+const V = { free: ventajasDe('free'), starter: ventajasDe('starter'), business: ventajasDe('business') };
 const VENTAJAS: Record<'free' | PlanPago, { comun: string[]; musica: string[] }> = {
   free: {
-    comun: ['Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas', 'Ofertas Flash Booking', 'Portafolio de 6 fotos'],
-    musica: ['Hasta 3 sets en tu perfil', 'Concursos de DJs de XPEAK'],
+    comun: ['Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas', 'Ofertas Flash Booking', `Portafolio de ${V.free.fotos} fotos`],
+    musica: [`Hasta ${V.free.sets} sets en tu perfil`, `${V.free.linksSesion} link de sesión`, 'Concursos de DJs de XPEAK'],
   },
   starter: {
-    comun: ['Avisos por WhatsApp de trabajo', 'Tu Instagram, TikTok y web visibles', 'Verificación ampliada', 'Estadísticas de visitas y mensajes', 'Portafolio de 12 fotos', 'Sorteos entre suscriptores'],
-    musica: ['Hasta 10 sets en tu perfil', 'Hasta 3 links de sesión'],
+    comun: ['Avisos por WhatsApp de trabajo', 'Tu Instagram, TikTok y web visibles', 'Verificación ampliada', 'Estadísticas de visitas y mensajes', `Portafolio de ${V.starter.fotos} fotos`, 'Sorteos entre suscriptores'],
+    musica: [`Hasta ${V.starter.sets} sets en tu perfil`, `Hasta ${V.starter.linksSesion} links de sesión`],
   },
   business: {
-    comun: ['Todo lo de Profesional', 'Posición destacada y aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Prioridad en los comunicados', 'Apareces una vez al mes en las redes de XPEAK', 'Ficha con vídeo de fondo', 'Estadísticas avanzadas', 'Portafolio de 20 fotos'],
+    comun: ['Todo lo de Profesional', 'Posición destacada y aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Prioridad en los comunicados', 'Apareces una vez al mes en las redes de XPEAK', 'Ficha con vídeo de fondo', 'Estadísticas avanzadas', `Portafolio de ${V.business.fotos} fotos`],
     musica: ['Sets ilimitados', 'Links de sesión ilimitados'],
   },
 };
