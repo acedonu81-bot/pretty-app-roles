@@ -2557,6 +2557,22 @@ async function atender(req: Request): Promise<Response> {
       if (!allowed) {
         return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: corsHeaders });
       }
+      // Aviso de mensaje desde el navegador (18 nov 2026, revisión de seguridad):
+      // solo a alguien con quien ya tienes conversación, y el nombre del
+      // remitente sale de tu perfil, no de lo que mande el navegador.
+      if (type === 'new_message') {
+        const sb = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+        const dest = typeof data?.user_id === 'string' ? data.user_id : '';
+        if (!callerId || !/^[0-9a-f-]{36}$/.test(dest)) return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: corsHeaders });
+        const { data: conv } = await sb.from('conversations').select('id')
+          .or(`and(participant_a.eq.${callerId},participant_b.eq.${dest}),and(participant_a.eq.${dest},participant_b.eq.${callerId})`)
+          .limit(1).maybeSingle();
+        if (!conv) return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: corsHeaders });
+        const { data: quien } = await sb.from('profiles').select('display_name')
+          .eq('user_id', callerId).order('is_primary', { ascending: false }).limit(1).maybeSingle();
+        data.sender_name = quien?.display_name?.trim().slice(0, 60) || 'Un usuario';
+        delete data.professional_user_id;
+      }
       if (ADMIN_TYPES.includes(type)) {
         const adminClient = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
         const { data: isAdmin } = await adminClient.from('user_roles').select('role').eq('user_id', callerId).eq('role', 'admin').maybeSingle();
