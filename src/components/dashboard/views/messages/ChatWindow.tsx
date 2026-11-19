@@ -1,4 +1,3 @@
-import { NOTA_CONTACTO_BLOQUEADO, NOTA_CONTACTO_DESBLOQUEADO } from '@/lib/contactoChat';
 import { fechaLegible, type SolicitudChat } from '@/lib/solicitudChat';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { leerAcuerdo, estadoAcepto, REF_ACUERDO } from '@/lib/acuerdoChat';
@@ -47,8 +46,6 @@ interface Props {
   onReportUser?: (reason: string) => void;
   /** Botón "Acepto" junto al cuadro de escribir (solo organizador ↔ profesional). */
   onAcepto?: (condicionesCodificadas: string) => void;
-  /** Contacto en el chat: false = bloqueado hasta que los dos acepten, true = desbloqueado, null = no aplica. */
-  contactoAcuerdo?: boolean | null;
   /** Profesional del acuerdo, para el contrato opcional en PDF. */
   profesionalAcuerdo?: { userId: string; name: string; role: string } | null;
   /** Reserva creada por cada mensaje que cerró un acuerdo (id del mensaje → reserva). */
@@ -74,7 +71,7 @@ const ChatWindow = ({
   input, setInput,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
-  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, onAcepto, contactoAcuerdo, onAceptarAcuerdo, profesionalAcuerdo, reservasAcuerdo, onCancelarAcuerdo, onValorarAcuerdo,
+  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser, onAcepto, onAceptarAcuerdo, profesionalAcuerdo, reservasAcuerdo, onCancelarAcuerdo, onValorarAcuerdo,
 }: Props) => {
   const { pendientes: aceptanAhora, condiciones: condicionesAbiertas, cierres: acuerdosCerrados, aceptadas: propuestasAceptadas } = estadoAcepto(messages);
   const yaAcepte = aceptanAhora.has(userId);
@@ -431,11 +428,6 @@ const ChatWindow = ({
               acuerdoCerrado
               onClose={() => setContrato(false)} onSaved={() => setContrato(false)} />
           </Suspense>
-        )}
-        {contactoAcuerdo !== undefined && contactoAcuerdo !== null && (
-          <p className="px-3 pb-1.5 text-xs leading-snug" style={{ color: contactoAcuerdo ? '#047857' : '#6B5B1E' }}>
-            {contactoAcuerdo ? NOTA_CONTACTO_DESBLOQUEADO : NOTA_CONTACTO_BLOQUEADO}
-          </p>
         )}
         <div className="flex items-end gap-1">
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
