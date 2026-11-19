@@ -19,6 +19,8 @@ interface BlogScrollCTAProps {
   role?: 'dj' | 'staff' | 'azafata' | 'fotografo' | 'bailarin' | 'makeup' | 'peluqueria' | 'general' | 'empresario' | ProfessionalRole;
   storageKey?: string;
   articlePath?: string;
+  // Para un artículo concreto: cambia texto y destino sin tocar el resto de blogs del rol.
+  destino?: { label?: string; sub?: string; cta: string; ctaShort?: string; href: string };
 }
 
 const CONFIG = {
@@ -153,7 +155,7 @@ const CONFIG = {
   },
 };
 
-export default function BlogScrollCTA({ role = 'general', storageKey, articlePath = '' }: BlogScrollCTAProps) {
+export default function BlogScrollCTA({ role = 'general', storageKey, articlePath = '', destino }: BlogScrollCTAProps) {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [pulse, setPulse] = useState(true);
@@ -195,7 +197,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey, articlePat
 
   if (dismissed) return null;
 
-  const c = CONFIG[role];
+  const c = destino ? { ...CONFIG[role], ...destino } : CONFIG[role];
 
   return (
     <div
