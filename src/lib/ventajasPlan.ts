@@ -96,7 +96,7 @@ export function listaVentajas(plan: Plan, o: Oficios): string[] {
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
   } else if (plan === 'starter') {
-    out.push('Todo lo de Esencial', 'Tu Instagram y TikTok visibles en tu ficha', 'Estadísticas de visitas y mensajes');
+    out.push('Todo lo de Esencial', 'Tu Instagram y TikTok visibles para todos en tu ficha, sin que tengan que escribirte', 'Estadísticas de visitas y mensajes');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
   } else {
