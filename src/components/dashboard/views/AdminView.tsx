@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion, Inbox, Megaphone, Music } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
+import AdminContactosProfesional from './admin/AdminContactosProfesional';
 import AdminCharts from './admin/AdminCharts';
 import AdminHiredContracts from './admin/AdminHiredContracts';
 import AdminUserManagement from './admin/AdminUserManagement';
@@ -153,6 +154,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       {tab === 'overview' && (
         <>
           <AdminMetrics />
+          <AdminContactosProfesional />
           <AdminHiredContracts />
           <AdminCharts />
         </>
