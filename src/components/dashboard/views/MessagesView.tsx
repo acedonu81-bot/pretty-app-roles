@@ -294,7 +294,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         });
         // El otro aceptó el contrato que le propusiste: fuegos para ti también.
         const acuerdo = leerAcuerdo(msg.content);
-        if (acuerdo?.estado === 'aceptado' && acuerdo.ref !== 'ACUERDO') celebrar('¡Enhorabuena!', 'Acuerdo cerrado. Ya está por escrito en este chat.', acuerdo.ref);
+        if (acuerdo?.estado === 'aceptado' && acuerdo.ref !== 'ACUERDO') celebrar('¡Conectados!', 'Ya estáis conectados. Seguid hablando para cerrar los detalles.', acuerdo.ref);
         // Auto-mark incoming messages as read
         if (msg.sender_id !== user.id) {
           supabase.from('messages').update({ read: true }).eq('id', msg.id)
@@ -346,7 +346,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     // El provisional ("tmp-") no: si no, al cambiarse por el guardado salían dos veces.
     if (!ultimo || ultimo.id.startsWith('tmp-') || Date.now() - new Date(ultimo.created_at).getTime() > 120_000) return;
     if (estadoAcepto(messages).cierres.has(ultimo.id)) {
-      celebrar('¡Enhorabuena!', `Acuerdo cerrado con ${activeOtherName || 'tu contacto'}. Queda por escrito en este chat.`, ultimo.id);
+      celebrar('¡Conectados!', `Ya estáis conectados con ${activeOtherName || 'tu contacto'}. Seguid hablando para cerrar los detalles.`, ultimo.id);
       // Se registra como reserva confirmada (historial del organizador,
       // calendario del profesional, métricas y reseña tras el evento). Lo
       // piden los dos lados; la RPC es idempotente y valida las condiciones.
@@ -764,7 +764,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 onValorarAcuerdo={valorarAcuerdo}
                 onAceptarAcuerdo={async ref => {
                   if (await sendMessage(mensajeAceptado(ref))) {
-                    celebrar('¡Enhorabuena!', `Acuerdo cerrado con ${activeOtherName || 'tu contacto'}. Ya está por escrito en este chat.`, ref);
+                    celebrar('¡Conectados!', `Ya estáis conectados con ${activeOtherName || 'tu contacto'}. Seguid hablando para cerrar los detalles.`, ref);
                   }
                 }}
               />

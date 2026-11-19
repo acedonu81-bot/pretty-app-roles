@@ -32,7 +32,7 @@ export function vistaPrevia(contenido: string): string {
     const texto = textoCondiciones(leerCondiciones(a.resumen));
     return texto ? `Acuerdo: ${texto}` : 'Acuerdo';
   }
-  return a.estado === 'propuesto' ? `Propuesta de contrato ${a.ref}` : `Contrato ${a.ref} aceptado`;
+  return a.estado === 'propuesto' ? 'Propuesta para seguir adelante' : 'Propuesta aceptada';
 }
 
 // "Acepto" en el propio chat (16 oct 2026, el usuario: la barra de arriba con el
