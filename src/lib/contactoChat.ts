@@ -27,8 +27,10 @@ export const NOTA_CONTACTO_DESBLOQUEADO =
 const PALABRAS_DE_CONTACTO = [/\binstagram\b/i, /\binsta\b/i, /\bwhats\s?app\b/i, /\bwasap\b/i, /\btelegram\b/i];
 
 export function mencionaContacto(texto: string): boolean {
-  // Los mensajes de acuerdo ("[[acuerdo:...]]") llevan el tipo de evento escrito por el usuario.
-  if (texto.startsWith('[[')) return false;
+  // Sin excepciones, ni siquiera para los mensajes de acuerdo ("[[acuerdo:...]]"):
+  // empezar un texto por "[[" bastaba para saltarse el filtro (revisión de
+  // seguridad, 19 nov 2026). Un tipo de evento que diga "Instagram" se frena
+  // hasta que los dos acepten, y es un caso rarísimo.
   return PALABRAS_DE_CONTACTO.some(p => p.test(texto));
 }
 

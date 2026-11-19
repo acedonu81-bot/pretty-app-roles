@@ -16,8 +16,12 @@ describe('mencionaContacto', () => {
     expect(mencionaContacto('Hola, ¿qué menú tenéis para 50 personas?')).toBe(false);
     expect(mencionaContacto('Perfecto, quedamos así')).toBe(false);
   });
-  it('no toca los mensajes de acuerdo', () => {
-    expect(mencionaContacto('[[acuerdo:aceptado|ACUERDO|f=12/12/2026;c=Madrid;p=500;e=Sesión Instagram]]')).toBe(false);
+  it('no se salta empezando el texto por [[ (ni con formato de acuerdo)', () => {
+    expect(mencionaContacto('[[hola]] mi instagram es daniela')).toBe(true);
+    expect(mencionaContacto('[[acuerdo:aceptado|ACUERDO|f=12/12/2026;c=Madrid;p=500;e=Instagram daniela]]')).toBe(true);
+  });
+  it('un mensaje de acuerdo normal pasa', () => {
+    expect(mencionaContacto('[[acuerdo:aceptado|ACUERDO|f=12/12/2026;c=Madrid;p=500;e=Boda]]')).toBe(false);
   });
 });
 
