@@ -35,6 +35,6 @@ describe('Proponer y aceptar en el chat', () => {
     expect(screen.getByText('Aceptada por ti')).toBeTruthy();
     expect(screen.getByText('Has aceptado la propuesta')).toBeTruthy();
     expect(screen.queryByText('Sustituida por otra propuesta')).toBeNull();
-    expect(screen.getByText('Cerrado')).toBeTruthy();
+    expect(screen.getByText('Conectados')).toBeTruthy();
   });
 });
