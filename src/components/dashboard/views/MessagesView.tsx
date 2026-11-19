@@ -5,7 +5,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { marcarAvisosMensajesLeidos } from '@/hooks/useDashboardBadges';
-import { sanitizeInput } from '@/lib/contentFilter';
+import { sanitizeInput, RAZON_CONTACTO } from '@/lib/contentFilter';
+import { logEvent } from '@/lib/track';
+import { AVISO_CONTACTO_BLOQUEADO, XPEAK_USER_ID, contactoDesbloqueado, mencionaContacto } from '@/lib/contactoChat';
 import { conversationPair } from '@/lib/conversationPair';
 import { toast } from 'sonner';
 import ConversationList from './messages/ConversationList';
@@ -331,6 +333,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   // cerrar_acuerdo_chat.
   const esCliente = (r: string | null) => r === 'empresario' || r === 'pending';
   const hayAcuerdoPosible = !!miRol && !!otroRol && esCliente(miRol) !== esCliente(otroRol);
+  // Con la cuenta oficial de XPEAK no hay acuerdo posible: no se promete desbloqueo.
+  const contactoAplica = hayAcuerdoPosible && activeOtherUserId !== XPEAK_USER_ID;
   const registradosRef = useRef<Set<string>>(new Set());
   const aceptandoRef = useRef(false);
   const profesionalAcuerdo = !hayAcuerdoPosible || !user ? null
@@ -441,8 +445,17 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     if (!activeConvId || !user || sending) return null;
 
     if (text) {
-      const { clean, reason } = sanitizeInput(text, 'default');
-      if (!clean) { toast.error(reason); return null; }
+      // Contacto desbloqueado cuando los dos han aceptado el acuerdo (19 nov 2026).
+      const desbloqueado = contactoDesbloqueado(messages);
+      const { clean, reason } = sanitizeInput(text, 'default', { permitirContacto: desbloqueado });
+      const redBloqueada = contactoAplica && !desbloqueado && mencionaContacto(text);
+      if (!clean || redBloqueada) {
+        const porContacto = redBloqueada || reason === RAZON_CONTACTO;
+        // Solo cuenta el intento: nunca se guarda lo escrito.
+        if (porContacto) void logEvent('cta_click', location.pathname, 'chat_contacto_bloqueado');
+        toast.error(porContacto && contactoAplica ? AVISO_CONTACTO_BLOQUEADO : (reason ?? RAZON_CONTACTO), { duration: porContacto && contactoAplica ? 10000 : undefined });
+        return null;
+      }
     }
 
     // Envío optimista (16 oct 2026): antes se esperaban seis viajes al
@@ -742,6 +755,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 }}
                 onBlockUser={() => { if (activeOtherUserId) blockUser(activeOtherUserId); }}
                 onReportUser={reportUser}
+                contactoAcuerdo={contactoAplica ? contactoDesbloqueado(messages) : null}
                 onAcepto={hayAcuerdoPosible ? async cod => {
                   // Candado: con toques rápidos salían varios "Acepto" seguidos.
                   if (aceptandoRef.current || !user) return;
