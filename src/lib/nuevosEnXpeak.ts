@@ -27,7 +27,8 @@ export function etiquetaAlta(iso: string, ahora: number = Date.now()): string {
   const dias = diaMadrid(ahora) - diaMadrid(t);
   if (dias <= 0) return 'hoy';
   if (dias === 1) return 'ayer';
-  return `hace ${dias} días`;
+  // Pasados dos días el "hace 3 días" resta (19 nov 2026): sin etiqueta de tiempo.
+  return '';
 }
 
 export function siguienteIndice(i: number, n: number): number {

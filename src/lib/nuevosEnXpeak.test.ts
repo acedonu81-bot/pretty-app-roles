@@ -16,8 +16,8 @@ describe('etiquetaAlta', () => {
   it('día anterior: "ayer"', () => {
     expect(etiquetaAlta('2026-11-15T12:00:00Z', AHORA)).toBe('ayer');
   });
-  it('varios días: "hace N días"', () => {
-    expect(etiquetaAlta('2026-11-13T14:38:00Z', AHORA)).toBe('hace 3 días');
+  it('más de un día: sin etiqueta de tiempo (resta)', () => {
+    expect(etiquetaAlta('2026-11-13T14:38:00Z', AHORA)).toBe('');
   });
   it('fecha inválida: cadena vacía, nunca "NaN"', () => {
     expect(etiquetaAlta('no es una fecha', AHORA)).toBe('');
