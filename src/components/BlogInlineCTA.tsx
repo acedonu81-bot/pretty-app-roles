@@ -17,7 +17,8 @@ const CONFIG = {
       headline: 'Encuentra DJ verificado para tu evento con Flash Booking',
       sub: 'DJs con portfolio verificado, tarifas públicas y contrato digital automático. Flash Booking: respuesta en menos de 1 hora.',
       cta: 'Ver DJs disponibles →',
-      href: '/auth?mode=register&intent=contratar-dj',
+      // El botón dice 'Ver DJs': lleva a verlos, no al registro (19 nov 2026).
+      href: '/contratar-dj',
       badge: 'Flash Booking <1h',
     },
   },

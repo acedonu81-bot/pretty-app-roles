@@ -8,7 +8,6 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
-import WarmUpAcademyBanner from '@/components/WarmUpAcademyBanner';
 import BlogDJEquipoPrecio from '@/components/BlogDJEquipoPrecio';
 
 const slug = 'dj-para-empresa-precio';
@@ -102,7 +101,6 @@ export default function BlogDJEmpresa() {
 
             <BlogDJEquipoPrecio contexto="empresa" tituloClass="text-lg font-black mb-4" className="" />
 
-            <WarmUpAcademyBanner variante="tira" origen="blog:dj-empresa-precio" className="" />
 
 
             <section>
@@ -141,7 +139,8 @@ export default function BlogDJEmpresa() {
         <BlogShare />
         <BlogRelatedPosts currentSlug='/blog/dj-empresa-precio' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_empresa" articlePath="/blog/dj-empresa-precio" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_empresa" articlePath="/blog/dj-empresa-precio"
+        destino={{ label: '¿Buscas DJ para tu evento de empresa?', sub: 'DJs verificados con tarifa pública. Mira precios y escríbeles por XPEAK.', cta: 'Ver DJs y precios →', ctaShort: 'Ver DJs →', href: '/contratar-dj' }} />
       </div>
     </>
   );
