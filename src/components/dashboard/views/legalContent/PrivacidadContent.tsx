@@ -31,6 +31,7 @@ export function PrivacidadContent() {
           <li>Gestionar la conexión entre profesionales del sector de eventos y empresarios/organizadores.</li>
           <li>Mostrar tu perfil profesional en el directorio público correspondiente a tu oficio.</li>
           <li>Enviar notificaciones sobre solicitudes de contratación de última hora ("Flash Booking") y mensajes recibidos.</li>
+          <li>Si pides un profesional desde el formulario de solicitud y dejas tu teléfono (es opcional), usarlo solo para avisarte si un profesional te espera y no has visto su mensaje. No se facilita a los profesionales.</li>
           <PrivacidadFinalidadPago />
         </ul>
       </section>

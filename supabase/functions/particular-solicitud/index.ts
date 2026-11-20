@@ -79,6 +79,16 @@ type Datos = {
   personas?: string; horario?: string;
   // Estilos de música separados por | (obligatorio para el DJ desde el 31 oct 2026).
   musica?: string;
+  // Teléfono opcional (20 nov 2026), ya normalizado. Solo lo usa XPEAK; va a profile_private_data.
+  telefono?: string;
+};
+
+// Misma regla que src/lib/telefonoSolicitud.ts (Deno no importa de src/).
+const normalizarTelefono = (v: string): string | null => {
+  const l = v.replace(/[\s.\-()]/g, '');
+  if (/^(\+34|0034)?[6-9]\d{8}$/.test(l)) return '+34' + l.slice(-9);
+  if (/^\+\d{8,15}$/.test(l)) return l;
+  return null;
 };
 
 // Enlace de confirmación: los datos van en el propio enlace, firmados con
@@ -206,6 +216,13 @@ serve(async (req) => {
     if (!fechaValida(d.date)) return json({ error: 'Pon la fecha del evento' }, 400);
     if (d.location.length < 3 || !/\p{L}{3}/u.test(d.location)) return json({ error: 'Pon la ciudad del evento' }, 400);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) return json({ error: 'Email no válido' }, 400);
+    // Teléfono opcional: vacío vale; si viene, tiene que ser un número real.
+    const telRaw = limpio(body.phone, 30);
+    if (telRaw) {
+      const tel = normalizarTelefono(telRaw);
+      if (!tel) return json({ error: 'El teléfono no es válido. Escríbelo con 9 cifras o déjalo en blanco' }, 400);
+      d.telefono = tel;
+    }
 
     // Un profesional que usa este formulario con su propio correo (caso DJ DERRE, 20 oct):
     // primero que cree un perfil de organizador; si no, aquí todo el mundo prueba.
@@ -270,6 +287,14 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
   } else {
     console.error('[particular-solicitud] createUser:', creado.error);
     return json({ error: 'No se pudo registrar la solicitud' }, 500);
+  }
+  // Teléfono opcional: se guarda en la tabla privada (solo lo lee el dueño y el admin) y
+  // solo si esa cuenta no tenía ya uno. Un fallo aquí nunca debe tumbar la solicitud.
+  if (userId && d.telefono) {
+    try {
+      const { data: previo } = await admin.from('profile_private_data').select('phone').eq('user_id', userId).maybeSingle();
+      if (!previo?.phone) await admin.from('profile_private_data').upsert({ user_id: userId, phone: d.telefono }, { onConflict: 'user_id' });
+    } catch (e) { console.warn('[particular-solicitud] teléfono no guardado', e); }
   }
   // Profesionales del oficio.
   const roles = ROLES_POR_SERVICIO[service] ?? [];
