@@ -2,13 +2,14 @@ import { useMemo, useState } from 'react';
 import { Play } from 'lucide-react';
 import { parseStreamUrl, normalizeStreamUrl } from '@/lib/streaming';
 import { enlaceDirectoValido } from '@/lib/directo';
+import { medirDirecto } from '@/lib/track';
 
 /**
  * Reproductor de un directo (Twitch o YouTube). No carga el iframe hasta que
  * alguien pulsa: así la ficha no baja de velocidad (mismo criterio que
  * EmbedDiferido con Mixcloud y hearthis). La CSP ya permite player.twitch.tv.
  */
-export default function DirectoPlayer({ url, titulo }: { url: string; titulo: string }) {
+export default function DirectoPlayer({ url, titulo, userId, origen = 'ficha' }: { url: string; titulo: string; userId?: string | null; origen?: string }) {
   const [cargado, setCargado] = useState(false);
   // parseStreamUrl acepta cualquier host que "contenga" twitch.tv; aquí se exige el dominio anclado
   // antes de incrustar o enlazar nada que venga de un campo que escribe el usuario.
@@ -30,7 +31,7 @@ export default function DirectoPlayer({ url, titulo }: { url: string; titulo: st
             style={{ border: 'none' }}
           />
         ) : (
-          <button type="button" onClick={() => setCargado(true)} aria-label={`Ver el directo: ${titulo}`}
+          <button type="button" onClick={() => { medirDirecto('play', origen, userId); setCargado(true); }} aria-label={`Ver el directo: ${titulo}`}
             className="absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-3 text-white">
             <span className="flex items-center justify-center rounded-full" style={{ width: 64, height: 64, background: 'rgba(255,255,255,0.16)' }}>
               <Play size={26} fill="#fff" color="#fff" style={{ marginLeft: 3 }} />
@@ -41,7 +42,7 @@ export default function DirectoPlayer({ url, titulo }: { url: string; titulo: st
         )}
       </div>
       {original && (
-        <a href={original} target="_blank" rel="noopener noreferrer"
+        <a href={original} onClick={() => medirDirecto('abrir_externo', origen, userId)} target="_blank" rel="noopener noreferrer"
           className="block text-right text-[0.75rem] underline mt-1" style={{ color: '#6b7280' }}>
           ¿No carga? Abrir en {web}
         </a>

@@ -417,3 +417,26 @@ export function clicRedSocial(
   track('social_click', { red, origen });
   void logEvent('cta_click', location.pathname, `redes ${red} ${origen} ${profesionalUserId}`);
 }
+
+/**
+ * Medición de los directos (20 nov 2026). Va a la analítica propia como
+ * cta_click con detalle "directo <accion> <origen> <user_id del que emite>",
+ * así cuenta a todo el mundo (GA4 solo ve a quien acepta cookies).
+ * Las acciones de "visto" se registran una vez por sesión y directo.
+ */
+export type AccionDirecto =
+  | 'barra_vista' | 'barra_clic' | 'lista_clic'
+  | 'ficha_vista' | 'play' | 'abrir_externo' | 'escribir'
+  | 'panel_vista' | 'empezar' | 'terminar';
+
+export function medirDirecto(accion: AccionDirecto, origen: string, userId?: string | null) {
+  try {
+    if (accion.endsWith('_vista')) {
+      const k = `dir_${accion}_${origen}_${userId ?? ''}`;
+      if (sessionStorage.getItem(k)) return;
+      sessionStorage.setItem(k, '1');
+    }
+  } catch { /* sin sessionStorage: se registra igualmente */ }
+  track(`directo_${accion}`, { origen });
+  void logEvent('cta_click', location.pathname, `directo ${accion} ${origen} ${userId ?? ''}`.trim().slice(0, 120));
+}

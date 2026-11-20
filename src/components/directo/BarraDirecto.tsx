@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { useDirectoAhora } from '@/hooks/useDirectoAhora';
 import { ROLE_LABELS } from '@/hooks/useActivityFeed';
 import PildoraDirecto from './PildoraDirecto';
+import { medirDirecto } from '@/lib/track';
 
 /**
  * Barra fina sobre la cabecera de la landing. Solo aparece si hay alguien en
@@ -18,6 +19,8 @@ export default function BarraDirecto() {
     const vistos = new Set<string>();
     return directos.filter(d => (vistos.has(d.user_id) ? false : (vistos.add(d.user_id), true)));
   }, [directos]);
+  const idPrimero = personas[0]?.user_id;
+  useEffect(() => { if (idPrimero) medirDirecto('barra_vista', 'landing', idPrimero); }, [idPrimero]);
   if (personas.length === 0) return null;
 
   const primero = personas[0];
@@ -34,13 +37,13 @@ export default function BarraDirecto() {
             : <><b>{nombre(primero)}</b> está en directo ahora</>}
         </span>
         {varios ? (
-          <button type="button" onClick={() => setAbierta(a => !a)} aria-expanded={abierta}
+          <button type="button" onClick={() => { medirDirecto('barra_clic', 'landing_varios'); setAbierta(a => !a); }} aria-expanded={abierta}
             className="flex-shrink-0 inline-flex items-center gap-1 font-black text-[0.82rem] px-3.5 py-1.5 rounded-full"
             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
             Ver directos <ChevronDown size={14} style={{ transform: abierta ? 'rotate(180deg)' : undefined }} />
           </button>
         ) : (
-          <Link to={`/p/${primero.user_id}`} className="flex-shrink-0 font-black text-[0.82rem] px-3.5 py-1.5 rounded-full"
+          <Link to={`/p/${primero.user_id}`} onClick={() => medirDirecto('barra_clic', 'landing', primero.user_id)} className="flex-shrink-0 font-black text-[0.82rem] px-3.5 py-1.5 rounded-full"
             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
             Ver directo
           </Link>
@@ -50,7 +53,7 @@ export default function BarraDirecto() {
         <ul className="max-w-xl mx-auto px-3 pb-3 flex flex-col gap-1.5">
           {personas.map(d => (
             <li key={d.user_id}>
-              <Link to={`/p/${d.user_id}`} className="flex items-center gap-3 rounded-xl px-3 py-2"
+              <Link to={`/p/${d.user_id}`} onClick={() => medirDirecto('lista_clic', 'landing', d.user_id)} className="flex items-center gap-3 rounded-xl px-3 py-2"
                 style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.35)' }}>
                 <span className="min-w-0 flex-1">
                   <span className="block font-bold text-sm truncate">{nombre(d)}</span>

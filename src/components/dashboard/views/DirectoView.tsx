@@ -8,6 +8,7 @@ import { useDirectoAhora } from '@/hooks/useDirectoAhora';
 import { ROLE_LABELS } from '@/hooks/useActivityFeed';
 import { DIRECTO_HORAS_MAX, directoVigente, enlaceDirectoValido, puedeHacerDirecto } from '@/lib/directo';
 import DirectoPlayer from '@/components/directo/DirectoPlayer';
+import { medirDirecto } from '@/lib/track';
 import PildoraDirecto from '@/components/directo/PildoraDirecto';
 
 const card = { background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.45)' } as const;
@@ -49,6 +50,7 @@ export default function DirectoView() {
     setGuardando(false);
     if (error) { toast.error('No se pudo empezar el directo: ' + error.message); return; }
     await profile.refresh();
+    medirDirecto('empezar', 'panel', profile.user_id);
     toast.success('Ya apareces en directo en XPEAK. Empieza a emitir en Twitch.');
   };
 
@@ -61,6 +63,7 @@ export default function DirectoView() {
     setGuardando(false);
     if (error) { toast.error('No se pudo terminar el directo: ' + error.message); return; }
     await profile.refresh();
+    medirDirecto('terminar', 'panel', profile.user_id);
     toast.success('Directo terminado.');
   };
 
@@ -130,7 +133,7 @@ export default function DirectoView() {
               {enlaceOk && (
                 <div>
                   <p className="text-xs font-semibold mb-1.5" style={{ color: '#6b7280' }}>Así se verá en tu ficha:</p>
-                  <DirectoPlayer url={enlace} titulo={titulo.trim() || 'Vista previa de tu directo'} />
+                  <DirectoPlayer origen="panel_previa" url={enlace} titulo={titulo.trim() || 'Vista previa de tu directo'} />
                 </div>
               )}
             </>
