@@ -401,7 +401,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
             )}
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} iconAlert={msgBadge > 0} navId="messages" />
             <NavItem icon={Newspaper} label="Novedades" isActive={activeView === 'comunicados' || activeView === 'feed'} onClick={() => onViewChange('comunicados')} iconAlert={hayNuevoFeed || hayNovedades} navId="comunicados" etiqueta={concursoActivo() ? 'Concurso DJ' : undefined} />
-            <NavItem icon={Radio} label="En directo" isActive={activeView === 'directo'} onClick={() => onViewChange('directo')} iconAlert={directosAhora.length > 0} navId="directo" />
+            <NavItem icon={Radio} label="En directo" isActive={activeView === 'directo'} onClick={() => onViewChange('directo')} iconAlert={directosAhora.length > 0} badge={directosAhora.length > 1 ? directosAhora.length : undefined} badgeColor="green" navId="directo" />
           </SidebarMenu>
         </div>
 
