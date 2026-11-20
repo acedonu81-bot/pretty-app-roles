@@ -14,6 +14,7 @@ import LocalEventosExtraFields from '@/components/dashboard/LocalEventosExtraFie
 import { sanitizeInput } from '@/lib/contentFilter';
 import { DJ_GENRES, ROLE_TAGS, ALQUILER_TAG_GROUPS } from '@/lib/constants';
 import { computeProfileCompleteness } from '@/hooks/useProfileCompleteness';
+import TarjetaHazDirecto from '@/components/directo/TarjetaHazDirecto';
 
 const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   const { user } = useAuth();
@@ -382,6 +383,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           {autoSavedAt && !saving && <span className="self-center text-xs font-bold" style={{ color: '#059669' }} role="status">Guardado</span>}
         </div>
       </div>
+      <TarjetaHazDirecto role={profile.role} enDirecto={profile.is_live} onIr={() => onNavigate?.('directo')} />
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4">
         <div className="flex flex-col gap-4">

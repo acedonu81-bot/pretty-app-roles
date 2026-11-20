@@ -12,6 +12,7 @@ import CondicionesPublicas from '@/components/CondicionesPublicas';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import SetCard from '@/components/SetCard';
 import SetFilaArtista from '@/components/SetFilaArtista';
+import BloqueDirectoFicha, { PildoraHeroDirecto } from '@/components/directo/BloqueDirectoFicha';
 import PestanasPerfilDJ, { ContadoresDJ, PanelPerfilDJ, type PestanaDJ } from '@/components/PestanasPerfilDJ';
 import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
 import LateralArtistaDJ from '@/components/LateralArtistaDJ';
@@ -864,12 +865,7 @@ const PublicProfile = () => {
                     <BadgeCheck size={12} /> Verificado por XPEAK
                   </span>
                 )}
-                {profile.isLive && (
-                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(34,197,94,0.85)', color: '#fff' }}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping inline-block" /> EN VIVO
-                  </span>
-                )}
+                <PildoraHeroDirecto userId={sbProfile?.user_id} />
                 {seoReviews.length > 0 && (
                   <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
@@ -974,6 +970,8 @@ const PublicProfile = () => {
         {/* DJ: dos columnas como Hearthis (contenido + lateral con cifras y contratar). */}
         <div className={esDJ ? 'max-w-6xl mx-auto px-4 sm:px-5 pb-24 pt-4 md:pt-6 md:grid md:grid-cols-[minmax(0,1fr)_18.5rem] md:gap-10' : 'max-w-3xl mx-auto px-5 pb-24 pt-8'}>
           <div className="flex flex-col gap-8">
+
+          <BloqueDirectoFicha userId={sbProfile?.user_id} nombre={profile.name} onContactar={handleContactClick} />
 
           {esDJ && (
             <>

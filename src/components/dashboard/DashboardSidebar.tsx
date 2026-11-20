@@ -1,11 +1,12 @@
 import {
   LayoutGrid, Home, Search, MessageSquare, Megaphone, Settings,
   BarChart3, FileText, CalendarDays, Sparkles, Rss, Newspaper,
-  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Briefcase, Building2, Shield, ThumbsUp,
+  ChevronDown, ChevronLeft, ChevronRight, Plus, User, Briefcase, Building2, Shield, ThumbsUp, Radio,
   type LucideIcon,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
+import { useDirectoAhora } from '@/hooks/useDirectoAhora';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useEffect, useState, useRef } from 'react';
@@ -329,6 +330,8 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
   // el rail de iconos se ven siempre (no hay texto que plegar).
   const TOOL_VIEWS = ['calendar', 'contracts', 'resources', 'resenas'];
   const [toolsOpen, setToolsOpen] = useState(() => TOOL_VIEWS.includes(activeView));
+  // Directos: hay alguien emitiendo ahora (consulta real, caduca a las 8 h).
+  const { directos: directosAhora } = useDirectoAhora();
   useEffect(() => { if (TOOL_VIEWS.includes(activeView)) setToolsOpen(true); }, [activeView]);
 
   useEffect(() => {
@@ -398,6 +401,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
             )}
             <NavItem icon={MessageSquare} label="Mensajes" isActive={activeView === 'messages'} onClick={() => onViewChange('messages')} iconAlert={msgBadge > 0} navId="messages" />
             <NavItem icon={Newspaper} label="Novedades" isActive={activeView === 'comunicados' || activeView === 'feed'} onClick={() => onViewChange('comunicados')} iconAlert={hayNuevoFeed || hayNovedades} navId="comunicados" etiqueta={concursoActivo() ? 'Concurso DJ' : undefined} />
+            <NavItem icon={Radio} label="En directo" isActive={activeView === 'directo'} onClick={() => onViewChange('directo')} iconAlert={directosAhora.length > 0} navId="directo" />
           </SidebarMenu>
         </div>
 

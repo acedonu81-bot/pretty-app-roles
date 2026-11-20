@@ -730,3 +730,21 @@ html.app-instalada .clay-tab-alerta {
 .lt-tag-nuevo { animation: lt-banner 1.8s ease-in-out 3; }
 @keyframes lt-banner { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,175,55,.6); } 50% { transform: scale(1.08); box-shadow: 0 0 0 7px rgba(212,175,55,0); } }
 @media (prefers-reduced-motion: reduce) { .lt-tag-nuevo { animation: none; } }
+
+/* Directos (20 nov 2026): píldora verde eléctrica que late. Se apaga con "reducir movimiento". */
+.directo-pill {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  background: #00E85C; color: #032310; border-radius: 9999px;
+  box-shadow: 0 0 0 3px rgba(0,232,92,0.25), 0 0 14px rgba(0,232,92,0.6);
+}
+.directo-dot { position: relative; width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: #032310; display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .directo-pill { animation: directoHalo 1.6s ease-in-out infinite; }
+  .directo-dot::after { content: ""; position: absolute; inset: -4px; border-radius: 9999px; border: 2px solid #032310; animation: directoAnillo 1.6s cubic-bezier(0,0,.2,1) infinite; }
+}
+@keyframes directoHalo {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,232,92,0.55), 0 0 10px rgba(0,232,92,0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(0,232,92,0), 0 0 24px rgba(0,232,92,0.9); }
+}
+@keyframes directoAnillo { 0% { transform: scale(.6); opacity: .9; } 80%, 100% { transform: scale(2.1); opacity: 0; } }
