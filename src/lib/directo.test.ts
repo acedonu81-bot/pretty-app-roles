@@ -25,12 +25,15 @@ describe('enlaceDirectoValido', () => {
     expect(enlaceDirectoValido('twitch.tv/djkevin')).toBe(true);
     expect(enlaceDirectoValido('https://youtu.be/abc')).toBe(true);
     expect(enlaceDirectoValido('https://www.youtube.com/watch?v=abc')).toBe(true);
+    expect(enlaceDirectoValido('https://www.youtube.com/live/abc123')).toBe(true);
   });
   it('rechaza otras webs y canal vacío', () => {
     expect(enlaceDirectoValido('https://instagram.com/x')).toBe(false);
     expect(enlaceDirectoValido('https://twitch.tv/')).toBe(false);
     expect(enlaceDirectoValido('https://eviltwitch.tv.example.com/x')).toBe(false);
     expect(enlaceDirectoValido('')).toBe(false);
+    expect(enlaceDirectoValido('https://www.youtube.com/@micanal')).toBe(false);
+    expect(enlaceDirectoValido('https://www.youtube.com/')).toBe(false);
   });
 });
 

@@ -33,7 +33,12 @@ export const enlaceDirectoValido = (url: string): boolean => {
     const h = u.hostname.replace(/^www\./, '').toLowerCase();
     if (h === 'twitch.tv' || h.endsWith('.twitch.tv')) return u.pathname.split('/').filter(Boolean).length > 0;
     if (h === 'youtu.be') return u.pathname.split('/').filter(Boolean).length > 0;
-    if (h === 'youtube.com' || h.endsWith('.youtube.com')) return true;
+    if (h === 'youtube.com' || h.endsWith('.youtube.com')) {
+      // En YouTube cada directo tiene su propio enlace de vídeo; el enlace del canal (@nombre)
+      // no se puede incrustar, así que no se acepta.
+      const seg = u.pathname.split('/').filter(Boolean);
+      return !!u.searchParams.get('v') || (['live', 'shorts', 'embed'].includes(seg[0]) && !!seg[1] && seg[1] !== 'live_stream');
+    }
     return false;
   } catch {
     return false;
