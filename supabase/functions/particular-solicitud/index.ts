@@ -79,7 +79,8 @@ type Datos = {
   personas?: string; horario?: string;
   // Estilos de música separados por | (obligatorio para el DJ desde el 31 oct 2026).
   musica?: string;
-  // Teléfono opcional (20 nov 2026), ya normalizado. Solo lo usa XPEAK; va a profile_private_data.
+  // Teléfono opcional (20 nov 2026), normalizado y CIFRADO (AES-GCM): el enlace del email no lleva
+  // el número legible. Solo lo usa XPEAK; al confirmar se descifra y va a profile_private_data.
   telefono?: string;
 };
 
@@ -100,6 +101,25 @@ const deB64url = (s: string) => Uint8Array.from(
   atob(s.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - s.length % 4) % 4)), c => c.charCodeAt(0));
 const clave = () => crypto.subtle.importKey('raw', enc.encode(Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''),
   { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
+
+// Cifrado del teléfono dentro del enlace (clave derivada de la clave de servicio, distinta de la del HMAC).
+const claveAes = async () => crypto.subtle.importKey('raw',
+  await crypto.subtle.digest('SHA-256', enc.encode('telefono:' + (Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''))),
+  'AES-GCM', false, ['encrypt', 'decrypt']);
+async function cifrar(texto: string): Promise<string> {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await claveAes(), enc.encode(texto)));
+  const todo = new Uint8Array(iv.length + ct.length);
+  todo.set(iv); todo.set(ct, iv.length);
+  return b64url(todo);
+}
+async function descifrar(s: string): Promise<string | null> {
+  try {
+    const b = deB64url(s);
+    const claro = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b.slice(0, 12) }, await claveAes(), b.slice(12));
+    return new TextDecoder().decode(claro);
+  } catch { return null; }
+}
 
 async function firmar(d: Datos): Promise<string> {
   const datos = enc.encode(JSON.stringify(d));
@@ -221,7 +241,7 @@ serve(async (req) => {
     if (telRaw) {
       const tel = normalizarTelefono(telRaw);
       if (!tel) return json({ error: 'El teléfono no es válido. Escríbelo con 9 cifras o déjalo en blanco' }, 400);
-      d.telefono = tel;
+      d.telefono = await cifrar(tel);
     }
 
     // Un profesional que usa este formulario con su propio correo (caso DJ DERRE, 20 oct):
@@ -290,10 +310,11 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
   }
   // Teléfono opcional: se guarda en la tabla privada (solo lo lee el dueño y el admin) y
   // solo si esa cuenta no tenía ya uno. Un fallo aquí nunca debe tumbar la solicitud.
-  if (userId && d.telefono) {
+  const telefono = d.telefono ? await descifrar(d.telefono) : null;
+  if (userId && telefono) {
     try {
       const { data: previo } = await admin.from('profile_private_data').select('phone').eq('user_id', userId).maybeSingle();
-      if (!previo?.phone) await admin.from('profile_private_data').upsert({ user_id: userId, phone: d.telefono }, { onConflict: 'user_id' });
+      if (!previo?.phone) await admin.from('profile_private_data').upsert({ user_id: userId, phone: telefono }, { onConflict: 'user_id' });
     } catch (e) { console.warn('[particular-solicitud] teléfono no guardado', e); }
   }
   // Profesionales del oficio.
