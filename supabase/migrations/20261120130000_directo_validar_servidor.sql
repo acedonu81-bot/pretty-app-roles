@@ -28,7 +28,7 @@ begin
     raise exception 'Este tipo de cuenta no puede hacer directos';
   end if;
   if new.stream_url is null
-     or new.stream_url !~* '^(https?://)?([a-z0-9-]+\.)*(twitch\.tv|youtube\.com|youtu\.be)([/?#:]|$)' then
+     or new.stream_url !~* '^(https?://)?([a-z0-9-]+\.)*(twitch\.tv|youtube\.com|youtu\.be)(:[0-9]+)?([/?#]|$)' then
     raise exception 'El enlace del directo debe ser de Twitch o YouTube';
   end if;
   if new.stream_title is not null and length(new.stream_title) > 80 then
