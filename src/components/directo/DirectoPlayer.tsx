@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Play } from 'lucide-react';
 import { parseStreamUrl, normalizeStreamUrl } from '@/lib/streaming';
+import { enlaceDirectoValido } from '@/lib/directo';
 
 /**
  * Reproductor de un directo (Twitch o YouTube). No carga el iframe hasta que
@@ -9,7 +10,9 @@ import { parseStreamUrl, normalizeStreamUrl } from '@/lib/streaming';
  */
 export default function DirectoPlayer({ url, titulo }: { url: string; titulo: string }) {
   const [cargado, setCargado] = useState(false);
-  const parsed = useMemo(() => parseStreamUrl(url), [url]);
+  // parseStreamUrl acepta cualquier host que "contenga" twitch.tv; aquí se exige el dominio anclado
+  // antes de incrustar o enlazar nada que venga de un campo que escribe el usuario.
+  const parsed = useMemo(() => (enlaceDirectoValido(url) ? parseStreamUrl(url) : null), [url]);
   if (!parsed) return null;
   const original = normalizeStreamUrl(url);
   const web = parsed.type === 'Twitch' ? 'Twitch' : parsed.type;

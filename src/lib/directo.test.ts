@@ -41,3 +41,12 @@ describe('puedeHacerDirecto', () => {
     expect(puedeHacerDirecto(undefined)).toBe(false);
   });
 });
+
+describe('enlaceDirectoValido: dominios falsos', () => {
+  it('no deja pasar hosts que solo contienen twitch.tv', () => {
+    expect(enlaceDirectoValido('https://twitch.tv.evil.com/x')).toBe(false);
+    expect(enlaceDirectoValido('https://twitch.tv@evil.com/x')).toBe(false);
+    expect(enlaceDirectoValido('https://evil.com/twitch.tv/x')).toBe(false);
+    expect(enlaceDirectoValido('https://nottwitch.tv/x')).toBe(false);
+  });
+});
