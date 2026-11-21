@@ -196,6 +196,7 @@ export function responseBucketLabel(bucket: string | null): string {
 }
 
 const PublicProfile = () => {
+  const [espAbierta, setEspAbierta] = useState(false);
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [sbProfile, setSbProfile] = useState<SupabaseProfile | null>(null);
@@ -949,7 +950,15 @@ const PublicProfile = () => {
               </h1>
 
               {profile.specialty && (
-                <p className="text-xs sm:text-sm font-semibold mb-3 truncate max-w-[80vw]" style={{ color: 'rgba(255,255,255,0.75)' }}>{profile.specialty}</p>
+                <div className="mb-3 max-w-[85vw] md:max-w-[80vw]">
+                  <p className={`text-xs sm:text-sm font-semibold ${espAbierta ? '' : 'line-clamp-2 md:truncate'}`} style={{ color: 'rgba(255,255,255,0.75)' }}>{profile.specialty}</p>
+                  {profile.specialty.length > 70 && (
+                    <button type="button" onClick={() => setEspAbierta(v => !v)}
+                      className="md:hidden text-xs font-bold underline mt-0.5" style={{ color: '#fff' }}>
+                      {espAbierta ? 'Leer menos' : 'Leer más'}
+                    </button>
+                  )}
+                </div>
               )}
 
               <div className="hidden md:block">
