@@ -135,8 +135,8 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
           {mode === 'view-request' && cargado && (
             <p className="text-[0.75rem] mt-2" style={{ color: '#6b6450' }}>
               {ultimaMarca
-                ? `Última fecha marcada por el DJ: ${textoHace(ultimaMarca)}.`
-                : 'Este DJ aún no ha marcado fechas ocupadas: confírmale la fecha por mensaje.'}
+                ? `Última fecha marcada por el profesional: ${textoHace(ultimaMarca)}.`
+                : 'Este profesional aún no ha marcado fechas ocupadas: confírmale la fecha por mensaje.'}
             </p>
           )}
         </div>
