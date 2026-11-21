@@ -17,7 +17,7 @@ export default function TarjetaHazDirecto({ role, enDirecto, onIr }: { role?: st
           {enDirecto && <PildoraDirecto texto="Estás en directo" />}
         </div>
         <p className="text-xs mt-0.5" style={{ color: '#4a3f2a' }}>
-          Emite por Twitch o YouTube y apareces "en directo" en la portada de XPEAK y en tu ficha. Quien te vea puede pedirte presupuesto al momento.
+          Emite por Twitch, YouTube o Hearthis y apareces "en directo" en la portada de XPEAK y en tu ficha. Quien te vea puede pedirte presupuesto al momento.
         </p>
       </div>
       <button type="button" onClick={onIr} className="font-black text-sm px-4 py-2.5 rounded-xl whitespace-nowrap w-full sm:w-auto"

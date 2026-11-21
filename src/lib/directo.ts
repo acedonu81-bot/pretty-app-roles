@@ -1,5 +1,6 @@
 // Directos de XPEAK (20 nov 2026): cualquier profesional puede emitir por
-// Twitch (o YouTube) y XPEAK incrusta el reproductor. No hay API de Twitch:
+// Twitch (o YouTube) y XPEAK incrusta el reproductor. Hearthis (21 nov) no se puede
+// incrustar (X-Frame-Options), así que su ficha muestra un botón que abre el directo allí. No hay API de Twitch:
 // el profesional pulsa "Empezar directo" y la hora de inicio queda en
 // profiles.live_started_at. Si olvida terminarlo, caduca a las 8 h.
 export const DIRECTO_HORAS_MAX = 8;
@@ -26,12 +27,19 @@ const ROLES_SIN_DIRECTO = new Set(['empresario', 'particular']);
 export const puedeHacerDirecto = (role?: string | null): boolean =>
   !!role && !ROLES_SIN_DIRECTO.has(role);
 
-/** Solo enlaces de Twitch o YouTube: son los que el reproductor sabe incrustar. */
+// Páginas de hearthis.at que NO son un canal (el panel de emisión es hearthis.at/live/).
+const HEARTHIS_RESERVADOS = new Set(['live', 'explore', 'popular', 'featured', 'news', 'maps', 'groups', 'upload', 'settings', 'search', 'login', 'register', 'premium']);
+
+/** Enlaces de Twitch, YouTube o hearthis.at. Twitch y YouTube se incrustan; hearthis se abre en su web. */
 export const enlaceDirectoValido = (url: string): boolean => {
   try {
     const u = new URL(/^https?:\/\//i.test(url.trim()) ? url.trim() : `https://${url.trim()}`);
     const h = u.hostname.replace(/^www\./, '').toLowerCase();
     if (h === 'twitch.tv' || h.endsWith('.twitch.tv')) return u.pathname.split('/').filter(Boolean).length > 0;
+    if (h === 'hearthis.at') {
+      const seg = u.pathname.split('/').filter(Boolean);
+      return seg.length > 0 && !HEARTHIS_RESERVADOS.has(seg[0].toLowerCase());
+    }
     if (h === 'youtu.be') return u.pathname.split('/').filter(Boolean).length > 0;
     if (h === 'youtube.com' || h.endsWith('.youtube.com')) {
       // En YouTube cada directo tiene su propio enlace de vídeo; el enlace del canal (@nombre)

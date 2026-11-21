@@ -42,7 +42,7 @@ export default function DirectoView() {
 
   const empezar = async () => {
     if (!profile.profileId) { toast.error('Tu perfil aún se está cargando. Vuelve a intentarlo en unos segundos.'); return; }
-    if (!enlaceOk) { toast.error('Pega el enlace de tu canal de Twitch (twitch.tv/tunombre) o el de tu directo de YouTube.'); return; }
+    if (!enlaceOk) { toast.error('Pega el enlace de tu canal de Twitch (twitch.tv/tunombre), el de tu directo de YouTube o el de tu perfil de Hearthis (hearthis.at/tunombre).'); return; }
     setGuardando(true);
     const { error } = await (supabase.from('profiles') as any)
       .update({ stream_url: enlace.trim(), stream_title: titulo.trim() || null, is_live: true, live_started_at: new Date().toISOString() })
@@ -51,7 +51,7 @@ export default function DirectoView() {
     if (error) { toast.error('No se pudo empezar el directo: ' + error.message); return; }
     await profile.refresh();
     medirDirecto('empezar', 'panel', profile.user_id);
-    toast.success('Ya apareces en directo en XPEAK. Empieza a emitir en Twitch.');
+    toast.success('Ya apareces en directo en XPEAK. Empieza a emitir.');
   };
 
   const terminar = async () => {
@@ -75,7 +75,7 @@ export default function DirectoView() {
         </h2>
         <p className="text-sm text-muted-foreground">
           {puede
-            ? 'Emite por Twitch o YouTube y tu ficha aparece "en directo" en XPEAK: en la portada, en tu perfil y en el panel de todos. Quien te vea puede pedirte presupuesto al momento.'
+            ? 'Emite por Twitch, YouTube o Hearthis y tu ficha aparece "en directo" en XPEAK: en la portada, en tu perfil y en el panel de todos. Quien te vea puede pedirte presupuesto al momento.'
             : 'Profesionales emitiendo ahora mismo. Míralos trabajar y pídeles presupuesto sin salir de XPEAK.'}
         </p>
       </div>
@@ -107,16 +107,16 @@ export default function DirectoView() {
           ) : (
             <>
               <ol className="text-sm flex flex-col gap-1.5 list-decimal pl-5" style={{ color: '#4a3f2a' }}>
-                <li>Prepara tu emisión en <b>Twitch</b> o <b>YouTube</b>.</li>
-                <li>Pega aquí el enlace: en Twitch el de tu canal; en YouTube el del directo (cada directo tiene el suyo, no sirve el del canal).</li>
-                <li>Pulsa <b>Empezar directo</b> y empieza a emitir en Twitch.</li>
+                <li>Prepara tu emisión en <b>Twitch</b>, <b>YouTube</b> o <b>Hearthis</b>.</li>
+                <li>Pega aquí el enlace: en Twitch el de tu canal; en YouTube el del directo (cada directo tiene el suyo, no sirve el del canal); en Hearthis el de tu perfil (hearthis.at/tunombre).</li>
+                <li>Pulsa <b>Empezar directo</b> y empieza a emitir en tu plataforma.</li>
               </ol>
               <div className="flex flex-col gap-3">
                 <label className="flex flex-col gap-1 text-sm font-semibold" htmlFor="directo-enlace">
                   Enlace del directo o del canal
                   <input id="directo-enlace" value={enlace} onChange={e => setEnlace(e.target.value)} placeholder="twitch.tv/tunombre" inputMode="url" autoComplete="off"
                     className="rounded-xl px-3 py-2.5 text-sm font-normal" style={{ border: '1px solid rgba(10,9,8,0.15)', background: '#fff' }} />
-                  {enlace.trim() !== '' && !enlaceOk && <span className="text-xs font-normal" style={{ color: '#b91c1c' }}>Pega un enlace de Twitch (twitch.tv/tunombre) o el de un directo de YouTube.</span>}
+                  {enlace.trim() !== '' && !enlaceOk && <span className="text-xs font-normal" style={{ color: '#b91c1c' }}>Pega un enlace de Twitch (twitch.tv/tunombre), el de un directo de YouTube o el de tu perfil de Hearthis (hearthis.at/tunombre, no el panel hearthis.at/live).</span>}
                 </label>
                 <label className="flex flex-col gap-1 text-sm font-semibold" htmlFor="directo-titulo">
                   Título (opcional)

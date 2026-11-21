@@ -27,6 +27,13 @@ describe('enlaceDirectoValido', () => {
     expect(enlaceDirectoValido('https://www.youtube.com/watch?v=abc')).toBe(true);
     expect(enlaceDirectoValido('https://www.youtube.com/live/abc123')).toBe(true);
   });
+  it('acepta el perfil de hearthis y rechaza el panel de emisión', () => {
+    expect(enlaceDirectoValido('https://hearthis.at/danieltorrez8/')).toBe(true);
+    expect(enlaceDirectoValido('hearthis.at/danieltorrez8')).toBe(true);
+    expect(enlaceDirectoValido('https://hearthis.at/live/')).toBe(false);
+    expect(enlaceDirectoValido('https://hearthis.at/')).toBe(false);
+    expect(enlaceDirectoValido('https://hearthis.at.evil.com/x')).toBe(false);
+  });
   it('rechaza otras webs y canal vacío', () => {
     expect(enlaceDirectoValido('https://instagram.com/x')).toBe(false);
     expect(enlaceDirectoValido('https://twitch.tv/')).toBe(false);
