@@ -171,7 +171,7 @@ export default function Precios() {
             </p>
           </div>
 
-          <div className={`grid grid-cols-1 sm:grid-cols-2 ${LANZADO ? 'lg:grid-cols-3' : ''} gap-6 mb-${LANZADO ? '6' : '16'}`}>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 ${LANZADO ? 'lg:grid-cols-2 max-w-3xl mx-auto' : ''} gap-6 mb-${LANZADO ? '6' : '16'}`}>
             {PLANES.map(plan => (
               <div key={plan.nombre} className="relative p-6 rounded-2xl"
                 style={{ background: plan.color, border: `1px solid ${plan.border}` }}>

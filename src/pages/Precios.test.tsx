@@ -52,4 +52,11 @@ describe('/precios', () => {
     expect(t).toContain(fmt(PRECIOS_ANUALES.starter));
     expect(t).toContain(fmt(PRECIOS_ANUALES.business));
   });
+
+  it('con los cobros activados la rejilla es de 2 columnas (solo hay dos planes)', () => {
+    vi.stubEnv('VITE_COBROS_ACTIVOS', 'true');
+    const { container } = render(<HelmetProvider><MemoryRouter><Precios /></MemoryRouter></HelmetProvider>);
+    expect(container.innerHTML).not.toContain('lg:grid-cols-3');
+    expect(container.innerHTML).toContain('lg:grid-cols-2');
+  });
 });
