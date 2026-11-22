@@ -58,14 +58,13 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
 
   useEffect(() => {
     if (!userId) return;
-    supabase
-      .from('availability')
-      .select('blocked_date, created_at')
-      .eq('user_id', userId)
-      .then(({ data }) => {
-        setBlocked(new Set((data ?? []).map((r: any) => r.blocked_date)));
-        const marcas = (data ?? []).map((r: any) => r.created_at as string).filter(Boolean).sort();
-        setUltimaMarca(marcas.length ? marcas[marcas.length - 1] : null);
+    // availability solo la lee su dueño (RLS): un visitante que la leía
+    // directamente veía todos los días libres. Esta función devuelve las
+    // fechas futuras ocupadas y la última marca de CUALQUIER profesional.
+    (supabase.rpc as any)('fechas_ocupadas_publicas', { p_user: userId })
+      .then(({ data }: { data: { fechas?: string[]; ultima_marca?: string | null } | null }) => {
+        setBlocked(new Set(data?.fechas ?? []));
+        setUltimaMarca(data?.ultima_marca ?? null);
         setCargado(true);
       });
   }, [userId]);
