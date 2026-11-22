@@ -49,3 +49,17 @@ verify_jwt = false
 # Lo llama Stripe directamente, sin sesión de usuario. Lo que da paso es la
 # firma del evento (STRIPE_WEBHOOK_SECRET), comprobada en la propia función.
 verify_jwt = false
+
+[functions.trayectoria-confirmar]
+# El organizador confirma desde el botón del correo, sin sesión: da paso la firma
+# HMAC del enlace (firmarConfirmacion en _shared/trayectoria.ts).
+verify_jwt = false
+
+[functions.acuerdo-cerrado-responder]
+# Respuesta a "¿se cerró el acuerdo?" desde el correo, sin sesión: da paso la
+# firma HMAC propia (firmarAcuerdo en _shared/trayectoria.ts).
+verify_jwt = false
+
+[functions.acuerdo-cerrado-reminder]
+# Lo lanza el cron con el secreto interno (esLlamadaInterna), sin sesión.
+verify_jwt = false
