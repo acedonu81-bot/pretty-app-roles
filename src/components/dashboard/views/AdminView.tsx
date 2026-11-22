@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminContactosProfesional from './admin/AdminContactosProfesional';
 import AdminCharts from './admin/AdminCharts';
+import AdminAcuerdos from './admin/AdminAcuerdos';
 import AdminHiredContracts from './admin/AdminHiredContracts';
 import AdminUserManagement from './admin/AdminUserManagement';
 import AdminBusinesses from './admin/AdminBusinesses';
@@ -156,6 +157,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
           <AdminMetrics />
           <AdminContactosProfesional />
           <AdminHiredContracts />
+          <AdminAcuerdos />
           <AdminCharts />
         </>
       )}
