@@ -21,15 +21,32 @@ const clave = async () => {
 };
 
 export function normalizarEmail(e: string): string {
-  const [usuario = '', dominio = ''] = e.trim().toLowerCase().split('@');
-  let u = usuario.split('+')[0];
-  if (dominio === 'gmail.com' || dominio === 'googlemail.com') u = u.replace(/\./g, '');
-  return `${u}@${dominio}`;
+  const partes = e.trim().toLowerCase().split('@');
+  if (partes.length !== 2 || !partes[0] || !partes[1]) return '';
+  let dominio = partes[1].replace(/\.+$/, '');
+  if (dominio === 'googlemail.com') dominio = 'gmail.com';
+  let usuario = partes[0].split('+')[0];
+  if (dominio === 'gmail.com') usuario = usuario.replace(/\./g, '');
+  return usuario ? `${usuario}@${dominio}` : '';
+}
+
+// Todas las direcciones que controla quien pide la confirmación: correo de la
+// cuenta, el pendiente de cambio, el de los metadatos y el de cada identidad
+// (Google, correo...). Con esto no se confirma con ninguna dirección propia
+// que XPEAK conozca; las que XPEAK nunca ha visto no se pueden detectar.
+export function correosDelUsuario(u: {
+  email?: string | null;
+  new_email?: string | null;
+  user_metadata?: { email?: unknown } | null;
+  identities?: { identity_data?: { email?: unknown } | null }[] | null;
+}): string[] {
+  const todos = [u.email, u.new_email, u.user_metadata?.email, ...(u.identities ?? []).map(i => i.identity_data?.email)];
+  return [...new Set(todos.filter((x): x is string => typeof x === 'string' && x.includes('@')))];
 }
 
 export function esCorreoPropio(organizador: string, propios: string[]): boolean {
   const o = normalizarEmail(organizador);
-  return propios.some(p => normalizarEmail(p) === o);
+  return !!o && propios.some(p => normalizarEmail(p) === o);
 }
 
 export const puedeConfirmarMas = (confirmadosEsteMes: number): boolean => confirmadosEsteMes < MAX_CONFIRMACIONES_MES;

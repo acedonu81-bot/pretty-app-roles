@@ -67,7 +67,7 @@ describe('qué ve cada oficio', () => {
 
   it('nunca se anuncia lo que aún no existe', () => {
     const todo = ['starter', 'business'].flatMap(p => lista(['dj'], p as 'starter')).join('|');
-    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|Soporte|Sello|adelanto|Concursos|y web/i);
+    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|Soporte|Sello Premium|adelanto|Concursos|y web/i);
   });
 
   it('no usa rayas largas ni "gratis"', () => {
@@ -91,5 +91,14 @@ describe('qué ve cada oficio', () => {
     expect(oficiosDe(['empresario']).profesional).toBe(false);
     expect(oficiosDe(['particular', 'pending']).profesional).toBe(false);
     expect(oficiosDe(['empresario', 'dj']).profesional).toBe(true);
+  });
+});
+
+describe('trayectoria verificada', () => {
+  it('pedir confirmación y el sello solo en Premium', () => {
+    expect(ventajasDe('business').trayectoriaConfirmada).toBe(true);
+    expect(ventajasDe('starter').trayectoriaConfirmada).toBe(false);
+    expect(listaVentajas('business', oficiosDe(['camarero']))).toContain('Sello de eventos confirmados en tu ficha');
+    expect(listaVentajas('starter', oficiosDe(['camarero']))).not.toContain('Sello de eventos confirmados en tu ficha');
   });
 });

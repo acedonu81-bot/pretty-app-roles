@@ -3,7 +3,7 @@
 // remitente, nunca en nombre del profesional. Del correo solo se guarda un hash.
 // POST { evento_id, email_organizador } con la sesión del profesional.
 import { admin, respuesta, usuarioDe, cabeceras } from '../_shared/cobrosHttp.ts';
-import { decidirSolicitud, firmarConfirmacion, hashEmail } from '../_shared/trayectoria.ts';
+import { correosDelUsuario, decidirSolicitud, firmarConfirmacion, hashEmail } from '../_shared/trayectoria.ts';
 
 const ESTADO_HTTP: Record<string, number> = {
   cobros_apagados: 403, no_premium: 403, correo_invalido: 400, correo_propio: 400, limite_correo: 429,
@@ -29,17 +29,25 @@ Deno.serve(async (req) => {
     const { data: perfil } = await db.from('profiles').select('display_name, subscription_tier')
       .eq('user_id', user.id).order('is_primary', { ascending: false }).limit(1).maybeSingle();
 
+    // El tope cuenta las solicitudes ENVIADAS este mes a ese correo (no solo las
+    // confirmadas): así tampoco se puede llenar de correos el buzón de nadie.
     const hash = await hashEmail(email_organizador);
     const inicioMes = new Date(); inicioMes.setUTCDate(1); inicioMes.setUTCHours(0, 0, 0, 0);
     const { count } = await db.from('trayectoria_confirmaciones').select('id', { count: 'exact', head: true })
-      .eq('email_hash', hash).gte('confirmado_at', inicioMes.toISOString());
+      .eq('email_hash', hash).gte('enviado_at', inicioMes.toISOString());
+
+    // La misma solicitud al mismo correo no se reenvía en 24 horas.
+    const hace24h = new Date(Date.now() - 24 * 3600_000).toISOString();
+    const { count: recientes } = await db.from('trayectoria_confirmaciones').select('id', { count: 'exact', head: true })
+      .eq('evento_id', evento.id).eq('email_hash', hash).gte('enviado_at', hace24h);
+    if ((recientes ?? 0) > 0) return respuesta(req, { error: 'ya_pendiente' }, 409);
 
     const decision = decidirSolicitud({
       cobrosActivos: Deno.env.get('COBROS_ACTIVOS') === 'true',
       tier: perfil?.subscription_tier ?? null,
       correoOrganizador: email_organizador,
-      correosPropios: [user.email ?? ''].filter(Boolean),
-      confirmadosEsteMes: count ?? 0,
+      correosPropios: correosDelUsuario(user),
+      confirmadosEsteMes: count ?? 0, // solicitudes del mes a ese correo
     });
     if (decision !== 'ok') return respuesta(req, { error: decision }, ESTADO_HTTP[decision]);
 

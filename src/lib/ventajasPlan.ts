@@ -36,18 +36,19 @@ export type Ventajas = {
   destacadoInicio: boolean;  // sale en la tarjeta del Inicio del panel
   posicionDestacada: boolean; // por delante en el directorio, con aro dorado y etiqueta Destacado
   redesXpeakMensual: boolean; // aparece una vez al mes en las redes de XPEAK (manual)
+  trayectoriaConfirmada: boolean; // pedir al organizador que confirme eventos y sello en la ficha
 };
 
 const VENTAJAS: Record<Plan, Ventajas> = {
   starter: {
     fotos: 12, sets: 10, redesVisibles: true,
     estadisticas: 'basicas', exportarEstadisticas: false, bannerCabecera: false,
-    destacadoInicio: false, posicionDestacada: false, redesXpeakMensual: false,
+    destacadoInicio: false, posicionDestacada: false, redesXpeakMensual: false, trayectoriaConfirmada: false,
   },
   business: {
     fotos: 20, sets: Infinity, redesVisibles: true,
     estadisticas: 'avanzadas', exportarEstadisticas: true, bannerCabecera: true,
-    destacadoInicio: true, posicionDestacada: true, redesXpeakMensual: true,
+    destacadoInicio: true, posicionDestacada: true, redesXpeakMensual: true, trayectoriaConfirmada: true,
   },
 };
 
@@ -94,6 +95,7 @@ export function listaVentajas(plan: Plan, o: Oficios): string[] {
     if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
   } else {
     out.push('Todo lo de Profesional', 'Posición destacada en el directorio, con aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Apareces una vez al mes en las redes de XPEAK');
+    out.push('Sello de eventos confirmados en tu ficha');
     out.push('Estadísticas avanzadas: visitas día a día, de dónde llegan y exportar');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push('Sets ilimitados');

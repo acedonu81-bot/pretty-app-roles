@@ -94,3 +94,28 @@ describe('hashEmail', () => {
     expect(a).toMatch(/^[0-9a-f]{64}$/);
   });
 });
+
+describe('antifraude: correos equivalentes (revisión de seguridad)', () => {
+  it('googlemail.com es gmail.com', async () => {
+    const { normalizarEmail, esCorreoPropio } = await cargar();
+    expect(normalizarEmail('Ana.Perez@googlemail.com')).toBe('anaperez@gmail.com');
+    expect(esCorreoPropio('ana@googlemail.com', ['ana@gmail.com'])).toBe(true);
+  });
+  it('un punto final en el dominio no esquiva la comprobación', async () => {
+    const { normalizarEmail, esCorreoPropio } = await cargar();
+    expect(normalizarEmail('ana@gmail.com.')).toBe('ana@gmail.com');
+    expect(esCorreoPropio('ana@empresa.es.', ['ana@empresa.es'])).toBe(true);
+  });
+  it('una dirección con más de una @ no normaliza a nada comparable', async () => {
+    const { normalizarEmail } = await cargar();
+    expect(normalizarEmail('a@b@c.com')).toBe('');
+    expect(normalizarEmail('sin-arroba')).toBe('');
+  });
+  it('correosDelUsuario reúne todas las direcciones de la cuenta', async () => {
+    const { correosDelUsuario } = await cargar();
+    const u = { email: 'ana@gmail.com', new_email: 'ana2@gmail.com', user_metadata: { email: 'ana3@gmail.com' },
+      identities: [{ identity_data: { email: 'ana@gmail.com' } }, { identity_data: { email: 'ana4@outlook.com' } }, { identity_data: {} }] };
+    expect(correosDelUsuario(u).sort()).toEqual(['ana2@gmail.com', 'ana3@gmail.com', 'ana4@outlook.com', 'ana@gmail.com']);
+    expect(correosDelUsuario({ email: null })).toEqual([]);
+  });
+});
