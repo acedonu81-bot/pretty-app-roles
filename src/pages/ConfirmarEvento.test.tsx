@@ -65,6 +65,11 @@ describe('ConfirmarEvento', () => {
     await screen.findByText('¿Trabajó Lucía Maquillaje en Boda en Casares?');
     expect(container.querySelector('img')).toBeNull();
     unmount();
+    invoke.mockResolvedValueOnce({ data: { ...datos, foto: 'https://rastreador.example/p.gif' }, error: null });
+    const ajena = pintar('?t=abc');
+    await screen.findByText('¿Trabajó Lucía Maquillaje en Boda en Casares?');
+    expect(ajena.container.querySelector('img')).toBeNull();
+    ajena.unmount();
     invoke.mockResolvedValueOnce({ data: { ...datos, foto: 'https://xyz.supabase.co/storage/v1/object/public/a.jpg' }, error: null });
     const otra = pintar('?t=abc');
     await screen.findByText('¿Trabajó Lucía Maquillaje en Boda en Casares?');

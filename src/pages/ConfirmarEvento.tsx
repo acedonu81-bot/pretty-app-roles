@@ -10,8 +10,15 @@ import { supabase } from '@/integrations/supabase/client';
  */
 type Info = { nombre: string; titulo: string; fecha: string; ciudad?: string | null; lugar?: string | null; foto?: string | null; oficio?: string | null; ya: boolean };
 
-// Solo fotos servidas por https (las de XPEAK están en Storage): nada de rastreadores http.
-const fotoSegura = (u?: string | null) => !!u && /^https:\/\//.test(u);
+// Solo fotos del Storage público de XPEAK (dominio propio o de Supabase), por https:
+// una foto de otro origen sería un píxel de rastreo para quien abre el correo.
+const fotoSegura = (u?: string | null) => {
+  try {
+    const x = new URL(u ?? '');
+    return x.protocol === 'https:' && (x.hostname === 'auth.xpeak.es' || x.hostname.endsWith('.supabase.co'))
+      && x.pathname.startsWith('/storage/v1/object/public/');
+  } catch { return false; }
+};
 
 const fechaLarga = (f: string) => {
   const d = new Date(`${f}T12:00:00`);

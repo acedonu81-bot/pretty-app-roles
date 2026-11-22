@@ -57,6 +57,10 @@ BEGIN
     RETURN NEW;
   END IF;
   IF TG_OP = 'INSERT' THEN
+    -- Tope de eventos por profesional: la trayectoria es una ficha, no un archivo.
+    IF (SELECT count(*) FROM public.trayectoria_eventos WHERE user_id = NEW.user_id) >= 200 THEN
+      RAISE EXCEPTION 'Has llegado al máximo de eventos en tu trayectoria';
+    END IF;
     NEW.origen := 'declarado';
     NEW.estado := 'declarado';
     NEW.confirmado_at := NULL;
@@ -85,11 +89,13 @@ CREATE TRIGGER trg_trayectoria_proteger_marca
 CREATE TABLE IF NOT EXISTS public.trayectoria_confirmaciones (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   evento_id uuid NOT NULL REFERENCES public.trayectoria_eventos(id) ON DELETE CASCADE,
+  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   email_hash text NOT NULL,
   enviado_at timestamptz NOT NULL DEFAULT now(),
   confirmado_at timestamptz
 );
-CREATE INDEX IF NOT EXISTS trayectoria_confirmaciones_email_idx ON public.trayectoria_confirmaciones (email_hash, confirmado_at);
+CREATE INDEX IF NOT EXISTS trayectoria_confirmaciones_email_idx ON public.trayectoria_confirmaciones (email_hash, enviado_at);
+CREATE INDEX IF NOT EXISTS trayectoria_confirmaciones_user_idx ON public.trayectoria_confirmaciones (user_id, enviado_at);
 ALTER TABLE public.trayectoria_confirmaciones ENABLE ROW LEVEL SECURITY;
 -- Sin políticas a propósito: ni el profesional ni el público ven los hashes.
 
@@ -141,7 +147,8 @@ $$;
 GRANT EXECUTE ON FUNCTION public.trayectoria_confirmados(uuid[]) TO anon, authenticated;
 
 -- Comparación para el panel de admin: cuántas contrataciones preguntadas
--- cierran según las dos partes, y de dónde vienen los eventos de las trayectorias.
+-- cierran según las dos partes (ambos_no = nadie dijo que sí y alguien dijo que no),
+-- y de dónde vienen los eventos de las trayectorias.
 CREATE OR REPLACE FUNCTION public.acuerdos_comparacion()
 RETURNS TABLE (preguntadas int, ambos_si int, solo_uno_si int, ambos_no int, sin_respuesta int, eventos_xpeak int, eventos_fuera int)
 LANGUAGE plpgsql

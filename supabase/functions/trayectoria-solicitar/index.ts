@@ -38,14 +38,13 @@ Deno.serve(async (req) => {
       .eq('email_hash', hash).gte('enviado_at', inicioMes.toISOString());
 
     // Por remitente: solicitudes de este profesional en las últimas 24 horas y,
-    // en el mismo periodo, ninguna repetida al mismo correo (da igual el evento).
+    // en ese periodo, ninguna repetida al mismo correo (da igual el evento).
     const hace24h = new Date(Date.now() - 24 * 3600_000).toISOString();
-    const { data: susEventos } = await db.from('trayectoria_eventos').select('id').eq('user_id', user.id).limit(500);
-    const ids = (susEventos ?? []).map((e: { id: string }) => e.id);
-    const { data: hoy, error: errHoy } = ids.length
-      ? await db.from('trayectoria_confirmaciones').select('email_hash').in('evento_id', ids).gte('enviado_at', hace24h)
-      : { data: [] as { email_hash: string }[], error: null };
-    if ((hoy ?? []).some((r: { email_hash: string }) => r.email_hash === hash)) return respuesta(req, { error: 'ya_pendiente' }, 409);
+    const { count: hoy, error: errHoy } = await db.from('trayectoria_confirmaciones').select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id).gte('enviado_at', hace24h);
+    const { count: repetidas, error: errRep } = await db.from('trayectoria_confirmaciones').select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id).eq('email_hash', hash).gte('enviado_at', hace24h);
+    if (!errRep && (repetidas ?? 0) > 0) return respuesta(req, { error: 'ya_pendiente' }, 409);
 
     const decision = decidirSolicitud({
       cobrosActivos: Deno.env.get('COBROS_ACTIVOS') === 'true',
@@ -53,12 +52,12 @@ Deno.serve(async (req) => {
       correoOrganizador: email_organizador,
       correosPropios: correosDelUsuario(user),
       confirmadosEsteMes: errMes || delMes === null ? null : delMes,
-      solicitudesHoy: errHoy ? null : (hoy ?? []).length,
+      solicitudesHoy: errHoy || errRep || hoy === null ? null : hoy,
     });
     if (decision !== 'ok') return respuesta(req, { error: decision }, ESTADO_HTTP[decision]);
 
     const { data: conf, error } = await db.from('trayectoria_confirmaciones')
-      .insert({ evento_id: evento.id, email_hash: hash }).select('id').single();
+      .insert({ evento_id: evento.id, user_id: user.id, email_hash: hash }).select('id').single();
     if (error || !conf) throw error ?? new Error('Sin confirmación');
     await db.from('trayectoria_eventos').update({ estado: 'pendiente' }).eq('id', evento.id);
 

@@ -14,7 +14,7 @@ describe('AdminAcuerdos', () => {
     render(<AdminAcuerdos />);
     expect(await screen.findByText('Acuerdos cerrados desde XPEAK')).toBeTruthy();
     for (const [etiqueta, valor] of [['Contrataciones preguntadas', '12'], ['Las dos partes dicen que sí', '4'], ['Solo una parte dice que sí', '3'],
-      ['Las dos partes dicen que no', '2'], ['Sin respuesta', '3'], ['Eventos de trayectorias con contrato XPEAK', '5'], ['Eventos de trayectorias de fuera', '20']]) {
+      ['Nadie dice que sí (alguien dice que no)', '2'], ['Sin respuesta', '3'], ['Eventos de trayectorias con contrato XPEAK', '5'], ['Eventos de trayectorias de fuera', '20']]) {
       expect(screen.getByText(etiqueta).parentElement?.textContent).toContain(valor);
     }
     expect(rpc).toHaveBeenCalledWith('acuerdos_comparacion');

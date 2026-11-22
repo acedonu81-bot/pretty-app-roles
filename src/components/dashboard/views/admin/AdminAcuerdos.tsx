@@ -25,7 +25,7 @@ const AdminAcuerdos = () => {
     ['Contrataciones preguntadas', d.preguntadas],
     ['Las dos partes dicen que sí', d.ambos_si],
     ['Solo una parte dice que sí', d.solo_uno_si],
-    ['Las dos partes dicen que no', d.ambos_no],
+    ['Nadie dice que sí (alguien dice que no)', d.ambos_no],
     ['Sin respuesta', d.sin_respuesta],
     ['Eventos de trayectorias con contrato XPEAK', d.eventos_xpeak],
     ['Eventos de trayectorias de fuera', d.eventos_fuera],
