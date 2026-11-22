@@ -79,16 +79,26 @@ Deno.serve(async (req) => {
     }
     const { data: perfil } = await db.from('profiles').select('display_name')
       .eq('user_id', p.user_id).order('is_primary', { ascending: false }).limit(1).maybeSingle();
-    const res = await fetch(`${url}/functions/v1/send-email`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${service}`, 'x-internal-secret': Deno.env.get('INTERNAL_SECRET') ?? '' },
-      body: JSON.stringify({
-        type: 'acuerdo_cerrado',
-        data: { email, name: perfil?.display_name || 'Hola', titulo: p.titulo, fecha: p.fecha, enlace: await firmarAcuerdo(p.origen, p.origen_id, p.user_id) },
-      }),
-    });
+    let res: Response;
+    try {
+      res = await fetch(`${url}/functions/v1/send-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${service}`, 'x-internal-secret': Deno.env.get('INTERNAL_SECRET') ?? '' },
+        body: JSON.stringify({
+          type: 'acuerdo_cerrado',
+          data: { email, name: perfil?.display_name || 'Hola', titulo: p.titulo, fecha: p.fecha, enlace: await firmarAcuerdo(p.origen, p.origen_id, p.user_id) },
+        }),
+      });
+    } catch (e) {
+      // Error de red: no sabemos si el correo salió. La fila se queda reservada para
+      // no mandar dos correos (preferimos una pregunta perdida a una repetida).
+      console.error('[acuerdo-cerrado-reminder] envío ambiguo', e);
+      errores.push(p.user_id);
+      continue;
+    }
     if (res.ok) { enviadas++; continue; }
-    // El envío falló: se libera la fila para que mañana se reintente y no cuente como "sin respuesta".
+    // send-email contestó con un error: el correo no salió. Se libera la fila para
+    // reintentar mañana y no contar como "sin respuesta".
     errores.push(p.user_id);
     await db.from('acuerdo_respuestas').delete()
       .eq('origen', p.origen).eq('origen_id', p.origen_id).eq('user_id', p.user_id).is('respuesta', null);

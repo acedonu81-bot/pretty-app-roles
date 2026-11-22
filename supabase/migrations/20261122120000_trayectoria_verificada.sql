@@ -94,7 +94,10 @@ CREATE TRIGGER trg_trayectoria_proteger_marca
 
 CREATE TABLE IF NOT EXISTS public.trayectoria_confirmaciones (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  evento_id uuid NOT NULL REFERENCES public.trayectoria_eventos(id) ON DELETE CASCADE,
+  -- SET NULL, no CASCADE: si el profesional borra el evento, la solicitud sigue
+  -- contando para los topes (por destinatario y por remitente); si no, borrar y
+  -- volver a crear reiniciaría los límites.
+  evento_id uuid REFERENCES public.trayectoria_eventos(id) ON DELETE SET NULL,
   user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   email_hash text NOT NULL,
   enviado_at timestamptz NOT NULL DEFAULT now(),
