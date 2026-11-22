@@ -52,7 +52,7 @@ export default function AcuerdoCerrado() {
           {(estado === 'listo' || estado === 'enviando') && info && !info.respuesta && (
             <div className="rounded-2xl p-6" style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.35)' }}>
               <h1 className="text-xl font-black mb-2" style={titulo}>{`¿Se cerró el acuerdo para ${info.titulo}?`}</h1>
-              <p className="text-sm mb-6" style={{ color: '#6B7280' }}>Nos ayuda a saber si XPEAK sirve para cerrar eventos. No se lo contamos a la otra parte.</p>
+              <p className="text-sm mb-6" style={{ color: '#6B7280' }}>Nos ayuda a saber si XPEAK sirve para cerrar eventos. Solo usamos tu respuesta para eso.</p>
               <button type="button" disabled={estado === 'enviando'} onClick={() => llamar({ accion: 'responder', r: 'si' })}
                 className="w-full rounded-xl py-3 font-bold mb-2" style={{ background: '#D4AF37', color: '#111' }}>Sí, se cerró</button>
               <button type="button" disabled={estado === 'enviando'} onClick={() => llamar({ accion: 'responder', r: 'no' })}

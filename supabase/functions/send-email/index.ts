@@ -910,7 +910,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ¿Se cerró el acuerdo entre las dos partes?
       </p>
       <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
-        Es un clic y nos ayuda a saber si XPEAK sirve para cerrar eventos. No se lo contamos a la otra parte.
+        Es un clic y nos ayuda a saber si XPEAK sirve para cerrar eventos. Solo usamos tu respuesta para eso.
       </p>
       ${btn('Contestar', String(d.enlace ?? 'https://xpeak.es'))}
       <p style="color:#6B7280;font-size:12px;margin-top:20px">Si prefieres no contestar, ignora este correo.</p>

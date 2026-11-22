@@ -75,7 +75,7 @@ export async function leerConfirmacion(t: string): Promise<{ e: string; c: strin
 const TIERS_PREMIUM = ['business', 'premium', 'agency', 'elite'];
 const CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-export type DecisionSolicitud = 'ok' | 'cobros_apagados' | 'no_premium' | 'correo_invalido' | 'correo_propio' | 'limite_correo' | 'limite_diario';
+export type DecisionSolicitud = 'ok' | 'cobros_apagados' | 'no_premium' | 'correo_invalido' | 'correo_propio' | 'limite_correo' | 'limite_diario' | 'evento_futuro';
 export const MAX_SOLICITUDES_DIA = 10;
 
 export function decidirSolicitud(ctx: {
@@ -87,6 +87,9 @@ export function decidirSolicitud(ctx: {
   confirmadosEsteMes: number | null;
   /** Solicitudes enviadas hoy por este profesional; null si no se pudo contar (se rechaza). */
   solicitudesHoy?: number | null;
+  /** Fecha del evento y fecha de hoy (AAAA-MM-DD): no se confirma lo que aún no ha ocurrido. */
+  fechaEvento?: string;
+  hoy?: string;
 }): DecisionSolicitud {
   if (!ctx.cobrosActivos) return 'cobros_apagados';
   if (!ctx.tier || !TIERS_PREMIUM.includes(ctx.tier)) return 'no_premium';
@@ -94,6 +97,7 @@ export function decidirSolicitud(ctx: {
   if (esCorreoPropio(ctx.correoOrganizador, ctx.correosPropios)) return 'correo_propio';
   if (ctx.confirmadosEsteMes === null || !puedeConfirmarMas(ctx.confirmadosEsteMes)) return 'limite_correo';
   if (ctx.solicitudesHoy === null || (ctx.solicitudesHoy ?? 0) >= MAX_SOLICITUDES_DIA) return 'limite_diario';
+  if (ctx.fechaEvento && ctx.hoy && ctx.fechaEvento > ctx.hoy) return 'evento_futuro';
   return 'ok';
 }
 
@@ -161,3 +165,8 @@ export function eventoCoincide(
   return !!evento && !!acuerdo.profesionalId && evento.user_id === acuerdo.profesionalId
     && evento.titulo === acuerdo.titulo && evento.fecha === acuerdo.fecha;
 }
+
+// Solo se confirma el evento que se pidió, tal como estaba: sigue pendiente, la
+// solicitud no se cerró porque el profesional lo editó, y no estaba ya confirmado.
+export const puedeConfirmarse = (x: { estado: string; cerrada_at: string | null; confirmado_at: string | null }): boolean =>
+  x.estado === 'pendiente' && !x.cerrada_at && !x.confirmado_at;

@@ -84,7 +84,7 @@ export function oficiosDe(roles: Array<string | null | undefined>): Oficios {
 }
 
 // Lista de ventajas de un plan para un conjunto de oficios.
-export function listaVentajas(plan: Plan, o: Oficios): string[] {
+export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boolean } = {}): string[] {
   const v = VENTAJAS[plan];
   const out: string[] = [];
   if (plan === 'starter') {
@@ -95,7 +95,8 @@ export function listaVentajas(plan: Plan, o: Oficios): string[] {
     if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
   } else {
     out.push('Todo lo de Profesional', 'Posición destacada en el directorio, con aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Apareces una vez al mes en las redes de XPEAK');
-    out.push('Sello de eventos confirmados en tu ficha');
+    // Con los cobros apagados nadie puede pedir confirmaciones: no se anuncia.
+    if (opciones.cobros !== false) out.push('Sello de eventos confirmados en tu ficha');
     out.push('Estadísticas avanzadas: visitas día a día, de dónde llegan y exportar');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push('Sets ilimitados');

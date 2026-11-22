@@ -81,6 +81,8 @@ BEGIN
     NEW.confirmado_at := NULL;
     -- Si el evento cambia, deja de ser el de la contratación: se rompe el vínculo.
     UPDATE public.acuerdo_respuestas SET evento_id = NULL WHERE evento_id = NEW.id;
+    -- Y las solicitudes de confirmación abiertas dejan de valer: el correo hablaba del evento antiguo.
+    UPDATE public.trayectoria_confirmaciones SET cerrada_at = now() WHERE evento_id = NEW.id AND confirmado_at IS NULL AND cerrada_at IS NULL;
   END IF;
   RETURN NEW;
 END;
@@ -96,7 +98,9 @@ CREATE TABLE IF NOT EXISTS public.trayectoria_confirmaciones (
   user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   email_hash text NOT NULL,
   enviado_at timestamptz NOT NULL DEFAULT now(),
-  confirmado_at timestamptz
+  confirmado_at timestamptz,
+  -- Se cierra (no se borra: cuenta para los topes) cuando el profesional edita el evento.
+  cerrada_at timestamptz
 );
 CREATE INDEX IF NOT EXISTS trayectoria_confirmaciones_email_idx ON public.trayectoria_confirmaciones (email_hash, enviado_at);
 CREATE INDEX IF NOT EXISTS trayectoria_confirmaciones_user_idx ON public.trayectoria_confirmaciones (user_id, enviado_at);

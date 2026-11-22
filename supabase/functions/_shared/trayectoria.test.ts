@@ -197,3 +197,23 @@ describe('eventoCoincide (el sello fuerte solo sube si el evento sigue siendo el
     expect(eventoCoincide(null, acuerdo)).toBe(false);
   });
 });
+
+describe('revisión final: solo se confirma el evento que se pidió', () => {
+  it('puedeConfirmarse exige pendiente, sin cerrar y sin confirmar ya', async () => {
+    const { puedeConfirmarse } = await cargar();
+    expect(puedeConfirmarse({ estado: 'pendiente', cerrada_at: null, confirmado_at: null })).toBe(true);
+    expect(puedeConfirmarse({ estado: 'declarado', cerrada_at: null, confirmado_at: null })).toBe(false); // se editó
+    expect(puedeConfirmarse({ estado: 'pendiente', cerrada_at: '2026-12-01T00:00:00Z', confirmado_at: null })).toBe(false);
+    expect(puedeConfirmarse({ estado: 'pendiente', cerrada_at: null, confirmado_at: '2026-12-01T00:00:00Z' })).toBe(false);
+  });
+});
+
+describe('revisión final: no se confirma un evento que no ha ocurrido', () => {
+  const base = { cobrosActivos: true, tier: 'business', correoOrganizador: 'organizador@empresa.es', correosPropios: ['ana@gmail.com'], confirmadosEsteMes: 0, solicitudesHoy: 0 };
+  it('un evento futuro se rechaza', async () => {
+    const { decidirSolicitud } = await cargar();
+    expect(decidirSolicitud({ ...base, fechaEvento: '2026-12-31', hoy: '2026-12-10' })).toBe('evento_futuro');
+    expect(decidirSolicitud({ ...base, fechaEvento: '2026-12-10', hoy: '2026-12-10' })).toBe('ok');
+    expect(decidirSolicitud({ ...base, fechaEvento: '2026-06-01', hoy: '2026-12-10' })).toBe('ok');
+  });
+});

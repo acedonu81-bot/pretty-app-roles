@@ -14,6 +14,7 @@ const MENSAJES: Record<string, string> = {
   limite_correo: 'No se puede enviar la solicitud ahora mismo. Inténtalo más tarde.',
   limite_diario: 'No se puede enviar la solicitud ahora mismo. Inténtalo más tarde.',
   ya_pendiente: 'Ya le enviamos la solicitud hace poco. Dale un día.',
+  evento_futuro: 'Solo se puede pedir confirmación de eventos que ya han pasado.',
   no_premium: 'Pedir confirmación es una ventaja de Premium.',
   cobros_apagados: 'Todavía no está disponible.',
 };

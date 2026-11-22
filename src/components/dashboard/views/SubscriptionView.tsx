@@ -30,7 +30,7 @@ const SubscriptionView = () => {
   const oficios = oficiosDe(todos);
   const profesional = oficios.profesional;
   const venta = profesional && !isNative && cobrosActivos();
-  const ventajas = (p: PlanPago) => listaVentajas(planDe(p), oficios);
+  const ventajas = (p: PlanPago) => listaVentajas(planDe(p), oficios, { cobros: cobrosActivos() });
 
   useEffect(() => {
     if (!venta) return;

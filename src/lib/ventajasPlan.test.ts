@@ -102,3 +102,12 @@ describe('trayectoria verificada', () => {
     expect(listaVentajas('starter', oficiosDe(['camarero']))).not.toContain('Sello de eventos confirmados en tu ficha');
   });
 });
+
+describe('trayectoria con los cobros apagados', () => {
+  it('Mi plan no anuncia el sello si no se puede usar todavía', () => {
+    const o = oficiosDe(['camarero']);
+    expect(listaVentajas('business', o, { cobros: false })).not.toContain('Sello de eventos confirmados en tu ficha');
+    expect(listaVentajas('business', o, { cobros: true })).toContain('Sello de eventos confirmados en tu ficha');
+    expect(listaVentajas('business', o)).toContain('Sello de eventos confirmados en tu ficha');
+  });
+});

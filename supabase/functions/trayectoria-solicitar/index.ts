@@ -6,7 +6,7 @@ import { admin, respuesta, usuarioDe, cabeceras } from '../_shared/cobrosHttp.ts
 import { correosDelUsuario, decidirSolicitud, firmarConfirmacion, hashEmail } from '../_shared/trayectoria.ts';
 
 const ESTADO_HTTP: Record<string, number> = {
-  cobros_apagados: 403, no_premium: 403, correo_invalido: 400, correo_propio: 400, limite_correo: 429, limite_diario: 429,
+  cobros_apagados: 403, no_premium: 403, correo_invalido: 400, correo_propio: 400, limite_correo: 429, limite_diario: 429, evento_futuro: 400,
 };
 
 Deno.serve(async (req) => {
@@ -53,6 +53,8 @@ Deno.serve(async (req) => {
       correosPropios: correosDelUsuario(user),
       confirmadosEsteMes: errMes || delMes === null ? null : delMes,
       solicitudesHoy: errHoy || errRep || hoy === null ? null : hoy,
+      fechaEvento: String(evento.fecha),
+      hoy: new Date().toISOString().slice(0, 10),
     });
     if (decision !== 'ok') return respuesta(req, { error: decision }, ESTADO_HTTP[decision]);
 

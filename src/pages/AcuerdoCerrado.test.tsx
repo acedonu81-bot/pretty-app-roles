@@ -56,4 +56,11 @@ describe('AcuerdoCerrado', () => {
     await screen.findByText('¿Se cerró el acuerdo para Boda en Casares?');
     expect(window.location.search).toBe('');
   });
+
+  it('no promete lo que no es cierto sobre la otra parte', async () => {
+    invoke.mockResolvedValueOnce({ data: ver, error: null });
+    const { container } = pintar('?t=abc');
+    await screen.findByText('¿Se cerró el acuerdo para Boda en Casares?');
+    expect(container.textContent).not.toMatch(/No se lo contamos a la otra parte/);
+  });
 });

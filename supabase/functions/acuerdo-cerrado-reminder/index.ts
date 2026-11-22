@@ -64,13 +64,19 @@ Deno.serve(async (req) => {
   let enviadas = 0;
   const errores: string[] = [];
   for (const p of contratacionesParaPreguntar(ahora, contrataciones, ya)) {
-    // Primero se reserva la fila: si dos ejecuciones coinciden, solo una envía.
-    const { error: errIns } = await db.from('acuerdo_respuestas')
-      .insert({ origen: p.origen, origen_id: p.origen_id, user_id: p.user_id });
-    if (errIns) continue;
+    // Sin correo real (cuenta demo o sin correo) no se pregunta ni se cuenta como "preguntada".
     const { data: u } = await db.auth.admin.getUserById(p.user_id);
     const email = u?.user?.email;
     if (!email || esDemo(email)) continue;
+
+    // Se reserva la fila antes de enviar: si dos ejecuciones coinciden, solo una envía.
+    // Solo un duplicado (23505) se salta en silencio; cualquier otro error se anota.
+    const { error: errIns } = await db.from('acuerdo_respuestas')
+      .insert({ origen: p.origen, origen_id: p.origen_id, user_id: p.user_id });
+    if (errIns) {
+      if (errIns.code !== '23505') { console.error('[acuerdo-cerrado-reminder] reserva', errIns); errores.push(p.user_id); }
+      continue;
+    }
     const { data: perfil } = await db.from('profiles').select('display_name')
       .eq('user_id', p.user_id).order('is_primary', { ascending: false }).limit(1).maybeSingle();
     const res = await fetch(`${url}/functions/v1/send-email`, {
@@ -81,7 +87,11 @@ Deno.serve(async (req) => {
         data: { email, name: perfil?.display_name || 'Hola', titulo: p.titulo, fecha: p.fecha, enlace: await firmarAcuerdo(p.origen, p.origen_id, p.user_id) },
       }),
     });
-    if (res.ok) enviadas++; else errores.push(p.user_id);
+    if (res.ok) { enviadas++; continue; }
+    // El envío falló: se libera la fila para que mañana se reintente y no cuente como "sin respuesta".
+    errores.push(p.user_id);
+    await db.from('acuerdo_respuestas').delete()
+      .eq('origen', p.origen).eq('origen_id', p.origen_id).eq('user_id', p.user_id).is('respuesta', null);
   }
   return json({ ok: errores.length === 0, preguntadas: enviadas, errores: errores.length });
 });
