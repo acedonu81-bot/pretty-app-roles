@@ -151,3 +151,13 @@ export async function leerAcuerdo(t: string): Promise<{ o: 'flash' | 'solicitud'
     return { o: d.o, i: d.i, u: d.u };
   } catch { return null; }
 }
+
+// El sello fuerte ("Contrato XPEAK") solo sube si el evento de la trayectoria
+// sigue siendo el de la contratación: mismo título, fecha y profesional.
+export function eventoCoincide(
+  evento: { titulo: string; fecha: string; user_id: string } | null,
+  acuerdo: { titulo: string; fecha: string; profesionalId: string | null },
+): boolean {
+  return !!evento && !!acuerdo.profesionalId && evento.user_id === acuerdo.profesionalId
+    && evento.titulo === acuerdo.titulo && evento.fecha === acuerdo.fecha;
+}

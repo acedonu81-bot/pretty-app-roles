@@ -6,7 +6,7 @@
 // Se responde solo por POST tras pulsar un botón. Cuando las DOS partes dicen
 // Sí, el evento de la trayectoria del profesional pasa a "Contrato XPEAK".
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { acuerdoCerrado, leerAcuerdo } from '../_shared/trayectoria.ts';
+import { acuerdoCerrado, eventoCoincide, leerAcuerdo } from '../_shared/trayectoria.ts';
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -59,8 +59,14 @@ Deno.serve(async (req) => {
       // ¿Las dos partes dicen Sí? Si el profesional ya tiene el evento en su trayectoria, sube a "Contrato XPEAK".
       const todas = (filas ?? []).map(f => (f.user_id === d.u ? r : f.respuesta) as 'si' | 'no' | null);
       if (acuerdoCerrado(todas)) {
-        const evento = (filas ?? []).find(f => f.evento_id)?.evento_id;
-        if (evento) await db.from('trayectoria_eventos').update({ origen: 'xpeak', estado: 'confirmado', confirmado_at: ahora }).eq('id', evento);
+        const eventoId = (filas ?? []).find(f => f.evento_id)?.evento_id;
+        if (eventoId) {
+          // Solo sube si el evento no se editó después de añadirlo desde el acuerdo.
+          const { data: ev } = await db.from('trayectoria_eventos').select('titulo, fecha, user_id').eq('id', eventoId).maybeSingle();
+          if (eventoCoincide(ev, { titulo, fecha, profesionalId })) {
+            await db.from('trayectoria_eventos').update({ origen: 'xpeak', estado: 'confirmado', confirmado_at: ahora }).eq('id', eventoId);
+          }
+        }
       }
       return json({ ...base, respuesta: r });
     }

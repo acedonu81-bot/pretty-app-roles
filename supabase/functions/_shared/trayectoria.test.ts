@@ -182,3 +182,18 @@ describe('enlace firmado de acuerdo', () => {
     expect(await leerAcuerdo(t2)).toBeNull();
   });
 });
+
+describe('eventoCoincide (el sello fuerte solo sube si el evento sigue siendo el del acuerdo)', () => {
+  const acuerdo = { titulo: 'Boda en Casares', fecha: '2026-12-01', profesionalId: 'pro' };
+  it('coincide con el mismo título, fecha y profesional', async () => {
+    const { eventoCoincide } = await cargar();
+    expect(eventoCoincide({ titulo: 'Boda en Casares', fecha: '2026-12-01', user_id: 'pro' }, acuerdo)).toBe(true);
+  });
+  it('no coincide si se editó el título, la fecha o es de otra persona', async () => {
+    const { eventoCoincide } = await cargar();
+    expect(eventoCoincide({ titulo: 'Gala premium', fecha: '2026-12-01', user_id: 'pro' }, acuerdo)).toBe(false);
+    expect(eventoCoincide({ titulo: 'Boda en Casares', fecha: '2026-11-01', user_id: 'pro' }, acuerdo)).toBe(false);
+    expect(eventoCoincide({ titulo: 'Boda en Casares', fecha: '2026-12-01', user_id: 'otro' }, acuerdo)).toBe(false);
+    expect(eventoCoincide(null, acuerdo)).toBe(false);
+  });
+});

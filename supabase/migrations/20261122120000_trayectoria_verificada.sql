@@ -77,6 +77,8 @@ BEGIN
     NEW.origen := 'declarado';
     NEW.estado := 'declarado';
     NEW.confirmado_at := NULL;
+    -- Si el evento cambia, deja de ser el de la contratación: se rompe el vínculo.
+    UPDATE public.acuerdo_respuestas SET evento_id = NULL WHERE evento_id = NEW.id;
   END IF;
   RETURN NEW;
 END;
