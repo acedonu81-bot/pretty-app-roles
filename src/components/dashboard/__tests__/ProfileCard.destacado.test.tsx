@@ -22,7 +22,7 @@ describe('ProfileCard: posición destacada', () => {
     render(<ProfileCard profile={{ ...base, userId: 'u1', subscriptionTier: 'business' }} />);
     expect(screen.getByText('Destacado')).toBeTruthy();
   });
-  it('Profesional y Esencial no la llevan', () => {
+  it('Profesional y sin suscripción no la llevan', () => {
     const { unmount } = render(<ProfileCard profile={{ ...base, userId: 'u1', subscriptionTier: 'starter' }} />);
     expect(screen.queryByText('Destacado')).toBeNull();
     unmount();

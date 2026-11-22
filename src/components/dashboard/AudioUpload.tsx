@@ -35,7 +35,7 @@ const sanitizeFileName = (name: string): string =>
     .replace(/_+/g, '_')
     .replace(/^_|_$/g, '');
 
-// Sets por plan desde ventajasPlan (Esencial 3, Profesional 10, Premium ilimitados).
+// Sets por plan desde ventajasPlan (Profesional 10, Premium ilimitados).
 // Quien ya tenía más los conserva, solo no puede añadir. La BD lo impone también.
 const MAX_FILE_MB = 45;
 

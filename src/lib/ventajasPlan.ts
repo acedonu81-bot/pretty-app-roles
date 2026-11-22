@@ -7,18 +7,19 @@
 //   avisos por WhatsApp de trabajo, verificación ampliada, sorteos entre suscriptores,
 //   prioridad en comunicados, sello Premium, Flash con adelanto, soporte prioritario, vídeo de fondo.
 //
-// Los nombres internos siguen siendo free / starter / business; los públicos son
-// Esencial / Profesional / Premium. Agencia está fuera: los tiers antiguos
-// (premium, agency, elite) se tratan como Premium para no quitar nada a nadie.
+// Solo hay DOS planes: Profesional (starter) y Premium (business). No existe plan
+// gratuito ni "Esencial" (decisión del 22 nov 2026). Quien no tiene suscripción de pago
+// (tier 'free' en la base de datos: los perfiles actuales, que son fundadores un año)
+// cuenta como Profesional. Agencia está fuera: los tiers antiguos (premium, agency,
+// elite) se tratan como Premium para no quitar nada a nadie.
 
-export type Plan = 'free' | 'starter' | 'business';
+export type Plan = 'starter' | 'business';
 
-export const NOMBRE_PLAN: Record<Plan, string> = { free: 'Esencial', starter: 'Profesional', business: 'Premium' };
+export const NOMBRE_PLAN: Record<Plan, string> = { starter: 'Profesional', business: 'Premium' };
 
 export function planDe(tier: string | null | undefined): Plan {
-  if (tier === 'starter') return 'starter';
   if (tier === 'business' || tier === 'premium' || tier === 'agency' || tier === 'elite') return 'business';
-  return 'free';
+  return 'starter';
 }
 
 export const nombrePlan = (tier: string | null | undefined) => NOMBRE_PLAN[planDe(tier)];
@@ -35,23 +36,19 @@ export type Ventajas = {
   destacadoInicio: boolean;  // sale en la tarjeta del Inicio del panel
   posicionDestacada: boolean; // por delante en el directorio, con aro dorado y etiqueta Destacado
   redesXpeakMensual: boolean; // aparece una vez al mes en las redes de XPEAK (manual)
+  trayectoriaConfirmada: boolean; // pedir al organizador que confirme eventos y sello en la ficha
 };
 
 const VENTAJAS: Record<Plan, Ventajas> = {
-  free: {
-    fotos: 6, sets: 3, redesVisibles: false,
-    estadisticas: 'ninguna', exportarEstadisticas: false, bannerCabecera: false,
-    destacadoInicio: false, posicionDestacada: false, redesXpeakMensual: false,
-  },
   starter: {
     fotos: 12, sets: 10, redesVisibles: true,
     estadisticas: 'basicas', exportarEstadisticas: false, bannerCabecera: false,
-    destacadoInicio: false, posicionDestacada: false, redesXpeakMensual: false,
+    destacadoInicio: false, posicionDestacada: false, redesXpeakMensual: false, trayectoriaConfirmada: false,
   },
   business: {
     fotos: 20, sets: Infinity, redesVisibles: true,
     estadisticas: 'avanzadas', exportarEstadisticas: true, bannerCabecera: true,
-    destacadoInicio: true, posicionDestacada: true, redesXpeakMensual: true,
+    destacadoInicio: true, posicionDestacada: true, redesXpeakMensual: true, trayectoriaConfirmada: true,
   },
 };
 
@@ -87,20 +84,19 @@ export function oficiosDe(roles: Array<string | null | undefined>): Oficios {
 }
 
 // Lista de ventajas de un plan para un conjunto de oficios.
-export function listaVentajas(plan: Plan, o: Oficios): string[] {
+export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boolean } = {}): string[] {
   const v = VENTAJAS[plan];
   const out: string[] = [];
-  if (plan === 'free') {
+  if (plan === 'starter') {
     out.push('Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas');
     if (o.flash) out.push('Ofertas Flash Booking');
-    out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
-    if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
-  } else if (plan === 'starter') {
-    out.push('Todo lo de Esencial', 'Tu Instagram y TikTok visibles para todos en tu ficha, sin que tengan que escribirte', 'Estadísticas de visitas y mensajes');
+    out.push('Tu Instagram y TikTok visibles para todos en tu ficha, sin que tengan que escribirte', 'Estadísticas de visitas y mensajes');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
   } else {
     out.push('Todo lo de Profesional', 'Posición destacada en el directorio, con aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Apareces una vez al mes en las redes de XPEAK');
+    // Con los cobros apagados nadie puede pedir confirmaciones: no se anuncia.
+    if (opciones.cobros !== false) out.push('Sello de eventos confirmados en tu ficha');
     out.push('Estadísticas avanzadas: visitas día a día, de dónde llegan y exportar');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push('Sets ilimitados');

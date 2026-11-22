@@ -1,5 +1,5 @@
 // Estadísticas según el plan (18 nov 2026, decisiones de Daniel):
-// - Esencial: solo las visitas del mes; el resto, difuminado con invitación a Profesional.
+// - Sin suscripción de pago ('free' en la BD): solo las visitas del mes; el resto, difuminado.
 // - Profesional (y fundadores): todo lo de siempre.
 // - Premium: además, visitas día a día, de dónde llegan y exportar.
 // - Antes del lanzamiento ('pre'): todo abierto, como hasta ahora.

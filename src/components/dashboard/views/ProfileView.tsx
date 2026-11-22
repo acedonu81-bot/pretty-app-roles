@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
+import TrayectoriaEditor from '@/components/dashboard/TrayectoriaEditor';
 import ProductionsUpload from '@/components/dashboard/ProductionsUpload';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
@@ -1218,7 +1219,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 );
                 if (profile.redes_visibles === false) return (
                   <p className="mt-2 text-xs" style={{ color: '#6b6454' }}>
-                    Con el plan Esencial tus redes no se muestran en tu ficha; las guardamos y vuelven a verse en cuanto mejores a Profesional.{' '}
+                    Con tu plan actual tus redes no se muestran en tu ficha; las guardamos y vuelven a verse en cuanto te suscribas a Profesional.{' '}
                     {onNavigate && (
                       <button type="button" onClick={() => onNavigate('subscription')} className="font-bold underline" style={{ color: '#8B6A00' }}>Ver planes</button>
                     )}
@@ -1324,6 +1325,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           {(profile.role === 'dj') && <AudioUpload legacyEmbedUrl={profile.audio_embed_url} onMigrated={() => profile.updateField({ audio_embed_url: null })} />}
           {(profile.role === 'dj') && <ProductionsUpload />}
           {profile.role !== 'dj' && profile.role !== 'empresario' && <PortfolioUpload />}
+          {profile.role !== 'empresario' && <TrayectoriaEditor />}
 
           {/* Export ZIP - GDPR */}
           <div className="glass-panel p-5 flex items-center justify-between gap-4"
