@@ -70,7 +70,12 @@ describe('ConfirmarEvento', () => {
     await screen.findByText('¿Trabajó Lucía Maquillaje en Boda en Casares?');
     expect(ajena.container.querySelector('img')).toBeNull();
     ajena.unmount();
-    invoke.mockResolvedValueOnce({ data: { ...datos, foto: 'https://xyz.supabase.co/storage/v1/object/public/a.jpg' }, error: null });
+    invoke.mockResolvedValueOnce({ data: { ...datos, foto: 'https://otro-proyecto.supabase.co/storage/v1/object/public/a.jpg' }, error: null });
+    const otroProyecto = pintar('?t=abc');
+    await screen.findByText('¿Trabajó Lucía Maquillaje en Boda en Casares?');
+    expect(otroProyecto.container.querySelector('img')).toBeNull();
+    otroProyecto.unmount();
+    invoke.mockResolvedValueOnce({ data: { ...datos, foto: 'https://ddrqhwravupjzysriblq.supabase.co/storage/v1/object/public/a.jpg' }, error: null });
     const otra = pintar('?t=abc');
     await screen.findByText('¿Trabajó Lucía Maquillaje en Boda en Casares?');
     expect(otra.container.querySelector('img')?.getAttribute('referrerpolicy')).toBe('no-referrer');

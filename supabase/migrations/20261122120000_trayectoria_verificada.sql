@@ -58,6 +58,8 @@ BEGIN
   END IF;
   IF TG_OP = 'INSERT' THEN
     -- Tope de eventos por profesional: la trayectoria es una ficha, no un archivo.
+    -- El candado evita que dos inserciones simultáneas pasen el tope a la vez.
+    PERFORM pg_advisory_xact_lock(hashtextextended(NEW.user_id::text, 0));
     IF (SELECT count(*) FROM public.trayectoria_eventos WHERE user_id = NEW.user_id) >= 200 THEN
       RAISE EXCEPTION 'Has llegado al máximo de eventos en tu trayectoria';
     END IF;

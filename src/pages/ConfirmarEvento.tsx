@@ -10,13 +10,18 @@ import { supabase } from '@/integrations/supabase/client';
  */
 type Info = { nombre: string; titulo: string; fecha: string; ciudad?: string | null; lugar?: string | null; foto?: string | null; oficio?: string | null; ya: boolean };
 
-// Solo fotos del Storage público de XPEAK (dominio propio o de Supabase), por https:
-// una foto de otro origen sería un píxel de rastreo para quien abre el correo.
+// Solo fotos del Storage público del proyecto de XPEAK (dominio propio o el host
+// del proyecto de Supabase), por https: una foto de otro origen sería un píxel
+// de rastreo para quien abre el correo. No vale cualquier *.supabase.co.
+const HOSTS_FOTO = (() => {
+  const hosts = ['auth.xpeak.es', 'ddrqhwravupjzysriblq.supabase.co'];
+  try { const h = new URL(String(import.meta.env.VITE_SUPABASE_URL ?? '')).hostname; if (h) hosts.push(h); } catch { /* sin variable */ }
+  return hosts;
+})();
 const fotoSegura = (u?: string | null) => {
   try {
     const x = new URL(u ?? '');
-    return x.protocol === 'https:' && (x.hostname === 'auth.xpeak.es' || x.hostname.endsWith('.supabase.co'))
-      && x.pathname.startsWith('/storage/v1/object/public/');
+    return x.protocol === 'https:' && HOSTS_FOTO.includes(x.hostname) && x.pathname.startsWith('/storage/v1/object/public/');
   } catch { return false; }
 };
 
