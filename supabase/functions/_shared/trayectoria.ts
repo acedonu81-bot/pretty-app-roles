@@ -52,3 +52,31 @@ export async function leerConfirmacion(t: string): Promise<{ e: string; c: strin
     return { e: d.e, c: d.c };
   } catch { return null; }
 }
+
+// Quién puede pedir que un organizador confirme un evento (ventaja Premium).
+// El servidor decide con esto aunque la pantalla ya oculte el botón.
+const TIERS_PREMIUM = ['business', 'premium', 'agency', 'elite'];
+const CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+export type DecisionSolicitud = 'ok' | 'cobros_apagados' | 'no_premium' | 'correo_invalido' | 'correo_propio' | 'limite_correo';
+
+export function decidirSolicitud(ctx: {
+  cobrosActivos: boolean;
+  tier: string | null;
+  correoOrganizador: string;
+  correosPropios: string[];
+  confirmadosEsteMes: number;
+}): DecisionSolicitud {
+  if (!ctx.cobrosActivos) return 'cobros_apagados';
+  if (!ctx.tier || !TIERS_PREMIUM.includes(ctx.tier)) return 'no_premium';
+  if (!CORREO.test(ctx.correoOrganizador.trim())) return 'correo_invalido';
+  if (esCorreoPropio(ctx.correoOrganizador, ctx.correosPropios)) return 'correo_propio';
+  if (!puedeConfirmarMas(ctx.confirmadosEsteMes)) return 'limite_correo';
+  return 'ok';
+}
+
+// Hash del correo normalizado: se guarda esto, nunca el correo.
+export async function hashEmail(e: string): Promise<string> {
+  const h = new Uint8Array(await crypto.subtle.digest('SHA-256', enc.encode(normalizarEmail(e))));
+  return Array.from(h, b => b.toString(16).padStart(2, '0')).join('');
+}

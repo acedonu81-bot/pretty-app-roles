@@ -876,6 +876,28 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     `, `Cuéntanos qué tal fue ${esc(d.titulo)}`),
   }),
 
+  // Trayectoria verificada (22 nov 2026): un profesional Premium pide al
+  // organizador que confirme que trabajó en su evento. Sale como XPEAK.
+  // El enlace va firmado (caduca a los 30 días) y la página pide pulsar el
+  // botón: abrir el correo no confirma nada.
+  confirmar_evento: (d) => ({
+    subject: `¿Trabajó ${esc(d.profesional)} en tu evento?`,
+    to: d.email,
+    html: base(`
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola, <strong>${esc(d.profesional)}</strong> ha añadido a su trayectoria en XPEAK el evento
+        <strong>${esc(d.titulo)}</strong> (${esc(d.fecha)}) y nos ha pedido que lo confirmes tú, que lo organizaste.
+      </p>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Es un clic y no hace falta crear cuenta. Ayuda a otros organizadores a contratar con confianza.
+      </p>
+      ${btn('Sí, trabajó en mi evento', String(d.enlace ?? 'https://xpeak.es'))}
+      <p style="color:#6B7280;font-size:12px;margin-top:20px">
+        Si no conoces a esta persona o no trabajó en tu evento, ignora este correo y no se confirmará nada.
+      </p>
+    `, `Confirma el evento de ${esc(d.profesional)}`),
+  }),
+
   // 2f. Reseña antigua sin las 3 preguntas nuevas: invitar a completarla.
   //
   // Reseñas aprobadas antes de añadir llego_puntual / cumplio_acordado /

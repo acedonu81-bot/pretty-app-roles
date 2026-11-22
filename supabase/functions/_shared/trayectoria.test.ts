@@ -56,3 +56,41 @@ describe('enlace firmado de confirmación', () => {
     }
   });
 });
+
+describe('decidirSolicitud', () => {
+  const base = { cobrosActivos: true, tier: 'business', correoOrganizador: 'organizador@empresa.es', correosPropios: ['ana@gmail.com'], confirmadosEsteMes: 0 };
+  it('Premium con correo ajeno y cupo libre: ok', async () => {
+    const { decidirSolicitud } = await cargar();
+    expect(decidirSolicitud(base)).toBe('ok');
+    for (const tier of ['premium', 'agency', 'elite']) expect(decidirSolicitud({ ...base, tier })).toBe('ok');
+  });
+  it('quien no es Premium no puede pedir confirmación', async () => {
+    const { decidirSolicitud } = await cargar();
+    for (const tier of ['free', 'starter', null]) expect(decidirSolicitud({ ...base, tier })).toBe('no_premium');
+  });
+  it('con los cobros apagados no se ofrece a nadie', async () => {
+    const { decidirSolicitud } = await cargar();
+    expect(decidirSolicitud({ ...base, cobrosActivos: false })).toBe('cobros_apagados');
+  });
+  it('no se puede confirmar con el propio correo', async () => {
+    const { decidirSolicitud } = await cargar();
+    expect(decidirSolicitud({ ...base, correoOrganizador: 'Ana+boda@gmail.com' })).toBe('correo_propio');
+  });
+  it('un correo mal escrito se rechaza', async () => {
+    const { decidirSolicitud } = await cargar();
+    for (const c of ['', 'sin-arroba', 'a@b']) expect(decidirSolicitud({ ...base, correoOrganizador: c })).toBe('correo_invalido');
+  });
+  it('un correo que ya confirmó 5 este mes no recibe más', async () => {
+    const { decidirSolicitud } = await cargar();
+    expect(decidirSolicitud({ ...base, confirmadosEsteMes: 5 })).toBe('limite_correo');
+  });
+});
+
+describe('hashEmail', () => {
+  it('da el mismo hash a las variantes de un correo y nunca el correo en claro', async () => {
+    const { hashEmail } = await cargar();
+    const a = await hashEmail('Ana.Perez+x@gmail.com');
+    expect(a).toBe(await hashEmail('anaperez@gmail.com'));
+    expect(a).toMatch(/^[0-9a-f]{64}$/);
+  });
+});
