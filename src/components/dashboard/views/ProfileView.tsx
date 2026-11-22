@@ -1218,7 +1218,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 );
                 if (profile.redes_visibles === false) return (
                   <p className="mt-2 text-xs" style={{ color: '#6b6454' }}>
-                    Con el plan Esencial tus redes no se muestran en tu ficha; las guardamos y vuelven a verse en cuanto mejores a Profesional.{' '}
+                    Con tu plan actual tus redes no se muestran en tu ficha; las guardamos y vuelven a verse en cuanto te suscribas a Profesional.{' '}
                     {onNavigate && (
                       <button type="button" onClick={() => onNavigate('subscription')} className="font-bold underline" style={{ color: '#8B6A00' }}>Ver planes</button>
                     )}

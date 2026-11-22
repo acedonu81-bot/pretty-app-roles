@@ -8,7 +8,7 @@ import { subscriptionPlans, PRECIOS_ANUALES, PRECIOS_ANUALES_PRIMER_ANO } from '
 
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 
-const NOMBRE: Record<string, string> = { free: 'Esencial', starter: 'Profesional', business: 'Premium', agency: 'Premium' };
+const NOMBRE: Record<string, string> = { starter: 'Profesional', business: 'Premium', agency: 'Premium' };
 
 const Lista = ({ items }: { items: string[] }) => (
   <div className="flex flex-col gap-2">
@@ -30,7 +30,7 @@ const SubscriptionView = () => {
   const oficios = oficiosDe(todos);
   const profesional = oficios.profesional;
   const venta = profesional && !isNative && cobrosActivos();
-  const ventajas = (p: 'free' | PlanPago) => listaVentajas(planDe(p), oficios);
+  const ventajas = (p: PlanPago) => listaVentajas(planDe(p), oficios);
 
   useEffect(() => {
     if (!venta) return;
@@ -46,17 +46,17 @@ const SubscriptionView = () => {
     <div className="max-w-5xl mx-auto py-10 px-4">
       <div className="text-center mb-8">
         <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#8A6D0F' }}>Tu plan</p>
-        <h2 className="text-3xl font-black mb-2">{NOMBRE[tier] ?? 'Esencial'}</h2>
+        <h2 className="text-3xl font-black mb-2">{NOMBRE[tier] ?? 'Sin suscripción'}</h2>
         {pagoOk && <p className="text-sm font-bold" style={{ color: '#059669' }}>Pago recibido. Tu plan se activa en unos segundos.</p>}
         {sus?.cancela_al_final && sus.periodo_fin && (
-          <p className="text-sm" style={{ color: '#8B6A00' }}>Tu plan termina el {new Date(sus.periodo_fin).toLocaleDateString('es-ES')}. Después pasas a Esencial.</p>
+          <p className="text-sm" style={{ color: '#8B6A00' }}>Tu plan termina el {new Date(sus.periodo_fin).toLocaleDateString('es-ES')}. Después pierdes las ventajas del plan.</p>
         )}
       </div>
 
       {!venta && (
         <div className="max-w-lg mx-auto rounded-2xl p-6" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
           <p className="text-sm font-bold mb-4" style={{ color: '#222' }}>Incluido en tu cuenta</p>
-          <Lista items={ventajas(tier === 'starter' || tier === 'business' ? tier : 'free')} />
+          <Lista items={ventajas(tier === 'business' ? 'business' : 'starter')} />
         </div>
       )}
 
@@ -80,12 +80,7 @@ const SubscriptionView = () => {
               ))}
             </div>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl p-6 flex flex-col gap-3" style={{ background: '#fff', border: '1px solid rgba(122,98,22,.18)' }}>
-              <p className="font-black text-lg">Esencial</p>
-              <p className="text-sm" style={{ color: '#6b6454' }}>Tu plan actual</p>
-              <Lista items={ventajas('free')} />
-            </div>
+          <div className="grid gap-4 md:grid-cols-2 max-w-3xl mx-auto">
             {(['starter', 'business'] as PlanPago[]).map(p => {
               const plan = subscriptionPlans.find(x => x.id === p)!;
               const anual = ciclo === 'anual';

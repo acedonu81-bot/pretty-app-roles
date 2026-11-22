@@ -134,7 +134,7 @@ const StatsView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
   useEffect(() => {
     if (!user || plan === undefined) return;
     const load = async () => {
-      // Esencial: solo las visitas de este mes (hora de Madrid); el resto no se pide.
+      // Sin suscripción de pago: solo las visitas de este mes (hora de Madrid); el resto no se pide.
       if (!acceso.basicas) {
         const desde = inicioMesMadrid();
         const { count } = await supabase.from('profile_business_views')
@@ -244,7 +244,7 @@ const StatsView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
   const yearTotalMsgs = monthlyMessages.reduce((a, b) => a + b, 0);
   const yearTotalConvs = monthlyConvs.reduce((a, b) => a + b, 0);
 
-  // Esencial: solo las visitas del mes; el resto, difuminado y sin datos reales detrás.
+  // Sin suscripción de pago: solo las visitas del mes; el resto, difuminado y sin datos reales detrás.
   if (plan !== undefined && !acceso.basicas) {
     const bloqueadas = ['Mensajes recibidos', 'Solicitudes Flash', 'Tasa de contacto'];
     return (

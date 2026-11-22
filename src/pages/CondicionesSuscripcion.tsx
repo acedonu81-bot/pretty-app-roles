@@ -40,7 +40,6 @@ const CondicionesSuscripcion = () => (
 
       <Section title="2. Qué se contrata">
         <p>Una suscripción de pago a XPEAK, el directorio profesional de eventos, con las ventajas del plan elegido. Las ventajas de cada plan se detallan en la pantalla "Mi plan" antes de pagar.</p>
-        <p>El plan Esencial no tiene coste y no necesita suscripción.</p>
       </Section>
 
       <Section title="3. Precios">
@@ -56,7 +55,7 @@ const CondicionesSuscripcion = () => (
 
       <Section title="5. Cómo cancelar">
         <p>Se puede cancelar en cualquier momento desde "Mi plan", en el portal de cliente, sin permanencia. La cancelación surte efecto al final del periodo ya pagado: hasta ese último día se mantienen las ventajas del plan. No hay devolución proporcional del periodo ya iniciado.</p>
-        <p>Al terminar, el perfil pasa al plan Esencial. Lo que el plan Esencial no incluye se oculta, no se borra, y reaparece si se vuelve a suscribir.</p>
+        <p>Al terminar, el perfil pierde las ventajas del plan. Lo que el plan ya no incluye se oculta, no se borra, y reaparece si se vuelve a suscribir.</p>
       </Section>
 
       <Section title="6. Derecho de desistimiento">
@@ -70,7 +69,7 @@ const CondicionesSuscripcion = () => (
       </Section>
 
       <Section title="8. Impago">
-        <p>Si un cobro falla, Stripe lo reintenta varias veces. Si finalmente no se cobra, la suscripción se cancela y el perfil vuelve al plan Esencial, con lo que no incluye oculto, nunca borrado.</p>
+        <p>Si un cobro falla, Stripe lo reintenta varias veces. Si finalmente no se cobra, la suscripción se cancela y el perfil pierde las ventajas del plan, con lo que no incluye oculto, nunca borrado.</p>
       </Section>
 
       <Section title="9. Intermediación">
