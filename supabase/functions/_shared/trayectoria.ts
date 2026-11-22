@@ -75,20 +75,25 @@ export async function leerConfirmacion(t: string): Promise<{ e: string; c: strin
 const TIERS_PREMIUM = ['business', 'premium', 'agency', 'elite'];
 const CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-export type DecisionSolicitud = 'ok' | 'cobros_apagados' | 'no_premium' | 'correo_invalido' | 'correo_propio' | 'limite_correo';
+export type DecisionSolicitud = 'ok' | 'cobros_apagados' | 'no_premium' | 'correo_invalido' | 'correo_propio' | 'limite_correo' | 'limite_diario';
+export const MAX_SOLICITUDES_DIA = 10;
 
 export function decidirSolicitud(ctx: {
   cobrosActivos: boolean;
   tier: string | null;
   correoOrganizador: string;
   correosPropios: string[];
-  confirmadosEsteMes: number;
+  /** Solicitudes enviadas este mes a ese correo; null si no se pudo contar (se rechaza). */
+  confirmadosEsteMes: number | null;
+  /** Solicitudes enviadas hoy por este profesional; null si no se pudo contar (se rechaza). */
+  solicitudesHoy?: number | null;
 }): DecisionSolicitud {
   if (!ctx.cobrosActivos) return 'cobros_apagados';
   if (!ctx.tier || !TIERS_PREMIUM.includes(ctx.tier)) return 'no_premium';
   if (!CORREO.test(ctx.correoOrganizador.trim())) return 'correo_invalido';
   if (esCorreoPropio(ctx.correoOrganizador, ctx.correosPropios)) return 'correo_propio';
-  if (!puedeConfirmarMas(ctx.confirmadosEsteMes)) return 'limite_correo';
+  if (ctx.confirmadosEsteMes === null || !puedeConfirmarMas(ctx.confirmadosEsteMes)) return 'limite_correo';
+  if (ctx.solicitudesHoy === null || (ctx.solicitudesHoy ?? 0) >= MAX_SOLICITUDES_DIA) return 'limite_diario';
   return 'ok';
 }
 

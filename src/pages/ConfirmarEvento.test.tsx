@@ -47,4 +47,27 @@ describe('ConfirmarEvento', () => {
     pintar('?t=malo');
     expect(await screen.findByText('El enlace no es válido')).toBeTruthy();
   });
+
+  it('quita el token de la barra de direcciones tras leerlo', async () => {
+    invoke.mockResolvedValueOnce({ data: datos, error: null });
+    pintar('?t=secreto123');
+    await screen.findByText('¿Trabajó Lucía Maquillaje en Boda en Casares?');
+    expect(window.location.search).toBe('');
+    // sigue pudiendo confirmar con el token guardado en memoria
+    invoke.mockResolvedValueOnce({ data: { ...datos, ya: true }, error: null });
+    fireEvent.click(screen.getByRole('button', { name: 'Sí, trabajó en mi evento' }));
+    await waitFor(() => expect(invoke).toHaveBeenLastCalledWith('trayectoria-confirmar', { body: { t: 'secreto123', accion: 'confirmar' } }));
+  });
+
+  it('solo pinta fotos https y sin enviar referer', async () => {
+    invoke.mockResolvedValueOnce({ data: { ...datos, foto: 'http://rastreador.example/p.gif' }, error: null });
+    const { container, unmount } = pintar('?t=abc');
+    await screen.findByText('¿Trabajó Lucía Maquillaje en Boda en Casares?');
+    expect(container.querySelector('img')).toBeNull();
+    unmount();
+    invoke.mockResolvedValueOnce({ data: { ...datos, foto: 'https://xyz.supabase.co/storage/v1/object/public/a.jpg' }, error: null });
+    const otra = pintar('?t=abc');
+    await screen.findByText('¿Trabajó Lucía Maquillaje en Boda en Casares?');
+    expect(otra.container.querySelector('img')?.getAttribute('referrerpolicy')).toBe('no-referrer');
+  });
 });

@@ -6,7 +6,7 @@ import { admin, respuesta, usuarioDe, cabeceras } from '../_shared/cobrosHttp.ts
 import { correosDelUsuario, decidirSolicitud, firmarConfirmacion, hashEmail } from '../_shared/trayectoria.ts';
 
 const ESTADO_HTTP: Record<string, number> = {
-  cobros_apagados: 403, no_premium: 403, correo_invalido: 400, correo_propio: 400, limite_correo: 429,
+  cobros_apagados: 403, no_premium: 403, correo_invalido: 400, correo_propio: 400, limite_correo: 429, limite_diario: 429,
 };
 
 Deno.serve(async (req) => {
@@ -29,25 +29,31 @@ Deno.serve(async (req) => {
     const { data: perfil } = await db.from('profiles').select('display_name, subscription_tier')
       .eq('user_id', user.id).order('is_primary', { ascending: false }).limit(1).maybeSingle();
 
-    // El tope cuenta las solicitudes ENVIADAS este mes a ese correo (no solo las
-    // confirmadas): así tampoco se puede llenar de correos el buzón de nadie.
+    // Los topes fallan cerrados: si una consulta de conteo falla, no se envía.
+    // Por destinatario: solicitudes ENVIADAS este mes a ese correo (no solo las
+    // confirmadas), para que nadie llene de correos el buzón de otra persona.
     const hash = await hashEmail(email_organizador);
     const inicioMes = new Date(); inicioMes.setUTCDate(1); inicioMes.setUTCHours(0, 0, 0, 0);
-    const { count } = await db.from('trayectoria_confirmaciones').select('id', { count: 'exact', head: true })
+    const { count: delMes, error: errMes } = await db.from('trayectoria_confirmaciones').select('id', { count: 'exact', head: true })
       .eq('email_hash', hash).gte('enviado_at', inicioMes.toISOString());
 
-    // La misma solicitud al mismo correo no se reenvía en 24 horas.
+    // Por remitente: solicitudes de este profesional en las últimas 24 horas y,
+    // en el mismo periodo, ninguna repetida al mismo correo (da igual el evento).
     const hace24h = new Date(Date.now() - 24 * 3600_000).toISOString();
-    const { count: recientes } = await db.from('trayectoria_confirmaciones').select('id', { count: 'exact', head: true })
-      .eq('evento_id', evento.id).eq('email_hash', hash).gte('enviado_at', hace24h);
-    if ((recientes ?? 0) > 0) return respuesta(req, { error: 'ya_pendiente' }, 409);
+    const { data: susEventos } = await db.from('trayectoria_eventos').select('id').eq('user_id', user.id).limit(500);
+    const ids = (susEventos ?? []).map((e: { id: string }) => e.id);
+    const { data: hoy, error: errHoy } = ids.length
+      ? await db.from('trayectoria_confirmaciones').select('email_hash').in('evento_id', ids).gte('enviado_at', hace24h)
+      : { data: [] as { email_hash: string }[], error: null };
+    if ((hoy ?? []).some((r: { email_hash: string }) => r.email_hash === hash)) return respuesta(req, { error: 'ya_pendiente' }, 409);
 
     const decision = decidirSolicitud({
       cobrosActivos: Deno.env.get('COBROS_ACTIVOS') === 'true',
       tier: perfil?.subscription_tier ?? null,
       correoOrganizador: email_organizador,
       correosPropios: correosDelUsuario(user),
-      confirmadosEsteMes: count ?? 0, // solicitudes del mes a ese correo
+      confirmadosEsteMes: errMes || delMes === null ? null : delMes,
+      solicitudesHoy: errHoy ? null : (hoy ?? []).length,
     });
     if (decision !== 'ok') return respuesta(req, { error: decision }, ESTADO_HTTP[decision]);
 

@@ -60,4 +60,15 @@ describe('TrayectoriaEditor', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Añadir evento' }));
     await waitFor(() => expect(crear).toHaveBeenCalledWith(expect.objectContaining({ titulo: 'Gala de empresa', fecha: '2026-05-10' })));
   });
+
+  it('los límites no cuentan lo que hacen otros: mismo mensaje opaco', async () => {
+    const { toast } = await import('sonner');
+    render(<TrayectoriaEditor />);
+    await screen.findByText('Boda en Casares');
+    fireEvent.click(screen.getByRole('button', { name: 'Pedir confirmación' }));
+    fireEvent.change(screen.getByLabelText('Correo del organizador'), { target: { value: 'org@empresa.es' } });
+    pedir.mockRejectedValueOnce(new Error('limite_correo'));
+    fireEvent.click(screen.getByRole('button', { name: 'Enviar' }));
+    await waitFor(() => expect(toast.error).toHaveBeenCalledWith('No se puede enviar la solicitud ahora mismo. Inténtalo más tarde.'));
+  });
 });

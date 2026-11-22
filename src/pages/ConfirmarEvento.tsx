@@ -10,13 +10,22 @@ import { supabase } from '@/integrations/supabase/client';
  */
 type Info = { nombre: string; titulo: string; fecha: string; ciudad?: string | null; lugar?: string | null; foto?: string | null; oficio?: string | null; ya: boolean };
 
+// Solo fotos servidas por https (las de XPEAK están en Storage): nada de rastreadores http.
+const fotoSegura = (u?: string | null) => !!u && /^https:\/\//.test(u);
+
 const fechaLarga = (f: string) => {
   const d = new Date(`${f}T12:00:00`);
   return Number.isNaN(d.getTime()) ? f : d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 };
 
 export default function ConfirmarEvento() {
-  const t = new URLSearchParams(window.location.search).get('t');
+  // El token se lee una vez y se quita de la barra de direcciones: así no viaja en
+  // el historial, en capturas ni en el Referer de lo que cargue la página.
+  const [t] = useState(() => {
+    const valor = new URLSearchParams(window.location.search).get('t');
+    if (valor) window.history.replaceState({}, '', window.location.pathname);
+    return valor;
+  });
   const [info, setInfo] = useState<Info | null>(null);
   const [estado, setEstado] = useState<'cargando' | 'listo' | 'enviando' | 'hecho' | 'error'>(t ? 'cargando' : 'error');
 
@@ -49,7 +58,7 @@ export default function ConfirmarEvento() {
 
           {(estado === 'listo' || estado === 'enviando') && info && (
             <div className="rounded-2xl p-6" style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.35)' }}>
-              {info.foto ? <img src={info.foto} alt={info.nombre} className="w-20 h-20 rounded-full object-cover mx-auto mb-4" /> : null}
+              {fotoSegura(info.foto) ? <img src={info.foto!} alt={info.nombre} referrerPolicy="no-referrer" className="w-20 h-20 rounded-full object-cover mx-auto mb-4" /> : null}
               <h1 className="text-xl font-black mb-2" style={{ fontFamily: 'Syne, Inter, sans-serif' }}>{`¿Trabajó ${info.nombre} en ${info.titulo}?`}</h1>
               <p className="text-sm mb-6" style={{ color: '#6B7280' }}>
                 {[fechaLarga(info.fecha), info.lugar, info.ciudad].filter(Boolean).join(' · ')}

@@ -42,6 +42,8 @@ import EmbedDiferido from '@/components/EmbedDiferido';
 import FollowButton from '@/components/FollowButton';
 import PostCard from '@/components/PostCard';
 import ReviewsSection from '@/components/ReviewsSection';
+import TrayectoriaSection from '@/components/profile/TrayectoriaSection';
+import { trayectoriaPublica, type EventoTrayectoria } from '@/lib/trayectoria';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 import { clicRedSocial, logContactClick } from '@/lib/track';
 // Se reexporta para los tests que lo importan desde aquí.
@@ -200,6 +202,11 @@ const PublicProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [sbProfile, setSbProfile] = useState<SupabaseProfile | null>(null);
+  const [trayectoria, setTrayectoria] = useState<EventoTrayectoria[]>([]);
+  useEffect(() => {
+    if (!sbProfile?.user_id) return;
+    trayectoriaPublica(sbProfile.user_id).then(setTrayectoria);
+  }, [sbProfile?.user_id]);
   const scarcity = useScarcitySignal(sbProfile?.user_id);
   const [flashBookingDate, setFlashBookingDate] = useState<string | null>(null);
   const [showCalendarHelp, setShowCalendarHelp] = useState(false);
@@ -1474,6 +1481,8 @@ const PublicProfile = () => {
           {showCalendarHelp && (
             <CalendarHowItWorksModal audience="organizador" onClose={() => setShowCalendarHelp(false)} />
           )}
+
+          {trayectoria.length > 0 && <TrayectoriaSection eventos={trayectoria} />}
 
           {/* Reviews */}
           <PanelPerfilDJ id="resenas" esDJ={esDJ} activa={pestana}>

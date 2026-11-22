@@ -15,6 +15,7 @@ import { fotoOptimizada } from '@/lib/imagen';
 import FollowButton from '@/components/FollowButton';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 import { esDestacado } from '@/lib/dailyRotation';
+import { cobrosActivos } from '@/lib/pagos';
 import { ANILLO_DESTACADO, EtiquetaDestacado } from '@/components/Destacado';
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
@@ -39,9 +40,11 @@ interface ProfileCardProps {
   onNavigateSubscription?: () => void;
   /** `'resenas'` abre la ficha directamente en las reseñas (clic en la nota). */
   onViewProfile?: (profile: Profile, seccion?: 'resenas') => void;
+  /** Eventos de su trayectoria confirmados por el organizador (o con contrato XPEAK). */
+  eventosConfirmados?: number;
 }
 
-const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription, onViewProfile }: ProfileCardProps) => {
+const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription, onViewProfile, eventosConfirmados }: ProfileCardProps) => {
   const currentUser = useProfile();
   const isRookie = p.category === 'rookie';
   const [accepted, setAccepted] = useState(() => localStorage.getItem('xpeak_norms_accepted') === 'true');
@@ -175,6 +178,12 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         )}
 
         {destacado && <EtiquetaDestacado className="absolute top-12 right-2.5 z-10" />}
+        {!!eventosConfirmados && eventosConfirmados > 0 && cobrosActivos() && (
+          <span className="absolute bottom-2.5 left-2.5 z-10 text-[11px] font-bold px-2 py-1 rounded-full"
+            style={{ background: 'rgba(255,253,247,.92)', color: '#8B6A00', border: '1px solid rgba(212,175,55,.45)' }}>
+            {`${eventosConfirmados} ${eventosConfirmados === 1 ? 'evento confirmado' : 'eventos confirmados'}`}
+          </span>
+        )}
 
         {/* Badges top-left — single most-relevant badge on mobile, full set on desktop */}
         <div className={`absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10 ${realProfileId && currentUser.user_id && currentUser.user_id !== realProfileId ? 'right-[6.5rem]' : 'right-2.5'}`}>

@@ -119,3 +119,17 @@ describe('antifraude: correos equivalentes (revisión de seguridad)', () => {
     expect(correosDelUsuario({ email: null })).toEqual([]);
   });
 });
+
+describe('decidirSolicitud: tope por remitente (revisión de seguridad)', () => {
+  const base = { cobrosActivos: true, tier: 'business', correoOrganizador: 'organizador@empresa.es', correosPropios: ['ana@gmail.com'], confirmadosEsteMes: 0 };
+  it('un profesional no puede enviar más de 10 solicitudes en un día', async () => {
+    const { decidirSolicitud } = await cargar();
+    expect(decidirSolicitud({ ...base, solicitudesHoy: 9 })).toBe('ok');
+    expect(decidirSolicitud({ ...base, solicitudesHoy: 10 })).toBe('limite_diario');
+  });
+  it('si no se pudo contar, se rechaza (falla cerrado)', async () => {
+    const { decidirSolicitud } = await cargar();
+    expect(decidirSolicitud({ ...base, solicitudesHoy: null })).toBe('limite_diario');
+    expect(decidirSolicitud({ ...base, confirmadosEsteMes: null })).toBe('limite_correo');
+  });
+});

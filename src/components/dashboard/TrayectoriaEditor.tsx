@@ -10,7 +10,9 @@ import {
 const MENSAJES: Record<string, string> = {
   correo_propio: 'Tiene que ser el correo del organizador, no el tuyo.',
   correo_invalido: 'Ese correo no parece válido.',
-  limite_correo: 'Ese correo ya ha recibido varias solicitudes este mes.',
+  // Los límites (de ese correo o diario) no cuentan qué ha pasado con otras personas.
+  limite_correo: 'No se puede enviar la solicitud ahora mismo. Inténtalo más tarde.',
+  limite_diario: 'No se puede enviar la solicitud ahora mismo. Inténtalo más tarde.',
   ya_pendiente: 'Ya le enviamos la solicitud hace poco. Dale un día.',
   no_premium: 'Pedir confirmación es una ventaja de Premium.',
   cobros_apagados: 'Todavía no está disponible.',
