@@ -256,6 +256,7 @@ const SolicitudConfirmada = lazy(() => import("./pages/SolicitudConfirmada"));
 const Acceso = lazy(() => import("./pages/Acceso"));
 const Responder = lazy(() => import("./pages/Responder"));
 const ConfirmarEvento = lazy(() => import("./pages/ConfirmarEvento"));
+const AcuerdoCerrado = lazy(() => import("./pages/AcuerdoCerrado"));
 const BlogCateringBoda = lazy(() => import("./pages/BlogCateringBoda"));
 const BlogVideografoBodas = lazy(() => import("./pages/BlogVideografoBodas"));
 const BlogTendenciasBodas = lazy(() => import("./pages/BlogTendenciasBodas"));
@@ -811,6 +812,7 @@ const App = () => (
             <Route path="/acceso" element={<Acceso />} />
             <Route path="/responder" element={<Responder />} />
             <Route path="/confirmar-evento" element={<ConfirmarEvento />} />
+            <Route path="/acuerdo-cerrado" element={<AcuerdoCerrado />} />
             {!isNative && (
               <>
             <Route path="/blog/catering-boda-precio-por-persona" element={<BlogCateringBoda />} />

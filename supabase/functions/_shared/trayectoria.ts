@@ -12,11 +12,11 @@ const deB64url = (s: string) => Uint8Array.from(
 
 // Clave derivada con propósito propio: una firma de estos enlaces no vale para
 // /acceso, /responder ni ningún otro enlace firmado, y al revés.
-const clave = async () => {
+const clave = async (proposito = 'xpeak-trayectoria-v1') => {
   const base = (globalThis as any).Deno?.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!base) throw new Error('Sin clave para firmar');
   const raiz = await crypto.subtle.importKey('raw', enc.encode(base), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
-  const derivada = await crypto.subtle.sign('HMAC', raiz, enc.encode('xpeak-trayectoria-v1'));
+  const derivada = await crypto.subtle.sign('HMAC', raiz, enc.encode(proposito));
   return crypto.subtle.importKey('raw', derivada, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
 };
 
@@ -101,4 +101,53 @@ export function decidirSolicitud(ctx: {
 export async function hashEmail(e: string): Promise<string> {
   const h = new Uint8Array(await crypto.subtle.digest('SHA-256', enc.encode(normalizarEmail(e))));
   return Array.from(h, b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ── Pregunta "¿se cerró el acuerdo?" (se mide cuántos acuerdos salen de XPEAK) ──
+
+export type Contratacion = { origen: 'flash' | 'solicitud'; origen_id: string; fecha: string; titulo: string; partes: string[] };
+export type Pregunta = { origen: 'flash' | 'solicitud'; origen_id: string; user_id: string; titulo: string; fecha: string };
+
+const DIA = 24 * 3600_000;
+const FECHA = /^\d{4}-\d{2}-\d{2}$/;
+
+// A cada parte de una contratación cuyo evento pasó hace 3 a 60 días y a quien
+// aún no se le ha preguntado. Los más antiguos ya no se preguntan.
+export function contratacionesParaPreguntar(ahora: Date, contrataciones: Contratacion[], yaPreguntados: Set<string>): Pregunta[] {
+  const salida: Pregunta[] = [];
+  for (const c of contrataciones) {
+    if (!FECHA.test(c.fecha)) continue;
+    const t = new Date(`${c.fecha}T00:00:00Z`).getTime();
+    if (Number.isNaN(t)) continue;
+    const hoy = new Date(`${ahora.toISOString().slice(0, 10)}T00:00:00Z`).getTime();
+    const pasados = (hoy - t) / DIA; // días naturales
+    if (pasados < 3 || pasados > 60) continue;
+    for (const u of new Set(c.partes.filter(Boolean))) {
+      if (yaPreguntados.has(`${c.origen}:${c.origen_id}:${u}`)) continue;
+      salida.push({ origen: c.origen, origen_id: c.origen_id, user_id: u, titulo: c.titulo, fecha: c.fecha });
+    }
+  }
+  return salida;
+}
+
+export const acuerdoCerrado = (respuestas: Array<'si' | 'no' | null>): boolean =>
+  respuestas.length >= 2 && respuestas.every(r => r === 'si');
+
+export async function firmarAcuerdo(origen: 'flash' | 'solicitud', origenId: string, userId: string): Promise<string> {
+  const datos = enc.encode(JSON.stringify({ o: origen, i: origenId, u: userId, iat: Date.now() }));
+  const firma = new Uint8Array(await crypto.subtle.sign('HMAC', await clave('xpeak-acuerdo-v1'), datos));
+  return `https://xpeak.es/acuerdo-cerrado?t=${b64url(datos)}.${b64url(firma)}`;
+}
+
+export async function leerAcuerdo(t: string): Promise<{ o: 'flash' | 'solicitud'; i: string; u: string } | null> {
+  try {
+    const [a, b] = t.split('.');
+    if (!a || !b) return null;
+    const datos = deB64url(a);
+    if (!(await crypto.subtle.verify('HMAC', await clave('xpeak-acuerdo-v1'), deB64url(b), datos))) return null;
+    const d = JSON.parse(new TextDecoder().decode(datos));
+    if ((d?.o !== 'flash' && d?.o !== 'solicitud') || typeof d?.i !== 'string' || typeof d?.u !== 'string' || typeof d?.iat !== 'number') return null;
+    if (Date.now() - d.iat > CADUCA_MS) return null;
+    return { o: d.o, i: d.i, u: d.u };
+  } catch { return null; }
 }

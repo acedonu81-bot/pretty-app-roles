@@ -133,3 +133,52 @@ describe('decidirSolicitud: tope por remitente (revisión de seguridad)', () => 
     expect(decidirSolicitud({ ...base, confirmadosEsteMes: null })).toBe('limite_correo');
   });
 });
+
+describe('contratacionesParaPreguntar', () => {
+  const ahora = new Date('2026-12-10T10:00:00Z');
+  const c = (id: string, fecha: string, partes = ['org', 'pro']) => ({ origen: 'flash' as const, origen_id: id, fecha, titulo: 'Boda', partes });
+
+  it('pregunta a cada parte cuando han pasado 3 días o más del evento', async () => {
+    const { contratacionesParaPreguntar } = await cargar();
+    const r = contratacionesParaPreguntar(ahora, [c('a', '2026-12-07')], new Set());
+    expect(r.map(x => x.user_id).sort()).toEqual(['org', 'pro']);
+    expect(r[0]).toMatchObject({ origen: 'flash', origen_id: 'a', titulo: 'Boda', fecha: '2026-12-07' });
+  });
+  it('no pregunta antes de 3 días ni pasados 60 días', async () => {
+    const { contratacionesParaPreguntar } = await cargar();
+    expect(contratacionesParaPreguntar(ahora, [c('a', '2026-12-08'), c('b', '2026-09-01')], new Set())).toEqual([]);
+  });
+  it('no repite a quien ya se le preguntó', async () => {
+    const { contratacionesParaPreguntar } = await cargar();
+    const r = contratacionesParaPreguntar(ahora, [c('a', '2026-12-01')], new Set(['flash:a:org']));
+    expect(r.map(x => x.user_id)).toEqual(['pro']);
+  });
+  it('ignora fechas que no son AAAA-MM-DD y partes repetidas', async () => {
+    const { contratacionesParaPreguntar } = await cargar();
+    expect(contratacionesParaPreguntar(ahora, [c('a', 'el sábado')], new Set())).toEqual([]);
+    expect(contratacionesParaPreguntar(ahora, [c('a', '2026-12-01', ['org', 'org'])], new Set()).length).toBe(1);
+  });
+});
+
+describe('acuerdoCerrado', () => {
+  it('solo es acuerdo cuando las dos partes dicen que sí', async () => {
+    const { acuerdoCerrado } = await cargar();
+    expect(acuerdoCerrado(['si', 'si'])).toBe(true);
+    expect(acuerdoCerrado(['si', null])).toBe(false);
+    expect(acuerdoCerrado(['si', 'no'])).toBe(false);
+    expect(acuerdoCerrado(['si'])).toBe(false);
+  });
+});
+
+describe('enlace firmado de acuerdo', () => {
+  it('se lee de vuelta y no vale como enlace de confirmación (ni al revés)', async () => {
+    const { firmarAcuerdo, leerAcuerdo, firmarConfirmacion, leerConfirmacion } = await cargar();
+    const url = await firmarAcuerdo('flash', 'a', 'pro');
+    expect(url.startsWith('https://xpeak.es/acuerdo-cerrado?t=')).toBe(true);
+    const t = new URL(url).searchParams.get('t')!;
+    expect(await leerAcuerdo(t)).toEqual({ o: 'flash', i: 'a', u: 'pro' });
+    expect(await leerConfirmacion(t)).toBeNull();
+    const t2 = new URL(await firmarConfirmacion('e', 'c')).searchParams.get('t')!;
+    expect(await leerAcuerdo(t2)).toBeNull();
+  });
+});

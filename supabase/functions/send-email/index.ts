@@ -898,6 +898,25 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     `, `Confirma el evento de ${esc(d.profesional)}`),
   }),
 
+  // Trayectoria verificada (22 nov 2026): a los 3 días del evento se pregunta a
+  // cada parte si el acuerdo se cerró. Sale como XPEAK; el enlace va firmado y
+  // la página pide pulsar un botón: abrir el correo no contesta por nadie.
+  acuerdo_cerrado: (d) => ({
+    subject: `¿Se cerró el acuerdo para ${esc(d.titulo)}?`,
+    to: d.email,
+    html: base(`
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name)}</strong>, el evento <strong>${esc(d.titulo)}</strong> (${esc(d.fecha)}) ya pasó.
+        ¿Se cerró el acuerdo entre las dos partes?
+      </p>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Es un clic y nos ayuda a saber si XPEAK sirve para cerrar eventos. No se lo contamos a la otra parte.
+      </p>
+      ${btn('Contestar', String(d.enlace ?? 'https://xpeak.es'))}
+      <p style="color:#6B7280;font-size:12px;margin-top:20px">Si prefieres no contestar, ignora este correo.</p>
+    `, `¿Se cerró el acuerdo para ${esc(d.titulo)}?`),
+  }),
+
   // 2f. Reseña antigua sin las 3 preguntas nuevas: invitar a completarla.
   //
   // Reseñas aprobadas antes de añadir llego_puntual / cumplio_acordado /
