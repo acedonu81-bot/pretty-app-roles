@@ -30,4 +30,11 @@ describe('CabeceraArtistaDJ', () => {
     expect((screen.getByLabelText('Cambiar la foto de perfil') as HTMLButtonElement).disabled).toBe(true);
     expect((screen.getByLabelText('Cambiar el fondo del banner') as HTMLButtonElement).disabled).toBe(false);
   });
+
+  it('el ganador del concurso lleva su sello y el resto no', () => {
+    const { rerender } = render(<CabeceraArtistaDJ {...base} premio="Ganador del 1er Concurso DJ XPEAK Madrid" />);
+    expect(screen.getByText('Ganador del 1er Concurso DJ XPEAK Madrid')).toBeTruthy();
+    rerender(<CabeceraArtistaDJ {...base} />);
+    expect(screen.queryByText(/Ganador del 1er Concurso/)).toBeNull();
+  });
 });

@@ -37,6 +37,11 @@ export function concursoEnRevision(ahora: Date = new Date()): boolean {
  *  del banner de finalistas; luego se apaga sola. No se borra nada para
  *  reutilizarlo en la siguiente edición. */
 export const GANADOR_CONCURSO_ID = 'ab1f4291-68d7-40e7-bde4-9b652151f061';
+
+/** Sello permanente del ganador en su ficha (23 nov 2026, Zulo Creativo). Por user_id. */
+export function premioConcursoDe(userId: string | null | undefined): string | null {
+  return userId === GANADOR_CONCURSO_ID ? 'Ganador del 1er Concurso DJ XPEAK Madrid' : null;
+}
 export const ANUNCIO_GANADOR = new Date('2026-11-09T00:00:00+01:00');
 export const FIN_GANADOR_PANEL = new Date('2026-11-17T00:00:00+01:00');
 

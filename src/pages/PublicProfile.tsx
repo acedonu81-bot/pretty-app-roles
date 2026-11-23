@@ -31,6 +31,7 @@ import { useScarcitySignal } from '@/hooks/useScarcitySignal';
 import PublicContactModal from '@/components/PublicContactModal';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
+import { premioConcursoDe } from '@/lib/concursoMadrid';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
 import CalendarHowItWorksModal from '@/components/CalendarHowItWorksModal';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
@@ -883,6 +884,7 @@ const PublicProfile = () => {
             onCambiarFoto={esMiPerfilDJ ? f => cambiarImagenArtista('foto', f) : undefined}
             subiendo={subiendoImagen}
             podio={mejorPuestoDJ}
+            premio={premioConcursoDe(sbProfile?.user_id)}
             acciones={<>
               {sbProfile && authUser?.id !== sbProfile.user_id && (authUser ? (
                 <FollowButton viewerId={authUser.id} followedUserId={sbProfile.user_id} />

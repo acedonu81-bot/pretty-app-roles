@@ -54,3 +54,12 @@ describe('ganadorEnPanel', () => {
     expect(ganadorEnPanel(new Date('2026-11-17T00:00:00+01:00'))).toBe(false);
   });
 });
+
+import { premioConcursoDe } from './concursoMadrid';
+describe('premioConcursoDe', () => {
+  it('solo el ganador tiene el sello del 1er concurso', () => {
+    expect(premioConcursoDe('ab1f4291-68d7-40e7-bde4-9b652151f061')).toBe('Ganador del 1er Concurso DJ XPEAK Madrid');
+    expect(premioConcursoDe('otro')).toBeNull();
+    expect(premioConcursoDe(undefined)).toBeNull();
+  });
+});

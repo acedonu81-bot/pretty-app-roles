@@ -16,6 +16,7 @@ import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
 import SessionAudioPlayer from '@/components/SessionAudioPlayer';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
+import { premioConcursoDe } from '@/lib/concursoMadrid';
 import FlashBookingRequestModal from './FlashBookingRequestModal';
 import CalendarHowItWorksModal from '@/components/CalendarHowItWorksModal';
 import { useScarcitySignal } from '@/hooks/useScarcitySignal';
@@ -511,6 +512,7 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
                 estilos={genres ?? []}
                 verificado={verified}
                 podio={mejorPuestoDJ}
+                premio={premioConcursoDe(p.userId)}
                 acciones={<>
                   {p.userId && me.user_id && me.user_id !== p.userId && (
                     <FollowButton viewerId={me.user_id} followedUserId={p.userId} />
