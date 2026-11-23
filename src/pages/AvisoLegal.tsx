@@ -28,7 +28,7 @@ const AvisoLegal = () => (
       <Section title="1. Datos identificativos del titular">
         <p><span className="font-bold text-[#111]">Denominación:</span> XPEAK</p>
         <p><span className="font-bold text-[#111]">Titular:</span> Daniel Acedo Núñez</p>
-        <p><span className="font-bold text-[#111]">NIF/CIF:</span> 53022503M</p>
+        <p><span className="font-bold text-[#111]">NIF:</span> 53022503M</p>
         <p><span className="font-bold text-[#111]">Domicilio:</span> {DOMICILIO_TITULAR}</p>
         <p><span className="font-bold text-[#111]">Email:</span> info@xpeak.site</p>
         <p><span className="font-bold text-[#111]">Contacto legal:</span> info@xpeak.site</p>
@@ -36,19 +36,19 @@ const AvisoLegal = () => (
       </Section>
 
       <Section title="2. Objeto y naturaleza del servicio">
-        <p>XPEAK es una plataforma de intermediación técnica que opera como directorio profesional para el sector de eventos y eventos y entretenimiento en España.</p>
-        <p>XPEAK actúa exclusivamente como intermediario tecnológico conforme al artículo 14 de la Directiva 2000/31/CE y la LSSI-CE. XPEAK <span className="font-bold text-[#111]">no es agencia de empleo</span>, empresa de trabajo temporal (ETT) ni actúa como empleador de los profesionales registrados.</p>
+        <p>XPEAK es una plataforma de intermediación técnica que opera como directorio profesional para el sector de eventos y entretenimiento en España.</p>
+        <p>XPEAK actúa exclusivamente como intermediario tecnológico, como prestador de servicios de alojamiento de datos conforme al Reglamento (UE) 2022/2065 de Servicios Digitales y la LSSI-CE. XPEAK <span className="font-bold text-[#111]">no es agencia de empleo</span>, empresa de trabajo temporal (ETT) ni actúa como empleador de los profesionales registrados.</p>
         <p>Los contratos de prestación de servicios se celebran directamente entre empresarios y profesionales. XPEAK no es parte de dichos contratos.</p>
       </Section>
 
       <Section title="3. Propiedad intelectual e industrial">
         <p>El diseño, código fuente, logotipos, marcas y contenidos propios de XPEAK están protegidos por la legislación española e internacional sobre propiedad intelectual e industrial (Real Decreto Legislativo 1/1996, Ley de Marcas 17/2001).</p>
         <p>Los contenidos generados por los usuarios (mezclas, fotografías, vídeos, textos) son responsabilidad exclusiva de quien los publica. XPEAK no asume responsabilidad sobre posibles infracciones de derechos de terceros realizadas por los usuarios.</p>
-        <p>Para notificaciones de infracción de derechos de autor: <span className="font-bold text-[#111]">info@xpeak.site</span> (procedimiento notice &amp; takedown conforme al art. 14 Dir. 2000/31/CE y Ley 21/2022 de servicios de comunicación audiovisual).</p>
+        <p>Para notificaciones de infracción de derechos de autor: <span className="font-bold text-[#111]">info@xpeak.site</span> (procedimiento de notificación y retirada conforme al artículo 16 del Reglamento (UE) 2022/2065 y al Real Decreto Legislativo 1/1996 de Propiedad Intelectual).</p>
       </Section>
 
       <Section title="4. Protección de datos personales">
-        <p>El responsable del tratamiento de datos personales es XPEAK (datos identificativos en el apartado 1).</p>
+        <p>El responsable del tratamiento de datos personales es Daniel Acedo Núñez, titular de XPEAK (datos identificativos en el apartado 1).</p>
         <p>El tratamiento se realiza conforme al Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</p>
         <p>Para más información consulta nuestra{' '}
           <Link to="/privacidad" className="underline font-bold" style={{ color: '#8B6A00' }}>Política de Privacidad</Link>.
@@ -71,9 +71,9 @@ const AvisoLegal = () => (
       </Section>
 
       <Section title="7. Legislación aplicable y jurisdicción">
-        <p>Este aviso legal se rige por la legislación española. Para la resolución de cualquier controversia derivada del acceso o uso de este sitio web, las partes se someten a los Juzgados y Tribunales de Madrid, con renuncia expresa a cualquier otro fuero que pudiera corresponderles.</p>
+        <p>Este aviso legal se rige por la legislación española. Para la resolución de cualquier controversia derivada del acceso o uso de este sitio web, serán competentes los Juzgados y Tribunales de Madrid. Si el usuario es consumidor, serán competentes los del lugar de su domicilio.</p>
         <p className="text-xs" style={{ color: '#6b7280' }}>
-          Normativa aplicable: RGPD (UE) 2016/679 · LOPDGDD (LO 3/2018) · LSSI-CE (Ley 34/2002) · Ley 21/2022 · Código Civil · Real Decreto-ley 9/2021
+          Normativa aplicable: RGPD (UE) 2016/679 · LOPDGDD (LO 3/2018) · LSSI-CE (Ley 34/2002) · Reglamento (UE) 2022/2065 de Servicios Digitales · Real Decreto Legislativo 1/2007 (consumidores) · Real Decreto Legislativo 1/1996 (propiedad intelectual) · Código Civil
         </p>
       </Section>
 

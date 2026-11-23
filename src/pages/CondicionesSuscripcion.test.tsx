@@ -13,7 +13,7 @@ describe('CondicionesSuscripcion', () => {
     pintar();
     expect(screen.getAllByText(/Daniel Acedo Núñez/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/53022503M/).length).toBeGreaterThan(0);
-    expect(screen.getByText(/Carretera de la Base, 8, 28850 Torrejón de Ardoz \(Madrid\)/)).toBeTruthy();
+    expect(screen.getAllByText(/Carretera de la Base, 8, 28850 Torrejón de Ardoz \(Madrid\)/).length).toBeGreaterThan(0);
   });
 
   it('explica el desistimiento de 14 días y la renuncia al empezar', () => {
@@ -42,5 +42,25 @@ describe('CondicionesSuscripcion: orden del directorio', () => {
     pintar();
     expect(screen.getByText(/aro dorado y la etiqueta "Destacado"/)).toBeTruthy();
     expect(screen.getByText(/rota cada día/)).toBeTruthy();
+    expect(screen.queryByText(/prioridad por invitar/)).toBeNull();
+  });
+});
+
+describe('CondicionesSuscripcion: revisión legal 23 nov', () => {
+  it('explica el año de fundador y qué pasa después', () => {
+    pintar();
+    expect(screen.getByText(/Profesional sin coste durante un año/)).toBeTruthy();
+    expect(screen.getByText(/pasan al nivel base salvo que se suscriban/)).toBeTruthy();
+    expect(screen.queryByText(/precio de fundador/)).toBeNull();
+  });
+
+  it('incluye el modelo de formulario de desistimiento', () => {
+    pintar();
+    expect(screen.getByText(/Modelo de formulario de desistimiento/)).toBeTruthy();
+  });
+
+  it('dice dónde descargar las facturas', () => {
+    pintar();
+    expect(screen.getByText(/facturas de cada cobro/)).toBeTruthy();
   });
 });

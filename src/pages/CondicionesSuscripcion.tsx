@@ -42,6 +42,7 @@ const CondicionesSuscripcion = () => (
 
       <Section title="2. Qué se contrata">
         <p>Una suscripción de pago a XPEAK, el directorio profesional de eventos, con las ventajas del plan elegido. Las ventajas de cada plan se detallan en la pantalla "Mi plan" antes de pagar.</p>
+        <p><B>Fundadores:</B> los profesionales que ya estaban en XPEAK antes del lanzamiento de los planes, con perfil aprobado y foto, tienen el plan Profesional sin coste durante un año desde el lanzamiento. Al terminar ese año pasan al nivel base salvo que se suscriban, y XPEAK les avisa por correo 30 días antes. Pueden suscribirse a cualquier plan cuando quieran.</p>
       </Section>
 
       <Section title="3. Precios">
@@ -56,6 +57,7 @@ const CondicionesSuscripcion = () => (
 
       <Section title="4. Renovación automática">
         <p>La suscripción se renueva sola cada mes o cada año, según el ciclo elegido, hasta que se cancele. El cobro se hace en la tarjeta indicada, a través de Stripe. XPEAK no guarda los datos de la tarjeta.</p>
+        <p>Las facturas de cada cobro se pueden descargar desde "Mi plan", en el portal de cliente.</p>
       </Section>
 
       <Section title="5. Cómo cancelar">
@@ -67,14 +69,15 @@ const CondicionesSuscripcion = () => (
         <p>Quien contrata como consumidor tiene derecho a desistir en 14 días naturales desde la contratación, sin dar explicaciones (texto refundido de la Ley General para la Defensa de los Consumidores y Usuarios).</p>
         <p>Al pagar, la persona solicita que el servicio empiece de inmediato y reconoce que, una vez prestado por completo, pierde el derecho de desistimiento. Si desiste dentro de los 14 días con el servicio ya iniciado, se descuenta la parte proporcional ya disfrutada y se devuelve el resto. Para desistir basta con escribir a info@xpeak.site.</p>
         <p>Esta renuncia se acepta marcando de forma expresa la casilla del pago, que enlaza con esta página.</p>
+        <p>Modelo de formulario de desistimiento (solo hay que enviarlo si se quiere desistir): "A la atención de Daniel Acedo Núñez (XPEAK), {DOMICILIO_TITULAR}, info@xpeak.site. Por la presente le comunico que desisto de mi contrato de suscripción al plan [Profesional o Premium] de XPEAK, contratado el [fecha]. Nombre: [nombre]. Correo de la cuenta: [correo]. Domicilio: [domicilio]. Fecha: [fecha]."</p>
       </Section>
 
       <Section title="7. Cambios de precio">
-        <p>Si XPEAK cambia el precio de un plan, avisa por correo con 30 días de antelación. Quien no esté de acuerdo puede cancelar antes de que el nuevo precio se aplique. Quien se suscribió con precio de fundador lo mantiene en las condiciones que se indicaron al contratar.</p>
+        <p>Si XPEAK cambia el precio de un plan, avisa por correo con 30 días de antelación. Quien no esté de acuerdo puede cancelar antes de que el nuevo precio se aplique.</p>
       </Section>
 
       <Section title="8. Impago">
-        <p>Si un cobro falla, Stripe lo reintenta varias veces. Si finalmente no se cobra, la suscripción se cancela y el perfil pierde las ventajas del plan, con lo que no incluye oculto, nunca borrado.</p>
+        <p>Si un cobro falla, Stripe lo reintenta varias veces. Si finalmente no se cobra, la suscripción se cancela y el perfil pierde las ventajas del plan. Lo que el plan ya no incluye se oculta, no se borra.</p>
       </Section>
 
       <Section title="9. Intermediación">
@@ -82,7 +85,7 @@ const CondicionesSuscripcion = () => (
       </Section>
 
       <Section title="10. Cómo se ordena el directorio y la posición destacada">
-        <p>El directorio de XPEAK ordena los perfiles así: primero los que tienen foto (y, entre los DJ, los de sets más escuchados del podio); entre ellos, los perfiles del plan Premium, que se muestran con un aro dorado y la etiqueta "Destacado" para que se vea que es una posición incluida en ese plan; después, los perfiles con insignia de prioridad por invitar a amigos; y a continuación el resto, de más a menos completos.</p>
+        <p>El directorio de XPEAK ordena los perfiles así: primero los que tienen foto (y, entre los DJ, los de sets más escuchados del podio); entre ellos, los perfiles del plan Premium, que se muestran con un aro dorado y la etiqueta "Destacado" para que se vea que es una posición incluida en ese plan; y a continuación el resto, de más a menos completos.</p>
         <p>Dentro de cada grupo el orden rota cada día, de forma que ningún perfil se queda siempre en la misma posición. La valoración de los clientes no se compra ni se altera con ningún plan.</p>
       </Section>
 
