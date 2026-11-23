@@ -112,6 +112,19 @@ export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boole
   return out;
 }
 
+// Nivel base: quien no paga y no es fundador, tras el lanzamiento (decisión del 22 nov
+// 2026). No se vende ni se anuncia como plan; es lo que tiene sin pagar. Los límites son
+// los de limites_de('free') en la BD: 6 fotos y vídeos, 3 sets.
+export const BASE = { fotos: 6, sets: 3 };
+export function listaBase(o: Oficios): string[] {
+  const out = ['Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas'];
+  if (o.flash) out.push('Ofertas Flash Booking: trabajos urgentes que publican los organizadores y te llegan al momento');
+  out.push('Visitas a tu ficha este mes', `Portafolio de ${BASE.fotos} fotos y vídeos`);
+  if (o.musica) out.push(`Hasta ${BASE.sets} sets en tu perfil`);
+  out.push('Concursos de XPEAK');
+  return out;
+}
+
 // Ventajas decididas que aún NO existen: se enseñan con la etiqueta "Próximamente"
 // (18 nov 2026, decisión de Daniel). Al construirlas, pasan a listaVentajas.
 export function proximamente(plan: Plan, o: Oficios): string[] {

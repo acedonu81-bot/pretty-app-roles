@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest';
-import { planDe, nombrePlan, ventajasDe, oficiosDe, listaVentajas, proximamente, ventajasAnual } from './ventajasPlan';
+import { planDe, nombrePlan, ventajasDe, oficiosDe, listaVentajas, proximamente, ventajasAnual, listaBase } from './ventajasPlan';
 
 describe('ventajasPlan', () => {
   it('normaliza los tiers antiguos sin quitar nada a nadie', () => {
@@ -146,5 +146,20 @@ describe('trayectoria con los cobros apagados', () => {
     expect(listaVentajas('business', o, { cobros: false })).not.toContain('Sello de eventos confirmados en tu ficha');
     expect(listaVentajas('business', o, { cobros: true })).toContain('Sello de eventos confirmados en tu ficha');
     expect(listaVentajas('business', o)).toContain('Sello de eventos confirmados en tu ficha');
+  });
+});
+
+describe('nivel base (sin pagar y sin ser fundador, tras el lanzamiento)', () => {
+  it('enseña lo que tiene de verdad, con los límites de la BD', () => {
+    const dj = listaBase(oficiosDe(['dj']));
+    expect(dj).toContain('Portafolio de 6 fotos y vídeos');
+    expect(dj).toContain('Hasta 3 sets en tu perfil');
+    expect(dj).toContain('Ofertas Flash Booking: trabajos urgentes que publican los organizadores y te llegan al momento');
+    expect(dj).toContain('Visitas a tu ficha este mes');
+    const mago = listaBase(oficiosDe(['mago'])).join('|');
+    expect(mago).not.toMatch(/sets|Flash/);
+  });
+  it('no promete lo que es de pago', () => {
+    expect(listaBase(oficiosDe(['dj'])).join('|')).not.toMatch(/Instagram|TikTok|sorteos|publicaci|directos? al mes|Estadísticas/i);
   });
 });

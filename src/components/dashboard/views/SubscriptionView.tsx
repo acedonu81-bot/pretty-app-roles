@@ -1,4 +1,5 @@
-import { listaVentajas, proximamente, oficiosDe, planDe, ventajasAnual, CUENTA_XPEAK_ID } from '@/lib/ventajasPlan';
+import { listaVentajas, listaBase, proximamente, oficiosDe, planDe, ventajasAnual, CUENTA_XPEAK_ID } from '@/lib/ventajasPlan';
+import { useMiPlan } from '@/hooks/useMiPlan';
 import { useNavigate } from 'react-router-dom';
 import TarjetaReferidos from '@/components/dashboard/TarjetaReferidos';
 import { useEffect, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
@@ -89,7 +90,7 @@ const Tarjeta = ({ retraso, destacada, estilo, children }: { retraso: number; de
 };
 
 const SubscriptionView = () => {
-  const { role, roles, subscription_tier, refresh } = useProfile();
+  const { id: profileId, role, roles, subscription_tier, refresh } = useProfile();
   const navigate = useNavigate();
   const [ciclo, setCiclo] = useState<Ciclo>('mensual');
   const [sus, setSus] = useState<MiSuscripcion | null>(null);
@@ -99,6 +100,14 @@ const SubscriptionView = () => {
   const profesional = oficios.profesional;
   const venta = profesional && !isNative && cobrosActivos();
   const ventajas = (p: PlanPago) => listaVentajas(planDe(p), oficios, { cobros: cobrosActivos() });
+  // Plan efectivo según la BD (lanzamiento, fundador o pago). Sin pagar: antes del
+  // lanzamiento ('pre') y los fundadores tienen Profesional; el resto, el nivel base.
+  // Mientras carga o si falla, manda la suscripción (nunca se quita nada por un fallo).
+  const efectivo = useMiPlan(profileId);
+  const sinPagar = tier !== 'starter' && planDe(tier) !== 'business';
+  const esBase = sinPagar && efectivo === 'free';
+  const esFundador = sinPagar && efectivo === 'starter';
+  const titulo = !sinPagar ? (NOMBRE[tier] ?? 'Premium') : esBase ? 'Nivel base' : 'Profesional';
 
   useEffect(() => {
     if (!venta) return;
@@ -117,7 +126,8 @@ const SubscriptionView = () => {
       <style>{ESTILOS}</style>
       <div className="text-center mb-8">
         <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#8A6D0F' }}>Tu plan</p>
-        <h2 className="text-3xl font-black mb-2">{NOMBRE[tier] ?? 'Sin suscripción'}</h2>
+        <h2 className="text-3xl font-black mb-2">{titulo}</h2>
+        {esFundador && <p className="text-sm font-bold" style={{ color: '#8B6A00' }}>Eres fundador: tienes Profesional sin pagar durante tu primer año.</p>}
         {pagoOk && <p className="text-sm font-bold" style={{ color: '#059669' }}>Pago recibido. Tu plan se activa en unos segundos.</p>}
         {pagoCancelado && <p className="text-sm font-bold" style={{ color: '#8B6A00' }}>No has completado el pago. No se te ha cobrado nada.</p>}
         {sus?.cancela_al_final && sus.periodo_fin && (
@@ -125,10 +135,12 @@ const SubscriptionView = () => {
         )}
       </div>
 
-      {!venta && (
-        <div className="max-w-lg mx-auto rounded-2xl p-6" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
+      {(!venta || esBase) && (
+        <div className="max-w-lg mx-auto rounded-2xl p-6 mb-8" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
           <p className="text-sm font-bold mb-4" style={{ color: '#222' }}>Incluido en tu cuenta</p>
-          <Lista items={ventajas(tier === 'business' ? 'business' : 'starter')} proximos={proximamente(planDe(tier), oficios)} />
+          {esBase
+            ? <Lista items={listaBase(oficios)} />
+            : <Lista items={ventajas(tier === 'business' ? 'business' : 'starter')} proximos={proximamente(planDe(tier), oficios)} />}
         </div>
       )}
 
