@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { DOMICILIO_TITULAR } from '@/lib/titular';
 import { Helmet } from 'react-helmet-async';
 import AmbientBackground from '@/components/AmbientBackground';
 
@@ -28,7 +29,7 @@ const AvisoLegal = () => (
         <p><span className="font-bold text-[#111]">Denominación:</span> XPEAK</p>
         <p><span className="font-bold text-[#111]">Titular:</span> Daniel Acedo Núñez</p>
         <p><span className="font-bold text-[#111]">NIF/CIF:</span> 53022503M</p>
-        <p><span className="font-bold text-[#111]">Domicilio:</span> España</p>
+        <p><span className="font-bold text-[#111]">Domicilio:</span> {DOMICILIO_TITULAR}</p>
         <p><span className="font-bold text-[#111]">Email:</span> info@xpeak.site</p>
         <p><span className="font-bold text-[#111]">Contacto legal:</span> info@xpeak.site</p>
         <p><span className="font-bold text-[#111]">Web:</span> https://xpeak.es</p>

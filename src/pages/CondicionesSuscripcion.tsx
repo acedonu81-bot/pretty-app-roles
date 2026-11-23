@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import AmbientBackground from '@/components/AmbientBackground';
 import { PRECIOS_ANUALES, PRECIOS_BLACK_FRIDAY } from '@/lib/subscriptions';
+import { DOMICILIO_TITULAR } from '@/lib/titular';
 
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 
@@ -34,6 +35,7 @@ const CondicionesSuscripcion = () => (
       <Section title="1. Quién vende">
         <p><B>Titular:</B> Daniel Acedo Núñez</p>
         <p><B>NIF:</B> 53022503M</p>
+        <p><B>Domicilio:</B> {DOMICILIO_TITULAR}</p>
         <p><B>Contacto:</B> info@xpeak.site</p>
         <p>Más datos del titular en el <Link to="/aviso-legal" className="underline">Aviso Legal</Link>.</p>
       </Section>
