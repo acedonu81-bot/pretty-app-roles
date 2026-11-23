@@ -189,7 +189,10 @@ export default function Precios() {
                 </div>
 
                 <ul className="space-y-2 mb-6">
-                  {plan.incluye.map(item => (
+                  {plan.incluye.map(item => /^Todo lo de /.test(item) ? (
+                    // Igual que en Mi plan: separa lo heredado de lo propio de Premium.
+                    <li key={item} className="text-xs font-extrabold" style={{ color: '#8B6A00' }}>{item}</li>
+                  ) : (
                     <li key={item} className="flex items-start gap-2 text-xs">
                       <CheckCircle size={13} className="mt-0.5 shrink-0" style={{ color: '#059669' }} />
                       <span style={{ color: '#111' }}>{item}</span>

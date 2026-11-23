@@ -44,6 +44,14 @@ describe('/precios', () => {
     expect(t).not.toMatch(/gratis/i);
   });
 
+  it('"Todo lo de Profesional, más:" va en dorado y sin check, como en Mi plan', () => {
+    vi.stubEnv('VITE_COBROS_ACTIVOS', 'true');
+    const { getByText } = render(<HelmetProvider><MemoryRouter><Precios /></MemoryRouter></HelmetProvider>);
+    const el = getByText('Todo lo de Profesional, más:');
+    expect(el.closest('li')?.querySelector('svg')).toBeNull();
+    expect(el.getAttribute('style') ?? '').toMatch(/#8B6A00|rgb\(139, 106, 0\)/i);
+  });
+
   it('el PRECIO de la página es el mismo que el de Mi plan', () => {
     const t = pagina('true');
     const fmt = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
