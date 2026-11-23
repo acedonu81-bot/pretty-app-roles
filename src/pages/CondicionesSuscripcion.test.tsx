@@ -13,7 +13,7 @@ describe('CondicionesSuscripcion', () => {
     pintar();
     expect(screen.getAllByText(/Daniel Acedo Núñez/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/53022503M/).length).toBeGreaterThan(0);
-    expect(screen.getByText(/FAMSAM, C\/ Hilados, 1, 28850 Torrejón de Ardoz \(Madrid\)/)).toBeTruthy();
+    expect(screen.getByText(/Carretera de la Base, 8, Torrejón de Ardoz \(Madrid\)/)).toBeTruthy();
   });
 
   it('explica el desistimiento de 14 días y la renuncia al empezar', () => {
