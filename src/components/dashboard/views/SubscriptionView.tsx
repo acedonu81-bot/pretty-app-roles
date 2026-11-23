@@ -1,4 +1,4 @@
-import { listaVentajas, proximamente, oficiosDe, planDe, CUENTA_XPEAK_ID } from '@/lib/ventajasPlan';
+import { listaVentajas, proximamente, oficiosDe, planDe, ventajasAnual, CUENTA_XPEAK_ID } from '@/lib/ventajasPlan';
 import { useNavigate } from 'react-router-dom';
 import TarjetaReferidos from '@/components/dashboard/TarjetaReferidos';
 import { useEffect, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
@@ -6,7 +6,7 @@ import { CheckCircle, Clock, Lock } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { isNative } from '@/lib/capacitor';
 import { iniciarPago, abrirPortal, leerMiSuscripcion, cobrosActivos, type Ciclo, type MiSuscripcion, type PlanPago } from '@/lib/pagos';
-import { subscriptionPlans, PRECIOS_ANUALES, PRECIOS_ANUALES_PRIMER_ANO } from '@/lib/subscriptions';
+import { subscriptionPlans, PRECIOS_ANUALES, PRECIOS_BLACK_FRIDAY, esBlackFriday, ahorroAnual } from '@/lib/subscriptions';
 
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 
@@ -39,7 +39,10 @@ const Fondo = ({ activo, children }: { activo: boolean; children: ReactNode }) =
 
 const Lista = ({ items, proximos = [] }: { items: string[]; proximos?: string[] }) => (
   <div className="flex flex-col gap-2">
-    {items.map(f => (
+    {items.map(f => /^Todo lo de /.test(f) ? (
+      // "Todo lo de Profesional, más:" en dorado: separa lo heredado de lo propio de Premium.
+      <p key={f} className="text-sm font-extrabold" style={{ color: '#8B6A00' }}>{f}</p>
+    ) : (
       <div key={f} className="flex items-center gap-2">
         <CheckCircle size={15} style={{ color: '#059669', flexShrink: 0 }} />
         <span className="text-sm" style={{ color: '#444' }}>{f}</span>
@@ -178,7 +181,7 @@ const SubscriptionView = () => {
                 <button key={c} type="button" aria-pressed={ciclo === c} onClick={() => setCiclo(c)}
                   className="rounded-full px-5 py-2 text-sm font-bold transition-all duration-200"
                   style={{ background: ciclo === c ? '#fff' : 'transparent', boxShadow: ciclo === c ? '0 2px 8px -2px rgba(90,66,0,.4)' : 'none' }}>
-                  {c === 'mensual' ? 'Mensual' : 'Anual, -15 % el 1er año'}
+                  {c === 'mensual' ? 'Mensual' : esBlackFriday() ? 'Anual, -35 % en Black Friday' : 'Anual, ahorras 2 meses'}
                 </button>
               ))}
             </div>
@@ -187,7 +190,9 @@ const SubscriptionView = () => {
             {(['starter', 'business'] as PlanPago[]).map((p, i) => {
               const plan = subscriptionPlans.find(x => x.id === p)!;
               const anual = ciclo === 'anual';
-              const precio = anual ? PRECIOS_ANUALES_PRIMER_ANO[p] / 12 : plan.monthlyPrice;
+              const bf = anual && esBlackFriday();
+              const primerAno = bf ? PRECIOS_BLACK_FRIDAY[p] : PRECIOS_ANUALES[p];
+              const precio = anual ? primerAno / 12 : plan.monthlyPrice;
               const destacado = p === 'starter';
               const apagado = destacado ? '#6b5516' : '#6b6454';
               return (
@@ -198,7 +203,9 @@ const SubscriptionView = () => {
                   <p className="font-black text-lg">{NOMBRE[p]}</p>
                   <p className="text-4xl font-black">{euros(Math.round(precio * 100) / 100)} <span className="text-sm font-bold" style={{ color: apagado }}>/ mes</span></p>
                   <p className="text-xs" style={{ color: apagado }}>
-                    IVA incluido · {anual ? `${euros(PRECIOS_ANUALES_PRIMER_ANO[p])} el primer año. Después, ${euros(PRECIOS_ANUALES[p])} al año` : 'Facturación mensual'}
+                    IVA incluido · {!anual ? 'Facturación mensual'
+                      : bf ? `${euros(PRECIOS_BLACK_FRIDAY[p])} el primer año con el 35 % de Black Friday. Después, ${euros(PRECIOS_ANUALES[p])} al año`
+                      : `${euros(PRECIOS_ANUALES[p])} al año: ahorras 2 meses (${euros(ahorroAnual(p))})`}
                   </p>
                   <button type="button" onClick={() => iniciarPago(p, ciclo)}
                     className="rounded-xl py-3 font-bold transition-all duration-150 hover:brightness-105 active:translate-y-px"
@@ -208,7 +215,7 @@ const SubscriptionView = () => {
                     Elegir {NOMBRE[p]}
                   </button>
                   <p className="text-xs text-center font-bold" style={{ color: '#059669' }}>Sin permanencia. Cancela cuando quieras.</p>
-                  <Lista items={ventajas(p)} proximos={proximamente(planDe(p), oficios)} />
+                  <Lista items={[...ventajas(p), ...(anual ? ventajasAnual() : [])]} proximos={proximamente(planDe(p), oficios)} />
                 </Tarjeta>
               );
             })}

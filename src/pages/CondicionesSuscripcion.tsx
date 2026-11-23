@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import AmbientBackground from '@/components/AmbientBackground';
-import { PRECIOS_ANUALES, PRECIOS_ANUALES_PRIMER_ANO } from '@/lib/subscriptions';
+import { PRECIOS_ANUALES, PRECIOS_BLACK_FRIDAY } from '@/lib/subscriptions';
 
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 
@@ -44,10 +44,12 @@ const CondicionesSuscripcion = () => (
 
       <Section title="3. Precios">
         <p>Todos los precios incluyen IVA y se muestran antes de pagar, en el pago seguro de Stripe.</p>
-        <p><B>Profesional:</B> 6,99 € al mes, o {euros(PRECIOS_ANUALES_PRIMER_ANO.starter)} el primer año si se paga por años y {euros(PRECIOS_ANUALES.starter)} al año en las renovaciones. IVA incluido.</p>
-        <p><B>Premium:</B> 14,99 € al mes, o {euros(PRECIOS_ANUALES_PRIMER_ANO.business)} el primer año si se paga por años y {euros(PRECIOS_ANUALES.business)} al año en las renovaciones. IVA incluido.</p>
-        <p>El descuento del primer año por pago anual se aplica solo en la primera suscripción de cada persona.</p>
-        <p><B>Descuento por amigos:</B> cada persona que se suscriba con tu enlace de invitación y pague te descuenta un 10 % de tu cuota, hasta un máximo del 20 % con dos o más, mientras sigan suscritas. Se aplica desde tu siguiente cobro, en Profesional o Premium, mensual o anual. Si estás en Esencial, se guarda y se aplica cuando te suscribas. Solo cuentan los amigos directos, no los amigos de tus amigos, y no cuenta quien pague con tu misma tarjeta. Si un amigo se da de baja, el descuento baja en tu siguiente cobro. No se suma a otros descuentos en la misma factura.</p>
+        <p><B>Profesional:</B> 6,99 € al mes, o {euros(PRECIOS_ANUALES.starter)} al año si se paga por años, también en las renovaciones. IVA incluido.</p>
+        <p><B>Premium:</B> 14,99 € al mes, o {euros(PRECIOS_ANUALES.business)} al año si se paga por años, también en las renovaciones. IVA incluido.</p>
+        <p>El precio anual equivale a diez mensualidades: pagando por años se ahorran dos meses.</p>
+        <p><B>Black Friday 2026:</B> del 27 al 30 de noviembre de 2026, hasta las 23:59 hora de Madrid, el primer año del plan anual tiene un 35 % de descuento: {euros(PRECIOS_BLACK_FRIDAY.starter)} en Profesional y {euros(PRECIOS_BLACK_FRIDAY.business)} en Premium. Después se renueva al precio anual de este apartado. Solo en la primera suscripción de cada persona.</p>
+        <p><B>Regalo de bienvenida:</B> quien contrata un plan anual por primera vez recibe un detalle de merchandising de XPEAK en la dirección que indique al pagar. Solo envíos a España.</p>
+        <p><B>Descuento por amigos:</B> cada persona que se suscriba con tu enlace de invitación y pague te descuenta un 10 % de tu cuota, hasta un máximo del 20 % con dos o más, mientras sigan suscritas. Se aplica desde tu siguiente cobro, en Profesional o Premium, mensual o anual. Si aún no pagas un plan, se guarda y se aplica cuando te suscribas. Solo cuentan los amigos directos, no los amigos de tus amigos, y no cuenta quien pague con tu misma tarjeta. Si un amigo se da de baja, el descuento baja en tu siguiente cobro. No se suma a otros descuentos en la misma factura.</p>
       </Section>
 
       <Section title="4. Renovación automática">

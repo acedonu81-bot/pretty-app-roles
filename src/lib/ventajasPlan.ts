@@ -39,7 +39,8 @@ export type Ventajas = {
   bannerCabecera: boolean;   // banner propio en la cabecera de artista (solo DJ)
   destacadoInicio: boolean;  // sale en la tarjeta del Inicio del panel
   posicionDestacada: boolean; // por delante en el directorio, con aro dorado y etiqueta Destacado
-  redesXpeakMensual: boolean; // aparece una vez al mes en las redes de XPEAK (manual)
+  publicacionesRedesMes: number; // publicaciones al mes en las redes de XPEAK (manual)
+  directosMes: number;        // directos al mes en XPEAK (23 nov 2026; el límite aún no se aplica)
   trayectoriaConfirmada: boolean; // pedir al organizador que confirme eventos y sello en la ficha
 };
 
@@ -47,12 +48,12 @@ const VENTAJAS: Record<Plan, Ventajas> = {
   starter: {
     fotos: 12, sets: 10, redesVisibles: true,
     estadisticas: 'basicas', exportarEstadisticas: false, bannerCabecera: false,
-    destacadoInicio: false, posicionDestacada: false, redesXpeakMensual: false, trayectoriaConfirmada: false,
+    destacadoInicio: false, posicionDestacada: false, publicacionesRedesMes: 1, directosMes: 1, trayectoriaConfirmada: false,
   },
   business: {
     fotos: 20, sets: Infinity, redesVisibles: true,
     estadisticas: 'avanzadas', exportarEstadisticas: true, bannerCabecera: true,
-    destacadoInicio: true, posicionDestacada: true, redesXpeakMensual: true, trayectoriaConfirmada: true,
+    destacadoInicio: true, posicionDestacada: true, publicacionesRedesMes: 3, directosMes: 5, trayectoriaConfirmada: true,
   },
 };
 
@@ -93,19 +94,20 @@ export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boole
   const out: string[] = [];
   if (plan === 'starter') {
     out.push('Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas');
-    if (o.flash) out.push('Ofertas Flash Booking');
-    out.push('Tu Instagram y TikTok visibles para todos en tu ficha, sin que tengan que escribirte', 'Estadísticas de visitas y mensajes');
+    if (o.flash) out.push('Ofertas Flash Booking: trabajos urgentes que publican los organizadores y te llegan al momento');
+    out.push('Tu Instagram y TikTok en tu ficha: quien te visita puede seguirte sin tener que escribirte antes', 'Estadísticas de visitas y mensajes');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
+    out.push(`${v.directosMes} directo al mes en XPEAK`, `${v.publicacionesRedesMes} publicación al mes en las redes de XPEAK`, 'Concursos y sorteos de XPEAK');
   } else {
-    out.push('Todo lo de Profesional', 'Posición destacada en el directorio, con aro dorado', 'Sales destacado en el Inicio de XPEAK', 'Apareces una vez al mes en las redes de XPEAK');
+    out.push('Todo lo de Profesional, más:', 'Posición destacada en el directorio, con aro dorado', 'Sales destacado en el Inicio de XPEAK', `${v.publicacionesRedesMes} publicaciones al mes en las redes de XPEAK`, `${v.directosMes} directos al mes en XPEAK`);
     // Con los cobros apagados nadie puede pedir confirmaciones: no se anuncia.
     if (opciones.cobros !== false) out.push('Sello de eventos confirmados en tu ficha');
     out.push('Estadísticas avanzadas: visitas día a día, de dónde llegan y exportar');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push('Sets ilimitados');
     if (o.banner) out.push('Banner propio en tu cabecera de artista');
-    out.push('Soporte prioritario: escribe directamente al equipo de XPEAK');
+    out.push('Soporte prioritario: escribe directamente al equipo de XPEAK', 'Concursos y sorteos de XPEAK');
   }
   return out;
 }
@@ -114,11 +116,17 @@ export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boole
 // (18 nov 2026, decisión de Daniel). Al construirlas, pasan a listaVentajas.
 export function proximamente(plan: Plan, o: Oficios): string[] {
   const out: string[] = [];
+  out.push('Avisos por WhatsApp de mensajes, reseñas, solicitudes de particulares y ofertas de organizadores', 'Tu Facebook en la ficha, junto a Instagram y TikTok');
   if (plan === 'starter') {
-    out.push('Avisos por WhatsApp de trabajo: solicitudes de particulares y ofertas de organizadores');
     if (o.flash) out.push('Flash Booking con adelanto');
   } else if (plan === 'business') {
     if (o.flash) out.push('Flash Booking con el mayor adelanto');
+    out.push('Tu directo se ve en vídeo en el Inicio de XPEAK, no solo como aviso');
   }
   return out;
+}
+
+// Solo en los planes anuales (23 nov 2026): el envío necesita la dirección, que pide el pago.
+export function ventajasAnual(): string[] {
+  return ['Regalo de bienvenida: te enviamos un detalle de merchandising de XPEAK'];
 }

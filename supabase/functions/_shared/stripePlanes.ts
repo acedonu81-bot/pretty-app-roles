@@ -52,13 +52,21 @@ export function esMusica(role: string | null): boolean {
 export const INICIO_BLACK_FRIDAY = new Date('2026-11-26T23:00:00Z');
 export const FIN_BLACK_FRIDAY = new Date('2026-11-30T23:00:00Z');
 
-// Cupón del primer año del plan anual: 15 % normal (ANUAL1) o 20 % más en Black Friday (BF).
-// Son cupones de importe fijo por plan, para que el total cuadre al céntimo.
-// yaTuvoPlan: el descuento del primer año es solo para la primera suscripción de la persona.
+// En el anual se pide la dirección: el regalo de bienvenida (merchandising) se envía
+// a casa (23 nov 2026). Solo envíos a España.
+export function extrasCheckout(ciclo: Ciclo): Record<string, unknown> {
+  return ciclo === 'anual' ? { shipping_address_collection: { allowed_countries: ['ES'] } } : {};
+}
+
+// El anual ya lleva el ahorro de 2 meses en su precio (23 nov 2026): fuera del Black
+// Friday no hay cupón. En Black Friday, 35 % sobre el anual el primer año, con un cupón
+// de importe fijo por plan para que el total cuadre al céntimo (45,44 / 97,44 €).
+// yaTuvoPlan: el descuento es solo para la primera suscripción de la persona.
 export function cuponDe(plan: PlanPago, ciclo: Ciclo, ahora: Date, env: Env, yaTuvoPlan = false): string | null {
   if (ciclo !== 'anual' || yaTuvoPlan) return null;
   const bf = ahora >= INICIO_BLACK_FRIDAY && ahora < FIN_BLACK_FRIDAY;
-  const clave = `STRIPE_CUPON_${plan.toUpperCase()}_${bf ? 'BF' : 'ANUAL1'}`;
+  if (!bf) return null;
+  const clave = `STRIPE_CUPON_${plan.toUpperCase()}_BF`;
   const id = env[clave];
   if (!id) throw new Error(`Falta el secreto ${clave}`);
   return id;

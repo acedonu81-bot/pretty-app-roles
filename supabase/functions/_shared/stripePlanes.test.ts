@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest';
 import { priceIdDe, planDesdePriceId, tierDesdeEstado, esProfesional, esMusica } from './stripePlanes.ts';
-import { subscriptionPlans, PRECIOS_ANUALES, PRECIOS_ANUALES_PRIMER_ANO } from '../../../src/lib/subscriptions';
+import { subscriptionPlans, PRECIOS_ANUALES, PRECIOS_BLACK_FRIDAY, ahorroAnual } from '../../../src/lib/subscriptions';
 
 const env = {
   STRIPE_PRICE_STARTER_MENSUAL: 'p_sm', STRIPE_PRICE_STARTER_ANUAL: 'p_sa',
@@ -42,38 +42,48 @@ describe('stripePlanes', () => {
   it('precios decididos en la web', () => {
     expect(subscriptionPlans.find(p => p.id === 'starter')!.monthlyPrice).toBe(6.99);
     expect(subscriptionPlans.find(p => p.id === 'business')!.monthlyPrice).toBe(14.99);
-    expect(PRECIOS_ANUALES).toEqual({ starter: 75.49, business: 161.89 });
-    expect(PRECIOS_ANUALES_PRIMER_ANO).toEqual({ starter: 71.30, business: 152.90 });
+    // Anual = 10 mensualidades: ahorras 2 meses, el primer año y en las renovaciones (23 nov 2026).
+    expect(PRECIOS_ANUALES).toEqual({ starter: 69.90, business: 149.90 });
+    expect(ahorroAnual('starter')).toBe(13.98);
+    expect(ahorroAnual('business')).toBe(29.98);
+    // Black Friday: 35 % sobre el anual, solo el primer año.
+    expect(PRECIOS_BLACK_FRIDAY).toEqual({ starter: 45.44, business: 97.44 });
   });
 });
 
 import { cuponDe, FIN_BLACK_FRIDAY } from './stripePlanes.ts';
 describe('cuponDe', () => {
-  const envC = { STRIPE_CUPON_STARTER_ANUAL1: 'c_sa1', STRIPE_CUPON_BUSINESS_ANUAL1: 'c_ba1', STRIPE_CUPON_STARTER_BF: 'c_sbf', STRIPE_CUPON_BUSINESS_BF: 'c_bbf' };
+  const envC = { STRIPE_CUPON_STARTER_BF: 'c_sbf', STRIPE_CUPON_BUSINESS_BF: 'c_bbf' };
   it('el mensual no lleva cupón', () => {
     expect(cuponDe('starter', 'mensual', new Date('2026-11-28'), envC)).toBeNull();
   });
-  it('el anual lleva el 15 % del primer año fuera del Black Friday', () => {
-    expect(cuponDe('business', 'anual', new Date('2026-12-05T10:00:00Z'), envC)).toBe('c_ba1');
+  it('fuera del Black Friday el anual no lleva cupón: el ahorro de 2 meses ya está en el precio', () => {
+    expect(cuponDe('business', 'anual', new Date('2026-12-05T10:00:00Z'), envC)).toBeNull();
+    expect(cuponDe('starter', 'anual', new Date('2026-11-26T12:00:00Z'), envC)).toBeNull();
   });
-  it('el anual lleva el Black Friday hasta el 30 nov a las 23:59 de Madrid', () => {
-    expect(cuponDe('starter', 'anual', new Date('2026-11-27T09:00:00Z'), envC)).toBe('c_sbf');
+  it('el anual lleva el Black Friday del 27 nov 00:00 al 30 nov 23:59 de Madrid', () => {
+    expect(cuponDe('starter', 'anual', new Date('2026-11-26T23:00:00Z'), envC)).toBe('c_sbf');
+    expect(cuponDe('business', 'anual', new Date('2026-11-27T09:00:00Z'), envC)).toBe('c_bbf');
     expect(cuponDe('starter', 'anual', new Date('2026-11-30T22:58:00Z'), envC)).toBe('c_sbf');
-    expect(cuponDe('starter', 'anual', new Date('2026-11-30T23:00:00Z'), envC)).toBe('c_sa1');
+    expect(cuponDe('starter', 'anual', new Date('2026-11-30T23:00:00Z'), envC)).toBeNull();
     expect(FIN_BLACK_FRIDAY.toISOString()).toBe('2026-11-30T23:00:00.000Z');
   });
-  it('el Black Friday empieza el 27 nov', () => {
-    expect(cuponDe('starter', 'anual', new Date('2026-11-26T12:00:00Z'), envC)).toBe('c_sa1');
+  it('lanza si en Black Friday falta el cupón', () => {
+    expect(() => cuponDe('starter', 'anual', new Date('2026-11-28T10:00:00Z'), {})).toThrow();
   });
-  it('lanza si falta el cupón', () => {
-    expect(() => cuponDe('starter', 'anual', new Date('2026-12-05'), {})).toThrow();
+});
+
+import { extrasCheckout } from './stripePlanes.ts';
+describe('extrasCheckout', () => {
+  it('el anual pide la dirección para el regalo, solo España; el mensual no', () => {
+    expect(extrasCheckout('anual')).toEqual({ shipping_address_collection: { allowed_countries: ['ES'] } });
+    expect(extrasCheckout('mensual')).toEqual({});
   });
 });
 
 describe('cuponDe una sola vez', () => {
-  const envC = { STRIPE_CUPON_STARTER_ANUAL1: 'c_sa1', STRIPE_CUPON_STARTER_BF: 'c_sbf' };
-  it('quien ya tuvo un plan no repite el descuento del primer año', () => {
-    expect(cuponDe('starter', 'anual', new Date('2026-12-05T10:00:00Z'), envC, true)).toBeNull();
+  const envC = { STRIPE_CUPON_STARTER_BF: 'c_sbf' };
+  it('quien ya tuvo un plan no repite el descuento de Black Friday', () => {
     expect(cuponDe('starter', 'anual', new Date('2026-11-28T10:00:00Z'), envC, true)).toBeNull();
   });
 });

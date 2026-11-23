@@ -25,7 +25,7 @@ describe('/precios', () => {
 
   it('con los cobros activados enseña solo Profesional y Premium con sus precios, y ninguna tarjeta de organizadores', () => {
     const t = pagina('true');
-    for (const x of ['Profesional', 'Premium', '6,99', '14,99', '75,49', '161,89', 'IVA incluido']) expect(t).toContain(x);
+    for (const x of ['Profesional', 'Premium', '6,99', '14,99', '69,90', '149,90', 'ahorras 2 meses', 'IVA incluido']) expect(t).toContain(x);
     expect(t).not.toMatch(/para siempre|Esencial/);
     expect(t).not.toMatch(/¿Cuándo habrá planes de pago\?/);
     expect(t).not.toMatch(/Organizadores|Salas, promotoras/);
@@ -39,7 +39,7 @@ describe('/precios', () => {
 
   it('no anuncia lo que no existe ni usa rayas largas o "gratis"', () => {
     const t = pagina('true');
-    expect(t).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|adelanto/i);
+    expect(t).not.toMatch(/WhatsApp|Facebook|ampliada|comunicados|vídeo de fondo|adelanto/i);
     expect(t).not.toMatch(/[—–]/);
     expect(t).not.toMatch(/gratis/i);
   });

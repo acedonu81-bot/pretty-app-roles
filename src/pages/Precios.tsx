@@ -74,7 +74,7 @@ const PLANES_DEFINITIVOS: PlanPublico[] = [
   {
     nombre: 'Profesional',
     precio: euros(precioMes('starter')),
-    periodo: `/mes, IVA incluido · o ${euros(PRECIOS_ANUALES.starter)} al año`,
+    periodo: `/mes, IVA incluido · o ${euros(PRECIOS_ANUALES.starter)} al año, ahorras 2 meses`,
     target: 'Más visibilidad',
     color: '#FFFDF7',
     border: 'rgba(212,175,55,0.35)',
@@ -86,7 +86,7 @@ const PLANES_DEFINITIVOS: PlanPublico[] = [
   {
     nombre: 'Premium',
     precio: euros(precioMes('business')),
-    periodo: `/mes, IVA incluido · o ${euros(PRECIOS_ANUALES.business)} al año`,
+    periodo: `/mes, IVA incluido · o ${euros(PRECIOS_ANUALES.business)} al año, ahorras 2 meses`,
     target: 'Máxima visibilidad',
     color: 'rgba(212,175,55,0.04)',
     border: 'rgba(212,175,55,0.25)',
@@ -101,7 +101,7 @@ const PLANES_DEFINITIVOS: PlanPublico[] = [
 const NOTA_PLANES = 'Precios con IVA incluido y sin permanencia. Las ofertas Flash Booking llegan a los oficios que las reciben; los sets (3, 10 o ilimitados) son para música, y el banner de cabecera, para DJ con Premium.';
 
 const FAQ_DEFINITIVAS = [
-  { q: '¿Cuánto cuestan los planes?', a: `Hay dos planes. Profesional cuesta ${euros(precioMes('starter'))} al mes y Premium ${euros(precioMes('business'))} al mes, con IVA incluido. Si pagas por años, ${euros(PRECIOS_ANUALES.starter)} y ${euros(PRECIOS_ANUALES.business)} al año. Sin permanencia.` },
+  { q: '¿Cuánto cuestan los planes?', a: `Hay dos planes. Profesional cuesta ${euros(precioMes('starter'))} al mes y Premium ${euros(precioMes('business'))} al mes, con IVA incluido. Si pagas por años, ${euros(PRECIOS_ANUALES.starter)} y ${euros(PRECIOS_ANUALES.business)} al año: ahorras 2 meses y recibes un regalo de bienvenida. Sin permanencia.` },
   { q: '¿Puedo cancelar cuando quiera?', a: 'Sí. Desde Mi plan, en Gestionar mi plan. Tu plan sigue activo hasta el último día que ya has pagado, y después pierdes las ventajas del plan.' },
   { q: '¿Qué pasa con mis datos si bajo de plan?', a: 'No se borra nada. Lo que tu plan no incluye (tus redes, las fotos o sets que pasen del límite, el banner) se oculta y vuelve a verse si subes de plan otra vez.' },
   FAQ_ANTES[1],

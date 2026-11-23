@@ -17,9 +17,17 @@ export const TRIAL_DAYS = 15;
 export const ANNUAL_DISCOUNT = 0.10;
 // Precios con IVA incluido (decisión 13 nov 2026).
 export const IVA_INCLUIDO = true;
-// Anual: 15 % el primer año y 10 % en las renovaciones.
-export const PRECIOS_ANUALES: Record<'starter' | 'business', number> = { starter: 75.49, business: 161.89 };
-export const PRECIOS_ANUALES_PRIMER_ANO: Record<'starter' | 'business', number> = { starter: 71.30, business: 152.90 };
+// Anual = 10 mensualidades: ahorras 2 meses, el primer año y en las renovaciones
+// (23 nov 2026, sustituye al 15 % / 10 %).
+export const PRECIOS_ANUALES: Record<'starter' | 'business', number> = { starter: 69.90, business: 149.90 };
+// Black Friday 2026: 35 % sobre el anual, solo el primer año (cupón de importe fijo en Stripe).
+export const PRECIOS_BLACK_FRIDAY: Record<'starter' | 'business', number> = { starter: 45.44, business: 97.44 };
+export const INICIO_BLACK_FRIDAY = new Date('2026-11-26T23:00:00Z'); // 27 nov 00:00 Madrid
+export const FIN_BLACK_FRIDAY = new Date('2026-11-30T23:00:00Z');    // 30 nov 23:59 Madrid
+export const esBlackFriday = (ahora = new Date()) => ahora >= INICIO_BLACK_FRIDAY && ahora < FIN_BLACK_FRIDAY;
+const MENSUAL: Record<'starter' | 'business', number> = { starter: 6.99, business: 14.99 };
+/** Lo que se ahorra al año pagando anual frente a 12 meses: 2 mensualidades. */
+export const ahorroAnual = (p: 'starter' | 'business') => Math.round((MENSUAL[p] * 12 - PRECIOS_ANUALES[p]) * 100) / 100;
 export const BIRTHDAY_DISCOUNT = 0.40;
 
 // Streaming (Amazon IVS)

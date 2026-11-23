@@ -1,7 +1,7 @@
 // Abre el pago de Stripe para un plan, o el portal si ya tiene uno vivo.
 import Stripe from 'npm:stripe@17';
 import { decidirCheckout } from '../_shared/decidirCheckout.ts';
-import { priceIdDe, cuponDe, type PlanPago, type Ciclo } from '../_shared/stripePlanes.ts';
+import { priceIdDe, cuponDe, extrasCheckout, type PlanPago, type Ciclo } from '../_shared/stripePlanes.ts';
 import { admin, respuesta, usuarioDe, cabeceras, URL_WEB, webDe, vueltaMiPlan } from '../_shared/cobrosHttp.ts';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') ?? '');
@@ -53,6 +53,7 @@ Deno.serve(async (req) => {
       subscription_data: { metadata: { user_id: user.id } },
       line_items: [{ price: priceIdDe(plan as PlanPago, ciclo as Ciclo, env), quantity: 1, tax_rates: [env.STRIPE_TAX_RATE_IVA] }],
       ...(cupon ? { discounts: [{ coupon: cupon }] } : {}),
+      ...extrasCheckout(ciclo as Ciclo),
       locale: 'es',
       consent_collection: { terms_of_service: 'required' },
       custom_text: {

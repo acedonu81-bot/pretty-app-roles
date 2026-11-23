@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest';
-import { planDe, nombrePlan, ventajasDe, oficiosDe, listaVentajas } from './ventajasPlan';
+import { planDe, nombrePlan, ventajasDe, oficiosDe, listaVentajas, proximamente, ventajasAnual } from './ventajasPlan';
 
 describe('ventajasPlan', () => {
   it('normaliza los tiers antiguos sin quitar nada a nadie', () => {
@@ -57,17 +57,54 @@ describe('qué ve cada oficio', () => {
     expect(lista(['grupo-musical'], 'business').join('|')).not.toMatch(/Banner/);
   });
 
-  it('solo los oficios del formulario de ofertas ven "Ofertas Flash Booking"', () => {
-    expect(lista(['dj'], 'starter')).toContain('Ofertas Flash Booking');
-    expect(lista(['camarero'], 'starter')).toContain('Ofertas Flash Booking');
+  it('solo los oficios del formulario de ofertas ven Flash Booking, explicado en una línea', () => {
+    const flash = 'Ofertas Flash Booking: trabajos urgentes que publican los organizadores y te llegan al momento';
+    expect(lista(['dj'], 'starter')).toContain(flash);
+    expect(lista(['camarero'], 'starter')).toContain(flash);
     for (const r of ['mago', 'bailarin', 'humorista', 'speaker', 'limpieza', 'azafata']) {
-      expect(lista([r], 'starter')).not.toContain('Ofertas Flash Booking');
+      expect(lista([r], 'starter').join('|')).not.toMatch(/Flash Booking/);
     }
+  });
+
+  it('la frase de redes dice para qué sirve', () => {
+    expect(lista(['mago'], 'starter')).toContain('Tu Instagram y TikTok en tu ficha: quien te visita puede seguirte sin tener que escribirte antes');
+  });
+
+  it('concursos y sorteos en los dos planes', () => {
+    for (const p of ['starter', 'business'] as const) expect(lista(['mago'], p)).toContain('Concursos y sorteos de XPEAK');
+  });
+
+  it('publicaciones en las redes de XPEAK: 1 al mes en Profesional, 3 en Premium', () => {
+    expect(lista(['mago'], 'starter')).toContain('1 publicación al mes en las redes de XPEAK');
+    expect(lista(['mago'], 'business')).toContain('3 publicaciones al mes en las redes de XPEAK');
+    expect([ventajasDe('starter').publicacionesRedesMes, ventajasDe('business').publicacionesRedesMes]).toEqual([1, 3]);
+  });
+
+  it('directos: 1 al mes en Profesional, 5 en Premium', () => {
+    expect(lista(['camarero'], 'starter')).toContain('1 directo al mes en XPEAK');
+    expect(lista(['camarero'], 'business')).toContain('5 directos al mes en XPEAK');
+    expect([ventajasDe('starter').directosMes, ventajasDe('business').directosMes]).toEqual([1, 5]);
+  });
+
+  it('próximamente: WhatsApp y Facebook en los dos; el directo en vídeo solo en Premium', () => {
+    const wa = 'Avisos por WhatsApp de mensajes, reseñas, solicitudes de particulares y ofertas de organizadores';
+    const fb = 'Tu Facebook en la ficha, junto a Instagram y TikTok';
+    for (const p of ['starter', 'business'] as const) {
+      const prox = proximamente(p, oficiosDe(['dj']));
+      expect(prox).toContain(wa);
+      expect(prox).toContain(fb);
+    }
+    expect(proximamente('business', oficiosDe(['dj']))).toContain('Tu directo se ve en vídeo en el Inicio de XPEAK, no solo como aviso');
+    expect(proximamente('starter', oficiosDe(['dj'])).join('|')).not.toMatch(/en vídeo/);
+  });
+
+  it('el anual trae regalo de bienvenida', () => {
+    expect(ventajasAnual()).toEqual(['Regalo de bienvenida: te enviamos un detalle de merchandising de XPEAK']);
   });
 
   it('nunca se anuncia lo que aún no existe', () => {
     const todo = ['starter', 'business'].flatMap(p => lista(['dj'], p as 'starter')).join('|');
-    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|Sello Premium|adelanto|Concursos|y web/i);
+    expect(todo).not.toMatch(/WhatsApp|Facebook|ampliada|comunicados|vídeo de fondo|Sello Premium|adelanto|y web/i);
   });
 
   it('no usa rayas largas ni "gratis"', () => {
@@ -84,7 +121,7 @@ describe('qué ve cada oficio', () => {
 
   it('cada plan incluye lo del anterior en el texto', () => {
     expect(lista(['dj'], 'starter')[0]).toBe('Perfil en el directorio');
-    expect(lista(['dj'], 'business')[0]).toBe('Todo lo de Profesional');
+    expect(lista(['dj'], 'business')[0]).toBe('Todo lo de Profesional, más:');
   });
 
   it('empresarios y particulares no son profesionales (no ven planes)', () => {

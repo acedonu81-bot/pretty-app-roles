@@ -26,12 +26,35 @@ describe('SubscriptionView', () => {
     expect(screen.getByText(/6,99/)).toBeTruthy();
     expect(screen.getAllByText(/IVA incluido/).length).toBeGreaterThan(0);
     fireEvent.click(screen.getByRole('button', { name: /Anual/ }));
-    expect(screen.getByText(/71,30/)).toBeTruthy();
+    expect(screen.getByText(/69,90 € al año/)).toBeTruthy();
+    expect(screen.getByText(/149,90 € al año/)).toBeTruthy();
+    expect(screen.getAllByText(/ahorras 2 meses/i).length).toBeGreaterThan(0);
   });
 
-  it('Premium incluye aparecer en las redes una vez al mes', () => {
+  it('el anual enseña el regalo de bienvenida y el mensual no', () => {
     render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
-    expect(screen.getByText('Apareces una vez al mes en las redes de XPEAK')).toBeTruthy();
+    expect(screen.queryByText(/Regalo de bienvenida/)).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: /Anual/ }));
+    expect(screen.getAllByText(/Regalo de bienvenida: te enviamos un detalle de merchandising de XPEAK/).length).toBe(2);
+  });
+
+  it('en Black Friday el anual enseña el 35 % y el precio de después', () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-11-28T10:00:00Z'));
+    try {
+      render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
+      fireEvent.click(screen.getByRole('button', { name: /Anual/ }));
+      expect(screen.getByText(/45,44 € el primer año/)).toBeTruthy();
+      expect(screen.getByText(/97,44 € el primer año/)).toBeTruthy();
+      expect(screen.getAllByText(/Black Friday/).length).toBeGreaterThan(0);
+    } finally { vi.useRealTimers(); }
+  });
+
+  it('Premium: publicaciones al mes y "Todo lo de Profesional, más:" resaltado', () => {
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
+    expect(screen.getByText('3 publicaciones al mes en las redes de XPEAK')).toBeTruthy();
+    const todo = screen.getByText('Todo lo de Profesional, más:');
+    expect(todo.getAttribute('style') ?? '').toMatch(/#8B6A00|rgb\(139, 106, 0\)/i);
   });
 
   it('un DJ ve sus ventajas de música y el banner de cabecera', () => {
