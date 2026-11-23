@@ -1,34 +1,37 @@
 import { useState, useEffect } from 'react';
 import { BarChart3, Activity } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { leerCobros, eur, type DatosCobros } from './AdminCobros';
 
-interface PlanCounts { elite: number; agency: number; free: number; total: number; }
+// Planes de hoy (23 nov 2026): Profesional (starter) y Premium (business) de pago,
+// fundadores (Profesional sin pagar el primer año) y el resto sin pagar. Antes se
+// contaban elite/agency, planes que ya no existen.
+interface PlanCounts { starter: number; business: number; free: number; fundadores: number; total: number; }
 interface ZoneCount { zone: string; count: number; }
 
-const AdminCharts = () => {
+const AdminCharts = ({ cargarCobros = leerCobros }: { cargarCobros?: () => Promise<DatosCobros> } = {}) => {
   const [plans, setPlans] = useState<PlanCounts | null>(null);
   const [zones, setZones] = useState<ZoneCount[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cobros, setCobros] = useState<DatosCobros | null | 'fallo'>(null);
+
+  useEffect(() => { cargarCobros().then(setCobros).catch(() => setCobros('fallo')); }, [cargarCobros]);
 
   useEffect(() => {
     const load = async () => {
-      // Tiers reales usados por la lógica de negocio activa (DashboardSidebar.tsx,
-      // AgencyView.tsx): free/agency/elite. Antes este componente usaba
-      // premium/business/starter — nombres que no existen en ningún otro sitio
-      // del código, así que en cuanto hubiera el primer usuario `agency` (el
-      // tier real, no contado en ningún bucket de antes), "Total" no habría
-      // sumado al total de usuarios y ese usuario habría desaparecido del breakdown.
-      const [eliteRes, agencyRes, freeRes, zoneRes] = await Promise.all([
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'elite'),
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'agency'),
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'free'),
+      const contar = (tier: string) => supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', tier);
+      const [starterRes, businessRes, freeRes, fundRes, zoneRes] = await Promise.all([
+        contar('starter'),
+        contar('business'),
+        contar('free'),
+        (supabase as any).from('redes_fundadores').select('profile_id', { count: 'exact', head: true }),
         supabase.from('profiles').select('zone').not('zone', 'is', null).limit(500),
       ]);
 
-      const elite = eliteRes.count ?? 0;
-      const agency = agencyRes.count ?? 0;
+      const starter = starterRes.count ?? 0;
+      const business = businessRes.count ?? 0;
       const free = freeRes.count ?? 0;
-      setPlans({ elite, agency, free, total: elite + agency + free });
+      setPlans({ starter, business, free, fundadores: fundRes.count ?? 0, total: starter + business + free });
 
       // Aggregate zones client-side from fetched data. Algunos perfiles
       // guardaron su zona como "Madrid, España" en vez de "Madrid" — sin
@@ -55,18 +58,23 @@ const AdminCharts = () => {
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-        {/* MRR — requires Stripe, show placeholder */}
+        {/* Ingreso mensual recurrente real (Stripe, vía admin-cobros). */}
         <div className="glass-panel p-5">
           <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-            <BarChart3 size={14} style={{ color: '#8A6D0F' }} /> Crecimiento MRR
+            <BarChart3 size={14} style={{ color: '#8A6D0F' }} /> Ingreso mensual recurrente
           </h3>
-          <div className="flex flex-col items-center justify-center h-40 gap-2">
-            <p className="text-xs text-muted-foreground">Disponible tras integrar Stripe Connect</p>
-            <span className="text-xs font-bold px-2 py-1 rounded"
-              style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
-              Próximamente
-            </span>
-          </div>
+          {cobros === null ? (
+            <div className="h-40 rounded-md animate-pulse" style={{ background: 'rgba(0,0,0,0.05)' }} />
+          ) : cobros === 'fallo' ? (
+            <p className="text-xs text-muted-foreground text-center py-12">No se han podido leer los cobros de Stripe.</p>
+          ) : (
+            <div className="flex flex-col gap-2 h-40 justify-center">
+              <p className="text-3xl font-black" style={{ color: '#8A6D0F' }}>{eur(cobros.resumen.ingresoMensual)}</p>
+              <p className="text-xs text-muted-foreground">Suscripciones vivas, el anual repartido en 12 meses, sin cupones.</p>
+              <p className="text-sm">Neto este mes: <span className="font-bold">{eur(cobros.resumen.neto)}</span> · {cobros.resumen.cobros} cobros</p>
+              <a href="/dashboard?view=admin&tab=cobros" className="text-xs font-bold underline" style={{ color: '#8A6D0F' }}>Ver cobros y movimientos</a>
+            </div>
+          )}
         </div>
 
         {/* Zone heatmap — real data */}
@@ -107,17 +115,18 @@ const AdminCharts = () => {
       <div className="glass-panel p-5 mb-6">
         <h3 className="text-sm font-bold mb-4">Distribución de Planes</h3>
         {loading ? (
-          <div className="grid grid-cols-3 gap-4">
-            {Array(3).fill(0).map((_, i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {Array(4).fill(0).map((_, i) => (
               <div key={i} className="h-16 rounded-lg animate-pulse" style={{ background: 'rgba(0,0,0,0.05)' }} />
             ))}
           </div>
         ) : plans ? (
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: 'Elite', count: plans.elite,   color: '#8A6D0F' },
-              { label: 'Agency', count: plans.agency, color: '#8B5CF6' },
-              { label: 'Sin suscripción',   count: plans.free,    color: '#333' },
+              { label: 'Premium (pagan)', count: plans.business, color: '#2563EB' },
+              { label: 'Profesional (pagan)', count: plans.starter, color: '#8A6D0F' },
+              { label: 'Fundadores (sin pagar el 1er año)', count: plans.fundadores, color: '#059669' },
+              { label: 'Sin plan de pago', count: plans.free, color: '#4b5563' },
             ].map((p) => (
               <div key={p.label} className="text-center">
                 <p className="text-2xl font-bold" style={{ color: p.color }}>{p.count}</p>

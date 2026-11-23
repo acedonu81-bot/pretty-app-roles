@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion, Inbox, Megaphone, Music } from 'lucide-react';
+import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles, Trophy, MessageCircleQuestion, Inbox, Megaphone, Music, CreditCard } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminContactosProfesional from './admin/AdminContactosProfesional';
@@ -26,6 +26,7 @@ import AdminFeedbackWeb from './admin/AdminFeedbackWeb';
 import AdminAvisos from './admin/AdminAvisos';
 import AdminBandejaXpeak from './admin/AdminBandejaXpeak';
 import AdminComunicados from './admin/AdminComunicados';
+import AdminCobros from './admin/AdminCobros';
 
 const TABS = [
   { id: 'activity', label: 'Actividad', icon: Activity },
@@ -34,6 +35,7 @@ const TABS = [
   { id: 'salud',    label: 'Salud',     icon: ShieldCheck },
   { id: 'analytics', label: 'Tráfico', icon: LineChart },
   { id: 'overview', label: 'General', icon: LayoutGrid },
+  { id: 'cobros', label: 'Cobros', icon: CreditCard },
   { id: 'users', label: 'Usuarios', icon: Users },
   { id: 'empresarios', label: 'Empresarios', icon: Building2 },
   { id: 'emergentes', label: 'Cantera XPEAK', icon: Sparkles },
@@ -161,6 +163,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
           <AdminCharts />
         </>
       )}
+      {tab === 'cobros' && <AdminCobros />}
       {tab === 'users' && <AdminUserManagement />}
       {tab === 'deletions' && <AdminDeletions />}
       {tab === 'empresarios' && <AdminBusinesses />}
