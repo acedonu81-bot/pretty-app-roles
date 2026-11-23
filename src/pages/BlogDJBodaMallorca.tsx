@@ -29,7 +29,7 @@ const ZONAS = [
   { zona: 'Levante', fincas: 'Manacor, Felanitx, Porto Cristo', nota: 'Fincas grandes con piscina' },
   { zona: 'Palma y alrededores', fincas: 'Palma, Génova, Son Vida', nota: 'Palacios y hoteles de lujo' },
 ];
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Mallorca', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Mallorca. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Mallorca' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-mallorca', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Mallorca', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Mallorca. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Mallorca' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-mallorca' };
 
 export default function BlogDJBodaMallorca() {
   return (

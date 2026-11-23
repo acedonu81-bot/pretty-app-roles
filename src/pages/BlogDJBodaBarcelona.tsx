@@ -33,7 +33,7 @@ const ZONAS = [
   { zona: 'Barcelona capital', fincas: 'Palacios, hoteles 5*, rooftops', nota: 'Las más exclusivas' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Barcelona', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Barcelona. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Barcelona' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-barcelona', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Barcelona', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Barcelona. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Barcelona' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-barcelona' };
 
 export default function BlogDJBodaBarcelona() {
   return (

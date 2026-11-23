@@ -5,6 +5,7 @@ import { cobrosActivos } from '@/lib/pagos';
 import { listaVentajas } from '@/lib/ventajasPlan';
 import { subscriptionPlans, PRECIOS_ANUALES } from '@/lib/subscriptions';
 import AvisoBlackFriday from '@/components/AvisoBlackFriday';
+import { TablaComparativaPlanes, NotasPlanes } from '@/components/NotasPlanes';
 
 type PlanPublico = {
   nombre: string; precio: string; periodo: string; target: string; color: string; border: string;
@@ -219,7 +220,13 @@ export default function Precios() {
             ))}
           </div>
 
-          {LANZADO && <p className="text-xs text-center max-w-2xl mx-auto mb-16" style={{ color: '#6b7280' }}>{NOTA_PLANES}</p>}
+          {LANZADO && (
+            <section className="max-w-3xl mx-auto mb-16" aria-label="Comparativa de planes y condiciones">
+              <h2 className="text-xl font-black text-center mb-4">Qué hace cada plan</h2>
+              <TablaComparativaPlanes className="mb-4" />
+              <NotasPlanes />
+            </section>
+          )}
 
           <div className="mb-16">
             <h2 className="text-xl font-black text-center mb-8">Preguntas frecuentes sobre precios</h2>

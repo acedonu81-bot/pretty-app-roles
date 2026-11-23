@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'Pinares de Soria', fincas: 'Fincas rodeadas de pinos, cercanas a Valladolid', nota: 'Íntimo y natural' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Valladolid', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Valladolid. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Valladolid' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-valladolid', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Valladolid', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Valladolid. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Valladolid' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-valladolid' };
 
 export default function BlogDJBodaValladolid() {
   return (

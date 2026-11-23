@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'Teide / interior', fincas: 'Fincas volcánicas con vistas únicas al Teide', nota: 'Espectacular, muy exclusivo' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Tenerife', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Tenerife. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Tenerife' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-tenerife', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Tenerife', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Tenerife. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Tenerife' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-tenerife' };
 
 export default function BlogDJBodaTenerife() {
   return (

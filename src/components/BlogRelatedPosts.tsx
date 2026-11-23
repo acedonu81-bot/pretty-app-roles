@@ -10,11 +10,21 @@ export default function BlogRelatedPosts({ currentSlug, tag }: BlogRelatedPostsP
     .filter(p => p.tag === tag && p.slug !== currentSlug)
     .slice(0, 4);
 
-  if (related.length === 0) return null;
+  // Páginas de boda (DJ por ciudad, coste, música): empujan la landing "DJ para bodas".
+  const esBoda = currentSlug.includes('boda') || tag === 'Bodas';
+  if (related.length === 0 && !esBoda) return null;
 
   return (
     <section className="my-10">
       <h2 className="text-lg font-black mb-4" style={{ color: '#161412' }}>También te puede interesar</h2>
+      {esBoda && (
+        <a href="/boda/contratar-dj"
+          className="block p-4 rounded-xl mb-3 transition-all hover:scale-[1.01]"
+          style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.35)' }}>
+          <p className="text-sm font-bold mb-1 leading-snug" style={{ color: '#161412' }}>DJ para bodas: contrata el DJ de tu boda</p>
+          <p className="text-xs leading-relaxed" style={{ color: '#666' }}>Compara DJs verificados con experiencia en bodas y pide propuestas.</p>
+        </a>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {related.map(post => (
           <a key={post.slug} href={post.slug}

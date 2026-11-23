@@ -15,7 +15,7 @@ const faq = [{ q: `¿Cuánto cuesta un DJ para una boda en ${ciudad}?`, a: `Entr
 const faqPageSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
 
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: `DJs para bodas en Cádiz`, description: `Encuentra y contrata DJs verificados para bodas y eventos en Cádiz. Contratos digitales.`, serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Cádiz' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: `https://xpeak.es/blog/dj-bodas-cadiz`, offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: `DJs para bodas en Cádiz`, description: `Encuentra y contrata DJs verificados para bodas y eventos en Cádiz. Contratos digitales.`, serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Cádiz' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: `https://xpeak.es/blog/dj-bodas-cadiz` };
 export default function BlogDJBodaCadiz() {
   const articleSchema = {
     '@context': 'https://schema.org',

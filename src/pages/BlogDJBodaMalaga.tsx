@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'Antequera / interior', fincas: 'Antequera, Archidona, Loja', nota: 'Cortijos amplios, más económicos' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Málaga', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Málaga. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Málaga' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-malaga', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Málaga', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Málaga. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Málaga' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-malaga' };
 
 export default function BlogDJBodaMalaga() {
   return (

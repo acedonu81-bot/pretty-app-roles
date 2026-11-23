@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'Sierra de Córdoba', fincas: 'Fincas en Espiel, Obejo, Villaviciosa', nota: 'Fresco en verano, muy íntimo' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Córdoba', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Córdoba. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Córdoba' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-cordoba', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Córdoba', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Córdoba. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Córdoba' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-cordoba' };
 
 export default function BlogDJBodaCordoba() {
   return (

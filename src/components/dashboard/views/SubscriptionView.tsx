@@ -1,3 +1,4 @@
+import { NotasPlanes } from '@/components/NotasPlanes';
 import { listaVentajas, listaBase, proximamente, oficiosDe, planDe, ventajasAnual, CUENTA_XPEAK_ID } from '@/lib/ventajasPlan';
 import { useMiPlan } from '@/hooks/useMiPlan';
 import { useNavigate } from 'react-router-dom';
@@ -312,6 +313,7 @@ const SubscriptionView = () => {
               );
             })}
           </div>
+          <NotasPlanes conOficios={false} className="max-w-3xl mx-auto mt-8" />
           <p className="text-center text-xs mt-8" style={{ color: '#6b5a1e' }}>
             Al pagar aceptas las <a href="/condiciones-suscripcion" className="underline">condiciones de contratación</a>.
           </p>

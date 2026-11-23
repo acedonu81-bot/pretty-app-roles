@@ -160,7 +160,7 @@ export const getPlanPricing = (
   promoDiscount = 0,        // 0–1 fraction from a promo code
 ) => {
   if (plan.monthlyPrice === 0) {
-    return { finalPrice: 0, originalPrice: null, period: plan.defaultPeriod, discountPercent: 0, helperText: 'Acceso básico gratuito' };
+    return { finalPrice: 0, originalPrice: null, period: plan.defaultPeriod, discountPercent: 0, helperText: 'Nivel base' };
   }
 
   // Promo code takes priority over birthday/annual if higher

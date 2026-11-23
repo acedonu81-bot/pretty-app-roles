@@ -41,7 +41,7 @@ const PLATFORMS = [
 ];
 
 const FAQ = [
-  { q: '¿Cuánto cuesta darse de alta como food truck en XPEAK?', a: 'Nada. Crear el perfil, publicar tu tarifa y aparecer en el directorio de Catering es gratuito, sin cuota de visibilidad ni suscripción para destacar frente a otros perfiles.' },
+  { q: '¿Cuánto cuesta darse de alta como food truck en XPEAK?', a: 'Crear el perfil, publicar tu tarifa y aparecer en el directorio de Catering no requiere pago. Hay dos planes de suscripción opcionales con más visibilidad (Profesional desde 6,99 € al mes y Premium desde 14,99 € al mes, IVA incluido), sin permanencia.' },
   { q: '¿XPEAK cobra comisión por cada evento cerrado?', a: 'No. El contrato se gestiona directamente entre tu food truck y el organizador, sin intermediación en el pago ni comisión sobre lo que factures.' },
   { q: '¿Qué diferencia hay con Foodtruckya?', a: 'Foodtruckya es una plataforma especializada solo en food trucks, con planes de pago para destacar en su buscador. XPEAK no cobra por visibilidad y además te pone delante de organizadores que buscan otros proveedores para el mismo evento (DJ, staff, fotografía), no solo comida.' },
   { q: '¿Y con Bodas.net?', a: 'En Bodas.net (y su versión para proveedores, Bodas.com) el alta es gratuita, pero pagas para desbloquear el contacto de cada pareja interesada, con paquetes de créditos desde 20€. En XPEAK el contacto es directo desde el primer momento, sin coste por lead.' },

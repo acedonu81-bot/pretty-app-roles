@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'Valencia capital', fincas: 'Jardines, palacios, hoteles 5*', nota: 'Las más exclusivas' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Valencia', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Valencia. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Valencia' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-valencia', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Valencia', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Valencia. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Valencia' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-valencia' };
 
 export default function BlogDJBodaValencia() {
   return (

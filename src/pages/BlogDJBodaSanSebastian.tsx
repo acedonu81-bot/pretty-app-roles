@@ -31,7 +31,7 @@ const faq = [
 const faqPageSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
 
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: `DJs para bodas en San Sebastián`, description: `Encuentra y contrata DJs verificados para bodas y eventos en San Sebastián. Contratos digitales.`, serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'San Sebastián' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: `https://xpeak.es/blog/dj-bodas-san-sebastian`, offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: `DJs para bodas en San Sebastián`, description: `Encuentra y contrata DJs verificados para bodas y eventos en San Sebastián. Contratos digitales.`, serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'San Sebastián' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: `https://xpeak.es/blog/dj-bodas-san-sebastian` };
 export default function BlogDJBodaSanSebastian() {
   return (
     <>

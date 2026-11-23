@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'Lorca y comarca', fincas: 'Haciendas con historia, fincas amplias', nota: 'Bodas grandes, buen precio' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Murcia', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Murcia. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Murcia' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-murcia', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Murcia', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Murcia. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Murcia' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-murcia' };
 
 export default function BlogDJBodaMurcia() {
   return (

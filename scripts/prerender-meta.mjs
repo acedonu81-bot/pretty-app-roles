@@ -1551,11 +1551,15 @@ for (const [occSlug, roleSlugs] of Object.entries(OCC_ROLES)) {
     // Siglas intactas ("DJ", no "dj"): mismo criterio que rolEnFrase() en OccasionLanding.tsx.
     const rolFrase = rol === rol.toUpperCase() ? rol : rol.toLowerCase();
     const desc = `Contrata ${rolFrase} para ${occLabel.toLowerCase()} en España. Profesionales verificados, precios públicos y contrato directo. Flash Booking en menos de 1h.`;
+    // Mismo título que OccasionLanding.tsx (tituloSEO): "DJ para bodas" en plural.
+    const tituloOcc = routePath === '/boda/contratar-dj'
+      ? 'DJ para bodas: contratar DJ para tu boda | XPEAK'
+      : `Contratar ${rol} para ${occLabel} | XPEAK`;
     ROUTES.push({
       path: routePath,
-      title: `Contratar ${rol} para ${occLabel} | XPEAK`,
+      title: tituloOcc,
       desc: desc.slice(0, 300),
-      ogTitle: `Contratar ${rol} para ${occLabel} | XPEAK`,
+      ogTitle: tituloOcc,
       ogDesc: desc.slice(0, 200),
       ogType: 'website',
     });

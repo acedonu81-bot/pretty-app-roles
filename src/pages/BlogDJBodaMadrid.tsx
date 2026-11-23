@@ -33,7 +33,7 @@ const ZONAS = [
   { zona: 'Madrid capital', fincas: 'Palacios, hoteles 5*, azoteas', nota: 'Las más caras, muy exclusivas' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Madrid', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Madrid. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Madrid' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-madrid', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Madrid', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Madrid. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Madrid' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-madrid' };
 
 export default function BlogDJBodaMadrid() {
   return (

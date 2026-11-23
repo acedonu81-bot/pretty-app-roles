@@ -14,7 +14,6 @@ const structuredData = {
   description: DESC,
   url: 'https://xpeak.es/organizar-eventos',
   serviceType: 'Gestión y organización de eventos',
-  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
 };
 
 const FAQS = [

@@ -277,6 +277,7 @@ export default function BlogWeddingPlanner() {
                   { href: '/blog/profesionales-bodas', tag: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026', desc: 'DJ, fotógrafo, catering y más. Todo lo que necesitas para tu boda.' },
                   { href: '/blog/cuanto-cuesta-una-boda-en-espana', title: 'Presupuesto completo de boda en España 2026', tag: 'Bodas' },
                   { href: '/blog/catering-boda-precio-por-persona', title: 'Catering de boda: precio por persona', tag: 'Catering' },
+                  { href: '/boda/contratar-dj', title: 'DJ para bodas: contratar DJ para tu boda', tag: 'DJ' },
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', title: 'Cuánto cobra un DJ para bodas', tag: 'DJ' },
                   { href: '/blog/fotografo-boda', title: 'Cómo contratar fotógrafo de bodas', tag: 'Fotografía' },
                 ].map(a => (

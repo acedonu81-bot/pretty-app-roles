@@ -241,6 +241,7 @@ const faqStructured = {
             <a href="/blog/dj-bodas-sevilla" style={{ color: '#D4AF37' }}>Sevilla</a>{' '}
             o <a href="/blog/dj-bodas-valencia" style={{ color: '#D4AF37' }}>Valencia</a>.
             ¿Es en Madrid? Mira los <a href="/contratar-dj/madrid" style={{ color: '#D4AF37', fontWeight: 700 }}>DJs de Madrid con su precio por hora</a>.
+            ¿Buscas DJ para tu boda? Compara <a href="/boda/contratar-dj" style={{ color: '#D4AF37', fontWeight: 700 }}>DJs para bodas</a> verificados y pide propuestas.
             Si quieres una cifra para tu evento, usa la{' '}
             <a href="#calculadora" style={{ color: '#D4AF37' }}>calculadora del precio de un DJ</a>{' '}
             o descarga la{' '}

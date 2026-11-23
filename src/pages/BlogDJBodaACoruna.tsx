@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'Interior: Terra de Soneira', fincas: 'Casas rurales y fincas agropecuarias', nota: 'Muy económico, mucho espacio' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en A Coruña', description: 'Encuentra y contrata DJs verificados para bodas y eventos en A Coruña. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'A Coruña' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-a-coruna', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en A Coruña', description: 'Encuentra y contrata DJs verificados para bodas y eventos en A Coruña. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'A Coruña' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-a-coruna' };
 
 export default function BlogDJBodaACoruna() {
   return (

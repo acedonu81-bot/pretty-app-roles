@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'Sevilla capital', fincas: 'Palacios, hoteles 5*, patios', nota: 'Las más exclusivas' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Sevilla', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Sevilla. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Sevilla' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-sevilla', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Sevilla', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Sevilla. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Sevilla' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-sevilla' };
 
 export default function BlogDJBodaSevilla() {
   return (

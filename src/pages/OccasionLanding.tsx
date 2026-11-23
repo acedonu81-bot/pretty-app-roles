@@ -243,6 +243,10 @@ export default function OccasionLanding() {
   const canonical = `/${occ.slug}/contratar-${categorySlug}`;
   const { profs, loaded } = useRoleProfessionals(categorySlug);
   const h1 = `Contratar ${rol} para ${occ.label} en España`;
+  // "DJ para bodas" (plural) es la búsqueda real; el resto sigue la plantilla.
+  const tituloSEO = canonical === '/boda/contratar-dj'
+    ? 'DJ para bodas: contratar DJ para tu boda | XPEAK'
+    : `Contratar ${rol} para ${occ.label} | XPEAK`;
   const desc = occ.answer(rol);
 
   const faqStructured = {
@@ -259,7 +263,6 @@ export default function OccasionLanding() {
     // Señal de frescura: las IAs priorizan contenido con dateModified reciente.
     // En SSR/prerender se congela con la fecha del build (lo que leen los bots).
     dateModified: BUILD_DATE,
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
   };
   const breadcrumbData = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -275,13 +278,13 @@ export default function OccasionLanding() {
   return (
     <>
       <Helmet>
-        <title>{`Contratar ${rol} para ${occ.label} | XPEAK`}</title>
+        <title>{tituloSEO}</title>
         <meta name="description" content={desc} />
         {/* El noindex de las páginas sin inventario se aplica en el prerender
             (prerender-content.mjs), no aquí: el robots global de index.html
             gana en el HTML servido y Helmet no lo sustituye. */}
         <link rel="canonical" href={`https://xpeak.es${canonical}`} />
-        <meta property="og:title" content={`Contratar ${rol} para ${occ.label} | XPEAK`} />
+        <meta property="og:title" content={tituloSEO} />
         <meta property="og:description" content={desc} />
         <meta property="og:url" content={`https://xpeak.es${canonical}`} />
         <meta property="og:type" content="website" />

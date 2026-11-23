@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
+  { href: '/boda/contratar-dj', tag: 'Música', title: 'DJ para bodas: contratar DJ para tu boda', desc: 'Compara DJs verificados con experiencia en bodas, mira precios y pide propuestas.' },
   { href: '/blog/cuanto-cuesta-una-boda-en-espana', tag: 'Presupuesto', title: 'Cuánto cuesta una boda en España 2026', desc: 'Desglose por partidas: catering, DJ, fotógrafo, camareros, flores y más.' },
   { href: '/blog/musica-para-bodas-guia', tag: 'Música', title: 'Música para bodas: DJ, banda o playlist 2026', desc: 'Comparativa DJ vs banda en directo vs lista propia. Precios y cuándo elegir cada opción.' },
   { href: '/blog/dj-boda-civil-precio-canciones', tag: 'Música', title: 'DJ boda civil: precio y canciones 2026', desc: 'Cuánto cuesta el DJ y qué música poner en la entrada, firma, cóctel y pista.' },

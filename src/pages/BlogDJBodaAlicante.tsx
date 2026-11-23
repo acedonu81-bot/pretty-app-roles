@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'L\'Alcoià / interior', fincas: 'Alcoy, Villena, Elda: fincas amplias', nota: 'Económico y privado' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Alicante', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Alicante. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Alicante' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-alicante', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Alicante', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Alicante. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Alicante' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-alicante' };
 
 export default function BlogDJBodaAlicante() {
   return (
