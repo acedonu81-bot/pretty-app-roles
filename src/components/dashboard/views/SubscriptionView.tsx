@@ -2,6 +2,7 @@ import { listaVentajas, listaBase, proximamente, oficiosDe, planDe, ventajasAnua
 import { useMiPlan } from '@/hooks/useMiPlan';
 import { useNavigate } from 'react-router-dom';
 import TarjetaReferidos from '@/components/dashboard/TarjetaReferidos';
+import AvisoBlackFriday from '@/components/AvisoBlackFriday';
 import { useEffect, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { CheckCircle, Clock, Lock } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
@@ -122,7 +123,8 @@ const LEMA: Record<PlanPago, string> = {
 const SubscriptionView = () => {
   const { id: profileId, role, roles, subscription_tier, refresh } = useProfile();
   const navigate = useNavigate();
-  const [ciclo, setCiclo] = useState<Ciclo>('mensual');
+  // En Black Friday la oferta es del anual: se abre ya marcado.
+  const [ciclo, setCiclo] = useState<Ciclo>(() => (esBlackFriday() ? 'anual' : 'mensual'));
   const [sus, setSus] = useState<MiSuscripcion | null>(null);
   const tier = subscription_tier ?? 'free';
   const todos = [role, ...(roles ?? [])].filter(Boolean) as string[];
@@ -217,6 +219,7 @@ const SubscriptionView = () => {
 
       {venta && tier === 'free' && (
         <div>
+          <AvisoBlackFriday className="max-w-3xl mx-auto mb-6" />
           <div className="flex justify-center mb-8">
             <div className="inline-flex items-center gap-3 rounded-full pl-5 pr-2 py-2"
               style={{ background: '#FFFDF7', boxShadow: '0 2px 10px -3px rgba(90,66,0,.35)', border: '1px solid rgba(212,175,55,.45)' }}>
@@ -255,10 +258,21 @@ const SubscriptionView = () => {
                         {destacado && (
                           <span className="rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap" style={t.etiqueta}>Recomendado</span>
                         )}
+                        {bf && (
+                          <span className="rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap"
+                            style={{ background: '#FFFDF7', color: '#7a5c00', border: '1.5px solid #B8941E' }}>Black Friday -35 %</span>
+                        )}
                       </div>
-                      <p className="font-black text-2xl leading-none whitespace-nowrap">
-                        {euros(Math.round(precio * 100) / 100)}<span className="text-xs font-bold" style={{ color: t.suave }}>/mes</span>
-                      </p>
+                      <div className="text-right">
+                        <p className="font-black text-2xl leading-none whitespace-nowrap">
+                          {euros(Math.round(precio * 100) / 100)}<span className="text-xs font-bold" style={{ color: t.suave }}>/mes</span>
+                        </p>
+                        {bf && (
+                          <p className="text-xs font-bold mt-1 whitespace-nowrap" style={{ color: t.suave }}>
+                            antes <s>{euros(Math.round(PRECIOS_ANUALES[p] / 12 * 100) / 100)}</s>
+                          </p>
+                        )}
+                      </div>
                     </div>
                     <p className="text-sm font-semibold" style={{ color: t.suave }}>{LEMA[p]}</p>
                     <button type="button" onClick={() => iniciarPago(p, ciclo)}

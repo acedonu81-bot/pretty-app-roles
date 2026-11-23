@@ -1,7 +1,7 @@
 // "Invita y paga menos": enlace de invitación y estado del descuento por amigos.
 // Sustituye a la antigua "Invita y gana prioridad" cuando los cobros están encendidos.
 import { useEffect, useState } from 'react';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy, Send } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { descuentoReferidos, enlaceInvitacion, leerMisReferidos } from '@/lib/referidos';
 
@@ -39,6 +39,19 @@ const TarjetaReferidos = ({ suscrito }: { suscrito: boolean }) => {
         </p>
       </div>
 
+      <ol className="grid gap-2 sm:grid-cols-3" aria-label="Cómo funciona">
+        {[
+          'Envía tu enlace a otros profesionales, por WhatsApp o donde quieras.',
+          'Tu amigo lo abre y crea su cuenta en XPEAK desde ese enlace. No hay que pegar ningún código.',
+          'Cuando pague un plan, tu cuota baja sola en tu siguiente cobro.',
+        ].map((paso, i) => (
+          <li key={paso} className="flex gap-2 rounded-xl p-3 text-xs leading-snug" style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,.15)', color: '#4a3f22' }}>
+            <span className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-black" style={{ background: '#F3E6B8', color: '#7a5c00' }}>{i + 1}</span>
+            <span>{paso}</span>
+          </li>
+        ))}
+      </ol>
+
       <div className="grid grid-cols-3 gap-2" role="list" aria-label="Descuento por amigos">
         {PASOS.map(p => {
           const actual = p.pct === pct;
@@ -62,8 +75,8 @@ const TarjetaReferidos = ({ suscrito }: { suscrito: boolean }) => {
         {pct > 0 && (suscrito ? ` · Tu descuento: ${pct} %` : ` · Tienes guardado un ${pct} %: se aplica cuando te suscribas`)}
       </p>
 
-      <div className="flex items-center gap-2">
-        <div className="flex-1 min-w-0 px-3 py-2.5 rounded-lg text-xs font-mono truncate"
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="basis-full sm:basis-auto flex-1 min-w-0 px-3 py-2.5 rounded-lg text-xs font-mono truncate"
           style={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,.2)', color: '#3d3d4e' }}>
           {codigo ? enlaceInvitacion(codigo).replace('https://', '') : '···'}
         </div>
@@ -75,9 +88,17 @@ const TarjetaReferidos = ({ suscrito }: { suscrito: boolean }) => {
           {copiado ? <Check size={14} /> : <Copy size={14} />}
           {copiado ? 'Copiado' : 'Copiar enlace'}
         </button>
+        {codigo && (
+          <a href={`https://wa.me/?text=${encodeURIComponent(`Te paso mi enlace para entrar en XPEAK, el directorio de profesionales de eventos: ${enlaceInvitacion(codigo)}`)}`}
+            target="_blank" rel="noopener noreferrer"
+            className="px-4 py-2.5 rounded-lg flex items-center gap-1.5 text-sm font-bold flex-shrink-0"
+            style={{ background: 'rgba(5,150,105,.1)', border: '1px solid rgba(5,150,105,.35)', color: '#047857' }}>
+            <Send size={14} /> Enviar por WhatsApp
+          </a>
+        )}
       </div>
       <p className="text-xs" style={{ color: '#6b6454' }}>
-        Solo cuentan los amigos directos y no quien pague con tu misma tarjeta. <a href="/condiciones-suscripcion" className="underline">Condiciones</a>.
+        Solo cuentan cuentas nuevas creadas desde tu enlace, los amigos directos y no quien pague con tu misma tarjeta. <a href="/condiciones-suscripcion" className="underline">Condiciones</a>.
       </p>
     </div>
   );

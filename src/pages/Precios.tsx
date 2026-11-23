@@ -4,6 +4,7 @@ import FooterPublic from '@/components/FooterPublic';
 import { cobrosActivos } from '@/lib/pagos';
 import { listaVentajas } from '@/lib/ventajasPlan';
 import { subscriptionPlans, PRECIOS_ANUALES } from '@/lib/subscriptions';
+import AvisoBlackFriday from '@/components/AvisoBlackFriday';
 
 type PlanPublico = {
   nombre: string; precio: string; periodo: string; target: string; color: string; border: string;
@@ -171,6 +172,7 @@ export default function Precios() {
             </p>
           </div>
 
+          {LANZADO && <AvisoBlackFriday className="max-w-3xl mx-auto mb-8" />}
           <div className={`grid grid-cols-1 sm:grid-cols-2 ${LANZADO ? 'lg:grid-cols-2 max-w-3xl mx-auto' : ''} gap-6 mb-${LANZADO ? '6' : '16'}`}>
             {PLANES.map(plan => (
               <div key={plan.nombre} className="relative p-6 rounded-2xl"
