@@ -61,8 +61,34 @@ const Lista = ({ items, proximos = [] }: { items: string[]; proximos?: string[] 
   </div>
 );
 
-// Tarjeta con entrada escalonada y foco de luz dorada que sigue al ratón.
-const Tarjeta = ({ retraso, destacada, estilo, children }: { retraso: number; destacada?: boolean; estilo: CSSProperties; children: ReactNode }) => {
+// Colores de cada plan (paleta XPEAK: crema, dorado, azul; nada de negro).
+// Estructura inspirada en las tarjetas de HeyGen: cabecera de color con nombre,
+// precio y botón; debajo, las ventajas. La etiqueta "Recomendado" va dentro de
+// la cabecera, junto al nombre, para que nada la tape.
+const TEMA: Record<PlanPago, { cabecera: string; borde: string; texto: string; suave: string; etiqueta: CSSProperties; boton: CSSProperties; aura: string }> = {
+  starter: {
+    cabecera: 'linear-gradient(135deg,#FBE7A1 0%,#E9C75A 55%,#D4AF37 100%)',
+    borde: '#D4AF37',
+    texto: '#2a2108',
+    suave: '#5a4716',
+    etiqueta: { background: '#FFF8E1', color: '#7a5c00', boxShadow: '0 1px 0 rgba(255,255,255,.6) inset' },
+    boton: { background: '#3a2c06', color: '#FFF8E1', boxShadow: '0 10px 20px -8px rgba(58,44,6,.8)' },
+    aura: 'rgba(212,175,55,.5)',
+  },
+  business: {
+    cabecera: 'linear-gradient(135deg,#DBEAFE 0%,#93C5FD 55%,#60A5FA 100%)',
+    borde: '#60A5FA',
+    texto: '#0b1f44',
+    suave: '#1e3a6e',
+    etiqueta: { background: '#EFF6FF', color: '#1d4ed8' },
+    boton: { background: '#1e3a8a', color: '#EFF6FF', boxShadow: '0 10px 20px -8px rgba(30,58,138,.8)' },
+    aura: 'rgba(96,165,250,.45)',
+  },
+};
+
+// Tarjeta con entrada escalonada y foco de luz que sigue al ratón.
+const Tarjeta = ({ retraso, plan, destacada, cabecera, children }: { retraso: number; plan: PlanPago; destacada?: boolean; cabecera: ReactNode; children: ReactNode }) => {
+  const t = TEMA[plan];
   const mover = (e: MouseEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
@@ -71,22 +97,26 @@ const Tarjeta = ({ retraso, destacada, estilo, children }: { retraso: number; de
   return (
     <div className="plan-entra relative" style={{ animationDelay: `${retraso}ms` }}>
       {destacada && (
-        <>
-          <div aria-hidden className="plan-aura absolute -inset-6 rounded-[2rem] pointer-events-none hidden md:block"
-            style={{ background: 'radial-gradient(closest-side, rgba(212,175,55,.5), rgba(212,175,55,0) 72%)' }} />
-          <span className="absolute left-1/2 -translate-x-1/2 -top-3.5 z-20 rounded-full px-4 py-1 text-[11px] font-extrabold uppercase tracking-widest whitespace-nowrap"
-            style={{ background: '#8B6A00', color: '#FFF8E1', boxShadow: '0 6px 14px -4px rgba(90,66,0,.6)' }}>Recomendado</span>
-        </>
+        <div aria-hidden className="plan-aura absolute -inset-6 rounded-[2.2rem] pointer-events-none hidden md:block"
+          style={{ background: `radial-gradient(closest-side, ${t.aura}, transparent 72%)` }} />
       )}
       <div onMouseMove={mover}
-        className={`group relative h-full rounded-2xl p-7 flex flex-col gap-3 transition-all duration-300 ${destacada ? 'md:-translate-y-3 md:scale-[1.03] hover:md:-translate-y-4' : 'hover:-translate-y-1.5'}`}
-        style={estilo}>
-        <div aria-hidden className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-          style={{ background: 'radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgba(212,175,55,.2), transparent 65%)' }} />
-        <div className="relative flex flex-col gap-3 h-full">{children}</div>
+        className="group relative h-full rounded-[1.75rem] p-2 flex flex-col transition-all duration-300 hover:-translate-y-1.5"
+        style={{ background: '#FFFDF7', border: `1.5px solid ${t.borde}`, boxShadow: '0 2px 4px rgba(60,45,0,.07), 0 30px 60px -24px rgba(90,66,0,.45)' }}>
+        <div aria-hidden className="absolute inset-0 rounded-[1.75rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          style={{ background: `radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), ${t.aura.replace(/[\d.]+\)$/, '.18)')}, transparent 65%)` }} />
+        <div className="relative rounded-[1.35rem] p-5 flex flex-col gap-3" style={{ background: t.cabecera, color: t.texto }}>
+          {cabecera}
+        </div>
+        <div className="relative flex flex-col gap-3 h-full px-4 pt-4 pb-3">{children}</div>
       </div>
     </div>
   );
+};
+
+const LEMA: Record<PlanPago, string> = {
+  starter: 'Para que te encuentren y te contraten',
+  business: 'Para destacar en el directorio y llegar a más clientes',
 };
 
 const SubscriptionView = () => {
@@ -161,7 +191,7 @@ const SubscriptionView = () => {
             {fecha && (
               <p className="text-sm font-bold" style={{ color: sus?.cancela_al_final ? '#8B6A00' : '#5a4716' }}>
                 {sus?.cancela_al_final
-                  ? `Tu plan termina el ${fecha}. Después pasas a Esencial, sin más cobros.`
+                  ? `Tu plan termina el ${fecha}. Después pasas al nivel base, sin más cobros.`
                   : `Se renueva el ${fecha} por ${euros(precio)}${anual ? ' al año' : ' al mes'}, IVA incluido.`}
               </p>
             )}
@@ -188,46 +218,64 @@ const SubscriptionView = () => {
       {venta && tier === 'free' && (
         <div>
           <div className="flex justify-center mb-8">
-            <div className="inline-flex rounded-full p-1" style={{ background: 'rgba(255,253,247,.65)', boxShadow: 'inset 0 1px 3px rgba(90,66,0,.18)' }} role="group" aria-label="Facturación">
-              {(['mensual', 'anual'] as Ciclo[]).map(c => (
-                <button key={c} type="button" aria-pressed={ciclo === c} onClick={() => setCiclo(c)}
-                  className="rounded-full px-5 py-2 text-sm font-bold transition-all duration-200"
-                  style={{ background: ciclo === c ? '#fff' : 'transparent', boxShadow: ciclo === c ? '0 2px 8px -2px rgba(90,66,0,.4)' : 'none' }}>
-                  {c === 'mensual' ? 'Mensual' : esBlackFriday() ? 'Anual, -35 % en Black Friday' : 'Anual, ahorras 2 meses'}
-                </button>
-              ))}
+            <div className="inline-flex items-center gap-3 rounded-full pl-5 pr-2 py-2"
+              style={{ background: '#FFFDF7', boxShadow: '0 2px 10px -3px rgba(90,66,0,.35)', border: '1px solid rgba(212,175,55,.45)' }}>
+              <button type="button" onClick={() => setCiclo('mensual')} aria-pressed={ciclo === 'mensual'}
+                className="text-sm font-bold" style={{ color: ciclo === 'mensual' ? '#111' : '#8a8170' }}>Mensual</button>
+              <button type="button" role="switch" aria-checked={ciclo === 'anual'} aria-label="Pagar por años"
+                onClick={() => setCiclo(ciclo === 'anual' ? 'mensual' : 'anual')}
+                className="relative w-11 h-6 rounded-full transition-colors duration-200"
+                style={{ background: ciclo === 'anual' ? '#D4AF37' : '#E5DCC3' }}>
+                <span className="absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all duration-200"
+                  style={{ left: ciclo === 'anual' ? 22 : 2, boxShadow: '0 1px 3px rgba(0,0,0,.25)' }} />
+              </button>
+              <button type="button" onClick={() => setCiclo('anual')} aria-pressed={ciclo === 'anual'}
+                className="text-sm font-bold" style={{ color: ciclo === 'anual' ? '#111' : '#8a8170' }}>Anual</button>
+              <span className="rounded-full px-3 py-1 text-xs font-extrabold whitespace-nowrap"
+                style={{ background: 'linear-gradient(90deg,#D1FAE5,#BFDBFE)', color: '#065f46' }}>
+                {esBlackFriday() ? '-35 % Black Friday' : 'Ahorras 2 meses'}
+              </span>
             </div>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 md:items-stretch pt-4 max-w-3xl mx-auto">
+          <div className="grid gap-6 md:grid-cols-2 md:items-stretch max-w-3xl mx-auto">
             {(['starter', 'business'] as PlanPago[]).map((p, i) => {
               const plan = subscriptionPlans.find(x => x.id === p)!;
+              const t = TEMA[p];
               const anual = ciclo === 'anual';
               const bf = anual && esBlackFriday();
               const primerAno = bf ? PRECIOS_BLACK_FRIDAY[p] : PRECIOS_ANUALES[p];
               const precio = anual ? primerAno / 12 : plan.monthlyPrice;
               const destacado = p === 'starter';
-              const apagado = destacado ? '#6b5516' : '#6b6454';
               return (
-                <Tarjeta key={p} retraso={130 * i} destacada={destacado}
-                  estilo={destacado
-                    ? { background: 'linear-gradient(180deg,#FFFCF0 0%,#FFF3CF 100%)', border: '2px solid #D4AF37', boxShadow: '0 4px 10px rgba(120,90,0,.16), 0 34px 64px -22px rgba(120,90,0,.6)' }
-                    : { background: '#fff', border: '1px solid rgba(212,175,55,.5)', boxShadow: '0 2px 4px rgba(60,45,0,.07), 0 22px 44px -20px rgba(120,90,0,.4)' }}>
-                  <p className="font-black text-lg">{NOMBRE[p]}</p>
-                  <p className="text-4xl font-black">{euros(Math.round(precio * 100) / 100)} <span className="text-sm font-bold" style={{ color: apagado }}>/ mes</span></p>
-                  <p className="text-xs" style={{ color: apagado }}>
+                <Tarjeta key={p} retraso={130 * i} plan={p} destacada={destacado}
+                  cabecera={<>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-2 flex-wrap min-w-0">
+                        <p className="font-black text-2xl leading-none">{NOMBRE[p]}</p>
+                        {destacado && (
+                          <span className="rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap" style={t.etiqueta}>Recomendado</span>
+                        )}
+                      </div>
+                      <p className="font-black text-2xl leading-none whitespace-nowrap">
+                        {euros(Math.round(precio * 100) / 100)}<span className="text-xs font-bold" style={{ color: t.suave }}>/mes</span>
+                      </p>
+                    </div>
+                    <p className="text-sm font-semibold" style={{ color: t.suave }}>{LEMA[p]}</p>
+                    <button type="button" onClick={() => iniciarPago(p, ciclo)}
+                      className="mt-1 rounded-full py-3 font-bold transition-all duration-150 hover:brightness-110 active:translate-y-px"
+                      style={t.boton}>
+                      Elegir {NOMBRE[p]}
+                    </button>
+                  </>}>
+                  <p className="text-xs" style={{ color: '#6b6454' }}>
                     IVA incluido · {!anual ? 'Facturación mensual'
                       : bf ? `${euros(PRECIOS_BLACK_FRIDAY[p])} el primer año con el 35 % de Black Friday. Después, ${euros(PRECIOS_ANUALES[p])} al año`
                       : `${euros(PRECIOS_ANUALES[p])} al año: ahorras 2 meses (${euros(ahorroAnual(p))})`}
                   </p>
-                  <button type="button" onClick={() => iniciarPago(p, ciclo)}
-                    className="rounded-xl py-3 font-bold transition-all duration-150 hover:brightness-105 active:translate-y-px"
-                    style={destacado
-                      ? { background: 'linear-gradient(180deg,#E6C75A 0%,#CFA52B 100%)', color: '#1d1a12', boxShadow: '0 10px 20px -6px rgba(120,90,0,.7), inset 0 1px 0 rgba(255,255,255,.5)' }
-                      : { border: '1.5px solid #D4AF37', background: '#FFFDF7', boxShadow: '0 4px 10px -6px rgba(120,90,0,.4)' }}>
-                    Elegir {NOMBRE[p]}
-                  </button>
-                  <p className="text-xs text-center font-bold" style={{ color: '#059669' }}>Sin permanencia. Cancela cuando quieras.</p>
-                  <Lista items={[...ventajas(p), ...(anual ? ventajasAnual() : [])]} proximos={proximamente(planDe(p), oficios)} />
+                  <p className="text-xs font-bold" style={{ color: '#059669' }}>Sin permanencia. Cancela cuando quieras.</p>
+                  <div className="pt-3" style={{ borderTop: '1px dashed rgba(122,98,22,.3)' }}>
+                    <Lista items={[...ventajas(p), ...(anual ? ventajasAnual() : [])]} proximos={proximamente(planDe(p), oficios)} />
+                  </div>
                 </Tarjeta>
               );
             })}
