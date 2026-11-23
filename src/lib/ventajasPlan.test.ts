@@ -4,23 +4,23 @@ import { planDe, nombrePlan, ventajasDe, oficiosDe, listaVentajas } from './vent
 
 describe('ventajasPlan', () => {
   it('normaliza los tiers antiguos sin quitar nada a nadie', () => {
-    expect(planDe(null)).toBe('free');
-    expect(planDe('raro')).toBe('free');
+    expect(planDe(null)).toBe('starter');
+    expect(planDe('raro')).toBe('starter');
+    expect(planDe('free')).toBe('starter'); // sin suscripción de pago cuenta como Profesional
     expect(planDe('starter')).toBe('starter');
     for (const t of ['business', 'premium', 'agency', 'elite']) expect(planDe(t)).toBe('business');
   });
 
   it('usa los nombres públicos', () => {
-    expect([nombrePlan('free'), nombrePlan('starter'), nombrePlan('business')]).toEqual(['Esencial', 'Profesional', 'Premium']);
+    expect([nombrePlan('free'), nombrePlan('starter'), nombrePlan('business')]).toEqual(['Profesional', 'Profesional', 'Premium']);
   });
 
   it('límites decididos el 13 nov', () => {
-    expect([ventajasDe('free').fotos, ventajasDe('starter').fotos, ventajasDe('business').fotos]).toEqual([6, 12, 20]);
-    expect([ventajasDe('free').sets, ventajasDe('starter').sets, ventajasDe('business').sets]).toEqual([3, 10, Infinity]);
+    expect([ventajasDe('starter').fotos, ventajasDe('business').fotos]).toEqual([12, 20]);
+    expect([ventajasDe('starter').sets, ventajasDe('business').sets]).toEqual([10, Infinity]);
   });
 
-  it('redes ocultas solo en Esencial; banner, Inicio y exportar solo en Premium', () => {
-    expect(ventajasDe('free').redesVisibles).toBe(false);
+  it('banner, Inicio y exportar solo en Premium', () => {
     expect(ventajasDe('starter').redesVisibles).toBe(true);
     expect(ventajasDe('starter').bannerCabecera).toBe(false);
     expect(ventajasDe('business').bannerCabecera).toBe(true);
@@ -29,7 +29,7 @@ describe('ventajasPlan', () => {
   });
 
   it('cada plan incluye todo lo del anterior', () => {
-    const orden = ['free', 'starter', 'business'].map(ventajasDe);
+    const orden = ['starter', 'business'].map(ventajasDe);
     for (let i = 1; i < orden.length; i++) {
       for (const [k, v] of Object.entries(orden[i - 1])) {
         const sig = (orden[i] as Record<string, unknown>)[k];
@@ -41,13 +41,13 @@ describe('ventajasPlan', () => {
 });
 
 describe('qué ve cada oficio', () => {
-  const lista = (roles: string[], plan: 'free' | 'starter' | 'business') => listaVentajas(plan, oficiosDe(roles));
+  const lista = (roles: string[], plan: 'starter' | 'business') => listaVentajas(plan, oficiosDe(roles));
 
   it('un DJ ve sets y banner; un mago no', () => {
-    expect(lista(['dj'], 'free')).toContain('Hasta 3 sets en tu perfil');
+    expect(lista(['dj'], 'starter')).toContain('Hasta 10 sets en tu perfil');
     expect(lista(['dj'], 'business')).toContain('Sets ilimitados');
     expect(lista(['dj'], 'business')).toContain('Banner propio en tu cabecera de artista');
-    for (const p of ['free', 'starter', 'business'] as const) {
+    for (const p of ['starter', 'business'] as const) {
       expect(lista(['mago'], p).join('|')).not.toMatch(/sets|Banner/i);
     }
   });
@@ -58,20 +58,20 @@ describe('qué ve cada oficio', () => {
   });
 
   it('solo los oficios del formulario de ofertas ven "Ofertas Flash Booking"', () => {
-    expect(lista(['dj'], 'free')).toContain('Ofertas Flash Booking');
-    expect(lista(['camarero'], 'free')).toContain('Ofertas Flash Booking');
+    expect(lista(['dj'], 'starter')).toContain('Ofertas Flash Booking');
+    expect(lista(['camarero'], 'starter')).toContain('Ofertas Flash Booking');
     for (const r of ['mago', 'bailarin', 'humorista', 'speaker', 'limpieza', 'azafata']) {
-      expect(lista([r], 'free')).not.toContain('Ofertas Flash Booking');
+      expect(lista([r], 'starter')).not.toContain('Ofertas Flash Booking');
     }
   });
 
   it('nunca se anuncia lo que aún no existe', () => {
-    const todo = ['free', 'starter', 'business'].flatMap(p => lista(['dj'], p as 'free')).join('|');
-    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|Sello|adelanto|Concursos|y web/i);
+    const todo = ['starter', 'business'].flatMap(p => lista(['dj'], p as 'starter')).join('|');
+    expect(todo).not.toMatch(/WhatsApp|ampliada|Sorteos|comunicados|vídeo de fondo|Sello Premium|adelanto|Concursos|y web/i);
   });
 
   it('no usa rayas largas ni "gratis"', () => {
-    const todo = ['free', 'starter', 'business'].flatMap(p => lista(['dj'], p as 'free')).join('|');
+    const todo = ['starter', 'business'].flatMap(p => lista(['dj'], p as 'starter')).join('|');
     expect(todo).not.toMatch(/[—–]|gratis/i);
   });
 
@@ -83,7 +83,7 @@ describe('qué ve cada oficio', () => {
   });
 
   it('cada plan incluye lo del anterior en el texto', () => {
-    expect(lista(['dj'], 'starter')[0]).toBe('Todo lo de Esencial');
+    expect(lista(['dj'], 'starter')[0]).toBe('Perfil en el directorio');
     expect(lista(['dj'], 'business')[0]).toBe('Todo lo de Profesional');
   });
 
@@ -91,5 +91,23 @@ describe('qué ve cada oficio', () => {
     expect(oficiosDe(['empresario']).profesional).toBe(false);
     expect(oficiosDe(['particular', 'pending']).profesional).toBe(false);
     expect(oficiosDe(['empresario', 'dj']).profesional).toBe(true);
+  });
+});
+
+describe('trayectoria verificada', () => {
+  it('pedir confirmación y el sello solo en Premium', () => {
+    expect(ventajasDe('business').trayectoriaConfirmada).toBe(true);
+    expect(ventajasDe('starter').trayectoriaConfirmada).toBe(false);
+    expect(listaVentajas('business', oficiosDe(['camarero']))).toContain('Sello de eventos confirmados en tu ficha');
+    expect(listaVentajas('starter', oficiosDe(['camarero']))).not.toContain('Sello de eventos confirmados en tu ficha');
+  });
+});
+
+describe('trayectoria con los cobros apagados', () => {
+  it('Mi plan no anuncia el sello si no se puede usar todavía', () => {
+    const o = oficiosDe(['camarero']);
+    expect(listaVentajas('business', o, { cobros: false })).not.toContain('Sello de eventos confirmados en tu ficha');
+    expect(listaVentajas('business', o, { cobros: true })).toContain('Sello de eventos confirmados en tu ficha');
+    expect(listaVentajas('business', o)).toContain('Sello de eventos confirmados en tu ficha');
   });
 });

@@ -95,7 +95,7 @@ serve(async (req) => {
     return new Response(JSON.stringify({ sent: 0, message: 'No profiles in window' }), { headers: corsHeaders });
   }
 
-  // Instagram real: tras el lanzamiento, en profiles queda vacío para Esencial
+  // Instagram real: tras el lanzamiento, en profiles queda vacío sin suscripción de pago
   // aunque lo tenga puesto (18 nov 2026). Se lee de redes_profesional.
   const { data: redesReales } = await admin.from('redes_profesional').select('profile_id, instagram');
   const igReal = new Map((redesReales ?? []).map((r: { profile_id: string; instagram: string | null }) => [r.profile_id, r.instagram]));

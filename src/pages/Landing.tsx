@@ -111,6 +111,7 @@ const bentoAnimacion = 'https://images.pexels.com/photos/1405528/pexels-photo-14
 import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
 import GigWonPopup from '@/components/GigWonPopup';
+import BarraDirecto from '@/components/directo/BarraDirecto';
 import { ventanaActiva } from '@/config/ventanasPrueba';
 
 const ConcursoFeedBanner = lazy(() => import('@/components/dashboard/views/ConcursoFeedBanner'));
@@ -688,6 +689,9 @@ const Landing = () => {
     <div className="min-h-screen relative flex flex-col" data-landing="true" style={{ background: '#ffffff', color: '#222', overflowX: 'clip' }}>
 
 
+
+      {/* Directo en vivo: solo pinta algo si hay alguien emitiendo de verdad. */}
+      <BarraDirecto />
 
       {/* ─ Nav ─ */}
       <nav className="sticky top-0 z-50"

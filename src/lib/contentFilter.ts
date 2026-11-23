@@ -174,12 +174,22 @@ const MAX_LENGTHS: Record<string, number> = {
   name: 60,
 };
 
-export function sanitizeInput(text: string, field: 'bio' | 'name' | 'default' = 'default'): { clean: boolean; reason?: string } {
+/** Motivo que devuelve sanitizeInput cuando el texto lleva un dato de contacto. */
+export const RAZON_CONTACTO = 'No compartas datos de contacto aquí. Usa el sistema de mensajes de XPEAK.';
+
+// `permitirContacto`: el chat lo activa cuando los dos han aceptado el acuerdo;
+// salta solo las comprobaciones de teléfono, @, correo y enlaces. Todo lo demás
+// (insultos, adultos, XSS) sigue filtrándose.
+export function sanitizeInput(
+  text: string,
+  field: 'bio' | 'name' | 'default' = 'default',
+  opciones: { permitirContacto?: boolean } = {},
+): { clean: boolean; reason?: string } {
   const maxLen = MAX_LENGTHS[field];
   if (text.length > maxLen) return { clean: false, reason: `Máximo ${maxLen} caracteres.` };
 
-  if (containsPhoneNumber(text)) {
-    return { clean: false, reason: 'No compartas datos de contacto aquí. Usa el sistema de mensajes de XPEAK.' };
+  if (!opciones.permitirContacto && containsPhoneNumber(text)) {
+    return { clean: false, reason: RAZON_CONTACTO };
   }
   for (const p of HATE_PATTERNS) {
     if (p.test(text)) return { clean: false, reason: 'El texto contiene lenguaje discriminatorio u ofensivo.' };
@@ -191,8 +201,10 @@ export function sanitizeInput(text: string, field: 'bio' | 'name' | 'default' = 
     if (p.test(text)) return { clean: false, reason: 'El texto contiene lenguaje no permitido.' };
   }
   if (contieneInsulto(text)) return { clean: false, reason: 'El texto contiene lenguaje no permitido.' };
-  for (const p of CONTACT_BYPASS_PATTERNS) {
-    if (p.test(text)) return { clean: false, reason: 'No compartas datos de contacto aquí. Usa el sistema de mensajes de XPEAK.' };
+  if (!opciones.permitirContacto) {
+    for (const p of CONTACT_BYPASS_PATTERNS) {
+      if (p.test(text)) return { clean: false, reason: RAZON_CONTACTO };
+    }
   }
   for (const p of XSS_PATTERNS) {
     if (p.test(text)) return { clean: false, reason: 'El texto contiene contenido no permitido.' };

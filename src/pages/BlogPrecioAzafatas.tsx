@@ -34,8 +34,8 @@ export default function BlogPrecioAzafatas() {
   return (
     <>
       <Helmet>
-        <title>Precio azafatas para eventos España 2026 | XPEAK</title>
-        <meta name="description" content="Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad. Guía completa 2026." />
+        <title>Precio azafatas para eventos 2026: de 12 a 18 €/hora | XPEAK</title>
+        <meta name="description" content="Una azafata de eventos cobra de 12 a 18 €/hora, o de 120 a 180 €/día en feria. Tarifas por perfil y ciudad, qué incluye el precio y cómo contratar." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-eventos-espana" />
         <meta property="og:title" content="Precio azafatas eventos España 2026 | XPEAK Blog" />
         <meta property="og:description" content="Cuánto cobran las azafatas para eventos y ferias en España. Tarifas por perfil y ciudad." />

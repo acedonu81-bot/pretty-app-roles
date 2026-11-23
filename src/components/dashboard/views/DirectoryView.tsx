@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { confirmadosDe } from '@/lib/trayectoria';
 import { useQuery } from '@tanstack/react-query';
 import { Crown, Users, Globe, Zap } from 'lucide-react';
 import { Profile } from '@/data/profiles';
@@ -313,6 +314,14 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
   // "camarero" generaría 8 eventos (uno por letra) y el informe de términos
   // sería ilegible. Con el número de resultados incluido, porque una búsqueda
   // que devuelve 0 es la que dice qué inventario falta.
+  // Eventos confirmados de la trayectoria de cada ficha visible (una consulta por lote).
+  const idsVisibles = filteredProfiles.map(p => p.userId).filter(Boolean).join(',');
+  const [confirmados, setConfirmados] = useState<Record<string, number>>({});
+  useEffect(() => {
+    if (!idsVisibles) return;
+    confirmadosDe(idsVisibles.split(',')).then(setConfirmados).catch(() => {});
+  }, [idsVisibles]);
+
   useEffect(() => {
     const q = searchQuery?.trim();
     if (!q || q.length < 2) return;
@@ -745,7 +754,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
                   <div className={gridClass}>
                     {b.perfiles.map(p => (
                       <ProfileCard key={`${b.titulo}-${p.id}`} profile={p} showPortfolio={wideCards} onMessage={onMessage}
-                        onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
+                        onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile}
+                        eventosConfirmados={p.userId ? confirmados[p.userId] : undefined} />
                     ))}
                   </div>
                 ) : (
@@ -761,7 +771,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           const puesto = p.userId ? puestos.get(p.userId) : undefined;
           const tarjeta = (
             <ProfileCard key={p.id} profile={p} showPortfolio={wideCards} onMessage={onMessage}
-              onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
+              onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile}
+                        eventosConfirmados={p.userId ? confirmados[p.userId] : undefined} />
           );
           return puesto ? (
             <div key={p.id} className="relative rounded-2xl flex flex-col [&>*:last-child]:flex-1" style={{ boxShadow: ANILLO_PODIO[puesto] }}>

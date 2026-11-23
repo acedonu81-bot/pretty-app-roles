@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { fechasDeOferta, fechasOcupadasEnOferta, parsePrecio } from '@/lib/ofertaPrecioFechas';
 import { createPortal } from 'react-dom';
 import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp, Check, Pencil, FileText, MessageSquare, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -113,7 +114,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
   const [savingEdit, setSavingEdit] = useState(false);
   const [cancelling, setCancelling] = useState<string | null>(null);
 
-  const [responses, setResponses] = useState<Record<string, { id: string; professionalUserId: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[]>>({});
+  const [responses, setResponses] = useState<Record<string, { id: string; professionalUserId: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null; precio: number | null; disponibilidad: 'libre' | 'ocupado' | 'sin_datos' }[]>>({});
   const [contractFor, setContractFor] = useState<{ req: EventRequest; professionalUserId: string; name: string } | null>(null);
   const [contractProfile, setContractProfile] = useState<Profile | null>(null);
   const [loadingContract, setLoadingContract] = useState(false);
@@ -123,6 +124,19 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
   // Estilos que declara cada candidato, para que el organizador vea si encaja con lo que pidió.
   const [generos, setGeneros] = useState<Record<string, string[]>>({});
   const [applyText, setApplyText] = useState<Record<string, string>>({});
+  const [applyPrecio, setApplyPrecio] = useState<Record<string, string>>({});
+  // Fechas que el propio profesional tiene ocupadas (null = aún sin cargar).
+  // availability solo la lee su dueño, así que esto es solo lo suyo.
+  const [misOcupadas, setMisOcupadas] = useState<Set<string> | null>(null);
+  useEffect(() => {
+    if (isEmpresario || !user?.id) return;
+    let cancelado = false;
+    (async () => {
+      const { data } = await supabase.from('availability').select('blocked_date').eq('user_id', user.id);
+      if (!cancelado) setMisOcupadas(new Set((data ?? []).map((r: { blocked_date: string }) => r.blocked_date)));
+    })();
+    return () => { cancelado = true; };
+  }, [isEmpresario, user?.id]);
   const [applying, setApplying] = useState<string | null>(null);
 
   const [form, setForm] = useState({
@@ -210,14 +224,15 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
     if (!user?.id || !isEmpresario || requests.length === 0) return;
     let cancelado = false;
     (async () => {
-      const agrupado: Record<string, { id: string; professionalUserId: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[]> = {};
+      const agrupado: Record<string, { id: string; professionalUserId: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null; precio: number | null; disponibilidad: 'libre' | 'ocupado' | 'sin_datos' }[]> = {};
       for (const req of requests) {
         const { data } = await (supabase.rpc as any)('interesados_en_oferta', { p_request_id: req.id });
-        const filas = (data ?? []) as { id: string; professional_user_id: string; nombre: string; foto: string | null; mensaje: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[];
+        const filas = (data ?? []) as { id: string; professional_user_id: string; nombre: string; foto: string | null; mensaje: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null; precio?: number | null; disponibilidad?: 'libre' | 'ocupado' | 'sin_datos' | null }[];
         if (filas.length > 0) {
           agrupado[req.id] = filas.map(f => ({
             id: f.id, professionalUserId: f.professional_user_id, name: f.nombre, photo: f.foto,
             message: f.mensaje, slot_id: f.slot_id, chosen_at: f.chosen_at, hired_at: f.hired_at,
+            precio: f.precio ?? null, disponibilidad: f.disponibilidad ?? 'sin_datos',
           }));
         }
       }
@@ -517,12 +532,20 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
     const plazas = slots[req.id] ?? [];
     const miPlaza = misOficios.map(o => plazas.find(s => ROL_UI_A_SLUG[s.role] === o)).find(Boolean);
     if (!miPlaza) { toast.error('No hay ninguna plaza de tu rol en esta oferta.'); return; }
+    const precioEscrito = (applyPrecio[req.id] ?? '').trim();
+    const precio = precioEscrito ? parsePrecio(precioEscrito) : null;
+    if (precioEscrito && precio === null) {
+      toast.error('El precio tiene que ser mayor que 0 y como mucho 100.000 €.');
+      return;
+    }
     setApplying(req.id);
     const { data, error } = await supabase.from('event_request_responses' as any).insert({
       request_id: req.id,
       slot_id: miPlaza.id,
       professional_user_id: user.id,
       message: (applyText[req.id] ?? '').trim() || null,
+      // Solo si hay precio: sin él la fila no depende de la columna nueva.
+      ...(precio !== null ? { precio } : {}),
     }).select().single();
     setApplying(null);
 
@@ -1019,6 +1042,15 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                                             </div>
                                           </div>
 
+                                          {(resp.precio != null || resp.disponibilidad !== 'sin_datos') && (
+                                            <p className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs font-bold mt-1" style={{ color: '#111' }}>
+                                              {resp.precio != null && (
+                                                <span>{resp.precio.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span>
+                                              )}
+                                              {resp.disponibilidad === 'libre' && <span style={{ color: '#15803d' }}>Libre ese día</span>}
+                                              {resp.disponibilidad === 'ocupado' && <span style={{ color: '#b45309' }}>Ocupado ese día</span>}
+                                            </p>
+                                          )}
                                           {resp.message && (
                                             <p className="text-xs mt-1" style={{ color: '#333' }}>{resp.message}</p>
                                           )}
@@ -1197,13 +1229,40 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                             rows={2} maxLength={300}
                             className="w-full px-3 py-2 rounded-xl text-base sm:text-xs focus:outline-none resize-none"
                             style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
+                          <input
+                            type="text" inputMode="decimal"
+                            aria-label="Tu precio (€)"
+                            value={applyPrecio[req.id] ?? ''}
+                            onChange={e => setApplyPrecio(t => ({ ...t, [req.id]: e.target.value }))}
+                            placeholder="Tu precio en € (opcional)"
+                            maxLength={10}
+                            className="w-full px-3 py-2 rounded-xl text-base sm:text-xs focus:outline-none"
+                            style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
+                          {(() => {
+                            if (misOcupadas === null) return null;
+                            if (misOcupadas.size === 0) {
+                              return (
+                                <p className="text-xs leading-snug px-3 py-2 rounded-xl" style={{ background: 'rgba(0,0,0,0.04)', color: '#444' }}>
+                                  Marca tus fechas ocupadas en tu calendario para que el organizador vea que estás libre. Lo encuentras en Calendario, en el menú.
+                                </p>
+                              );
+                            }
+                            const choque = fechasOcupadasEnOferta(fechasDeOferta(req), misOcupadas);
+                            if (choque.length === 0) return null;
+                            const txt = choque.map(f => `${f.slice(8, 10)}/${f.slice(5, 7)}`).join(', ');
+                            return (
+                              <p className="text-xs leading-snug px-3 py-2 rounded-xl" style={{ background: 'rgba(245,158,11,0.12)', color: '#7c4a03', border: '1px solid rgba(245,158,11,0.35)' }}>
+                                Tienes ocupado el {txt} en tu calendario. Puedes apuntarte igualmente si ya no es así.
+                              </p>
+                            );
+                          })()}
                           <button
                             type="button"
                             onClick={() => applyToRequest(req)}
                             disabled={applying === req.id}
                             className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-60"
                             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                            <Send size={11} /> {applying === req.id ? 'Enviando…' : 'Me interesa este bolo'}
+                            <Send size={11} /> {applying === req.id ? 'Enviando…' : 'Me interesa esta oferta'}
                           </button>
                         </div>
                       )}

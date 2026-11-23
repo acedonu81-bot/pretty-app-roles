@@ -442,14 +442,14 @@ const ChatWindow = ({
 
           {onAcepto && (
             <button type="button" onClick={pulsarAcepto} disabled={sending || yaAcepte || recienCerrado}
-              title={recienCerrado ? 'Acuerdo cerrado' : yaAcepte ? `Propuesta enviada. Falta que ${activeOtherName || 'la otra parte'} la acepte`
+              title={recienCerrado ? 'Conectados' : yaAcepte ? `Propuesta enviada. Falta que ${activeOtherName || 'la otra parte'} la acepte`
                 : otroEsperando ? `Aceptar la propuesta de ${activeOtherName || 'la otra parte'}` : 'Proponer fecha, ciudad y precio'}
               className="flex-shrink-0 h-10 rounded-full px-3 text-xs font-black transition-all active:scale-95"
               style={yaAcepte || recienCerrado
                 ? { background: '#ECFDF5', border: '1px solid rgba(5,150,105,0.4)', color: '#059669' }
                 : otroEsperando ? { background: '#059669', color: '#fff' }
                 : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#2A2412' }}>
-              {recienCerrado ? 'Cerrado' : yaAcepte ? 'Enviada' : otroEsperando ? 'ACEPTO'
+              {recienCerrado ? 'Conectados' : yaAcepte ? 'Enviada' : otroEsperando ? 'ACEPTO'
                 : <><span className="sm:hidden">Proponer</span><span className="hidden sm:inline">Proponer acuerdo</span></>}
             </button>
           )}

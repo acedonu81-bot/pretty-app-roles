@@ -12,6 +12,7 @@ import CondicionesPublicas from '@/components/CondicionesPublicas';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import SetCard from '@/components/SetCard';
 import SetFilaArtista from '@/components/SetFilaArtista';
+import BloqueDirectoFicha, { PildoraHeroDirecto } from '@/components/directo/BloqueDirectoFicha';
 import PestanasPerfilDJ, { ContadoresDJ, PanelPerfilDJ, type PestanaDJ } from '@/components/PestanasPerfilDJ';
 import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
 import LateralArtistaDJ from '@/components/LateralArtistaDJ';
@@ -41,6 +42,8 @@ import EmbedDiferido from '@/components/EmbedDiferido';
 import FollowButton from '@/components/FollowButton';
 import PostCard from '@/components/PostCard';
 import ReviewsSection from '@/components/ReviewsSection';
+import TrayectoriaSection from '@/components/profile/TrayectoriaSection';
+import { trayectoriaPublica, type EventoTrayectoria } from '@/lib/trayectoria';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
 import { clicRedSocial, logContactClick } from '@/lib/track';
 // Se reexporta para los tests que lo importan desde aquí.
@@ -195,9 +198,15 @@ export function responseBucketLabel(bucket: string | null): string {
 }
 
 const PublicProfile = () => {
+  const [espAbierta, setEspAbierta] = useState(false);
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [sbProfile, setSbProfile] = useState<SupabaseProfile | null>(null);
+  const [trayectoria, setTrayectoria] = useState<EventoTrayectoria[]>([]);
+  useEffect(() => {
+    if (!sbProfile?.user_id) return;
+    trayectoriaPublica(sbProfile.user_id).then(setTrayectoria);
+  }, [sbProfile?.user_id]);
   const scarcity = useScarcitySignal(sbProfile?.user_id);
   const [flashBookingDate, setFlashBookingDate] = useState<string | null>(null);
   const [showCalendarHelp, setShowCalendarHelp] = useState(false);
@@ -632,6 +641,103 @@ const PublicProfile = () => {
   const precioDJ = (profile as { price?: number }).price ? `Desde ${(profile as { price?: number }).price}€${unidadTarifa(profile.role, true)}` : null;
   const pestana: PestanaDJ = pestanaElegida && pestanasDJ.includes(pestanaElegida) ? pestanaElegida : pestanasDJ[0];
 
+  const chipsMovil = (
+    <div className="chips-movil">
+              {/* Role badge + seguir + compartir */}
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                  style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
+                  {roleLabel[profile.role] ?? profile.role}
+                </span>
+                {sbProfile && authUser?.id !== sbProfile.user_id && (
+                  <FollowButton viewerId={authUser?.id} followedUserId={sbProfile.user_id} />
+                )}
+                <ShareProfileButton name={profile.name} roleLabel={roleLabel[profile.role] ?? profile.role} url={profileUrl} />
+              </div>
+
+              {/* Tags — solo lo que ayuda a decidir de un vistazo lleva el
+                  dorado sólido (verificado, en vivo). El resto (vistas,
+                  antigüedad, badges de rol) va en un tono neutro para no
+                  competir entre sí: con 7-9 chips del mismo peso, nada
+                  destacaba. */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {profile.isVerified && (
+                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
+                    <BadgeCheck size={12} /> Verificado por XPEAK
+                  </span>
+                )}
+                <PildoraHeroDirecto userId={sbProfile?.user_id} />
+                {seoReviews.length > 0 && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    <Star size={11} fill="#fff" /> {(seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1)} ({seoReviews.length})
+                  </span>
+                )}
+                {profile.zone && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    <MapPin size={11} /> {profile.zone}
+                  </span>
+                )}
+                {(profile as any).price > 0 ? (
+                  <span className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    Desde {(profile as any).price}€/h
+                  </span>
+                ) : (
+                  <span className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    Precio a consultar
+                  </span>
+                )}
+                <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                  style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)' }}>
+                  <Zap size={11} /> {responseBucketText}
+                </span>
+                {weeklyViews !== null && weeklyViews >= 3 && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)' }}>
+                    {weeklyViews} vistas esta semana
+                  </span>
+                )}
+                {antiguedad && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)' }}>
+                    <Clock size={11} /> {antiguedad}
+                  </span>
+                )}
+                {profile.badges.slice(0, 2).map(b => (
+                  <span key={b} className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)' }}>
+                    {b}
+                  </span>
+                ))}
+              </div>
+
+              {/* Instagram */}
+              {sbProfile?.instagram && (
+                <div className="mb-4">
+                  {authUser ? (
+                  <a href={instagramUrl(sbProfile.instagram)} target="_blank" rel="noopener noreferrer"
+                    onClick={() => clicRedSocial('instagram', 'perfil_publico', sbProfile.user_id)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
+                    style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
+                    <Instagram size={12} /> @{extractInstagramHandle(sbProfile.instagram)}
+                  </a>
+                  ) : (
+                  <a href={irARegistroInstagram}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
+                    style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
+                    <Instagram size={12} /> Regístrate para ver su Instagram
+                  </a>
+                  )}
+                </div>
+              )}
+
+    </div>
+  );
+
   return (
     <>
       <Helmet>
@@ -831,6 +937,7 @@ const PublicProfile = () => {
             initial="hidden" animate="show" variants={stagger}>
 
             <motion.div variants={fadeUp}>
+              <div className="hidden md:block">
               {/* Role badge + seguir + compartir */}
               <div className="flex flex-wrap items-center gap-2 mb-3">
                 <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
@@ -843,15 +950,25 @@ const PublicProfile = () => {
                 <ShareProfileButton name={profile.name} roleLabel={roleLabel[profile.role] ?? profile.role} url={profileUrl} />
               </div>
 
+              </div>
               {/* Nombre grande */}
               <h1 className="font-black tracking-tight mb-1" style={{ fontSize: 'clamp(1.8rem, 8vw, 5rem)', lineHeight: 1.05, letterSpacing: '-0.03em', color: '#fff', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}>
                 {profile.name}
               </h1>
 
               {profile.specialty && (
-                <p className="text-xs sm:text-sm font-semibold mb-3 truncate max-w-[80vw]" style={{ color: 'rgba(255,255,255,0.75)' }}>{profile.specialty}</p>
+                <div className="mb-3 max-w-[85vw] md:max-w-[80vw]">
+                  <p className={`text-xs sm:text-sm font-semibold ${espAbierta ? '' : 'line-clamp-2 md:truncate'}`} style={{ color: 'rgba(255,255,255,0.75)' }}>{profile.specialty}</p>
+                  {profile.specialty.length > 70 && (
+                    <button type="button" onClick={() => setEspAbierta(v => !v)}
+                      className="md:hidden text-xs font-bold underline mt-0.5" style={{ color: '#fff' }}>
+                      {espAbierta ? 'Leer menos' : 'Leer más'}
+                    </button>
+                  )}
+                </div>
               )}
 
+              <div className="hidden md:block">
               {/* Tags — solo lo que ayuda a decidir de un vistazo lleva el
                   dorado sólido (verificado, en vivo). El resto (vistas,
                   antigüedad, badges de rol) va en un tono neutro para no
@@ -864,12 +981,7 @@ const PublicProfile = () => {
                     <BadgeCheck size={12} /> Verificado por XPEAK
                   </span>
                 )}
-                {profile.isLive && (
-                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(34,197,94,0.85)', color: '#fff' }}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping inline-block" /> EN VIVO
-                  </span>
-                )}
+                <PildoraHeroDirecto userId={sbProfile?.user_id} />
                 {seoReviews.length > 0 && (
                   <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
@@ -917,6 +1029,8 @@ const PublicProfile = () => {
                 ))}
               </div>
 
+              </div>
+              <div className="hidden md:block">
               {/* Instagram */}
               {sbProfile?.instagram && (
                 <div className="mb-4">
@@ -937,6 +1051,7 @@ const PublicProfile = () => {
                 </div>
               )}
 
+              </div>
               {/* CTA — directo a mensajes si logueado. Oculto en móvil: el sticky bottom ya lo cubre */}
               <div className="hidden md:flex gap-3 flex-wrap">
                 <button
@@ -968,12 +1083,18 @@ const PublicProfile = () => {
             </motion.div>
           </motion.div>
         </div>
+        {/* Móvil: la foto va limpia; chips, seguir/compartir e Instagram debajo */}
+        <div className="md:hidden px-4 pt-4 pb-2" style={{ background: '#FFFDF7' }}>
+          <div className="rounded-2xl p-4" style={{ background: '#1a160d' }}>{chipsMovil}</div>
+        </div>
         </>)}
 
         {/* ═══════════ CONTENIDO ═══════════ */}
         {/* DJ: dos columnas como Hearthis (contenido + lateral con cifras y contratar). */}
         <div className={esDJ ? 'max-w-6xl mx-auto px-4 sm:px-5 pb-24 pt-4 md:pt-6 md:grid md:grid-cols-[minmax(0,1fr)_18.5rem] md:gap-10' : 'max-w-3xl mx-auto px-5 pb-24 pt-8'}>
           <div className="flex flex-col gap-8">
+
+          <BloqueDirectoFicha userId={sbProfile?.user_id} nombre={profile.name} onContactar={handleContactClick} />
 
           {esDJ && (
             <>
@@ -1360,6 +1481,8 @@ const PublicProfile = () => {
           {showCalendarHelp && (
             <CalendarHowItWorksModal audience="organizador" onClose={() => setShowCalendarHelp(false)} />
           )}
+
+          {trayectoria.length > 0 && <TrayectoriaSection eventos={trayectoria} />}
 
           {/* Reviews */}
           <PanelPerfilDJ id="resenas" esDJ={esDJ} activa={pestana}>

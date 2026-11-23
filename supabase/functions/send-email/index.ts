@@ -1,5 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { firmarAcceso } from '../_shared/accesoParticular.ts';
+import { firmarAcceso, firmarRespuesta } from '../_shared/accesoParticular.ts';
 import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -118,6 +118,38 @@ const badge = (text: string, color = '#7a6216') =>
 
 const btn = (text: string, url: string) =>
   `<a href="${esc(url)}" style="display:block;text-align:center;background:linear-gradient(135deg,#E0BC4B,#B8941E);color:#0a0908;font-weight:700;font-size:14px;padding:15px;border-radius:10px;text-decoration:none;margin:24px 0 4px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.4),0 6px 14px rgba(212,175,55,0.35),0 16px 32px rgba(184,148,30,0.28)">${esc(text)}</a>`;
+
+// Correo al particular cuando un profesional le escribe (18 nov 2026, ficha
+// XDS 78,7). Antes solo decía "X te ha enviado un mensaje" y un botón: ningún
+// particular contestaba. Ahora ve quién es, lo que le ha escrito y responde
+// con un toque; la respuesta se confirma en xpeak.es/responder (POST), así que
+// abrir el enlace no contesta por él.
+const mensajeAParticular = (d: Record<string, any>) => {
+  const t = encodeURIComponent(String(d.respuesta_t));
+  const foto = typeof d.pro_foto === 'string' && /^https:\/\//.test(d.pro_foto)
+    ? `<img src="${esc(d.pro_foto)}" width="64" height="64" alt="" style="width:64px;height:64px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 12px;border:1px solid rgba(212,175,55,0.35)">`
+    : avatarCircle(esc(d.sender_name).charAt(0).toUpperCase());
+  const sub = [d.pro_oficio, d.pro_zona].filter(Boolean).map(esc).join(' · ');
+  const botonNo = `<a href="https://xpeak.es/responder?r=no&t=${t}" style="display:block;text-align:center;background:#FFFFFF;color:#374151;font-weight:700;font-size:14px;padding:13px;border-radius:10px;text-decoration:none;margin:10px 0 4px;border:1px solid #E5E7EB">No, gracias</a>`;
+  return {
+    subject: `${esc(d.sender_name)} ha contestado a tu solicitud`,
+    to: d.email,
+    replyTo: 'info@xpeak.site',
+    html: base(`
+      <div style="text-align:center">
+        ${foto}
+        <h2 style="font-size:20px;font-weight:900;margin:0 0 4px;color:#0a0908">${esc(d.sender_name)} te ha contestado</h2>
+        ${sub ? `<p style="color:#6B7280;font-size:13px;margin:0 0 16px">${sub}</p>` : ''}
+      </div>
+      ${d.mensaje ? `<div style="background:#FBF3DD;border:1px solid rgba(212,175,55,0.3);border-radius:12px;padding:14px 16px;margin:0 0 6px;color:#1F2937;font-size:14px;line-height:1.6;white-space:pre-line">${esc(d.mensaje)}</div>` : ''}
+      <p style="color:#4b5563;font-size:14px;line-height:1.6;text-align:center;margin:16px 0 0">¿Te interesa? Respóndele con un toque, sin contraseña.</p>
+      ${btn('Me interesa', `https://xpeak.es/responder?r=si&t=${t}`)}
+      ${botonNo}
+      <p style="text-align:center;margin:14px 0 8px;font-size:13px"><a href="${esc(enlaceSeguro(d.action_url, 'https://xpeak.es/auth?acceso=1'))}" style="color:#8B6A00">Ver la conversación completa</a></p>
+      <p style="color:#6B7280;font-size:11px;text-align:center;margin:0">Puedes desactivar estas notificaciones en Ajustes → Privacidad.</p>`,
+      d.mensaje ? String(d.mensaje).slice(0, 110) : `${String(d.sender_name ?? '')} puede ayudarte con tu evento`),
+  };
+};
 
 // Círculo con inicial/emoji — para remitentes de mensajes, avisos de perfil, etc.
 const avatarCircle = (initialOrEmoji: string) =>
@@ -842,6 +874,47 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Un minuto de tu tiempo. Si prefieres no valorar, ignora este correo.
       </p>
     `, `Cuéntanos qué tal fue ${esc(d.titulo)}`),
+  }),
+
+  // Trayectoria verificada (22 nov 2026): un profesional Premium pide al
+  // organizador que confirme que trabajó en su evento. Sale como XPEAK.
+  // El enlace va firmado (caduca a los 30 días) y la página pide pulsar el
+  // botón: abrir el correo no confirma nada.
+  confirmar_evento: (d) => ({
+    subject: `¿Trabajó ${esc(d.profesional)} en tu evento?`,
+    to: d.email,
+    html: base(`
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola, <strong>${esc(d.profesional)}</strong> ha añadido a su trayectoria en XPEAK el evento
+        <strong>${esc(d.titulo)}</strong> (${esc(d.fecha)}) y nos ha pedido que lo confirmes tú, que lo organizaste.
+      </p>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Es un clic y no hace falta crear cuenta. Ayuda a otros organizadores a contratar con confianza.
+      </p>
+      ${btn('Sí, trabajó en mi evento', String(d.enlace ?? 'https://xpeak.es'))}
+      <p style="color:#6B7280;font-size:12px;margin-top:20px">
+        Si no conoces a esta persona o no trabajó en tu evento, ignora este correo y no se confirmará nada.
+      </p>
+    `, `Confirma el evento de ${esc(d.profesional)}`),
+  }),
+
+  // Trayectoria verificada (22 nov 2026): a los 3 días del evento se pregunta a
+  // cada parte si el acuerdo se cerró. Sale como XPEAK; el enlace va firmado y
+  // la página pide pulsar un botón: abrir el correo no contesta por nadie.
+  acuerdo_cerrado: (d) => ({
+    subject: `¿Se cerró el acuerdo para ${esc(d.titulo)}?`,
+    to: d.email,
+    html: base(`
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name)}</strong>, el evento <strong>${esc(d.titulo)}</strong> (${esc(d.fecha)}) ya pasó.
+        ¿Se cerró el acuerdo entre las dos partes?
+      </p>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Es un clic y nos ayuda a saber si XPEAK sirve para cerrar eventos. Solo usamos tu respuesta para eso.
+      </p>
+      ${btn('Contestar', String(d.enlace ?? 'https://xpeak.es'))}
+      <p style="color:#6B7280;font-size:12px;margin-top:20px">Si prefieres no contestar, ignora este correo.</p>
+    `, `¿Se cerró el acuerdo para ${esc(d.titulo)}?`),
   }),
 
   // 2f. Reseña antigua sin las 3 preguntas nuevas: invitar a completarla.
@@ -2011,7 +2084,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   },
 
   // 13b. Nuevo mensaje en chat
-  new_message: (d) => ({
+  new_message: (d) => d.respuesta_t ? mensajeAParticular(d) : ({
     subject: `${esc(d.sender_name)} te ha enviado un mensaje en XPEAK`,
     to: d.email,
     html: base(`
@@ -2525,6 +2598,22 @@ async function atender(req: Request): Promise<Response> {
       if (!allowed) {
         return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: corsHeaders });
       }
+      // Aviso de mensaje desde el navegador (18 nov 2026, revisión de seguridad):
+      // solo a alguien con quien ya tienes conversación, y el nombre del
+      // remitente sale de tu perfil, no de lo que mande el navegador.
+      if (type === 'new_message') {
+        const sb = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+        const dest = typeof data?.user_id === 'string' ? data.user_id : '';
+        if (!callerId || !/^[0-9a-f-]{36}$/.test(dest)) return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: corsHeaders });
+        const { data: conv } = await sb.from('conversations').select('id')
+          .or(`and(participant_a.eq.${callerId},participant_b.eq.${dest}),and(participant_a.eq.${dest},participant_b.eq.${callerId})`)
+          .limit(1).maybeSingle();
+        if (!conv) return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: corsHeaders });
+        const { data: quien } = await sb.from('profiles').select('display_name')
+          .eq('user_id', callerId).order('is_primary', { ascending: false }).limit(1).maybeSingle();
+        data.sender_name = quien?.display_name?.trim().slice(0, 60) || 'Un usuario';
+        delete data.professional_user_id;
+      }
       if (ADMIN_TYPES.includes(type)) {
         const adminClient = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
         const { data: isAdmin } = await adminClient.from('user_roles').select('role').eq('user_id', callerId).eq('role', 'admin').maybeSingle();
@@ -2658,6 +2747,13 @@ async function atender(req: Request): Promise<Response> {
     // solicitante. El payload trae requester_contact (email de quien contacta),
     // que NO debe usarse como destino. Resolvemos data.email desde el user_id
     // del destinatario real (professional_user_id o user_id).
+    // Los datos del correo al particular (botones, mensaje, ficha del profesional)
+    // los pone SOLO el servidor más abajo. Si llegaran del navegador, cualquier
+    // usuario con sesión podría mandar un correo con la marca de XPEAK y el texto
+    // que quisiera (revisión de seguridad, 18 nov 2026).
+    if (type === 'new_message' && data) {
+      for (const k of ['respuesta_t', 'mensaje', 'pro_foto', 'pro_oficio', 'pro_zona', 'particular']) delete data[k];
+    }
     const targetUserId = data?.professional_user_id ?? data?.user_id;
     if (targetUserId && !data?.email) {
       const adminClient = createClient(
@@ -2682,6 +2778,26 @@ async function atender(req: Request): Promise<Response> {
         const url = await firmarAcceso(targetUserId, destino.replace('https://xpeak.es', ''));
         if (url) data.action_url = url;
         data.particular = true;
+        // Ficha XDS 78,7 (18 nov 2026): el correo enseña quién contesta y lo que
+        // ha escrito, con botones para responder sin entrar. Todo lo pone el
+        // servidor (perfil y último mensaje del remitente verificado por JWT).
+        if (type === 'new_message') {
+          const { data: pro } = await adminClient.from('profiles').select('photo_url, specialty, zone')
+            .eq('user_id', callerId).order('is_primary', { ascending: false }).limit(1).maybeSingle();
+          const { data: conv } = await adminClient.from('conversations').select('id')
+            .or(`and(participant_a.eq.${callerId},participant_b.eq.${targetUserId}),and(participant_a.eq.${targetUserId},participant_b.eq.${callerId})`)
+            .limit(1).maybeSingle();
+          const { data: ult } = conv ? await adminClient.from('messages').select('content')
+            .eq('conversation_id', conv.id).eq('sender_id', callerId).is('deleted_at', null)
+            .order('created_at', { ascending: false }).limit(1).maybeSingle() : { data: null };
+          const texto = String(ult?.content ?? '');
+          if (texto && !texto.startsWith('[[')) data.mensaje = texto.length > 400 ? `${texto.slice(0, 400)}…` : texto;
+          if (pro?.photo_url) data.pro_foto = pro.photo_url;
+          if (pro?.specialty) data.pro_oficio = pro.specialty;
+          if (pro?.zone) data.pro_zona = pro.zone;
+          const t = await firmarRespuesta(targetUserId, callerId);
+          if (t) data.respuesta_t = t;
+        }
       }
 
       // Aviso a la clienta sin contraseña que no abre sus conversaciones: solo con

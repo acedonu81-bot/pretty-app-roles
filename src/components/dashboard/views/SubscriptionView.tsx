@@ -10,7 +10,7 @@ import { subscriptionPlans, PRECIOS_ANUALES, PRECIOS_ANUALES_PRIMER_ANO } from '
 
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 
-const NOMBRE: Record<string, string> = { free: 'Esencial', starter: 'Profesional', business: 'Premium', agency: 'Premium' };
+const NOMBRE: Record<string, string> = { starter: 'Profesional', business: 'Premium', agency: 'Premium' };
 
 // Efectos de la pantalla de planes: entrada escalonada y aura que respira detrás
 // de la recomendada. Se apagan con "reducir movimiento".
@@ -95,7 +95,7 @@ const SubscriptionView = () => {
   const oficios = oficiosDe(todos);
   const profesional = oficios.profesional;
   const venta = profesional && !isNative && cobrosActivos();
-  const ventajas = (p: 'free' | PlanPago) => listaVentajas(planDe(p), oficios);
+  const ventajas = (p: PlanPago) => listaVentajas(planDe(p), oficios, { cobros: cobrosActivos() });
 
   useEffect(() => {
     if (!venta) return;
@@ -114,15 +114,18 @@ const SubscriptionView = () => {
       <style>{ESTILOS}</style>
       <div className="text-center mb-8">
         <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#8A6D0F' }}>Tu plan</p>
-        <h2 className="text-3xl font-black mb-2">{NOMBRE[tier] ?? 'Esencial'}</h2>
+        <h2 className="text-3xl font-black mb-2">{NOMBRE[tier] ?? 'Sin suscripción'}</h2>
         {pagoOk && <p className="text-sm font-bold" style={{ color: '#059669' }}>Pago recibido. Tu plan se activa en unos segundos.</p>}
         {pagoCancelado && <p className="text-sm font-bold" style={{ color: '#8B6A00' }}>No has completado el pago. No se te ha cobrado nada.</p>}
+        {sus?.cancela_al_final && sus.periodo_fin && (
+          <p className="text-sm" style={{ color: '#8B6A00' }}>Tu plan termina el {new Date(sus.periodo_fin).toLocaleDateString('es-ES')}. Después pierdes las ventajas del plan.</p>
+        )}
       </div>
 
       {!venta && (
         <div className="max-w-lg mx-auto rounded-2xl p-6" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
           <p className="text-sm font-bold mb-4" style={{ color: '#222' }}>Incluido en tu cuenta</p>
-          <Lista items={ventajas(tier === 'starter' || tier === 'business' ? tier : 'free')} proximos={proximamente(planDe(tier), oficios)} />
+          <Lista items={ventajas(tier === 'business' ? 'business' : 'starter')} proximos={proximamente(planDe(tier), oficios)} />
         </div>
       )}
 
@@ -180,26 +183,7 @@ const SubscriptionView = () => {
               ))}
             </div>
           </div>
-
-          <div className="grid gap-6 md:grid-cols-3 md:items-stretch pt-4">
-            <Tarjeta retraso={0} estilo={{ background: '#FFFDF7', border: '1px solid rgba(122,98,22,.16)', boxShadow: '0 1px 2px rgba(60,45,0,.06), 0 14px 30px -16px rgba(60,45,0,.28)' }}>
-              <span className="self-start rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest" style={{ background: '#F3EAD0', color: '#6b5a1e' }}>Tu plan actual</span>
-              <p className="font-black text-lg">Esencial</p>
-              <p className="text-sm" style={{ color: '#6b6454' }}>Tu punto de partida en XPEAK</p>
-              <Lista items={ventajas('free')} />
-              <div className="mt-auto pt-4" style={{ borderTop: '1px dashed rgba(122,98,22,.3)' }}>
-                <p className="text-[11px] font-extrabold uppercase tracking-widest mb-2" style={{ color: '#8A6D0F' }}>Al subir a Profesional</p>
-                <div className="flex flex-col gap-2">
-                  {ventajas('starter').filter(f => !/^todo lo de/i.test(f)).slice(0, 3).map(f => (
-                    <div key={f} className="flex items-center gap-2">
-                      <Lock size={14} style={{ color: '#B8941E', flexShrink: 0 }} />
-                      <span className="text-sm" style={{ color: '#7a7260' }}>{f}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Tarjeta>
-
+          <div className="grid gap-6 md:grid-cols-2 md:items-stretch pt-4 max-w-3xl mx-auto">
             {(['starter', 'business'] as PlanPago[]).map((p, i) => {
               const plan = subscriptionPlans.find(x => x.id === p)!;
               const anual = ciclo === 'anual';
@@ -207,7 +191,7 @@ const SubscriptionView = () => {
               const destacado = p === 'starter';
               const apagado = destacado ? '#6b5516' : '#6b6454';
               return (
-                <Tarjeta key={p} retraso={130 * (i + 1)} destacada={destacado}
+                <Tarjeta key={p} retraso={130 * i} destacada={destacado}
                   estilo={destacado
                     ? { background: 'linear-gradient(180deg,#FFFCF0 0%,#FFF3CF 100%)', border: '2px solid #D4AF37', boxShadow: '0 4px 10px rgba(120,90,0,.16), 0 34px 64px -22px rgba(120,90,0,.6)' }
                     : { background: '#fff', border: '1px solid rgba(212,175,55,.5)', boxShadow: '0 2px 4px rgba(60,45,0,.07), 0 22px 44px -20px rgba(120,90,0,.4)' }}>

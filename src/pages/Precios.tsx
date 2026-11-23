@@ -72,25 +72,13 @@ const GENERAL = { profesional: true, musica: false, banner: false, flash: false 
 
 const PLANES_DEFINITIVOS: PlanPublico[] = [
   {
-    nombre: 'Esencial',
-    precio: '0 €',
-    periodo: 'sin cuota',
-    target: 'Todos los profesionales',
-    color: '#FFFDF7',
-    border: 'rgba(122,98,22,0.16)',
-    incluye: [...listaVentajas('free', GENERAL), 'Contrato digital automático', 'Calendario de disponibilidad'],
-    noIncluye: ['Tus redes visibles en la ficha', 'Estadísticas completas'],
-    cta: 'Crear perfil',
-    href: '/auth?mode=register&role=profesional',
-  },
-  {
     nombre: 'Profesional',
     precio: euros(precioMes('starter')),
     periodo: `/mes, IVA incluido · o ${euros(PRECIOS_ANUALES.starter)} al año`,
     target: 'Más visibilidad',
     color: '#FFFDF7',
     border: 'rgba(212,175,55,0.35)',
-    incluye: listaVentajas('starter', GENERAL),
+    incluye: [...listaVentajas('starter', GENERAL), 'Contrato digital automático', 'Calendario de disponibilidad'],
     noIncluye: [],
     cta: 'Crear perfil y elegir plan',
     href: '/auth?mode=register&role=profesional',
@@ -113,8 +101,8 @@ const PLANES_DEFINITIVOS: PlanPublico[] = [
 const NOTA_PLANES = 'Precios con IVA incluido y sin permanencia. Las ofertas Flash Booking llegan a los oficios que las reciben; los sets (3, 10 o ilimitados) son para música, y el banner de cabecera, para DJ con Premium.';
 
 const FAQ_DEFINITIVAS = [
-  { q: '¿Cuánto cuestan los planes?', a: `Esencial no tiene cuota. Profesional cuesta ${euros(precioMes('starter'))} al mes y Premium ${euros(precioMes('business'))} al mes, con IVA incluido. Si pagas por años, ${euros(PRECIOS_ANUALES.starter)} y ${euros(PRECIOS_ANUALES.business)} al año. Sin permanencia.` },
-  { q: '¿Puedo cancelar cuando quiera?', a: 'Sí. Desde Mi plan, en Gestionar mi plan. Tu plan sigue activo hasta el último día que ya has pagado, y después vuelves a Esencial.' },
+  { q: '¿Cuánto cuestan los planes?', a: `Hay dos planes. Profesional cuesta ${euros(precioMes('starter'))} al mes y Premium ${euros(precioMes('business'))} al mes, con IVA incluido. Si pagas por años, ${euros(PRECIOS_ANUALES.starter)} y ${euros(PRECIOS_ANUALES.business)} al año. Sin permanencia.` },
+  { q: '¿Puedo cancelar cuando quiera?', a: 'Sí. Desde Mi plan, en Gestionar mi plan. Tu plan sigue activo hasta el último día que ya has pagado, y después pierdes las ventajas del plan.' },
   { q: '¿Qué pasa con mis datos si bajo de plan?', a: 'No se borra nada. Lo que tu plan no incluye (tus redes, las fotos o sets que pasen del límite, el banner) se oculta y vuelve a verse si subes de plan otra vez.' },
   FAQ_ANTES[1],
 ];
@@ -145,7 +133,7 @@ export default function Precios() {
     <>
       <Helmet>
         <title>Precios XPEAK: Para profesionales y empresarios de eventos</title>
-        <meta name="description" content={LANZADO ? "Planes de XPEAK para profesionales de eventos: Esencial sin cuota, Profesional y Premium con IVA incluido y sin permanencia. Contratos digitales incluidos." : "Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos."} />
+        <meta name="description" content={LANZADO ? "Planes de XPEAK para profesionales de eventos: Profesional y Premium con IVA incluido y sin permanencia. Contratos digitales incluidos." : "Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos."} />
         <link rel="canonical" href="https://xpeak.es/precios" />
         <meta property="og:title" content="Precios XPEAK" />
         <meta property="og:description" content="Precios de XPEAK para profesionales y empresarios de eventos. Contratos digitales automáticos." />
@@ -183,7 +171,7 @@ export default function Precios() {
             </p>
           </div>
 
-          <div className={`grid grid-cols-1 sm:grid-cols-2 ${LANZADO ? 'lg:grid-cols-3' : ''} gap-6 mb-${LANZADO ? '6' : '16'}`}>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 ${LANZADO ? 'lg:grid-cols-2 max-w-3xl mx-auto' : ''} gap-6 mb-${LANZADO ? '6' : '16'}`}>
             {PLANES.map(plan => (
               <div key={plan.nombre} className="relative p-6 rounded-2xl"
                 style={{ background: plan.color, border: `1px solid ${plan.border}` }}>

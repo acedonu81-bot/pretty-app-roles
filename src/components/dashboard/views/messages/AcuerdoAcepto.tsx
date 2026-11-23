@@ -102,7 +102,7 @@ export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, aceptada = f
         </p>
       ) : cerrado ? (
         <>
-          <p className="text-xs mt-1.5 font-bold" style={{ color: '#059669' }}>Acuerdo cerrado por los dos</p>
+          <p className="text-xs mt-1.5 font-bold" style={{ color: '#059669' }}>Los dos queréis seguir adelante: ya estáis conectados</p>
           <p className="flex items-center gap-1 text-[0.75rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.6)' }}>
             <CalendarCheck size={12} />
             {dias === null ? 'Guardado en reservas y en el calendario'
@@ -157,7 +157,7 @@ export const TarjetaAcepto = ({ resumen, isMe, otroNombre, cerrado, aceptada = f
           <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>Falta que {quien} la acepte</p>
         ) : (
           <>
-            <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>Si te encaja, pulsa ACEPTO abajo y el acuerdo queda cerrado.</p>
+            <p className="text-xs mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>Si te encaja, pulsa ACEPTO abajo y quedáis conectados.</p>
             {onProponerOtras && (
               <button type="button" onClick={() => onProponerOtras(cond)} className="mt-1 text-xs font-bold underline" style={{ color: '#8B6A00' }}>
                 Proponer otras condiciones

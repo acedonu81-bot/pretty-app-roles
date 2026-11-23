@@ -1,0 +1,19 @@
+-- Trayectoria verificada (22 nov 2026): pregunta "¿se cerró el acuerdo?" a los 3
+-- días del evento. NO se programa aquí: se crea APARTE, después de desplegar
+-- send-email (plantilla acuerdo_cerrado) y las funciones acuerdo-cerrado-reminder
+-- y acuerdo-cerrado-responder (esta última y el reminder con --no-verify-jwt,
+-- como review-reminder). La clave anon va en el Authorization, igual que en los
+-- otros crons; el secreto interno sale del vault. Una vez al día a las 10:30:
+--
+-- select cron.schedule('xpeak-acuerdo-cerrado', '30 10 * * *', $job$
+--   select net.http_post(
+--     url := 'https://ddrqhwravupjzysriblq.supabase.co/functions/v1/acuerdo-cerrado-reminder',
+--     headers := jsonb_build_object(
+--       'Authorization', 'Bearer <<CLAVE_ANON, ver .env>>',
+--       'x-internal-secret', (select decrypted_secret from vault.decrypted_secrets where name = 'send_email_internal_secret'),
+--       'Content-Type', 'application/json'),
+--     body := '{}'::jsonb);
+-- $job$);
+--
+-- Para quitarlo: select cron.unschedule('xpeak-acuerdo-cerrado');
+select 1;

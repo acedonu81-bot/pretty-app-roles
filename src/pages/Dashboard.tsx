@@ -74,6 +74,7 @@ const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
 const OrganizadoresView = lazy(() => import('@/components/dashboard/views/OrganizadoresView'));
 const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
 const ResourcesView = lazy(() => import('@/components/dashboard/views/ResourcesView'));
+const DirectoView = lazy(() => import('@/components/dashboard/views/DirectoView'));
 const ComunicadosView = lazy(() => import('@/components/dashboard/views/ComunicadosView'));
 const ResenasView = lazy(() => import('@/components/dashboard/views/ResenasView'));
 const LegalView = lazy(() => import('@/components/dashboard/views/LegalView').then(m => ({ default: m.LegalView })));
@@ -773,6 +774,7 @@ const DashboardPanel = () => {
       case 'stats': return <StatsView onNavigate={nav} />;
       case 'agency': return <AgencyView />;
       case 'resources': return <ResourcesView />;
+      case 'directo': return <DirectoView />;
       case 'comunicados': return <ComunicadosView onNavigate={handleViewChange} />;
       case 'resenas': return <ResenasView />;
       case 'admin': return (

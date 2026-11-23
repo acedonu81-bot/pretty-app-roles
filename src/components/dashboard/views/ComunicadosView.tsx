@@ -5,11 +5,12 @@ import { useComunicados } from '@/hooks/useComunicados';
 import LineaTemporal, { type FiltroNovedades } from '@/components/comunicados/LineaTemporal';
 import { useAuth } from '@/hooks/useAuth';
 import { useFeedAlert } from '@/hooks/useFeedAlert';
+import CompartirComunicado from '@/components/comunicados/CompartirComunicado';
 import ComunicadoInteraccion from '@/components/comunicados/ComunicadoInteraccion';
 import {
   CuerpoConMenciones, MetaComunicado, ORO, Portada, StatsComunicado, TituloComunicado,
 } from '@/components/comunicados/ComunicadoPartes';
-import { type Comunicado, esEnlaceInterno, enlaceEnPanel } from '@/lib/comunicados';
+import { type Comunicado, esEnlaceInterno, enlaceEnPanel, slugNovedad } from '@/lib/comunicados';
 
 // Página del tablón de comunicados (6 nov 2026): panel grande con todos los
 // vigentes y, al pulsar uno, su propia página (como la del concurso), sin
@@ -77,6 +78,7 @@ export default function ComunicadosView({ onNavigate, filtroInicial = 'todo' }: 
                   {abierto.cta_texto || 'Ver más'} <ChevronRight size={15} />
                 </button>
               )}
+              <CompartirComunicado titulo={abierto.titulo} url={`https://xpeak.es/novedades/${slugNovedad(abierto.titulo, abierto.id)}`} />
               <div className="pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
                 <ComunicadoInteraccion c={abierto} inter={inter[abierto.id]}
                   onCambio={i => setInter(m => ({ ...m, [abierto.id]: i }))} />

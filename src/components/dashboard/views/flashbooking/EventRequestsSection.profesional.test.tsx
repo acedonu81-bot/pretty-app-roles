@@ -8,6 +8,7 @@ const estado = {
   inserts: [] as unknown[],
   yo_contratado: false,
   status: 'open',
+  ocupadas: [] as { blocked_date: string }[],
 };
 const onMessage = vi.fn();
 const toastOk = vi.fn();
@@ -49,6 +50,7 @@ vi.mock('@/integrations/supabase/client', () => ({
         u === 'insert' ? { data: { id: 'nueva' }, error: null }
         : u === 'update' ? { data: estado.filasActualizadas, error: null }
         : { data: estado.misRespuestas, error: null });
+      if (t === 'availability') return tabla(() => ({ data: estado.ocupadas, error: null }));
       return tabla(() => ({ data: [], error: null }));
     },
     rpc: vi.fn(async () => ({ data: [], error: null })),
@@ -63,7 +65,7 @@ const abrir = async () => fireEvent.click(await screen.findByRole('button', { na
 
 describe('Oferta vista por el profesional: cada paso dice qué hacer', () => {
   beforeEach(() => {
-    estado.misRespuestas = []; estado.filasActualizadas = [{ id: 'r1' }]; estado.updates = []; estado.inserts = []; estado.yo_contratado = false; estado.status = 'open';
+    estado.misRespuestas = []; estado.filasActualizadas = [{ id: 'r1' }]; estado.updates = []; estado.inserts = []; estado.yo_contratado = false; estado.status = 'open'; estado.ocupadas = [];
     onMessage.mockClear(); toastOk.mockClear(); toastError.mockClear(); toastNeutro.mockClear(); invoke.mockClear();
     Element.prototype.scrollIntoView = vi.fn();
   });
@@ -71,7 +73,7 @@ describe('Oferta vista por el profesional: cada paso dice qué hacer', () => {
   it('apuntarse dice qué pasa después y NO manda el email falso de "te ha enviado un mensaje"', async () => {
     render(<EventRequestsSection onMessage={onMessage} />);
     await abrir();
-    fireEvent.click(await screen.findByRole('button', { name: /Me interesa este bolo/ }));
+    fireEvent.click(await screen.findByRole('button', { name: /Me interesa esta oferta/ }));
     await waitFor(() => expect(toastOk).toHaveBeenCalled());
     expect(String(toastOk.mock.calls[0][0])).toMatch(/Si te elige, te avisamos y tendrás que confirmar/);
     expect(await screen.findByText(/Te has apuntado\. El organizador ya lo sabe\. Si te elige, te avisamos y tendrás que confirmar\./)).toBeTruthy();
@@ -121,8 +123,65 @@ describe('Oferta vista por el profesional: cada paso dice qué hacer', () => {
     render(<EventRequestsSection onMessage={onMessage} />);
     await abrir();
     expect(await screen.findByText(/Te han contratado\. Está en tu calendario/)).toBeTruthy();
-    expect(screen.queryByRole('button', { name: /Me interesa este bolo/ })).toBeNull();
+    expect(screen.queryByRole('button', { name: /Me interesa esta oferta/ })).toBeNull();
     expect(screen.getByRole('button', { name: /Abrir el chat/ })).toBeTruthy();
+  });
+
+  describe('precio opcional y fechas ocupadas al apuntarse', () => {
+    const apuntarse = async () => fireEvent.click(await screen.findByRole('button', { name: /Me interesa esta oferta/ }));
+
+    it('manda el precio escrito con coma como número', async () => {
+      render(<EventRequestsSection onMessage={onMessage} />);
+      await abrir();
+      fireEvent.change(await screen.findByLabelText(/Tu precio/), { target: { value: '150,50' } });
+      await apuntarse();
+      await waitFor(() => expect(estado.inserts.length).toBe(1));
+      expect(estado.inserts[0]).toMatchObject({ request_id: 'q1', precio: 150.5 });
+    });
+
+    // Sin precio no se manda la clave: así apuntarse sigue funcionando aunque la
+    // web salga antes que la migración que crea la columna.
+    it('sin precio NO manda la clave precio', async () => {
+      render(<EventRequestsSection onMessage={onMessage} />);
+      await abrir();
+      await apuntarse();
+      await waitFor(() => expect(estado.inserts.length).toBe(1));
+      expect(estado.inserts[0]).not.toHaveProperty('precio');
+    });
+
+    it('un precio de 0 no se envía y explica por qué', async () => {
+      render(<EventRequestsSection onMessage={onMessage} />);
+      await abrir();
+      fireEvent.change(await screen.findByLabelText(/Tu precio/), { target: { value: '0' } });
+      await apuntarse();
+      await waitFor(() => expect(toastError).toHaveBeenCalled());
+      expect(String(toastError.mock.calls[0][0])).toMatch(/El precio tiene que ser mayor que 0/);
+      expect(estado.inserts.length).toBe(0);
+    });
+
+    it('avisa si la fecha de la oferta está ocupada, pero deja apuntarse', async () => {
+      estado.ocupadas = [{ blocked_date: '2026-10-17' }];
+      render(<EventRequestsSection onMessage={onMessage} />);
+      await abrir();
+      expect(await screen.findByText(/Tienes ocupado el 17\/10/)).toBeTruthy();
+      await apuntarse();
+      await waitFor(() => expect(estado.inserts.length).toBe(1));
+    });
+
+    it('si nunca ha marcado fechas, le anima a usar el calendario', async () => {
+      render(<EventRequestsSection onMessage={onMessage} />);
+      await abrir();
+      expect(await screen.findByText(/Marca tus fechas ocupadas en tu calendario para que el organizador vea que estás libre/)).toBeTruthy();
+    });
+
+    it('con fechas marcadas y ninguna choque, no muestra ningún aviso de fechas', async () => {
+      estado.ocupadas = [{ blocked_date: '2026-12-01' }];
+      render(<EventRequestsSection onMessage={onMessage} />);
+      await abrir();
+      await screen.findByLabelText(/Tu precio/);
+      expect(screen.queryByText(/Tienes ocupado/)).toBeNull();
+      expect(screen.queryByText(/Marca tus fechas ocupadas/)).toBeNull();
+    });
   });
 
   it('oferta cerrada en la que no estoy contratado NO aparece, aunque la base de datos la entregue (caso admin/DJ, Burguerfest)', async () => {

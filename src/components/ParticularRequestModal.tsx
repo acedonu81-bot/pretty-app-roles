@@ -4,6 +4,7 @@ import { X, Send, CheckCircle, PartyPopper, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { faltanDatos, mensajeFaltan, detalleSolicitud, SERVICIO_ORGANIZA } from '@/lib/solicitudCompleta';
 import CamposPersonasHorario from '@/components/CamposPersonasHorario';
+import { normalizarTelefono } from '@/lib/telefonoSolicitud';
 
 /**
  * "Soy particular" de la landing (Ficha XDS 73,6, aprobada 11 oct 2026; reparto
@@ -70,7 +71,7 @@ interface Props {
 export default function ParticularRequestModal({ onClose, onEnviado, inicial }: Props) {
   const [form, setForm] = useState({
     name: '', email: '', eventType: inicial?.eventType ?? '', service: inicial?.service ?? '', date: '', location: inicial?.location ?? '',
-    personas: '', horario: '', budget: '', message: '', website: '',
+    personas: '', horario: '', budget: '', message: '', website: '', phone: '',
   });
   // Estilos de música que pide (obligatorio para el DJ: se reparte por estilo y ciudad).
   const [musica, setMusica] = useState<string[]>([]);
@@ -83,6 +84,8 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
   const ciudadOk = /\p{L}{3}/u.test(form.location.trim());
+  // Teléfono opcional (20 nov 2026): vacío vale; si lo rellena, tiene que ser un número real.
+  const phoneOk = !form.phone.trim() || normalizarTelefono(form.phone) !== null;
   // Sin todos los datos no se manda nada a nadie (20 oct 2026): oficio, tipo de evento, fecha
   // futura, ciudad, nombre real y email válido.
   const faltan = [
@@ -92,7 +95,7 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
   if (PIDE_MUSICA(form.service) && musica.length === 0) faltan.push('qué música quieres');
   const organiza = form.service === SERVICIO_ORGANIZA;
   if (organiza && ciudadOk && !/madrid/i.test(form.location)) faltan.push('que el evento sea en Madrid (de momento)');
-  const listo = faltan.length === 0 && ciudadOk && emailOk;
+  const listo = faltan.length === 0 && ciudadOk && emailOk && phoneOk;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -295,6 +298,16 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
                     placeholder="tu@email.com" autoComplete="email" inputMode="email" className={inputCls} required />
                 </div>
               </div>
+              <div>
+                <label className={labelCls} style={{ color: '#222' }}>Tu teléfono (opcional)</label>
+                <input type="tel" value={form.phone} onChange={e => set('phone', e.target.value)}
+                  placeholder="600 000 000" autoComplete="tel" inputMode="tel" className={inputCls} />
+                <p className="text-[0.75rem] mt-1" style={{ color: phoneOk ? '#555' : '#B45309' }}>
+                  {phoneOk
+                    ? 'Solo lo usa XPEAK para avisarte si un profesional te espera y no has visto su mensaje. No se lo damos a los profesionales.'
+                    : 'Escribe un teléfono válido, por ejemplo 600 000 000, o déjalo en blanco.'}
+                </p>
+              </div>
 
               {/* Tipo de evento, presupuesto y notas son opcionales: plegados para
                   que el formulario no se vea largo (quien lo ve largo se va). */}
@@ -373,7 +386,7 @@ export default function ParticularRequestModal({ onClose, onEnviado, inicial }: 
               <Send size={16} /> {status === 'sending' ? 'Enviando...' : 'Enviar'}
             </button>
             <p className="text-[0.75rem] mt-3 text-center" style={{ color: '#555' }}>
-              Usamos tu email solo para esta solicitud y para que hables con el profesional.{' '}
+              Usamos tu email (y tu teléfono, si lo das) solo para esta solicitud y para que hables con el profesional.{' '}
               <a href="/privacidad" className="underline">Privacidad</a>
             </p>
           </form>

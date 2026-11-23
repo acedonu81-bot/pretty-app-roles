@@ -8,13 +8,15 @@ import { ROLE_ES } from '@/lib/constants';
 // inventado. Los datos vienen de la función actividad_reciente_panel.
 type Fila = { tipo: 'solicitud' | 'oferta'; servicio: string | null; lugar: string | null; creado: string };
 
+// 19 nov 2026: pasados dos días el "hace 3 días" resta (parece que no pasa
+// nada), así que no se pone tiempo. La fila sigue saliendo, solo sin la hora.
 function haceCuanto(iso: string): string {
   const min = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 60000));
   if (min < 60) return 'hace un momento';
   const h = Math.floor(min / 60);
   if (h < 24) return `hace ${h} h`;
-  const d = Math.floor(h / 24);
-  return d === 1 ? 'ayer' : `hace ${d} días`;
+  if (h < 48) return 'ayer';
+  return '';
 }
 
 const MovimientoReciente = () => {
@@ -51,7 +53,7 @@ const MovimientoReciente = () => {
               <span className="min-w-0 flex-1 truncate">
                 {texto}{f.lugar ? ` en ${f.lugar}` : ''}
               </span>
-              <span className="flex-shrink-0 text-xs" style={{ color: 'rgba(10,9,8,0.6)' }}>{haceCuanto(f.creado)}</span>
+              {haceCuanto(f.creado) && <span className="flex-shrink-0 text-xs" style={{ color: 'rgba(10,9,8,0.6)' }}>{haceCuanto(f.creado)}</span>}
             </li>
           );
         })}

@@ -11,7 +11,7 @@ describe('acuerdoChat', () => {
   });
   it('aceptado', () => {
     expect(leerAcuerdo(mensajeAceptado('XPEAK-AB12CD'))?.estado).toBe('aceptado');
-    expect(vistaPrevia(mensajeAceptado('XPEAK-AB12CD'))).toBe('Contrato XPEAK-AB12CD aceptado');
+    expect(vistaPrevia(mensajeAceptado('XPEAK-AB12CD'))).toBe('Propuesta aceptada');
   });
   it('un texto normal no es un acuerdo', () => {
     expect(leerAcuerdo('hola, ¿cerramos?')).toBeNull();

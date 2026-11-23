@@ -49,6 +49,7 @@ const Privacidad = () => {
               <li>Gestionar la conexión entre profesionales del sector de eventos y empresarios/organizadores.</li>
               <li>Mostrar tu perfil profesional en el directorio público correspondiente a tu oficio.</li>
               <li>Enviar notificaciones sobre solicitudes de contratación de última hora ("Flash Booking") y mensajes recibidos.</li>
+              <li>Si pides un profesional desde el formulario de solicitud y dejas tu teléfono (es opcional), usarlo solo para avisarte si un profesional te espera y no has visto su mensaje. No se facilita a los profesionales.</li>
               <li>Gestionar el Concurso DJ XPEAK Madrid, solo si te inscribes: tu sesión de SoundCloud, tu nombre de DJ y tu foto de perfil se muestran públicamente, se cuentan los me gusta de los usuarios y, al ganador, se le pide un documento que acredite su residencia en la Comunidad de Madrid (DNI o certificado de empadronamiento) y una dirección de envío para entregarle el premio.</li>
               <PrivacidadFinalidadPago />
             </ul>

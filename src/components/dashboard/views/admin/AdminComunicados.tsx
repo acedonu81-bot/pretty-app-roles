@@ -241,8 +241,8 @@ export default function AdminComunicados() {
   };
 
   return (
-    <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6">
-      <div ref={formRef} className="rounded-2xl p-5 space-y-4" style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.3)' }}>
+    <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6 w-full max-w-full min-w-0 [overflow-wrap:anywhere] [&_input]:max-w-full [&_select]:max-w-full [&_textarea]:max-w-full [&_video]:max-w-full [&_img]:max-w-full">
+      <div ref={formRef} className="min-w-0 rounded-2xl p-4 sm:p-5 space-y-4" style={{ background: '#FFFDF7', border: '1px solid rgba(212,175,55,0.3)' }}>
         <div className="flex items-center justify-between gap-2">
           <h3 className="text-lg font-extrabold" style={{ color: '#111827' }}>{editandoId ? 'Editar comunicado' : 'Nuevo comunicado'}</h3>
           {editandoId && (
@@ -322,10 +322,10 @@ export default function AdminComunicados() {
               <input value={pregunta} onChange={e => setPregunta(e.target.value)} maxLength={200} placeholder="Pregunta"
                 className="w-full rounded-lg px-3 py-2 text-sm" style={estiloCampo} />
               {opciones.map((o, i) => (
-                <div key={i} className="flex gap-2">
+                <div key={i} className="flex gap-2 min-w-0">
                   <input value={o} maxLength={80} placeholder={`Opción ${i + 1}`} disabled={votosEdit > 0}
                     onChange={e => setOpciones(os => os.map((x, j) => (j === i ? e.target.value : x)))}
-                    className="flex-1 rounded-lg px-3 py-2 text-sm disabled:opacity-60" style={estiloCampo} />
+                    className="flex-1 min-w-0 rounded-lg px-3 py-2 text-sm disabled:opacity-60" style={estiloCampo} />
                   {opciones.length > 2 && votosEdit === 0 && (
                     <button type="button" onClick={() => setOpciones(os => os.filter((_, j) => j !== i))} aria-label="Quitar opción"
                       className="p-2 rounded-lg hover:bg-black/5"><X size={14} /></button>
@@ -519,7 +519,7 @@ export default function AdminComunicados() {
         </button>
       </div>
 
-      <div className="space-y-3">
+      <div className="min-w-0 space-y-3">
         <h3 className="text-lg font-extrabold" style={{ color: '#111827' }}>Publicados</h3>
         {!lista.length && <p className="text-sm" style={{ color: '#6b7280' }}>Todavía no hay ninguno.</p>}
         {lista.map(c => {

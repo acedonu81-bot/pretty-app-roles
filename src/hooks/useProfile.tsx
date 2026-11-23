@@ -245,7 +245,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     const primary = (rows.find((r: any) => r.is_primary) ?? rows[0]) as any;
 
     // Instagram y TikTok reales viven en redes_profesional (solo los lee su
-    // dueño): en profiles queda la copia publicada, que en Esencial va vacía
+    // dueño): en profiles queda la copia publicada, que sin suscripción de pago va vacía
     // tras el lanzamiento (18 nov 2026). El dueño edita siempre su valor real.
     const [{ data: redes }, { data: estadoRedes }] = await Promise.all([
       supabase.from('redes_profesional' as any).select('instagram, tiktok').eq('profile_id', primary.id).maybeSingle(),

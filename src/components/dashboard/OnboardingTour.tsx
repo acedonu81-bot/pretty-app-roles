@@ -15,14 +15,14 @@ interface TourStep {
 const PROFESSIONAL_STEPS: TourStep[] = [
   {
     icon: <User size={20} />,
-    title: '¡Ya estás dentro!',
-    body: 'XPEAK es donde los profesionales de eventos consiguen bookings sin intermediarios. Este tour dura 60 segundos.',
+    title: 'Bienvenido a XPEAK',
+    body: 'Aquí los profesionales de eventos consiguen trabajo hablando directamente con quien contrata. Este recorrido dura un minuto.',
     highlight: 'Empieza a explorar.',
   },
   {
     icon: <User size={20} />,
     title: 'Completa tu perfil',
-    body: 'Foto, bio, tarifa y géneros. Los organizadores buscan por todos estos campos. Un perfil completo multiplica por 5 las visitas.',
+    body: 'Foto, bio, tarifa y géneros. Los organizadores buscan por todos estos campos, y sin foto tu ficha no aparece en el directorio.',
     view: 'profile',
     cta: 'Ir a mi perfil →',
   },
@@ -50,7 +50,7 @@ const PROFESSIONAL_STEPS: TourStep[] = [
   },
   {
     icon: <CheckCircle size={20} />,
-    title: '¡Todo listo!',
+    title: 'Todo listo',
     body: 'Ya tienes todo lo que necesitas. Empieza completando tu perfil para que te encuentren enseguida.',
     highlight: 'Cualquier duda, usa el chat de soporte.',
   },
@@ -59,8 +59,8 @@ const PROFESSIONAL_STEPS: TourStep[] = [
 const EMPRESARIO_STEPS: TourStep[] = [
   {
     icon: <Building2 size={20} />,
-    title: '¡Bienvenido/a a XPEAK!',
-    body: 'El marketplace de talento para eventos. Contrata DJs, staff, fotógrafos y maquillaje directo con el profesional.',
+    title: 'Bienvenido a XPEAK',
+    body: 'El directorio de profesionales para eventos. Contrata DJs, staff, fotógrafos y maquillaje directo con el profesional.',
     highlight: 'Empieza a buscar.',
   },
   {
@@ -93,7 +93,7 @@ const EMPRESARIO_STEPS: TourStep[] = [
   },
   {
     icon: <CheckCircle size={20} />,
-    title: '¡Todo listo!',
+    title: 'Todo listo',
     body: 'Empieza buscando en el Directorio o publica tu primera oferta Flash.',
     highlight: 'El talento que necesitas, cuando lo necesitas.',
   },

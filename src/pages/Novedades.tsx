@@ -5,6 +5,7 @@ import { ChevronRight, Heart, MessageCircle, Pin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import FooterPublic from '@/components/FooterPublic';
+import CompartirComunicado from '@/components/comunicados/CompartirComunicado';
 import LineaTemporal from '@/components/comunicados/LineaTemporal';
 import {
   CuerpoConMenciones, MetaComunicado, ORO, Portada, StatsComunicado, TituloComunicado,
@@ -178,6 +179,8 @@ export default function Novedades() {
             <span className="inline-flex items-center gap-1.5"><Heart size={17} /> {k?.likes ?? 0} me gusta</span>
             {n.comentarios_on !== false && <span className="inline-flex items-center gap-1.5"><MessageCircle size={17} /> {k?.comentarios ?? 0} {(k?.comentarios ?? 0) === 1 ? 'comentario' : 'comentarios'}</span>}
           </div>
+
+          <CompartirComunicado titulo={n.titulo} url={url} />
 
           <Invitacion id={n.id} />
 

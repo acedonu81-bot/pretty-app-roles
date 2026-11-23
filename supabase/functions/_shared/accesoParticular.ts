@@ -44,3 +44,42 @@ export async function leerAcceso(t: string): Promise<DatosAcceso | null> {
     return d;
   } catch { return null; }
 }
+
+// Botones "Me interesa" / "No, gracias" del correo al particular (18 nov 2026,
+// ficha XDS 78,7: los profesionales contestan y ningún particular respondía, 2
+// de 3 no llegaban a entrar). La firma lleva quién responde (u) y a qué
+// profesional (p); la respuesta se elige en xpeak.es/responder con un POST, así
+// que un antivirus que abra el enlace no contesta por el cliente. Clave propia:
+// una firma de acceso no vale como respuesta ni al revés.
+// Mismo plazo que el enlace de acceso: el botón no debe dar más tiempo de
+// entrada que el propio correo.
+const CADUCA_RESPUESTA_MS = CADUCA_MS;
+const claveRespuesta = async () => {
+  const base = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  if (!base) throw new Error('Sin clave para firmar');
+  const raiz = await crypto.subtle.importKey('raw', enc.encode(base), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const derivada = await crypto.subtle.sign('HMAC', raiz, enc.encode('xpeak-respuesta-particular-v1'));
+  return crypto.subtle.importKey('raw', derivada, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
+};
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+export interface DatosRespuesta { u: string; p: string; iat: number }
+
+export async function firmarRespuesta(userId: string, profesionalId: string): Promise<string | null> {
+  if (!UUID.test(userId) || !UUID.test(profesionalId)) return null;
+  const datos = enc.encode(JSON.stringify({ u: userId, p: profesionalId, iat: Date.now() } satisfies DatosRespuesta));
+  const firma = new Uint8Array(await crypto.subtle.sign('HMAC', await claveRespuesta(), datos));
+  return `${b64url(datos)}.${b64url(firma)}`;
+}
+
+export async function leerRespuesta(t: string): Promise<DatosRespuesta | null> {
+  try {
+    const [a, b] = t.split('.');
+    if (!a || !b) return null;
+    const datos = deB64url(a);
+    if (!(await crypto.subtle.verify('HMAC', await claveRespuesta(), deB64url(b), datos))) return null;
+    const d = JSON.parse(new TextDecoder().decode(datos)) as DatosRespuesta;
+    if (Date.now() - d.iat > CADUCA_RESPUESTA_MS || !UUID.test(d.u) || !UUID.test(d.p)) return null;
+    return d;
+  } catch { return null; }
+}

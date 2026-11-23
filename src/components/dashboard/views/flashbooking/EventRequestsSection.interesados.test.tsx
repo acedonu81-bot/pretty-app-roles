@@ -74,6 +74,30 @@ describe('Ofertas del organizador con un profesional apuntado', () => {
     expect(screen.getByText(/1 interesado/)).toBeTruthy();
   });
 
+  it('enseña el precio del candidato y que está libre ese día', async () => {
+    estado.candidatos = [{ ...manuel, precio: 150.5, disponibilidad: 'libre' }];
+    render(<EventRequestsSection onMessage={onMessage} />);
+    expect(await screen.findByText(/150,50\s€/)).toBeTruthy();
+    expect(screen.getByText('Libre ese día')).toBeTruthy();
+    expect(screen.queryByText('Ocupado ese día')).toBeNull();
+  });
+
+  it('si el candidato está ocupado esos días lo dice y no dice "Libre"', async () => {
+    estado.candidatos = [{ ...manuel, precio: null, disponibilidad: 'ocupado' }];
+    render(<EventRequestsSection onMessage={onMessage} />);
+    expect(await screen.findByText('Ocupado ese día')).toBeTruthy();
+    expect(screen.queryByText('Libre ese día')).toBeNull();
+  });
+
+  it('sin datos de calendario ni precio no se afirma nada (ni libre ni ocupado ni euros)', async () => {
+    estado.candidatos = [{ ...manuel, precio: null, disponibilidad: 'sin_datos' }];
+    render(<EventRequestsSection onMessage={onMessage} />);
+    await screen.findByText('Manuel Jesús Frias Martín');
+    expect(screen.queryByText('Libre ese día')).toBeNull();
+    expect(screen.queryByText('Ocupado ese día')).toBeNull();
+    expect(screen.queryByText(/\d\s€/)).toBeNull();
+  });
+
   it('con la tarjeta cerrada se ve igualmente "se ha apuntado" con un botón Ver y elegir', async () => {
     render(<EventRequestsSection onMessage={onMessage} />);
     fireEvent.click(await screen.findByRole('button', { name: /Cerrar/ }));

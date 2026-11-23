@@ -23,10 +23,10 @@ describe('/precios', () => {
     expect(t).not.toMatch(/6,99|14,99/);
   });
 
-  it('con los cobros activados enseña Esencial, Profesional y Premium con sus precios, y ninguna tarjeta de organizadores', () => {
+  it('con los cobros activados enseña solo Profesional y Premium con sus precios, y ninguna tarjeta de organizadores', () => {
     const t = pagina('true');
-    for (const x of ['Esencial', 'Profesional', 'Premium', '6,99', '14,99', '75,49', '161,89', 'IVA incluido']) expect(t).toContain(x);
-    expect(t).not.toMatch(/para siempre/);
+    for (const x of ['Profesional', 'Premium', '6,99', '14,99', '75,49', '161,89', 'IVA incluido']) expect(t).toContain(x);
+    expect(t).not.toMatch(/para siempre|Esencial/);
     expect(t).not.toMatch(/¿Cuándo habrá planes de pago\?/);
     expect(t).not.toMatch(/Organizadores|Salas, promotoras/);
   });
@@ -51,5 +51,12 @@ describe('/precios', () => {
     expect(t).toContain(fmt(subscriptionPlans.find(p => p.id === 'business')!.monthlyPrice));
     expect(t).toContain(fmt(PRECIOS_ANUALES.starter));
     expect(t).toContain(fmt(PRECIOS_ANUALES.business));
+  });
+
+  it('con los cobros activados la rejilla es de 2 columnas (solo hay dos planes)', () => {
+    vi.stubEnv('VITE_COBROS_ACTIVOS', 'true');
+    const { container } = render(<HelmetProvider><MemoryRouter><Precios /></MemoryRouter></HelmetProvider>);
+    expect(container.innerHTML).not.toContain('lg:grid-cols-3');
+    expect(container.innerHTML).toContain('lg:grid-cols-2');
   });
 });

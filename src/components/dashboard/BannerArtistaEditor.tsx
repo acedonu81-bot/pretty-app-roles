@@ -11,7 +11,7 @@ const MAX_MB = 8;
 // Banner de la cabecera de artista del perfil público del DJ (estilo
 // Hearthis, 1 nov 2026). Sin banner, la cabecera usa la portada del primer
 // set o la foto de perfil desenfocada.
-// 18 nov 2026: es una ventaja de Premium. Con Esencial o Profesional se puede ver y
+// 18 nov 2026: es una ventaja de Premium. Con Profesional se puede ver y
 // quitar el que ya hubiera, pero no subir otro; la BD lo impone también (banner_permitido).
 const BannerArtistaEditor = ({ userId }: { userId: string }) => {
   const { banner, recargar } = useDjBanner(userId);

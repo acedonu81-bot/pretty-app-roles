@@ -76,16 +76,6 @@ export const STREAMING_PACK_ELIGIBLE_PLANS = ['starter', 'business', 'agency'] a
 
 export const subscriptionPlans: SubscriptionPlan[] = [
   {
-    id: 'free',
-    name: 'Esencial',
-    monthlyPrice: 0,
-    defaultPeriod: '',
-    features: [], // las ventajas viven en src/lib/ventajasPlan.ts
-    textColor: '#8E8EA0',
-    annualEligible: false,
-    trialDays: 0,
-  },
-  {
     id: 'starter',
     name: 'Profesional',
     monthlyPrice: 6.99,
@@ -129,7 +119,7 @@ export const mapSubscriptionTierToPlan = (tier?: string | null): SubscriptionPla
       return 'agency';
     case 'free':
     default:
-      return 'free';
+      return 'starter'; // no hay plan gratuito: sin suscripción de pago cuenta como Profesional
   }
 };
 
