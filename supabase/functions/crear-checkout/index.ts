@@ -63,7 +63,6 @@ Deno.serve(async (req) => {
       },
       billing_address_collection: 'required',
       tax_id_collection: { enabled: true },
-      customer_update: { address: 'auto', name: 'auto' },
       success_url: vueltaMiPlan(webDe(req), 'ok'),
       cancel_url: vueltaMiPlan(webDe(req), 'cancelado'),
     });

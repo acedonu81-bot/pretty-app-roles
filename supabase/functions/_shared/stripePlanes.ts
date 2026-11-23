@@ -54,8 +54,13 @@ export const FIN_BLACK_FRIDAY = new Date('2026-11-30T23:00:00Z');
 
 // En el anual se pide la dirección: el regalo de bienvenida (merchandising) se envía
 // a casa (23 nov 2026). Solo envíos a España.
+// Con NIF (tax_id_collection) y un cliente ya creado, Stripe exige guardar en el
+// cliente lo que se pide en el pago; en el anual, también la dirección de envío
+// (23 nov 2026: sin shipping:'auto' el anual daba error y no abría el pago).
 export function extrasCheckout(ciclo: Ciclo): Record<string, unknown> {
-  return ciclo === 'anual' ? { shipping_address_collection: { allowed_countries: ['ES'] } } : {};
+  return ciclo === 'anual'
+    ? { shipping_address_collection: { allowed_countries: ['ES'] }, customer_update: { address: 'auto', name: 'auto', shipping: 'auto' } }
+    : { customer_update: { address: 'auto', name: 'auto' } };
 }
 
 // El anual ya lleva el ahorro de 2 meses en su precio (23 nov 2026): fuera del Black

@@ -141,16 +141,34 @@ const SubscriptionView = () => {
   const esFundador = sinPagar && efectivo === 'starter';
   const titulo = !sinPagar ? (NOMBRE[tier] ?? 'Premium') : esBase ? 'Nivel base' : 'Profesional';
 
+  // Vuelta de Stripe (?pago=ok|cancelado): el aviso se lee una vez y se quita de la
+  // dirección; si no, se quedaba "Pago recibido" para siempre, también tras una baja.
+  const [vuelta, setVuelta] = useState<'ok' | 'cancelado' | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const v = new URLSearchParams(window.location.search).get('pago');
+    return v === 'ok' || v === 'cancelado' ? v : null;
+  });
+
+  useEffect(() => {
+    if (!vuelta) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete('pago');
+    window.history.replaceState(window.history.state, '', url.toString());
+    const fin = setTimeout(() => setVuelta(null), 15000);
+    return () => clearTimeout(fin);
+  }, [vuelta]);
+
   useEffect(() => {
     if (!venta) return;
     leerMiSuscripcion().then(setSus).catch(() => setSus(null));
-    if (new URLSearchParams(window.location.search).get('pago') !== 'ok') return;
+    if (vuelta !== 'ok') return;
     const t = [setTimeout(refresh, 3000), setTimeout(refresh, 8000)];
     return () => t.forEach(clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [venta, refresh]);
 
-  const pagoOk = venta && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('pago') === 'ok';
-  const pagoCancelado = venta && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('pago') === 'cancelado';
+  const pagoOk = venta && vuelta === 'ok';
+  const pagoCancelado = venta && vuelta === 'cancelado';
 
   return (
     <Fondo activo={!!venta}>

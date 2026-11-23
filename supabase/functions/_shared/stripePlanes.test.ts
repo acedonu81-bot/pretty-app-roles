@@ -76,8 +76,15 @@ describe('cuponDe', () => {
 import { extrasCheckout } from './stripePlanes.ts';
 describe('extrasCheckout', () => {
   it('el anual pide la dirección para el regalo, solo España; el mensual no', () => {
-    expect(extrasCheckout('anual')).toEqual({ shipping_address_collection: { allowed_countries: ['ES'] } });
-    expect(extrasCheckout('mensual')).toEqual({});
+    expect(extrasCheckout('anual').shipping_address_collection).toEqual({ allowed_countries: ['ES'] });
+    expect(extrasCheckout('mensual').shipping_address_collection).toBeUndefined();
+  });
+
+  // 23 nov 2026: el anual fallaba con un cliente ya creado. Con NIF (tax_id_collection)
+  // Stripe exige customer_update.shipping='auto' si se pide dirección de envío.
+  it('siempre actualiza dirección y nombre del cliente; en anual también la de envío', () => {
+    expect(extrasCheckout('mensual').customer_update).toEqual({ address: 'auto', name: 'auto' });
+    expect(extrasCheckout('anual').customer_update).toEqual({ address: 'auto', name: 'auto', shipping: 'auto' });
   });
 });
 

@@ -155,3 +155,18 @@ describe('SubscriptionView', () => {
     });
   });
 });
+
+describe('SubscriptionView: vuelta de Stripe', () => {
+  it('"Pago recibido" sale al volver y se quita de la dirección para no quedarse pegado', () => {
+    window.history.replaceState({}, '', '/dashboard?view=subscription&pago=ok');
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
+    expect(screen.getByText(/Pago recibido/)).toBeTruthy();
+    expect(window.location.search).toBe('?view=subscription');
+  });
+
+  it('sin volver de Stripe no sale ningún aviso de pago', () => {
+    window.history.replaceState({}, '', '/dashboard?view=subscription');
+    render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
+    expect(screen.queryByText(/Pago recibido/)).toBeNull();
+  });
+});
