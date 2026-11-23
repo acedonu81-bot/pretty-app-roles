@@ -271,6 +271,34 @@ export function logPageView(path: string = location.pathname, search: string = l
   const genero = path.startsWith('/directorio/') ? new URLSearchParams(search).get('genero') : null;
   const detalle = path === '/auth' && search ? search.replace(/^\?/, '') : genero ? `genero=${genero}` : undefined;
   void logEvent('page_view', path, detalle);
+  void registrarRegionSesion();
+}
+
+const REGION_KEY = 'xpeak_region_ok';
+
+/**
+ * Comunidad autónoma de la sesión, una sola vez por sesión (24 nov 2026).
+ * /api/geo la deduce de la cabecera de ubicación de Vercel y NO devuelve la
+ * IP; aquí solo se manda la comunidad. Si algo falla, la visita cuenta igual:
+ * se reintenta en la siguiente página.
+ */
+async function registrarRegionSesion() {
+  if (esBot()) return;
+  try {
+    if (sessionStorage.getItem(REGION_KEY)) return;
+    const r = await fetch('/api/geo', { cache: 'no-store' });
+    if (!r.ok) return;
+    const { region } = (await r.json()) as { region: string | null };
+    if (!region) return;
+    const { supabase } = await import('@/integrations/supabase/client');
+    const sb = supabase as unknown as {
+      rpc: (fn: string, args: Record<string, unknown>) => Promise<{ error: { message: string } | null }>;
+    };
+    const res = await sb.rpc('registrar_region_sesion', { p_session_id: sessionId(), p_region: region });
+    if (!res.error) sessionStorage.setItem(REGION_KEY, '1');
+  } catch {
+    // La analítica nunca rompe la app.
+  }
 }
 
 /**

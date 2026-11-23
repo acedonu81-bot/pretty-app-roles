@@ -38,7 +38,18 @@ type QuienOnline = {
   hace_segundos: number; display_name: string | null; rol: string | null;
   detalle: string | null;
 };
+type RegionReparto = { region: string; personas: number; visitas: number };
 const GOLD = '#B8941E';
+
+/** "Madrid 3 · Galicia 1": de dónde están entrando ahora, de más a menos. */
+function resumenRegiones(online: QuienOnline[], regionOnline: Record<string, string>): string {
+  const cuenta: Record<string, number> = {};
+  for (const q of online) {
+    const r = regionOnline[q.session_id];
+    if (r) cuenta[r] = (cuenta[r] || 0) + 1;
+  }
+  return Object.entries(cuenta).sort((a, b) => b[1] - a[1]).map(([r, n]) => `${r} ${n}`).join(' · ');
+}
 
 /**
  * Explicación al pasar el ratón. Un panel de analítica sin esto obliga a
@@ -170,6 +181,9 @@ export default function AdminAnalytics() {
   const [usuariosUnicos, setUsuariosUnicos] = useState<number | null>(null);
   const [quienOnline, setQuienOnline] = useState<QuienOnline[]>([]);
   const [onlineAbierto, setOnlineAbierto] = useState(false);
+  // Comunidad de cada sesión online (session_id -> comunidad) y reparto del periodo.
+  const [regionOnline, setRegionOnline] = useState<Record<string, string>>({});
+  const [regiones, setRegiones] = useState<RegionReparto[]>([]);
   const [instalaciones, setInstalaciones] = useState<EventoPwa[]>([]);
   const personasPwa = agruparInstalacionesPwa(instalaciones);
   // Lista de "App instalada": quien más abre la app, primero; a igualdad, el más reciente.
@@ -198,7 +212,7 @@ export default function AdminAnalytics() {
     // hoy (corta en la hora actual), no el patrón histórico agregado que da
     // panel_analytics_hora — ese sirve para "¿a qué hora entra tu gente?"
     // pero pintaba horas futuras del día como si ya hubieran pasado.
-    const [d, h, t, n, bus, afi, blg, emb, rec, uu, pwa, ban, red] = await Promise.all([
+    const [d, h, t, n, bus, afi, blg, emb, rec, uu, pwa, ban, red, reg] = await Promise.all([
       sb.rpc('panel_analytics_dia', { p_dias: dias }),
       dias === 1 && hoy
         ? sb.rpc('panel_analytics_hora_hoy', {})
@@ -217,6 +231,7 @@ export default function AdminAnalytics() {
       sb.rpc('panel_analytics_pwa_instalaciones', { p_dias: dias }),
       sb.rpc('panel_analytics_banners', { p_dias: dias }),
       sb.rpc('panel_analytics_redes', { p_dias: dias }),
+      sb.rpc('panel_analytics_regiones', { p_dias: dias }),
     ]);
 
     const fallo = [d, h, t, n].find(r => r.error);
@@ -248,6 +263,9 @@ export default function AdminAnalytics() {
     const uuRow = (uu.data as { usuarios: number }[] | null)?.[0];
     setUsuariosUnicos(uuRow ? Number(uuRow.usuarios) : null);
     setInstalaciones((pwa.data as EventoPwa[]) ?? []);
+    setRegiones(((reg.data as RegionReparto[] | null) ?? []).map(r => ({
+      region: r.region, personas: Number(r.personas), visitas: Number(r.visitas),
+    })));
     setCargando(false);
   }, [dias, hoy]);
 
@@ -271,6 +289,11 @@ export default function AdminAnalytics() {
       // hace hasta 30s, justo lo que este panel intenta evitar.
       sb.rpc('panel_analytics_quien_online', {}).then(r => {
         setQuienOnline((r.data as QuienOnline[] | null) ?? []);
+      });
+      sb.rpc('panel_analytics_region_online', {}).then(r => {
+        const mapa: Record<string, string> = {};
+        for (const x of ((r.data as { session_id: string; region: string }[] | null) ?? [])) mapa[x.session_id] = x.region;
+        setRegionOnline(mapa);
       });
     };
     cargarOnline();
@@ -405,6 +428,12 @@ export default function AdminAnalytics() {
           {quienOnline.length === 0 ? (
             <p className="text-xs" style={{ color: 'rgba(10,9,8,0.45)' }}>Nadie navegando ahora mismo.</p>
           ) : (
+            <>
+            {resumenRegiones(quienOnline, regionOnline) && (
+              <p className="text-xs font-bold mb-3 pb-3 border-b" style={{ color: '#0a0908', borderColor: 'rgba(10,9,8,0.06)' }}>
+                {resumenRegiones(quienOnline, regionOnline)}
+              </p>
+            )}
             <div className="flex flex-col divide-y" style={{ borderColor: 'rgba(10,9,8,0.06)' }}>
               {quienOnline.map(q => (
                 <div key={q.session_id} className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
@@ -416,6 +445,7 @@ export default function AdminAnalytics() {
                     <p className="text-xs font-bold truncate" style={{ color: '#0a0908' }}>
                       {q.display_name || 'Visitante'}
                       {q.rol && <span className="font-normal" style={{ color: 'rgba(10,9,8,0.45)' }}> · {q.rol}</span>}
+                      {regionOnline[q.session_id] && <span className="font-normal" style={{ color: GOLD }}> · {regionOnline[q.session_id]}</span>}
                     </p>
                     <p className="text-[0.7rem] truncate" style={{ color: 'rgba(10,9,8,0.5)' }}>
                       {q.ultima_pagina || '/'}{describirDetalleAuth(q.ultima_pagina, q.detalle)}
@@ -428,9 +458,35 @@ export default function AdminAnalytics() {
                 </div>
               ))}
             </div>
+            </>
           )}
         </div>
       )}
+
+      {/* De dónde entra la gente: comunidad autónoma, personas distintas del periodo.
+          Solo hay dato desde el 24 nov 2026; antes sale "Sin dato". */}
+      <Panel title="De dónde entra la gente"
+        hint="Personas distintas por comunidad autónoma. Sin IP guardada: solo la comunidad."
+        ayuda="Cuenta personas distintas en el periodo elegido, según la comunidad autónoma que da la conexión. En móvil la operadora puede situar a alguien en otra provincia. Solo hay dato desde el 24 nov 2026: las visitas anteriores salen como 'Sin dato'.">
+        {regiones.length === 0 ? (
+          <p className="text-xs" style={{ color: 'rgba(10,9,8,0.45)' }}>Aún no hay datos en este periodo.</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {regiones.map(r => {
+              const max = Math.max(...regiones.map(x => x.personas), 1);
+              return (
+                <div key={r.region} className="flex items-center gap-3 text-xs">
+                  <span className="w-40 flex-shrink-0 truncate font-bold" style={{ color: r.region === 'Sin dato' ? 'rgba(10,9,8,0.4)' : '#0a0908' }}>{r.region}</span>
+                  <div className="flex-1 h-2 rounded-full" style={{ background: 'rgba(10,9,8,0.05)' }}>
+                    <div className="h-2 rounded-full" style={{ width: `${(r.personas / max) * 100}%`, background: r.region === 'Sin dato' ? 'rgba(10,9,8,0.2)' : GOLD }} />
+                  </div>
+                  <span className="w-10 text-right tabular-nums" style={{ color: 'rgba(10,9,8,0.6)' }}>{r.personas}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Panel>
 
       {/* Tráfico por día (o por hora en la vista de 24h, donde "por día" solo
           tiene un punto y no dice nada) */}
