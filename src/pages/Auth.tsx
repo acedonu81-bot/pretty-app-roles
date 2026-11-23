@@ -1373,21 +1373,31 @@ const Auth = () => {
                 )}
 
                 {isLogin && loginFailed && (
-                  <div className="rounded-xl p-4 text-sm" role="alert"
-                    style={{ background: 'rgba(212,175,55,0.10)', border: '1px solid rgba(212,175,55,0.45)', color: '#111' }}>
-                    <p className="font-bold mb-1">Ese email y contraseña no coinciden.</p>
-                    <p className="text-xs mb-3" style={{ color: 'rgba(0,0,0,0.65)' }}>
-                      Si ya te registraste, no crees la cuenta otra vez: la contraseña no cambiaría. Pon una nueva con el botón de abajo y entras en un minuto.
+                  <div className="rounded-xl p-5 text-base" role="alert"
+                    style={{ background: 'rgba(212,175,55,0.14)', border: '2px solid rgba(212,175,55,0.7)', color: '#111' }}>
+                    <p className="font-black text-lg mb-1">No hemos podido entrar con esos datos.</p>
+                    <p className="text-sm mb-4" style={{ color: 'rgba(0,0,0,0.8)' }}>
+                      Tu cuenta puede existir, pero la contraseña no es esa. Elige lo que te pasa:
                     </p>
                     <button type="button"
                       onClick={() => { track('auth_login_failed_recuperar', {}); setLoginFailed(false); setForgotEmail(email); setShowForgot(true); }}
-                      className="w-full py-2.5 rounded-lg font-black text-sm"
+                      className="w-full py-3.5 rounded-lg font-black text-base"
                       style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#111' }}>
-                      Ya tengo cuenta: poner contraseña nueva
+                      Me he olvidado de la contraseña
+                    </button>
+                    <p className="text-xs mt-1.5 mb-3 text-center" style={{ color: 'rgba(0,0,0,0.7)' }}>
+                      Te mandamos un enlace al correo y pones una nueva en un minuto.
+                    </p>
+                    <button type="button"
+                      onClick={() => { track('auth_login_failed_google', {}); handleGoogleSignIn(); }}
+                      disabled={googleLoading}
+                      className="w-full py-3 rounded-lg font-bold text-sm"
+                      style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.25)', color: '#111' }}>
+                      Me registré con Google: entrar con Google
                     </button>
                     <button type="button"
                       onClick={() => { track('auth_toggle_mode', { to: 'register', from: 'login_failed' }); setIsLogin(false); setLoginFailed(false); setShowForgot(false); setForgotSent(false); }}
-                      className="w-full mt-2 text-xs font-bold" style={{ color: '#8B6A00' }}>
+                      className="w-full mt-3 py-2 text-sm font-bold underline" style={{ color: '#8B6A00' }}>
                       Es mi primera vez: crear cuenta
                     </button>
                   </div>
