@@ -74,7 +74,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
 
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,zone,role,roles,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at,hourly_rate,genres')
+      .select('user_id,display_name,photo_url,directorio_ok,bio,zone,role,roles,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at,hourly_rate,genres')
       .or(roleFilter)
       // Un empresario puede tener 'mago' en `roles` (segundo oficio marcado
       // por error o dato legacy) y coincidir con roleFilter via roles.cs — se
@@ -112,7 +112,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
           // No hay en esta ciudad — cargar sugerencias nacionales
           supabase
             .from('profiles')
-            .select('user_id,display_name,photo_url,bio,zone,role,roles,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at')
+            .select('user_id,display_name,photo_url,directorio_ok,bio,zone,role,roles,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at')
             .or(roleFilter)
             .neq('role', 'empresario')
             .or('is_public.is.null,is_public.eq.true')

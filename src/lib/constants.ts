@@ -227,13 +227,15 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
 // Jovenesflamencos (local Córdoba) estuvo aquí del 7 al 19 oct 2026; se quitó
 // a petición del usuario porque seguía saliendo en DJs sin foto.
 export const PHOTO_GATE_EXCEPTIONS: string[] = [];
-export const passesPhotoGate = (p: { photo_url?: string | null; user_id?: string | null }): boolean =>
-  !!p.photo_url || (!!p.user_id && PHOTO_GATE_EXCEPTIONS.includes(p.user_id));
+// directorio_ok (24 nov 2026): la BD lo pone a false al nivel base sin bio de 40+
+// caracteres. Si la consulta no lo pidió (undefined) no se oculta a nadie por eso.
+export const passesPhotoGate = (p: { photo_url?: string | null; user_id?: string | null; directorio_ok?: boolean | null }): boolean =>
+  (!!p.photo_url && p.directorio_ok !== false) || (!!p.user_id && PHOTO_GATE_EXCEPTIONS.includes(p.user_id));
 // Mismo filtro para queries de Supabase en lugar de .not('photo_url', 'is', null).
 // Con la lista vacía no se añade user_id.in.(): PostgREST rechaza un in() vacío.
 export const PHOTO_GATE_OR = PHOTO_GATE_EXCEPTIONS.length
-  ? `photo_url.not.is.null,user_id.in.(${PHOTO_GATE_EXCEPTIONS.join(',')})`
-  : 'photo_url.not.is.null';
+  ? `and(photo_url.not.is.null,directorio_ok.is.true),user_id.in.(${PHOTO_GATE_EXCEPTIONS.join(',')})`
+  : 'and(photo_url.not.is.null,directorio_ok.is.true)';
 
 /** Atracciones con riesgo físico para quien las usa: el cliente debe pedir seguro y licencia al proveedor. */
 export const ETIQUETAS_ATRACCION_RIESGO = ['Hinchables', 'Castillos hinchables', 'Toro mecánico'];

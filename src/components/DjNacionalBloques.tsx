@@ -39,7 +39,7 @@ export function useDjsNacional(activo: boolean) {
     ].join(',');
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,zone,city_ref,role,roles,score,is_verified,hourly_rate,genres')
+      .select('user_id,display_name,photo_url,directorio_ok,bio,zone,city_ref,role,roles,score,is_verified,hourly_rate,genres')
       .or(roleFilter)
       .neq('role', 'empresario')
       .or('is_public.is.null,is_public.eq.true')

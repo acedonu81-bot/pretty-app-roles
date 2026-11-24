@@ -430,7 +430,7 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   const orFilter = dbRoles.map(r => `role.eq.${r}`).join(',') + ',' + dbRoles.map(r => `roles.cs.{${r}}`).join(',');
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, subscription_tier, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, experience_level, show_new_badge')
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, directorio_ok, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, subscription_tier, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, experience_level, show_new_badge')
     .or(orFilter)
     // Un empresario que tenga esta categoria en su array `roles` (segundo
     // oficio marcado por error o dato legacy) hace match por roles.cs — se
@@ -521,7 +521,7 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
   // columna `role` en vez de reintroducir el ORDER BY en BD.
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, roles, genres, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, subscription_tier, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, city_ref')
+    .select('user_id, display_name, role, roles, genres, specialty, zone, photo_url, directorio_ok, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, subscription_tier, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, city_ref')
     .not('display_name', 'is', null)
     .limit(1000) as any;
 

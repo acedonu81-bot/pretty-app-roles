@@ -111,7 +111,29 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
   // En "Mi Perfil" la tarjeta de completitud (con checklist accionable) ya
   // cubre este aviso — mostrar también el banner ahí duplica el mismo % y
   // mensaje dos veces seguidas en la misma pantalla.
-  if (ctx.loading || dismissed || activeView === 'profile') return null;
+  if (ctx.loading || dismissed) return null;
+
+  // Nivel base sin bio (24 nov 2026): la BD lo saca del directorio (directorio_ok).
+  // Se avisa también en "Mi Perfil", que es donde se arregla. Al escribir la bio
+  // el aviso desaparece sin esperar a recargar.
+  const bioLen = (ctx.bio ?? '').trim().length;
+  if (ctx.directorio_ok === false && bioLen < 40) {
+    return (
+      <div className="clay-card mx-4 mt-3 mb-0 flex items-center gap-3 px-4 py-3 rounded-xl text-xs"
+        style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.25)' }}>
+        <span className="flex-1 min-w-0" style={{ color: '#222' }}>
+          <strong>No sales en el directorio.</strong> Te falta una bio de al menos 40 caracteres ({bioLen}/40). Con Profesional sales aunque no la tengas.
+        </span>
+        <button onClick={() => onNavigate('profile')}
+          className="clay-btn flex-shrink-0 px-3 py-1.5 rounded-lg font-bold transition-all hover:scale-105"
+          style={{ background: 'rgba(212,175,55,0.15)', color: '#8a6d12', border: '1px solid rgba(212,175,55,0.25)' }}>
+          Escribir bio
+        </button>
+      </div>
+    );
+  }
+
+  if (activeView === 'profile') return null;
 
   // Misma cuenta que ProfileView.tsx y el email profile_incomplete_reminder
   // (useProfileCompleteness) — antes este banner tenía su propia copia de

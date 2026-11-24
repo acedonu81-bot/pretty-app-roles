@@ -57,7 +57,7 @@ function useRoleProfessionals(categorySlug: string) {
     ].join(',');
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,zone,city_ref,role,roles,score,is_verified,created_at')
+      .select('user_id,display_name,photo_url,directorio_ok,bio,zone,city_ref,role,roles,score,is_verified,created_at')
       .or(roleFilter)
       // Ver CityLanding.tsx: excluye empresarios que tengan este oficio en
       // `roles` por dato legacy o error — buscan y contratan, no les contratan.
