@@ -1648,6 +1648,7 @@ export type Database = {
           dance_role: string | null
           display_name: string | null
           distance_from_madrid_km: number | null
+          directorio_ok: boolean
           email_opt_out: boolean
           emergente_anios: number | null
           emergente_sub_nivel: string | null
@@ -1740,6 +1741,7 @@ export type Database = {
           dance_role?: string | null
           display_name?: string | null
           distance_from_madrid_km?: number | null
+          directorio_ok?: boolean
           email_opt_out?: boolean
           emergente_anios?: number | null
           emergente_sub_nivel?: string | null
@@ -1832,6 +1834,7 @@ export type Database = {
           dance_role?: string | null
           display_name?: string | null
           distance_from_madrid_km?: number | null
+          directorio_ok?: boolean
           email_opt_out?: boolean
           emergente_anios?: number | null
           emergente_sub_nivel?: string | null
