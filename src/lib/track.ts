@@ -28,6 +28,13 @@ export function track(eventName: string, props?: Record<string, string | number 
     const extra = props ? Object.entries(props).map(([k, v]) => `${k}=${v}`).join(' ') : '';
     void logEvent('cta_click', location.pathname, `push_ask ${eventName.slice(9)} ${extra}`.trim().slice(0, 120));
   }
+  // Avisos del nivel base (24 nov 2026): cuántos topan con el límite, cuántos ven
+  // el aviso y cuántos pulsan "Ver planes". Se cruza con suscripciones por user_id
+  // para saber si el tope empuja a pagar.
+  if (eventName.startsWith('plan_base_')) {
+    const extra = props ? Object.entries(props).map(([k, v]) => `${k}=${v}`).join(' ') : '';
+    void logEvent('cta_click', location.pathname, `plan_base ${eventName.slice(10)} ${extra}`.trim().slice(0, 120));
+  }
 }
 
 /**

@@ -15,6 +15,9 @@ import { ReviewModal, type Booking } from '@/components/dashboard/views/empresar
 import type { Profile } from '@/data/profiles';
 import { EVENTO_INTERESADOS } from '@/hooks/useInteresadosPendientes';
 import { pideDeTodo, noEncajaEnDeTodo, listarEstilos } from '@/lib/estilosOferta';
+import { useOfertasMes } from '@/hooks/useOfertasMes';
+import { avisoOfertasMes, sinOfertasEsteMes } from '@/lib/ofertasMes';
+import { track } from '@/lib/track';
 
 interface EventRequest {
   id: string;
@@ -138,6 +141,18 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
     return () => { cancelado = true; };
   }, [isEmpresario, user?.id]);
   const [applying, setApplying] = useState<string | null>(null);
+  // Nivel base: una oferta al mes. El tope real lo pone la BD; esto solo avisa.
+  const [ofertasRecarga, setOfertasRecarga] = useState(0);
+  const ofertasMes = useOfertasMes(isEmpresario ? null : user?.id, ofertasRecarga);
+  const sinOfertas = sinOfertasEsteMes(ofertasMes);
+  const avisoOfertas = avisoOfertasMes(ofertasMes);
+  // Una vez por visita a la pantalla: cuántos nivel base ven el aviso (y en qué estado).
+  const avisoRegistrado = useRef(false);
+  useEffect(() => {
+    if (!avisoOfertas || avisoRegistrado.current) return;
+    avisoRegistrado.current = true;
+    track('plan_base_aviso_visto', { estado: sinOfertas ? 'sin_oferta' : 'con_oferta' });
+  }, [avisoOfertas, sinOfertas]);
 
   const [form, setForm] = useState({
     client_name: '',
@@ -556,6 +571,12 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
         toast.info('Ya te habías apuntado a esta oferta.');
         return;
       }
+      if (String((error as { message?: string }).message ?? '').includes('limite_ofertas_mes')) {
+        track('plan_base_tope', { origen: 'intento' });
+        setOfertasRecarga(n => n + 1);
+        toast.info('Ya has usado tu oferta de este mes. Con Profesional te apuntas a todas.');
+        return;
+      }
       if (String((error as { message?: string }).message ?? '').includes('oferta_cerrada')) {
         setRequests(prev => prev.filter(r => r.id !== req.id));
         toast.info('Esta oferta ya está cerrada. La quitamos de tu lista.');
@@ -566,6 +587,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
     }
 
     setApplied(a => ({ ...a, [req.id]: { responseId: (data as { id: string }).id, chosenAt: null } }));
+    setOfertasRecarga(n => n + 1);
     toast.success('Te has apuntado. El organizador ya lo sabe. Si te elige, te avisamos y tendrás que confirmar.');
     // El aviso al organizador (campana, push y email "se ha apuntado a tu
     // oferta") lo manda el trigger de base de datos. Aquí se mandaba además un
@@ -1256,10 +1278,19 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
                               </p>
                             );
                           })()}
+                          {avisoOfertas && (
+                            <p className="text-xs leading-snug px-3 py-2 rounded-xl" style={{ background: sinOfertas ? 'rgba(212,175,55,0.14)' : 'rgba(0,0,0,0.04)', color: '#444', border: sinOfertas ? '1px solid rgba(212,175,55,0.45)' : 'none' }}>
+                              {avisoOfertas}{' '}
+                              <a href="/dashboard?view=subscription" className="font-bold underline"
+                                onClick={() => track('plan_base_ver_planes', { origen: sinOfertas ? 'tope' : 'aviso' })}>
+                                Ver planes
+                              </a>
+                            </p>
+                          )}
                           <button
                             type="button"
                             onClick={() => applyToRequest(req)}
-                            disabled={applying === req.id}
+                            disabled={applying === req.id || sinOfertas}
                             className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-60"
                             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
                             <Send size={11} /> {applying === req.id ? 'Enviando…' : 'Me interesa esta oferta'}

@@ -16,6 +16,8 @@ import { sanitizeInput } from '@/lib/contentFilter';
 import { logAsistente, resumenAsistente } from '@/lib/asistenteAlta';
 import { normalizarInstagram, esUsuarioInstagram } from '@/lib/instagramUsuario';
 import { ciudadInicial } from '@/lib/ciudadAsistente';
+import { cobrosActivos } from '@/lib/pagos';
+import { track } from '@/lib/track';
 
 // Ciudades principales — lista corta a propósito para elegir en segundos
 // dentro del wizard. Quien necesite un barrio/ciudad más específico lo
@@ -982,6 +984,17 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                 : ofreceServicio ? 'Crear también mi perfil profesional'
                 : 'Completar mi perfil'} <ChevronRight size={15} />
             </button>
+          )}
+          {/* Nota de plan (24 nov 2026): sin paso nuevo, el alta ya pierde gente en este
+              tramo. Solo informa de con qué empieza y cuándo se empieza a pagar. */}
+          {step === 1 && selectedRole !== 'empresario' && cobrosActivos() && (
+            <p className="text-center text-xs leading-snug mt-2" style={{ color: '#4b5563' }}>
+              Empiezas con el nivel base: 1 oferta Flash al mes y 6 fotos. No pagas nada ahora; con Profesional (desde 6,99 €/mes) todo sin tope.{' '}
+              <a href="/precios" target="_blank" rel="noopener noreferrer" className="font-bold underline"
+                onClick={() => track('plan_base_alta_ver_planes')}>
+                Ver planes
+              </a>
+            </p>
           )}
           {/* Salida en todos los pasos (auditoría 15 oct 2026): el asistente
               tapa todo el panel y solo el paso final del organizador tenía
