@@ -1,0 +1,6 @@
+Concurso DJ XPEAK Madrid 2026: material del anuncio del ganador (9 nov 2026).
+carrusel/c.html : las 7 fichas en un solo HTML (#s1 ... #s7). Se renderiza una a una:
+  chrome --headless=new --hide-scrollbars --window-size=1080,1350 --virtual-time-budget=6000 --screenshot=ficha_N.png "file://.../c.html#sN"
+  Cambiar: nombre del ganador/foto (zulo.jpg), cifras de la ficha 2 (10 DJs, 351 votantes), motivo del jurado en la ficha 6.
+correo/render.ts : deno run -A render.ts <ruta>/supabase/functions/send-email/index.ts <carpeta salida>  -> HTML de las 3 versiones del correo.
+post_concurso_cascos_ya_aqui.png : imagen suelta "El premio ya esta aqui" (28 oct).

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Carrusel ganador</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden}
+body{background:#FFFDF7;font-family:Inter,sans-serif;color:#1a1a1a;position:relative}
+.bg{position:absolute;inset:0;
+ background:radial-gradient(620px 520px at 105% -5%,rgba(212,175,55,.32),transparent 70%),
+ radial-gradient(700px 560px at -10% 105%,rgba(212,175,55,.24),transparent 70%),
+ linear-gradient(180deg,#FFFDF7,#FBF3DD)}
+.s{display:none;position:absolute;inset:0;padding:60px 76px}
+.s.on{display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between}
+.marca{display:flex;align-items:center;gap:16px;font-family:Syne;font-weight:800;font-size:40px;letter-spacing:.02em}
+.marca img{width:68px;height:68px;border-radius:18px;box-shadow:8px 8px 18px rgba(150,130,90,.28),-6px -6px 14px rgba(255,255,255,.9)}
+.pill{background:#FBF3DD;color:#8B6A00;font-weight:800;font-size:26px;letter-spacing:.08em;padding:14px 24px;border-radius:999px;
+ box-shadow:inset 4px 4px 8px rgba(150,130,90,.18),inset -4px -4px 8px rgba(255,255,255,.8)}
+.kicker{margin-top:46px;color:#8B6A00;font-weight:800;font-size:30px;letter-spacing:.16em}
+h1{font-family:Syne;font-weight:800;font-size:96px;line-height:1;margin-top:12px;text-transform:uppercase;letter-spacing:-.01em}
+h1 span,.oro{color:#B8941E}
+.txt{font-size:38px;line-height:1.3;font-weight:500}
+.txt b{color:#8B6A00;font-weight:800}
+.clay{border-radius:32px;overflow:hidden;position:relative;border:8px solid #fff;
+ box-shadow:16px 16px 34px rgba(150,130,90,.34),-10px -10px 22px rgba(255,255,255,.95)}
+.clay img{width:100%;height:100%;object-fit:cover;display:block}
+.pie{margin-top:auto;display:flex;align-items:center;justify-content:space-between}
+.desliza{display:flex;align-items:center;gap:14px;background:#2563EB;color:#fff;font-weight:800;font-size:30px;padding:18px 30px;border-radius:20px;
+ box-shadow:8px 8px 18px rgba(37,99,235,.30),-6px -6px 14px rgba(255,255,255,.9)}
+.n{font-weight:700;font-size:28px;color:#8B6A00;letter-spacing:.1em}
+/* 2 */
+.datos{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:56px}
+.dato{background:#fff;border-radius:32px;padding:44px 40px;box-shadow:14px 14px 30px rgba(150,130,90,.28),-10px -10px 22px rgba(255,255,255,.95)}
+.dato .num{font-family:Syne;font-weight:800;font-size:150px;line-height:1;color:#B8941E}
+.dato .lab{font-size:36px;font-weight:700;margin-top:14px;line-height:1.2}
+/* 3 */
+.fin{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px}
+.fin .clay{height:470px}
+.fin .nom{margin-top:20px;font-weight:800;font-size:32px;text-align:center}
+/* 4 */
+.drum{flex:1;display:flex;flex-direction:column;justify-content:center}
+.drum h1{font-size:112px;line-height:1}
+.pts{display:flex;gap:26px;margin-top:40px}
+.pts i{width:46px;height:46px;border-radius:50%;background:#D4AF37;box-shadow:6px 6px 12px rgba(150,130,90,.35),-4px -4px 10px rgba(255,255,255,.9)}
+.pts i:nth-child(2){opacity:.7}.pts i:nth-child(3){opacity:.4}
+.crit{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:44px}
+.col{background:#fff;border-radius:32px;padding:30px 30px;box-shadow:14px 14px 30px rgba(150,130,90,.28),-10px -10px 22px rgba(255,255,255,.95)}
+.ct{font-family:Syne;font-weight:800;font-size:40px;text-transform:uppercase;margin-bottom:18px}
+.si .ct{color:#059669}.no .ct{color:#dc2626}
+.col p{font-size:29px;font-weight:700;line-height:1.25;padding:13px 0 13px 50px;position:relative;border-top:2px solid #FBF3DD}
+.col p::before{position:absolute;left:0;top:12px;width:34px;height:34px;border-radius:50%;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;font-weight:800}
+.si p::before{content:"✓";background:#059669}.no p::before{content:"✕";background:#dc2626}
+.cta7{margin-top:44px;background:#fff;border-radius:32px;padding:44px 40px;box-shadow:14px 14px 30px rgba(150,130,90,.28),-10px -10px 22px rgba(255,255,255,.95)}
+.cta-t{font-family:Syne;font-weight:800;font-size:56px;line-height:1.05;text-transform:uppercase;color:#8B6A00}
+.cta7 p{font-size:34px;line-height:1.3;margin-top:22px;font-weight:500}
+.btn7{display:inline-block;margin-top:30px;background:#2563EB;color:#fff;font-weight:800;font-size:34px;padding:20px 34px;border-radius:20px;box-shadow:8px 8px 18px rgba(37,99,235,.30),-6px -6px 14px rgba(255,255,255,.9)}
+/* 5 */
+.win{height:620px;margin-top:40px;box-shadow:16px 16px 34px rgba(150,130,90,.34),-10px -10px 22px rgba(255,255,255,.95),0 0 90px rgba(212,175,55,.55)}
+.win img{object-position:72% 40%}
+.corona{position:absolute;left:24px;top:24px;background:#D4AF37;border-radius:18px;padding:14px 22px;font-weight:800;font-size:28px;letter-spacing:.08em;box-shadow:6px 6px 14px rgba(0,0,0,.25)}
+</style></head>
+<body>
+<div class="bg"></div>
+
+<section class="s" id="s1">
+ <div class="top"><div class="marca"><img src="logo.png" alt="">XPEAK</div><div class="pill">CONCURSO DJ MADRID</div></div>
+ <div class="kicker">EDICIÓN 2026</div>
+ <h1>Ya tenemos <span>ganador</span></h1>
+ <div class="clay" style="height:560px;margin-top:44px"><img src="caja.jpg" alt=""></div>
+ <div class="pie"><p class="txt" style="font-size:36px">Estos cascos ya tienen dueño.</p><div class="desliza">Desliza →</div></div>
+</section>
+
+<section class="s" id="s2">
+ <div class="top"><div class="marca"><img src="logo.png" alt="">XPEAK</div><div class="n">2 / 7</div></div>
+ <div class="kicker">ANTES DE NADA</div>
+ <h1>Gracias, <span>Madrid</span></h1>
+ <div class="datos">
+  <div class="dato"><div class="num">10</div><div class="lab">DJs se presentaron con su sesión</div></div>
+  <div class="dato"><div class="num">351</div><div class="lab">personas votaron en XPEAK</div></div>
+ </div>
+ <p class="txt" style="margin-top:56px">Tres semanas de sesiones, votos y mucho movimiento. <b>Lo pusisteis muy difícil.</b></p>
+ <div class="pie"><span></span><div class="desliza">Desliza →</div></div>
+</section>
+
+<section class="s" id="s3">
+ <div class="top"><div class="marca"><img src="logo.png" alt="">XPEAK</div><div class="n">3 / 7</div></div>
+ <div class="kicker">LA FINAL</div>
+ <h1>Los 3 <span>finalistas</span></h1>
+ <div class="fin">
+  <div><div class="clay"><img src="vizard.jpg" alt="" style="object-position:58% 50%"></div><div class="nom">DJ VIZARD</div></div>
+  <div><div class="clay"><img src="ruben.jpg" alt="" style="object-position:40% 60%"></div><div class="nom">Ruben Trias</div></div>
+  <div><div class="clay"><img src="zulo.jpg" alt="" style="object-position:72% 40%"></div><div class="nom">Zulo Creativo</div></div>
+ </div>
+ <p class="txt" style="margin-top:44px">Vuestros votos los llevaron a la final. Después, <b>el jurado escuchó sus sesiones</b> y eligió.</p>
+ <div class="pie"><span></span><div class="desliza">Desliza →</div></div>
+</section>
+
+<section class="s" id="s4">
+ <div class="top"><div class="marca"><img src="logo.png" alt="">XPEAK</div><div class="n">4 / 7</div></div>
+ <div class="kicker">ANTES DE DESVELARLO</div>
+ <h1 style="font-size:76px">Cómo ha decidido <span>el jurado</span></h1>
+ <div class="crit">
+  <div class="col si"><div class="ct">Ha contado</div><p>Técnica de mezcla</p><p>Selección musical</p><p>Energía y cómo se construye la sesión</p><p>Sonido de la grabación</p></div>
+  <div class="col no"><div class="ct">No ha contado</div><p>Seguidores en otras redes</p><p>Fama o dónde ha pinchado antes</p><p>El equipo con el que pincha</p><p>Conocer a alguien de XPEAK</p></div>
+ </div>
+ <p class="txt" style="margin-top:30px">Solo la sesión. <b>Cada criterio cuenta lo mismo.</b></p>
+ <div class="pie"><span></span><div class="desliza">Desliza →</div></div>
+</section>
+
+<section class="s" id="s5">
+ <div class="top"><div class="marca"><img src="logo.png" alt="">XPEAK</div><div class="n">5 / 7</div></div>
+ <div class="drum">
+  <div class="kicker" style="margin-top:0">EL JURADO YA HA DECIDIDO</div>
+  <h1 style="margin-top:24px">Y el<br>ganador<br><span>es</span></h1>
+  <div class="pts"><i></i><i></i><i></i></div>
+ </div>
+ <div class="pie"><span></span><div class="desliza">Desliza →</div></div>
+</section>
+
+<section class="s" id="s6">
+ <div class="top"><div class="marca"><img src="logo.png" alt="">XPEAK</div><div class="n">6 / 7</div></div>
+ <div class="clay win" style="height:500px;margin-top:30px"><img src="zulo.jpg" alt=""><div class="corona">GANADOR 2026</div></div>
+ <h1 style="margin-top:34px;font-size:96px;line-height:.98">Zulo <span>Creativo</span></h1>
+ <p class="txt" style="margin-top:20px;font-size:34px">El jurado destacó una sesión cuidada y con un ritmo muy bien llevado, con intercambios de energía que dejan respirar.</p>
+ <div class="pie"><p class="txt" style="font-size:32px">Se lleva unos <b>Pioneer DJ HDJ-X5</b>.</p><div class="desliza">Desliza →</div></div>
+</section>
+
+
+<section class="s" id="s7">
+ <div class="top"><div class="marca"><img src="logo.png" alt="">XPEAK</div><div class="n">7 / 7</div></div>
+ <div class="kicker">PARA LOS QUE NO HAN GANADO</div>
+ <h1 style="font-size:84px">Ha estado <span>muy ajustado</span></h1>
+ <p class="txt" style="margin-top:34px">Había que elegir a uno y no ha sido fácil. <b>DJ VIZARD, Ruben Trias y todos los que os presentasteis</b>: gracias por dar la cara con vuestra sesión.</p>
+ <div class="cta7">
+  <div class="cta-t">La próxima edición puede ser la tuya</div>
+  <p>Crea tu perfil de DJ en XPEAK con foto, bio y una sesión que te represente, y estate atento a la siguiente convocatoria.</p>
+  <div class="btn7">xpeak.es/concurso-dj-madrid</div>
+ </div>
+</section>
+<script>document.getElementById(location.hash.slice(1)||'s1').classList.add('on')</script>
+</body></html>

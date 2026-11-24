@@ -1,15 +1,15 @@
 import QRCode from 'qrcode';
 import { chromium } from 'playwright';
 import fs from 'fs'; import path from 'path'; import { pathToFileURL } from 'url';
-const base = 'https://xpeak.site/auth?mode=register';
+const base = 'https://xpeak.es/auth?mode=register';
 const url = (role) => `${base}&role=${role}&utm_source=flyer&utm_medium=print&utm_campaign=flyer_${role}`;
 const qr = (t) => QRCode.toString(t, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#241C08', light: '#FFFFFF' } });
-const [qe, qp] = await Promise.all([qr(url('empresario')), qr(url('profesional'))]);
+const qe = await qr('https://xpeak.es/auth?mode=register&utm_source=flyer&utm_medium=print&utm_campaign=flyer_registro');
 const photo = pathToFileURL(path.resolve('../../public/images/pexels/1763075.jpg')).href;
 const IG = () => `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r=".6" fill="#fff"/></svg>`;
 const TTP = 'M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z';
 const TT = () => `<svg viewBox="-1 -1 26 26"><path d="${TTP}" fill="#25F4EE" transform="translate(-.9 -.7)"/><path d="${TTP}" fill="#FE2C55" transform="translate(.9 .7)"/><path d="${TTP}" fill="#fff"/></svg>`;
-const [qi, qt] = await Promise.all([qr('https://www.instagram.com/xpeaksite'), qr('https://www.tiktok.com/@xpeak30')]);
+const qi = await qr('https://www.instagram.com/xpeaksite');
 const icon = pathToFileURL(path.resolve('xpeak-icon.png')).href;
 const html = `<!doctype html><html lang="es"><meta charset="utf-8"><style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@500;600;700;800&display=swap');
@@ -58,22 +58,20 @@ h1{font-size:15pt;line-height:1.12;margin-top:3.5mm;text-shadow:0 .4mm 1.6mm rgb
 <div class="page" id="f">
  <div class="hero"><img class="mark" src="${icon}">
   <h1 class="syne">¿Organizas<br>o trabajas<br><span class="gold">en eventos?</span></h1>
-  <div class="sub">DJs, fotógrafos, camareros, food trucks y más. Sin intermediarios y 0 comisión.</div></div>
- <div class="cards">
-  <div class="card e"><div class="tag">Organizo eventos</div><h2 class="syne">Empresario u organizador</h2><p>Publica lo que necesitas y te responden los profesionales disponibles.</p><div class="qr">${qe}</div><div class="scan">Escanea y publica</div></div>
-  <div class="card p"><div class="tag">Trabajo en eventos</div><h2 class="syne">Profesional</h2><p>Crea tu perfil con fotos y tarifa y recibe avisos de eventos en tu zona.</p><div class="qr">${qp}</div><div class="scan">Escanea y crea tu perfil</div></div>
+  <div class="sub">DJs, fotógrafos, camareros, food trucks y más.</div></div>
+ <div class="cards single">
+  <div class="card e"><div class="tag">Organizo o trabajo</div><h2 class="syne">Crea tu cuenta</h2><p>Organizadores: publica lo que necesitas. Profesionales: crea tu perfil y recibe avisos de eventos.</p><div class="qr">${qe}</div><div class="scan">Escanea y regístrate</div></div>
  </div>
- <div class="social"><div><span class="ic ig">${IG()}</span>@xpeaksite</div><div><span class="ic tt">${TT()}</span>@xpeak30</div></div>
+ <div class="social"><span class="url syne">xpeak.es</span></div>
 </div>
 <div class="page" id="b">
  <div class="hero"><img class="mark" src="${icon}">
-  <h1 class="syne">Síguenos y<br>entérate de<br><span class="gold">los bolos</span></h1>
+  <h1 class="syne">Síguenos y<br>entérate de<br><span class="gold">todo</span></h1>
   <div class="sub">Novedades, eventos y profesionales de XPEAK cada semana.</div></div>
- <div class="cards">
+ <div class="cards single">
   <div class="card ig"><div class="tag">Instagram</div><h2 class="syne">@xpeaksite</h2><p>Escanea el código y síguenos para no perderte nada.</p><div class="qr">${qi}</div><div class="scan">Escanea y síguenos</div></div>
-  <div class="card tt"><div class="tag">TikTok</div><h2 class="syne">@xpeak30</h2><p>Escanea el código y síguenos para no perderte nada.</p><div class="qr">${qt}</div><div class="scan">Escanea y síguenos</div></div>
  </div>
- <div class="social"><span class="url syne">xpeak.site</span></div>
+ <div class="social"><span class="url syne">xpeak.es</span></div>
 </div>
 </body></html>`;
 const K = 0.7048; // A6 (105 mm) -> A7 (74 mm)
@@ -86,6 +84,7 @@ const htmlA7 = html.replace('Empresario u organizador', 'Organizador').replace('
   return `<style>${importFuentes}${escala(resto)}
 @page{size:74mm 105mm;margin:0}
 .page{width:74mm;height:105mm}
+.single .qr{width:30mm;height:30mm}.single+.social{padding-top:2mm}.single .card h2{min-height:0;margin:2.2mm 0 1.2mm}.single .card p{min-height:0;margin-bottom:1.6mm;padding:0 1mm}
 .bleed .page{width:80mm;height:111mm;padding:0 3mm 3mm}
 .bleed .hero{margin:0 -3mm;height:46.7mm;padding:7.2mm 7.9mm 0}
 </style>`;

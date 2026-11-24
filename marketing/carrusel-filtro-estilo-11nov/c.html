@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Carrusel filtro estilo</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden}
+body{background:#FFFDF7;font-family:Inter,sans-serif;color:#1a1a1a;position:relative}
+.bg{position:absolute;inset:0;background:radial-gradient(620px 520px at 105% -5%,rgba(212,175,55,.32),transparent 70%),radial-gradient(700px 560px at -10% 105%,rgba(212,175,55,.24),transparent 70%),linear-gradient(180deg,#FFFDF7,#FBF3DD)}
+.s{display:none;position:absolute;inset:0;padding:60px 76px}
+.s.on{display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between}
+.marca{display:flex;align-items:center;gap:16px;font-family:Syne;font-weight:800;font-size:40px;letter-spacing:.02em}
+.marca img{width:68px;height:68px;border-radius:18px;box-shadow:8px 8px 18px rgba(150,130,90,.28),-6px -6px 14px rgba(255,255,255,.9)}
+.pill{background:#FBF3DD;color:#8B6A00;font-weight:800;font-size:26px;letter-spacing:.08em;padding:14px 24px;border-radius:999px;box-shadow:inset 4px 4px 8px rgba(150,130,90,.18),inset -4px -4px 8px rgba(255,255,255,.8)}
+.kicker{margin-top:46px;color:#8B6A00;font-weight:800;font-size:30px;letter-spacing:.16em}
+h1{font-family:Syne;font-weight:800;font-size:82px;line-height:1.02;margin-top:14px;text-transform:uppercase}
+h1 span{color:#B8941E}
+.txt{font-size:38px;line-height:1.3;font-weight:500;margin-top:28px}
+.txt b{color:#8B6A00;font-weight:800}
+.clay{border-radius:32px;overflow:hidden;border:8px solid #fff;box-shadow:16px 16px 34px rgba(150,130,90,.34),-10px -10px 22px rgba(255,255,255,.95)}
+.clay img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.08) saturate(1.1) brightness(1.04)}
+.pie{margin-top:auto;display:flex;align-items:center;justify-content:space-between}
+.desliza{background:#2563EB;color:#fff;font-weight:800;font-size:30px;padding:18px 30px;border-radius:20px;box-shadow:8px 8px 18px rgba(37,99,235,.30),-6px -6px 14px rgba(255,255,255,.9)}
+.n{font-weight:700;font-size:28px;color:#8B6A00;letter-spacing:.1em}
+.chips{display:flex;flex-wrap:wrap;gap:18px;margin-top:44px}
+.chip{background:#fff;border-radius:22px;padding:20px 30px;font-weight:800;font-size:36px;box-shadow:10px 10px 22px rgba(150,130,90,.26),-8px -8px 16px rgba(255,255,255,.95)}
+.chip.o{color:#8B6A00}
+.combo{margin-top:40px;background:#fff;border-radius:32px;padding:36px 40px;font-size:36px;line-height:1.3;font-weight:500;box-shadow:14px 14px 30px rgba(150,130,90,.28),-10px -10px 22px rgba(255,255,255,.95)}
+.combo b{color:#8B6A00;font-weight:800}
+.btn{display:inline-block;margin-top:34px;background:#2563EB;color:#fff;font-weight:800;font-size:38px;padding:24px 40px;border-radius:22px;box-shadow:8px 8px 18px rgba(37,99,235,.30),-6px -6px 14px rgba(255,255,255,.9)}
+</style></head><body>
+<div class="bg"></div>
+
+<section class="s" id="s1">
+ <div class="top"><div class="marca"><img src="logo.png">XPEAK</div><div class="pill">NOVEDAD</div></div>
+ <div class="kicker">BUSCADOR DE DJs</div>
+ <h1>Encuentra al DJ por su <span>estilo</span></h1>
+ <div class="clay" style="height:470px;margin-top:36px"><img src="foto.jpg" style="object-position:55% 50%"></div>
+ <p class="txt">Nuevo filtro: el estilo de música que quieres para tu evento, a un toque.</p>
+ <div class="pie"><div class="desliza">Desliza →</div><div class="n">1 / 3</div></div>
+</section>
+
+<section class="s" id="s2">
+ <div class="top"><div class="marca"><img src="logo.png">XPEAK</div><div class="pill">NOVEDAD</div></div>
+ <div class="kicker">ELIGE TU ESTILO</div>
+ <h1>11 estilos, <span>un filtro</span></h1>
+ <div class="chips">
+  <div class="chip o">Comercial</div><div class="chip o">Remember</div><div class="chip o">House</div><div class="chip o">Techno</div>
+  <div class="chip">Reggaetón y latino</div><div class="chip">Pachanga y verbenas</div><div class="chip">Trance</div>
+  <div class="chip">EDM y electro</div><div class="chip">Hardstyle y hardcore</div><div class="chip">Disco y funk</div><div class="chip">Chill e indie</div>
+ </div>
+ <div class="combo">Combínalo con la ciudad: por ejemplo, <b>DJs de Remember en la Comunidad de Madrid</b>.</div>
+ <div class="pie"><div class="desliza">Desliza →</div><div class="n">2 / 3</div></div>
+</section>
+
+<section class="s" id="s3">
+ <div class="top"><div class="marca"><img src="logo.png">XPEAK</div><div class="pill">CONFIANZA</div></div>
+ <div class="kicker">TAMBIÉN NOS LO TOMAMOS EN SERIO</div>
+ <h1>Revisamos cada <span>perfil</span></h1>
+ <p class="txt">Escuchamos las sesiones y revisamos, uno a uno, los trabajos que cada DJ muestra en su perfil. Para que <b>quien contrata pueda fiarse de lo que ve</b>.</p>
+ <p class="txt">Los DJs que empiezan pasan a la <b>Cantera XPEAK</b> y, cuando su nivel lo demuestra, al directorio.</p>
+ <div><span class="btn">Busca tu DJ en xpeak.es</span></div>
+ <div class="clay" style="height:250px;margin-top:40px"><img src="foto.jpg" style="object-position:50% 100%"></div>
+ <div class="pie"><div></div><div class="n">3 / 3</div></div>
+</section>
+
+<script>const h=location.hash.slice(1)||'s1';document.getElementById(h).classList.add('on')</script>
+</body></html>

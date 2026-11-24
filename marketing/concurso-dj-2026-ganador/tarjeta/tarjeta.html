@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Tarjeta ganador</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+@page{size:1500px 1050px;margin:0}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1500px;height:1050px;overflow:hidden}
+body{background:#FFFDF7;font-family:Inter,sans-serif;color:#1a1a1a;position:relative}
+.bg{position:absolute;inset:0;
+ background:radial-gradient(700px 560px at 105% -5%,rgba(212,175,55,.34),transparent 70%),
+ radial-gradient(760px 600px at -10% 105%,rgba(212,175,55,.26),transparent 70%),
+ linear-gradient(180deg,#FFFDF7,#FBF3DD)}
+.card{position:absolute;inset:0;padding:70px 90px;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between}
+.marca{display:flex;align-items:center;gap:18px;font-family:Syne;font-weight:800;font-size:44px;letter-spacing:.02em}
+.marca img{width:76px;height:76px;border-radius:20px;box-shadow:8px 8px 18px rgba(150,130,90,.28),-6px -6px 14px rgba(255,255,255,.9)}
+.pill{background:#FBF3DD;color:#8B6A00;font-weight:800;font-size:24px;letter-spacing:.08em;padding:14px 26px;border-radius:999px;
+ box-shadow:inset 4px 4px 8px rgba(150,130,90,.18),inset -4px -4px 8px rgba(255,255,255,.8)}
+.main{flex:1;display:flex;gap:60px;align-items:center;margin-top:20px}
+.l{flex:none;width:790px}
+.kicker{color:#8B6A00;font-weight:800;font-size:26px;letter-spacing:.16em}
+h1{font-family:Syne;font-weight:800;font-size:60px;line-height:1;margin-top:14px;text-transform:uppercase;letter-spacing:-.01em}
+h1 span{color:#B8941E;display:block}
+.txt{font-size:29px;line-height:1.38;font-weight:500;margin-top:34px}
+.txt b{color:#8B6A00;font-weight:800}
+.r{flex:1;min-width:0}
+.clay{height:600px;border-radius:32px;overflow:hidden;position:relative;border:8px solid #fff;
+ box-shadow:16px 16px 34px rgba(150,130,90,.34),-10px -10px 22px rgba(255,255,255,.95),0 0 80px rgba(212,175,55,.45)}
+.clay img{width:100%;height:100%;object-fit:cover;display:block}
+.tag{position:absolute;left:22px;top:22px;background:#D4AF37;border-radius:16px;padding:12px 20px;font-weight:800;font-size:24px;letter-spacing:.08em;box-shadow:6px 6px 14px rgba(0,0,0,.22)}
+.pie{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.firma{font-size:30px;font-weight:700}
+.firma b{color:#8B6A00;font-weight:800}
+.web{background:#2563EB;color:#fff;font-weight:800;font-size:26px;padding:16px 28px;border-radius:18px;
+ box-shadow:8px 8px 18px rgba(37,99,235,.30),-6px -6px 14px rgba(255,255,255,.9)}
+</style></head>
+<body><div class="bg"></div>
+<div class="card">
+ <div class="top"><div class="marca"><img src="logo.png" alt="">XPEAK</div><div class="pill">CONCURSO DJ MADRID 2026</div></div>
+ <div class="main">
+  <div class="l">
+   <div class="kicker">GRACIAS POR TU COLABORACIÓN</div>
+   <h1>Enhorabuena,<span>Zulo Creativo</span></h1>
+   <p class="txt">Tu sesión fue la elegida por el jurado entre 10 DJs y más de 350 votantes: cuidada, con un ritmo muy bien llevado y <b>intercambios de energía que dejan respirar.</b></p>
+   <p class="txt" style="margin-top:20px">Disfruta de tus <b>Pioneer DJ HDJ-X5</b>. Te los has ganado.</p>
+  </div>
+  <div class="r"><div class="clay"><img src="caja.jpg" alt="" style="object-position:50% 50%"><div class="tag">GANADOR 2026</div></div></div>
+ </div>
+ <div class="pie"><div class="firma">Un abrazo de parte de todo el equipo de <b>XPEAK</b></div><div class="web">xpeak.es</div></div>
+</div>
+</body></html>

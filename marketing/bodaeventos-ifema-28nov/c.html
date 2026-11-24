@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Carrusel Bodaeventos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden}
+body{background:#FFFDF7;font-family:Inter,sans-serif;color:#1a1a1a;position:relative}
+.bg{position:absolute;inset:0;background:radial-gradient(620px 520px at 105% -5%,rgba(212,175,55,.32),transparent 70%),radial-gradient(700px 560px at -10% 105%,rgba(212,175,55,.24),transparent 70%),linear-gradient(180deg,#FFFDF7,#FBF3DD)}
+.s{display:none;position:absolute;inset:0;padding:60px 76px}
+.s.on{display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between}
+.marca{display:flex;align-items:center;gap:16px;font-family:Syne;font-weight:800;font-size:40px;letter-spacing:.02em}
+.marca img{width:68px;height:68px;border-radius:18px;box-shadow:8px 8px 18px rgba(150,130,90,.28),-6px -6px 14px rgba(255,255,255,.9)}
+.pill{background:#FBF3DD;color:#8B6A00;font-weight:800;font-size:26px;letter-spacing:.08em;padding:14px 24px;border-radius:999px;box-shadow:inset 4px 4px 8px rgba(150,130,90,.18),inset -4px -4px 8px rgba(255,255,255,.8)}
+.kicker{margin-top:56px;color:#8B6A00;font-weight:800;font-size:30px;letter-spacing:.16em}
+h1{font-family:Syne;font-weight:800;font-size:92px;line-height:1.02;margin-top:18px;text-transform:uppercase}
+h1.g{font-size:86px}
+h1 span{color:#B8941E}
+.txt{font-size:42px;line-height:1.32;font-weight:500;margin-top:34px}
+.txt b{color:#8B6A00;font-weight:800}
+.pie{margin-top:auto;display:flex;align-items:center;justify-content:space-between}
+.desliza{background:#2563EB;color:#fff;font-weight:800;font-size:30px;padding:18px 30px;border-radius:20px;box-shadow:8px 8px 18px rgba(37,99,235,.30),-6px -6px 14px rgba(255,255,255,.9)}
+.n{font-weight:700;font-size:28px;color:#8B6A00;letter-spacing:.1em}
+.card{margin-top:40px;background:#fff;border-radius:32px;padding:40px 44px;font-size:40px;line-height:1.3;font-weight:500;box-shadow:14px 14px 30px rgba(150,130,90,.28),-10px -10px 22px rgba(255,255,255,.95)}
+.card b{color:#8B6A00;font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:18px;margin-top:40px}
+.chip{background:#fff;border-radius:22px;padding:20px 30px;font-weight:800;font-size:36px;box-shadow:10px 10px 22px rgba(150,130,90,.26),-8px -8px 16px rgba(255,255,255,.95)}
+.chip.o{color:#8B6A00}
+.fecha{margin-top:44px;display:flex;gap:26px}
+.dia{flex:1;background:#fff;border-radius:32px;padding:34px 20px;text-align:center;box-shadow:14px 14px 30px rgba(150,130,90,.28),-10px -10px 22px rgba(255,255,255,.95)}
+.dia .d{font-family:Syne;font-weight:800;font-size:150px;line-height:1;color:#B8941E}
+.dia .l{font-weight:800;font-size:34px;letter-spacing:.12em;color:#8B6A00;margin-top:8px}
+.btn{display:inline-block;margin-top:40px;background:#2563EB;color:#fff;font-weight:800;font-size:40px;padding:26px 44px;border-radius:22px;box-shadow:8px 8px 18px rgba(37,99,235,.30),-6px -6px 14px rgba(255,255,255,.9)}
+</style></head><body>
+<div class="bg"></div>
+
+<section class="s" id="s1">
+ <div class="top"><div class="marca"><img src="logo.png">XPEAK</div><div class="pill">ESTE FINDE</div></div>
+ <div class="kicker">IFEMA MADRID · 28 Y 29 NOV</div>
+ <h1 class="g">Nos pedisteis trabajo.<br><span>Vamos a buscarlo.</span></h1>
+ <p class="txt">Este sábado y domingo estamos donde se contrata para <b>bodas y eventos</b>.</p>
+ <div class="pie"><div class="desliza">Desliza →</div><div class="n">1 / 6</div></div>
+</section>
+
+<section class="s" id="s2">
+ <div class="top"><div class="marca"><img src="logo.png">XPEAK</div><div class="pill">LA ENCUESTA</div></div>
+ <div class="kicker">LO DIJISTEIS VOSOTROS</div>
+ <h1 style="font-size:78px">Pedisteis ayuda para <span>encontrar trabajo</span></h1>
+ <div class="card">En la última encuesta de la web, muchos profesionales nos dijisteis lo mismo: <b>necesitáis que os lleguen más trabajos</b>.</div>
+ <p class="txt">Os hemos escuchado. Y no vamos a esperar sentados.</p>
+ <div class="pie"><div class="desliza">Desliza →</div><div class="n">2 / 6</div></div>
+</section>
+
+<section class="s" id="s3">
+ <div class="top"><div class="marca"><img src="logo.png">XPEAK</div><div class="pill">LA CITA</div></div>
+ <div class="kicker">BODAEVENTOS MADRID · IFEMA</div>
+ <h1>Sábado y <span>domingo</span></h1>
+ <div class="fecha"><div class="dia"><div class="d">28</div><div class="l">SÁBADO</div></div><div class="dia"><div class="d">29</div><div class="l">DOMINGO</div></div></div>
+ <p class="txt">Noviembre de 2026, en <b>IFEMA Madrid</b>. Una feria de bodas y eventos llena de empresas y profesionales del sector.</p>
+ <div class="pie"><div class="desliza">Desliza →</div><div class="n">3 / 6</div></div>
+</section>
+
+<section class="s" id="s4">
+ <div class="top"><div class="marca"><img src="logo.png">XPEAK</div><div class="pill">QUIÉN ESTÁ</div></div>
+ <div class="kicker">DONDE SE MUEVE EL SECTOR</div>
+ <h1>Quien contrata <span>está allí</span></h1>
+ <div class="chips"><div class="chip o">Fotografía</div><div class="chip o">Música</div><div class="chip">Decoración</div><div class="chip">Flores</div><div class="chip">Gastronomía</div><div class="chip">Servicios para eventos</div></div>
+ <p class="txt">Empresas y organizadores que montan bodas y eventos cada semana. <b>Justo con quien queremos que te conozcan.</b></p>
+ <div class="pie"><div class="desliza">Desliza →</div><div class="n">4 / 6</div></div>
+</section>
+
+<section class="s" id="s5">
+ <div class="top"><div class="marca"><img src="logo.png">XPEAK</div><div class="pill">QUÉ LLEVAMOS</div></div>
+ <div class="kicker">SIN STAND, CON GANAS</div>
+ <h1>Tarjetas, flyers y <span>XPEAK</span></h1>
+ <div class="card">Vamos a repartir <b>tarjetas y flyers</b> y a presentar la plataforma a organizadores y empresas, <b>contando con los profesionales que estáis en ella</b>.</div>
+ <p class="txt">Cuando pregunten "¿dónde encuentro a alguien bueno?", queremos que la respuesta sea XPEAK.</p>
+ <div class="pie"><div class="desliza">Desliza →</div><div class="n">5 / 6</div></div>
+</section>
+
+<section class="s" id="s6">
+ <div class="top"><div class="marca"><img src="logo.png">XPEAK</div><div class="pill">TU PARTE</div></div>
+ <div class="kicker">ANTES DEL SÁBADO</div>
+ <h1>Que tu perfil <span>esté listo</span></h1>
+ <div class="card">Foto, Instagram, tus mejores trabajos y tu ciudad. <b>Es lo primero que verán</b> quienes entren a buscarte.</div>
+ <div><span class="btn">Revisa tu perfil en xpeak.es</span></div>
+ <p class="txt">Si vas a la feria, escríbenos por el chat de XPEAK y nos vemos allí.</p>
+ <div class="pie"><div></div><div class="n">6 / 6</div></div>
+</section>
+
+<script>const h=location.hash.slice(1)||'s1';document.getElementById(h).classList.add('on')</script>
+</body></html>

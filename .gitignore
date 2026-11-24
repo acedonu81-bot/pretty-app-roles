@@ -38,3 +38,6 @@ android/app/*.keystore
 supabase/.temp/
 scratch/
 .superpowers/
+
+# Listas de captacion con contactos y estado: el repo es publico (25 nov 2026)
+marketing/captacion-salas-navidad-2026/
