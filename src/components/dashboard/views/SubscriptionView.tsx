@@ -129,6 +129,10 @@ const SubscriptionView = () => {
   const [ciclo, setCiclo] = useState<Ciclo>(() => (esBlackFriday() ? 'anual' : 'mensual'));
   const [sus, setSus] = useState<MiSuscripcion | null>(null);
   const tier = subscription_tier ?? 'free';
+  // El descuento de Black Friday es solo para la primera suscripción (lo aplica crear-checkout):
+  // quien ya tuvo plan ve los precios normales y un aviso.
+  const yaTuvoPlan = !!sus?.estado;
+  const bfAplica = esBlackFriday() && !yaTuvoPlan;
   const todos = [role, ...(roles ?? [])].filter(Boolean) as string[];
   const oficios = oficiosDe(todos);
   const profesional = oficios.profesional;
@@ -248,7 +252,14 @@ const SubscriptionView = () => {
 
       {venta && tier === 'free' && (
         <div>
-          <AvisoBlackFriday className="max-w-3xl mx-auto mb-6" />
+          {yaTuvoPlan && esBlackFriday() ? (
+            <div role="note" className="max-w-3xl mx-auto mb-6 rounded-2xl px-5 py-4 text-sm font-semibold"
+              style={{ background: '#FFFDF7', border: '1.5px solid #D4AF37', color: '#4a3a0a' }}>
+              El 35 % de Black Friday es solo para la primera suscripción y tu cuenta ya tuvo un plan. Verás el precio normal al pagar.
+            </div>
+          ) : (
+            <AvisoBlackFriday className="max-w-3xl mx-auto mb-6" />
+          )}
           <div className="flex justify-center mb-8">
             <div className="inline-flex items-center gap-3 rounded-full pl-5 pr-2 py-2"
               style={{ background: '#FFFDF7', boxShadow: '0 2px 10px -3px rgba(90,66,0,.35)', border: '1px solid rgba(212,175,55,.45)' }}>
@@ -265,7 +276,7 @@ const SubscriptionView = () => {
                 className="text-sm font-bold" style={{ color: ciclo === 'anual' ? '#111' : '#8a8170' }}>Anual</button>
               <span className="rounded-full px-3 py-1 text-xs font-extrabold whitespace-nowrap"
                 style={{ background: 'linear-gradient(90deg,#D1FAE5,#BFDBFE)', color: '#065f46' }}>
-                {esBlackFriday() ? '-35 % Black Friday' : 'Ahorras 2 meses'}
+                {bfAplica ? '-35 % Black Friday' : 'Ahorras 2 meses'}
               </span>
             </div>
           </div>
@@ -274,7 +285,7 @@ const SubscriptionView = () => {
               const plan = subscriptionPlans.find(x => x.id === p)!;
               const t = TEMA[p];
               const anual = ciclo === 'anual';
-              const bf = anual && esBlackFriday();
+              const bf = anual && bfAplica;
               const primerAno = bf ? PRECIOS_BLACK_FRIDAY[p] : PRECIOS_ANUALES[p];
               const precio = anual ? primerAno / 12 : plan.monthlyPrice;
               const destacado = p === 'starter';
