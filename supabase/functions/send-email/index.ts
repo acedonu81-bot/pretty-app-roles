@@ -1083,6 +1083,9 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center">
         ${ORGANIZA_NOMBRE === d.professional_name
           ? 'Nuestro equipo ha recibido tu solicitud y te escribe en breve para entender qué necesitas y contarte el precio antes de empezar. No hay ningún cobro hasta que lo aceptes.'
+          : String(d.professional_name ?? '').startsWith('Solicitud particular: ')
+          // 25 nov 2026: el equipo se implica en cada solicitud, sin prometer cobertura.
+          ? 'Hemos recibido tu solicitud. Además de enviarla a los profesionales de XPEAK que encajan, nuestro equipo te ayuda a encontrar profesionales disponibles para tu fecha. Cuando alguien pueda cubrirla, te lo contamos por aquí.'
           : `<strong style="color:#D4AF37">${esc(d.professional_name)}</strong> ha recibido tu solicitud y se pondrá en contacto contigo en breve.`}
       </p>
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:18px;margin:0 0 20px;box-shadow:0 6px 16px rgba(212,175,55,0.14)">
