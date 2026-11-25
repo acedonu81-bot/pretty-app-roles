@@ -380,7 +380,9 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
     event_description: `[Particular] [${eventType}] [${service}] ${extras}`.trim(),
     agreed_price: null, status: 'pending',
   };
-  const envios: Promise<unknown>[] = [enviar('flash_booking', payload), enviar('flash_booking_confirm', payload)];
+  // Al admin le decimos a quién ha ido (o que a nadie) para saber si moverla.
+  const reparto = destinatarios.map(p => p.display_name || 'profesional');
+  const envios: Promise<unknown>[] = [enviar('flash_booking', { ...payload, reparto }), enviar('flash_booking_confirm', payload)];
   // Faltan fecha o lugar (o el lugar es basura): le pedimos los datos por email
   // para que los profesionales puedan contestar con precio.
   if (faltan || location.length < 3) {

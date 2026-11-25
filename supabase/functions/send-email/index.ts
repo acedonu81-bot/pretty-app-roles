@@ -1004,11 +1004,18 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   }),
 
   // 2. Flash Booking — aviso a admin
-  flash_booking: (d) => ({
+  flash_booking: (d) => {
+    // 25 nov 2026: en las de particular, el asunto dice a quién se mandó (o que
+    // no fue a nadie) para saber de un vistazo si hay que moverla a mano.
+    // d.reparto solo llega desde particular-solicitud (clave de servicio).
+    const reparto: string[] | null = Array.isArray(d.reparto) ? d.reparto.map((n: unknown) => String(n)) : null;
+    const estado = reparto === null ? ''
+      : reparto.length ? `Enviada a ${reparto.length} · ` : 'SIN NADIE, repártela tú · ';
+    return {
     // Particular que pide que lo organice XPEAK (27 oct 2026): se distingue en la bandeja.
     subject: ORGANIZA_NOMBRE === d.professional_name
       ? `ORGANIZAR EVENTO (Madrid): ${esc(d.requester_name)} · ${esc(d.event_date ?? 'Sin fecha')}`
-      : `Flash Booking: ${esc(d.professional_name)} · ${esc(d.event_date ?? 'Sin fecha')}`,
+      : `${estado}${reparto === null ? 'Flash Booking: ' : ''}${esc(d.professional_name)} · ${esc(d.event_date ?? 'Sin fecha')}`,
     to: ADMIN,
     replyTo: d.requester_contact?.includes('@') ? d.requester_contact : ADMIN,
     html: base(`
@@ -1016,6 +1023,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         <p style="margin:0 0 4px">${badge('Flash Booking')}</p>
         <p style="font-size:20px;font-weight:900;margin:6px 0 0">Para: ${esc(d.professional_name)}</p>
       </div>
+      ${reparto === null ? '' : `<p style="font-size:15px;font-weight:700;margin:0 0 16px;color:${reparto.length ? '#0A0908' : '#B42318'}">${
+        reparto.length
+          ? `Se ha enviado a ${reparto.length}: ${reparto.map(esc).join(', ')}. Si en unas horas nadie contesta, muévela tú.`
+          : 'No ha ido a ningún profesional: no hay nadie que encaje. Búscale tú a alguien.'}</p>`}
       ${rows([
         ['Solicitante', d.requester_name],
         ['Contacto', d.requester_contact],
@@ -1024,7 +1035,37 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Descripción', d.event_description],
       ])}
       <p style="color:#6B7280;font-size:12px;margin-top:16px">Responder a este email contacta directamente al solicitante.</p>`),
-  }),
+    };
+  },
+
+  // Oferta nueva de un organizador — aviso a admin (25 nov 2026). Antes solo
+  // salía en la campana. Solo por secreto interno (trigger notify_new_event_request).
+  admin_oferta_nueva: (d) => {
+    const fechas = Array.isArray(d.fechas) && d.fechas.length ? d.fechas.join(', ') : 'Sin fecha';
+    const n = Number(d.avisados) || 0;
+    const presupuesto = d.budget_max ? `${d.budget_min ? `${d.budget_min} a ` : 'hasta '}${d.budget_max} €` : '';
+    return {
+      subject: `${n ? `Avisados ${n}` : 'SIN NADIE AVISADO'} · Oferta nueva: ${esc(d.roles ?? 'profesionales')}${d.city ? ` en ${esc(d.city)}` : ''} · ${esc(fechas)}`,
+      to: ADMIN,
+      html: base(`
+        <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px">
+          <p style="margin:0 0 4px">${badge('Oferta nueva')}</p>
+          <p style="font-size:18px;font-weight:900;margin:6px 0 0">${esc(d.client_name ?? 'Un organizador')} busca ${esc(d.roles ?? 'profesionales')}</p>
+        </div>
+        <p style="font-size:15px;font-weight:700;margin:0 0 16px;color:${n ? '#0A0908' : '#B42318'}">${
+          n ? `Se ha avisado a ${n} profesional(es). Si en unas horas nadie se apunta, muévela tú.`
+            : 'No se ha avisado a nadie: ningún profesional encaja. Búscale tú a alguien.'}</p>
+        ${rows([
+          ['Tipo de evento', d.event_type ?? ''],
+          ['Ciudad', d.city ?? ''],
+          ['Fechas', fechas],
+          ['Presupuesto', presupuesto],
+          ['Descripción', d.description ?? ''],
+        ])}
+        ${btn('Ver ofertas en el panel →', 'https://xpeak.es/dashboard?view=flashbooking')}
+      `, `Oferta nueva: ${esc(d.roles ?? 'profesionales')}`),
+    };
+  },
 
   // 3. Flash Booking — confirmación al solicitante
   flash_booking_confirm: (d) => ({
@@ -2564,6 +2605,9 @@ async function atender(req: Request): Promise<Response> {
     // Desde el navegador se descarta: si no, un usuario con sesión podría mandar
     // desde XPEAK un enlace de entrada a SU cuenta y dejar a otro dentro de ella.
     if (data && typeof data === 'object' && !isInternal && !isService) delete data.action_url;
+    // reparto (a quién se mandó una solicitud de particular) solo lo pone
+    // particular-solicitud con la clave de servicio: cambia el asunto del aviso al admin.
+    if (data && typeof data === 'object' && !isInternal && !isService) delete data.reparto;
 
     // Quien llama. El gateway ya verifica la firma del JWT (verify_jwt por
     // defecto), asi que el claim role es fiable: anon = visitante sin sesion
