@@ -103,6 +103,15 @@ const ROUTES = [
   },
   // City landings — DJ
   {
+    path: '/comunion/contratar-dj',
+    // Mismo título y descripción que DJ_OCASIONES en components/DjOcasionMadrid.tsx (25 nov 2026).
+    title: 'DJ y discomóvil para comuniones en Madrid: precios y disponibilidad | XPEAK',
+    desc: 'DJs y discomóviles para comuniones en Madrid con su precio por hora, estilos y fotos. Mira cuánto cuesta y pide presupuesto para la fecha de la comunión.',
+    ogTitle: 'DJ y discomóvil para comuniones en Madrid: precios y disponibilidad',
+    ogDesc: 'DJs y discomóviles para comuniones en Madrid con su precio por hora, estilos y fotos. Mira cuánto cuesta y pide presupuesto para la fecha de la comunión.',
+    ogType: 'website',
+  },
+  {
     path: '/boda/contratar-dj',
     // Mismo título y descripción que DJ_OCASIONES en components/DjOcasionMadrid.tsx (25 nov 2026).
     title: 'DJ para bodas en Madrid: precios reales y disponibilidad | XPEAK',

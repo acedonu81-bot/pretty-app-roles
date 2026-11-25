@@ -95,6 +95,10 @@ const faqStructured = {
             <p className="text-base leading-relaxed" style={{ color: '#222' }}>
               La disco móvil convierte el baile de la comunión en un momento que todos recuerdan. Aquí tienes todo lo que necesitas saber antes de contratar.
             </p>
+            {/* 25 nov 2026: esta guía posiciona 7-8 en "discomóvil para comunión"; enlaza a la página con DJs reales de Madrid y su precio. */}
+            <p className="text-sm leading-relaxed mt-3" style={{ color: '#222' }}>
+              ¿Es en Madrid? Mira los <a href="/comunion/contratar-dj" style={{ color: '#8B6A00', fontWeight: 700 }}>DJs y discomóviles para comuniones en Madrid</a> con su precio por hora.
+            </p>
           </header>
 
           <section className="mb-10">
@@ -163,7 +167,7 @@ const faqStructured = {
             </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <p className="text-sm font-black mb-1">Encuentra disco móvil para tu comunión</p>
-            <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>DJs con equipo completo verificados en toda España.</p>
+            <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>DJs con equipo completo verificados. En Madrid, con su <a href="/comunion/contratar-dj" style={{ color: '#8B6A00', fontWeight: 700 }}>precio para comuniones</a>.</p>
             <a href="/contratar-disco-movil" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver disco móvil →

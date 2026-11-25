@@ -170,6 +170,37 @@ export const DJ_OCASIONES: Record<string, DjOcasion> = {
       { q: '¿Cómo pido DJ para un cumpleaños con XPEAK?', a: 'Pulsa «Pide DJ para tu cumpleaños», di la fecha y dónde es y confirma tu email. Se lo mandamos a los DJs de Madrid que encajan y habláis por el chat de XPEAK.' },
     ],
   },
+  comunion: {
+    slug: 'comunion',
+    titulo: 'DJ y discomóvil para comuniones en Madrid: precios y disponibilidad',
+    desc: 'DJs y discomóviles para comuniones en Madrid con su precio por hora, estilos y fotos. Mira cuánto cuesta y pide presupuesto para la fecha de la comunión.',
+    h1: 'DJ y discomóvil para comuniones en Madrid',
+    intro: 'Música para la comida y fiesta para los niños, con juegos y canciones que conocen. Compara DJs de Madrid por su precio por hora y pide presupuesto para la fecha de la comunión.',
+    horas: 4,
+    etiquetaHoras: '4 horas de música',
+    tipoEvento: 'Comunión',
+    cta: 'Pide DJ para la comunión',
+    preguntar: [
+      { t: 'Si hace animación para niños', d: 'En una comunión la pista es de los niños: juegos, bailes conocidos y concursos. Pregunta si lo hace él o si hay que contratar un animador aparte.' },
+      { t: 'Música para la comida', d: 'Durante la comida, música suave para que los mayores puedan hablar. Que lo tenga claro antes de empezar.' },
+      { t: 'Equipo y luces', d: 'Altavoces, micrófono y luces para la pista. Si el restaurante tiene sonido propio, puede salir más barato.' },
+      { t: 'Horario del restaurante', d: 'Muchos restaurantes y salones dan un horario cerrado para la fiesta. Confírmalo con el local antes de cerrar las horas con el DJ.' },
+    ],
+    tituloMomentos: 'La música de una comunión',
+    momentos: [
+      { t: 'Llegada y aperitivo', d: 'Música de fondo mientras llegan los invitados.' },
+      { t: 'Comida', d: 'Volumen bajo, para que la familia pueda hablar.' },
+      { t: 'Tarta y regalos', d: 'Un momento marcado: micrófono y la canción que elija el niño o la niña.' },
+      { t: 'Fiesta para los niños', d: 'Juegos, bailes y canciones que conocen. Suele ser la parte más larga.' },
+    ],
+    faqs: (precio) => [
+      { q: '¿Cuánto cuesta un DJ para una comunión en Madrid?', a: cifra(precio, `Con las tarifas que publican los DJs de Madrid en XPEAK, 4 horas de música salen por ${precio}. Si añade animación para los niños o luces especiales, sube.`, 'Depende de las horas, del equipo y de si incluye animación para los niños. Cada DJ publica su tarifa por hora en su perfil.') },
+      { q: '¿Qué diferencia hay entre DJ y discomóvil para una comunión?', a: 'La discomóvil suele llevar más luces y efectos y, a veces, animación. Un DJ se centra en la música. Para una comunión con muchos niños, pregunta qué incluye cada uno.' },
+      { q: '¿Con cuánta antelación hay que reservar?', a: 'La temporada de comuniones (mayo y junio) se llena pronto: reserva con 2 a 4 meses de antelación, sobre todo para sábados.' },
+      { q: '¿El DJ hace juegos para los niños?', a: 'Muchos sí: concursos, bailes y juegos de grupo. Pregúntalo antes, porque no todos lo hacen y a veces se cobra como animación aparte.' },
+      { q: '¿Cómo pido DJ para la comunión con XPEAK?', a: 'Pulsa «Pide DJ para la comunión», di la fecha y dónde es y confirma tu email. Se lo mandamos a los DJs de Madrid que encajan y habláis por el chat de XPEAK.' },
+    ],
+  },
 };
 
 export const esDjOcasion = (ocasion: string, rol: string) => rol === 'dj' && !!DJ_OCASIONES[ocasion];

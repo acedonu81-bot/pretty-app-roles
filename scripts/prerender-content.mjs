@@ -362,7 +362,7 @@ for (const { routePath, file, routePattern, roleSlug: occRoleSlug } of routes) {
     // lee __PRERENDER_PROFILES__ con useCityProfessionals). Mismo criterio que
     // /contratar-dj/madrid. Si se añade una ocasión en DJ_OCASIONES, añadirla aquí.
     if (file === 'OccasionLanding.tsx' && occRoleSlug === 'dj'
-      && ['boda', 'evento-empresa', 'fiesta-privada', 'cumpleanos'].includes(routePath.split('/')[1])) {
+      && ['boda', 'evento-empresa', 'fiesta-privada', 'cumpleanos', 'comunion'].includes(routePath.split('/')[1])) {
       preloadedProfiles = resolveProfilesForCity(allProfiles, 'Madrid', 'dj');
     }
     if (file === 'SocialEvent.tsx') {

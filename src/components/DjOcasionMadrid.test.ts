@@ -11,10 +11,11 @@ const textos = (o: (typeof DJ_OCASIONES)[string]) => [
 
 describe('DJ por ocasión (Madrid)', () => {
   it('cubre boda, empresa, fiesta privada y cumpleaños solo para DJ', () => {
-    expect(Object.keys(DJ_OCASIONES).sort()).toEqual(['boda', 'cumpleanos', 'evento-empresa', 'fiesta-privada']);
+    expect(Object.keys(DJ_OCASIONES).sort()).toEqual(['boda', 'comunion', 'cumpleanos', 'evento-empresa', 'fiesta-privada']);
     expect(esDjOcasion('boda', 'dj')).toBe(true);
     expect(esDjOcasion('boda', 'fotografo')).toBe(false);
-    expect(esDjOcasion('comunion', 'dj')).toBe(false);
+    expect(esDjOcasion('comunion', 'dj')).toBe(true);
+    expect(esDjOcasion('despedida', 'dj')).toBe(false);
   });
 
   it('respeta las reglas de copy: sin "gratis", "bolo", rayas largas ni emojis', () => {
@@ -43,7 +44,7 @@ describe('DJ por ocasión (Madrid)', () => {
 
   it('el prerender inyecta los DJs de Madrid en las mismas ocasiones', () => {
     const pre = fs.readFileSync(path.resolve(__dirname, '../../scripts/prerender-content.mjs'), 'utf8');
-    const lista = pre.match(/\['boda', 'evento-empresa', 'fiesta-privada', 'cumpleanos'\]/);
+    const lista = pre.match(/\['boda', 'evento-empresa', 'fiesta-privada', 'cumpleanos', 'comunion'\]/);
     expect(lista).not.toBeNull();
   });
 });
