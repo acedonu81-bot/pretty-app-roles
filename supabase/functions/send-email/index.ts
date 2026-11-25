@@ -601,8 +601,36 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // el Burger Gourmet Fest el 10 sep. El email es el único canal que llega a
   // todos. Misma información que ya ve el profesional en la campana: no se
   // añade teléfono, email ni dirección exacta (el contacto va por el chat).
+  // Confirmación al organizador al publicar una oferta (25 nov 2026). Antes solo
+  // veía un aviso en pantalla. Solo por secreto interno (trigger notify_new_event_request).
+  oferta_publicada_confirm: (d) => {
+    const fechas = Array.isArray(d.fechas) && d.fechas.length ? d.fechas.join(', ') : 'Por confirmar';
+    const que = d.roles || 'profesionales';
+    return {
+      subject: `Hemos recibido tu solicitud de ${esc(que)} ✓`,
+      to: d.email,
+      html: base(`
+        ${confirmSeal()}
+        <h2 style="font-size:22px;font-weight:900;margin:0 0 8px;text-align:center;color:#0a0908">Solicitud recibida</h2>
+        <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center">
+          Hola${d.name ? ` <strong style="color:#0a0908">${esc(d.name)}</strong>` : ''}. Tu solicitud ya está publicada. Además de publicarla, desde XPEAK te ayudamos a encontrar profesionales disponibles. Cuando alguien se apunte, te avisamos por aquí.
+        </p>
+        <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:18px;margin:0 0 20px;box-shadow:0 6px 16px rgba(212,175,55,0.14)">
+          ${rows([
+            ['Se busca', que],
+            ['Dónde', d.city ?? 'Por confirmar'],
+            ['Cuándo', fechas],
+          ])}
+        </div>
+        ${btn('Ver mi solicitud →', 'https://xpeak.es/dashboard?view=flashbooking')}
+        <p style="color:#6B7280;font-size:12px;margin-top:20px;text-align:center">
+          Si tienes dudas, escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
+        </p>`, `Tu solicitud de ${que} está publicada`),
+    };
+  },
+
   oferta_nueva: (d) => {
-    const dato = (k: string, v: string) =>
+    const dato =(k: string, v: string) =>
       `<tr><td style="padding:9px 0;border-bottom:1px solid rgba(10,9,8,0.06);color:#6B7280;font-size:13px;width:34%;vertical-align:top">${esc(k)}</td>`
       + `<td style="padding:9px 0;border-bottom:1px solid rgba(10,9,8,0.06);color:#0a0908;font-size:14px;font-weight:600;line-height:1.5">${esc(v)}</td></tr>`;
     const presupuesto = d.budget_max
@@ -2872,6 +2900,19 @@ async function atender(req: Request): Promise<Response> {
     // Validate destination email before sending
     if (!to || !to.includes('@')) {
       return new Response(JSON.stringify({ error: 'Invalid recipient email' }), { status: 400, headers: corsHeaders });
+    }
+
+    // Confirmación al organizador: uno por oferta (pg_net puede reintentar).
+    if (type === 'oferta_publicada_confirm' && data?.request_id && data?.user_id) {
+      const dedupeConf = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+      const { error: reservaConf } = await dedupeConf.from('email_logs' as any).insert({
+        user_id: data.user_id,
+        type: `oferta_publicada_${data.request_id}`,
+        sent_at: new Date().toISOString(),
+      });
+      if (reservaConf) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'ya_avisado' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
     }
 
     // Oferta nueva: un email por profesional y oferta. El trigger llama vía
