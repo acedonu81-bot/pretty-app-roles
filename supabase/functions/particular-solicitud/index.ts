@@ -382,7 +382,16 @@ async function repartir(admin: any, d: Datos): Promise<Response> {
   };
   // Al admin le decimos a quién ha ido (o que a nadie) para saber si moverla.
   const reparto = destinatarios.map(p => p.display_name || 'profesional');
-  const envios: Promise<unknown>[] = [enviar('flash_booking', { ...payload, reparto }), enviar('flash_booking_confirm', payload)];
+  // Su Instagram real (tabla privada redes_profesional, clave de servicio) para pincharlo desde el aviso.
+  const redesPorUsuario = new Map<string, string | null>();
+  if (destinatarios.length) {
+    try {
+      const { data: redes } = await admin.from('redes_profesional').select('user_id, instagram').in('user_id', destinatarios.map(p => p.user_id));
+      for (const r of (redes ?? []) as { user_id: string; instagram: string | null }[]) redesPorUsuario.set(r.user_id, r.instagram);
+    } catch (e) { console.warn('[particular-solicitud] instagram del reparto no leído', e); }
+  }
+  const reparto_redes = destinatarios.map(p => redesPorUsuario.get(p.user_id) ?? null);
+  const envios: Promise<unknown>[] = [enviar('flash_booking', { ...payload, reparto, reparto_redes }), enviar('flash_booking_confirm', payload)];
   // Faltan fecha o lugar (o el lugar es basura): le pedimos los datos por email
   // para que los profesionales puedan contestar con precio.
   if (faltan || location.length < 3) {

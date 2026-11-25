@@ -60,6 +60,32 @@ const enlaceSeguro = (u: unknown, porDefecto: string): string => {
 const esc = (s: unknown): string =>
   String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
+/**
+ * Lista de profesionales avisados con su Instagram para pinchar (25 nov 2026).
+ * El valor guardado puede ser "usuario", "@usuario" o la URL entera, así que se
+ * reduce al usuario y solo se acepta lo que un usuario de Instagram puede ser
+ * (letras, números, punto y guion bajo): el enlace sale siempre de instagram.com.
+ */
+const instagramHandle = (raw: unknown): string | null => {
+  let v = String(raw ?? '').trim().replace(/^@/, '');
+  const m = v.match(/instagram\.com\/([^/?#\s]+)/i);
+  if (m) v = m[1];
+  return /^[A-Za-z0-9._]{1,30}$/.test(v) ? v : null;
+};
+// Con una oferta de DJ el aviso sale a ~90 personas: se enseñan primero los que tienen
+// Instagram válido, hasta 15, y el resto se cuenta (están todos en el panel).
+const listaAvisados = (nombres: string[], redes: unknown[] = []): string => {
+  const items = nombres.map((n, i) => ({ n, raw: String(redes[i] ?? '').trim(), h: instagramHandle(redes[i]) }));
+  items.sort((a, b) => Number(!!b.h) - Number(!!a.h));
+  const MAX = 15;
+  const filas = items.slice(0, MAX).map(x => x.h
+    ? `<a href="https://instagram.com/${x.h}" style="color:#8B6A00;font-weight:700">${esc(x.n)}</a> <span style="color:#6B7280">(@${esc(x.h)})</span>`
+    : `${esc(x.n)} <span style="color:#9CA3AF">(${x.raw ? 'Instagram no válido' : 'sin Instagram'})</span>`);
+  const resto = items.length - MAX;
+  if (resto > 0) filas.push(`<span style="color:#6B7280">y ${resto} más, en el panel</span>`);
+  return filas.join('<br>');
+};
+
 const UNSUB_PLACEHOLDER = '{{UNSUB_URL}}';
 
 const FONT = `-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif`;
@@ -1053,7 +1079,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </div>
       ${reparto === null ? '' : `<p style="font-size:15px;font-weight:700;margin:0 0 16px;color:${reparto.length ? '#0A0908' : '#B42318'}">${
         reparto.length
-          ? `Se ha enviado a ${reparto.length}: ${reparto.map(esc).join(', ')}. Si en unas horas nadie contesta, muévela tú.`
+          ? `Se ha enviado a ${reparto.length}. Si en unas horas nadie contesta, muévela tú.</p><p style="font-size:14px;line-height:1.9;margin:-8px 0 16px">${listaAvisados(reparto, d.reparto_redes)}`
           : 'No ha ido a ningún profesional: no hay nadie que encaje. Búscale tú a alguien.'}</p>`}
       ${rows([
         ['Solicitante', d.requester_name],
@@ -1071,6 +1097,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   admin_oferta_nueva: (d) => {
     const fechas = Array.isArray(d.fechas) && d.fechas.length ? d.fechas.join(', ') : 'Sin fecha';
     const n = Number(d.avisados) || 0;
+    // Quién recibió el aviso, con su Instagram (lo manda el trigger notify_new_event_request).
+    const lista: { nombre: string; instagram: string | null }[] = Array.isArray(d.lista)
+      ? d.lista.slice(0, 200).map((x: any) => ({ nombre: String(x?.nombre ?? 'profesional'), instagram: x?.instagram ?? null }))
+      : [];
     const presupuesto = d.budget_max ? `${d.budget_min ? `${d.budget_min} a ` : 'hasta '}${d.budget_max} €` : '';
     return {
       subject: `${n ? `Avisados ${n}` : 'SIN NADIE AVISADO'} · Oferta nueva: ${esc(d.roles ?? 'profesionales')}${d.city ? ` en ${esc(d.city)}` : ''} · ${esc(fechas)}`,
@@ -1083,6 +1113,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         <p style="font-size:15px;font-weight:700;margin:0 0 16px;color:${n ? '#0A0908' : '#B42318'}">${
           n ? `Se ha avisado a ${n} profesional(es). Si en unas horas nadie se apunta, muévela tú.`
             : 'No se ha avisado a nadie: ningún profesional encaja. Búscale tú a alguien.'}</p>
+        ${lista.length ? `<p style="font-size:14px;line-height:1.9;margin:-8px 0 16px">${listaAvisados(lista.map(x => x.nombre), lista.map(x => x.instagram))}</p>` : ''}
         ${rows([
           ['Tipo de evento', d.event_type ?? ''],
           ['Ciudad', d.city ?? ''],
@@ -2638,7 +2669,7 @@ async function atender(req: Request): Promise<Response> {
     if (data && typeof data === 'object' && !isInternal && !isService) delete data.action_url;
     // reparto (a quién se mandó una solicitud de particular) solo lo pone
     // particular-solicitud con la clave de servicio: cambia el asunto del aviso al admin.
-    if (data && typeof data === 'object' && !isInternal && !isService) delete data.reparto;
+    if (data && typeof data === 'object' && !isInternal && !isService) { delete data.reparto; delete data.reparto_redes; delete data.lista; }
 
     // Quien llama. El gateway ya verifica la firma del JWT (verify_jwt por
     // defecto), asi que el claim role es fiable: anon = visitante sin sesion
