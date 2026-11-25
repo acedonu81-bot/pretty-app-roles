@@ -22,7 +22,8 @@ export const IVA_INCLUIDO = true;
 export const PRECIOS_ANUALES: Record<'starter' | 'business', number> = { starter: 69.90, business: 149.90 };
 // Black Friday 2026: 35 % sobre el anual, solo el primer año (cupón de importe fijo en Stripe).
 export const PRECIOS_BLACK_FRIDAY: Record<'starter' | 'business', number> = { starter: 45.44, business: 97.44 };
-export const INICIO_BLACK_FRIDAY = new Date('2026-11-26T23:00:00Z'); // 27 nov 00:00 Madrid
+// Se adelantó del 27 al 25 nov (25 nov 2026, decisión de Daniel): la oferta va del 25 nov 00:00 al 30 nov 23:59 de Madrid.
+export const INICIO_BLACK_FRIDAY = new Date('2026-11-24T23:00:00Z'); // 25 nov 00:00 Madrid
 export const FIN_BLACK_FRIDAY = new Date('2026-11-30T23:00:00Z');    // 30 nov 23:59 Madrid
 export const esBlackFriday = (ahora = new Date()) => ahora >= INICIO_BLACK_FRIDAY && ahora < FIN_BLACK_FRIDAY;
 const MENSUAL: Record<'starter' | 'business', number> = { starter: 6.99, business: 14.99 };

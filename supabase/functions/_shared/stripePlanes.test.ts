@@ -59,10 +59,10 @@ describe('cuponDe', () => {
   });
   it('fuera del Black Friday el anual no lleva cupón: el ahorro de 2 meses ya está en el precio', () => {
     expect(cuponDe('business', 'anual', new Date('2026-12-05T10:00:00Z'), envC)).toBeNull();
-    expect(cuponDe('starter', 'anual', new Date('2026-11-26T12:00:00Z'), envC)).toBeNull();
+    expect(cuponDe('starter', 'anual', new Date('2026-11-24T22:59:00Z'), envC)).toBeNull();
   });
-  it('el anual lleva el Black Friday del 27 nov 00:00 al 30 nov 23:59 de Madrid', () => {
-    expect(cuponDe('starter', 'anual', new Date('2026-11-26T23:00:00Z'), envC)).toBe('c_sbf');
+  it('el anual lleva el Black Friday del 25 nov 00:00 al 30 nov 23:59 de Madrid', () => {
+    expect(cuponDe('starter', 'anual', new Date('2026-11-24T23:00:00Z'), envC)).toBe('c_sbf');
     expect(cuponDe('business', 'anual', new Date('2026-11-27T09:00:00Z'), envC)).toBe('c_bbf');
     expect(cuponDe('starter', 'anual', new Date('2026-11-30T22:58:00Z'), envC)).toBe('c_sbf');
     expect(cuponDe('starter', 'anual', new Date('2026-11-30T23:00:00Z'), envC)).toBeNull();

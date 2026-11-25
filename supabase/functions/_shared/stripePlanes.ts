@@ -48,8 +48,9 @@ export function esMusica(role: string | null): boolean {
   return !!role && MUSICA.includes(role);
 }
 
-// Black Friday 2026: del viernes 27 nov 00:00 al domingo 30 nov 23:59, hora de Madrid (UTC+1).
-export const INICIO_BLACK_FRIDAY = new Date('2026-11-26T23:00:00Z');
+// Black Friday 2026: del miércoles 25 nov 00:00 (adelantado, 25 nov 2026) al domingo 30 nov 23:59, hora de Madrid (UTC+1).
+// Debe ser igual que en src/lib/subscriptions.ts: si la web enseña el precio y el cobro no lo aplica, se cobra de más.
+export const INICIO_BLACK_FRIDAY = new Date('2026-11-24T23:00:00Z');
 export const FIN_BLACK_FRIDAY = new Date('2026-11-30T23:00:00Z');
 
 // En el anual se pide la dirección: el regalo de bienvenida (merchandising) se envía

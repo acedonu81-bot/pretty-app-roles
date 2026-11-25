@@ -1,5 +1,5 @@
 import { MemoryRouter } from 'react-router-dom';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 
 const perfil = { id: 'perfil-1', role: 'dj', roles: ['dj'], subscription_tier: 'free', refresh: vi.fn() };
@@ -19,7 +19,11 @@ beforeEach(() => {
   nativo.isNative = false;
   iniciarPago.mockReset();
   vi.stubEnv('VITE_COBROS_ACTIVOS', 'true');
+  // Fuera del Black Friday (25 al 30 nov 2026): estas pruebas no dependen del reloj real.
+  vi.useFakeTimers({ toFake: ['Date'] });
+  vi.setSystemTime(new Date('2026-12-05T10:00:00Z'));
 });
+afterEach(() => { vi.useRealTimers(); });
 
 describe('SubscriptionView', () => {
   it('enseña los planes con IVA incluido a un DJ en la web', () => {

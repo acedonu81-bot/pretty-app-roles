@@ -1,4 +1,4 @@
-// Aviso de la oferta de Black Friday (27 al 30 nov 2026, hora de Madrid).
+// Aviso de la oferta de Black Friday (25 al 30 nov 2026, hora de Madrid).
 // Solo se pinta dentro de esas fechas (esBlackFriday). Paleta XPEAK: dorado y
 // crema, sin fondos negros.
 import { BadgePercent } from 'lucide-react';
