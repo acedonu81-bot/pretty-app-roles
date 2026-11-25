@@ -1,3 +1,4 @@
+import { RedesFicha, tieneRedes } from '@/components/RedesFicha';
 import { ROLE_ES, unidadTarifa } from '@/lib/constants';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
@@ -20,13 +21,11 @@ import { premioConcursoDe } from '@/lib/concursoMadrid';
 import FlashBookingRequestModal from './FlashBookingRequestModal';
 import CalendarHowItWorksModal from '@/components/CalendarHowItWorksModal';
 import { useScarcitySignal } from '@/hooks/useScarcitySignal';
-import { instagramUrl, extractInstagramHandle } from '@/lib/social';
 import { toSlug } from '@/data/profiles';
 import type { Profile } from '@/data/profiles';
 import FollowButton from '@/components/FollowButton';
 import ReviewsSection from '@/components/ReviewsSection';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
-import { clicRedSocial } from '@/lib/track';
 import CabeceraArtistaDJ from '@/components/CabeceraArtistaDJ';
 import LateralArtistaDJ from '@/components/LateralArtistaDJ';
 import PestanasPerfilDJ, { ContadoresDJ, PanelPerfilDJ, type PestanaDJ } from '@/components/PestanasPerfilDJ';
@@ -946,25 +945,10 @@ const ProfessionalProfilePage = ({ profile: p, abrirEn, onClose, onMessage }: Pr
             {/* Redes sociales — registrados. Hasta el 28 oct ponía me.userId
                 (no existe) y el bloque no salía nunca. Son escaparate, no
                 contacto: el perfil público ya enseña el Instagram. */}
-            {me.user_id && (p.instagram || p.tiktok) && (
+            {me.user_id && tieneRedes(p) && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}
                 className="flex gap-2 flex-wrap" style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
-                {p.instagram && (
-                  <a href={instagramUrl(p.instagram)} target="_blank" rel="noopener noreferrer"
-                    onClick={() => clicRedSocial('instagram', 'panel', p.userId)}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(225,48,108,0.08)', color: '#E1306C', border: '1px solid rgba(225,48,108,0.15)' }}>
-                    <Instagram size={13} /> @{extractInstagramHandle(p.instagram)}
-                  </a>
-                )}
-                {p.tiktok && (
-                  <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
-                    onClick={() => clicRedSocial('tiktok', 'panel', p.userId)}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.08)' }}>
-                    TikTok @{p.tiktok}
-                  </a>
-                )}
+                <RedesFicha redes={p} userId={p.userId} origen="panel" estilo="chip" />
               </motion.div>
             )}
 

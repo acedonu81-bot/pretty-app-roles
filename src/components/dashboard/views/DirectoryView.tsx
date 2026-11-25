@@ -99,7 +99,7 @@ export async function fetchDirectoryProfiles(role: string, roles: string[] | und
   ].join(',');
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, rental_equipment, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level, show_new_badge, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, rental_equipment, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, facebook, instagram, category, is_verified, is_flash_active, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level, show_new_badge, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
     .or(orFilter)
     // Excluye empresarios que tengan este oficio en `roles` por dato legacy o
     // error de alta — buscan y contratan, no les contratan (caso real: MAGIG
@@ -216,6 +216,7 @@ export async function fetchDirectoryProfiles(role: string, roles: string[] | und
       isPremium: row.subscription_tier !== 'free',
       languages: row.languages ?? [],
       tiktok: row.tiktok || '',
+      facebook: (row as any).facebook || '',
       category: (row.category as Profile['category']) ?? 'professional',
       isVerified: row.is_verified ?? false,
       hasPriorityBadge: !!((row as any).priority_badge_until && new Date((row as any).priority_badge_until) > new Date()),

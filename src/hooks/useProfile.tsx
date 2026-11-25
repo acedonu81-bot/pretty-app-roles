@@ -54,6 +54,7 @@ interface ProfileData {
   genres: string[] | null;
   category: string | null;
   tiktok: string | null;
+  facebook: string | null;
   /** Estado de las redes según el plan (18 nov 2026). */
   redes_visibles?: boolean;
   redes_fundador_hasta?: string | null;
@@ -166,6 +167,7 @@ const defaults: ProfileData = {
   genres: null,
   category: null,
   tiktok: null,
+  facebook: null,
   bio_video_url: null,
   bg_music_url: null,
   portfolio_urls: null,
@@ -214,7 +216,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     // si la migración aún no está aplicada, Postgres rechaza TODA la consulta y
     // el perfil no cargaría para nadie. Se pide primero con ellas y, si falla,
     // se reintenta sin ellas usando los defaults.
-    const BASE_COLS = 'id, user_id, is_verified, google_review_url, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, mostrar_organizador, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, created_at, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, blocked_dates, min_notice_hours, conditions_note, directorio_ok';
+    const BASE_COLS = 'id, user_id, is_verified, google_review_url, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, mostrar_organizador, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, facebook, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, created_at, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, blocked_dates, min_notice_hours, conditions_note, directorio_ok';
     const PRIVACY_COLS = 'is_public, show_online, email_opt_out, marketing_consent, marketing_consent_asked_at';
     const EMERGENTE_COLS = 'experience_level, emergente_sub_nivel, emergente_anios, show_new_badge';
 
@@ -249,10 +251,10 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     // dueño): en profiles queda la copia publicada, que sin suscripción de pago va vacía
     // tras el lanzamiento (18 nov 2026). El dueño edita siempre su valor real.
     const [{ data: redes }, { data: estadoRedes }] = await Promise.all([
-      supabase.from('redes_profesional' as any).select('instagram, tiktok').eq('profile_id', primary.id).maybeSingle(),
+      supabase.from('redes_profesional' as any).select('instagram, tiktok, facebook').eq('profile_id', primary.id).maybeSingle(),
       (supabase.rpc as any)('mis_redes_estado', { p_profile: primary.id }),
     ]);
-    const r = redes as { instagram?: string | null; tiktok?: string | null } | null;
+    const r = redes as { instagram?: string | null; tiktok?: string | null; facebook?: string | null } | null;
     const est = (Array.isArray(estadoRedes) ? estadoRedes[0] : null) as { visibles?: boolean; fundador_hasta?: string | null; lanzado?: boolean } | null;
 
     setProfileId(primary.id);
@@ -260,6 +262,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       ...primary,
       instagram: r ? (r.instagram ?? null) : (primary.instagram ?? null),
       tiktok: r ? (r.tiktok ?? null) : (primary.tiktok ?? null),
+      facebook: r ? (r.facebook ?? null) : (primary.facebook ?? null),
       redes_visibles: est?.visibles ?? true,
       redes_fundador_hasta: est?.fundador_hasta ?? null,
       redes_lanzado: est?.lanzado ?? false,
@@ -295,10 +298,11 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       return false;
     }
     // Las redes van a redes_profesional; la BD publica en profiles lo que toque.
-    const { instagram, tiktok, ...resto } = fields as Partial<ProfileData> & Record<string, unknown>;
+    const { instagram, tiktok, facebook, ...resto } = fields as Partial<ProfileData> & Record<string, unknown>;
     const redes: Record<string, unknown> = {};
     if ('instagram' in fields) redes.instagram = instagram ?? null;
     if ('tiktok' in fields) redes.tiktok = tiktok ?? null;
+    if ('facebook' in fields) redes.facebook = facebook ?? null;
     if (Object.keys(redes).length) {
       const { error: errRedes } = await supabase
         .from('redes_profesional' as any)

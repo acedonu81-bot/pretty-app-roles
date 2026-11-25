@@ -5,6 +5,7 @@ import { unidadTarifa } from '@/lib/constants';
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { RedesFicha } from '@/components/RedesFicha';
 import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, UserPlus, Headphones, Disc3, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2, Building2, Moon, Navigation, Flag } from 'lucide-react';
 import { toast } from 'sonner';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
@@ -36,7 +37,7 @@ import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequest
 import CalendarHowItWorksModal from '@/components/CalendarHowItWorksModal';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
-import { instagramUrl, extractInstagramHandle } from '@/lib/social';
+import { instagramUrl, tiktokUrl, facebookRuta, facebookUrl } from '@/lib/social';
 import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
 import { fotoOptimizada } from '@/lib/imagen';
 import EmbedDiferido from '@/components/EmbedDiferido';
@@ -46,7 +47,7 @@ import ReviewsSection from '@/components/ReviewsSection';
 import TrayectoriaSection from '@/components/profile/TrayectoriaSection';
 import { trayectoriaPublica, type EventoTrayectoria } from '@/lib/trayectoria';
 import { ajustarFotoCaptura } from '@/lib/fotoCaptura';
-import { clicRedSocial, logContactClick } from '@/lib/track';
+import { logContactClick } from '@/lib/track';
 // Se reexporta para los tests que lo importan desde aquí.
 export { reviewQuestionStats } from '@/components/ReviewsSection';
 
@@ -151,6 +152,8 @@ interface SupabaseProfile {
   subscription_tier: string;
   stream_url: string | null;
   instagram: string | null;
+  tiktok: string | null;
+  facebook: string | null;
   audio_embed_url: string | null;
   portfolio_urls: string[] | null;
   offers_classes: boolean | null;
@@ -277,7 +280,7 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, languages, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, tiktok, facebook, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, languages, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .eq('user_id', slug)
           // Un mismo user_id puede tener varios perfiles (varios roles, ej.
           // food-truck + empresario): .maybeSingle() con 2+ filas devuelve
@@ -294,7 +297,7 @@ const PublicProfile = () => {
             return { data: elegido, error };
           })
       : supabase.from('profiles')
-          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, languages, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+          .select('id, google_review_url, user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, tiktok, facebook, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, rental_equipment, class_price, seeking_dance_partner, dance_level, dance_role, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, languages, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -716,25 +719,8 @@ const PublicProfile = () => {
                 ))}
               </div>
 
-              {/* Instagram */}
-              {sbProfile?.instagram && (
-                <div className="mb-4">
-                  {authUser ? (
-                  <a href={instagramUrl(sbProfile.instagram)} target="_blank" rel="noopener noreferrer"
-                    onClick={() => clicRedSocial('instagram', 'perfil_publico', sbProfile.user_id)}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
-                    style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
-                    <Instagram size={12} /> @{extractInstagramHandle(sbProfile.instagram)}
-                  </a>
-                  ) : (
-                  <a href={irARegistroInstagram}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
-                    style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
-                    <Instagram size={12} /> Regístrate para ver su Instagram
-                  </a>
-                  )}
-                </div>
-              )}
+              {/* Redes: Instagram, TikTok y Facebook */}
+              {sbProfile && <RedesFicha redes={sbProfile} userId={sbProfile.user_id} origen="perfil_publico" estilo="cristal" logueado={!!authUser} registroHref={irARegistroInstagram} className="mb-4" />}
 
     </div>
   );
@@ -810,7 +796,14 @@ const PublicProfile = () => {
             }
           } : {}),
           ...(profile.badges && profile.badges.length > 0 ? { "knowsAbout": profile.badges } : {}),
-          ...(sbProfile?.instagram ? { "sameAs": [instagramUrl(sbProfile.instagram).replace('instagram.com', 'www.instagram.com')] } : {}),
+          ...(() => {
+            const sameAs = [
+              sbProfile?.instagram ? instagramUrl(sbProfile.instagram).replace('instagram.com', 'www.instagram.com') : null,
+              sbProfile?.tiktok ? tiktokUrl(sbProfile.tiktok) : null,
+              facebookRuta(sbProfile?.facebook) ? facebookUrl(sbProfile!.facebook!) : null,
+            ].filter(Boolean);
+            return sameAs.length ? { sameAs } : {};
+          })(),
           ...(seoReviews.length > 0 ? {
             "aggregateRating": {
               "@type": "AggregateRating",
@@ -1033,25 +1026,8 @@ const PublicProfile = () => {
 
               </div>
               <div className="hidden md:block">
-              {/* Instagram */}
-              {sbProfile?.instagram && (
-                <div className="mb-4">
-                  {authUser ? (
-                  <a href={instagramUrl(sbProfile.instagram)} target="_blank" rel="noopener noreferrer"
-                    onClick={() => clicRedSocial('instagram', 'perfil_publico', sbProfile.user_id)}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
-                    style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
-                    <Instagram size={12} /> @{extractInstagramHandle(sbProfile.instagram)}
-                  </a>
-                  ) : (
-                  <a href={irARegistroInstagram}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
-                    style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
-                    <Instagram size={12} /> Regístrate para ver su Instagram
-                  </a>
-                  )}
-                </div>
-              )}
+              {/* Redes: Instagram, TikTok y Facebook */}
+              {sbProfile && <RedesFicha redes={sbProfile} userId={sbProfile.user_id} origen="perfil_publico" estilo="cristal" logueado={!!authUser} registroHref={irARegistroInstagram} className="mb-4" />}
 
               </div>
               {/* CTA — directo a mensajes si logueado. Oculto en móvil: el sticky bottom ya lo cubre */}
@@ -1602,20 +1578,7 @@ const PublicProfile = () => {
                       </button>
                     )}
                   </>}
-                  extra={sbProfile?.instagram ? (
-                    authUser ? (
-                    <a href={instagramUrl(sbProfile.instagram)} target="_blank" rel="noopener noreferrer"
-                      onClick={() => clicRedSocial('instagram', 'perfil_publico', sbProfile.user_id)}
-                      className="inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#8B6A00' }}>
-                      <Instagram size={15} /> @{extractInstagramHandle(sbProfile.instagram)}
-                    </a>
-                    ) : (
-                    <a href={irARegistroInstagram}
-                      className="inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: '#8B6A00' }}>
-                      <Instagram size={15} /> Regístrate para ver su Instagram
-                    </a>
-                    )
-                  ) : null}
+                  extra={sbProfile ? <RedesFicha redes={sbProfile} userId={sbProfile.user_id} origen="perfil_publico" estilo="texto" logueado={!!authUser} registroHref={irARegistroInstagram} /> : null}
                 />
               </div>
             </div>

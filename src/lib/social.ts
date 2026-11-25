@@ -23,3 +23,32 @@ export function extractInstagramHandle(raw: string): string {
 export function instagramUrl(raw: string): string {
   return `https://instagram.com/${extractInstagramHandle(raw)}`;
 }
+
+// TikTok (25 nov 2026): admite "@usuario", "usuario" o la URL del perfil
+// ("https://www.tiktok.com/@usuario?lang=es") y devuelve el usuario limpio.
+export function extractTiktokHandle(raw: string): string {
+  const t = raw.trim();
+  const m = t.match(/tiktok\.com\/@([^/?#\s]+)/i);
+  return (m ? m[1] : t).replace(/^@/, '').trim();
+}
+
+export function tiktokUrl(raw: string): string {
+  return `https://www.tiktok.com/@${extractTiktokHandle(raw)}`;
+}
+
+// Facebook (25 nov 2026): misma limpieza que limpiar_facebook() en la BD. Devuelve la
+// ruta de la página ("mipagina", "profile.php?id=123") o null si no es de Facebook.
+// El enlace siempre se monta sobre https://www.facebook.com/, nunca con lo que pegue
+// la persona, para que no se cuele otro dominio.
+export function facebookRuta(raw: string | null | undefined): string | null {
+  let v = (raw ?? '').trim()
+    .replace(/^(https?:\/\/)?((www|m|web|es-es)\.)?(facebook\.com|fb\.com)\//i, '')
+    .replace(/^@/, '');
+  const id = v.match(/^profile\.php\?id=[0-9]+/);
+  v = (id ? id[0] : v.replace(/[?#].*$/, '')).replace(/\/+$/, '');
+  return /^[A-Za-z0-9._-]+(\/[A-Za-z0-9._-]+)*(\?id=[0-9]+)?$/.test(v) ? v : null;
+}
+
+export function facebookUrl(ruta: string): string {
+  return `https://www.facebook.com/${facebookRuta(ruta) ?? ''}`;
+}

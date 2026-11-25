@@ -33,7 +33,7 @@ export type Estadisticas = 'ninguna' | 'basicas' | 'avanzadas';
 export type Ventajas = {
   fotos: number;             // portafolio: fotos y vídeos juntos
   sets: number;              // Infinity = ilimitados (archivos y enlaces cuentan igual)
-  redesVisibles: boolean;    // Instagram y TikTok en la ficha pública
+  redesVisibles: boolean;    // Instagram, TikTok y Facebook en la ficha pública (Facebook desde el 25 nov 2026)
   estadisticas: Estadisticas;
   exportarEstadisticas: boolean;
   bannerCabecera: boolean;   // banner propio en la cabecera de artista (solo DJ)
@@ -95,7 +95,7 @@ export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boole
   if (plan === 'starter') {
     out.push('Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas');
     if (o.flash) out.push('Ofertas Flash Booking: trabajos urgentes que publican los organizadores y te llegan al momento');
-    out.push('Tu Instagram y TikTok en tu ficha: quien te visita puede seguirte sin tener que escribirte antes', 'Estadísticas de visitas y mensajes');
+    out.push('Tu Instagram, TikTok y Facebook en tu ficha: quien te visita puede seguirte sin tener que escribirte antes', 'Estadísticas de visitas y mensajes');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
     out.push(`${v.directosMes} directo al mes en XPEAK`, `${v.publicacionesRedesMes} publicación al mes en las redes de XPEAK`, 'Concursos y sorteos de XPEAK');
@@ -107,7 +107,8 @@ export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boole
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push('Sets ilimitados');
     if (o.banner) out.push('Banner propio en tu cabecera de artista');
-    out.push('Soporte prioritario: escribe directamente al equipo de XPEAK', 'Concursos y sorteos de XPEAK');
+    // Concursos y sorteos ya van en "Todo lo de Profesional": no se repiten aquí.
+    out.push('Soporte prioritario: escribe directamente al equipo de XPEAK');
   }
   return out;
 }
@@ -129,8 +130,9 @@ export function listaBase(o: Oficios): string[] {
 // (18 nov 2026, decisión de Daniel). Al construirlas, pasan a listaVentajas.
 export function proximamente(plan: Plan, o: Oficios): string[] {
   const out: string[] = [];
-  out.push('Avisos por WhatsApp de mensajes, reseñas, solicitudes de particulares y ofertas de organizadores', 'Tu Facebook en la ficha, junto a Instagram y TikTok');
   if (plan === 'starter') {
+    // Comunes a los dos planes: en Premium ya van dentro de "Todo lo de Profesional".
+    out.push('Avisos por WhatsApp de mensajes, reseñas, solicitudes de particulares y ofertas de organizadores');
     if (o.flash) out.push('Flash Booking con adelanto');
   } else if (plan === 'business') {
     if (o.flash) out.push('Flash Booking con el mayor adelanto');

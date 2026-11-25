@@ -29,6 +29,7 @@ export interface Profile {
   category?: 'professional' | 'rookie';
   isPremium?: boolean;
   tiktok?: string;
+  facebook?: string;
   portfolioUrls?: string[];
   languages?: string[];
   country?: string;

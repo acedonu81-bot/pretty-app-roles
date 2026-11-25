@@ -15,6 +15,7 @@ import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import MisCondicionesSection from './profile/MisCondicionesSection';
 import LocalEventosExtraFields from '@/components/dashboard/LocalEventosExtraFields';
 import { sanitizeInput } from '@/lib/contentFilter';
+import { extractTiktokHandle, facebookRuta } from '@/lib/social';
 import { DJ_GENRES, ROLE_TAGS, ALQUILER_TAG_GROUPS } from '@/lib/constants';
 import { computeProfileCompleteness } from '@/hooks/useProfileCompleteness';
 import TarjetaHazDirecto from '@/components/directo/TarjetaHazDirecto';
@@ -32,6 +33,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [rider, setRider] = useState<string | null>(null);
   const [bio, setBio] = useState<string | null>(null);
   const [instagram, setInstagram] = useState<string | null>(null);
+  const [tiktok, setTiktok] = useState<string | null>(null);
+  const [facebook, setFacebook] = useState<string | null>(null);
   const [googleReviewUrl, setGoogleReviewUrl] = useState<string | null>(null);
   const [hourlyRate, setHourlyRate] = useState<string | null>(null);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
@@ -279,7 +282,14 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (!user || saving || profile.loading) return;
     // El campo Instagram admite "@usuario": se quita la @ inicial antes de filtrar
     // (la @ está bloqueada en cualquier otro texto).
-    const toCheck = [localName, bio, rider, instagram?.replace(/^\s*@/, '')].filter(Boolean) as string[];
+    // Facebook se guarda solo si es un enlace o una página de Facebook válidos.
+    // Con el guardado automático no se molesta mientras se escribe: se espera.
+    const fbRuta = facebook !== null && facebook.trim() ? facebookRuta(facebook) : null;
+    const fbMal = facebook !== null && !!facebook.trim() && !fbRuta;
+    if (fbMal && !silent) { toast.error('Pega el enlace de tu página de Facebook (facebook.com/...) o solo su nombre.'); return; }
+    const toCheck = [localName, bio, rider, instagram?.replace(/^\s*@/, ''),
+      tiktok ? extractTiktokHandle(tiktok) : null,
+      fbRuta && !fbRuta.startsWith('profile.php') ? fbRuta : null].filter(Boolean) as string[];
     for (const val of toCheck) {
       const { clean, reason } = sanitizeInput(val);
       if (!clean) { toast.error(reason); return; }
@@ -291,6 +301,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (rider !== null) updates.specialty = rider;
     if (bio !== null) updates.bio = bio;
     if (instagram !== null) updates.instagram = instagram.trim().replace(/^@/, '') || null;
+    if (tiktok !== null) updates.tiktok = extractTiktokHandle(tiktok) || null;
+    if (facebook !== null && !fbMal) updates.facebook = fbRuta;
     if (googleReviewUrl !== null) updates.google_review_url = googleReviewUrl.trim() || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
     if (selectedGenres !== null) updates.genres = selectedGenres;
@@ -330,7 +342,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   // cambios. Se guarda solo 1,2 s después de dejar de escribir. El botón sigue
   // ahí por si se prefiere pulsarlo.
   const [autoSavedAt, setAutoSavedAt] = useState<number | null>(null);
-  const snapshot = JSON.stringify([localName, city, rider, bio, instagram, googleReviewUrl, hourlyRate, selectedLangs, selectedRoles, selectedGenres, offersClasses, classStyles, rentalEquipment, classPrice, seekingPartner, danceLevel, danceRole, venueCapacity, allowsOvernight, pricePerHour, pricePerEvent, distanceFromMadridKm]);
+  const snapshot = JSON.stringify([localName, city, rider, bio, instagram, tiktok, facebook, googleReviewUrl, hourlyRate, selectedLangs, selectedRoles, selectedGenres, offersClasses, classStyles, rentalEquipment, classPrice, seekingPartner, danceLevel, danceRole, venueCapacity, allowsOvernight, pricePerHour, pricePerEvent, distanceFromMadridKm]);
   const lastSnapshot = useRef(snapshot);
   const saveRef = useRef(handleSave);
   saveRef.current = handleSave;
@@ -1214,13 +1226,26 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 onChange={e => setInstagram(e.target.value)}
                 placeholder="tu_usuario (sin @)"
                 className="nightlife-input mt-1 text-base" />
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider mt-3 block">TikTok</label>
+              <input value={tiktok ?? profile.tiktok ?? ''}
+                onChange={e => setTiktok(e.target.value)}
+                placeholder="tu_usuario (sin @)"
+                className="nightlife-input mt-1 text-base" />
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider mt-3 block">Facebook</label>
+              <input value={facebook ?? (profile.facebook ? `facebook.com/${profile.facebook}` : '')}
+                onChange={e => setFacebook(e.target.value)}
+                placeholder="facebook.com/tu_pagina"
+                className="nightlife-input mt-1 text-base" />
+              {facebook !== null && !!facebook.trim() && !facebookRuta(facebook) && (
+                <p className="mt-1 text-xs" style={{ color: '#b45309' }}>Pega el enlace de tu página de Facebook (facebook.com/...) o solo su nombre.</p>
+              )}
               {profile.role !== 'empresario' && profile.redes_lanzado && (() => {
                 const fin = profile.redes_fundador_hasta ? new Date(profile.redes_fundador_hasta) : null;
                 const finTxt = fin ? fin.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid' }) : '';
                 const fundadorVigente = !!fin && fin.getTime() > Date.now() && (profile.subscription_tier ?? 'free') === 'free';
                 if (fundadorVigente) return (
                   <p className="mt-2 text-xs" style={{ color: '#8B6A00' }}>
-                    Como profesional fundador, tu Instagram y tu TikTok se ven en tu ficha hasta el {finTxt}. Después, con el plan Profesional.
+                    Como profesional fundador, tus redes (Instagram, TikTok y Facebook) se ven en tu ficha hasta el {finTxt}. Después, con el plan Profesional.
                   </p>
                 );
                 if (profile.redes_visibles === false) return (

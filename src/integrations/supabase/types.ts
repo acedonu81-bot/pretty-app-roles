@@ -1662,6 +1662,7 @@ export type Database = {
           holiday_surcharge_pct: number | null
           hourly_rate: number | null
           id: string
+          facebook: string | null
           instagram: string | null
           is_flash_active: boolean | null
           mostrar_organizador: boolean
@@ -1755,6 +1756,7 @@ export type Database = {
           holiday_surcharge_pct?: number | null
           hourly_rate?: number | null
           id?: string
+          facebook?: string | null
           instagram?: string | null
           is_flash_active?: boolean | null
           mostrar_organizador?: boolean
@@ -1848,6 +1850,7 @@ export type Database = {
           holiday_surcharge_pct?: number | null
           hourly_rate?: number | null
           id?: string
+          facebook?: string | null
           instagram?: string | null
           is_flash_active?: boolean | null
           mostrar_organizador?: boolean

@@ -833,7 +833,7 @@ export default function AdminAnalytics() {
           Comparar con los mensajes del chat dice cuánto pesa esa fuga. */}
       <Panel
         title="Clics en redes de profesionales"
-        hint="Quién pincha el Instagram o TikTok de cada profesional y desde dónde. Cuenta desde el 28 oct; no incluye a los admins."
+        hint="Quién pincha el Instagram, TikTok o Facebook de cada profesional y desde dónde. Cuenta desde el 28 oct; no incluye a los admins."
         ayuda="'Perfil público' es la ficha /p/...; 'Panel' es la ficha dentro de la app (solo registrados). Personas = sesiones distintas, así que alguien que pincha tres veces cuenta una. Si esto crece mucho más que los mensajes del chat, el contacto se está yendo fuera."
       >
         {clicsRedes.length === 0 ? (
@@ -857,7 +857,7 @@ export default function AdminAnalytics() {
                     </span>
                     <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
                       style={{ background: 'rgba(10,9,8,0.05)', color: 'rgba(10,9,8,0.5)' }}>
-                      {red === 'tiktok' ? 'TikTok' : 'Instagram'}
+                      {red === 'tiktok' ? 'TikTok' : red === 'facebook' ? 'Facebook' : 'Instagram'}
                     </span>
                     <span className="text-[0.65rem] flex-shrink-0" style={{ color: 'rgba(10,9,8,0.45)' }}>
                       {personas} {personas === 1 ? 'persona' : 'personas'}

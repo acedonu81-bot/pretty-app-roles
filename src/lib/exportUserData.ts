@@ -20,12 +20,12 @@ export const exportUserDataZip = async (user: User) => {
       supabase.from('flash_bookings').select('*').or(`created_by.eq.${user.id},professional_user_id.eq.${user.id}`),
       supabase.from('conversations').select('*').or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`),
       // Instagram y TikTok reales (en profiles solo está la copia publicada).
-      supabase.from('redes_profesional' as any).select('profile_id, instagram, tiktok').eq('user_id', user.id),
+      supabase.from('redes_profesional' as any).select('profile_id, instagram, tiktok, facebook').eq('user_id', user.id),
     ]);
 
     const p = { ...((profileRes.data as Record<string, unknown> | null) ?? {}) };
-    const redesPropias = ((redesRes.data ?? []) as unknown as Array<{ profile_id: string; instagram: string | null; tiktok: string | null }>).find(r => r.profile_id === p.id);
-    if (redesPropias) { p.instagram = redesPropias.instagram; p.tiktok = redesPropias.tiktok; }
+    const redesPropias = ((redesRes.data ?? []) as unknown as Array<{ profile_id: string; instagram: string | null; tiktok: string | null; facebook: string | null }>).find(r => r.profile_id === p.id);
+    if (redesPropias) { p.instagram = redesPropias.instagram; p.tiktok = redesPropias.tiktok; p.facebook = redesPropias.facebook; }
     const isEmpresarioAccount = p.role === 'empresario';
     const today = new Date().toISOString().slice(0, 10);
     const displayName = (p.display_name as string) ?? '';
@@ -48,6 +48,8 @@ export const exportUserDataZip = async (user: User) => {
           ['Visible ahora', p.is_live ? 'sí' : 'no'],
           ['Géneros', Array.isArray(p.genres) ? (p.genres as string[]).join('; ') : ''],
           ['Instagram', (p.instagram as string) ?? ''],
+          ['TikTok', (p.tiktok as string) ?? ''],
+          ['Facebook', (p.facebook as string) ?? ''],
           ['URL perfil público', `https://xpeak.es/p/${slug}`],
           ['Fecha de registro', fmtDateISO(p.created_at as string)],
         ],

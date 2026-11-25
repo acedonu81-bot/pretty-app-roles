@@ -445,7 +445,7 @@ export function logPwaSessionIfStandalone() {
  * nombres y así no hace falta migración.
  */
 export function clicRedSocial(
-  red: 'instagram' | 'tiktok',
+  red: 'instagram' | 'tiktok' | 'facebook',
   origen: 'perfil_publico' | 'panel',
   profesionalUserId: string,
 ) {

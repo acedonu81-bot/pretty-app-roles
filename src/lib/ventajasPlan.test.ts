@@ -67,11 +67,14 @@ describe('qué ve cada oficio', () => {
   });
 
   it('la frase de redes dice para qué sirve', () => {
-    expect(lista(['mago'], 'starter')).toContain('Tu Instagram y TikTok en tu ficha: quien te visita puede seguirte sin tener que escribirte antes');
+    expect(lista(['mago'], 'starter')).toContain('Tu Instagram, TikTok y Facebook en tu ficha: quien te visita puede seguirte sin tener que escribirte antes');
   });
 
-  it('concursos y sorteos en los dos planes', () => {
-    for (const p of ['starter', 'business'] as const) expect(lista(['mago'], p)).toContain('Concursos y sorteos de XPEAK');
+  it('concursos y sorteos en Profesional; Premium los hereda sin repetirlos', () => {
+    expect(lista(['mago'], 'starter')).toContain('Concursos y sorteos de XPEAK');
+    const premium = lista(['mago'], 'business');
+    expect(premium).toContain('Todo lo de Profesional, más:');
+    expect(premium).not.toContain('Concursos y sorteos de XPEAK');
   });
 
   it('publicaciones en las redes de XPEAK: 1 al mes en Profesional, 3 en Premium', () => {
@@ -86,14 +89,11 @@ describe('qué ve cada oficio', () => {
     expect([ventajasDe('starter').directosMes, ventajasDe('business').directosMes]).toEqual([1, 5]);
   });
 
-  it('próximamente: WhatsApp y Facebook en los dos; el directo en vídeo solo en Premium', () => {
+  it('próximamente: WhatsApp en Profesional (Premium lo hereda sin repetirlo); Facebook ya existe; el directo en vídeo solo en Premium', () => {
     const wa = 'Avisos por WhatsApp de mensajes, reseñas, solicitudes de particulares y ofertas de organizadores';
-    const fb = 'Tu Facebook en la ficha, junto a Instagram y TikTok';
-    for (const p of ['starter', 'business'] as const) {
-      const prox = proximamente(p, oficiosDe(['dj']));
-      expect(prox).toContain(wa);
-      expect(prox).toContain(fb);
-    }
+    expect(proximamente('starter', oficiosDe(['dj']))).toContain(wa);
+    expect(proximamente('business', oficiosDe(['dj']))).not.toContain(wa);
+    for (const p of ['starter', 'business'] as const) expect(proximamente(p, oficiosDe(['dj'])).join('|')).not.toMatch(/Facebook/);
     expect(proximamente('business', oficiosDe(['dj']))).toContain('Tu directo se ve en vídeo en el Inicio de XPEAK, no solo como aviso');
     expect(proximamente('starter', oficiosDe(['dj'])).join('|')).not.toMatch(/en vídeo/);
   });
@@ -104,7 +104,7 @@ describe('qué ve cada oficio', () => {
 
   it('nunca se anuncia lo que aún no existe', () => {
     const todo = ['starter', 'business'].flatMap(p => lista(['dj'], p as 'starter')).join('|');
-    expect(todo).not.toMatch(/WhatsApp|Facebook|ampliada|comunicados|vídeo de fondo|Sello Premium|adelanto|y web/i);
+    expect(todo).not.toMatch(/WhatsApp|ampliada|comunicados|vídeo de fondo|Sello Premium|adelanto|y web/i);
   });
 
   it('no usa rayas largas ni "gratis"', () => {

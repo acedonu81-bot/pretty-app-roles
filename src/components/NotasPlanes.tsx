@@ -23,6 +23,7 @@ export function filasComparativa(): Fila[] {
     { etiqueta: 'Precio al año', profesional: `${euros(PRECIOS_ANUALES.starter)}`, premium: `${euros(PRECIOS_ANUALES.business)}`, nota: 'anual' },
     { etiqueta: 'Perfil verificado en el directorio, mensajes y reseñas', profesional: true, premium: true },
     { etiqueta: 'Ofertas Flash Booking', profesional: true, premium: true, nota: 'oficios' },
+    { etiqueta: 'Tu Instagram, TikTok y Facebook en tu ficha', profesional: p.redesVisibles, premium: q.redesVisibles },
     { etiqueta: 'Fotos y vídeos en el portafolio', profesional: `${p.fotos}`, premium: `${q.fotos}` },
     { etiqueta: 'Sets en tu perfil (música)', profesional: sets(p.sets), premium: sets(q.sets), nota: 'oficios' },
     { etiqueta: 'Estadísticas', profesional: 'Básicas', premium: 'Avanzadas y exportables' },
