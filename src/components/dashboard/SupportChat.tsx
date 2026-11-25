@@ -11,8 +11,21 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { logEvent } from '@/lib/track';
 import { abrirFeedback } from '@/components/FeedbackWebCard';
 import { cobrosActivos } from '@/lib/pagos';
-import { ventajasDe } from '@/lib/ventajasPlan';
+import { listaVentajas } from '@/lib/ventajasPlan';
 import { subscriptionPlans } from '@/lib/subscriptions';
+
+// Respuesta de "planes" del chat de soporte (25 nov 2026): sale de la misma lista que
+// las tarjetas de Mi plan y /precios, para que el bot nunca diga otra cosa.
+// Oficio genérico: con Flash, sin las ventajas que son solo de música o de DJ.
+function textoPlanesSoporte(): string {
+  const generico = { profesional: true, musica: false, banner: false, flash: true };
+  const vinetas = (xs: string[]) => xs.filter(x => !/^Todo lo de /.test(x)).map(x => `• ${x}`).join('\n');
+  return `XPEAK tiene dos planes para profesionales:\n\n`
+    + `**Profesional** (${euros(PLAN_MENSUAL.starter)} al mes, IVA incluido):\n${vinetas(listaVentajas('starter', generico))}\n\n`
+    + `**Premium** (${euros(PLAN_MENSUAL.business)} al mes, IVA incluido), todo lo de Profesional y además:\n${vinetas(listaVentajas('business', generico))}\n\n`
+    + `Si haces música, también cuentan los sets, y si eres DJ, el banner de cabecera. También puedes pagar por años y ahorras 2 meses. Lo ves y lo cambias en **Mi plan**. Sin permanencia.`;
+}
+
 
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 const PLAN_MENSUAL = { starter: subscriptionPlans.find(p => p.id === 'starter')!.monthlyPrice, business: subscriptionPlans.find(p => p.id === 'business')!.monthlyPrice };
@@ -189,7 +202,7 @@ const KB: KBEntry[] = [
     id: 'subscription',
     patterns: [/suscripci|precio.*plan|plan.*precio|cuánto.*cuesta|cuanto.*cuesta|gratis.*qué incluye|free.*plan|starter|business.*plan|elite.*plan|agency.*plan|diferencia.*planes/i],
     answer: cobrosActivos()
-      ? `XPEAK tiene dos planes para profesionales:\n\n• **Profesional** (${euros(PLAN_MENSUAL.starter)} al mes, IVA incluido): perfil en el directorio, verificación, mensajes y reseñas, tus redes visibles, estadísticas de visitas y mensajes y portafolio de ${ventajasDe('starter').fotos}.\n• **Premium** (${euros(PLAN_MENSUAL.business)} al mes, IVA incluido): posición destacada en el directorio, destacado en el Inicio, estadísticas avanzadas con exportar y portafolio de ${ventajasDe('business').fotos}.\n\nTambién puedes pagar por años con descuento. Lo ves y lo cambias en **Mi plan**. Sin permanencia.`
+      ? textoPlanesSoporte()
       : 'Tu plan incluye:\n\n• Perfil activo y visible en el directorio europeo\n• Flash Booking, contratación en tiempo real\n• Mensajería directa con clientes y profesionales\n• Calendario y gestión de disponibilidad\n• Generación de contratos legales en PDF\n• Estadísticas de visitas a tu perfil\n\nSin tarjeta de crédito · Sin contratos.',
     followUps: ['¿Cómo completo mi perfil?', '¿Cómo consigo más bookings?'],
   },

@@ -117,7 +117,7 @@ const Tarjeta = ({ retraso, plan, destacada, cabecera, children }: { retraso: nu
 };
 
 const LEMA: Record<PlanPago, string> = {
-  starter: 'Para que te encuentren y te contraten',
+  starter: 'Para que te sigan, te conozcan y te contraten',
   business: 'Para destacar en el directorio y llegar a más clientes',
 };
 

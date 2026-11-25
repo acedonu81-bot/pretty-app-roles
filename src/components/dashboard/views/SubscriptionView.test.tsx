@@ -61,7 +61,7 @@ describe('SubscriptionView', () => {
 
   it('un DJ ve sus ventajas de música y el banner de cabecera', () => {
     render(<MemoryRouter><SubscriptionView /></MemoryRouter>);
-    expect(screen.getByText('Sets ilimitados')).toBeTruthy();
+    expect(screen.getByText('Sets ilimitados (10 en Profesional)')).toBeTruthy();
     expect(screen.getByText('Banner propio en tu cabecera de artista')).toBeTruthy();
   });
 
@@ -73,7 +73,7 @@ describe('SubscriptionView', () => {
     expect(screen.queryByText('Ofertas Flash Booking')).toBeNull();
     expect(screen.queryByText(/Concursos de DJs/)).toBeNull();
     expect(screen.getByText('Sales destacado en el Inicio de XPEAK')).toBeTruthy();
-    expect(screen.getByText('Portafolio de 20 fotos y vídeos')).toBeTruthy();
+    expect(screen.getByText('Portafolio de 20 fotos y vídeos (12 en Profesional)')).toBeTruthy();
   });
 
   it('pide el pago del plan y ciclo elegidos', () => {

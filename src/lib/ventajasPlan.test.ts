@@ -45,7 +45,7 @@ describe('qué ve cada oficio', () => {
 
   it('un DJ ve sets y banner; un mago no', () => {
     expect(lista(['dj'], 'starter')).toContain('Hasta 10 sets en tu perfil');
-    expect(lista(['dj'], 'business')).toContain('Sets ilimitados');
+    expect(lista(['dj'], 'business')).toContain('Sets ilimitados (10 en Profesional)');
     expect(lista(['dj'], 'business')).toContain('Banner propio en tu cabecera de artista');
     for (const p of ['starter', 'business'] as const) {
       expect(lista(['mago'], p).join('|')).not.toMatch(/sets|Banner/i);
@@ -58,7 +58,7 @@ describe('qué ve cada oficio', () => {
   });
 
   it('solo los oficios del formulario de ofertas ven Flash Booking, explicado en una línea', () => {
-    const flash = 'Ofertas Flash Booking: trabajos urgentes que publican los organizadores y te llegan al momento';
+    const flash = 'Ofertas Flash Booking: trabajos urgentes al momento';
     expect(lista(['dj'], 'starter')).toContain(flash);
     expect(lista(['camarero'], 'starter')).toContain(flash);
     for (const r of ['mago', 'bailarin', 'humorista', 'speaker', 'limpieza', 'azafata']) {
@@ -67,7 +67,7 @@ describe('qué ve cada oficio', () => {
   });
 
   it('la frase de redes dice para qué sirve', () => {
-    expect(lista(['mago'], 'starter')).toContain('Tu Instagram, TikTok y Facebook en tu ficha: quien te visita puede seguirte sin tener que escribirte antes');
+    expect(lista(['mago'], 'starter')).toContain('Tu Instagram, TikTok y Facebook en tu ficha');
   });
 
   it('concursos y sorteos en Profesional; Premium los hereda sin repetirlos', () => {
@@ -90,7 +90,7 @@ describe('qué ve cada oficio', () => {
   });
 
   it('próximamente: WhatsApp en Profesional (Premium lo hereda sin repetirlo); Facebook ya existe; el directo en vídeo solo en Premium', () => {
-    const wa = 'Avisos por WhatsApp de mensajes, reseñas, solicitudes de particulares y ofertas de organizadores';
+    const wa = 'Avisos por WhatsApp de mensajes, solicitudes y ofertas';
     expect(proximamente('starter', oficiosDe(['dj']))).toContain(wa);
     expect(proximamente('business', oficiosDe(['dj']))).not.toContain(wa);
     for (const p of ['starter', 'business'] as const) expect(proximamente(p, oficiosDe(['dj'])).join('|')).not.toMatch(/Facebook/);
@@ -120,7 +120,7 @@ describe('qué ve cada oficio', () => {
   });
 
   it('cada plan incluye lo del anterior en el texto', () => {
-    expect(lista(['dj'], 'starter')[0]).toBe('Perfil en el directorio');
+    expect(lista(['dj'], 'starter')[0]).toBe('Perfil verificado en el directorio, con mensajes y reseñas');
     expect(lista(['dj'], 'business')[0]).toBe('Todo lo de Profesional, más:');
   });
 
@@ -154,7 +154,7 @@ describe('nivel base (sin pagar y sin ser fundador, tras el lanzamiento)', () =>
     const dj = listaBase(oficiosDe(['dj']));
     expect(dj).toContain('Portafolio de 6 fotos y vídeos');
     expect(dj).toContain('Hasta 3 sets en tu perfil');
-    expect(dj).toContain('Ofertas Flash Booking: trabajos urgentes que publican los organizadores y te llegan al momento');
+    expect(dj).toContain('Ofertas Flash Booking: trabajos urgentes al momento');
     expect(dj).toContain('Visitas a tu ficha este mes');
     const mago = listaBase(oficiosDe(['mago'])).join('|');
     expect(mago).not.toMatch(/sets|Flash/);

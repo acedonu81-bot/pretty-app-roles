@@ -93,9 +93,10 @@ export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boole
   const v = VENTAJAS[plan];
   const out: string[] = [];
   if (plan === 'starter') {
-    out.push('Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas');
-    if (o.flash) out.push('Ofertas Flash Booking: trabajos urgentes que publican los organizadores y te llegan al momento');
-    out.push('Tu Instagram, TikTok y Facebook en tu ficha: quien te visita puede seguirte sin tener que escribirte antes', 'Estadísticas de visitas y mensajes');
+    // Frases cortas (25 nov 2026): una línea cada ventaja, que la tarjeta se lea de un vistazo.
+    out.push('Perfil verificado en el directorio, con mensajes y reseñas');
+    if (o.flash) out.push('Ofertas Flash Booking: trabajos urgentes al momento');
+    out.push('Tu Instagram, TikTok y Facebook en tu ficha', 'Estadísticas de visitas y mensajes');
     out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
     if (o.musica) out.push(`Hasta ${v.sets} sets en tu perfil`);
     out.push(`${v.directosMes} directo al mes en XPEAK`, `${v.publicacionesRedesMes} publicación al mes en las redes de XPEAK`, 'Concursos y sorteos de XPEAK');
@@ -103,12 +104,12 @@ export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boole
     out.push('Todo lo de Profesional, más:', 'Posición destacada en el directorio, con aro dorado', 'Sales destacado en el Inicio de XPEAK', `${v.publicacionesRedesMes} publicaciones al mes en las redes de XPEAK`, `${v.directosMes} directos al mes en XPEAK`);
     // Con los cobros apagados nadie puede pedir confirmaciones: no se anuncia.
     if (opciones.cobros !== false) out.push('Sello de eventos confirmados en tu ficha');
-    out.push('Estadísticas avanzadas: visitas día a día, de dónde llegan y exportar');
-    out.push(`Portafolio de ${v.fotos} fotos y vídeos`);
-    if (o.musica) out.push('Sets ilimitados');
+    out.push('Estadísticas avanzadas: día a día, de dónde llegan y exportables');
+    out.push(`Portafolio de ${v.fotos} fotos y vídeos (${VENTAJAS.starter.fotos} en Profesional)`);
+    if (o.musica) out.push(`Sets ilimitados (${VENTAJAS.starter.sets} en Profesional)`);
     if (o.banner) out.push('Banner propio en tu cabecera de artista');
     // Concursos y sorteos ya van en "Todo lo de Profesional": no se repiten aquí.
-    out.push('Soporte prioritario: escribe directamente al equipo de XPEAK');
+    out.push('Soporte prioritario: hablas directamente con el equipo');
   }
   return out;
 }
@@ -118,8 +119,8 @@ export function listaVentajas(plan: Plan, o: Oficios, opciones: { cobros?: boole
 // los de limites_de('free') en la BD: 6 fotos y vídeos, 3 sets.
 export const BASE = { fotos: 6, sets: 3 };
 export function listaBase(o: Oficios): string[] {
-  const out = ['Perfil en el directorio', 'Verificación de perfil', 'Mensajes y reseñas'];
-  if (o.flash) out.push('Ofertas Flash Booking: trabajos urgentes que publican los organizadores y te llegan al momento');
+  const out = ['Perfil verificado en el directorio, con mensajes y reseñas'];
+  if (o.flash) out.push('Ofertas Flash Booking: trabajos urgentes al momento');
   out.push('Visitas a tu ficha este mes', `Portafolio de ${BASE.fotos} fotos y vídeos`);
   if (o.musica) out.push(`Hasta ${BASE.sets} sets en tu perfil`);
   out.push('Concursos de XPEAK');
@@ -132,7 +133,7 @@ export function proximamente(plan: Plan, o: Oficios): string[] {
   const out: string[] = [];
   if (plan === 'starter') {
     // Comunes a los dos planes: en Premium ya van dentro de "Todo lo de Profesional".
-    out.push('Avisos por WhatsApp de mensajes, reseñas, solicitudes de particulares y ofertas de organizadores');
+    out.push('Avisos por WhatsApp de mensajes, solicitudes y ofertas');
     if (o.flash) out.push('Flash Booking con adelanto');
   } else if (plan === 'business') {
     if (o.flash) out.push('Flash Booking con el mayor adelanto');
