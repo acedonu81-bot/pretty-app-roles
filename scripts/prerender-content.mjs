@@ -357,6 +357,14 @@ for (const { routePath, file, routePattern, roleSlug: occRoleSlug } of routes) {
       const cfg = ROLE_CONFIG[occRoleSlug];
       if (cfg?.dbRole) preloadedDirectorio = resolveProfilesForDirectorio(allProfiles, cfg.dbRole);
     }
+    // DJ para boda, empresa, fiesta privada y cumpleaños (25 nov 2026): son páginas
+    // propias con los DJs de Madrid y su precio (components/DjOcasionMadrid.tsx, que
+    // lee __PRERENDER_PROFILES__ con useCityProfessionals). Mismo criterio que
+    // /contratar-dj/madrid. Si se añade una ocasión en DJ_OCASIONES, añadirla aquí.
+    if (file === 'OccasionLanding.tsx' && occRoleSlug === 'dj'
+      && ['boda', 'evento-empresa', 'fiesta-privada', 'cumpleanos'].includes(routePath.split('/')[1])) {
+      preloadedProfiles = resolveProfilesForCity(allProfiles, 'Madrid', 'dj');
+    }
     if (file === 'SocialEvent.tsx') {
       const found = socialEvents.find(se => se.routePath === routePath);
       const organizer = found ? allProfiles.find(p => p.user_id === found.event.user_id) : null;

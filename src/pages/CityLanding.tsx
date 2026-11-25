@@ -46,7 +46,7 @@ declare global {
 export const CIUDADES_PAGINA_COMPLETA = ['Madrid', 'Barcelona'];
 export const esPaginaCompleta = (categorySlug: string, ciudad: string) => categorySlug === 'dj' && CIUDADES_PAGINA_COMPLETA.includes(ciudad);
 
-function useCityProfessionals(ciudad: string, categorySlug: string) {
+export function useCityProfessionals(ciudad: string, categorySlug: string) {
   const preloaded = typeof globalThis !== 'undefined' ? globalThis.__PRERENDER_PROFILES__ : undefined;
   const [profs, setProfs] = useState<Prof[]>(preloaded?.profs ?? []);
   const [suggestions, setSuggestions] = useState<Prof[]>(preloaded?.suggestions ?? []);
@@ -787,10 +787,12 @@ function faqsCompletas(ciudad: string, st: EstadPrecio | null) {
 }
 
 export const TIPOS_EVENTO = [
-  { t: 'Bodas', d: 'Cuenta con 5 a 7 horas entre cóctel, banquete y baile. Pregunta si incluye micrófono para los discursos, luces para la pista y si prepara la lista de canciones contigo.' },
-  { t: 'Cumpleaños y fiestas privadas', d: 'Suelen ser 3 o 4 horas. Dile qué música os gusta y cuánta gente viene: con eso sabe qué equipo llevar.' },
-  { t: 'Empresas', d: 'Cenas de Navidad, inauguraciones y presentaciones. Pide factura y confirma con el local el horario de montaje.' },
-  { t: 'Fiestas en casa o en finca', d: 'Mira si hay enchufes cerca y si hay límite de ruido o de horario. Hay DJs con equipo compacto para espacios pequeños.' },
+  // href (25 nov 2026): cada tipo enlaza a su página de DJ por ocasión, que tiene
+  // los DJs de Madrid con precio (components/DjOcasionMadrid.tsx).
+  { t: 'Bodas', href: '/boda/contratar-dj', d: 'Cuenta con 5 a 7 horas entre cóctel, banquete y baile. Pregunta si incluye micrófono para los discursos, luces para la pista y si prepara la lista de canciones contigo.' },
+  { t: 'Cumpleaños y fiestas privadas', href: '/cumpleanos/contratar-dj', d: 'Suelen ser 3 o 4 horas. Dile qué música os gusta y cuánta gente viene: con eso sabe qué equipo llevar.' },
+  { t: 'Empresas', href: '/evento-empresa/contratar-dj', d: 'Cenas de Navidad, inauguraciones y presentaciones. Pide factura y confirma con el local el horario de montaje.' },
+  { t: 'Fiestas en casa o en finca', href: '/fiesta-privada/contratar-dj', d: 'Mira si hay enchufes cerca y si hay límite de ruido o de horario. Hay DJs con equipo compacto para espacios pequeños.' },
 ];
 
 function BloquesCompletos({ ciudad, profs, st, onPedir }: { ciudad: string; profs: Prof[]; st: EstadPrecio | null; onPedir: () => void }) {
@@ -845,7 +847,12 @@ function BloquesCompletos({ ciudad, profs, st, onPedir }: { ciudad: string; prof
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {TIPOS_EVENTO.map(e => (
             <div key={e.t} className="p-5 rounded-xl" style={caja}>
-              <h3 className="text-base font-black mb-2">DJ para {e.t.toLowerCase()} en {ciudad}</h3>
+              <h3 className="text-base font-black mb-2">
+                {/* Las páginas por ocasión son de Madrid: en otra ciudad no se enlazan. */}
+                {ciudad === 'Madrid'
+                  ? <a href={e.href} style={{ color: '#111', textDecoration: 'underline', textDecorationColor: 'rgba(139,106,0,0.4)' }}>DJ para {e.t.toLowerCase()} en {ciudad}</a>
+                  : <>DJ para {e.t.toLowerCase()} en {ciudad}</>}
+              </h3>
               <p className="text-sm leading-relaxed" style={{ color: '#4b5563' }}>{e.d}</p>
             </div>
           ))}

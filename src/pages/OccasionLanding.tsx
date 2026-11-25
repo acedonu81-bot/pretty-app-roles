@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { CATEGORIES } from '@/pages/CityLanding';
 import { toSlug } from '@/data/profiles';
 import { passesPhotoGate } from '@/lib/constants';
+import DjOcasionMadrid, { esDjOcasion } from '@/components/DjOcasionMadrid';
 
 /**
  * OccasionLanding — eje ocasión × rol (ej: /boda/contratar-dj).
@@ -224,6 +225,10 @@ export default function OccasionLanding() {
   const parts = pathname.split('/').filter(Boolean);
   const occasionSlug = parts[0] ?? '';
   const categorySlug = (parts[1] ?? '').replace('contratar-', '');
+
+  // DJ para boda, empresa, fiesta privada y cumpleaños: página propia con los DJs
+  // de Madrid y sus precios (25 nov 2026, ver components/DjOcasionMadrid.tsx).
+  if (esDjOcasion(occasionSlug, categorySlug)) return <DjOcasionMadrid ocasion={occasionSlug} />;
 
   const occ = OCCASIONS[occasionSlug];
   const catData = CATEGORIES[categorySlug];

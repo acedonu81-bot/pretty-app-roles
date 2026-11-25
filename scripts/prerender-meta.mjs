@@ -103,6 +103,42 @@ const ROUTES = [
   },
   // City landings — DJ
   {
+    path: '/boda/contratar-dj',
+    // Mismo título y descripción que DJ_OCASIONES en components/DjOcasionMadrid.tsx (25 nov 2026).
+    title: 'DJ para bodas en Madrid: precios reales y disponibilidad | XPEAK',
+    desc: 'DJs para bodas en Madrid con su precio por hora, estilos y fotos. Mira cuánto cuesta un DJ de boda y pide presupuesto a los que tienen tu fecha libre.',
+    ogTitle: 'DJ para bodas en Madrid: precios reales y disponibilidad',
+    ogDesc: 'DJs para bodas en Madrid con su precio por hora, estilos y fotos. Mira cuánto cuesta un DJ de boda y pide presupuesto a los que tienen tu fecha libre.',
+    ogType: 'website',
+  },
+  {
+    path: '/evento-empresa/contratar-dj',
+    // Mismo título y descripción que DJ_OCASIONES en components/DjOcasionMadrid.tsx (25 nov 2026).
+    title: 'DJ para eventos de empresa en Madrid: precios y disponibilidad | XPEAK',
+    desc: 'DJs para cenas de empresa, afterworks, presentaciones y fiestas de Navidad en Madrid, con su precio por hora. Pide presupuesto con factura.',
+    ogTitle: 'DJ para eventos de empresa en Madrid: precios y disponibilidad',
+    ogDesc: 'DJs para cenas de empresa, afterworks, presentaciones y fiestas de Navidad en Madrid, con su precio por hora. Pide presupuesto con factura.',
+    ogType: 'website',
+  },
+  {
+    path: '/fiesta-privada/contratar-dj',
+    // Mismo título y descripción que DJ_OCASIONES en components/DjOcasionMadrid.tsx (25 nov 2026).
+    title: 'DJ para fiestas privadas en Madrid: precios y disponibilidad | XPEAK',
+    desc: 'DJs para fiestas privadas en Madrid: en casa, en finca, en un ático o en un local. Mira su precio por hora y estilos y pide presupuesto.',
+    ogTitle: 'DJ para fiestas privadas en Madrid: precios y disponibilidad',
+    ogDesc: 'DJs para fiestas privadas en Madrid: en casa, en finca, en un ático o en un local. Mira su precio por hora y estilos y pide presupuesto.',
+    ogType: 'website',
+  },
+  {
+    path: '/cumpleanos/contratar-dj',
+    // Mismo título y descripción que DJ_OCASIONES en components/DjOcasionMadrid.tsx (25 nov 2026).
+    title: 'DJ para cumpleaños en Madrid: precios y disponibilidad | XPEAK',
+    desc: 'DJs para cumpleaños en Madrid: 18 años, 30, 40, 50 o fiesta familiar. Mira su precio por hora y estilos y pide presupuesto para tu fecha.',
+    ogTitle: 'DJ para cumpleaños en Madrid: precios y disponibilidad',
+    ogDesc: 'DJs para cumpleaños en Madrid: 18 años, 30, 40, 50 o fiesta familiar. Mira su precio por hora y estilos y pide presupuesto para tu fecha.',
+    ogType: 'website',
+  },
+  {
     path: '/contratar-dj/madrid',
     // Mismo título y descripción que tituloCompleto/descCompleta de CityLanding.tsx (19 oct 2026).
     title: 'DJ en Madrid para bodas, fiestas y empresas: precios y disponibilidad | XPEAK',

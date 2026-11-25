@@ -136,7 +136,9 @@ export default function DjNacionalBloques({ profs, st, ciudades }: { profs: DjNa
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {TIPOS_EVENTO.map(e => (
             <div key={e.t} className="p-5 rounded-xl" style={caja}>
-              <h3 className="text-base font-black mb-2">DJ para {e.t.toLowerCase()}</h3>
+              <h3 className="text-base font-black mb-2">
+                <a href={e.href} style={{ color: '#111', textDecoration: 'underline', textDecorationColor: 'rgba(139,106,0,0.4)' }}>DJ para {e.t.toLowerCase()}</a>
+              </h3>
               <p className="text-sm leading-relaxed" style={{ color: '#4b5563' }}>{e.d}</p>
             </div>
           ))}

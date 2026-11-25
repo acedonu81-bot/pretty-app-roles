@@ -18,6 +18,10 @@ const SOCIAL_LINKS = [
 const FOOTER_LINKS = {
   contratar: [
     { label: 'Contratar DJ', href: '/contratar-dj' },
+    // Páginas de DJ por ocasión para organizadores (25 nov 2026): sin enlaces, Google no las visitaba desde agosto.
+    { label: 'DJ para bodas', href: '/boda/contratar-dj' },
+    { label: 'DJ para empresas', href: '/evento-empresa/contratar-dj' },
+    { label: 'DJ para fiestas privadas', href: '/fiesta-privada/contratar-dj' },
     { label: 'Contratar Camareros', href: '/contratar-camareros' },
     { label: 'Contratar Fotógrafo', href: '/contratar-fotografo' },
     { label: 'Contratar Staff', href: '/contratar-staff' },
