@@ -783,7 +783,7 @@ const EventRequestsSection = ({ foco, onMessage }: EventRequestsSectionProps = {
     setSubmitting(false);
     if (slotsError) { toast.error('La oferta se creó pero hubo un problema con las plazas.'); }
 
-    toast.success('¡Solicitud publicada! Los profesionales podrán contactarte.');
+    toast.success('Solicitud recibida. Además de publicarla, desde XPEAK te ayudamos a encontrar profesionales disponibles.');
     setRequests(prev => [nuevaOferta, ...prev]);
     setShowForm(false);
     setForm({ client_name: '', event_type: '', city: '', exact_address: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roleCounts: {}, description: '', contact_email: '', contact_phone: '' });
