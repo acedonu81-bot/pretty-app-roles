@@ -180,7 +180,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
   );
 };
 
-const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, alertTono = 'green', iconColor, navId, etiqueta }: {
+const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert, alertTono = 'green', iconColor, navId, etiqueta, iconRing }: {
   icon: LucideIcon;
   label: string;
   isActive: boolean;
@@ -203,6 +203,8 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
   /** Etiqueta azul de aviso junto al nombre (p. ej. "Concurso DJ" en Feed).
    *  Con el sidebar plegado a iconos queda como un punto verde en el icono. */
   etiqueta?: string;
+  /** Aro dorado fino alrededor del icono en reposo (p. ej. la corona de Mi plan). */
+  iconRing?: boolean;
 }) => (
   <SidebarMenuItem>
     <SidebarMenuButton
@@ -226,9 +228,11 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
           ? { width: 26, height: 26, margin: -4.5, color: '#fff', background: alertTono === 'blue' ? '#2563EB' : '#16a34a' }
           : iconColor && !isActive
             ? { width: 24, height: 24, margin: -3.5, color: '#fff', background: iconColor }
-            : { width: 17, height: 17, color: isActive ? '#B8941E' : 'rgba(10,9,8,0.55)' }}
+            : iconRing
+              ? { width: 23, height: 23, margin: -3, color: isActive ? '#B8941E' : '#8A6D0F', boxShadow: 'inset 0 0 0 1px #D4AF37' }
+              : { width: 17, height: 17, color: isActive ? '#B8941E' : 'rgba(10,9,8,0.55)' }}
       >
-        <Icon size={iconAlert ? 15 : (iconColor && !isActive ? 14 : 17)} strokeWidth={iconColor && !isActive ? 2.5 : 2} />
+        <Icon size={iconAlert ? 15 : (iconColor && !isActive ? 14 : iconRing ? 14 : 17)} strokeWidth={iconColor && !isActive ? 2.5 : 2} />
       </span>
       <span className="flex-1" style={iconAlert ? { color: alertTono === 'blue' ? '#1d4ed8' : '#166534', fontWeight: 800 } : undefined}>{label}</span>
       {etiqueta && (
@@ -538,7 +542,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded,
                 ("Ver planes") y un profesional no encontraba dónde contratar.
                 Solo con los cobros encendidos y para profesionales. */}
             {cobrosActivos() && !isEmpresario && role !== 'particular' && role !== 'pending' && (
-              <NavItem icon={Crown} label="Mi plan" isActive={activeView === 'subscription'} onClick={() => onViewChange('subscription')} navId="subscription" />
+              <NavItem icon={Crown} label="Mi plan" isActive={activeView === 'subscription'} onClick={() => onViewChange('subscription')} navId="subscription" iconRing />
             )}
             <NavItem icon={BarChart3} label="Estadísticas" isActive={activeView === 'stats'} onClick={() => onViewChange('stats')} navId="stats" />
           </SidebarMenu>

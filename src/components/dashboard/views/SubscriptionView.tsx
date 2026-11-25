@@ -9,6 +9,7 @@ import { CheckCircle, Clock, Lock } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { isNative } from '@/lib/capacitor';
 import { iniciarPago, abrirPortal, leerMiSuscripcion, cobrosActivos, type Ciclo, type MiSuscripcion, type PlanPago } from '@/lib/pagos';
+import { logEvent } from '@/lib/track';
 import { subscriptionPlans, PRECIOS_ANUALES, PRECIOS_BLACK_FRIDAY, esBlackFriday, ahorroAnual } from '@/lib/subscriptions';
 
 const euros = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
@@ -142,6 +143,15 @@ const SubscriptionView = () => {
   const esFundador = sinPagar && efectivo === 'starter';
   const titulo = !sinPagar ? (NOMBRE[tier] ?? 'Premium') : esBase ? 'Nivel base' : 'Profesional';
 
+  // Medición (25 nov 2026): dentro del panel todo se guardaba como "/dashboard"
+  // y no había forma de saber quién abría Mi plan ni quién pulsaba pagar.
+  // Va como cta_click (ya admitido por log_analytics_event): sin migración.
+  useEffect(() => {
+    void logEvent('cta_click', '/dashboard', `mi_plan vista tier=${tier}`);
+    // Solo al abrir la vista, no en cada cambio de plan.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Vuelta de Stripe (?pago=ok|cancelado): el aviso se lee una vez y se quita de la
   // dirección; si no, se quedaba "Pago recibido" para siempre, también tras una baja.
   const [vuelta, setVuelta] = useState<'ok' | 'cancelado' | null>(() => {
@@ -220,7 +230,7 @@ const SubscriptionView = () => {
               <p className="text-[11px] font-extrabold uppercase tracking-widest mb-3" style={{ color: '#8A6D0F' }}>Incluido en tu plan</p>
               <Lista items={ventajas(p)} proximos={proximamente(planDe(p), oficios)} />
             </div>
-            <button type="button" onClick={() => abrirPortal()} className="rounded-xl py-3 font-bold transition-all duration-150 hover:brightness-105"
+            <button type="button" onClick={() => { void logEvent('cta_click', '/dashboard', `mi_plan gestionar tier=${tier}`); abrirPortal(); }} className="rounded-xl py-3 font-bold transition-all duration-150 hover:brightness-105"
               style={{ background: 'linear-gradient(180deg,#E6C75A 0%,#CFA52B 100%)', color: '#1d1a12', boxShadow: '0 10px 20px -6px rgba(120,90,0,.6)' }}>
               Gestionar mi plan
             </button>
@@ -294,7 +304,7 @@ const SubscriptionView = () => {
                       </div>
                     </div>
                     <p className="text-sm font-semibold" style={{ color: t.suave }}>{LEMA[p]}</p>
-                    <button type="button" onClick={() => iniciarPago(p, ciclo)}
+                    <button type="button" onClick={() => { void logEvent('cta_click', '/dashboard', `mi_plan elegir plan=${p} ciclo=${ciclo}`); iniciarPago(p, ciclo); }}
                       className="mt-1 rounded-full py-3 font-bold transition-all duration-150 hover:brightness-110 active:translate-y-px"
                       style={t.boton}>
                       Elegir {NOMBRE[p]}
