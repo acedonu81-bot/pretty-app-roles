@@ -17,6 +17,8 @@ import { logAsistente, resumenAsistente } from '@/lib/asistenteAlta';
 import { normalizarInstagram, esUsuarioInstagram } from '@/lib/instagramUsuario';
 import { ciudadInicial } from '@/lib/ciudadAsistente';
 import { cobrosActivos } from '@/lib/pagos';
+import { esBlackFriday } from '@/lib/subscriptions';
+import { isNative } from '@/lib/capacitor';
 import { track } from '@/lib/track';
 
 // Ciudades principales — lista corta a propósito para elegir en segundos
@@ -990,6 +992,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
           {step === 1 && selectedRole !== 'empresario' && cobrosActivos() && (
             <p className="text-center text-xs leading-snug mt-2" style={{ color: '#4b5563' }}>
               Empiezas con el nivel base: 1 oferta Flash al mes y 6 fotos. No pagas nada ahora; con Profesional (desde 6,99 €/mes) todo sin tope.{' '}
+              {esBlackFriday() && !isNative && <strong>Black Friday hasta el 30 nov: 35 % menos el primer año del plan anual.{' '}</strong>}
               <a href="/precios" target="_blank" rel="noopener noreferrer" className="font-bold underline"
                 onClick={() => track('plan_base_alta_ver_planes')}>
                 Ver planes

@@ -111,6 +111,7 @@ const bentoAnimacion = 'https://images.pexels.com/photos/1405528/pexels-photo-14
 import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
 import GigWonPopup from '@/components/GigWonPopup';
+import BlackFridayPortada from '@/components/BlackFridayPortada';
 import BarraDirecto from '@/components/directo/BarraDirecto';
 import { ventanaActiva } from '@/config/ventanasPrueba';
 
@@ -843,6 +844,7 @@ const Landing = () => {
         )}
         {movember && <MovemberPastilla />}
         {dia25n && <Bloque25N />}
+        <BlackFridayPortada />
         <div className="max-w-2xl mx-auto mb-5 text-left">
           <Suspense fallback={null}><ConcursoFeedBanner sinTexto /></Suspense>
         </div>
