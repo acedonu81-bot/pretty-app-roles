@@ -40,7 +40,7 @@ const BannerPlanes = ({ onVer, activeView }: { onVer: () => void; activeView: st
 
   return (
     <div role="note" aria-label="Planes de XPEAK"
-      className="mx-4 mt-3 flex flex-wrap md:flex-nowrap items-center gap-x-3 gap-y-3 md:gap-4 rounded-2xl py-3 pl-3 pr-3 md:pr-4 overflow-hidden relative"
+      className="mx-4 mt-3 flex flex-wrap md:flex-nowrap items-center gap-x-3 gap-y-3 md:gap-4 rounded-2xl py-3 pl-3 pr-3 md:pr-4 shrink-0 relative"
       style={{ background: '#FBF3DC', border: '1px solid #E6D08A', borderLeft: '4px solid #16a34a', color: '#2a2108', boxShadow: '0 10px 22px -16px rgba(90,66,0,.55)' }}>
       {/* Sello tipo estampa: doble aro, el interior discontinuo. */}
       <div aria-hidden="true" className="relative shrink-0 w-12 h-12 md:w-[54px] md:h-[54px] rounded-full flex items-center justify-center font-black text-sm tracking-tight"
