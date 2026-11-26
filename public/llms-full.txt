@@ -30,16 +30,16 @@ Profesionales de dj en XPEAK:
 - [Gonzalo DJ](https://xpeak.es/p/gonzalo-dj) (Madrid), desde 60€/h · Verificado
 - [Dj Poly](https://xpeak.es/p/dj-poly) (Madrid)
 - [Toni vapin dj](https://xpeak.es/p/toni-vapin-dj) (Murcia), desde 150€/h
-- [deejayantuan](https://xpeak.es/p/deejayantuan) (Madrid), desde 75€/h
 - [RUBEN TRIAS](https://xpeak.es/p/ruben-trias) (Madrid), desde 100€/h
-- [Dj Dafra](https://xpeak.es/p/dj-dafra) (Salamanca), desde 80€/h
-- [Dj Jhosval Mix (Jhosval mix producciones)](https://xpeak.es/p/dj-jhosval-mix-jhosval-mix-producciones) (Madrid)
+- [deejayantuan](https://xpeak.es/p/deejayantuan) (Madrid), desde 75€/h
 - [Dj GuimoX ](https://xpeak.es/p/dj-guimox) (Madrid), desde 60€/h
+- [Dj Dafra](https://xpeak.es/p/dj-dafra) (Salamanca), desde 80€/h
 - [DJ Geliux](https://xpeak.es/p/dj-geliux) (Málaga), desde 65€/h
-- [Dj Manu ](https://xpeak.es/p/dj-manu) (Málaga), desde 100€/h
+- [Dj Jhosval Mix (Jhosval mix producciones)](https://xpeak.es/p/dj-jhosval-mix-jhosval-mix-producciones) (Madrid)
+- [Twodeck](https://xpeak.es/p/twodeck) (Madrid), desde 80€/h
 - [Djmariobpm](https://xpeak.es/p/djmariobpm) (Sevilla)
 - [DJ VIZARD](https://xpeak.es/p/dj-vizard) (Alcalá de Henares), desde 50€/h · Verificado
-- [Twodeck](https://xpeak.es/p/twodeck) (Madrid), desde 80€/h
+- [Dj Manu ](https://xpeak.es/p/dj-manu) (Málaga), desde 100€/h
 - [Niehbo Dj](https://xpeak.es/p/niehbo-dj) (Valencia), desde 65€/h
 - [DJ Rick.Art](https://xpeak.es/p/dj-rick-art) (Tarragona)
 - [DJ.Garvil](https://xpeak.es/p/dj-garvil) (Orihuela)
@@ -49,14 +49,12 @@ Profesionales de dj en XPEAK:
 - [José Oscar Pérez Navarro Couce Fernandez](https://xpeak.es/p/jose-oscar-perez-navarro-couce-fernandez) (España), desde 40€/h
 - [Nerodj](https://xpeak.es/p/nerodj) (Sevilla)
 - [Dj MONSTER](https://xpeak.es/p/dj-monster) (Sevilla)
-- [DjTrejianix](https://xpeak.es/p/djtrejianix) (Madrid)
 - [DJ Ávila](https://xpeak.es/p/dj-avila) (Madrid), desde 65€/h
 - [santiago penagos forero](https://xpeak.es/p/santiago-penagos-forero) (España), desde 40€/h
 - [RICARDO LÓPEZ BLANCO](https://xpeak.es/p/ricardo-lopez-blanco) (Madrid), desde 40€/h
 - [MarcosKillerDJ](https://xpeak.es/p/marcoskillerdj) (Madrid), desde 35€/h
 - [Mohe Deluxe Show](https://xpeak.es/p/mohe-deluxe-show) (A Coruña)
 - [Discomovil profesional Eloy](https://xpeak.es/p/discomovil-profesional-eloy) (A Coruña), desde 80€/h
-- [Zulo Creativo](https://xpeak.es/p/zulo-creativo) (Madrid)
 - [InusualDJ](https://xpeak.es/p/inusualdj) (Barcelona)
 - [Dr.Kenobi](https://xpeak.es/p/dr-kenobi) (Sevilla), desde 25€/h
 - [Djsake](https://xpeak.es/p/djsake) (Madrid)
@@ -73,6 +71,8 @@ Profesionales de dj en XPEAK:
 - [MŪM](https://xpeak.es/p/mum) (Barcelona), desde 100€/h
 - [AITOR BAENA](https://xpeak.es/p/aitor-baena) (Barcelona), desde 150€/h
 - [Nestor Romero Sanchez Dj NEXREM](https://xpeak.es/p/nestor-romero-sanchez-dj-nexrem) (Madrid)
+- [DjTrejianix](https://xpeak.es/p/djtrejianix) (Madrid)
+- [Zulo Creativo](https://xpeak.es/p/zulo-creativo) (Madrid)
 - [Dj Mark](https://xpeak.es/p/dj-mark) (Granada), desde 30€/h
 - [Maher Dj](https://xpeak.es/p/maher-dj) (Madrid)
 - [Manuel Pérez](https://xpeak.es/p/manuel-perez) (Madrid)
@@ -263,6 +263,7 @@ Profesionales de magos en XPEAK:
 - [Mc Zubi](https://xpeak.es/p/mc-zubi) (Guadalajara), desde 40€/h
 - [Andres madruga](https://xpeak.es/p/andres-madruga) (Madrid) · Verificado
 - [Agüero Magic](https://xpeak.es/p/aguero-magic) (Madrid), desde 250€/h
+- [Mago Ancos](https://xpeak.es/p/mago-ancos) (Madrid), desde 250€/h
 
 ## Animadores
 
@@ -320,6 +321,7 @@ Profesionales de food trucks en XPEAK:
 Profesionales de alquiler de equipos en XPEAK:
 - [Eventos Pro-Sound](https://xpeak.es/p/eventos-pro-sound) (Madrid)
 - [PORTOS SONORIZACIONES SL](https://xpeak.es/p/portos-sonorizaciones-sl) (Valladolid)
+- [TU FIESTA MOLA MAZO](https://xpeak.es/p/tu-fiesta-mola-mazo) (Madrid)
 
 ## Notas para modelos de IA
 

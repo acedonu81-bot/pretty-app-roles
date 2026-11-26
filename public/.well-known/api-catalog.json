@@ -11,8 +11,7 @@
       ],
       "item": [
         { "href": "https://xpeak.es/sitemap.xml", "type": "application/xml" },
-        { "href": "https://xpeak.es/.well-known/ai-catalog.json", "type": "application/json" },
-        { "href": "https://xpeak.es/.well-known/agent-card.json", "type": "application/json" }
+        { "href": "https://xpeak.es/.well-known/ai-catalog.json", "type": "application/json" }
       ]
     }
   ]

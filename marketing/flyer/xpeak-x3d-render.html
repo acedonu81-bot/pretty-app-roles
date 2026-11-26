@@ -1,0 +1,41 @@
+<!doctype html><body style="margin:0"><canvas id=c width=1800 height=1800></canvas>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as T from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const q=new URLSearchParams(location.search);
+const ry=+(q.get('ry')??-0.42), rx=+(q.get('rx')??0.2), rz=+(q.get('rz')??0);
+const r=new T.WebGLRenderer({canvas:document.getElementById('c'),alpha:true,antialias:true,preserveDrawingBuffer:true});
+r.setSize(1800,1800,false);r.toneMapping=T.ACESFilmicToneMapping;r.toneMappingExposure=1.05;
+const s=new T.Scene();const pm=new T.PMREMGenerator(r);s.environment=pm.fromScene(new RoomEnvironment(),0.03).texture;
+s.environmentIntensity=1.0;
+const cam=new T.PerspectiveCamera(24,1,.1,100);
+// --- contorno de la X: 4 rectas diagonales, 12 vértices, esquinas redondeadas
+const wE=.52;                       // ancho horizontal del extremo de cada brazo
+const P=(x,y)=>new T.Vector2(x,y);
+const inter=(a,b,c,d)=>{const r_=b.clone().sub(a),s_=d.clone().sub(c);const den=r_.x*s_.y-r_.y*s_.x;const t=((c.x-a.x)*s_.y-(c.y-a.y)*s_.x)/den;return a.clone().add(r_.multiplyScalar(t));};
+// "/" y "\" : bordes
+const sL=[P(1-wE,1),P(-1,-1)], sR=[P(1,1),P(-1+wE,-1)];   // "/"
+const bL=[P(-1,1),P(1-wE,-1)], bR=[P(-1+wE,1),P(1,-1)];   // "\"
+const top=inter(...bR,...sL), right=inter(...sR,...bR), bottom=inter(...bL,...sR), left=inter(...sL,...bL);
+const pts=[P(-1,1),P(-1+wE,1),top,P(1-wE,1),P(1,1),right,P(1,-1),P(1-wE,-1),bottom,P(-1+wE,-1),P(-1,-1),left];
+const shape=new T.Shape();const n=pts.length;
+const R=.085;
+for(let i=0;i<n;i++){
+  const p=pts[i],a=pts[(i+n-1)%n],b=pts[(i+1)%n];
+  const da=a.clone().sub(p),db=b.clone().sub(p);
+  const k=Math.min(R,da.length()*.4,db.length()*.4);
+  const p1=p.clone().add(da.normalize().multiplyScalar(k)),p2=p.clone().add(db.normalize().multiplyScalar(k));
+  if(i===0)shape.moveTo(p1.x,p1.y);else shape.lineTo(p1.x,p1.y);
+  shape.quadraticCurveTo(p.x,p.y,p2.x,p2.y);
+}
+shape.closePath();
+const geo=new T.ExtrudeGeometry(shape,{depth:.34,bevelEnabled:true,bevelThickness:.14,bevelSize:.12,bevelOffset:-.06,bevelSegments:18,curveSegments:14});
+geo.computeVertexNormals();geo.center();
+const gold=new T.MeshPhysicalMaterial({color:0xF2CB55,metalness:.78,roughness:.34,clearcoat:.7,clearcoatRoughness:.1,envMapIntensity:2.1});
+const m=new T.Mesh(geo,gold);m.rotation.set(rx,ry,rz);s.add(m);
+const k=new T.DirectionalLight(0xfff0c0,3.4);k.position.set(-3,4,5);s.add(k);
+const f=new T.DirectionalLight(0xffd98a,1.6);f.position.set(4,-2,3);s.add(f);
+s.add(new T.HemisphereLight(0xfff4d0,0x7a5a10,1.1));cam.position.set(0,0,9.2);cam.lookAt(0,0,0);
+r.render(s,cam);window.done=true;
+</script></body>
