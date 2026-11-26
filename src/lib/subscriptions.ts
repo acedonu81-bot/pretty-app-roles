@@ -26,6 +26,12 @@ export const PRECIOS_BLACK_FRIDAY: Record<'starter' | 'business', number> = { st
 export const INICIO_BLACK_FRIDAY = new Date('2026-11-24T23:00:00Z'); // 25 nov 00:00 Madrid
 export const FIN_BLACK_FRIDAY = new Date('2026-11-30T23:00:00Z');    // 30 nov 23:59 Madrid
 export const esBlackFriday = (ahora = new Date()) => ahora >= INICIO_BLACK_FRIDAY && ahora < FIN_BLACK_FRIDAY;
+/** Etiqueta de cuenta atrás de la oferta: "Quedan 4 días", "Queda 1 día" o "Último día". */
+export const diasRestantesBlackFriday = (ahora = new Date()): string => {
+  const d = Math.floor((FIN_BLACK_FRIDAY.getTime() - ahora.getTime()) / 86_400_000);
+  if (d <= 0) return 'Último día';
+  return d === 1 ? 'Queda 1 día' : `Quedan ${d} días`;
+};
 const MENSUAL: Record<'starter' | 'business', number> = { starter: 6.99, business: 14.99 };
 /** Lo que se ahorra al año pagando anual frente a 12 meses: 2 mensualidades. */
 export const ahorroAnual = (p: 'starter' | 'business') => Math.round((MENSUAL[p] * 12 - PRECIOS_ANUALES[p]) * 100) / 100;
