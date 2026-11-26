@@ -9,6 +9,7 @@ import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
 import NuevaOfertaBanner from '@/components/dashboard/NuevaOfertaBanner';
+import BannerPlanes from '@/components/dashboard/BannerPlanes';
 import ComunicadosCarrusel from '@/components/comunicados/ComunicadosCarrusel';
 import PendingReviewsBanner from '@/components/dashboard/PendingReviewsBanner';
 import { marcarFlashVisto } from '@/hooks/useDashboardBadges';
@@ -878,6 +879,7 @@ const DashboardPanel = () => {
           {dia25nActivo() && <Franja25N />}
           <NuevaOfertaBanner userId={user?.id} isEmpresario={profileRole === 'empresario'} oculto={activeView === 'flashbooking'} onVer={d => (d === 'solicitudes' ? goToSolicitudesFlashBooking() : goToOfertasFlashBooking())} />
           <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
+          <BannerPlanes onVer={() => handleViewChange('subscription')} activeView={activeView} />
           <PendingReviewsBanner onGoToReviews={goToPendingReviews} />
           <MarketingConsentBanner />
           <RecentBusinessViewLine />
