@@ -228,7 +228,7 @@ export const ROLE_CONFIG: Record<string, {
   'wedding-planner': {
     dbRole: 'event_manager',
     title: 'Wedding planners y coordinadores/as de eventos',
-    subtitle: 'Wedding planners y coordinadoras de eventos para bodas, comuniones y celebraciones en toda España.',
+    subtitle: 'Wedding planners y coordinadores/as de eventos para bodas, comuniones y celebraciones en toda España.',
     seoTitle: 'Contratar wedding planner para tu boda en España | XPEAK',
     seoDesc: 'Directorio de wedding planners y coordinadores/as de eventos en España. Organización integral de bodas y celebraciones. Precios reales y contacto directo.',
     cta: 'Contratar wedding planner',
