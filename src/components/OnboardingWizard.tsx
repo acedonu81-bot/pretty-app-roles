@@ -38,7 +38,7 @@ const ROLES = [
   { value: 'peluqueria',   label: 'Peluquería a Domicilio', desc: 'Peluquería a domicilio, eventos y día a día', icon: Scissors, color: '#fb7185' },
   { value: 'staff',        label: 'Camarero',            desc: 'Camarero y personal de sala',       icon: Users,          color: '#34d399' },
   { value: 'azafata',      label: 'Azafata',             desc: 'Azafata de imagen y atención al público', icon: Users,    color: '#f472b6' },
-  { value: 'event_manager', label: 'Encargada de Eventos', desc: 'Coordinación y producción de eventos', icon: ClipboardList, color: '#818cf8' },
+  { value: 'event_manager', label: 'Coordinador/a de eventos', desc: 'Coordinación y producción de eventos', icon: ClipboardList, color: '#818cf8' },
   { value: 'promotor',     label: 'Promotor / RRPP',     desc: 'Relaciones públicas y listas',      icon: Megaphone,      color: '#a78bfa' },
   { value: 'catering',     label: 'Catering / Chef',     desc: 'Cocina, barra y cócteles',          icon: UtensilsCrossed, color: '#fb923c' },
   { value: 'food-truck',   label: 'Food Truck',          desc: 'Cocina sobre ruedas para eventos',  icon: Truck,          color: '#f59e0b' },
@@ -255,7 +255,7 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
     ],
   },
   event_manager: {
-    title: 'Tu perfil de Encargada de Eventos está listo',
+    title: 'Tu perfil de Coordinador/a de eventos está listo',
     tips: [
       ['Añade tu foto', 'Sin foto no apareces en el directorio'],
       ['Cuenta qué eventos coordinas', 'Bodas, corporativos, festivales...'],

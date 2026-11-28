@@ -62,7 +62,7 @@ const ROLE_OPTIONS = [
   { value: 'disco-movil',     label: 'Disco Móvil' },
   { value: 'staff',           label: 'Camarero / Sala' },
   { value: 'azafata',         label: 'Azafata' },
-  { value: 'event_manager',   label: 'Encargada de Eventos' },
+  { value: 'event_manager',   label: 'Coordinador/a de eventos' },
   { value: 'promotor',        label: 'Promotor / RRPP' },
   { value: 'catering',        label: 'Catering / Cocina' },
   { value: 'food-truck',      label: 'Food Truck' },

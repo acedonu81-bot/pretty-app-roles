@@ -8,7 +8,7 @@ const ROLES = [
   { value: 'dj', label: 'DJ / Artista' },
   { value: 'staff', label: 'Sala & Barra' },
   { value: 'azafata', label: 'Azafata' },
-  { value: 'event_manager', label: 'Encargada de Eventos' },
+  { value: 'event_manager', label: 'Coordinador/a de eventos' },
   { value: 'makeup', label: 'Maquillaje' },
   { value: 'peluqueria', label: 'Peluquería a Domicilio' },
   { value: 'media', label: 'Fotógrafo / Vídeo' },

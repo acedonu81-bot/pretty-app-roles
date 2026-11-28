@@ -22,7 +22,7 @@ export const ROLE_LABELS: Record<string, string> = {
   azafata: 'Azafata',
   promotor: 'Promotor / RRPP',
   empresario: 'Empresario',
-  event_manager: 'Encargada de Eventos',
+  event_manager: 'Coordinador/a de eventos',
   rookie: 'DJ Promesa',
   vestuario: 'Estilista',
   catering: 'Catering & Chef',

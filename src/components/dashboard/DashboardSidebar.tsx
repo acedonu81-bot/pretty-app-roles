@@ -55,7 +55,7 @@ const DIRECTORY_ITEMS: { id: string; label: string }[] = [
   { id: 'emergentes', label: 'Cantera XPEAK' },
   { id: 'staff', label: 'Sala & Barra' },
   { id: 'azafata', label: 'Azafatas' },
-  { id: 'event_manager', label: 'Encargadas de Eventos' },
+  { id: 'event_manager', label: 'Coordinación de eventos' },
   { id: 'bailarin', label: 'Instructores & Bailarines' },
   { id: 'makeup', label: 'Maquillaje & Peluquería' },
   { id: 'media', label: 'Media & Contenido' },

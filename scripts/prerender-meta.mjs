@@ -926,7 +926,7 @@ const ROUTES = [
   {
     path: '/directorio/wedding-planner',
     title: 'Contratar wedding planner para tu boda en España: Directorio XPEAK',
-    desc: 'Directorio de wedding planners y encargadas de eventos en España. Organización integral de bodas y celebraciones. Precios reales y contacto directo.',
+    desc: 'Directorio de wedding planners y coordinadores/as de eventos en España. Organización integral de bodas y celebraciones. Precios reales y contacto directo.',
     ogTitle: 'Directorio de wedding planners | XPEAK',
     ogDesc: 'Encuentra wedding planners y coordinadoras de eventos para tu boda.',
     ogType: 'website',

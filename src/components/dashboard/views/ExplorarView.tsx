@@ -90,7 +90,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
       { id: 'speaker', view: 'speaker', nombre: 'Speakers', gancho: 'Presentadores y maestros de ceremonias' },
       { id: 'promotor', view: 'promotor', nombre: 'Promotor & RRPP', gancho: 'Relaciones públicas y listas' },
       { id: 'azafata', view: 'azafata', nombre: 'Azafatas', gancho: 'Congresos, ferias y protocolo' },
-      { id: 'event_manager', view: 'event_manager', nombre: 'Encargadas de Eventos', gancho: 'Coordinación y producción' },
+      { id: 'event_manager', view: 'event_manager', nombre: 'Coordinación de eventos', gancho: 'Coordinación y producción' },
     ],
   },
   {

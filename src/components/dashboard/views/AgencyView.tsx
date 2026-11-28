@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 
 const ROLE_ES: Record<string, string> = {
-  dj: 'DJ / Artista', rookie: 'DJ Promesa', staff: 'Camarero', azafata: 'Azafata', event_manager: 'Encargada Eventos',
+  dj: 'DJ / Artista', rookie: 'DJ Promesa', staff: 'Camarero', azafata: 'Azafata', event_manager: 'Coordinador/a de eventos',
   promotor: 'Promotor', camarero: 'Camarero', catering: 'Catering',
   makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Media / Foto', empresario: 'Empresario',
 };

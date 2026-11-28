@@ -16,7 +16,7 @@ export const ROLE_ES: Record<string, string> = {
   dj:            'DJ / Artista / Música en Vivo',
   staff:         'Sala & Barra',
   azafata:       'Azafata',
-  event_manager: 'Encargada de Eventos',
+  event_manager: 'Coordinador/a de eventos',
   promotor:      'Promotor & Maestro de Ceremonias',
   camarero:      'Sala & Barra',
   catering:      'Catering / Cocina',

@@ -589,7 +589,7 @@ const PublicProfile = () => {
     : `${BASE_URL}/og-image.jpg`;
 
   const roleLabel: Record<string, string> = {
-    dj: 'DJ & Artista', staff: 'Camarero', azafata: 'Azafata', event_manager: 'Encargada de Eventos',
+    dj: 'DJ & Artista', staff: 'Camarero', azafata: 'Azafata', event_manager: 'Coordinador/a de eventos',
     makeup: 'Belleza & Estética', peluqueria: 'Peluquería a Domicilio', media: 'Imagen & Media', design: 'Diseño & Visuales',
     promotor: 'Promotor', ambassador: 'Embajador', catering: 'Catering & Chef',
     mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico',

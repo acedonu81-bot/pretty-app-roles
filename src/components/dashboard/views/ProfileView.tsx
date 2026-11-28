@@ -160,7 +160,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     { value: 'dj',            label: 'DJ / Artista (pinchas o actúas tú)' },
     { value: 'staff',         label: 'Sala & Barra' },
     { value: 'azafata',       label: 'Azafata' },
-    { value: 'event_manager', label: 'Encargada de Eventos' },
+    { value: 'event_manager', label: 'Coordinador/a de eventos' },
     { value: 'promotor',      label: 'Promotor' },
     { value: 'catering',      label: 'Catering / Cocina' },
     { value: 'food-truck',    label: 'Food Truck' },

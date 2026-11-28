@@ -30,7 +30,7 @@ const ORGANIZA_NOMBRE = 'Solicitud particular: Que lo organice XPEAK';
 // del frontend (no se puede importar: esta funcion corre en Deno, aislada).
 const ROL_ES: Record<string, string> = {
   dj: 'DJ', staff: 'Sala & Barra', camarero: 'Sala & Barra', azafata: 'Azafata',
-  event_manager: 'Encargada de Eventos', promotor: 'Promotor & RRPP',
+  event_manager: 'Coordinador/a de eventos', promotor: 'Promotor & RRPP',
   catering: 'Catering', makeup: 'Maquillaje', peluqueria: 'Peluquería',
   media: 'Media & Fotografía', 'grupo-musical': 'Grupo Musical', mago: 'Mago',
   humorista: 'Humorista', animador: 'Animador', navidad: 'Especial Navidad', bailarin: 'Bailarín',

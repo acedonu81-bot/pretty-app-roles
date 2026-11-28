@@ -85,7 +85,7 @@ interface ContractRow {
 
 const ROLE_LABEL: Record<string, string> = {
   dj: 'DJ / Artista', rookie: 'DJ Promesa', staff: 'Staff / RRPP',
-  event_manager: 'Encargada de Eventos',
+  event_manager: 'Coordinador/a de eventos',
   bailarin: 'Instructor / Bailarín',
   makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Foto / Vídeo',
   mago: 'Mago / Ilusionista', humorista: 'Humorista', animador: 'Animador / Payaso',

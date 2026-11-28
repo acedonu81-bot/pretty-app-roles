@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 const ROLE_LABELS: Record<string, string> = {
   dj: 'DJ / Artista', media: 'Fotógrafo / Vídeo', makeup: 'Maquilladora', peluqueria: 'Peluquería a Domicilio',
   staff: 'Camarero', azafata: 'Azafata', promotor: 'Promotor / RRPP', empresario: 'Empresario',
-  event_manager: 'Encargada de Eventos', rookie: 'DJ Promesa', vestuario: 'Estilista',
+  event_manager: 'Coordinador/a de eventos', rookie: 'DJ Promesa', vestuario: 'Estilista',
   catering: 'Catering & Chef', 'food-truck': 'Food Truck', 'disco-movil': 'Disco Móvil', ambassador: 'Embajador', design: 'Diseño',
   mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico',
   monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador',
